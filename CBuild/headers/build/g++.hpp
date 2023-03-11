@@ -22,10 +22,9 @@
  */
 // Project files
 #include "Build.hpp"
-#include "../print.hpp"
-#include "../hash.hpp"
-// C++ libraries
-#include "stdlib.h"
+#include "CBuild/print.hpp"
+#include "CBuild/hash.hpp"
+#include "CBuild/system.hpp"
 // Code
 #ifndef _CBUILD_GXX_TOOLCHAIN
 #define _CBUILD_GXX_TOOLCHAIN
@@ -89,8 +88,8 @@ namespace CBuild
                     cmd += " -o ";
                     cmd += files.at(i).data;
                     // Call command
-                    CBuild::print(cmd.c_str(), CBuild::color::BLUE);
-                    system(cmd.c_str());
+                    // CBuild::print(cmd.c_str(), CBuild::color::BLUE);
+                    CBuild::system(cmd);
                     // Save file name
                     hash_files.push_back(this->gen_hash_file(files.at(i).key));
                 }
@@ -126,8 +125,8 @@ namespace CBuild
                 cmd += " -o ";
                 cmd += this->gen_out_name();
                 // Call command
-                CBuild::print(cmd.c_str(), CBuild::color::BLUE);
-                system(cmd.c_str());
+                // CBuild::print(cmd.c_str(), CBuild::color::BLUE);
+                CBuild::system(cmd);
             }
         }
         void link_pack()
@@ -156,8 +155,8 @@ namespace CBuild
                 cmd += flist;
                 cmd += " ";
                 // Call command
-                CBuild::print(cmd.c_str(), CBuild::color::BLUE);
-                system(cmd.c_str());
+                // CBuild::print(cmd.c_str(), CBuild::color::BLUE);
+                CBuild::system(cmd);
             }
         }
     };

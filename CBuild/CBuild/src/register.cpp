@@ -52,6 +52,9 @@ namespace CBuild
             puts("-d [toolchain name] -> call toolchain with specified name or all if nothing specified in debug mode");
             puts("-br [toolchain name] -> call toolchain with specified name or all if nothing specified in build mode and then in run mode");
             puts("-f -> force rebuild files, ignore cache");
+            puts("-gm -> generate Makefile from toolchain execution, example:");
+            puts("./CBuild.run -gm -f -b app");
+            puts("It builds app in force mode and generate Makefile based on this, note, that only shell command will be in Makefile, so, not caching or other fancy thing. Also Makefile will not necessary be easy to read.");
             puts("Directories:");
             puts("build/<toolchain_name>/out -> output directory of tollchain with toolchain_name");
             puts("CBuild/cache/tmp -> temporary copy cache");

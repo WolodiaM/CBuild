@@ -156,7 +156,7 @@ namespace lib
          * @brief Get element by it's key
          *
          * @param key Key
-         * @return const _D& Returned element reference
+         * @return const _D* -> Returned element reference
          */
         const _D* get(_K key)
         {

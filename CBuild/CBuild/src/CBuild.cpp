@@ -4,10 +4,10 @@
  * @brief Main source file of CBuild core
  * @version 1.0
  * @date 2023-01-18
- * 
- * 
+ *
+ *
  * @license GPL v3.0 or later
- * 
+ *
  * Copyright (C) 2023  WolodiaM
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +22,16 @@
  */
 // C++ libraries
 #include "stdio.h"
+#include "iostream"
+#include "fstream"
 // Project headers
 #include "../../headers/CBuild.hpp"
 #include "../../headers/register.hpp"
 #include "../../headers/filesystem++.hpp"
 #include "../../headers/CBuild_defs.hpp"
+#include "../../headers/system.hpp"
 /* CBuild.hpp */
-CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, char** argv)
+CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc, char **argv)
 {
 	// Init registry
 	CBuild::Registry::init();
@@ -42,10 +45,30 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 	{
 		std::string tmp = argv[i];
 		// Force, not use cache compilation
-		if (tmp == std::string("-f")) {
-			try{args->push_back_check("force", "force");}catch(std::exception& e){}
-		// Compile
-		} else if (tmp == std::string("-b")) {
+		if (tmp == std::string("-f"))
+		{
+			try
+			{
+				args->push_back_check("force", "force");
+			}
+			catch (std::exception &e)
+			{
+			}
+			// Makefile gen
+		}
+		else if (tmp == std::string("-gm"))
+		{
+			try
+			{
+				args->push_back_check("gen", "make");
+			}
+			catch (std::exception &e)
+			{
+			}
+			// Compile
+		}
+		else if (tmp == std::string("-b"))
+		{
 			// We build now, not error
 			ret = CBuild::BUILD;
 			i++;
@@ -60,7 +83,13 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				}
 				else
 				{
-					try {args->push_back_check("toolchain_id", tmp);}catch(std::exception& e){}
+					try
+					{
+						args->push_back_check("toolchain_id", tmp);
+					}
+					catch (std::exception &e)
+					{
+					}
 				}
 			}
 			else
@@ -68,8 +97,10 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				puts("-b <toolchain name>");
 				exit(0xFF);
 			}
-		// Run
-		} else if (tmp == std::string("-r")) {
+			// Run
+		}
+		else if (tmp == std::string("-r"))
+		{
 			// Run now, not error
 			ret = CBuild::RUN;
 			i++;
@@ -84,15 +115,29 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				}
 				else
 				{
-					try{args->push_back_check("toolchain_id", tmp);}catch(std::exception& e){}
+					try
+					{
+						args->push_back_check("toolchain_id", tmp);
+					}
+					catch (std::exception &e)
+					{
+					}
 				}
 			}
 			else
 			{
-				try {args->push_back_check("toolchain_id", "CBuild_all");}catch(std::exception& e){}
+				try
+				{
+					args->push_back_check("toolchain_id", "CBuild_all");
+				}
+				catch (std::exception &e)
+				{
+				}
 			}
-		// Build and run
-		} else if (tmp == std::string("-br")) {
+			// Build and run
+		}
+		else if (tmp == std::string("-br"))
+		{
 			// Build and run now, not error
 			ret = CBuild::BUILD_RUN;
 			i++;
@@ -107,7 +152,13 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				}
 				else
 				{
-					try{args->push_back_check("toolchain_id", tmp);}catch(std::exception& e){}
+					try
+					{
+						args->push_back_check("toolchain_id", tmp);
+					}
+					catch (std::exception &e)
+					{
+					}
 				}
 			}
 			else
@@ -115,8 +166,10 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				puts("-br <toolchain name>");
 				exit(0xFF);
 			}
-		// Debug
-		} else if (tmp == std::string("-d")) {
+			// Debug
+		}
+		else if (tmp == std::string("-d"))
+		{
 			// Debug now, not error
 			ret = CBuild::DEBUG;
 			i++;
@@ -131,7 +184,13 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				}
 				else
 				{
-					try{args->push_back_check("toolchain_id", tmp);}catch(std::exception& e){}
+					try
+					{
+						args->push_back_check("toolchain_id", tmp);
+					}
+					catch (std::exception &e)
+					{
+					}
 				}
 			}
 			else
@@ -139,8 +198,10 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				puts("-d <toolchain name>");
 				exit(0xFF);
 			}
-		// Cleran builded app
-		} else if (tmp == std::string("-c")) {
+			// Cleran builded app
+		}
+		else if (tmp == std::string("-c"))
+		{
 			// Clear now, not error
 			ret = CBuild::CLEAR;
 			i++;
@@ -155,7 +216,13 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				}
 				else
 				{
-					try{args->push_back_check("toolchain_id", tmp);}catch(std::exception& e){}
+					try
+					{
+						args->push_back_check("toolchain_id", tmp);
+					}
+					catch (std::exception &e)
+					{
+					}
 				}
 			}
 			else
@@ -163,8 +230,10 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				puts("-c <toolchain name>");
 				exit(0xFF);
 			}
-		// Run task
-		} else if (tmp == std::string("-t")) {
+			// Run task
+		}
+		else if (tmp == std::string("-t"))
+		{
 			// Run task (legacy TASK) now
 			ret = CBuild::TASK;
 			i++;
@@ -187,8 +256,10 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 				puts("-t <task name>");
 				exit(0xFF);
 			}
-		// Add argument
-		} else if (tmp == std::string("-a")) {
+			// Add argument
+		}
+		else if (tmp == std::string("-a"))
+		{
 			i++;
 			// Load argument and perform some checks
 			if (i < argc)
@@ -201,8 +272,10 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 			{
 				exit(0xFF);
 			}
-		// Program arguments
-		} else if (tmp == std::string("-pa")) {
+			// Program arguments
+		}
+		else if (tmp == std::string("-pa"))
+		{
 			i++;
 			// Load program argument and perform some checks
 			if (i < argc)
@@ -215,22 +288,28 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 			{
 				exit(0xFF);
 			}
-		// Init workspace
-		} else if (tmp == std::string("--init")) {
+			// Init workspace
+		}
+		else if (tmp == std::string("--init"))
+		{
 			// Fresh start
 			args->clear();
 			// Load init task
 			args->push_back("task_id", "CBuild_init");
 			return CBuild::TASK;
-		// Get help message
-		} else if ((tmp == std::string("--help")) || (tmp == std::string("-h"))) {
+			// Get help message
+		}
+		else if ((tmp == std::string("--help")) || (tmp == std::string("-h")))
+		{
 			// Fresh start
 			args->clear();
 			// Load help task
 			args->push_back("task_id", "CBuild_help");
 			return CBuild::TASK;
-		// Parse user-defined keywords
-		} else {
+			// Parse user-defined keywords
+		}
+		else
+		{
 			auto keys = Registry::GetKeywordsList();
 			for (unsigned int i = 0; i < keys.size(); i++)
 			{
@@ -244,7 +323,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, 
 	}
 	return ret;
 }
-void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args)
+void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string> *args)
 {
 	// Check if cache directory exists
 	if (!CBuild::fs::exists(CBUILD_CACHE_DIR))
@@ -280,93 +359,95 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args)
 				force = true;
 			}
 		}
-		catch (std::exception& e){}
+		catch (std::exception &e)
+		{
+		}
 	}
 	// Select mode
-	switch(mode)
+	switch (mode)
 	{
 	// Build
 	case CBuild::BUILD:
+	{
+		// Load toolchain
+		std::string id = *(args->get("toolchain_id"));
+		CBuild::Toolchain *target = CBuild::Registry::GetToolchain(id);
+		// Error
+		if (target == NULL)
 		{
-			// Load toolchain
-			std::string id = *(args->get("toolchain_id"));
-			CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
-			// Error
-			if (target == NULL)
-			{
-				printf("Toolchain %s not found. Exiting...\n", id.c_str());
-				exit(0xFF);
-			}
-			// Call tolchain in build mode
-			target->call(&pargs, force);
+			printf("Toolchain %s not found. Exiting...\n", id.c_str());
+			exit(0xFF);
 		}
-		break;
+		// Call tolchain in build mode
+		target->call(&pargs, force);
+	}
+	break;
 	// Build and run
 	case CBuild::BUILD_RUN:
+	{
+		// Load toolchain
+		std::string id = *(args->get("toolchain_id"));
+		CBuild::Toolchain *target = CBuild::Registry::GetToolchain(id);
+		// Error
+		if (target == NULL)
 		{
-			// Load toolchain
-			std::string id = *(args->get("toolchain_id"));
-			CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
-			// Error
-			if (target == NULL)
-			{
-				printf("Toolchain %s not found. Exiting...\n", id.c_str());
-				exit(0xFF);
-			}
-			// Run toolchain in build mode
-			target->call(&pargs, force);
-			// Run toolchain in run mode
-			target->run(&ppargs);
+			printf("Toolchain %s not found. Exiting...\n", id.c_str());
+			exit(0xFF);
 		}
-		break;
-	// Run 
+		// Run toolchain in build mode
+		target->call(&pargs, force);
+		// Run toolchain in run mode
+		target->run(&ppargs);
+	}
+	break;
+	// Run
 	case CBuild::RUN:
+	{
+		// Load toolchain
+		std::string id = *(args->get("toolchain_id"));
+		CBuild::Toolchain *target = CBuild::Registry::GetToolchain(id);
+		// Error
+		if (target == NULL)
 		{
-			// Load toolchain
-			std::string id = *(args->get("toolchain_id"));
-			CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
-			// Error
-			if (target == NULL)
-			{
-				printf("Toolchain %s not found. Exiting...\n", id.c_str());
-				exit(0xFF);
-			}
-			// Run toolchain in run mode
-			target->run(&ppargs);
+			printf("Toolchain %s not found. Exiting...\n", id.c_str());
+			exit(0xFF);
 		}
-		break;
+		// Run toolchain in run mode
+		target->run(&ppargs);
+	}
+	break;
 	// Build and run indebug mode
 	case CBuild::DEBUG:
+	{
+		// Load toolchain
+		std::string id = *(args->get("toolchain_id"));
+		CBuild::Toolchain *target = CBuild::Registry::GetToolchain(id);
+		// Error
+		if (target == NULL)
 		{
-			// Load toolchain
-			std::string id = *(args->get("toolchain_id"));
-			CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
-			// Error
-			if (target == NULL)
-			{
-				printf("Toolchain %s not found. Exiting...\n", id.c_str());
-				exit(0xFF);
-			}
-			// Run toolchain in debug mode
-			target->debug(&pargs, &ppargs);
+			printf("Toolchain %s not found. Exiting...\n", id.c_str());
+			exit(0xFF);
 		}
-		break;
+		// Run toolchain in debug mode
+		target->debug(&pargs, &ppargs);
+	}
+	break;
 	// Clear (files)
 	case CBuild::CLEAR:
+	{
+		// Load toolchain
+		std::string id = *(args->get("toolchain_id"));
+		CBuild::Toolchain *target = CBuild::Registry::GetToolchain(id);
+		// Error
+		if (target == NULL)
 		{
-			// Load toolchain
-			std::string id = *(args->get("toolchain_id"));
-			CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
-			// Error
-			if (target == NULL)
-			{
-				printf("Toolchain %s not found. Exiting...\n", id.c_str());
-				exit(0xFF);
-			}
-			// Run toolchain is self-clear mode
-			target->clear();
+			printf("Toolchain %s not found. Exiting...\n", id.c_str());
+			exit(0xFF);
 		}
-		break;
+		// Run toolchain is self-clear mode
+		target->clear();
+	}
+	break;
 	// Run task
 	case CBuild::TASK:
 		// Call task
@@ -378,5 +459,63 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args)
 	// Also error ;)
 	default:
 		exit(0xFF);
+	}
+	auto gen = args->get_ptr("gen");
+	if (gen != NULL && gen->data == "make")
+	{
+		auto log = CBuild::get_log();
+		if (!CBuild::fs::exists(CBUILD_MAKEFILE))
+		{
+			CBuild::fs::create({CBUILD_MAKEFILE}, CBuild::fs::FILE);
+		}
+		std::ofstream makefile;
+		makefile.open(CBUILD_MAKEFILE, std::ios::app);
+		std::string name = "";
+		switch (mode)
+		{
+		case CBuild::BUILD:
+			name += "build_";
+			break;
+		case CBuild::BUILD_RUN:
+			name += "build_run_";
+			break;
+		case CBuild::RUN:
+			name += "run_";
+			break;
+		case CBuild::CLEAR:
+			name += "clear_";
+			break;
+		case CBuild::DEBUG:
+			name += "debug_";
+			break;
+		case CBuild::TASK:
+			name += "task_";
+			break;
+		default:
+			name += "cbuild_";
+			break;
+		}
+		if (mode == CBuild::BUILD || mode == CBuild::BUILD_RUN || mode == CBuild::RUN || mode == CBuild::DEBUG || mode == CBuild::CLEAR)
+		{
+			name += *(args->get("toolchain_id"));
+		}
+		else if (mode == CBuild::TASK)
+		{
+			name += *(args->get("task_id"));
+		}
+		else
+		{
+			name += "cbuild";
+		}
+		makefile << "\n";
+		makefile << name << ":\n";
+		for (auto elem : *log)
+		{
+			makefile << "\t"
+					 << elem
+					 << "\n";
+		}
+		makefile << "\n";
+		makefile.close();
 	}
 }

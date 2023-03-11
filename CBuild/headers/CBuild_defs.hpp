@@ -51,3 +51,7 @@
  * @brief Scripts dir of CBuild
  */
 #define CBUILD_SCRIPTS_DIR std::string("scripts")
+/**
+ * @brief Output Makefile path
+ */
+#define CBUILD_MAKEFILE std::string("Makefile")

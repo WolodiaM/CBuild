@@ -1,7 +1,7 @@
 # CBuild
 Full feathured build system for C / C++.
-All build scripts go into scripts folder
-All build scripts is written in C++ (can be written in C but CBuild does not have any C API)
+All build scripts go into scripts folder.
+All build scripts is written in C++ (can be written in C but CBuild does not have any C API).
 
 # Example
 This is folder structure:  
@@ -21,8 +21,8 @@ project
     |--- CBuild.run (main CBuild executable)  
     |--- build.sh (build script rebuild file (for now))  
 </pre>
-main.cpp -> main file of Cbuild executable, change only if you know how CBuild work internally  
-user_init.hpp -> headers of user scripts, have 1 function, that need to be called in main.cpp (init());  
+main.cpp -> main file of Cbuild executable, change only if you know how CBuild work internally.  
+user_init.hpp -> headers of user scripts, have 1 function, that need to be called in main.cpp (init()).  
 user_init.cpp -> implemenet init() form headers, thie function will be ruuned at a start of Cbuild, before all core functions.  
 example build script for lib and app that use it:
 <pre>
@@ -54,4 +54,4 @@ void init()
 	CBuild::Registry::RegisterTarget(&lib);  
 }  
 </pre>
-It uses g++ as compiler, as c++20
+It uses g++ as compiler, as c++20.

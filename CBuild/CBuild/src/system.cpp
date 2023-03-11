@@ -1,9 +1,9 @@
 /**
- * @file print.hpp
+ * @file system.cpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief Custom print that support color codes
+ * @brief custom system() wrapper
  * @version 1.0
- * @date 2023-02-14
+ * @date 2023-03-11
  * 
  * 
  * @license GPL v3.0 or later
@@ -21,32 +21,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // C++ libraries
-#include "vector"
 #include "string"
-// Code
-#ifndef __CBUILD_PRINT_HPP__
-#define __CBUILD_PRINT_HPP__
-namespace CBuild
-{
-    /**
-     * @brief Text color
-     */
-    typedef enum {
-        BLACK = 30,
-        RED = 31,
-        GREEN = 32,
-        YELLOW = 33,
-        BLUE = 34,
-        MAGENTA = 35,
-        CYAN = 36,
-        WHITE = 37
-    } color;
-    /**
-     * @brief Print colored text to STDOUT
-     * 
-     * @param msg => std::string -> text to print
-     * @param fg => CBuild::color -> color of text
-     */
-    void print(std::string msg, color fg = CBuild::WHITE);
+#include "vector"
+#include "stdlib.h"
+// Project headers
+#include "../../headers/print.hpp"
+#include "../../headers/system.hpp"
+/* namespace CBuild */
+namespace CBuild {
+    std::vector<std::string> log;
 } // namespace CBuild
-#endif // __CBUILD_PRINT_HPP__
+/* system.hpp */
+void CBuild::system(std::string cmd) 
+{
+    CBuild::log.push_back(cmd);
+    CBuild::print(cmd, CBuild::color::BLUE);
+    std::system(cmd.c_str());
+}
+std::vector<std::string>* CBuild::get_log()
+{
+    return &CBuild::log;
+}

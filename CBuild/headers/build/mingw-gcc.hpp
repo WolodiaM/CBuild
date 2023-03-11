@@ -22,13 +22,12 @@
  */
 // Project files
 #include "Build.hpp"
-#include "../CBuild_defs.hpp"
-#include "../print.hpp"
-#include "../register.hpp"
-#include "../filesystem++.hpp"
-#include "../hash.hpp"
-// C++ libraries
-#include "stdlib.h"
+#include "CBuild/CBuild_defs.hpp"
+#include "CBuild/print.hpp"
+#include "CBuild/register.hpp"
+#include "CBuild/filesystem++.hpp"
+#include "CBuild/hash.hpp"
+#include "CBuild/system.hpp"
 // Code
 #ifndef _CBUILD_MINGW_GCC_TOOLCHAIN
 #define _CBUILD_MINGW_GCC_TOOLCHAIN
@@ -86,8 +85,8 @@ namespace CBuild
                     cmd += args;
                     cmd += " -o ";
                     cmd += files.at(i).data;
-                    CBuild::print(cmd, CBuild::BLUE);
-                    system(cmd.c_str());
+                    // CBuild::print(cmd, CBuild::BLUE);
+                    CBuild::system(cmd);
                     hash_files.push_back(this->gen_hash_file(files.at(i).key));
                 }
             }
@@ -117,8 +116,8 @@ namespace CBuild
                 cmd += " ";
                 cmd += " -o ";
                 cmd += this->gen_out_name();
-                CBuild::print(cmd, CBuild::BLUE);
-                system(cmd.c_str());
+                // CBuild::print(cmd, CBuild::BLUE);
+                CBuild::system(cmd);
             }
         }
         void link_pack()
@@ -143,8 +142,8 @@ namespace CBuild
                 cmd += " ";
                 cmd += flist;
                 cmd += " ";
-                CBuild::print(cmd, CBuild::BLUE);
-                system(cmd.c_str());
+                // CBuild::print(cmd, CBuild::BLUE);
+                CBuild::system(cmd.c_str());
             }
         }
         void post_link()
@@ -300,7 +299,7 @@ namespace CBuild
             cmd += " ";
             cmd += pargs;
             CBuild::print("App output (if any):", CBuild::MAGENTA);
-            system(cmd.c_str());
+            CBuild::system(cmd);
             CBuild::print("End of app execution", CBuild::RED);
         }
         void debug(std::vector<std::string> *args, std::vector<std::string> *pargs)
@@ -323,8 +322,8 @@ namespace CBuild
             // cmd += this->gen_out_name();
             // cmd += " ";
             // cmd += ppargs;
-            // CBuild::print("Now you can see gdb shell ", CBuild::MAGENTA);
-            // system(cmd.c_str());
+            // // CBuild::print("Now you can see gdb shell ", CBuild::MAGENTA);
+            // CBuild::system(cmd);
             // CBuild::print("End of app execution", CBuild::RED);
         }
     };

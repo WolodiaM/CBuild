@@ -34,6 +34,7 @@
 #include "../../headers/CBuild_defs.hpp"
 #include "../../headers/hash.hpp"
 #include "../../headers/print.hpp"
+#include "../../headers/system.hpp"
 /* Build.hpp - arguments */
 void CBuild::Toolchain::add_compile_arg(std::string arg)
 {
@@ -543,7 +544,7 @@ void CBuild::Toolchain::run(std::vector<std::string> *args)
     cmd += pargs;
     // Call app
     CBuild::print("App output (if any):", CBuild::MAGENTA);
-    system(cmd.c_str());
+    CBuild::system(cmd);
     CBuild::print("End of app execution", CBuild::RED);
 }
 void CBuild::Toolchain::debug(std::vector<std::string> *args, std::vector<std::string> *pargs)
@@ -569,11 +570,11 @@ void CBuild::Toolchain::debug(std::vector<std::string> *args, std::vector<std::s
     cmd += ppargs;
     // Call gdb on app
     CBuild::print("Now you can see gdb shell ", CBuild::MAGENTA);
-    system(cmd.c_str());
+    CBuild::system(cmd);
     CBuild::print("End of app execution", CBuild::RED);
 }
 void CBuild::Toolchain::clear()
 {
     // Symple clear though shell ;)
-    system((std::string("rm -r ") + CBUILD_BUILD_DIR + "/" + this->id).c_str());
+    CBuild::system(std::string("rm -r ") + CBUILD_BUILD_DIR + "/" + this->id);
 }
