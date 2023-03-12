@@ -1,0 +1,138 @@
+\hypertarget{g_09_09_8hpp_source}{}\doxysection{g++.hpp}
+\label{g_09_09_8hpp_source}\index{CBuild/headers/build/g++.hpp@{CBuild/headers/build/g++.hpp}}
+\mbox{\hyperlink{g_09_09_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00023}00023 \textcolor{comment}{// Project files}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00024}00024 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{Build_8hpp}{Build.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00025}00025 \textcolor{preprocessor}{\#include "{}CBuild/print.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00026}00026 \textcolor{preprocessor}{\#include "{}CBuild/hash.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00027}00027 \textcolor{preprocessor}{\#include "{}CBuild/system.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00028}00028 \textcolor{comment}{// Code}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00029}00029 \textcolor{preprocessor}{\#ifndef \_CBUILD\_GXX\_TOOLCHAIN}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00030}\mbox{\hyperlink{g_09_09_8hpp_a12d98cf5e12b3679fccc20f2e020945e}{00030}} \textcolor{preprocessor}{\#define \_CBUILD\_GXX\_TOOLCHAIN}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00031}00031 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceCBuild}{CBuild}}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00032}00032 \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00033}\mbox{\hyperlink{classCBuild_1_1GXX}{00033}}     \textcolor{keyword}{class }\mbox{\hyperlink{classCBuild_1_1GXX}{GXX}} : \textcolor{keyword}{public} \mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild::Toolchain}}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00034}00034     \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00035}00035     \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00041}\mbox{\hyperlink{classCBuild_1_1GXX_acfc4d510a17f494e1c991abe79b81f8c}{00041}}         \mbox{\hyperlink{classCBuild_1_1GXX_acfc4d510a17f494e1c991abe79b81f8c}{GXX}}(std::string \textcolor{keywordtype}{id})}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00042}00042         \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00043}00043             \textcolor{comment}{// Set id of toolchain and assign executables constants}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00044}00044             this-\/>\textcolor{keywordtype}{id} = \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00045}00045             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}} = \textcolor{stringliteral}{"{}g++"{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00046}00046             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}} = \textcolor{stringliteral}{"{}g++"{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00047}00047             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}} = \textcolor{stringliteral}{"{}ar cr"{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00048}00048         \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00055}\mbox{\hyperlink{classCBuild_1_1GXX_a528bdf5e39d20b43dfeb50c4e2f1aa52}{00055}}         \mbox{\hyperlink{classCBuild_1_1GXX_a528bdf5e39d20b43dfeb50c4e2f1aa52}{GXX}}(std::string \textcolor{keywordtype}{id}, std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}})}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00056}00056         \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00057}00057             \textcolor{comment}{// Set id and name of toolchain and assign executables constants}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00058}00058             this-\/>\textcolor{keywordtype}{id} = \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00059}00059             this-\/>name = \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00060}00060             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}} = \textcolor{stringliteral}{"{}g++"{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00061}00061             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}} = \textcolor{stringliteral}{"{}g++"{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00062}00062             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}} = \textcolor{stringliteral}{"{}ar cr"{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00063}00063         \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00064}00064 }
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00065}00065     \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00066}\mbox{\hyperlink{classCBuild_1_1GXX_a09469e91e25cc01bc380201f25cc7b9b}{00066}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1GXX_a09469e91e25cc01bc380201f25cc7b9b}{build}}()}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00067}00067         \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00068}00068             \textcolor{comment}{// Get all args}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00069}00069             std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00070}00070             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\_args}})}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00071}00071             \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00072}00072                 args += elem;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00073}00073                 \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00074}00074             \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00075}00075             \textcolor{comment}{// Get all files}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00076}00076             \textcolor{keyword}{auto} files = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}});}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00077}00077             std::vector<std::string> hash\_files;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00078}00078             \textcolor{keywordflow}{if} (files.size() > 0)}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00079}00079             \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00080}00080                 \textcolor{comment}{// Compile file by file}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00081}00081                 \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < files.size(); i++)}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00082}00082                 \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00083}00083                     \textcolor{comment}{// Construct command}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00084}00084                     std::string cmd = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}} + \textcolor{stringliteral}{"{} -\/c "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00085}00085                     cmd += files.at(i).key;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00086}00086                     cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00087}00087                     cmd += \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00088}00088                     cmd += \textcolor{stringliteral}{"{} -\/o "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00089}00089                     cmd += files.at(i).data;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00090}00090                     \textcolor{comment}{// Call command}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00091}00091                     \textcolor{comment}{// CBuild::print(cmd.c\_str(), CBuild::color::BLUE);}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00092}00092                     \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00093}00093                     \textcolor{comment}{// Save file name}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00094}00094                     hash\_files.push\_back(this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a83c45aea3e5d4c3dcb085420ac625b26}{gen\_hash\_file}}(files.at(i).key));}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00095}00095                 \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00096}00096             \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00097}00097             \textcolor{comment}{// Update hashes}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00098}00098             \mbox{\hyperlink{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}{CBuild::save\_hashes}}(hash\_files, files.keys());}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00099}00099         \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00100}\mbox{\hyperlink{classCBuild_1_1GXX_a176a3fa5aff2e1a023a0ef2eba0196bf}{00100}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1GXX_a176a3fa5aff2e1a023a0ef2eba0196bf}{link}}()}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00101}00101         \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00102}00102             \textcolor{comment}{// Get args}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00103}00103             std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00104}00104             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}})}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00105}00105             \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00106}00106                 args += elem;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00107}00107                 \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00108}00108             \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00109}00109             \textcolor{comment}{// Get files}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00110}00110             \textcolor{keyword}{auto} files = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00111}00111             std::string flist;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00112}00112             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < files.size(); i++)}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00113}00113             \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00114}00114                 flist += files.at(i).data;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00115}00115                 flist += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00116}00116             \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00117}00117             \textcolor{keywordflow}{if} (files.size() > 0)}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00118}00118             \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00119}00119                 \textcolor{comment}{// Construct command}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00120}00120                 std::string cmd = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}} + \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00121}00121                 cmd += flist;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00122}00122                 cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00123}00123                 cmd += \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00124}00124                 cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00125}00125                 cmd += \textcolor{stringliteral}{"{} -\/o "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00126}00126                 cmd += this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}{gen\_out\_name}}();}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00127}00127                 \textcolor{comment}{// Call command}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00128}00128                 \textcolor{comment}{// CBuild::print(cmd.c\_str(), CBuild::color::BLUE);}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00129}00129                 \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00130}00130             \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00131}00131         \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00132}\mbox{\hyperlink{classCBuild_1_1GXX_a956a1781d7e189a2b145a3f6c57aab6f}{00132}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1GXX_a956a1781d7e189a2b145a3f6c57aab6f}{link\_pack}}()}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00133}00133         \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00134}00134             \textcolor{comment}{// Get args}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00135}00135             std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00136}00136             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}})}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00137}00137             \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00138}00138                 args += elem;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00139}00139                 \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00140}00140             \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00141}00141             \textcolor{comment}{// Get all files}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00142}00142             \textcolor{keyword}{auto} files = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00143}00143             std::string flist;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00144}00144             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < files.size(); i++)}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00145}00145             \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00146}00146                 flist += files.at(i).data;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00147}00147                 flist += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00148}00148             \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00149}00149             \textcolor{keywordflow}{if} (files.size() > 0)}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00150}00150             \{}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00151}00151                 \textcolor{comment}{// Construct command}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00152}00152                 std::string cmd = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}} + \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00153}00153                 cmd += this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}{gen\_out\_name}}();}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00154}00154                 cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00155}00155                 cmd += flist;}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00156}00156                 cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00157}00157                 \textcolor{comment}{// Call command}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00158}00158                 \textcolor{comment}{// CBuild::print(cmd.c\_str(), CBuild::color::BLUE);}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00159}00159                 \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00160}00160             \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00161}00161         \}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00162}00162     \};}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00163}00163 \} \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{g_09_09_8hpp_source_l00164}00164 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_CBUILD\_GXX\_TOOLCHAIN}}
+
+\end{DoxyCode}

@@ -1,0 +1,477 @@
+\hypertarget{namespaceCBuild}{}\doxysection{CBuild Namespace Reference}
+\label{namespaceCBuild}\index{CBuild@{CBuild}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild_1_1fs}{fs}}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild_1_1Registry}{Registry}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classCBuild_1_1GCC}{GCC}}
+\item 
+class \mbox{\hyperlink{classCBuild_1_1GXX}{GXX}}
+\item 
+class \mbox{\hyperlink{classCBuild_1_1Help}{Help}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classCBuild_1_1Help}{Help}} print task. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classCBuild_1_1Init}{Init}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classCBuild_1_1Init}{Init}} task. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classCBuild_1_1MINGW__GCC}{MINGW\+\_\+\+GCC}}
+\item 
+class \mbox{\hyperlink{classCBuild_1_1MINGW__GXX}{MINGW\+\_\+\+GXX}}
+\item 
+struct \mbox{\hyperlink{structCBuild_1_1Path}{Path}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structCBuild_1_1Path}{Path}} datatype. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classCBuild_1_1Task}{Task}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classCBuild_1_1Task}{Task}}, can be runned from shell or code. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classCBuild_1_1Toolchain}{Toolchain}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classCBuild_1_1Toolchain}{Toolchain}} class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9c}{stage}} \{ \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9ca48260554740aee4470be239e88c42d4c}{PRE}}
+, \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9caf95818e5b66b8e7c97df05a58b9126d3}{POST}}
+ \}
+\begin{DoxyCompactList}\small\item\em Type of depencesies for toolchain. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\+\_\+type}} \{ \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a1e3140ac4b5daffae90f95ab0d2666f2}{EXECUTABLE}}
+, \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a38f43fcafde9a74a2fd8e1840ea52cf8}{STATIC\+\_\+\+LIBRARY}}
+, \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f}{DYNAMIC\+\_\+\+LIBRARY}}
+ \}
+\item 
+enum \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{RType}} \{ \newline
+\mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a7c8f5f1751cc7e58d643768e7c7fe0f1}{TASK}}
+, \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2af2594630569a995a701bb1e4cc4baed9}{BUILD}}
+, \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a3d026180189f243302c9a1bc39a4f2ff}{RUN}}
+, \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a83a8937af3ed3d7dd2ff3fd3cf417825}{BUILD\+\_\+\+RUN}}
+, \newline
+\mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a38ad9d9bf8bd65002915f20519907263}{DEBUG}}
+, \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a4322a86e756ad9c98766046eeac9a7ff}{CLEAR}}
+, \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a0f3f84fcd03bccedf3da4e5939d46fe9}{ERROR}}
+ \}
+\begin{DoxyCompactList}\small\item\em Run mode. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}} \{ \newline
+\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a8bd0cf7a4d1d3a65b9c8f616054c5950}{BLACK}} = 30
+, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{RED}} = 31
+, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{GREEN}} = 32
+, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a2a67edb9753b55a661c1557c45fc2a76}{YELLOW}} = 33
+, \newline
+\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}{BLUE}} = 34
+, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{MAGENTA}} = 35
+, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a0440f78b5c38b9bfbfa19039d01ecdbc}{CYAN}} = 36
+, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{WHITE}} = 37
+ \}
+\begin{DoxyCompactList}\small\item\em Text color. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{RType}} \mbox{\hyperlink{namespaceCBuild_a65ab369788ba3c28cb453822f0126206}{parse}} (\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ $\ast$args, int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Parse arguments. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_ac649cc483958d2ee270b9f260c70f8e0}{loop}} (\mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{RType}} mode, \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ $\ast$args)
+\begin{DoxyCompactList}\small\item\em loop of \mbox{\hyperlink{namespaceCBuild}{CBuild}} \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceCBuild_aae905ec357d685e121d099e5bc4ac853}{hash\+\_\+match\+\_\+store}} (std\+::string hash\+\_\+file, std\+::string code\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Check if saved hash match new hash of file and update saved hash. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceCBuild_a0f4e5b83b3f6e800684965a69f13ca6f}{load\+\_\+hash}} (std\+::string hash, std\+::string code)
+\begin{DoxyCompactList}\small\item\em Load hash. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}{save\+\_\+hashes}} (std\+::vector$<$ std\+::string $>$ hash\+\_\+files, std\+::vector$<$ std\+::string $>$ code\+\_\+files)
+\begin{DoxyCompactList}\small\item\em Store hashes. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{print}} (std\+::string msg, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}} fg=\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{CBuild\+::\+WHITE}})
+\begin{DoxyCompactList}\small\item\em Print colored text to STDOUT. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{system}} (std\+::string cmd)
+\begin{DoxyCompactList}\small\item\em Call stdlib \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{system()}} and print cmd to shell. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ $\ast$ \mbox{\hyperlink{namespaceCBuild_a454c89f17e1bbea2bd4bdb0be34027b7}{get\+\_\+log}} ()
+\begin{DoxyCompactList}\small\item\em Get the internall command log. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{log}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}\label{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}} 
+\index{CBuild@{CBuild}!build\_type@{build\_type}}
+\index{build\_type@{build\_type}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{build\_type}{build\_type}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{CBuild\+::build\+\_\+type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EXECUTABLE@{EXECUTABLE}!CBuild@{CBuild}}\index{CBuild@{CBuild}!EXECUTABLE@{EXECUTABLE}}}\mbox{\Hypertarget{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a1e3140ac4b5daffae90f95ab0d2666f2}\label{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a1e3140ac4b5daffae90f95ab0d2666f2}} 
+EXECUTABLE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{STATIC\_LIBRARY@{STATIC\_LIBRARY}!CBuild@{CBuild}}\index{CBuild@{CBuild}!STATIC\_LIBRARY@{STATIC\_LIBRARY}}}\mbox{\Hypertarget{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a38f43fcafde9a74a2fd8e1840ea52cf8}\label{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a38f43fcafde9a74a2fd8e1840ea52cf8}} 
+STATIC\+\_\+\+LIBRARY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DYNAMIC\_LIBRARY@{DYNAMIC\_LIBRARY}!CBuild@{CBuild}}\index{CBuild@{CBuild}!DYNAMIC\_LIBRARY@{DYNAMIC\_LIBRARY}}}\mbox{\Hypertarget{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f}\label{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f}} 
+DYNAMIC\+\_\+\+LIBRARY&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00047}{47}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+\mbox{\Hypertarget{namespaceCBuild_a3291e277899194e904c57c9133ff5025}\label{namespaceCBuild_a3291e277899194e904c57c9133ff5025}} 
+\index{CBuild@{CBuild}!color@{color}}
+\index{color@{color}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{color}{color}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{CBuild\+::color}}}
+
+
+
+Text color. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BLACK@{BLACK}!CBuild@{CBuild}}\index{CBuild@{CBuild}!BLACK@{BLACK}}}\mbox{\Hypertarget{namespaceCBuild_a3291e277899194e904c57c9133ff5025a8bd0cf7a4d1d3a65b9c8f616054c5950}\label{namespaceCBuild_a3291e277899194e904c57c9133ff5025a8bd0cf7a4d1d3a65b9c8f616054c5950}} 
+BLACK&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RED@{RED}!CBuild@{CBuild}}\index{CBuild@{CBuild}!RED@{RED}}}\mbox{\Hypertarget{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}\label{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}} 
+RED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{GREEN@{GREEN}!CBuild@{CBuild}}\index{CBuild@{CBuild}!GREEN@{GREEN}}}\mbox{\Hypertarget{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}\label{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}} 
+GREEN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{YELLOW@{YELLOW}!CBuild@{CBuild}}\index{CBuild@{CBuild}!YELLOW@{YELLOW}}}\mbox{\Hypertarget{namespaceCBuild_a3291e277899194e904c57c9133ff5025a2a67edb9753b55a661c1557c45fc2a76}\label{namespaceCBuild_a3291e277899194e904c57c9133ff5025a2a67edb9753b55a661c1557c45fc2a76}} 
+YELLOW&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BLUE@{BLUE}!CBuild@{CBuild}}\index{CBuild@{CBuild}!BLUE@{BLUE}}}\mbox{\Hypertarget{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}\label{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}} 
+BLUE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MAGENTA@{MAGENTA}!CBuild@{CBuild}}\index{CBuild@{CBuild}!MAGENTA@{MAGENTA}}}\mbox{\Hypertarget{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}\label{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}} 
+MAGENTA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CYAN@{CYAN}!CBuild@{CBuild}}\index{CBuild@{CBuild}!CYAN@{CYAN}}}\mbox{\Hypertarget{namespaceCBuild_a3291e277899194e904c57c9133ff5025a0440f78b5c38b9bfbfa19039d01ecdbc}\label{namespaceCBuild_a3291e277899194e904c57c9133ff5025a0440f78b5c38b9bfbfa19039d01ecdbc}} 
+CYAN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{WHITE@{WHITE}!CBuild@{CBuild}}\index{CBuild@{CBuild}!WHITE@{WHITE}}}\mbox{\Hypertarget{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}\label{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}} 
+WHITE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{print_8hpp_source_l00034}{34}} of file \mbox{\hyperlink{print_8hpp_source}{print.\+hpp}}.
+
+\mbox{\Hypertarget{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}\label{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}} 
+\index{CBuild@{CBuild}!RType@{RType}}
+\index{RType@{RType}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{RType}{RType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{CBuild\+::\+RType}}}
+
+
+
+Run mode. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TASK@{TASK}!CBuild@{CBuild}}\index{CBuild@{CBuild}!TASK@{TASK}}}\mbox{\Hypertarget{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a7c8f5f1751cc7e58d643768e7c7fe0f1}\label{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a7c8f5f1751cc7e58d643768e7c7fe0f1}} 
+TASK&Run task. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BUILD@{BUILD}!CBuild@{CBuild}}\index{CBuild@{CBuild}!BUILD@{BUILD}}}\mbox{\Hypertarget{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2af2594630569a995a701bb1e4cc4baed9}\label{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2af2594630569a995a701bb1e4cc4baed9}} 
+BUILD&Build target. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RUN@{RUN}!CBuild@{CBuild}}\index{CBuild@{CBuild}!RUN@{RUN}}}\mbox{\Hypertarget{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a3d026180189f243302c9a1bc39a4f2ff}\label{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a3d026180189f243302c9a1bc39a4f2ff}} 
+RUN&Run target. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BUILD\_RUN@{BUILD\_RUN}!CBuild@{CBuild}}\index{CBuild@{CBuild}!BUILD\_RUN@{BUILD\_RUN}}}\mbox{\Hypertarget{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a83a8937af3ed3d7dd2ff3fd3cf417825}\label{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a83a8937af3ed3d7dd2ff3fd3cf417825}} 
+BUILD\+\_\+\+RUN&Build and run target. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DEBUG@{DEBUG}!CBuild@{CBuild}}\index{CBuild@{CBuild}!DEBUG@{DEBUG}}}\mbox{\Hypertarget{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a38ad9d9bf8bd65002915f20519907263}\label{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a38ad9d9bf8bd65002915f20519907263}} 
+DEBUG&Build and run target in debug mode. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CLEAR@{CLEAR}!CBuild@{CBuild}}\index{CBuild@{CBuild}!CLEAR@{CLEAR}}}\mbox{\Hypertarget{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a4322a86e756ad9c98766046eeac9a7ff}\label{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a4322a86e756ad9c98766046eeac9a7ff}} 
+CLEAR&Clear build output and cache. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ERROR@{ERROR}!CBuild@{CBuild}}\index{CBuild@{CBuild}!ERROR@{ERROR}}}\mbox{\Hypertarget{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a0f3f84fcd03bccedf3da4e5939d46fe9}\label{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2a0f3f84fcd03bccedf3da4e5939d46fe9}} 
+ERROR&Some error occurred. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{CBuild_8hpp_source_l00034}{34}} of file \mbox{\hyperlink{CBuild_8hpp_source}{CBuild.\+hpp}}.
+
+\mbox{\Hypertarget{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9c}\label{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9c}} 
+\index{CBuild@{CBuild}!stage@{stage}}
+\index{stage@{stage}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{stage}{stage}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9c}{CBuild\+::stage}}}
+
+
+
+Type of depencesies for toolchain. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PRE@{PRE}!CBuild@{CBuild}}\index{CBuild@{CBuild}!PRE@{PRE}}}\mbox{\Hypertarget{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9ca48260554740aee4470be239e88c42d4c}\label{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9ca48260554740aee4470be239e88c42d4c}} 
+PRE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{POST@{POST}!CBuild@{CBuild}}\index{CBuild@{CBuild}!POST@{POST}}}\mbox{\Hypertarget{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9caf95818e5b66b8e7c97df05a58b9126d3}\label{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9caf95818e5b66b8e7c97df05a58b9126d3}} 
+POST&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00043}{43}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceCBuild_a454c89f17e1bbea2bd4bdb0be34027b7}\label{namespaceCBuild_a454c89f17e1bbea2bd4bdb0be34027b7}} 
+\index{CBuild@{CBuild}!get\_log@{get\_log}}
+\index{get\_log@{get\_log}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{get\_log()}{get\_log()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ $\ast$ CBuild\+::get\+\_\+log (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the internall command log. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::string$>$$\ast$ -\/\texorpdfstring{$>$}{>} pointer to command log 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{system_8cpp_source_l00041}{41}} of file \mbox{\hyperlink{system_8cpp_source}{system.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{system_8cpp_source_l00032}{log}}.
+
+
+
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00326}{loop()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_aae905ec357d685e121d099e5bc4ac853}\label{namespaceCBuild_aae905ec357d685e121d099e5bc4ac853}} 
+\index{CBuild@{CBuild}!hash\_match\_store@{hash\_match\_store}}
+\index{hash\_match\_store@{hash\_match\_store}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{hash\_match\_store()}{hash\_match\_store()}}
+{\footnotesize\ttfamily bool CBuild\+::hash\+\_\+match\+\_\+store (\begin{DoxyParamCaption}\item[{std\+::string}]{hash\+\_\+file,  }\item[{std\+::string}]{code\+\_\+file }\end{DoxyParamCaption})}
+
+
+
+Check if saved hash match new hash of file and update saved hash. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hash\+\_\+file} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} path to hash file \\
+\hline
+{\em code\+\_\+file} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} path to code file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true -\/\texorpdfstring{$>$}{>} file hash equal to saved 
+
+false -\/\texorpdfstring{$>$}{>} file hash different from saved 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00053}{53}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{hash_8cpp_source_l00034}{sha256()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_a0f4e5b83b3f6e800684965a69f13ca6f}\label{namespaceCBuild_a0f4e5b83b3f6e800684965a69f13ca6f}} 
+\index{CBuild@{CBuild}!load\_hash@{load\_hash}}
+\index{load\_hash@{load\_hash}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{load\_hash()}{load\_hash()}}
+{\footnotesize\ttfamily bool CBuild\+::load\+\_\+hash (\begin{DoxyParamCaption}\item[{std\+::string}]{hash,  }\item[{std\+::string}]{code }\end{DoxyParamCaption})}
+
+
+
+Load hash. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hash\+\_\+files} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} hash files \\
+\hline
+{\em code\+\_\+files} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} code files \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true -\/\texorpdfstring{$>$}{>} file hash equal to saved 
+
+false -\/\texorpdfstring{$>$}{>} file hash different from saved 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00090}{90}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{hash_8cpp_source_l00034}{sha256()}}.
+
+
+
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00233}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_ac649cc483958d2ee270b9f260c70f8e0}\label{namespaceCBuild_ac649cc483958d2ee270b9f260c70f8e0}} 
+\index{CBuild@{CBuild}!loop@{loop}}
+\index{loop@{loop}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void CBuild\+::loop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{CBuild\+::\+RType}}}]{mode,  }\item[{\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ $\ast$}]{args }\end{DoxyParamCaption})}
+
+
+
+loop of \mbox{\hyperlink{namespaceCBuild}{CBuild}} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & =\texorpdfstring{$>$}{>} \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{CBuild\+::\+RType}} -\/\texorpdfstring{$>$}{>} from \mbox{\hyperlink{namespaceCBuild_a65ab369788ba3c28cb453822f0126206}{CBuild\+::parse}} function \\
+\hline
+{\em args} & =\texorpdfstring{$>$}{>} lib\+::map$<$std\+::string, std\+::string$>$$\ast$ -\/\texorpdfstring{$>$}{>} args from \mbox{\hyperlink{namespaceCBuild_a65ab369788ba3c28cb453822f0126206}{CBuild\+::parse}} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{CBuild_8cpp_source_l00326}{326}} of file \mbox{\hyperlink{CBuild_8cpp_source}{CBuild.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{map_8hpp_source_l00239}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::at()}}, \mbox{\hyperlink{CBuild_8hpp_source_l00043}{BUILD}}, \mbox{\hyperlink{CBuild_8hpp_source_l00051}{BUILD\+\_\+\+RUN}}, \mbox{\hyperlink{Build_8cpp_source_l00428}{CBuild\+::\+Toolchain\+::call()}}, \mbox{\hyperlink{register_8cpp_source_l00123}{CBuild\+::\+Registry\+::\+Call\+Task()}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00029}{CBUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00033}{CBUILD\+\_\+\+COPY\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00057}{CBUILD\+\_\+\+MAKEFILE}}, \mbox{\hyperlink{Build_8cpp_source_l00576}{CBuild\+::\+Toolchain\+::clear()}}, \mbox{\hyperlink{CBuild_8hpp_source_l00059}{CLEAR}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00238}{CBuild\+::fs\+::create()}}, \mbox{\hyperlink{Build_8cpp_source_l00550}{CBuild\+::\+Toolchain\+::debug()}}, \mbox{\hyperlink{CBuild_8hpp_source_l00055}{DEBUG}}, \mbox{\hyperlink{filesystem_09_09_8hpp_source_l00048}{CBuild\+::fs\+::\+DIR}}, \mbox{\hyperlink{CBuild_8hpp_source_l00063}{ERROR}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00505}{CBuild\+::fs\+::exists()}}, \mbox{\hyperlink{filesystem_09_09_8hpp_source_l00040}{CBuild\+::fs\+::\+FILE}}, \mbox{\hyperlink{map_8hpp_source_l00161}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get()}}, \mbox{\hyperlink{system_8cpp_source_l00041}{get\+\_\+log()}}, \mbox{\hyperlink{map_8hpp_source_l00181}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get\+\_\+ptr()}}, \mbox{\hyperlink{register_8cpp_source_l00153}{CBuild\+::\+Registry\+::\+Get\+Toolchain()}}, \mbox{\hyperlink{system_8cpp_source_l00032}{log}}, \mbox{\hyperlink{Build_8cpp_source_l00527}{CBuild\+::\+Toolchain\+::run()}}, \mbox{\hyperlink{CBuild_8hpp_source_l00047}{RUN}}, \mbox{\hyperlink{map_8hpp_source_l00291}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::size()}}, and \mbox{\hyperlink{CBuild_8hpp_source_l00039}{TASK}}.
+
+\mbox{\Hypertarget{namespaceCBuild_a65ab369788ba3c28cb453822f0126206}\label{namespaceCBuild_a65ab369788ba3c28cb453822f0126206}} 
+\index{CBuild@{CBuild}!parse@{parse}}
+\index{parse@{parse}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{CBuild\+::\+RType}} CBuild\+::parse (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ $\ast$}]{args,  }\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+
+
+Parse arguments. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & =\texorpdfstring{$>$}{>} lib\+::map$<$std\+::string, std\+::string$>$$\ast$ -\/\texorpdfstring{$>$}{>} Returned arguments for other functions \\
+\hline
+{\em argc} & =\texorpdfstring{$>$}{>} int -\/\texorpdfstring{$>$}{>} argc from main \\
+\hline
+{\em argv} & =\texorpdfstring{$>$}{>} char$\ast$$\ast$ -\/\texorpdfstring{$>$}{>} argv from main \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+RType -\/\texorpdfstring{$>$}{>} type of \mbox{\hyperlink{namespaceCBuild}{CBuild}} task 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{CBuild_8cpp_source_l00034}{34}} of file \mbox{\hyperlink{CBuild_8cpp_source}{CBuild.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{CBuild_8hpp_source_l00043}{BUILD}}, \mbox{\hyperlink{CBuild_8hpp_source_l00051}{BUILD\+\_\+\+RUN}}, \mbox{\hyperlink{CBuild_8hpp_source_l00059}{CLEAR}}, \mbox{\hyperlink{map_8hpp_source_l00229}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::clear()}}, \mbox{\hyperlink{CBuild_8hpp_source_l00055}{DEBUG}}, \mbox{\hyperlink{CBuild_8hpp_source_l00063}{ERROR}}, \mbox{\hyperlink{register_8cpp_source_l00109}{CBuild\+::\+Registry\+::init()}}, \mbox{\hyperlink{map_8hpp_source_l00108}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back()}}, \mbox{\hyperlink{map_8hpp_source_l00128}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back\+\_\+check()}}, \mbox{\hyperlink{CBuild_8hpp_source_l00047}{RUN}}, and \mbox{\hyperlink{CBuild_8hpp_source_l00039}{TASK}}.
+
+\mbox{\Hypertarget{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}\label{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}} 
+\index{CBuild@{CBuild}!print@{print}}
+\index{print@{print}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily void CBuild\+::print (\begin{DoxyParamCaption}\item[{std\+::string}]{msg,  }\item[{\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}}}]{fg = {\ttfamily \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{CBuild\+::\+WHITE}}} }\end{DoxyParamCaption})}
+
+
+
+Print colored text to STDOUT. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} text to print \\
+\hline
+{\em fg} & =\texorpdfstring{$>$}{>} \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{CBuild\+::color}} -\/\texorpdfstring{$>$}{>} color of text \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{print_8cpp_source_l00028}{28}} of file \mbox{\hyperlink{print_8cpp_source}{print.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00428}{CBuild\+::\+Toolchain\+::call()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{Build_8cpp_source_l00550}{CBuild\+::\+Toolchain\+::debug()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00309}{CBuild\+::\+MINGW\+\_\+\+GXX\+::debug()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00305}{CBuild\+::\+MINGW\+\_\+\+GCC\+::debug()}}, \mbox{\hyperlink{Build_8cpp_source_l00527}{CBuild\+::\+Toolchain\+::run()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00288}{CBuild\+::\+MINGW\+\_\+\+GXX\+::run()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00284}{CBuild\+::\+MINGW\+\_\+\+GCC\+::run()}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{system()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}\label{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}} 
+\index{CBuild@{CBuild}!save\_hashes@{save\_hashes}}
+\index{save\_hashes@{save\_hashes}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{save\_hashes()}{save\_hashes()}}
+{\footnotesize\ttfamily void CBuild\+::save\+\_\+hashes (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$}]{hash\+\_\+files,  }\item[{std\+::vector$<$ std\+::string $>$}]{code\+\_\+files }\end{DoxyParamCaption})}
+
+
+
+Store hashes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hash\+\_\+files} & =\texorpdfstring{$>$}{>} std\+::vector$<$std\+::string$>$ -\/\texorpdfstring{$>$}{>} hash files \\
+\hline
+{\em code\+\_\+files} & =\texorpdfstring{$>$}{>} std\+::vector$<$std\+::string$>$ -\/\texorpdfstring{$>$}{>} code files \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00124}{124}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{hash_8cpp_source_l00034}{sha256()}}.
+
+
+
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00066}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00065}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}\label{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}} 
+\index{CBuild@{CBuild}!system@{system}}
+\index{system@{system}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{system()}{system()}}
+{\footnotesize\ttfamily void CBuild\+::system (\begin{DoxyParamCaption}\item[{std\+::string}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Call stdlib \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{system()}} and print cmd to shell. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} command \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{system_8cpp_source_l00035}{35}} of file \mbox{\hyperlink{system_8cpp_source}{system.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{print_8hpp_source_l00039}{BLUE}}, \mbox{\hyperlink{system_8cpp_source_l00032}{log}}, and \mbox{\hyperlink{print_8cpp_source_l00028}{print()}}.
+
+
+
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00066}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00065}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{Build_8cpp_source_l00576}{CBuild\+::\+Toolchain\+::clear()}}, \mbox{\hyperlink{Build_8cpp_source_l00550}{CBuild\+::\+Toolchain\+::debug()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00100}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00092}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00132}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00120}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{Build_8cpp_source_l00527}{CBuild\+::\+Toolchain\+::run()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00288}{CBuild\+::\+MINGW\+\_\+\+GXX\+::run()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00284}{CBuild\+::\+MINGW\+\_\+\+GCC\+::run()}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}\label{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}} 
+\index{CBuild@{CBuild}!log@{log}}
+\index{log@{log}!CBuild@{CBuild}}
+\doxysubsubsection{\texorpdfstring{log}{log}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ CBuild\+::log}
+
+
+
+Definition at line \mbox{\hyperlink{system_8cpp_source_l00032}{32}} of file \mbox{\hyperlink{system_8cpp_source}{system.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{system_8cpp_source_l00041}{get\+\_\+log()}}, \mbox{\hyperlink{CBuild_8cpp_source_l00326}{loop()}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{system()}}.
+

@@ -27,3 +27,14 @@ Depends
             g++
             g++-mingw-w64-x86-64-win32
             gcc-mingw-w64-x86-64-win32
+
+Size:
+    All:                7.9 MiB
+    Source:             1.6 MiB
+    Source + build.sh:  1.6 MiB
+    libCBuild.so:       1.5 MiB
+    Build:              5.3 KiB
+    deb:                1.4 MiB
+    ppa:                230.7 KiB
+    deb + ppa;          1.7 MiB
+    doxygen:            3.2 MiB

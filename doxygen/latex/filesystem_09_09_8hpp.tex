@@ -1,0 +1,73 @@
+\hypertarget{filesystem_09_09_8hpp}{}\doxysection{CBuild/headers/filesystem++.hpp File Reference}
+\label{filesystem_09_09_8hpp}\index{CBuild/headers/filesystem++.hpp@{CBuild/headers/filesystem++.hpp}}
+
+
+filesystem++ api  
+
+
+{\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}string\char`\"{}}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild}{CBuild}}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild_1_1fs}{CBuild\+::fs}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{CBuild\+::fs\+::type}} \{ \newline
+\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{CBuild\+::fs\+::\+FILE}}
+, \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca147be5f09382f8628291195a291d6c22}{CBuild\+::fs\+::\+DIRECTORY}}
+, \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca8411d0ba0382070f24a0e2a9015f62b9}{CBuild\+::fs\+::\+DIR}}
+, \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca5b0881c558badf9d5f51675e03cdb275}{CBuild\+::fs\+::\+SYMLINK\+\_\+\+FILE}}
+, \newline
+\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca73dc6faf9da93d2d1269f29037f634a0}{CBuild\+::fs\+::\+SYMLINK\+\_\+\+DIRECTORY}}
+, \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca48cc85a15d49d801d3c509e976bc64b4}{CBuild\+::fs\+::\+SYMLINK\+\_\+\+DIR}}
+, \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca1edf4b605a5dc28ccf9fbfc318829a2d}{CBuild\+::fs\+::\+HARDLINK}}
+ \}
+\begin{DoxyCompactList}\small\item\em Type for element creating. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{CBuild\+::fs\+::dir}} (std\+::string path, std\+::string search)
+\begin{DoxyCompactList}\small\item\em Search files using provided regex. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_a68fced753f8789df81c229ff7068cc7e}{CBuild\+::fs\+::dir}} (std\+::string path)
+\begin{DoxyCompactList}\small\item\em Search files using standard regex (\char`\"{}.$\ast$\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{}) \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{CBuild\+::fs\+::dir\+\_\+rec}} (std\+::string path, std\+::string search)
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_aee249da4a350096ea1011652df0e982a}{CBuild\+::fs\+::dir\+\_\+rec}} (std\+::string path)
+\item 
+bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{CBuild\+::fs\+::remove}} (std\+::string path, bool force=false)
+\begin{DoxyCompactList}\small\item\em Delete files or directories. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{CBuild\+::fs\+::copy}} (std\+::string start, std\+::string end)
+\begin{DoxyCompactList}\small\item\em Copy files or directories. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}{CBuild\+::fs\+::move}} (std\+::string start, std\+::string end)
+\begin{DoxyCompactList}\small\item\em Move files or directories, remove starting files or directories. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}{CBuild\+::fs\+::rename}} (std\+::string start, std\+::string end)
+\begin{DoxyCompactList}\small\item\em Rename files or directories,. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{CBuild\+::fs\+::create}} (std\+::vector$<$ std\+::string $>$ paths, \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{CBuild\+::fs\+::type}} what)
+\begin{DoxyCompactList}\small\item\em Create element. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{CBuild\+::fs\+::exists}} (std\+::string path)
+\begin{DoxyCompactList}\small\item\em Check if file exists. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+filesystem++ api 
+
+\begin{DoxyAuthor}{Author}
+WolodiaM (\href{mailto:w_melnyk@outlook.com}{\texttt{ w\+\_\+melnyk@outlook.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2023-\/01-\/19
+\end{DoxyDate}
+@license GPL v3.\+0 or later
+
+Copyright (C) 2023 WolodiaM This program is free software\+: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see \href{https://www.gnu.org/licenses/}{\texttt{ https\+://www.\+gnu.\+org/licenses/}}. 
+
+Definition in file \mbox{\hyperlink{filesystem_09_09_8hpp_source}{filesystem++.\+hpp}}.
+

@@ -1,0 +1,73 @@
+\hypertarget{register_8hpp}{}\doxysection{CBuild/headers/register.hpp File Reference}
+\label{register_8hpp}\index{CBuild/headers/register.hpp@{CBuild/headers/register.hpp}}
+
+
+Register any things.  
+
+
+{\ttfamily \#include \char`\"{}task/\+Task.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}build/\+Build.\+hpp\char`\"{}}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild}{CBuild}}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild_1_1Registry}{CBuild\+::\+Registry}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{register_8hpp_a6c9462b244ba301be8a555dd970fa637}{\+\_\+\+\_\+\+CBUILD\+\_\+\+REGISTER\+\_\+\+HPP\+\_\+\+\_\+}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9be19bd471349943095783bad96ed908}{CBuild\+::\+Registry\+::init}} ()
+\begin{DoxyCompactList}\small\item\em Internal init. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_aa8c4c391fb32f5f30b506917151e3f5e}{CBuild\+::\+Registry\+::\+Registry\+Task}} (\mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$task)
+\begin{DoxyCompactList}\small\item\em Register new task. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}{CBuild\+::\+Registry\+::\+Call\+Task}} (std\+::string name, std\+::vector$<$ std\+::string $>$ args)
+\begin{DoxyCompactList}\small\item\em Run tasks. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_ad02f9738893f725b263013012f886f26}{CBuild\+::\+Registry\+::\+Register\+Target}} (\mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild\+::\+Toolchain}} $\ast$target)
+\begin{DoxyCompactList}\small\item\em Register new target for build. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild\+::\+Toolchain}} $\ast$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a2b1eddd86007d7ce185071dd004a5036}{CBuild\+::\+Registry\+::\+Get\+Toolchain}} (std\+::string name, bool force=false)
+\begin{DoxyCompactList}\small\item\em Get the registered toolchain. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, \mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild\+::\+Toolchain}} $\ast$ $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a80b8ee3e1ed5dba24027e6e486e599b1}{CBuild\+::\+Registry\+::\+Get\+Targets}} ()
+\begin{DoxyCompactList}\small\item\em Get list of all targets. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_ac2a13262b5b36758289f9cca42ce13e2}{CBuild\+::\+Registry\+::\+Register\+Keyword}} (std\+::string key, \mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$func)
+\begin{DoxyCompactList}\small\item\em Register new keyord for parsing, ! Dangerous, owerwriting existing keywords can lead to undefined behaviours. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a6b538efddd82cdc95d1506fba6a93b59}{CBuild\+::\+Registry\+::\+Get\+Keywords\+List}} ()
+\begin{DoxyCompactList}\small\item\em Get list of all user registered keywords. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Register any things. 
+
+\begin{DoxyAuthor}{Author}
+WolodiaM (\href{mailto:w_melnyk@outlook.com}{\texttt{ w\+\_\+melnyk@outlook.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2023-\/01-\/28
+\end{DoxyDate}
+@license GPL v3.\+0 or later
+
+Copyright (C) 2023 WolodiaM This program is free software\+: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see \href{https://www.gnu.org/licenses/}{\texttt{ https\+://www.\+gnu.\+org/licenses/}}. 
+
+Definition in file \mbox{\hyperlink{register_8hpp_source}{register.\+hpp}}.
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{register_8hpp_a6c9462b244ba301be8a555dd970fa637}\label{register_8hpp_a6c9462b244ba301be8a555dd970fa637}} 
+\index{register.hpp@{register.hpp}!\_\_CBUILD\_REGISTER\_HPP\_\_@{\_\_CBUILD\_REGISTER\_HPP\_\_}}
+\index{\_\_CBUILD\_REGISTER\_HPP\_\_@{\_\_CBUILD\_REGISTER\_HPP\_\_}!register.hpp@{register.hpp}}
+\doxysubsubsection{\texorpdfstring{\_\_CBUILD\_REGISTER\_HPP\_\_}{\_\_CBUILD\_REGISTER\_HPP\_\_}}
+{\footnotesize\ttfamily \#define \+\_\+\+\_\+\+CBUILD\+\_\+\+REGISTER\+\_\+\+HPP\+\_\+\+\_\+}
+
+
+
+Definition at line \mbox{\hyperlink{register_8hpp_source_l00028}{28}} of file \mbox{\hyperlink{register_8hpp_source}{register.\+hpp}}.
+

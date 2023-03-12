@@ -1,0 +1,1120 @@
+\hypertarget{classCBuild_1_1Toolchain}{}\doxysection{CBuild\+::Toolchain Class Reference}
+\label{classCBuild_1_1Toolchain}\index{CBuild::Toolchain@{CBuild::Toolchain}}
+
+
+\mbox{\hyperlink{classCBuild_1_1Toolchain}{Toolchain}} class.  
+
+
+
+
+{\ttfamily \#include $<$Build.\+hpp$>$}
+
+Inheritance diagram for CBuild\+::Toolchain\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCBuild_1_1Toolchain}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}{gen\+\_\+out\+\_\+name}} (std\+::string executable=\char`\"{}.run\char`\"{}, std\+::string dyn\+\_\+lib=\char`\"{}.so\char`\"{}, std\+::string stat\+\_\+lib=\char`\"{}.a\char`\"{})
+\begin{DoxyCompactList}\small\item\em Generate output file name (after linking) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classCBuild_1_1Toolchain_a975fd1f1cde45f0e965cd74568c81517}{Toolchain}} ()
+\item 
+\mbox{\hyperlink{classCBuild_1_1Toolchain_a7035618d95165f21080daa7487f26c5c}{$\sim$\+Toolchain}} ()
+\item 
+virtual std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a2489c6794e28fd6a8143fedd506407a3}{get\+\_\+id}} ()
+\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_afc878456770e7581db33502fba56e7b5}{call}} (std\+::vector$<$ std\+::string $>$ $\ast$\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}, bool \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}}=false, bool \mbox{\hyperlink{classCBuild_1_1Toolchain_a16ceca74d4c19e759912109326154d08}{debug}}=false)
+\begin{DoxyCompactList}\small\item\em Call tollchain to execute. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a223c889464b4b798a347d8f20123880d}{run}} (std\+::vector$<$ std\+::string $>$ $\ast$\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}})
+\begin{DoxyCompactList}\small\item\em Run builded app. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a16ceca74d4c19e759912109326154d08}{debug}} (std\+::vector$<$ std\+::string $>$ $\ast$\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}, std\+::vector$<$ std\+::string $>$ $\ast$pargs)
+\begin{DoxyCompactList}\small\item\em Build program in debug mode and after run gdb on it. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a05e9cec7cd87361d20d64424f2350c09}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Clear all caches and builded app. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a73d043b2570d5ab7608a5bf7669abe98}{add\+\_\+define}} (std\+::string define, std\+::string val=\char`\"{}\char`\"{})
+\begin{DoxyCompactList}\small\item\em Add new define. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a08bad46725b79244023721ffb3907bc2}{add\+\_\+undef}} (std\+::string define)
+\begin{DoxyCompactList}\small\item\em Add new undefine (undefine previvious define) \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a1bdc2c91714340b724bb7d0bf857fc7b}{add\+\_\+include}} (std\+::string include\+\_\+path)
+\begin{DoxyCompactList}\small\item\em Add compile-\/time include. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a31a5e7cf0ae6a48cb9e2aaa1fd077118}{add\+\_\+compile\+\_\+arg}} (std\+::string arg)
+\begin{DoxyCompactList}\small\item\em Directly add compiler argument. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a9484161cf7845614132b472b0bd087a8}{add\+\_\+link\+\_\+arg}} (std\+::string arg)
+\begin{DoxyCompactList}\small\item\em Add linker arguments. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a5d50b63ecb923242185f54942b35ee6f}{add\+\_\+library\+\_\+include}} (std\+::string library)
+\begin{DoxyCompactList}\small\item\em Add system library include, library include folder need to be in PATH. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a7a855ae33674d98aca57ab935b169a50}{add\+\_\+library\+\_\+dir}} (std\+::string include, std\+::string lib)
+\begin{DoxyCompactList}\small\item\em Add library include directory (with $\ast$.h files) and directory with library $\ast$.a and $\ast$.so/$\ast$.dll files. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a3b6835aae93380a71f5dd5d00e973d25}{add\+\_\+requirment}} (std\+::string task\+\_\+, \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9c}{CBuild\+::stage}} run\+\_\+stage=\mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9ca48260554740aee4470be239e88c42d4c}{CBuild\+::\+PRE}})
+\begin{DoxyCompactList}\small\item\em Add required task, that task will be executed before toolchain, it can have dependecies, but toolchain can depend on multiple tasks also. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_afa959e39632096b2e3fdd28c4b8edf5f}{depends\+\_\+on}} (std\+::string target)
+\begin{DoxyCompactList}\small\item\em This target depends on other target. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_ae60a20f278ece81c719eb99ca29bac58}{warn}} ()
+\begin{DoxyCompactList}\small\item\em Enable more warnings. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_aef4acaa411aa3d20cbca80114e33a5fd}{static\+\_\+analizer}} ()
+\begin{DoxyCompactList}\small\item\em Enable static anlizer (very slow) \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a48707e88ecc35220c48b4d54367fea4e}{error}} ()
+\begin{DoxyCompactList}\small\item\em Add -\/Werror. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a0ab6111fe320549f06bf8594e2a9e88c}{set\+\_\+standart}} (std\+::string std\+\_\+)
+\begin{DoxyCompactList}\small\item\em Set standart for code (-\/std=std\+\_\+) \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a866672bec7317fa095e82ae45315cd92}{add\+\_\+file}} (std\+::string path)
+\begin{DoxyCompactList}\small\item\em Add file for compilation. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a505c62bffd19ee603cd13b700e4fb513}{add\+\_\+folder}} (std\+::string path)
+\begin{DoxyCompactList}\small\item\em Add folder to compile path, scan is not recursive. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a9ff804f2e7c2dd63822d48f779242e8a}{set\+\_\+type}} (\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{CBuild\+::build\+\_\+type}} type)
+\begin{DoxyCompactList}\small\item\em Set the type of build. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a589b707f242aee3f846fb511242f0112}{pre\+\_\+build}} ()
+\begin{DoxyCompactList}\small\item\em Before build. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a41b77cccb491ab0e6564a93fc72f4e4b}{post\+\_\+build}} ()
+\begin{DoxyCompactList}\small\item\em After build. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_af10adffca42d4277aa86cfcd27cfba13}{pre\+\_\+link}} ()
+\begin{DoxyCompactList}\small\item\em Before linking. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a2a40fc15c0e3bc3f743cd354ab3d190f}{post\+\_\+link}} ()
+\begin{DoxyCompactList}\small\item\em After linking. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a304690847efa8191ec66b1c966742d39}{build}} ()=0
+\begin{DoxyCompactList}\small\item\em Build. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_adf746115d76976ccd9916a37994b09e1}{link}} ()=0
+\begin{DoxyCompactList}\small\item\em Linking. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a121ee5ea85b59529c7aa05ca8ca8255e}{link\+\_\+pack}} ()=0
+\begin{DoxyCompactList}\small\item\em Linking for static libraries. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\+\_\+file\+\_\+list}} (bool force\+\_\+)
+\begin{DoxyCompactList}\small\item\em Generate list of files that need to be compiles. \end{DoxyCompactList}\item 
+virtual std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_adcc30e51100a389f7178d2be9c2bcf04}{gen\+\_\+out\+\_\+file}} (std\+::string file)
+\begin{DoxyCompactList}\small\item\em Generate output object file from input file. \end{DoxyCompactList}\item 
+virtual std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a83c45aea3e5d4c3dcb085420ac625b26}{gen\+\_\+hash\+\_\+file}} (std\+::string file)
+\begin{DoxyCompactList}\small\item\em Generate hash file for .cpp file. \end{DoxyCompactList}\item 
+virtual std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_ad94fac4b38afc12b44b20f66bd46c3a3}{cmd\+\_\+str}} (std\+::string in)
+\begin{DoxyCompactList}\small\item\em Replace spaces by \char`\"{}\textbackslash{} \char`\"{}. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_ade6d0d671052e834f6dbdb4c5a8e485c}{init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize folder structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}} = \char`\"{}\char`\"{}
+\begin{DoxyCompactList}\small\item\em Name of output, if undefined (\char`\"{}\char`\"{}), for output name used id. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}}
+\begin{DoxyCompactList}\small\item\em Must be initialized in derived classes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9c}{CBuild\+::stage}} $>$ \mbox{\hyperlink{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}{required}}
+\begin{DoxyCompactList}\small\item\em Save task id with run stage sprecified for this task. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classCBuild_1_1Toolchain_ad18750bc8fcad84be54cbfb98661727f}{depends}}
+\begin{DoxyCompactList}\small\item\em All other targets, that is needed for this target. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{structCBuild_1_1Path}{CBuild\+::\+Path}} $>$ \mbox{\hyperlink{classCBuild_1_1Toolchain_a1b2edd263ef95925304f80ca52000bc7}{targets}}
+\begin{DoxyCompactList}\small\item\em Target files or folders. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\+\_\+args}}
+\begin{DoxyCompactList}\small\item\em Compiler args (specified and generated) \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\+\_\+args}}
+\begin{DoxyCompactList}\small\item\em Linker args (specified and generated) \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}}
+\begin{DoxyCompactList}\small\item\em Compiler command. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}}
+\begin{DoxyCompactList}\small\item\em Linker command. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}}
+\begin{DoxyCompactList}\small\item\em ar command for packing static libraries \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ $\ast$ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}
+\begin{DoxyCompactList}\small\item\em Argument pointer (scratch variable) \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}}
+\begin{DoxyCompactList}\small\item\em Force argument (scratch variable) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{CBuild\+::build\+\_\+type}} \mbox{\hyperlink{classCBuild_1_1Toolchain_ae76177499acce9818eb21f26520f5088}{build\+\_\+type}}
+\begin{DoxyCompactList}\small\item\em Type of build. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classCBuild_1_1Toolchain}{Toolchain}} class. 
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00055}{55}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a975fd1f1cde45f0e965cd74568c81517}\label{classCBuild_1_1Toolchain_a975fd1f1cde45f0e965cd74568c81517}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!Toolchain@{Toolchain}}
+\index{Toolchain@{Toolchain}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{Toolchain()}{Toolchain()}}
+{\footnotesize\ttfamily CBuild\+::\+Toolchain\+::\+Toolchain (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00182}{182}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a7035618d95165f21080daa7487f26c5c}\label{classCBuild_1_1Toolchain_a7035618d95165f21080daa7487f26c5c}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!````~Toolchain@{$\sim$Toolchain}}
+\index{````~Toolchain@{$\sim$Toolchain}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{$\sim$Toolchain()}{~Toolchain()}}
+{\footnotesize\ttfamily CBuild\+::\+Toolchain\+::$\sim$\+Toolchain (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00183}{183}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a31a5e7cf0ae6a48cb9e2aaa1fd077118}\label{classCBuild_1_1Toolchain_a31a5e7cf0ae6a48cb9e2aaa1fd077118}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_compile\_arg@{add\_compile\_arg}}
+\index{add\_compile\_arg@{add\_compile\_arg}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_compile\_arg()}{add\_compile\_arg()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+compile\+\_\+arg (\begin{DoxyParamCaption}\item[{std\+::string}]{arg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Directly add compiler argument. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & =\texorpdfstring{$>$}{>} std\+:string -\/\texorpdfstring{$>$}{>} argument, directly passed to compiler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00039}{39}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{Build_8hpp_source_l00082}{compiler\+\_\+args}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a73d043b2570d5ab7608a5bf7669abe98}\label{classCBuild_1_1Toolchain_a73d043b2570d5ab7608a5bf7669abe98}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_define@{add\_define}}
+\index{add\_define@{add\_define}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_define()}{add\_define()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+define (\begin{DoxyParamCaption}\item[{std\+::string}]{define,  }\item[{std\+::string}]{val = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add new define. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em define} & =\texorpdfstring{$>$}{>} std\+:string -\/\texorpdfstring{$>$}{>} Define name \\
+\hline
+{\em arg} & =\texorpdfstring{$>$}{>} std\+:string -\/\texorpdfstring{$>$}{>} Value for define, default -\/ \char`\"{}\char`\"{} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00055}{55}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a866672bec7317fa095e82ae45315cd92}\label{classCBuild_1_1Toolchain_a866672bec7317fa095e82ae45315cd92}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_file@{add\_file}}
+\index{add\_file@{add\_file}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_file()}{add\_file()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+file (\begin{DoxyParamCaption}\item[{std\+::string}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add file for compilation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} \mbox{\hyperlink{structCBuild_1_1Path}{Path}} to file \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00168}{168}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{Build_8hpp_source_l00038}{CBuild\+::\+Path\+::folder}}, and \mbox{\hyperlink{Build_8hpp_source_l00037}{CBuild\+::\+Path\+::path}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a505c62bffd19ee603cd13b700e4fb513}\label{classCBuild_1_1Toolchain_a505c62bffd19ee603cd13b700e4fb513}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_folder@{add\_folder}}
+\index{add\_folder@{add\_folder}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_folder()}{add\_folder()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+folder (\begin{DoxyParamCaption}\item[{std\+::string}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add folder to compile path, scan is not recursive. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} \mbox{\hyperlink{structCBuild_1_1Path}{Path}} to folder \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00181}{181}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{Build_8hpp_source_l00038}{CBuild\+::\+Path\+::folder}}, and \mbox{\hyperlink{Build_8hpp_source_l00037}{CBuild\+::\+Path\+::path}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a1bdc2c91714340b724bb7d0bf857fc7b}\label{classCBuild_1_1Toolchain_a1bdc2c91714340b724bb7d0bf857fc7b}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_include@{add\_include}}
+\index{add\_include@{add\_include}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_include()}{add\_include()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+include (\begin{DoxyParamCaption}\item[{std\+::string}]{include\+\_\+path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add compile-\/time include. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em include\+\_\+path} & =\texorpdfstring{$>$}{>} std\+:string -\/\texorpdfstring{$>$}{>} path for include \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00083}{83}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a7a855ae33674d98aca57ab935b169a50}\label{classCBuild_1_1Toolchain_a7a855ae33674d98aca57ab935b169a50}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_library\_dir@{add\_library\_dir}}
+\index{add\_library\_dir@{add\_library\_dir}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_library\_dir()}{add\_library\_dir()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+library\+\_\+dir (\begin{DoxyParamCaption}\item[{std\+::string}]{include,  }\item[{std\+::string}]{lib }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add library include directory (with $\ast$.h files) and directory with library $\ast$.a and $\ast$.so/$\ast$.dll files. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em include} & =\texorpdfstring{$>$}{>} std\+:string -\/\texorpdfstring{$>$}{>} include dir, will be used as -\/I$<$include$>$ \\
+\hline
+{\em lib} & =\texorpdfstring{$>$}{>} std\+:string -\/\texorpdfstring{$>$}{>} library dir, will be used as -\/L$<$lib$>$ \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00107}{107}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a5d50b63ecb923242185f54942b35ee6f}\label{classCBuild_1_1Toolchain_a5d50b63ecb923242185f54942b35ee6f}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_library\_include@{add\_library\_include}}
+\index{add\_library\_include@{add\_library\_include}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_library\_include()}{add\_library\_include()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+library\+\_\+include (\begin{DoxyParamCaption}\item[{std\+::string}]{library }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add system library include, library include folder need to be in PATH. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em library} & =\texorpdfstring{$>$}{>} std\+:string -\/\texorpdfstring{$>$}{>} library name, will be used as -\/l$<$library$>$ \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00095}{95}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a9484161cf7845614132b472b0bd087a8}\label{classCBuild_1_1Toolchain_a9484161cf7845614132b472b0bd087a8}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_link\_arg@{add\_link\_arg}}
+\index{add\_link\_arg@{add\_link\_arg}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_link\_arg()}{add\_link\_arg()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+link\+\_\+arg (\begin{DoxyParamCaption}\item[{std\+::string}]{arg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add linker arguments. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & =\texorpdfstring{$>$}{>} std\+:string -\/\texorpdfstring{$>$}{>} argument, directly passed to compiler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00047}{47}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a3b6835aae93380a71f5dd5d00e973d25}\label{classCBuild_1_1Toolchain_a3b6835aae93380a71f5dd5d00e973d25}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_requirment@{add\_requirment}}
+\index{add\_requirment@{add\_requirment}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_requirment()}{add\_requirment()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+requirment (\begin{DoxyParamCaption}\item[{std\+::string}]{task\+\_\+,  }\item[{\mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9c}{CBuild\+::stage}}}]{run\+\_\+stage = {\ttfamily \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9ca48260554740aee4470be239e88c42d4c}{CBuild\+::\+PRE}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add required task, that task will be executed before toolchain, it can have dependecies, but toolchain can depend on multiple tasks also. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+\_\+} & =\texorpdfstring{$>$}{>} std\+:string -\/\texorpdfstring{$>$}{>} task id \\
+\hline
+{\em run\+\_\+stage} & =\texorpdfstring{$>$}{>} \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9c}{CBuild\+::stage}} -\/\texorpdfstring{$>$}{>} run stage of task \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00123}{123}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a08bad46725b79244023721ffb3907bc2}\label{classCBuild_1_1Toolchain_a08bad46725b79244023721ffb3907bc2}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!add\_undef@{add\_undef}}
+\index{add\_undef@{add\_undef}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{add\_undef()}{add\_undef()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::add\+\_\+undef (\begin{DoxyParamCaption}\item[{std\+::string}]{define }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add new undefine (undefine previvious define) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em define} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} Define name \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00072}{72}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a304690847efa8191ec66b1c966742d39}\label{classCBuild_1_1Toolchain_a304690847efa8191ec66b1c966742d39}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!build@{build}}
+\index{build@{build}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{build()}{build()}}
+{\footnotesize\ttfamily virtual void CBuild\+::\+Toolchain\+::build (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Build. 
+
+
+
+Implemented in \mbox{\hyperlink{classCBuild_1_1GXX_a09469e91e25cc01bc380201f25cc7b9b}{CBuild\+::\+GXX}}, \mbox{\hyperlink{classCBuild_1_1GCC_a3903a0ac26c4076681d08cd4383e6344}{CBuild\+::\+GCC}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_ad6b4338a8a7f90399b03f263409a296a}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a6e686f741e4b227f92cc5580b9c18464}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_afc878456770e7581db33502fba56e7b5}\label{classCBuild_1_1Toolchain_afc878456770e7581db33502fba56e7b5}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!call@{call}}
+\index{call@{call}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{call()}{call()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::call (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$ $\ast$}]{args,  }\item[{bool}]{force = {\ttfamily false},  }\item[{bool}]{debug = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Call tollchain to execute. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & =\texorpdfstring{$>$}{>} std\+::vector$<$std\+::string$>$$\ast$ -\/\texorpdfstring{$>$}{>} argument for call, pointer, nonull \\
+\hline
+{\em force} & =\texorpdfstring{$>$}{>} bool -\/\texorpdfstring{$>$}{>} force argument, used internally \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a76a20f42b0993323549840508cabd384}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a257f675200309e4e6b310d7ede3d59f1}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00428}{428}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{register_8cpp_source_l00123}{CBuild\+::\+Registry\+::\+Call\+Task()}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00045}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{Build_8hpp_source_l00050}{CBuild\+::\+DYNAMIC\+\_\+\+LIBRARY}}, \mbox{\hyperlink{register_8cpp_source_l00153}{CBuild\+::\+Registry\+::\+Get\+Toolchain()}}, \mbox{\hyperlink{print_8hpp_source_l00037}{CBuild\+::\+GREEN}}, \mbox{\hyperlink{print_8hpp_source_l00040}{CBuild\+::\+MAGENTA}}, \mbox{\hyperlink{Build_8hpp_source_l00045}{CBuild\+::\+POST}}, \mbox{\hyperlink{Build_8hpp_source_l00044}{CBuild\+::\+PRE}}, \mbox{\hyperlink{print_8cpp_source_l00028}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00036}{CBuild\+::\+RED}}, and \mbox{\hyperlink{Build_8hpp_source_l00049}{CBuild\+::\+STATIC\+\_\+\+LIBRARY}}.
+
+
+
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00326}{CBuild\+::loop()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a05e9cec7cd87361d20d64424f2350c09}\label{classCBuild_1_1Toolchain_a05e9cec7cd87361d20d64424f2350c09}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!clear@{clear}}
+\index{clear@{clear}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Clear all caches and builded app. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00576}{576}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+
+
+
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00326}{CBuild\+::loop()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_ad94fac4b38afc12b44b20f66bd46c3a3}\label{classCBuild_1_1Toolchain_ad94fac4b38afc12b44b20f66bd46c3a3}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!cmd\_str@{cmd\_str}}
+\index{cmd\_str@{cmd\_str}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{cmd\_str()}{cmd\_str()}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::cmd\+\_\+str (\begin{DoxyParamCaption}\item[{std\+::string}]{in }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Replace spaces by \char`\"{}\textbackslash{} \char`\"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} input string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::string Returned string 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00386}{386}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00168}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00165}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a16ceca74d4c19e759912109326154d08}\label{classCBuild_1_1Toolchain_a16ceca74d4c19e759912109326154d08}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!debug@{debug}}
+\index{debug@{debug}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{debug()}{debug()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::debug (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$ $\ast$}]{args,  }\item[{std\+::vector$<$ std\+::string $>$ $\ast$}]{pargs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Build program in debug mode and after run gdb on it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & =\texorpdfstring{$>$}{>} std\+::vector$<$std\+::string$>$$\ast$ -\/\texorpdfstring{$>$}{>} arguments for build \\
+\hline
+{\em pargs} & =\texorpdfstring{$>$}{>} std\+::vector$<$std\+::string$>$$\ast$ -\/\texorpdfstring{$>$}{>} arguments for run \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_aea46c240733400ed5fe7b3d66f5d95b7}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00550}{550}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{print_8hpp_source_l00037}{CBuild\+::\+GREEN}}, \mbox{\hyperlink{print_8hpp_source_l00040}{CBuild\+::\+MAGENTA}}, \mbox{\hyperlink{print_8cpp_source_l00028}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00036}{CBuild\+::\+RED}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+
+
+
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00326}{CBuild\+::loop()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_afa959e39632096b2e3fdd28c4b8edf5f}\label{classCBuild_1_1Toolchain_afa959e39632096b2e3fdd28c4b8edf5f}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!depends\_on@{depends\_on}}
+\index{depends\_on@{depends\_on}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{depends\_on()}{depends\_on()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::depends\+\_\+on (\begin{DoxyParamCaption}\item[{std\+::string}]{target }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+This target depends on other target. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em target} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} Other target id \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00162}{162}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a48707e88ecc35220c48b4d54367fea4e}\label{classCBuild_1_1Toolchain_a48707e88ecc35220c48b4d54367fea4e}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!error@{error}}
+\index{error@{error}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{error()}{error()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add -\/Werror. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00144}{144}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}\label{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!gen\_file\_list@{gen\_file\_list}}
+\index{gen\_file\_list@{gen\_file\_list}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{gen\_file\_list()}{gen\_file\_list()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list (\begin{DoxyParamCaption}\item[{bool}]{force\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generate list of files that need to be compiles. 
+
+\begin{DoxyReturn}{Returns}
+lib\+::map$<$std\+::string, std\+::string$>$ -\/\texorpdfstring{$>$}{>} list of files, key -\/ code, value -\/ object 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00233}{233}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00238}{CBuild\+::fs\+::create()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00044}{CBuild\+::fs\+::dir()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00505}{CBuild\+::fs\+::exists()}}, \mbox{\hyperlink{filesystem_09_09_8hpp_source_l00040}{CBuild\+::fs\+::\+FILE}}, \mbox{\hyperlink{hash_8cpp_source_l00090}{CBuild\+::load\+\_\+hash()}}, and \mbox{\hyperlink{map_8hpp_source_l00108}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back()}}.
+
+
+
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00066}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00065}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00100}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00092}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00132}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00120}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a83c45aea3e5d4c3dcb085420ac625b26}\label{classCBuild_1_1Toolchain_a83c45aea3e5d4c3dcb085420ac625b26}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!gen\_hash\_file@{gen\_hash\_file}}
+\index{gen\_hash\_file@{gen\_hash\_file}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{gen\_hash\_file()}{gen\_hash\_file()}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::gen\+\_\+hash\+\_\+file (\begin{DoxyParamCaption}\item[{std\+::string}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generate hash file for .cpp file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} input file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::string -\/\texorpdfstring{$>$}{>} file path 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00214}{214}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, and \mbox{\hyperlink{CBuild__defs_8hpp_source_l00037}{CBUILD\+\_\+\+HASH\+\_\+\+DIR}}.
+
+
+
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00066}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00065}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_adcc30e51100a389f7178d2be9c2bcf04}\label{classCBuild_1_1Toolchain_adcc30e51100a389f7178d2be9c2bcf04}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!gen\_out\_file@{gen\_out\_file}}
+\index{gen\_out\_file@{gen\_out\_file}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{gen\_out\_file()}{gen\_out\_file()}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+file (\begin{DoxyParamCaption}\item[{std\+::string}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generate output object file from input file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} input file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::string -\/\texorpdfstring{$>$}{>} file path 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00195}{195}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00049}{CBUILD\+\_\+\+BUILD\+\_\+\+CACHE\+\_\+\+DIR}}, and \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}\label{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!gen\_out\_name@{gen\_out\_name}}
+\index{gen\_out\_name@{gen\_out\_name}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{gen\_out\_name()}{gen\_out\_name()}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+name (\begin{DoxyParamCaption}\item[{std\+::string}]{executable = {\ttfamily \char`\"{}.run\char`\"{}},  }\item[{std\+::string}]{dyn\+\_\+lib = {\ttfamily \char`\"{}.so\char`\"{}},  }\item[{std\+::string}]{stat\+\_\+lib = {\ttfamily \char`\"{}.a\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Generate output file name (after linking) 
+
+\begin{DoxyReturn}{Returns}
+std\+::string -\/\texorpdfstring{$>$}{>} File name 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_abe27573491bf28a353eca5ce6a73c40e}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00328}{328}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00045}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{Build_8hpp_source_l00050}{CBuild\+::\+DYNAMIC\+\_\+\+LIBRARY}}, and \mbox{\hyperlink{Build_8hpp_source_l00048}{CBuild\+::\+EXECUTABLE}}.
+
+
+
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00100}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00092}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00132}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, and \mbox{\hyperlink{gcc_8hpp_source_l00120}{CBuild\+::\+GCC\+::link\+\_\+pack()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a2489c6794e28fd6a8143fedd506407a3}\label{classCBuild_1_1Toolchain_a2489c6794e28fd6a8143fedd506407a3}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!get\_id@{get\_id}}
+\index{get\_id@{get\_id}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{get\_id()}{get\_id()}}
+{\footnotesize\ttfamily virtual std\+::string CBuild\+::\+Toolchain\+::get\+\_\+id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00184}{184}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+References \mbox{\hyperlink{Build_8hpp_source_l00066}{id}}.
+
+
+
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00146}{CBuild\+::\+Registry\+::\+Register\+Target()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_ade6d0d671052e834f6dbdb4c5a8e485c}\label{classCBuild_1_1Toolchain_ade6d0d671052e834f6dbdb4c5a8e485c}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!init@{init}}
+\index{init@{init}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Initialize folder structure. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00400}{400}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00049}{CBUILD\+\_\+\+BUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00045}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00037}{CBUILD\+\_\+\+HASH\+\_\+\+DIR}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00238}{CBuild\+::fs\+::create()}}, \mbox{\hyperlink{filesystem_09_09_8hpp_source_l00048}{CBuild\+::fs\+::\+DIR}}, and \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00505}{CBuild\+::fs\+::exists()}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_adf746115d76976ccd9916a37994b09e1}\label{classCBuild_1_1Toolchain_adf746115d76976ccd9916a37994b09e1}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!link@{link}}
+\index{link@{link}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{link()}{link()}}
+{\footnotesize\ttfamily virtual void CBuild\+::\+Toolchain\+::link (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Linking. 
+
+
+
+Implemented in \mbox{\hyperlink{classCBuild_1_1GXX_a176a3fa5aff2e1a023a0ef2eba0196bf}{CBuild\+::\+GXX}}, \mbox{\hyperlink{classCBuild_1_1GCC_a0d6da921c254bb411e096cd65c4c9cdc}{CBuild\+::\+GCC}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a50d9d4ee89661a25fa468b01090317a2}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a56bca52c9bc3a7cf7f57245c22e0de52}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a121ee5ea85b59529c7aa05ca8ca8255e}\label{classCBuild_1_1Toolchain_a121ee5ea85b59529c7aa05ca8ca8255e}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!link\_pack@{link\_pack}}
+\index{link\_pack@{link\_pack}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{link\_pack()}{link\_pack()}}
+{\footnotesize\ttfamily virtual void CBuild\+::\+Toolchain\+::link\+\_\+pack (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Linking for static libraries. 
+
+
+
+Implemented in \mbox{\hyperlink{classCBuild_1_1GXX_a956a1781d7e189a2b145a3f6c57aab6f}{CBuild\+::\+GXX}}, \mbox{\hyperlink{classCBuild_1_1GCC_a4ea0321bb0b8e8186aed50b7452d9317}{CBuild\+::\+GCC}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a68b7028f94984f6ab2c9fbe952cf57d8}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_ae95c1e7a5fb8f10d988181c6d95e714b}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a41b77cccb491ab0e6564a93fc72f4e4b}\label{classCBuild_1_1Toolchain_a41b77cccb491ab0e6564a93fc72f4e4b}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!post\_build@{post\_build}}
+\index{post\_build@{post\_build}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{post\_build()}{post\_build()}}
+{\footnotesize\ttfamily virtual void CBuild\+::\+Toolchain\+::post\+\_\+build (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+After build. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00120}{120}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a2a40fc15c0e3bc3f743cd354ab3d190f}\label{classCBuild_1_1Toolchain_a2a40fc15c0e3bc3f743cd354ab3d190f}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!post\_link@{post\_link}}
+\index{post\_link@{post\_link}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{post\_link()}{post\_link()}}
+{\footnotesize\ttfamily virtual void CBuild\+::\+Toolchain\+::post\+\_\+link (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+After linking. 
+
+
+
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a6f5822e7553afb2809067166a0997b03}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9bea8ada9d6d902a653239ba27e11e86}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00128}{128}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a589b707f242aee3f846fb511242f0112}\label{classCBuild_1_1Toolchain_a589b707f242aee3f846fb511242f0112}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!pre\_build@{pre\_build}}
+\index{pre\_build@{pre\_build}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{pre\_build()}{pre\_build()}}
+{\footnotesize\ttfamily virtual void CBuild\+::\+Toolchain\+::pre\+\_\+build (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Before build. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00116}{116}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_af10adffca42d4277aa86cfcd27cfba13}\label{classCBuild_1_1Toolchain_af10adffca42d4277aa86cfcd27cfba13}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!pre\_link@{pre\_link}}
+\index{pre\_link@{pre\_link}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{pre\_link()}{pre\_link()}}
+{\footnotesize\ttfamily virtual void CBuild\+::\+Toolchain\+::pre\+\_\+link (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Before linking. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00124}{124}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a223c889464b4b798a347d8f20123880d}\label{classCBuild_1_1Toolchain_a223c889464b4b798a347d8f20123880d}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!run@{run}}
+\index{run@{run}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::run (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$ $\ast$}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Run builded app. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & =\texorpdfstring{$>$}{>} std\+::vector$<$std\+::string$>$$\ast$ -\/\texorpdfstring{$>$}{>} program arguments \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a6ae384ec2d68c69ace93601a7edba67e}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_aa5467e768d237b8bd50139b3e8f4014a}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00527}{527}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{print_8hpp_source_l00040}{CBuild\+::\+MAGENTA}}, \mbox{\hyperlink{print_8cpp_source_l00028}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00036}{CBuild\+::\+RED}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+
+
+
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00326}{CBuild\+::loop()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a0ab6111fe320549f06bf8594e2a9e88c}\label{classCBuild_1_1Toolchain_a0ab6111fe320549f06bf8594e2a9e88c}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!set\_standart@{set\_standart}}
+\index{set\_standart@{set\_standart}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{set\_standart()}{set\_standart()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::set\+\_\+standart (\begin{DoxyParamCaption}\item[{std\+::string}]{std\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Set standart for code (-\/std=std\+\_\+) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em std\+\_\+} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} Stadart name \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00149}{149}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a9ff804f2e7c2dd63822d48f779242e8a}\label{classCBuild_1_1Toolchain_a9ff804f2e7c2dd63822d48f779242e8a}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!set\_type@{set\_type}}
+\index{set\_type@{set\_type}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{set\_type()}{set\_type()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::set\+\_\+type (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{CBuild\+::build\+\_\+type}}}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Set the type of build. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & Build type \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00158}{158}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_aef4acaa411aa3d20cbca80114e33a5fd}\label{classCBuild_1_1Toolchain_aef4acaa411aa3d20cbca80114e33a5fd}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!static\_analizer@{static\_analizer}}
+\index{static\_analizer@{static\_analizer}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{static\_analizer()}{static\_analizer()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::static\+\_\+analizer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Enable static anlizer (very slow) 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00138}{138}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_ae60a20f278ece81c719eb99ca29bac58}\label{classCBuild_1_1Toolchain_ae60a20f278ece81c719eb99ca29bac58}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!warn@{warn}}
+\index{warn@{warn}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{warn()}{warn()}}
+{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::warn (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Enable more warnings. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00131}{131}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}\label{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!args@{args}}
+\index{args@{args}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{args}{args}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$$\ast$ CBuild\+::\+Toolchain\+::args\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Argument pointer (scratch variable) 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00102}{102}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00066}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00065}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00100}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00092}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00132}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00120}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00288}{CBuild\+::\+MINGW\+\_\+\+GXX\+::run()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00284}{CBuild\+::\+MINGW\+\_\+\+GCC\+::run()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_ae76177499acce9818eb21f26520f5088}\label{classCBuild_1_1Toolchain_ae76177499acce9818eb21f26520f5088}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!build\_type@{build\_type}}
+\index{build\_type@{build\_type}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{build\_type}{build\_type}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{CBuild\+::build\+\_\+type}} CBuild\+::\+Toolchain\+::build\+\_\+type\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Type of build. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00110}{110}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}\label{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!compiler@{compiler}}
+\index{compiler@{compiler}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{compiler}{compiler}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::compiler\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Compiler command. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00090}{90}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00066}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00065}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00041}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00041}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00044}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00044}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}\label{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!compiler\_args@{compiler\_args}}
+\index{compiler\_args@{compiler\_args}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{compiler\_args}{compiler\_args}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ CBuild\+::\+Toolchain\+::compiler\+\_\+args\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Compiler args (specified and generated) 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00082}{82}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00039}{add\+\_\+compile\+\_\+arg()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00066}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00065}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_ad18750bc8fcad84be54cbfb98661727f}\label{classCBuild_1_1Toolchain_ad18750bc8fcad84be54cbfb98661727f}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!depends@{depends}}
+\index{depends@{depends}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{depends}{depends}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ CBuild\+::\+Toolchain\+::depends\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+All other targets, that is needed for this target. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00074}{74}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00149}{CBuild\+::\+MINGW\+\_\+\+GXX\+::post\+\_\+link()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00149}{CBuild\+::\+MINGW\+\_\+\+GCC\+::post\+\_\+link()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}\label{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!force@{force}}
+\index{force@{force}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{force}{force}}
+{\footnotesize\ttfamily bool CBuild\+::\+Toolchain\+::force\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Force argument (scratch variable) 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00106}{106}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00066}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00065}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00068}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}\label{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!id@{id}}
+\index{id@{id}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::id\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Must be initialized in derived classes. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00066}{66}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00041}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00168}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00165}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{Build_8hpp_source_l00184}{get\+\_\+id()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00041}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00044}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00044}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}\label{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!link\_args@{link\_args}}
+\index{link\_args@{link\_args}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{link\_args}{link\_args}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ CBuild\+::\+Toolchain\+::link\+\_\+args\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Linker args (specified and generated) 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00086}{86}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00100}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00092}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00132}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00120}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}\label{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!linker@{linker}}
+\index{linker@{linker}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{linker}{linker}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::linker\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Linker command. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00094}{94}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00041}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00041}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00100}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00092}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00095}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00044}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00044}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}\label{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!name@{name}}
+\index{name@{name}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::name = \char`\"{}\char`\"{}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Name of output, if undefined (\char`\"{}\char`\"{}), for output name used id. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00061}{61}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00054}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00168}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00165}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00055}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00057}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00057}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00288}{CBuild\+::\+MINGW\+\_\+\+GXX\+::run()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00284}{CBuild\+::\+MINGW\+\_\+\+GCC\+::run()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}\label{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!packer@{packer}}
+\index{packer@{packer}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{packer}{packer}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::packer\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+ar command for packing static libraries 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00098}{98}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00041}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00041}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00132}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00120}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00123}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00044}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00044}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}\label{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!required@{required}}
+\index{required@{required}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{required}{required}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$std\+::string, \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9c}{CBuild\+::stage}}$>$ CBuild\+::\+Toolchain\+::required\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Save task id with run stage sprecified for this task. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00070}{70}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00215}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00212}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a1b2edd263ef95925304f80ca52000bc7}\label{classCBuild_1_1Toolchain_a1b2edd263ef95925304f80ca52000bc7}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!targets@{targets}}
+\index{targets@{targets}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{targets}{targets}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{structCBuild_1_1Path}{CBuild\+::\+Path}}$>$ CBuild\+::\+Toolchain\+::targets\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Target files or folders. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00078}{78}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+CBuild/headers/build/\mbox{\hyperlink{Build_8hpp}{Build.\+hpp}}\item 
+CBuild/\+CBuild/src/\mbox{\hyperlink{Build_8cpp}{Build.\+cpp}}\end{DoxyCompactItemize}

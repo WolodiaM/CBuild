@@ -1,0 +1,63 @@
+\hypertarget{register_8cpp}{}\doxysection{CBuild/\+CBuild/src/register.cpp File Reference}
+\label{register_8cpp}\index{CBuild/CBuild/src/register.cpp@{CBuild/CBuild/src/register.cpp}}
+
+
+Register implementation.  
+
+
+{\ttfamily \#include \char`\"{}../../headers/map.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/filesystem++.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/register.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/build/g++.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/\+CBuild\+\_\+defs.\+hpp\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classCBuild_1_1Help}{CBuild\+::\+Help}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classCBuild_1_1Help}{Help}} print task. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classCBuild_1_1Init}{CBuild\+::\+Init}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classCBuild_1_1Init}{Init}} task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild}{CBuild}}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild_1_1Registry}{CBuild\+::\+Registry}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCBuild_1_1Help}{CBuild\+::\+Help}} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a898d68a1fde4c705d15ab0fa2d24f72c}{CBuild\+::\+Registry\+::help}}
+\item 
+\mbox{\hyperlink{classCBuild_1_1Init}{CBuild\+::\+Init}} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a127c9a77ac7122e3da3f35d0c9a6c207}{CBuild\+::\+Registry\+::initw}}
+\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, \mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$ $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a622b61aabaad12faedca87869fd5801f}{CBuild\+::\+Registry\+::tasks}}
+\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, bool $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a7610e0427b2f16ddcd1cd7c01dc11229}{CBuild\+::\+Registry\+::task\+\_\+executed}}
+\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, \mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild\+::\+Toolchain}} $\ast$ $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9051b3f36a18fe20cfbda218824a950e}{CBuild\+::\+Registry\+::targets}}
+\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, bool $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_aca54837e829e5a288440c5ec214b1843}{CBuild\+::\+Registry\+::target\+\_\+executed}}
+\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9766563e4b786c01ab14376dd32eebe6}{CBuild\+::\+Registry\+::keywords}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Register implementation. 
+
+\begin{DoxyAuthor}{Author}
+WolodiaM (\href{mailto:w_melnyk@outlook.com}{\texttt{ w\+\_\+melnyk@outlook.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2023-\/01-\/28
+\end{DoxyDate}
+@license GPL v3.\+0 or later
+
+Copyright (C) 2023 WolodiaM This program is free software\+: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see \href{https://www.gnu.org/licenses/}{\texttt{ https\+://www.\+gnu.\+org/licenses/}}. 
+
+Definition in file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+

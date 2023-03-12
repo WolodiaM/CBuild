@@ -1,0 +1,79 @@
+\hypertarget{hash_8cpp}{}\doxysection{CBuild/\+CBuild/src/hash.cpp File Reference}
+\label{hash_8cpp}\index{CBuild/CBuild/src/hash.cpp@{CBuild/CBuild/src/hash.cpp}}
+
+
+SHA256 implementation.  
+
+
+{\ttfamily \#include \char`\"{}fstream\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}iostream\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sstream\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}iomanip\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}openssl/sha.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}string\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/hash.\+hpp\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}} (const std\+::string str)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}{changed}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+SHA256 implementation. 
+
+\begin{DoxyAuthor}{Author}
+WolodiaM (\href{mailto:w_melnyk@outlook.com}{\texttt{ w\+\_\+melnyk@outlook.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2023-\/02-\/13
+\end{DoxyDate}
+@license GPL v3.\+0 or later
+
+Copyright (C) 2023 WolodiaM This program is free software\+: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see \href{https://www.gnu.org/licenses/}{\texttt{ https\+://www.\+gnu.\+org/licenses/}}. 
+
+Definition in file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}\label{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}} 
+\index{hash.cpp@{hash.cpp}!sha256@{sha256}}
+\index{sha256@{sha256}!hash.cpp@{hash.cpp}}
+\doxysubsubsection{\texorpdfstring{sha256()}{sha256()}}
+{\footnotesize\ttfamily std\+::string sha256 (\begin{DoxyParamCaption}\item[{const std\+::string}]{str }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00034}{34}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{hash_8cpp_source_l00034}{sha256()}}.
+
+
+
+Referenced by \mbox{\hyperlink{hash_8cpp_source_l00053}{CBuild\+::hash\+\_\+match\+\_\+store()}}, \mbox{\hyperlink{hash_8cpp_source_l00090}{CBuild\+::load\+\_\+hash()}}, \mbox{\hyperlink{hash_8cpp_source_l00124}{CBuild\+::save\+\_\+hashes()}}, and \mbox{\hyperlink{hash_8cpp_source_l00034}{sha256()}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}\label{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}} 
+\index{hash.cpp@{hash.cpp}!changed@{changed}}
+\index{changed@{changed}!hash.cpp@{hash.cpp}}
+\doxysubsubsection{\texorpdfstring{changed}{changed}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ changed}
+
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00051}{51}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
