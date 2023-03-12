@@ -54,4 +54,4 @@ void init()
 	CBuild::Registry::RegisterTarget(&lib);  
 }  
 </pre>
-It uses g++ as compiler, as c++20.
+It uses g++ as compiler, and c++20.
