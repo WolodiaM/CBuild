@@ -9,8 +9,8 @@ scripts
 src/main.cpp
 src/test.hpp
 src/test.cpp
-deb
 CBuild.run
 CBuild build system prerequirments.rtf
 CBuild/CBuild/libCBuild.so
 Makefile
+private_gpg_key.asc

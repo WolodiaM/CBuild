@@ -1,0 +1,42 @@
+cbuild (3.0) stable; urgency=low
+
+  [ WolodiaM ]
+  * Add auto Makefile generation based on executed commands from toollchain
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat,  11 Mar 2023 07:22:00 +0200
+
+cbuild (2.3) stable; urgency=high
+
+  [ WolodiaM ]
+  * Build system now add soname property fo dynamick libraries, 
+    making possible pack it to .deb without errors 
+
+ -- WolodiaM <w_melnyk@outlook.com>  Fri,  10 Mar 2023 10:33:00 +0200
+
+cbuild (2.2) stable; urgency=low
+
+  [ WolodiaM ]
+  * Fix error and warnings of lintian
+
+ -- WolodiaM <w_melnyk@outlook.com>  Fri,  10 Mar 2023 10:15:00 +0200
+
+cbuild (2.1) stable; urgency=low
+
+  [ WolodiaM ]
+  * Better docs in code, fixed some errors with deb packet
+
+ -- WolodiaM <w_melnyk@outlook.com>  Fri,  10 Mar 2023 09:03:00 +0200
+
+cbuild (2.0) stable; urgency=low
+
+  [ WolodiaM ]
+  * First release
+
+ -- WolodiaM <w_melnyk@outlook.com>  Thu,  09 Mar 2023 10:19:00 +0200
+
+cbuild (1.0) stable; urgency=low
+
+  [ WolodiaM ]
+  * First build, before deb packaging
+
+ -- WolodiaM <w_melnyk@outlook.com>  Thu,  09 Mar 2023 10:02:00 +0200

@@ -1,0 +1,23 @@
+override_dh_strip:
+        dh_strip --dbg-package=cbuild
+
+override_dh_makeshlibs:
+        dh_makeshlibs -V "libCbuild (>= 2.1)" --add-udeb=libCBuild-udeb \
+        -- -c4 -Xusr/lib
+
+binary-arch:
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+	install -m 644 libCBuild.so.2 debian/cbuild/usr/lib/libCBuild.so.2
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+	override_dh_makeshlibs
+	override_dh_strip

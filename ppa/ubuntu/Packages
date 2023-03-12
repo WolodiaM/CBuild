@@ -1,0 +1,19 @@
+Package: libcbuild
+Version: 3.0
+Architecture: amd64
+Maintainer: WolodiaM <w_melnyk@outlook.com>
+Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9), libssl-dev
+Filename: ./libcbuild-3.0.deb
+Size: 219404
+MD5sum: 97692b598ae381f8d677a1677d361ec7
+SHA1: 1d7f94e04d944e42f86a01b480705b2d02e12c1f
+SHA256: c0389fc24de23f59b04756f466efac23335c1cd17ef985a0da2b90231ce26924
+Section: utils
+Priority: optional
+Description: Build system for c++ that use scripts writen in c++ ;).
+ This is a build system that allow creating simple or not build scripts for
+ building c++ code.
+ It is easy retargetable, if you can write a build procces (what command and
+ when need to be called), to any other language.
+ It allow to use full c++ api and any libraries in build scripts.
+

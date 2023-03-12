@@ -60,6 +60,10 @@ if [ $1 == "help" ]; then
 	echo "\"core\" - build CBuild backend dynamic library";
 	echo "\"all\" - build core and the user";
     echo "\"pack\" - copy lib and headers, pack deb packet"
+    echo "\"mkppa\" - pack ppa"
+    echo "\"incv major\" - increment major version"
+    echo "\"incv minor\" - increment minor version"
+    echo "\"mkppa\" - pack ppa"
 	echo "\"rm core\" - remove core library";
 	echo "\"rm user\" - remove user executable";
 	echo "\"rm all\" - remove core library and user executable";
@@ -121,4 +125,48 @@ if [ $1 == "pack" ]; then
     echo Running lintian
     lintian ./deb/libcbuild.deb;
     echo End of packaging deb
+fi
+if [ $1 == "mkppa" ]; then
+    version=`cat ./ppa/ubuntu/version`
+    echo `expr index "$version" v` > tmp
+    end=`cat tmp`
+    end=$((end - 1))
+    version=${version:0:$end}
+    rm tmp
+    echo Copy deb
+    gpg --import ../../private_gpg_key.asc 
+    cp ./deb/libcbuild.deb ./ppa/ubuntu/libcbuild-${version}.deb;
+    cd ./ppa/ubuntu/;
+    echo Not forget to change version though ./build.sh incv major/minor
+    echo Create Packages and Packages.gs
+    dpkg-scanpackages --multiversion . > Packages;
+    gzip -k -f Packages;
+    echo Creare Release
+    apt-ftparchive release . > Release
+    gpg --default-key "w_melnyk@outlook.com" -abs -o - Release > Release.gpg
+    gpg --default-key "w_melnyk@outlook.com" --clearsign -o - Release > InRelease
+fi
+if [ $1 == "incv" ]; then
+    version_old=`cat ./ppa/ubuntu/version`
+    echo `expr index "$version_old" .` > tmp
+    dot=`cat tmp`
+    echo `expr index "$version_old" v` > tmp
+    end=`cat tmp`
+    end=$((end - 1))
+    dot=$((dot - 1))
+    major=${version_old:0:$dot}
+    dot="$dot"
+    end="$end"
+    dot=$((dot + 1))
+    end=$((end - dot))
+    minor=${version_old:$dot:$end}
+    if [ $2 == "major" ]; then
+        major=$((major + 1))
+    fi
+    if [ $2 == "minor" ]; then
+        minor=$((minor + 1))
+    fi
+    version_new=${major}.${minor}v
+    rm tmp
+    echo $version_new > ./ppa/ubuntu/version
 fi

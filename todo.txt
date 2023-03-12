@@ -1,16 +1,12 @@
-            3.0
-Export Makefile
-EExport buildcommand.json
-
-            4.0
-Support for modules
-Easy build, not build.sh/build.bat
-
-	        5.0
+	        4.0
 Import repos
 	VCPKG
 	Conan
 	...
+
+            5.0
+Support for modules
+Easy build, not build.sh/build.bat
 Import CMake projects???
 
         Unimplemented 
