@@ -83,11 +83,15 @@ if [ $1 == "rm" ]; then
     remove $2;
 fi
 if [ $1 == "pack" ]; then
-    echo Remove and copy lib ;
+    echo Copy rebuold script;
+    rm -r ./deb/libcbuild/usr/bin;
+    mkdir ./deb/libcbuild/usr/bin;
+    cp ./rebuild.sh ./deb/libcbuild/usr/bin/CBuild_rebuild;
+    echo Remove and copy lib;
     rm -r ./deb/libcbuild/usr/lib;
     mkdir ./deb/libcbuild/usr/lib;
-    cp ./CBuild/CBuild/libCBuild.so ./deb/libcbuild/usr/lib/libCBuild.so.2;
-    strip ./deb/libcbuild/usr/lib/libCBuild.so.2;
+    cp ./CBuild/CBuild/libCBuild.so ./deb/libcbuild/usr/lib/libCBuild.so;
+    strip ./deb/libcbuild/usr/lib/libCBuild.so;
     echo Remove and copy headers;
     rm -r ./deb/libcbuild/usr/include;
     mkdir ./deb/libcbuild/usr/include/;
@@ -111,9 +115,11 @@ if [ $1 == "pack" ]; then
     chmod 0755 ./deb/libcbuild/usr/share;
     chmod 0755 ./deb/libcbuild/usr/share/doc;
     chmod 0755 ./deb/libcbuild/usr/share/doc/libcbuild;
+    chmod 0755 ./deb/libcbuild/usr/bin;
     echo Chmod fix for files
-    chmod 0755 ./deb/libcbuild/usr/lib/libCBuild.so.2;
-    chmod -x ./deb/libcbuild/usr/lib/libCBuild.so.2;
+    chmod 0755 ./deb/libcbuild/usr/lib/libCBuild.so;
+    chmod 0755 ./deb/libcbuild/usr/bin/CBuild_rebuild;
+    chmod -x ./deb/libcbuild/usr/lib/libCBuild.so;
     chmod 0644 ./deb/libcbuild/usr/include/CBuild/*.hpp;
     chmod 0644 ./deb/libcbuild/usr/include/CBuild/task/*.hpp;
     chmod 0644 ./deb/libcbuild/usr/include/CBuild/build/*.hpp;

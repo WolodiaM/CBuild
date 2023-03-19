@@ -4,10 +4,10 @@ Architecture: amd64
 Maintainer: WolodiaM <w_melnyk@outlook.com>
 Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9), libssl-dev
 Filename: ./libcbuild-3.0.deb
-Size: 219404
-MD5sum: 97692b598ae381f8d677a1677d361ec7
-SHA1: 1d7f94e04d944e42f86a01b480705b2d02e12c1f
-SHA256: c0389fc24de23f59b04756f466efac23335c1cd17ef985a0da2b90231ce26924
+Size: 219432
+MD5sum: 24c57b96844e9696ac0839fd1534cefd
+SHA1: e3276de68ce11cc342b1916e0c562ea007b17925
+SHA256: 9bd2173fc6f4d7919e410bef546a79294f2640d8e884f18e985eea43dd0b01bb
 Section: utils
 Priority: optional
 Description: Build system for c++ that use scripts writen in c++ ;).
