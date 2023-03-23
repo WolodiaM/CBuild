@@ -1,10 +1,9 @@
 #!/bin/bash
 # Rebuild CBuild user scripts
-# $2 - user scripts dir
-# $3 - plugins in format "-lplugin1 -lplugin2"
-# $4 - custom user build args args in format "-arg1 -arg2"
-# $5 - custom user link args in format "-arg1 -arg2"
-# $6 - custom name of user executable
+# $1 - user scripts dir
+# $2 - custom user build args args in format "-arg1 -arg2"
+# $3 - custom user link args in format "-arg1 -arg2"
+# $4 - custom name of user executable
 # Error codes
 # 1 - Too litle number of elements
 # 2 - Too many arguments
@@ -35,22 +34,18 @@ fi
 C_PATH=$1
 # Custom compile args exists
 if [ $# -gt 1 ]; then
-    PLUGIN_INC=$2;
-fi
-# Custom compile args exists
-if [ $# -gt 2 ]; then
-    COMPILE_ARG=$3;
+    COMPILE_ARG=$2;
 fi
 # Custom link args exists
-if [ $# -gt 3 ]; then
-    LINK_ARG=$4;
+if [ $# -gt 2 ]; then
+    LINK_ARG=$3;
 fi
 # Name is specified
-if [ $# -gt 4 ]; then
-    NAME=$5;
+if [ $# -gt 3 ]; then
+    NAME=$4;
 fi
 # Too many args
-if [ $# -gt 6 ]; then
+if [ $# -gt 4 ]; then
     error "Too many arguments." 2;
 fi
 # Get files needed for compilation

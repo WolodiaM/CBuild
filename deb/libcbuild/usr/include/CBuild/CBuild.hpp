@@ -58,6 +58,10 @@ namespace CBuild
 		 */
 		CLEAR,
 		/**
+		 * @brief Rebuild user executable
+		 */
+		REBUILD,
+		/**
 		 * @brief Some error occurred
 		 */
 		ERROR
@@ -76,5 +80,10 @@ namespace CBuild
 	 * @param args => lib::map<std::string, std::string>* -> args from CBuild::parse
 	 */
 	void loop(RType mode, lib::map<std::string, std::string>* args);
+	/**
+	 * @brief Rebuild userspace part of CBuild
+	 * @param scripts => std::string -> path to scripts dir
+	 */
+	void rebuild(std::string scripts);
 } // namespace CBuild
 #endif // __CBUILD_CORE_HPP__

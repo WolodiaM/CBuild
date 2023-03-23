@@ -4,10 +4,29 @@ Architecture: amd64
 Maintainer: WolodiaM <w_melnyk@outlook.com>
 Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9), libssl-dev
 Filename: ./libcbuild-3.0.deb
-Size: 219432
-MD5sum: 24c57b96844e9696ac0839fd1534cefd
-SHA1: e3276de68ce11cc342b1916e0c562ea007b17925
-SHA256: 9bd2173fc6f4d7919e410bef546a79294f2640d8e884f18e985eea43dd0b01bb
+Size: 223104
+MD5sum: 557508c56578756cf6d430e44f557b91
+SHA1: 8cfa0e0302975068780096034649b3cf1e6fe95e
+SHA256: 0045029796346782f64528f5a85c0b1f52cc1fab0cfeb335e2c5f2e9b9175498
+Section: utils
+Priority: optional
+Description: Build system for c++ that use scripts writen in c++ ;).
+ This is a build system that allow creating simple or not build scripts for
+ building c++ code.
+ It is easy retargetable, if you can write a build procces (what command and
+ when need to be called), to any other language.
+ It allow to use full c++ api and any libraries in build scripts.
+
+Package: libcbuild
+Version: 3.0
+Architecture: amd64
+Maintainer: WolodiaM <w_melnyk@outlook.com>
+Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9), libssl-dev
+Filename: ./libcbuild-4.0.deb
+Size: 223094
+MD5sum: c905770a13afc599841beeb6f93cf5e5
+SHA1: d0b1e55689332306c92527a619a8342f9a16119c
+SHA256: 8c71915dfe0d8cda5bf09fe9f9ccca925877810fa2846f858e491700d930ed66
 Section: utils
 Priority: optional
 Description: Build system for c++ that use scripts writen in c++ ;).

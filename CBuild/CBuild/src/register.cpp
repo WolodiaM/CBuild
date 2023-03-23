@@ -23,6 +23,8 @@
 // C++ libraries
 #include "../../headers/map.hpp"
 #include "../../headers/filesystem++.hpp"
+#include "string"
+#include "vector"
 // Project headers
 #include "../../headers/register.hpp"
 #include "../../headers/build/g++.hpp"
@@ -102,6 +104,11 @@ namespace CBuild
         lib::map<std::string, bool> target_executed;
         // Custom cmd line arguments to tasks mapping
         lib::map<std::string, std::string> keywords;
+        // Custom rebuild name
+        std::string name = "CBuild.run";
+        // Custom rebuild args
+        std::vector<std::string> cargs;
+        std::vector<std::string> largs;
         // TODO other types ?
     } // namespace Registry
 } // namespace CBuild
@@ -192,4 +199,41 @@ lib::map<std::string, std::string> CBuild::Registry::GetKeywordsList()
 {
     // Return list of arguments
     return Registry::keywords;
+}
+
+void CBuild::Registry::SetRebuildName(std::string _name)
+{
+    // Save name
+    Registry::name = _name;
+}
+void CBuild::Registry::AddLinkArg(std::string arg)
+{
+    // Add argument
+    Registry::largs.push_back(arg);
+}
+void CBuild::Registry::AddCompileArg(std::string arg)
+{
+    // Add argument
+    Registry::cargs.push_back(arg);
+}
+std::string CBuild::Registry::GetRebuildArgs()
+{
+    // Return string
+    std::string ret = " \"";
+    // Get compile args and pack it to workable string
+    for (auto elem : Registry::cargs) {
+        ret += elem;
+        ret += " ";
+    }
+    ret += " \" \" ";
+    // Get link args and pack it to workable string
+    for (auto elem : Registry::largs) {
+        ret += elem;
+        ret += " ";
+    }
+    ret += " \" ";
+    // Get name and pack it to workable string
+    ret += Registry::name;
+    // Return string
+    return ret;
 }

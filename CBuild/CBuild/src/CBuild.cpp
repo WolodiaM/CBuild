@@ -288,6 +288,11 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc, 
 			{
 				exit(0xFF);
 			}
+			// Rebuild of CBuild
+		}
+		else if (tmp == std::string("--rebuild"))
+		{
+			ret=CBuild::REBUILD;
 			// Init workspace
 		}
 		else if (tmp == std::string("--init"))
@@ -518,4 +523,10 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string> *args)
 		makefile << "\n";
 		makefile.close();
 	}
+}
+void CBuild::rebuild(std::string scripts)
+{
+	std::string args = scripts + " ";
+	args += CBuild::Registry::GetRebuildArgs();
+	CBuild::system(("CBuild_rebuild " + args));
 }

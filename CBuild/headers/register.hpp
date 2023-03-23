@@ -81,6 +81,26 @@ namespace CBuild
          * @returns lib::map<std::string, std::string> where key - keyword, value - task id to call
          */
         lib::map<std::string, std::string> GetKeywordsList();
+        /**
+         * @brief Set the rebuilt CBuild executable name
+         * @param _name => std::string -> new CBuild user executable name
+         */
+        void SetRebuildName(std::string _name);
+        /**
+         * @brief Add linker arg for CBuild rebuild
+         * @param arg => std::string -> raw argument
+         */
+        void AddLinkArg(std::string arg);
+        /**
+         * @brief Add compiler argument for CBuild rebuild
+         * @param arg => std::string -> raw argument
+         */
+        void AddCompileArg(std::string arg);
+        /**
+         * @brief Get the rebuild args for CBuild executable
+         * @return std::string -> formatted arguments
+         */
+        std::string GetRebuildArgs();
     } // namespace Registry
 } // namespace CBuild
 #endif // __CBUILD_REGISTER_HPP__
