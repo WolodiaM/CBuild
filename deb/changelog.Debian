@@ -1,3 +1,18 @@
+cbuild (4.1) stable; urgency=low
+
+  [ WolodiaM ]
+  * Fix error in help message
+
+ -- WolodiaM <w_melnyk@outlook.com>  Wed,  5 Apr 2023 14:56:00 +0200
+
+
+cbuild (4.0) stable; urgency=high
+
+  [ WolodiaM ]
+  * Allow rebuild of CBuild.run executable using CBuild itself
+
+ -- WolodiaM <w_melnyk@outlook.com>  Wed,  5 Apr 2023 14:22:00 +0200
+
 cbuild (3.0) stable; urgency=low
 
   [ WolodiaM ]
@@ -8,8 +23,8 @@ cbuild (3.0) stable; urgency=low
 cbuild (2.3) stable; urgency=high
 
   [ WolodiaM ]
-  * Build system now add soname property fo dynamick libraries, 
-    making possible pack it to .deb without errors 
+  * Build system now add soname property for dynamick libraries,
+    making possible pack it to .deb without errors
 
  -- WolodiaM <w_melnyk@outlook.com>  Fri,  10 Mar 2023 10:33:00 +0200
 
