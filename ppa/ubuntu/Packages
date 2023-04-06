@@ -75,15 +75,15 @@ Description: Build system for c++ that use scripts writen in c++ ;).
  It allow to use full c++ api and any libraries in build scripts.
 
 Package: libcbuild
-Version: 4.1
+Version: 5.0
 Architecture: amd64
 Maintainer: WolodiaM <w_melnyk@outlook.com>
 Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9), libssl-dev
 Filename: ./libcbuild-5.0.deb
-Size: 223540
-MD5sum: b7b53900c31b9e638a7621cd58875610
-SHA1: 26eaa0fd00a4c12399d4825d64ba64eef3632348
-SHA256: abca932c7f75dc039aba4459bc01a1bb1b7dc402d455d2ebfd342b7dd76bb8e2
+Size: 223586
+MD5sum: 766f9753c9cac03b0ba781de2ec8fbfe
+SHA1: 7f1952f87e9c7801054200bd725aa1a4e53e049f
+SHA256: d427eb691f4f08fa1a453f0ca23ea16d8ffa434e3bf3b7d972570f8270d1178d
 Section: utils
 Priority: optional
 Description: Build system for c++ that use scripts writen in c++ ;).

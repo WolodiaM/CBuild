@@ -175,4 +175,6 @@ if [ $1 == "incv" ]; then
     version_new=${major}.${minor}v
     rm tmp
     echo $version_new > ./ppa/ubuntu/version
+    echo Vesion: $version_new
+    echo Not forget to add version to .deb and update changelog
 fi

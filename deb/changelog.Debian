@@ -1,3 +1,12 @@
+cbuild (5.0) stable; urgency=high
+
+  [ WolodiaM ]
+  * Added export of compile_commands.json
+  * Added documentation
+  * Recompiled doxygen
+
+ -- WolodiaM <w_melnyk@outlook.com>  Thu,  6 Apr 2023 22:36:00 +0200
+
 cbuild (4.1) stable; urgency=low
 
   [ WolodiaM ]
