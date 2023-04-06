@@ -55,3 +55,7 @@
  * @brief Output Makefile path
  */
 #define CBUILD_MAKEFILE std::string("Makefile")
+/**
+ * @brief Output compile_command.json path
+ */
+#define CBUILD_COMPILE_COMMAND_JSON std::string("compile_commands.json")

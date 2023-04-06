@@ -5,32 +5,10 @@ Import repos
 	...
 
             5.0
-Support for modules
-Easy build, not build.sh/build.bat
 Import CMake projects???
 
         Unimplemented 
 mingw debugger
-
-Plugins api:
-    ???
-    search in /usr/lib/CBuildPlugins
-    scan dir
-    dlopen() all .so files
-    load table of function via dlsym()
-        get size of function table (from plugin)
-        malloc function table space in global function table
-        call plugin function to copy plugin function tale to place in global function table
-        NOTE: function tbale also containt plugin name, version and id (in standard)
-    check if plugin have some standard functions
-        check function table of plugin for functions:
-            init_subcommands() -> init other console arguments, return pointer to struct with two std::vectors, one with subcommands id and function piinters, that use this arguments
-            init_toolchains() -> init some special toolchains, return pointer to struct with two std::vectors, one with toolchain and other with function that init and remove this toolchain (pointer constructor)
-            init_modules() -> simmilar to init_toolchains()
-    init plugin
-    Init call_plugin_func() function, add plugin symbol table to standard symbol tables
-    Use plugin as needed
-
 
 Depends
     Libs:

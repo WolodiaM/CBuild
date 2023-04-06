@@ -1,8 +1,7 @@
 # VSCode
 .vscode
 # CBuild main gitnore
-build/mull/**
-build/mull_lib/**
+build/**
 cache
 # CBuild dev gitnore
 scripts
@@ -14,3 +13,5 @@ CBuild build system prerequirments.rtf
 CBuild/CBuild/libCBuild.so
 Makefile
 private_gpg_key.asc
+releases
+compile_commands.json
