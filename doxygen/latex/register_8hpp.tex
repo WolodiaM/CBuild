@@ -37,7 +37,15 @@ void \mbox{\hyperlink{namespaceCBuild_1_1Registry_ad02f9738893f725b263013012f886
 void \mbox{\hyperlink{namespaceCBuild_1_1Registry_ac2a13262b5b36758289f9cca42ce13e2}{CBuild\+::\+Registry\+::\+Register\+Keyword}} (std\+::string key, \mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$func)
 \begin{DoxyCompactList}\small\item\em Register new keyord for parsing, ! Dangerous, owerwriting existing keywords can lead to undefined behaviours. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a6b538efddd82cdc95d1506fba6a93b59}{CBuild\+::\+Registry\+::\+Get\+Keywords\+List}} ()
-\begin{DoxyCompactList}\small\item\em Get list of all user registered keywords. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get list of all user registered keywords. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a52caf93d8f2358ace59cf256f3ed6ebf}{CBuild\+::\+Registry\+::\+Set\+Rebuild\+Name}} (std\+::string \+\_\+name)
+\begin{DoxyCompactList}\small\item\em Set the rebuilt \mbox{\hyperlink{namespaceCBuild}{CBuild}} executable name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a552d1c75543fd4b4c1bbe19e011a6a22}{CBuild\+::\+Registry\+::\+Add\+Link\+Arg}} (std\+::string arg)
+\begin{DoxyCompactList}\small\item\em Add linker arg for \mbox{\hyperlink{namespaceCBuild}{CBuild}} rebuild. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_aad2852a78f5aa5c9f84dc53b065cdee8}{CBuild\+::\+Registry\+::\+Add\+Compile\+Arg}} (std\+::string arg)
+\begin{DoxyCompactList}\small\item\em Add compiler argument for \mbox{\hyperlink{namespaceCBuild}{CBuild}} rebuild. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespaceCBuild_1_1Registry_aea482c73e78098645ac59484c470a378}{CBuild\+::\+Registry\+::\+Get\+Rebuild\+Args}} ()
+\begin{DoxyCompactList}\small\item\em Get the rebuild args for \mbox{\hyperlink{namespaceCBuild}{CBuild}} executable. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

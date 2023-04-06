@@ -10,7 +10,8 @@ var searchData=
   ['get_5flog_7',['get_log',['../namespaceCBuild.html#a454c89f17e1bbea2bd4bdb0be34027b7',1,'CBuild']]],
   ['get_5fptr_8',['get_ptr',['../classlib_1_1map.html#ac9f1b7875dd85ccdc555647cda839395',1,'lib::map']]],
   ['getkeywordslist_9',['GetKeywordsList',['../namespaceCBuild_1_1Registry.html#a6b538efddd82cdc95d1506fba6a93b59',1,'CBuild::Registry']]],
-  ['gettargets_10',['GetTargets',['../namespaceCBuild_1_1Registry.html#a80b8ee3e1ed5dba24027e6e486e599b1',1,'CBuild::Registry']]],
-  ['gettoolchain_11',['GetToolchain',['../namespaceCBuild_1_1Registry.html#a2b1eddd86007d7ce185071dd004a5036',1,'CBuild::Registry']]],
-  ['gxx_12',['GXX',['../classCBuild_1_1GXX.html#acfc4d510a17f494e1c991abe79b81f8c',1,'CBuild::GXX::GXX(std::string id)'],['../classCBuild_1_1GXX.html#a528bdf5e39d20b43dfeb50c4e2f1aa52',1,'CBuild::GXX::GXX(std::string id, std::string name)']]]
+  ['getrebuildargs_10',['GetRebuildArgs',['../namespaceCBuild_1_1Registry.html#aea482c73e78098645ac59484c470a378',1,'CBuild::Registry']]],
+  ['gettargets_11',['GetTargets',['../namespaceCBuild_1_1Registry.html#a80b8ee3e1ed5dba24027e6e486e599b1',1,'CBuild::Registry']]],
+  ['gettoolchain_12',['GetToolchain',['../namespaceCBuild_1_1Registry.html#a2b1eddd86007d7ce185071dd004a5036',1,'CBuild::Registry']]],
+  ['gxx_13',['GXX',['../classCBuild_1_1GXX.html#acfc4d510a17f494e1c991abe79b81f8c',1,'CBuild::GXX::GXX(std::string id)'],['../classCBuild_1_1GXX.html#a528bdf5e39d20b43dfeb50c4e2f1aa52',1,'CBuild::GXX::GXX(std::string id, std::string name)']]]
 ];

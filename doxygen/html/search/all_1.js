@@ -10,6 +10,8 @@ var searchData=
   ['add_5flink_5farg_7',['add_link_arg',['../classCBuild_1_1Toolchain.html#a9484161cf7845614132b472b0bd087a8',1,'CBuild::Toolchain']]],
   ['add_5frequirment_8',['add_requirment',['../classCBuild_1_1Toolchain.html#a3b6835aae93380a71f5dd5d00e973d25',1,'CBuild::Toolchain']]],
   ['add_5fundef_9',['add_undef',['../classCBuild_1_1Toolchain.html#a08bad46725b79244023721ffb3907bc2',1,'CBuild::Toolchain']]],
-  ['args_10',['args',['../classCBuild_1_1Toolchain.html#af5cd1dde6aba3754ceb79c3829e23ee8',1,'CBuild::Toolchain']]],
-  ['at_11',['at',['../classlib_1_1map.html#ac1bc33a78f8af74f79bd69878d8409a9',1,'lib::map']]]
+  ['addcompilearg_10',['AddCompileArg',['../namespaceCBuild_1_1Registry.html#aad2852a78f5aa5c9f84dc53b065cdee8',1,'CBuild::Registry']]],
+  ['addlinkarg_11',['AddLinkArg',['../namespaceCBuild_1_1Registry.html#a552d1c75543fd4b4c1bbe19e011a6a22',1,'CBuild::Registry']]],
+  ['args_12',['args',['../classCBuild_1_1Toolchain.html#af5cd1dde6aba3754ceb79c3829e23ee8',1,'CBuild::Toolchain']]],
+  ['at_13',['at',['../classlib_1_1map.html#ac1bc33a78f8af74f79bd69878d8409a9',1,'lib::map']]]
 ];

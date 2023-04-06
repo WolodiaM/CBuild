@@ -15,14 +15,18 @@
 \DoxyCodeLine{\Hypertarget{register_8hpp_source_l00032}00032     \{}
 \DoxyCodeLine{\Hypertarget{register_8hpp_source_l00036}00036         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9be19bd471349943095783bad96ed908}{init}}();}
 \DoxyCodeLine{\Hypertarget{register_8hpp_source_l00042}00042         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_1_1Registry_aa8c4c391fb32f5f30b506917151e3f5e}{RegistryTask}}(\mbox{\hyperlink{classCBuild_1_1Task}{CBuild::Task}}* task);}
-\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00049}00049         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}{CallTask}}(std::string name, std::vector<std::string> args);}
+\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00049}00049         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}{CallTask}}(std::string \mbox{\hyperlink{namespaceCBuild_1_1Registry_ad570aea7d453a3bde5ea92fb3fa7ff2c}{name}}, std::vector<std::string> args);}
 \DoxyCodeLine{\Hypertarget{register_8hpp_source_l00055}00055         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_1_1Registry_ad02f9738893f725b263013012f886f26}{RegisterTarget}}(\mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild::Toolchain}}* target);}
-\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00063}00063         \mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild::Toolchain}}* \mbox{\hyperlink{namespaceCBuild_1_1Registry_a2b1eddd86007d7ce185071dd004a5036}{GetToolchain}}(std::string name, \textcolor{keywordtype}{bool} force = \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00063}00063         \mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild::Toolchain}}* \mbox{\hyperlink{namespaceCBuild_1_1Registry_a2b1eddd86007d7ce185071dd004a5036}{GetToolchain}}(std::string \mbox{\hyperlink{namespaceCBuild_1_1Registry_ad570aea7d453a3bde5ea92fb3fa7ff2c}{name}}, \textcolor{keywordtype}{bool} force = \textcolor{keyword}{false});}
 \DoxyCodeLine{\Hypertarget{register_8hpp_source_l00069}00069         \mbox{\hyperlink{classlib_1_1map}{lib::map<std::string, CBuild::Toolchain*>}} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a80b8ee3e1ed5dba24027e6e486e599b1}{GetTargets}}();}
 \DoxyCodeLine{\Hypertarget{register_8hpp_source_l00077}00077         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_1_1Registry_ac2a13262b5b36758289f9cca42ce13e2}{RegisterKeyword}}(std::string key, \mbox{\hyperlink{classCBuild_1_1Task}{CBuild::Task}}* func);}
 \DoxyCodeLine{\Hypertarget{register_8hpp_source_l00083}00083         \mbox{\hyperlink{classlib_1_1map}{lib::map<std::string, std::string>}} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a6b538efddd82cdc95d1506fba6a93b59}{GetKeywordsList}}();}
-\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00084}00084     \} \textcolor{comment}{// namespace Registry}}
-\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00085}00085 \} \textcolor{comment}{// namespace CBuild}}
-\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00086}00086 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_\_CBUILD\_REGISTER\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00088}00088         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a52caf93d8f2358ace59cf256f3ed6ebf}{SetRebuildName}}(std::string \_name);}
+\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00093}00093         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a552d1c75543fd4b4c1bbe19e011a6a22}{AddLinkArg}}(std::string arg);}
+\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00098}00098         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_1_1Registry_aad2852a78f5aa5c9f84dc53b065cdee8}{AddCompileArg}}(std::string arg);}
+\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00103}00103         std::string \mbox{\hyperlink{namespaceCBuild_1_1Registry_aea482c73e78098645ac59484c470a378}{GetRebuildArgs}}();}
+\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00104}00104     \} \textcolor{comment}{// namespace Registry}}
+\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00105}00105 \} \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{register_8hpp_source_l00106}00106 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_\_CBUILD\_REGISTER\_HPP\_\_}}
 
 \end{DoxyCode}
