@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 # Build user scripts
 function build_user()
 {
@@ -59,11 +59,14 @@ if [ $1 == "help" ]; then
 	echo "\"user\" - build user scripts";
 	echo "\"core\" - build CBuild backend dynamic library";
 	echo "\"all\" - build core and the user";
-    echo "\"pack\" - copy lib and headers, pack deb packet"
-    echo "\"mkppa\" - pack ppa"
-    echo "\"incv major\" - increment major version"
-    echo "\"incv minor\" - increment minor version"
-    echo "\"mkppa\" - pack ppa"
+	echo "\"pack\" - copy lib and headers, pack deb packet"
+	echo "\"mkppa\" - pack ppa"
+	echo "\"incv major\" - increment major version"
+	echo "\"incv major\" - increment major version"
+	echo "\"decv minor\" - decrement minor version"
+	echo "\"decv major\" - decrement major version"
+	echo "\"getv\" - print version"
+	echo "\"mkppa\" - pack ppa"
 	echo "\"rm core\" - remove core library";
 	echo "\"rm user\" - remove user executable";
 	echo "\"rm all\" - remove core library and user executable";
@@ -168,6 +171,7 @@ if [ $1 == "incv" ]; then
     minor=${version_old:$dot:$end}
     if [ $2 == "major" ]; then
         major=$((major + 1))
+	minor="0"
     fi
     if [ $2 == "minor" ]; then
         minor=$((minor + 1))
@@ -176,5 +180,36 @@ if [ $1 == "incv" ]; then
     rm tmp
     echo $version_new > ./ppa/ubuntu/version
     echo Vesion: $version_new
-    echo Not forget to add version to .deb and update changelog
+    echo Not forget to change version in.deb \(deb/libcbuild/DEBIAN/control\) and update changelog \(deb/changelog.Debian\)
+fi
+if [ $1 == "decv" ]; then
+    version_old=`cat ./ppa/ubuntu/version`
+    echo `expr index "$version_old" .` > tmp
+    dot=`cat tmp`
+    echo `expr index "$version_old" v` > tmp
+    end=`cat tmp`
+    end=$((end - 1))
+    dot=$((dot - 1))
+    major=${version_old:0:$dot}
+    dot="$dot"
+    end="$end"
+    dot=$((dot + 1))
+    end=$((end - dot))
+    minor=${version_old:$dot:$end}
+    if [ $2 == "major" ]; then
+        major=$((major - 1))
+	minor="0"
+    fi
+    if [ $2 == "minor" ]; then
+        minor=$((minor - 1))
+    fi
+    version_new=${major}.${minor}v
+    rm tmp
+    echo $version_new > ./ppa/ubuntu/version
+    echo Vesion: $version_new
+    echo Not forget to change version in.deb \(deb/libcbuild/DEBIAN/control\) and update changelog \(deb/changelog.Debian\)
+fi
+if [ $1 == "getv" ]; then
+    version=`cat ./ppa/ubuntu/version`
+    echo Vesion: $version
 fi

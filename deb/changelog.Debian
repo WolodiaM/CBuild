@@ -1,3 +1,11 @@
+cbuild (5.1) stable; urgency=high
+
+  [ WolodiaM ]
+  * Fix for enabling static analyzer (typo in argument, that build system try
+    to add to compilation command)
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat,  8 Apr 2023 18:03:00 +0200
+
 cbuild (5.0) stable; urgency=high
 
   [ WolodiaM ]

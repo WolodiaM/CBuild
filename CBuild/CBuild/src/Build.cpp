@@ -138,7 +138,7 @@ void CBuild::Toolchain::warn()
 void CBuild::Toolchain::static_analizer()
 {
     // Push all aruments needed for static anlization of code
-    this->add_compile_arg("-fanalizer");
+    this->add_compile_arg("-fanalyzer");
     this->add_compile_arg("-Wanalyzer-too-complex");
 }
 void CBuild::Toolchain::error()
