@@ -2,6 +2,7 @@
 Full feathured build system for C / C++.
 All build scripts go into scripts folder.
 All build scripts is written in C++ (can be written in C but CBuild does not have any C API).
+All html and TeX are because of doxygen
 
 # Example
 This is folder structure:  
