@@ -4,10 +4,10 @@
  * @brief Defines
  * @version 1.0
  * @date 2023-02-02
- * 
- * 
+ *
+ *
  * @license GPL v3.0 or later
- * 
+ *
  * Copyright (C) 2023  WolodiaM
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,11 +40,11 @@
  */
 #define CBUILD_BUILD_DIR std::string("build")
 /**
- * @brief Build out in build/toolchain 
+ * @brief Build out in build/toolchain
  */
 #define CBUILD_BUILD_OUT_DIR std::string("out")
 /**
- * @brief Object cache in build/toolchain 
+ * @brief Object cache in build/toolchain
  */
 #define CBUILD_BUILD_CACHE_DIR std::string("objs")
 /**
@@ -59,3 +59,17 @@
  * @brief Output compile_command.json path
  */
 #define CBUILD_COMPILE_COMMAND_JSON std::string("compile_commands.json")
+/**
+ * @brief For other included project, in cache dir
+ */
+#define CBUILD_PROJECT_DEPS_DIR std::string("libs")
+/**
+ * @brief For other included project, in cache dir
+ */
+#define CBUILD_PROJECT_DEPS_HEADERS std::string("headers")
+/**
+ * @brief CBuilddifferent representation of CBuild version
+ */
+#define CBUILD_VERSION_MAJOR (int)6
+#define CBUILD_VERSION_MINOR (int)0
+#define CBUILD_VERSION_STR std::string("6.0")

@@ -1,3 +1,11 @@
+cbuild (6.0) stable; urgency=high
+
+  [ WolodiaM ]
+  * Added ability to include other CBuild project, update Build API
+  * Added version check of CBuild backend - simply return version of lib
+
+ -- WolodiaM <w_melnyk@outlook.com>  Mon,  10 Apr 2023 19:49:00 +0200
+
 cbuild (5.1) stable; urgency=high
 
   [ WolodiaM ]

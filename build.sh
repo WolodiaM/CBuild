@@ -143,7 +143,7 @@ if [ $1 == "mkppa" ]; then
     version=${version:0:$end}
     rm tmp
     echo Copy deb
-    gpg --import ../../private_gpg_key.asc 
+    gpg --import private_gpg_key.asc
     cp ./deb/libcbuild.deb ./ppa/ubuntu/libcbuild-${version}.deb;
     cd ./ppa/ubuntu/;
     echo Not forget to change version though ./build.sh incv major/minor
@@ -207,7 +207,7 @@ if [ $1 == "decv" ]; then
     rm tmp
     echo $version_new > ./ppa/ubuntu/version
     echo Vesion: $version_new
-    echo Not forget to change version in.deb \(deb/libcbuild/DEBIAN/control\) and update changelog \(deb/changelog.Debian\)
+    echo Not forget to change version in.deb \(deb/libcbuild/DEBIAN/control\) and update changelog \(deb/changelog.Debian\) and in CBuild headers \(CBuild/headers/CBuild_defs.hpp\)
 fi
 if [ $1 == "getv" ]; then
     version=`cat ./ppa/ubuntu/version`
