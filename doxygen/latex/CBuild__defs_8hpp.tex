@@ -26,7 +26,17 @@ Defines.
 \#define \mbox{\hyperlink{CBuild__defs_8hpp_a761920c23501e922f0767bd55a50fd29}{CBUILD\+\_\+\+MAKEFILE}}~std\+::string(\char`\"{}Makefile\char`\"{})
 \begin{DoxyCompactList}\small\item\em Output Makefile path. \end{DoxyCompactList}\item 
 \#define \mbox{\hyperlink{CBuild__defs_8hpp_ad8fac2af2ef2cb9013efc161dc0c7389}{CBUILD\+\_\+\+COMPILE\+\_\+\+COMMAND\+\_\+\+JSON}}~std\+::string(\char`\"{}compile\+\_\+commands.\+json\char`\"{})
-\begin{DoxyCompactList}\small\item\em Output compile\+\_\+command.\+json path. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Output compile\+\_\+command.\+json path. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{CBuild__defs_8hpp_a1037fddc83410d38f0059af93d2d43ba}{CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+DIR}}~std\+::string(\char`\"{}libs\char`\"{})
+\begin{DoxyCompactList}\small\item\em For other included project, in cache dir. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{CBuild__defs_8hpp_ab21311c4b3564228d976931147026678}{CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+HEADERS}}~std\+::string(\char`\"{}headers\char`\"{})
+\begin{DoxyCompactList}\small\item\em For other included project, in cache dir. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{CBuild__defs_8hpp_a3cf9dbf518b887c1e12943c5c6617bae}{CBUILD\+\_\+\+VERSION\+\_\+\+MAJOR}}~(int)6
+\begin{DoxyCompactList}\small\item\em CBuilddifferent representation of \mbox{\hyperlink{namespaceCBuild}{CBuild}} version. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{CBuild__defs_8hpp_adaeeff6f524b4de17359959eb6e46877}{CBUILD\+\_\+\+VERSION\+\_\+\+MINOR}}~(int)0
+\item 
+\#define \mbox{\hyperlink{CBuild__defs_8hpp_a4f50b4c13754bcbc01d265482d634892}{CBUILD\+\_\+\+VERSION\+\_\+\+STR}}~std\+::string(\char`\"{}6.\+0\char`\"{})
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -162,6 +172,34 @@ Output Makefile path.
 
 Definition at line \mbox{\hyperlink{CBuild__defs_8hpp_source_l00057}{57}} of file \mbox{\hyperlink{CBuild__defs_8hpp_source}{CBuild\+\_\+defs.\+hpp}}.
 
+\mbox{\Hypertarget{CBuild__defs_8hpp_a1037fddc83410d38f0059af93d2d43ba}\label{CBuild__defs_8hpp_a1037fddc83410d38f0059af93d2d43ba}} 
+\index{CBuild\_defs.hpp@{CBuild\_defs.hpp}!CBUILD\_PROJECT\_DEPS\_DIR@{CBUILD\_PROJECT\_DEPS\_DIR}}
+\index{CBUILD\_PROJECT\_DEPS\_DIR@{CBUILD\_PROJECT\_DEPS\_DIR}!CBuild\_defs.hpp@{CBuild\_defs.hpp}}
+\doxysubsubsection{\texorpdfstring{CBUILD\_PROJECT\_DEPS\_DIR}{CBUILD\_PROJECT\_DEPS\_DIR}}
+{\footnotesize\ttfamily \#define CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+DIR~std\+::string(\char`\"{}libs\char`\"{})}
+
+
+
+For other included project, in cache dir. 
+
+
+
+Definition at line \mbox{\hyperlink{CBuild__defs_8hpp_source_l00065}{65}} of file \mbox{\hyperlink{CBuild__defs_8hpp_source}{CBuild\+\_\+defs.\+hpp}}.
+
+\mbox{\Hypertarget{CBuild__defs_8hpp_ab21311c4b3564228d976931147026678}\label{CBuild__defs_8hpp_ab21311c4b3564228d976931147026678}} 
+\index{CBuild\_defs.hpp@{CBuild\_defs.hpp}!CBUILD\_PROJECT\_DEPS\_HEADERS@{CBUILD\_PROJECT\_DEPS\_HEADERS}}
+\index{CBUILD\_PROJECT\_DEPS\_HEADERS@{CBUILD\_PROJECT\_DEPS\_HEADERS}!CBuild\_defs.hpp@{CBuild\_defs.hpp}}
+\doxysubsubsection{\texorpdfstring{CBUILD\_PROJECT\_DEPS\_HEADERS}{CBUILD\_PROJECT\_DEPS\_HEADERS}}
+{\footnotesize\ttfamily \#define CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+HEADERS~std\+::string(\char`\"{}headers\char`\"{})}
+
+
+
+For other included project, in cache dir. 
+
+
+
+Definition at line \mbox{\hyperlink{CBuild__defs_8hpp_source_l00069}{69}} of file \mbox{\hyperlink{CBuild__defs_8hpp_source}{CBuild\+\_\+defs.\+hpp}}.
+
 \mbox{\Hypertarget{CBuild__defs_8hpp_aa8742e6c197f4ee26782268f40cf4300}\label{CBuild__defs_8hpp_aa8742e6c197f4ee26782268f40cf4300}} 
 \index{CBuild\_defs.hpp@{CBuild\_defs.hpp}!CBUILD\_SCRIPTS\_DIR@{CBUILD\_SCRIPTS\_DIR}}
 \index{CBUILD\_SCRIPTS\_DIR@{CBUILD\_SCRIPTS\_DIR}!CBuild\_defs.hpp@{CBuild\_defs.hpp}}
@@ -175,4 +213,38 @@ Scripts dir of \mbox{\hyperlink{namespaceCBuild}{CBuild}}.
 
 
 Definition at line \mbox{\hyperlink{CBuild__defs_8hpp_source_l00053}{53}} of file \mbox{\hyperlink{CBuild__defs_8hpp_source}{CBuild\+\_\+defs.\+hpp}}.
+
+\mbox{\Hypertarget{CBuild__defs_8hpp_a3cf9dbf518b887c1e12943c5c6617bae}\label{CBuild__defs_8hpp_a3cf9dbf518b887c1e12943c5c6617bae}} 
+\index{CBuild\_defs.hpp@{CBuild\_defs.hpp}!CBUILD\_VERSION\_MAJOR@{CBUILD\_VERSION\_MAJOR}}
+\index{CBUILD\_VERSION\_MAJOR@{CBUILD\_VERSION\_MAJOR}!CBuild\_defs.hpp@{CBuild\_defs.hpp}}
+\doxysubsubsection{\texorpdfstring{CBUILD\_VERSION\_MAJOR}{CBUILD\_VERSION\_MAJOR}}
+{\footnotesize\ttfamily \#define CBUILD\+\_\+\+VERSION\+\_\+\+MAJOR~(int)6}
+
+
+
+CBuilddifferent representation of \mbox{\hyperlink{namespaceCBuild}{CBuild}} version. 
+
+
+
+Definition at line \mbox{\hyperlink{CBuild__defs_8hpp_source_l00073}{73}} of file \mbox{\hyperlink{CBuild__defs_8hpp_source}{CBuild\+\_\+defs.\+hpp}}.
+
+\mbox{\Hypertarget{CBuild__defs_8hpp_adaeeff6f524b4de17359959eb6e46877}\label{CBuild__defs_8hpp_adaeeff6f524b4de17359959eb6e46877}} 
+\index{CBuild\_defs.hpp@{CBuild\_defs.hpp}!CBUILD\_VERSION\_MINOR@{CBUILD\_VERSION\_MINOR}}
+\index{CBUILD\_VERSION\_MINOR@{CBUILD\_VERSION\_MINOR}!CBuild\_defs.hpp@{CBuild\_defs.hpp}}
+\doxysubsubsection{\texorpdfstring{CBUILD\_VERSION\_MINOR}{CBUILD\_VERSION\_MINOR}}
+{\footnotesize\ttfamily \#define CBUILD\+\_\+\+VERSION\+\_\+\+MINOR~(int)0}
+
+
+
+Definition at line \mbox{\hyperlink{CBuild__defs_8hpp_source_l00074}{74}} of file \mbox{\hyperlink{CBuild__defs_8hpp_source}{CBuild\+\_\+defs.\+hpp}}.
+
+\mbox{\Hypertarget{CBuild__defs_8hpp_a4f50b4c13754bcbc01d265482d634892}\label{CBuild__defs_8hpp_a4f50b4c13754bcbc01d265482d634892}} 
+\index{CBuild\_defs.hpp@{CBuild\_defs.hpp}!CBUILD\_VERSION\_STR@{CBUILD\_VERSION\_STR}}
+\index{CBUILD\_VERSION\_STR@{CBUILD\_VERSION\_STR}!CBuild\_defs.hpp@{CBuild\_defs.hpp}}
+\doxysubsubsection{\texorpdfstring{CBUILD\_VERSION\_STR}{CBUILD\_VERSION\_STR}}
+{\footnotesize\ttfamily \#define CBUILD\+\_\+\+VERSION\+\_\+\+STR~std\+::string(\char`\"{}6.\+0\char`\"{})}
+
+
+
+Definition at line \mbox{\hyperlink{CBuild__defs_8hpp_source_l00075}{75}} of file \mbox{\hyperlink{CBuild__defs_8hpp_source}{CBuild\+\_\+defs.\+hpp}}.
 

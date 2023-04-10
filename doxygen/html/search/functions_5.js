@@ -9,9 +9,13 @@ var searchData=
   ['get_5fid_6',['get_id',['../classCBuild_1_1Toolchain.html#a2489c6794e28fd6a8143fedd506407a3',1,'CBuild::Toolchain']]],
   ['get_5flog_7',['get_log',['../namespaceCBuild.html#a454c89f17e1bbea2bd4bdb0be34027b7',1,'CBuild']]],
   ['get_5fptr_8',['get_ptr',['../classlib_1_1map.html#ac9f1b7875dd85ccdc555647cda839395',1,'lib::map']]],
-  ['getkeywordslist_9',['GetKeywordsList',['../namespaceCBuild_1_1Registry.html#a6b538efddd82cdc95d1506fba6a93b59',1,'CBuild::Registry']]],
-  ['getrebuildargs_10',['GetRebuildArgs',['../namespaceCBuild_1_1Registry.html#aea482c73e78098645ac59484c470a378',1,'CBuild::Registry']]],
-  ['gettargets_11',['GetTargets',['../namespaceCBuild_1_1Registry.html#a80b8ee3e1ed5dba24027e6e486e599b1',1,'CBuild::Registry']]],
-  ['gettoolchain_12',['GetToolchain',['../namespaceCBuild_1_1Registry.html#a2b1eddd86007d7ce185071dd004a5036',1,'CBuild::Registry']]],
-  ['gxx_13',['GXX',['../classCBuild_1_1GXX.html#acfc4d510a17f494e1c991abe79b81f8c',1,'CBuild::GXX::GXX(std::string id)'],['../classCBuild_1_1GXX.html#a528bdf5e39d20b43dfeb50c4e2f1aa52',1,'CBuild::GXX::GXX(std::string id, std::string name)']]]
+  ['get_5fversion_5farray_9',['get_version_array',['../namespaceCBuild.html#a5d0f3bdae4036a2ed28c0c4bc718b39d',1,'CBuild']]],
+  ['get_5fversion_5fmajor_10',['get_version_major',['../namespaceCBuild.html#a6134aef1f9239e22e973e9f02b69eec6',1,'CBuild']]],
+  ['get_5fversion_5fminor_11',['get_version_minor',['../namespaceCBuild.html#a893d1ef6a6784f49e7fdaf1796b44d2f',1,'CBuild']]],
+  ['get_5fversion_5fstring_12',['get_version_string',['../namespaceCBuild.html#a586aa7f0f1a706a08f407c6853dfdc6b',1,'CBuild']]],
+  ['getkeywordslist_13',['GetKeywordsList',['../namespaceCBuild_1_1Registry.html#a6b538efddd82cdc95d1506fba6a93b59',1,'CBuild::Registry']]],
+  ['getrebuildargs_14',['GetRebuildArgs',['../namespaceCBuild_1_1Registry.html#aea482c73e78098645ac59484c470a378',1,'CBuild::Registry']]],
+  ['gettargets_15',['GetTargets',['../namespaceCBuild_1_1Registry.html#a80b8ee3e1ed5dba24027e6e486e599b1',1,'CBuild::Registry']]],
+  ['gettoolchain_16',['GetToolchain',['../namespaceCBuild_1_1Registry.html#a2b1eddd86007d7ce185071dd004a5036',1,'CBuild::Registry']]],
+  ['gxx_17',['GXX',['../classCBuild_1_1GXX.html#a528bdf5e39d20b43dfeb50c4e2f1aa52',1,'CBuild::GXX::GXX(std::string id, std::string name)'],['../classCBuild_1_1GXX.html#acfc4d510a17f494e1c991abe79b81f8c',1,'CBuild::GXX::GXX(std::string id)']]]
 ];

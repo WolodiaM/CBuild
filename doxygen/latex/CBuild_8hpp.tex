@@ -5,9 +5,9 @@
 Main headers of \mbox{\hyperlink{namespaceCBuild}{CBuild}} core.  
 
 
+{\ttfamily \#include \char`\"{}map.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}string\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}map.\+hpp\char`\"{}}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -36,7 +36,15 @@ RType \mbox{\hyperlink{namespaceCBuild_a65ab369788ba3c28cb453822f0126206}{CBuild
 void \mbox{\hyperlink{namespaceCBuild_ac649cc483958d2ee270b9f260c70f8e0}{CBuild\+::loop}} (RType mode, \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ $\ast$args)
 \begin{DoxyCompactList}\small\item\em loop of \mbox{\hyperlink{namespaceCBuild}{CBuild}} \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{namespaceCBuild_ae2b7da512099900682e8b038e0b2bc4f}{CBuild\+::rebuild}} (std\+::string scripts)
-\begin{DoxyCompactList}\small\item\em Rebuild userspace part of \mbox{\hyperlink{namespaceCBuild}{CBuild}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Rebuild userspace part of \mbox{\hyperlink{namespaceCBuild}{CBuild}}. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespaceCBuild_a586aa7f0f1a706a08f407c6853dfdc6b}{CBuild\+::get\+\_\+version\+\_\+string}} ()
+\begin{DoxyCompactList}\small\item\em Return version as string. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespaceCBuild_a6134aef1f9239e22e973e9f02b69eec6}{CBuild\+::get\+\_\+version\+\_\+major}} ()
+\begin{DoxyCompactList}\small\item\em Get major component of \mbox{\hyperlink{namespaceCBuild}{CBuild}} version. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespaceCBuild_a893d1ef6a6784f49e7fdaf1796b44d2f}{CBuild\+::get\+\_\+version\+\_\+minor}} ()
+\begin{DoxyCompactList}\small\item\em Get minor component of \mbox{\hyperlink{namespaceCBuild}{CBuild}} version. \end{DoxyCompactList}\item 
+int $\ast$ \mbox{\hyperlink{namespaceCBuild_a5d0f3bdae4036a2ed28c0c4bc718b39d}{CBuild\+::get\+\_\+version\+\_\+array}} ()
+\begin{DoxyCompactList}\small\item\em Get full \mbox{\hyperlink{namespaceCBuild}{CBuild}} version as int array of two components, no oveflow or rewrite check ! \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

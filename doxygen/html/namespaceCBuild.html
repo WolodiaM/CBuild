@@ -166,6 +166,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ae2b7da512099900682e8b038e0b2bc4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#ae2b7da512099900682e8b038e0b2bc4f">rebuild</a> (std::string scripts)</td></tr>
 <tr class="memdesc:ae2b7da512099900682e8b038e0b2bc4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rebuild userspace part of <a class="el" href="namespaceCBuild.html">CBuild</a>.  <a href="namespaceCBuild.html#ae2b7da512099900682e8b038e0b2bc4f">More...</a><br /></td></tr>
 <tr class="separator:ae2b7da512099900682e8b038e0b2bc4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a586aa7f0f1a706a08f407c6853dfdc6b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a586aa7f0f1a706a08f407c6853dfdc6b">get_version_string</a> ()</td></tr>
+<tr class="memdesc:a586aa7f0f1a706a08f407c6853dfdc6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return version as string.  <a href="namespaceCBuild.html#a586aa7f0f1a706a08f407c6853dfdc6b">More...</a><br /></td></tr>
+<tr class="separator:a586aa7f0f1a706a08f407c6853dfdc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6134aef1f9239e22e973e9f02b69eec6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a6134aef1f9239e22e973e9f02b69eec6">get_version_major</a> ()</td></tr>
+<tr class="memdesc:a6134aef1f9239e22e973e9f02b69eec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get major component of <a class="el" href="namespaceCBuild.html">CBuild</a> version.  <a href="namespaceCBuild.html#a6134aef1f9239e22e973e9f02b69eec6">More...</a><br /></td></tr>
+<tr class="separator:a6134aef1f9239e22e973e9f02b69eec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a893d1ef6a6784f49e7fdaf1796b44d2f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a893d1ef6a6784f49e7fdaf1796b44d2f">get_version_minor</a> ()</td></tr>
+<tr class="memdesc:a893d1ef6a6784f49e7fdaf1796b44d2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get minor component of <a class="el" href="namespaceCBuild.html">CBuild</a> version.  <a href="namespaceCBuild.html#a893d1ef6a6784f49e7fdaf1796b44d2f">More...</a><br /></td></tr>
+<tr class="separator:a893d1ef6a6784f49e7fdaf1796b44d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d0f3bdae4036a2ed28c0c4bc718b39d"><td class="memItemLeft" align="right" valign="top">int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a5d0f3bdae4036a2ed28c0c4bc718b39d">get_version_array</a> ()</td></tr>
+<tr class="memdesc:a5d0f3bdae4036a2ed28c0c4bc718b39d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get full <a class="el" href="namespaceCBuild.html">CBuild</a> version as int array of two components, no oveflow or rewrite check !  <a href="namespaceCBuild.html#a5d0f3bdae4036a2ed28c0c4bc718b39d">More...</a><br /></td></tr>
+<tr class="separator:a5d0f3bdae4036a2ed28c0c4bc718b39d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae905ec357d685e121d099e5bc4ac853"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#aae905ec357d685e121d099e5bc4ac853">hash_match_store</a> (std::string hash_file, std::string code_file)</td></tr>
 <tr class="memdesc:aae905ec357d685e121d099e5bc4ac853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if saved hash match new hash of file and update saved hash.  <a href="namespaceCBuild.html#aae905ec357d685e121d099e5bc4ac853">More...</a><br /></td></tr>
 <tr class="separator:aae905ec357d685e121d099e5bc4ac853"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,6 +199,8 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a301dc03a072dbb7914dbdb7289b30216"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a301dc03a072dbb7914dbdb7289b30216">version</a> [] = {<a class="el" href="CBuild__defs_8hpp.html#a3cf9dbf518b887c1e12943c5c6617bae">CBUILD_VERSION_MAJOR</a>, <a class="el" href="CBuild__defs_8hpp.html#adaeeff6f524b4de17359959eb6e46877">CBUILD_VERSION_MINOR</a>}</td></tr>
+<tr class="separator:a301dc03a072dbb7914dbdb7289b30216"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad14c8b8fe9709fdb08a99f212b6a721f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#ad14c8b8fe9709fdb08a99f212b6a721f">log</a></td></tr>
 <tr class="separator:ad14c8b8fe9709fdb08a99f212b6a721f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -208,7 +222,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f" name="a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f"></a>DYNAMIC_LIBRARY&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00047">47</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00042">42</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 </div>
 </div>
@@ -272,7 +286,7 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="CBuild_8hpp_source.html#l00034">34</a> of file <a class="el" href="CBuild_8hpp_source.html">CBuild.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CBuild_8hpp_source.html#l00033">33</a> of file <a class="el" href="CBuild_8hpp_source.html">CBuild.hpp</a>.</p>
 
 </div>
 </div>
@@ -294,7 +308,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a48dcc8465fd3ac71019d7edf3868fb9caf95818e5b66b8e7c97df05a58b9126d3" name="a48dcc8465fd3ac71019d7edf3868fb9caf95818e5b66b8e7c97df05a58b9126d3"></a>POST&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00043">43</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00041">41</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 </div>
 </div>
@@ -321,7 +335,103 @@ Variables</h2></td></tr>
 
 <p class="reference">References <a class="el" href="system_8cpp_source.html#l00032">log</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00244">loop()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00255">loop()</a>.</p>
+
+</div>
+</div>
+<a id="a5d0f3bdae4036a2ed28c0c4bc718b39d" name="a5d0f3bdae4036a2ed28c0c4bc718b39d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d0f3bdae4036a2ed28c0c4bc718b39d">&#9670;&#160;</a></span>get_version_array()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int * CBuild::get_version_array </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get full <a class="el" href="namespaceCBuild.html">CBuild</a> version as int array of two components, no oveflow or rewrite check ! </p>
+<dl class="section return"><dt>Returns</dt><dd>int* -&gt; array of two parst of <a class="el" href="namespaceCBuild.html">CBuild</a> version </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00559">559</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="CBuild_8cpp_source.html#l00554">version</a>.</p>
+
+</div>
+</div>
+<a id="a6134aef1f9239e22e973e9f02b69eec6" name="a6134aef1f9239e22e973e9f02b69eec6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6134aef1f9239e22e973e9f02b69eec6">&#9670;&#160;</a></span>get_version_major()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CBuild::get_version_major </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get major component of <a class="el" href="namespaceCBuild.html">CBuild</a> version. </p>
+<dl class="section return"><dt>Returns</dt><dd>int -&gt; major version of <a class="el" href="namespaceCBuild.html">CBuild</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00557">557</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00073">CBUILD_VERSION_MAJOR</a>.</p>
+
+</div>
+</div>
+<a id="a893d1ef6a6784f49e7fdaf1796b44d2f" name="a893d1ef6a6784f49e7fdaf1796b44d2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a893d1ef6a6784f49e7fdaf1796b44d2f">&#9670;&#160;</a></span>get_version_minor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CBuild::get_version_minor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get minor component of <a class="el" href="namespaceCBuild.html">CBuild</a> version. </p>
+<dl class="section return"><dt>Returns</dt><dd>int -&gt; minor (patch) version of <a class="el" href="namespaceCBuild.html">CBuild</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00558">558</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00074">CBUILD_VERSION_MINOR</a>.</p>
+
+</div>
+</div>
+<a id="a586aa7f0f1a706a08f407c6853dfdc6b" name="a586aa7f0f1a706a08f407c6853dfdc6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a586aa7f0f1a706a08f407c6853dfdc6b">&#9670;&#160;</a></span>get_version_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string CBuild::get_version_string </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return version as string. </p>
+<dl class="section return"><dt>Returns</dt><dd>std:;string -&gt; version of <a class="el" href="namespaceCBuild.html">CBuild</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00556">556</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00075">CBUILD_VERSION_STR</a>.</p>
 
 </div>
 </div>
@@ -411,7 +521,7 @@ false -&gt; file hash different from saved </dd></dl>
 
 <p class="reference">References <a class="el" href="hash_8cpp_source.html#l00034">sha256()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00233">CBuild::Toolchain::gen_file_list()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00220">CBuild::Toolchain::gen_file_list()</a>.</p>
 
 </div>
 </div>
@@ -450,9 +560,9 @@ false -&gt; file hash different from saved </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00244">244</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00255">255</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="map_8hpp_source.html#l00239">lib::map&lt; _K, _D &gt;::at()</a>, <a class="el" href="CBuild_8hpp_source.html#l00043">BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00051">BUILD_RUN</a>, <a class="el" href="Build_8cpp_source.html#l00428">CBuild::Toolchain::call()</a>, <a class="el" href="register_8cpp_source.html#l00133">CBuild::Registry::CallTask()</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00029">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00061">CBUILD_COMPILE_COMMAND_JSON</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00033">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00057">CBUILD_MAKEFILE</a>, <a class="el" href="Build_8cpp_source.html#l00576">CBuild::Toolchain::clear()</a>, <a class="el" href="CBuild_8hpp_source.html#l00059">CLEAR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00238">CBuild::fs::create()</a>, <a class="el" href="Build_8cpp_source.html#l00550">CBuild::Toolchain::debug()</a>, <a class="el" href="CBuild_8hpp_source.html#l00055">DEBUG</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00048">CBuild::fs::DIR</a>, <a class="el" href="CBuild_8hpp_source.html#l00067">ERROR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00505">CBuild::fs::exists()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00040">CBuild::fs::FILE</a>, <a class="el" href="map_8hpp_source.html#l00161">lib::map&lt; _K, _D &gt;::get()</a>, <a class="el" href="system_8cpp_source.html#l00041">get_log()</a>, <a class="el" href="map_8hpp_source.html#l00181">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00163">CBuild::Registry::GetToolchain()</a>, <a class="el" href="system_8cpp_source.html#l00032">log</a>, <a class="el" href="print_8hpp_source.html#l00040">MAGENTA</a>, <a class="el" href="print_8cpp_source.html#l00028">print()</a>, <a class="el" href="CBuild_8hpp_source.html#l00063">REBUILD</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00157">CBuild::fs::remove()</a>, <a class="el" href="Build_8cpp_source.html#l00527">CBuild::Toolchain::run()</a>, <a class="el" href="CBuild_8hpp_source.html#l00047">RUN</a>, <a class="el" href="map_8hpp_source.html#l00291">lib::map&lt; _K, _D &gt;::size()</a>, and <a class="el" href="CBuild_8hpp_source.html#l00039">TASK</a>.</p>
+<p class="reference">References <a class="el" href="map_8hpp_source.html#l00239">lib::map&lt; _K, _D &gt;::at()</a>, <a class="el" href="CBuild_8hpp_source.html#l00041">BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00049">BUILD_RUN</a>, <a class="el" href="Build_8cpp_source.html#l00422">CBuild::Toolchain::call()</a>, <a class="el" href="register_8cpp_source.html#l00133">CBuild::Registry::CallTask()</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00029">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00061">CBUILD_COMPILE_COMMAND_JSON</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00033">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00057">CBUILD_MAKEFILE</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00065">CBUILD_PROJECT_DEPS_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00069">CBUILD_PROJECT_DEPS_HEADERS</a>, <a class="el" href="Build_8cpp_source.html#l00565">CBuild::Toolchain::clear()</a>, <a class="el" href="CBuild_8hpp_source.html#l00057">CLEAR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00238">CBuild::fs::create()</a>, <a class="el" href="Build_8cpp_source.html#l00540">CBuild::Toolchain::debug()</a>, <a class="el" href="CBuild_8hpp_source.html#l00053">DEBUG</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00048">CBuild::fs::DIR</a>, <a class="el" href="CBuild_8hpp_source.html#l00065">ERROR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00505">CBuild::fs::exists()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00040">CBuild::fs::FILE</a>, <a class="el" href="map_8hpp_source.html#l00161">lib::map&lt; _K, _D &gt;::get()</a>, <a class="el" href="system_8cpp_source.html#l00041">get_log()</a>, <a class="el" href="map_8hpp_source.html#l00181">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00163">CBuild::Registry::GetToolchain()</a>, <a class="el" href="system_8cpp_source.html#l00032">log</a>, <a class="el" href="print_8hpp_source.html#l00040">MAGENTA</a>, <a class="el" href="print_8cpp_source.html#l00028">print()</a>, <a class="el" href="CBuild_8hpp_source.html#l00061">REBUILD</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00157">CBuild::fs::remove()</a>, <a class="el" href="Build_8cpp_source.html#l00520">CBuild::Toolchain::run()</a>, <a class="el" href="CBuild_8hpp_source.html#l00045">RUN</a>, <a class="el" href="map_8hpp_source.html#l00291">lib::map&lt; _K, _D &gt;::size()</a>, and <a class="el" href="CBuild_8hpp_source.html#l00037">TASK</a>.</p>
 
 </div>
 </div>
@@ -501,7 +611,7 @@ false -&gt; file hash different from saved </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00038">38</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="CBuild_8hpp_source.html#l00043">BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00051">BUILD_RUN</a>, <a class="el" href="CBuild_8hpp_source.html#l00059">CLEAR</a>, <a class="el" href="map_8hpp_source.html#l00229">lib::map&lt; _K, _D &gt;::clear()</a>, <a class="el" href="CBuild_8hpp_source.html#l00055">DEBUG</a>, <a class="el" href="CBuild_8hpp_source.html#l00067">ERROR</a>, <a class="el" href="register_8cpp_source.html#l00119">CBuild::Registry::init()</a>, <a class="el" href="map_8hpp_source.html#l00108">lib::map&lt; _K, _D &gt;::push_back()</a>, <a class="el" href="map_8hpp_source.html#l00128">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="CBuild_8hpp_source.html#l00063">REBUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00047">RUN</a>, and <a class="el" href="CBuild_8hpp_source.html#l00039">TASK</a>.</p>
+<p class="reference">References <a class="el" href="CBuild_8hpp_source.html#l00041">BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00049">BUILD_RUN</a>, <a class="el" href="CBuild_8hpp_source.html#l00057">CLEAR</a>, <a class="el" href="map_8hpp_source.html#l00229">lib::map&lt; _K, _D &gt;::clear()</a>, <a class="el" href="CBuild_8hpp_source.html#l00053">DEBUG</a>, <a class="el" href="CBuild_8hpp_source.html#l00065">ERROR</a>, <a class="el" href="register_8cpp_source.html#l00119">CBuild::Registry::init()</a>, <a class="el" href="map_8hpp_source.html#l00108">lib::map&lt; _K, _D &gt;::push_back()</a>, <a class="el" href="map_8hpp_source.html#l00128">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="CBuild_8hpp_source.html#l00061">REBUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00045">RUN</a>, and <a class="el" href="CBuild_8hpp_source.html#l00037">TASK</a>.</p>
 
 </div>
 </div>
@@ -542,7 +652,7 @@ false -&gt; file hash different from saved </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="print_8cpp_source.html#l00028">28</a> of file <a class="el" href="print_8cpp_source.html">print.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00428">CBuild::Toolchain::call()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00215">CBuild::MINGW_GXX::call()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00212">CBuild::MINGW_GCC::call()</a>, <a class="el" href="Build_8cpp_source.html#l00550">CBuild::Toolchain::debug()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00309">CBuild::MINGW_GXX::debug()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00305">CBuild::MINGW_GCC::debug()</a>, <a class="el" href="CBuild_8cpp_source.html#l00244">loop()</a>, <a class="el" href="Build_8cpp_source.html#l00527">CBuild::Toolchain::run()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00288">CBuild::MINGW_GXX::run()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00284">CBuild::MINGW_GCC::run()</a>, and <a class="el" href="system_8cpp_source.html#l00035">system()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00422">CBuild::Toolchain::call()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00215">CBuild::MINGW_GXX::call()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00212">CBuild::MINGW_GCC::call()</a>, <a class="el" href="Build_8cpp_source.html#l00540">CBuild::Toolchain::debug()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00309">CBuild::MINGW_GXX::debug()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00305">CBuild::MINGW_GCC::debug()</a>, <a class="el" href="CBuild_8cpp_source.html#l00255">loop()</a>, <a class="el" href="Build_8cpp_source.html#l00520">CBuild::Toolchain::run()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00288">CBuild::MINGW_GXX::run()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00284">CBuild::MINGW_GCC::run()</a>, and <a class="el" href="system_8cpp_source.html#l00035">system()</a>.</p>
 
 </div>
 </div>
@@ -570,7 +680,7 @@ false -&gt; file hash different from saved </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00501">501</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00545">545</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="register_8cpp_source.html#l00222">CBuild::Registry::GetRebuildArgs()</a>, and <a class="el" href="system_8cpp_source.html#l00035">system()</a>.</p>
 
@@ -647,7 +757,7 @@ false -&gt; file hash different from saved </dd></dl>
 
 <p class="reference">References <a class="el" href="print_8hpp_source.html#l00039">BLUE</a>, <a class="el" href="system_8cpp_source.html#l00032">log</a>, and <a class="el" href="print_8cpp_source.html#l00028">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00066">CBuild::GXX::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00065">CBuild::GCC::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00068">CBuild::MINGW_GXX::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00068">CBuild::MINGW_GCC::build()</a>, <a class="el" href="Build_8cpp_source.html#l00576">CBuild::Toolchain::clear()</a>, <a class="el" href="Build_8cpp_source.html#l00550">CBuild::Toolchain::debug()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00100">CBuild::GXX::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00092">CBuild::GCC::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00095">CBuild::MINGW_GXX::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00095">CBuild::MINGW_GCC::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00132">CBuild::GXX::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00120">CBuild::GCC::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00123">CBuild::MINGW_GXX::link_pack()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00123">CBuild::MINGW_GCC::link_pack()</a>, <a class="el" href="CBuild_8cpp_source.html#l00501">rebuild()</a>, <a class="el" href="Build_8cpp_source.html#l00527">CBuild::Toolchain::run()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00288">CBuild::MINGW_GXX::run()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00284">CBuild::MINGW_GCC::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00066">CBuild::GXX::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00065">CBuild::GCC::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00068">CBuild::MINGW_GXX::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00068">CBuild::MINGW_GCC::build()</a>, <a class="el" href="Build_8cpp_source.html#l00565">CBuild::Toolchain::clear()</a>, <a class="el" href="Build_8cpp_source.html#l00540">CBuild::Toolchain::debug()</a>, <a class="el" href="Build_8cpp_source.html#l00145">CBuild::Toolchain::depends_on_project()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00100">CBuild::GXX::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00092">CBuild::GCC::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00095">CBuild::MINGW_GXX::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00095">CBuild::MINGW_GCC::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00132">CBuild::GXX::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00120">CBuild::GCC::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00123">CBuild::MINGW_GXX::link_pack()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00123">CBuild::MINGW_GCC::link_pack()</a>, <a class="el" href="CBuild_8cpp_source.html#l00545">rebuild()</a>, <a class="el" href="Build_8cpp_source.html#l00520">CBuild::Toolchain::run()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00288">CBuild::MINGW_GXX::run()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00284">CBuild::MINGW_GCC::run()</a>.</p>
 
 </div>
 </div>
@@ -666,7 +776,25 @@ false -&gt; file hash different from saved </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00032">32</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="system_8cpp_source.html#l00041">get_log()</a>, <a class="el" href="CBuild_8cpp_source.html#l00244">loop()</a>, and <a class="el" href="system_8cpp_source.html#l00035">system()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="system_8cpp_source.html#l00041">get_log()</a>, <a class="el" href="CBuild_8cpp_source.html#l00255">loop()</a>, and <a class="el" href="system_8cpp_source.html#l00035">system()</a>.</p>
+
+</div>
+</div>
+<a id="a301dc03a072dbb7914dbdb7289b30216" name="a301dc03a072dbb7914dbdb7289b30216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a301dc03a072dbb7914dbdb7289b30216">&#9670;&#160;</a></span>version</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CBuild::version[] = {<a class="el" href="CBuild__defs_8hpp.html#a3cf9dbf518b887c1e12943c5c6617bae">CBUILD_VERSION_MAJOR</a>, <a class="el" href="CBuild__defs_8hpp.html#adaeeff6f524b4de17359959eb6e46877">CBUILD_VERSION_MINOR</a>}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00554">554</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00559">get_version_array()</a>.</p>
 
 </div>
 </div>
