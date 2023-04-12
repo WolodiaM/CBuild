@@ -60,6 +60,10 @@ typedef enum {
 	 */
 	REBUILD,
 	/**
+	 * @brief Load other project deps
+	 */
+	LOAD_DEPS,
+	/**
 	 * @brief Some error occurred
 	 */
 	ERROR

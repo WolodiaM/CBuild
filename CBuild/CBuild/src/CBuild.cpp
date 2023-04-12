@@ -65,6 +65,27 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 				args->push_back_check("gen", "ccj");
 			} catch (std::exception &e) {
 			}
+			// Load deps
+		} else if (tmp == std::string("-ld")) {
+			ret = CBuild::RType::LOAD_DEPS;
+			i++;
+			// Load toolchain name and perform all checks
+			if (i < argc) {
+				tmp = argv[i];
+				if (tmp.at(0) == '-') {
+					puts("-ld <toolchain name>");
+					exit(0xFF);
+				} else {
+					try {
+						args->push_back_check(
+						    "toolchain_id", tmp);
+					} catch (std::exception &e) {
+					}
+				}
+			} else {
+				puts("-ld <toolchain name>");
+				exit(0xFF);
+			}
 			// Compile
 		} else if (tmp == std::string("-b")) {
 			// We build now, not error
@@ -268,14 +289,20 @@ void CBuild::loop(CBuild::RType mode,
 		    CBuild::fs::DIR);
 	}
 	// Check if lib cache sir exists
-	if (!CBuild::fs::exists(CBUILD_COPY_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR)) {
+	if (!CBuild::fs::exists(CBUILD_COPY_CACHE_DIR + "/" +
+				CBUILD_PROJECT_DEPS_DIR)) {
 		// Create dir
-		CBuild::fs::create({CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR}, CBuild::fs::DIR);
+		CBuild::fs::create(
+		    {CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR},
+		    CBuild::fs::DIR);
 	}
 	// Check if lib headers cache sir exists
-	if (!CBuild::fs::exists(CBUILD_COPY_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS)) {
+	if (!CBuild::fs::exists(CBUILD_COPY_CACHE_DIR + "/" +
+				CBUILD_PROJECT_DEPS_HEADERS)) {
 		// Create dir
-		CBuild::fs::create({CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS}, CBuild::fs::DIR);
+		CBuild::fs::create(
+		    {CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS},
+		    CBuild::fs::DIR);
 	}
 	// Args
 	std::vector<std::string> pargs, ppargs;
@@ -309,6 +336,8 @@ void CBuild::loop(CBuild::RType mode,
 				       id.c_str());
 				exit(0xFF);
 			}
+			// Load libs
+			target->load_project_deps(*(args->get("curr_path")));
 			// Call tolchain in build mode
 			target->call(&pargs, force);
 		} break;
@@ -324,6 +353,8 @@ void CBuild::loop(CBuild::RType mode,
 				       id.c_str());
 				exit(0xFF);
 			}
+			// Load libs
+			target->load_project_deps(*(args->get("curr_path")));
 			// Run toolchain in build mode
 			target->call(&pargs, force);
 			// Run toolchain in run mode
@@ -356,6 +387,8 @@ void CBuild::loop(CBuild::RType mode,
 				       id.c_str());
 				exit(0xFF);
 			}
+			// Load libs
+			target->load_project_deps(*(args->get("curr_path")));
 			// Run toolchain in debug mode
 			target->debug(&pargs, &ppargs);
 		} break;
@@ -380,6 +413,21 @@ void CBuild::loop(CBuild::RType mode,
 			CBuild::Registry::CallTask(*(args->get("task_id")),
 						   pargs);
 			break;
+		// Load deps
+		case CBuild::LOAD_DEPS: {
+			// Load toolchain
+			std::string id = *(args->get("toolchain_id"));
+			CBuild::Toolchain *target =
+			    CBuild::Registry::GetToolchain(id);
+			// Error
+			if (target == NULL) {
+				printf("Toolchain %s not found. Exiting...\n",
+				       id.c_str());
+				exit(0xFF);
+			}
+			// Load libs
+			target->load_project_deps(*(args->get("curr_path")));
+		} break;
 		// Error
 		case CBuild::ERROR:
 			[[fallthrough]];

@@ -36,6 +36,15 @@ typedef struct {
 	bool folder;
 } Path;
 /**
+ * @brief Project dependency data
+ */
+typedef struct {
+	std::string path;
+	std::string id;
+	std::string name;
+	std::string headers_path;
+} Project_dependency;
+/**
  * @brief Type of depencesies for toolchain
  */
 typedef enum { PRE, POST } stage;
@@ -87,6 +96,17 @@ class Toolchain {
 	 */
 	std::string packer;
 	/**
+	 * @brief Type of build
+	 */
+	CBuild::build_type build_type;
+	/**
+	 * @brief Project dependencies
+	 */
+	std::vector<CBuild::Project_dependency> project_deps;
+
+       protected:
+	// Scratch variables
+	/**
 	 * @brief Argument pointer (scratch variable)
 	 */
 	std::vector<std::string>* args;
@@ -94,10 +114,6 @@ class Toolchain {
 	 * @brief Force argument (scratch variable)
 	 */
 	bool force;
-	/**
-	 * @brief Type of build
-	 */
-	CBuild::build_type build_type;
 
        protected:
 	/* Build stages */
@@ -161,6 +177,12 @@ class Toolchain {
 	virtual std::string gen_out_name(std::string executable = ".run",
 					 std::string dyn_lib = ".so",
 					 std::string stat_lib = ".a");
+	/**
+	 * @brief Load all project dependencies
+	 *
+	 * @param curr_path => std::string -> current path
+	 */
+	virtual void load_project_deps(std::string curr_path);
 
        protected:
 	/**
@@ -309,12 +331,16 @@ class Toolchain {
 	/**
 	 * @brief Add another CBuild project as dependency
 	 *
-	 * @param path => std::string -> Relative (from CBuild.run, not end with '/' !) path to needed toolchain
+	 * @param path => std::string -> Relative (from CBuild.run, not end with
+	 * '/' !) path to needed toolchain
 	 * @param name => std::string -> name of build target (for lib linking)
-	 * @param id => std::string -> Id of needed toolchain for calling target build
+	 * @param id => std::string -> Id of needed toolchain for calling target
+	 * build
 	 * @param headers_path => std::string -> path to headers dir
 	 */
-	virtual void depends_on_project(std::string path, std::string name, std::string id, std::string headers_path);
+	virtual void depends_on_project(std::string path, std::string name,
+					std::string id,
+					std::string headers_path);
 };
 }  // namespace CBuild
 #endif	// __CBUILD_TOOLCHAIN_HPP__

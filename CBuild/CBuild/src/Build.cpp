@@ -142,20 +142,15 @@ void CBuild::Toolchain::depends_on(std::string target) {
 	// Push target in list of dependencies
 	this->depends.push_back(target);
 }
-void CBuild::Toolchain::depends_on_project(std::string path, std::string name, std::string id, std::string headers_path) {
-	// Generate and execute command for build dependencies
-	std::string cmd = path + "/CBuild.run -b " + id;
-	CBuild::system(cmd);
-	// Copy lib and it's headers to project dir
-	CBuild::system("cp -r " + path + "/" + CBUILD_BUILD_DIR + "/" + id + "/" + CBUILD_BUILD_OUT_DIR + "/*.* " + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
-	// CBuild::fs::copy(path + "/" + CBUILD_BUILD_DIR + "/" + id + "/" + CBUILD_BUILD_OUT_DIR, CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
-	CBuild::system("cp -r " + headers_path + "/ " + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS + "/" + id);
-	// CBuild::fs::copy(headers_path, CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
-	// Link lib
-	this->add_library_dir(CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS, CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
-	this->add_library_include(name);
-	this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN/../../../" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR + "\"");
-	this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN/../../../" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR + "\"");
+void CBuild::Toolchain::depends_on_project(std::string path, std::string name,
+					   std::string id,
+					   std::string headers_path) {
+	CBuild::Project_dependency dep;
+	dep.headers_path = headers_path;
+	dep.id = id;
+	dep.name = name;
+	dep.path = path;
+	this->project_deps.push_back(dep);
 }
 /* Build.hpp - files */
 void CBuild::Toolchain::add_file(std::string path) {
@@ -416,6 +411,32 @@ void CBuild::Toolchain::init() {
 		CBuild::fs::create(
 		    {CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_HASH_DIR},
 		    CBuild::fs::DIR);
+	}
+}
+void CBuild::Toolchain::load_project_deps(std::string curr_path) {
+	for (auto elem : this->project_deps) {
+		// Generate and execute command for build dependencies
+		std::string cmd = "cd " + elem.path + " && ./CBuild.run -b " + elem.id;
+		CBuild::system(cmd);
+		// Copy files
+		CBuild::system("cp -r " + elem.path + "/" + CBUILD_BUILD_DIR +
+			       "/" + elem.id + "/" + CBUILD_BUILD_OUT_DIR +
+			       "/*.* " + CBUILD_CACHE_DIR + "/" +
+			       CBUILD_PROJECT_DEPS_DIR);
+		CBuild::system("cp -r " + elem.headers_path + "/ " +
+			       CBUILD_CACHE_DIR + "/" +
+			       CBUILD_PROJECT_DEPS_HEADERS + "/" + elem.id);
+		// Add lib in dependencies
+		this->add_library_dir(
+		    CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS,
+		    CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
+		this->add_library_include(elem.name);
+		this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN/../../../" +
+				      CBUILD_CACHE_DIR + "/" +
+				      CBUILD_PROJECT_DEPS_DIR + "\"");
+		this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN/../../../" +
+				   CBUILD_CACHE_DIR + "/" +
+				   CBUILD_PROJECT_DEPS_DIR + "\"");
 	}
 }
 /* Build.hpp - main */

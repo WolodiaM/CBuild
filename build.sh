@@ -180,7 +180,7 @@ if [ $1 == "incv" ]; then
     rm tmp
     echo $version_new > ./ppa/ubuntu/version
     echo Vesion: $version_new
-    echo Not forget to change version in.deb \(deb/libcbuild/DEBIAN/control\) and update changelog \(deb/changelog.Debian\)
+    echo Not forget to change version in.deb \(deb/libcbuild/DEBIAN/control\) and update changelog \(deb/changelog.Debian\) and in CBuild headers \(CBuild/headers/CBuild_defs.hpp\)
 fi
 if [ $1 == "decv" ]; then
     version_old=`cat ./ppa/ubuntu/version`
