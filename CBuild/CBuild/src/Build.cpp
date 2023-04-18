@@ -458,6 +458,8 @@ void CBuild::Toolchain::call(std::vector<std::string> *args, bool force,
 	this->add_compile_arg("-Wl,-z,origin");
 	this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
 	this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
+	this->add_compile_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
+	this->add_link_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
 	// For packing in deb fomat
 	if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
 		std::string lib = this->gen_out_name();

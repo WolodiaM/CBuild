@@ -19,7 +19,7 @@ NAME="CBuild.run"
 # $1 => string -> Error descriptions
 # $2 => int -> Error code
 function error() {
-    if [ $# -lt 2 ]; then 
+    if [ $# -lt 2 ]; then
         error "Error in function error() -> need 2 argument but received less" 3;
     fi
     echo "$1";
@@ -54,7 +54,7 @@ SCRIPTS_DIR=`basename ${C_PATH}`
 scripts=`dir ${SCRIPTS_DIR}/*.cpp`
 # Compile
 link="-lCBuild -Wl,-z,origin -Wl,-rpath,\$ORIGIN/CBuild/CBuild ${PLUGIN_INC} ${LINK_ARG}"
-g++ -c ${scripts} ${COMPILE_ARG} -fPIC -std=c++20 -Wall -Wextra -Wno-comments ${link}
+g++ -c ${scripts} ${COMPILE_ARG} -g -fPIC -std=c++20 -Wall -Wextra -Wno-comments ${link}
 objects=`dir *.o`
-g++ ${objects} ${link} -o ${NAME}
+g++ ${objects} ${link} -g -o ${NAME}
 rm -r ${objects}
