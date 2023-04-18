@@ -1,3 +1,11 @@
+cbuild (6.2) stable; urgency=high
+
+  [ WolodiaM ]
+  * Fix for generating compile_commands.json when importing other CBuild
+    project
+
+ -- WolodiaM <w_melnyk@outlook.com>  Tue, 18 Apr 2023 08:47:00 +0200
+
 cbuild (6.1) stable; urgency=high
 
   [ WolodiaM ]

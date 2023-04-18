@@ -71,5 +71,5 @@
  * @brief CBuilddifferent representation of CBuild version
  */
 #define CBUILD_VERSION_MAJOR (int)6
-#define CBUILD_VERSION_MINOR (int)1
-#define CBUILD_VERSION_STR std::string("6.1")
+#define CBUILD_VERSION_MINOR (int)2
+#define CBUILD_VERSION_STR std::string("6.2")
