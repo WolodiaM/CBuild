@@ -199,7 +199,7 @@ class Toolchain {
 
        public:
 	Toolchain() {}
-	~Toolchain() {}
+	virtual ~Toolchain() {}
 	virtual std::string get_id() { return this->id; }
 	/**
 	 * @brief Call tollchain to execute
