@@ -7,7 +7,7 @@ Import repos
             5.0
 Import CMake projects???
 
-        Unimplemented 
+        Unimplemented
 mingw debugger
 
 Depends

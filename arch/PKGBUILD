@@ -1,0 +1,16 @@
+pkgver="1"
+pkgdesc="Build system for c++ that use scripts writen in c++ ;)."
+arch=("x86_64")
+depends=("glibc>=2.17" "gcc-libs>=4.9" "nss>=3.0")
+license=("GPL3")
+source=("libCBuild.so" "CBuild_rebuild" "./build""./build/mingw-gcc.hpp""./build/Build.hpp""./build/gcc.hpp""./build/mingw-g++.hpp""./build/g++.hpp""./CBuild_defs.hpp""./CBuild.hpp""./files.hpp""./filesystem++.hpp""./hash.hpp""./map.hpp""./print.hpp""./register.hpp""./system.hpp""./task""./task/Task.hpp")
+sha512sums=("SKIP")
+package() {
+	mkdir -p "${pkgdir}/usr/bin"
+	mkdir -p "${pkgdir}/usr/lib"
+	mkdir -p "${pkgdir}/usr/include/CBuild"
+	cp "${srcdir}/CBuild_rebuild" "${pkgdir}/usr/bin/CBuild_rebuild"
+	cp "${srcdir}/libCBuild.so" "${pkgdir}/usr/lib/libCBuild.so"
+	cp -r "${srcdir}/CBuild/headers/*" "${pkgdir}/usr/include/"
+	chmod +x "${pkgdir}/usr/bin/CBuild_rebuild"
+}

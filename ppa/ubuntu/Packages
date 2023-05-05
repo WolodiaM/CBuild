@@ -22,11 +22,11 @@ Version: 4.0
 Architecture: amd64
 Maintainer: WolodiaM <w_melnyk@outlook.com>
 Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9), libssl-dev
-Filename: ./libcbuild-3.1.deb
-Size: 221078
-MD5sum: 1200013d10abeaf2d886bf44c046d0a8
-SHA1: 7dc0e8a95baa720789f648621635512ec714b58e
-SHA256: 420e09cd73a8ad11e99e4d70b10f4f9ee4c9de38b1db85455c2fd59f51e28afd
+Filename: ./libcbuild-4.0.deb
+Size: 223092
+MD5sum: 3171481fbfa39e380c046754279671e8
+SHA1: 8a78f260b088acfee654233a266ebe304db9ed4e
+SHA256: 0e0795203b74a93e0a2a123e2e07d36e45655be414b767f1a520b1e1e3c30557
 Section: utils
 Priority: optional
 Description: Build system for c++ that use scripts writen in c++ ;).
@@ -41,11 +41,11 @@ Version: 4.0
 Architecture: amd64
 Maintainer: WolodiaM <w_melnyk@outlook.com>
 Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9), libssl-dev
-Filename: ./libcbuild-4.0.deb
-Size: 223092
-MD5sum: 3171481fbfa39e380c046754279671e8
-SHA1: 8a78f260b088acfee654233a266ebe304db9ed4e
-SHA256: 0e0795203b74a93e0a2a123e2e07d36e45655be414b767f1a520b1e1e3c30557
+Filename: ./libcbuild-3.1.deb
+Size: 221078
+MD5sum: 1200013d10abeaf2d886bf44c046d0a8
+SHA1: 7dc0e8a95baa720789f648621635512ec714b58e
+SHA256: 420e09cd73a8ad11e99e4d70b10f4f9ee4c9de38b1db85455c2fd59f51e28afd
 Section: utils
 Priority: optional
 Description: Build system for c++ that use scripts writen in c++ ;).
@@ -179,10 +179,10 @@ Architecture: amd64
 Maintainer: WolodiaM <w_melnyk@outlook.com>
 Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9), libssl3
 Filename: ./libcbuild-6.3.deb
-Size: 229020
-MD5sum: 2e61eea8d916905200f6c2862beddde4
-SHA1: 3e9e6e66ead9f38959b20643266afc0bdb6a7727
-SHA256: eb9b1e826ad52fb7a54f32d764a202b7b71d56ca205be70fc20eafba5399dda3
+Size: 229010
+MD5sum: 7615ff46b7a672377ade74aeb046493a
+SHA1: 5e7d0d1c32b9fbc13d3c20857530f81e82aabcec
+SHA256: 782f0aed8142a652c74e76a14111dcb7ce47807218eb728a3685b4a975a85b1e
 Section: utils
 Priority: optional
 Description: Build system for c++ that use scripts writen in c++ ;).

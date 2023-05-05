@@ -46,31 +46,24 @@ function remove()
     fi
     echo "Usage - $0 rm [all/core/user]"
 }
-# Run CBuild
-function run()
-{
-    ./CBuild.run $1
-}
-
-
 # Code
 if [ $1 == "help" ]; then
 	echo "\"help\" - this message";
 	echo "\"user\" - build user scripts";
 	echo "\"core\" - build CBuild backend dynamic library";
 	echo "\"all\" - build core and the user";
-	echo "\"pack\" - copy lib and headers, pack deb packet"
-	echo "\"mkppa\" - pack ppa"
-	echo "\"incv major\" - increment major version"
-	echo "\"incv major\" - increment major version"
-	echo "\"decv minor\" - decrement minor version"
-	echo "\"decv major\" - decrement major version"
-	echo "\"getv\" - print version"
-	echo "\"mkppa\" - pack ppa"
+	echo "\"packd\" - copy lib and headers, pack deb packet";
+	echo "\"packa\" - copy lib and headers, pack AUR packet";
+	echo "\"mkppa\" - pack ppa";
+	echo "\"incv major\" - increment major version";
+	echo "\"incv major\" - increment major version";
+	echo "\"decv minor\" - decrement minor version";
+	echo "\"decv major\" - decrement major version";
+	echo "\"getv\" - print version";
+	echo "\"mkppa\" - pack ppa";
 	echo "\"rm core\" - remove core library";
 	echo "\"rm user\" - remove user executable";
 	echo "\"rm all\" - remove core library and user executable";
-	echo "\"run <arg>\" - run CBuild executable with argument";
 fi
 if [ $1 == "user" ]; then
     build_user;
@@ -85,8 +78,8 @@ fi
 if [ $1 == "rm" ]; then
     remove $2;
 fi
-if [ $1 == "pack" ]; then
-    echo Copy rebuold script;
+if [ $1 == "packd" ]; then
+    echo Copy rebuild script;
     rm -r ./deb/libcbuild/usr/bin;
     mkdir ./deb/libcbuild/usr/bin;
     cp ./rebuild.sh ./deb/libcbuild/usr/bin/CBuild_rebuild;
@@ -155,6 +148,43 @@ if [ $1 == "mkppa" ]; then
     gpg --default-key "w_melnyk@outlook.com" -abs -o - Release > Release.gpg
     gpg --default-key "w_melnyk@outlook.com" --clearsign -o - Release > InRelease
 fi
+if [ $1 == "packa" ]; then
+	rm -rf ./arch/*
+	touch ./arch/PKGBUILD
+	echo "pkgname=\"libcbuild\"" >> ./arch/PKGBUILD
+	version=`cat ./ppa/ubuntu/version`
+	echo `expr index "$version_old" v` > tmp
+	end=`cat tmp`
+	rm -r tmp
+	version=${version:0:$end}
+	echo "pkgver=\"$version\"" >> ./arch/PKGBUILD
+	echo "pkgver=\"1\"" > ./arch/PKGBUILD
+	echo "pkgdesc=\"Build system for c++ that use scripts writen in c++ ;).\"" >> ./arch/PKGBUILD
+	echo "arch=(\"x86_64\")" >> ./arch/PKGBUILD
+	echo "depends=(\"glibc>=2.17\" \"gcc-libs>=4.9\" \"nss>=3.0\")" >> ./arch/PKGBUILD
+	echo "license=(\"GPL3\")" >> ./arch/PKGBUILD
+    	cp ./rebuild.sh ./arch/CBuild_rebuild;
+    	cp ./CBuild/CBuild/libCBuild.so ./arch/libCBuild.so;
+    	cp -r ./CBuild/headers/* ./arch/
+	strip ./arch/libCBuild.so;
+	file=""
+	cd CBuild/headers
+	find ./* >> ../../tmp
+	cd ../../
+	while read -r line; do files=$files\"$line\"; done < tmp
+	rm tmp
+	echo "source=(\"libCBuild.so\" \"CBuild_rebuild\" $files)" >> ./arch/PKGBUILD
+	echo "sha512sums=(\"SKIP\")" >> ./arch/PKGBUILD
+	echo "package() {" >> ./arch/PKGBUILD
+	echo "	mkdir -p \"\${pkgdir}/usr/bin\"" >> ./arch/PKGBUILD
+	echo "	mkdir -p \"\${pkgdir}/usr/lib\"" >> ./arch/PKGBUILD
+	echo "	mkdir -p \"\${pkgdir}/usr/include/CBuild\"" >> ./arch/PKGBUILD
+	echo "	cp \"\${srcdir}/CBuild_rebuild\" \"\${pkgdir}/usr/bin/CBuild_rebuild\"" >> ./arch/PKGBUILD
+	echo "	cp \"\${srcdir}/libCBuild.so\" \"\${pkgdir}/usr/lib/libCBuild.so\"" >> ./arch/PKGBUILD
+	echo "	cp -r \"\${srcdir}/CBuild/headers/*\" \"\${pkgdir}/usr/include/\"" >> ./arch/PKGBUILD
+	echo "	chmod +x \"\${pkgdir}/usr/bin/CBuild_rebuild\"" >> ./arch/PKGBUILD
+	echo "}" >> ./arch/PKGBUILD
+fi
 if [ $1 == "incv" ]; then
     version_old=`cat ./ppa/ubuntu/version`
     echo `expr index "$version_old" .` > tmp
@@ -212,4 +242,11 @@ fi
 if [ $1 == "getv" ]; then
     version=`cat ./ppa/ubuntu/version`
     echo Vesion: $version
+fi
+if [ $1 == "test" ]; then
+	cd CBuild/headers
+	find ./* > tmp
+	cat tmp
+	rm tmp
+
 fi
