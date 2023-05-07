@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['help_0',['Help',['../classCBuild_1_1Help.html',1,'CBuild']]]
+  ['gcc_0',['GCC',['../classCBuild_1_1GCC.html',1,'CBuild']]],
+  ['gxx_1',['GXX',['../classCBuild_1_1GXX.html',1,'CBuild']]]
 ];

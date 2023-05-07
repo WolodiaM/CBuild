@@ -21,28 +21,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // C++ libraries
-#include "vector"
-#include "string"
-#include "regex"
 #include "filesystem"
-#include "iostream"
 #include "fstream"
+#include "iostream"
+#include "regex"
 #include "stdlib.h"
+#include "string"
+#include "vector"
 // Project files
-#include "../../headers/filesystem++.hpp"
-#include "../../headers/files.hpp"
 #include "../../headers/CBuild_defs.hpp"
+#include "../../headers/files.hpp"
+#include "../../headers/filesystem++.hpp"
 /* CBuild::fs namespace */
-namespace CBuild
-{
-	namespace fs
-	{
-		std::regex c_cpp_file(".*\\.(cpp|cxx|cc|c)");
-	} // namespace fs
-} // namespace CBuild
+namespace CBuild {
+namespace fs {
+std::regex c_cpp_file(".*\\.(cpp|cxx|cc|c)");
+}  // namespace fs
+}  // namespace CBuild
 /* filesystem++.hpp */
-std::vector<std::string> CBuild::fs::dir(std::string path, std::string search)
-{
+std::vector<std::string> CBuild::fs::dir(std::string path, std::string search) {
 	// List of all found files
 	std::vector<std::string> files;
 	// List of files that need to be returned
@@ -50,45 +47,38 @@ std::vector<std::string> CBuild::fs::dir(std::string path, std::string search)
 	// Regex for search, use ECMAScript syntax
 	std::regex reg(search, std::regex::ECMAScript);
 	// Found all files in directory and store in array
-	for (const auto &entry : std::filesystem::directory_iterator(path))
-	{
+	for (const auto &entry : std::filesystem::directory_iterator(path)) {
 		files.push_back(entry.path().generic_string());
 	}
 	// Check all elements with regex and  add it to return array
-	for (auto elem : files)
-	{
-		if (std::regex_match(elem, reg))
-		{
+	for (auto elem : files) {
+		if (std::regex_match(elem, reg)) {
 			ret.push_back(elem);
 		}
 	}
 	// Return list of found files that match given regex
 	return ret;
 }
-std::vector<std::string> CBuild::fs::dir(std::string path)
-{
+std::vector<std::string> CBuild::fs::dir(std::string path) {
 	// List of found files
 	std::vector<std::string> files;
 	// List of returned files
 	std::vector<std::string> ret;
 	// Get all files and store it's paths in array
-	for (const auto &entry : std::filesystem::directory_iterator(path))
-	{
+	for (const auto &entry : std::filesystem::directory_iterator(path)) {
 		files.push_back(entry.path().generic_string());
 	}
 	// Check every file with internal regex and add to return array
-	for (auto elem : files)
-	{
-		if (std::regex_match(elem, c_cpp_file))
-		{
+	for (auto elem : files) {
+		if (std::regex_match(elem, c_cpp_file)) {
 			ret.push_back(elem);
 		}
 	}
 	// Return list of found files
 	return ret;
 }
-std::vector<std::string> CBuild::fs::dir_rec(std::string path, std::string search)
-{
+std::vector<std::string> CBuild::fs::dir_rec(std::string path,
+					     std::string search) {
 	// List of all found files
 	std::vector<std::string> files;
 	// List of files for return
@@ -96,98 +86,77 @@ std::vector<std::string> CBuild::fs::dir_rec(std::string path, std::string searc
 	// Create regex
 	std::regex reg(search);
 	// Check all directories recursively and add to array
-	for (const auto &entry : std::filesystem::recursive_directory_iterator(path))
-	{
+	for (const auto &entry :
+	     std::filesystem::recursive_directory_iterator(path)) {
 		files.push_back(entry.path().generic_string());
 	}
 	// Check all files with given regex and add to return array
-	for (auto elem : files)
-	{
-		if (std::regex_match(elem, reg))
-		{
+	for (auto elem : files) {
+		if (std::regex_match(elem, reg)) {
 			ret.push_back(elem);
 		}
 	}
 	// Return list of found files
 	return ret;
 }
-std::vector<std::string> CBuild::fs::dir_rec(std::string path)
-{
-
+std::vector<std::string> CBuild::fs::dir_rec(std::string path) {
 	// List of all found files
 	std::vector<std::string> files;
 	// List of files for return
 	std::vector<std::string> ret;
 	// Check all directories recursively and add to array
-	for (const auto &entry : std::filesystem::recursive_directory_iterator(path))
-	{
+	for (const auto &entry :
+	     std::filesystem::recursive_directory_iterator(path)) {
 		files.push_back(entry.path().generic_string());
 	}
 	// Check all files with internal regex and add to return array
-	for (auto elem : files)
-	{
-		if (std::regex_match(elem, c_cpp_file))
-		{
+	for (auto elem : files) {
+		if (std::regex_match(elem, c_cpp_file)) {
 			ret.push_back(elem);
 		}
 	}
 	// Return list of found filews
 	return ret;
 }
-bool CBuild::fs::rename(std::string start, std::string end)
-{
+bool CBuild::fs::rename(std::string start, std::string end) {
 	// Two paths
 	std::filesystem::path from, to;
 	// Create paths from strings
 	from.assign(start);
 	to.assign(end);
 	// Try to rename file
-	try
-	{
+	try {
 		std::filesystem::rename(from, to);
-	}
-	catch (std::exception &e)
-	{
+	} catch (std::exception &e) {
 		// Something goes wrong
 		return false;
 	}
 	// All good
 	return true;
 }
-bool CBuild::fs::remove(std::string path, bool force)
-{
+bool CBuild::fs::remove(std::string path, bool force) {
 	// Create path from string
 	std::filesystem::path p;
 	p.assign(path);
 	// If we need force remove
-	if (force)
-	{
+	if (force) {
 		// Try force remove
-		try
-		{
-			if (std::filesystem::remove_all(p) == 0)
-			{
+		try {
+			if (std::filesystem::remove_all(p) == 0) {
 				// Something goes wrong
 				return false;
 			}
-		}
-		catch (std::exception &e)
-		{
+		} catch (std::exception &e) {
 			// Something goes wrong
 			return false;
 		}
 	}
 	// We can use "lite" remove
-	else
-	{
+	else {
 		// Try force remove
-		try
-		{
-			if (std::filesystem::remove(p) == false)
-				return false;
-		}
-		catch (std::exception &e)
-		{
+		try {
+			if (std::filesystem::remove(p) == false) return false;
+		} catch (std::exception &e) {
 			// Something goes wrong
 			return false;
 		}
@@ -195,236 +164,191 @@ bool CBuild::fs::remove(std::string path, bool force)
 	// All good
 	return true;
 }
-bool CBuild::fs::copy(std::string start, std::string end)
-{
+bool CBuild::fs::copy(std::string start, std::string end) {
 	// Create paths from strings
 	std::filesystem::path from, to;
 	from.assign(start);
 	to.assign(end);
 	// Try to copy elements
-	try
-	{
+	try {
 		std::filesystem::copy(from, to);
-	}
-	catch (std::exception &e)
-	{
+	} catch (std::exception &e) {
 		// Something goes wrong
 		return false;
 	}
 	// All good
 	return true;
 }
-bool CBuild::fs::move(std::string start, std::string end)
-{
+bool CBuild::fs::move(std::string start, std::string end) {
 	// Create paths from strings
 	std::filesystem::path from, to;
 	from.assign(start);
 	to.assign(end);
 	// Try to copy files
-	try
-	{
+	try {
 		std::filesystem::copy(from, to);
 		if (CBuild::fs::remove(start, true) == false)
-			return false; // Something wrong with removal
-	}
-	catch (std::exception &e)
-	{
+			return false;  // Something wrong with removal
+	} catch (std::exception &e) {
 		// Something goes wrong
 		return false;
 	}
 	// All good
 	return true;
 }
-bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what)
-{
+bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
 	// Check type of new element
-	switch (what)
-	{
-	// We creating simple file
-	case CBuild::fs::type::FILE:
-	{
-		// Argument number check
-		std::string path = "";
-		try
-		{
-			path = paths.at(0);
-		}
-		catch (std::exception &e)
-		{
-			// Invalid argument count
-			throw std::runtime_error("Invalid count of elements");
-			return false;
-		}
-		// Try to create file using std::ofstream
-		try
-		{
-			std::ofstream file(path);
-			if (file.bad())
+	switch (what) {
+		// We creating simple file
+		case CBuild::fs::type::FILE: {
+			// Argument number check
+			std::string path = "";
+			try {
+				path = paths.at(0);
+			} catch (std::exception &e) {
+				// Invalid argument count
+				throw std::runtime_error(
+				    "Invalid count of elements");
 				return false;
-			file.close();
-		}
-		catch (std::exception &e)
-		{
-			// Something goes wrong
+			}
+			// Try to create file using std::ofstream
+			try {
+				std::ofstream file(path);
+				if (file.bad()) return false;
+				file.close();
+			} catch (std::exception &e) {
+				// Something goes wrong
+				return false;
+			}
+		} break;
+		// We creating directory
+		case CBuild::fs::DIR:
+		case CBuild::fs::type::DIRECTORY: {
+			// Check argument count
+			std::filesystem::path p;
+			try {
+				p.assign(paths.at(0));
+			} catch (std::exception &e) {
+				// Invalid arguments count
+				throw std::runtime_error(
+				    "Invalid count of elements");
+				return false;
+			}
+			// Try to create new directory
+			try {
+				std::filesystem::create_directory(p);
+			} catch (std::exception &e) {
+				// Something goes wrong
+				return false;
+			}
+		} break;
+		// We creating symlink to file
+		case CBuild::fs::type::SYMLINK_FILE: {
+			// Check argument count
+			std::filesystem::path file, link;
+			try {
+				file.assign(paths.at(0));
+			} catch (std::exception &e) {
+				// Invalid argument count
+				throw std::runtime_error(
+				    "Invalid count of elements");
+				return false;
+			}
+			try {
+				link.assign(paths.at(1));
+			} catch (std::exception &e) {
+				// Invalid argument count
+				throw std::runtime_error(
+				    "Invalid count of elements");
+				return false;
+			}
+			// Try to create new symlink, can be unsupported
+			try {
+				std::filesystem::create_symlink(file, link);
+			} catch (std::exception &e) {
+				// Something goes wrong
+				return false;
+			}
+		} break;
+		// We creating symlink to directory
+		case CBuild::fs::type::SYMLINK_DIR:
+		case CBuild::fs::type::SYMLINK_DIRECTORY: {
+			// Check argument count
+			std::filesystem::path directory, link;
+			try {
+				directory.assign(paths.at(0));
+			} catch (std::exception &e) {
+				// Invalid argument count
+				throw std::runtime_error(
+				    "Invalid count of elements");
+				return false;
+			}
+			try {
+				link.assign(paths.at(1));
+			} catch (std::exception &e) {
+				// Invalid argument count
+				throw std::runtime_error(
+				    "Invalid count of elements");
+				return false;
+			}
+			// try to create symlink, can be unsupported
+			try {
+				std::filesystem::create_directory_symlink(
+				    directory, link);
+			} catch (std::exception &e) {
+				// Something goes wrong
+				return false;
+			}
+		} break;
+		// We creating hardlink, can be unsupported
+		case CBuild::fs::type::HARDLINK: {
+			// Checking argument count
+			std::filesystem::path element, link;
+			try {
+				element.assign(paths.at(0));
+			} catch (std::exception &e) {
+				// Invalid argument count
+				throw std::runtime_error(
+				    "Invalid count of elements");
+				return false;
+			}
+			try {
+				link.assign(paths.at(1));
+			} catch (std::exception &e) {
+				// Invalid argument count
+				throw std::runtime_error(
+				    "Invalid count of elements");
+				return false;
+			}
+			// Try to create hardlink, can be unsupported
+			try {
+				std::filesystem::create_hard_link(element,
+								  link);
+			} catch (std::exception &e) {
+				// Something goes wrong
+				return false;
+			}
+		} break;
+		default:
+			// Invalid type of new element
+			throw std::runtime_error("Invalid type of new element");
 			return false;
-		}
-	}
-	break;
-	// We creating directory
-	case CBuild::fs::DIR:
-	case CBuild::fs::type::DIRECTORY:
-	{
-		// Check argument count
-		std::filesystem::path p;
-		try
-		{
-			p.assign(paths.at(0));
-		}
-		catch (std::exception &e)
-		{
-			// Invalid arguments count
-			throw std::runtime_error("Invalid count of elements");
-			return false;
-		}
-		// Try to create new directory
-		try
-		{
-			std::filesystem::create_directory(p);
-		}
-		catch (std::exception &e)
-		{
-			// Something goes wrong
-			return false;
-		}
-	}
-	break;
-	// We creating symlink to file
-	case CBuild::fs::type::SYMLINK_FILE:
-	{
-		// Check argument count
-		std::filesystem::path file, link;
-		try
-		{
-			file.assign(paths.at(0));
-		}
-		catch (std::exception &e)
-		{
-			// Invalid argument count
-			throw std::runtime_error("Invalid count of elements");
-			return false;
-		}
-		try
-		{
-			link.assign(paths.at(1));
-		}
-		catch (std::exception &e)
-		{
-			// Invalid argument count
-			throw std::runtime_error("Invalid count of elements");
-			return false;
-		}
-		// Try to create new symlink, can be unsupported
-		try
-		{
-			std::filesystem::create_symlink(file, link);
-		}
-		catch (std::exception &e)
-		{
-			// Something goes wrong
-			return false;
-		}
-	}
-	break;
-	// We creating symlink to directory
-	case CBuild::fs::type::SYMLINK_DIR:
-	case CBuild::fs::type::SYMLINK_DIRECTORY:
-	{
-		// Check argument count
-		std::filesystem::path directory, link;
-		try
-		{
-			directory.assign(paths.at(0));
-		}
-		catch (std::exception &e)
-		{
-			// Invalid argument count
-			throw std::runtime_error("Invalid count of elements");
-			return false;
-		}
-		try
-		{
-			link.assign(paths.at(1));
-		}
-		catch (std::exception &e)
-		{
-			// Invalid argument count
-			throw std::runtime_error("Invalid count of elements");
-			return false;
-		}
-		// try to create symlink, can be unsupported
-		try
-		{
-			std::filesystem::create_directory_symlink(directory, link);
-		}
-		catch (std::exception &e)
-		{
-			// Something goes wrong
-			return false;
-		}
-	}
-	break;
-	// We creating hardlink, can be unsupported
-	case CBuild::fs::type::HARDLINK:
-	{
-		// Checking argument count
-		std::filesystem::path element, link;
-		try
-		{
-			element.assign(paths.at(0));
-		}
-		catch (std::exception &e)
-		{
-			// Invalid argument count
-			throw std::runtime_error("Invalid count of elements");
-			return false;
-		}
-		try
-		{
-			link.assign(paths.at(1));
-		}
-		catch (std::exception &e)
-		{
-			// Invalid argument count
-			throw std::runtime_error("Invalid count of elements");
-			return false;
-		}
-		// Try to create hardlink, can be unsupported
-		try
-		{
-			std::filesystem::create_hard_link(element, link);
-		}
-		catch (std::exception &e)
-		{
-			// Something goes wrong
-			return false;
-		}
-	}
-	break;
-	default:
-		// Invalid type of new element
-		throw std::runtime_error("Invalid type of new element");
-		return false;
-		break;
+			break;
 	}
 	// All good
 	return true;
 }
+bool CBuild::fs::exists(std::string path) {
+	std::filesystem::path p;
+	p.assign(path);
+	return std::filesystem::exists(p);
+}
 /* files.hpp */
-int CBuild::fs::replace(std::string file, std::string token, std::string data)
-{
+int CBuild::fs::replace(std::string file, std::string token, std::string data) {
 	// Path to tmp file
 	std::string cache;
-	cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" + file + ".tmp";
+	cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" +
+		CBuild::fs::path_to_file(file) + ".tmp";
 	// std::cout << cache << "\n";
 	// Open two files
 	std::ofstream tmp_file(cache);
@@ -435,11 +359,9 @@ int CBuild::fs::replace(std::string file, std::string token, std::string data)
 	check_num = 0;
 	// Read and copy file to temp file line by line
 	std::string line;
-	while (std::getline(main_file, line))
-	{
+	while (std::getline(main_file, line)) {
 		// If token found - replace it and increment counter
-		while (line.find(token) != std::string::npos)
-		{
+		while (line.find(token) != std::string::npos) {
 			line.replace(line.find(token), token.size(), data);
 			check_num++;
 		}
@@ -452,15 +374,15 @@ int CBuild::fs::replace(std::string file, std::string token, std::string data)
 	CBuild::fs::remove(file, true);
 	CBuild::fs::move(cache, file);
 	// Return number of replaced element or -1 if nothing has been replaced
-	if (check_num == 0)
-		return -1;
+	if (check_num == 0) return -1;
 	return check_num;
 }
-int CBuild::fs::set_var(std::string file, std::string var_type, std::string var_name, std::string data)
-{
+int CBuild::fs::set_var(std::string file, std::string var_type,
+			std::string var_name, std::string data) {
 	// Path to tmp file
 	std::string cache;
-	cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" + file + ".tmp";
+	cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" +
+		CBuild::fs::path_to_file(file) + ".tmp";
 	// std::cout << cache << "\n";
 	// Open two files
 	std::ofstream tmp_file(cache);
@@ -471,20 +393,22 @@ int CBuild::fs::set_var(std::string file, std::string var_type, std::string var_
 	check_num = 0;
 	// Read and copy file to temp file line by line
 	std::string line;
-	while (std::getline(main_file, line))
-	{
+	while (std::getline(main_file, line)) {
 		// We can refer to #define by define
-		if (var_type == "define")
-			var_type = "#define";
+		if (var_type == "define") var_type = "#define";
 		// If variable found
-		if ((line.find(var_type) != std::string::npos) && (line.find(var_name) != std::string::npos))
-		{
+		if ((line.find(var_type) != std::string::npos) &&
+		    (line.find(var_name) != std::string::npos)) {
 			// All content before variable
-			std::string prefix = line.substr(0, line.find(var_type));
+			std::string prefix =
+			    line.substr(0, line.find(var_type));
 			// All content after variable
-			std::string postfix = line.substr(line.find(var_name) + var_name.size(), line.size() - 1);
+			std::string postfix =
+			    line.substr(line.find(var_name) + var_name.size(),
+					line.size() - 1);
 			// Variable
-			std::string var = var_type + " " + var_name + " = " + data;
+			std::string var =
+			    var_type + " " + var_name + " = " + data;
 			// Recreate line
 			line = prefix + var + postfix;
 			check_num++;
@@ -498,13 +422,12 @@ int CBuild::fs::set_var(std::string file, std::string var_type, std::string var_
 	CBuild::fs::remove(file, true);
 	CBuild::fs::move(cache, file);
 	// Return number of replaced element or -1 if nothing has been replaced
-	if (check_num == 0)
-		return -1;
+	if (check_num == 0) return -1;
 	return check_num;
 }
-bool CBuild::fs::exists(std::string path)
-{
-	std::filesystem::path p;
-	p.assign(path);
-	return std::filesystem::exists(p);
+std::string CBuild::fs::path_to_file(std::string in) {
+	while (in.find("/") != std::string::npos) {
+		in.replace(in.find("/"), std::string("/").size(), ".");
+	}
+	return in;
 }

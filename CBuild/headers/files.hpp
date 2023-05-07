@@ -23,28 +23,34 @@
 #include "string"
 #ifndef __CBUILD_FILE_HPP__
 #define __CBUILD_FILE_HPP__
-namespace CBuild
-{
-	namespace fs
-	{
-		/**
-		 * @brief Replace [token] by [data] in [file]
-		 * @param file => std::string -> Path to file
-		 * @param token => std::string -> Token for replacing
-		 * @param data => std::string -> Data that replace token
-		 * @return int -> -1 = error, else - number of replaced tokens
-		 */
-		int replace(std::string file, std::string token, std::string data);
-		/**
-		 * @brief Set value of variable with type var_type wth name var_name to data
-		 * @param file => std::string -> Path to file for replacing
-		 * @param var_type => std::string -> Type of variable
-		 * @param var_name => std::string -> Name of variable
-		 * @param data => std::string -> New value of variable
-		 * @return int -> -1 - error, else - number of replaced tokens
-		 */
-		int set_var(std::string file, std::string var_type, std::string var_name, std::string data);
-	} // namespace fs
-} // namespace CBuild
+namespace CBuild {
+namespace fs {
+/**
+ * @brief Replace [token] by [data] in [file]
+ * @param file => std::string -> Path to file
+ * @param token => std::string -> Token for replacing
+ * @param data => std::string -> Data that replace token
+ * @return int -> -1 = error, else - number of replaced tokens
+ */
+int replace(std::string file, std::string token, std::string data);
+/**
+ * @brief Set value of variable with type var_type wth name var_name to data
+ * @param file => std::string -> Path to file for replacing
+ * @param var_type => std::string -> Type of variable
+ * @param var_name => std::string -> Name of variable
+ * @param data => std::string -> New value of variable
+ * @return int -> -1 - error, else - number of replaced tokens
+ */
+int set_var(std::string file, std::string var_type, std::string var_name,
+	    std::string data);
+/**
+ * @brief Convert path to filename by replacing '\' by '.'
+ *
+ * @param in => std::string -> Input path
+ * @return std::string -> Filename
+ */
+std::string path_to_file(std::string in);
+}  // namespace fs
+}  // namespace CBuild
 
-#endif // __CBUILD_FILE_HPP__
+#endif	// __CBUILD_FILE_HPP__

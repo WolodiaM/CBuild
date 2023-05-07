@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['white_0',['WHITE',['../namespaceCBuild.html#a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31',1,'CBuild']]]
+  ['task_0',['TASK',['../namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2a7c8f5f1751cc7e58d643768e7c7fe0f1',1,'CBuild']]]
 ];

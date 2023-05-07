@@ -1,3 +1,12 @@
+cbuild (6.4) stable; urgency=high
+
+  [ WolodiaM ]
+  * Fix for bug in CBuild::fs::replace and CBuild::fs::set_var where CBuild
+    not creating cache file because of broken path to filename conversion
+    * Added filebuffer api
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sun, 7 May 2023 17:31:00 +0200
+
 cbuild (6.3) stable; urgency=high
 
   [ WolodiaM ]

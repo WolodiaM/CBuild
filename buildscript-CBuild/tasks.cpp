@@ -22,12 +22,10 @@
 #include "../CBuild/headers/register.hpp"
 #include "../CBuild/headers/task/Task.hpp"
 #include "string"
-//Scripts headers
-#include "user_init.hpp"
+// Scripts headers
 #include "pack.hpp"
+#include "user_init.hpp"
 // Tasks
 pack_deb packd;
 // Init
-void load_tasks() {
-	CBuild::Registry::RegistryTask(&packd);
-}
+void load_tasks() { CBuild::Registry::RegistryTask(&packd); }

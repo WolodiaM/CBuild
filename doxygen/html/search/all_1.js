@@ -13,5 +13,6 @@ var searchData=
   ['addcompilearg_10',['AddCompileArg',['../namespaceCBuild_1_1Registry.html#aad2852a78f5aa5c9f84dc53b065cdee8',1,'CBuild::Registry']]],
   ['addlinkarg_11',['AddLinkArg',['../namespaceCBuild_1_1Registry.html#a552d1c75543fd4b4c1bbe19e011a6a22',1,'CBuild::Registry']]],
   ['args_12',['args',['../classCBuild_1_1Toolchain.html#af5cd1dde6aba3754ceb79c3829e23ee8',1,'CBuild::Toolchain']]],
-  ['at_13',['at',['../classlib_1_1map.html#ac1bc33a78f8af74f79bd69878d8409a9',1,'lib::map']]]
+  ['at_13',['at',['../classlib_1_1map.html#ac1bc33a78f8af74f79bd69878d8409a9',1,'lib::map']]],
+  ['autorefresh_14',['autorefresh',['../classCBuild_1_1filebuff.html#a803e7f4c78f5b23d68bd5bfe5b283e56',1,'CBuild::filebuff']]]
 ];

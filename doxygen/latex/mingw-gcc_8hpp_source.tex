@@ -2,304 +2,304 @@
 \label{mingw-gcc_8hpp_source}\index{CBuild/headers/build/mingw-\/gcc.hpp@{CBuild/headers/build/mingw-\/gcc.hpp}}
 \mbox{\hyperlink{mingw-gcc_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00001}00001 }
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00023}00023 \textcolor{comment}{// Project files}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00024}00024 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{Build_8hpp}{Build.hpp}}"{}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00025}00025 \textcolor{preprocessor}{\#include "{}CBuild/CBuild\_defs.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00026}00026 \textcolor{preprocessor}{\#include "{}CBuild/print.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00027}00027 \textcolor{preprocessor}{\#include "{}CBuild/register.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00028}00028 \textcolor{preprocessor}{\#include "{}CBuild/filesystem++.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00029}00029 \textcolor{preprocessor}{\#include "{}CBuild/hash.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00030}00030 \textcolor{preprocessor}{\#include "{}CBuild/system.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00031}00031 \textcolor{comment}{// Code}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00032}00032 \textcolor{preprocessor}{\#ifndef \_CBUILD\_MINGW\_GCC\_TOOLCHAIN}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00033}00033 \textcolor{preprocessor}{\#define \_CBUILD\_MINGW\_GCC\_TOOLCHAIN}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00034}00034 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceCBuild}{CBuild}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00035}00035 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00036}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC}{00036}}     \textcolor{keyword}{class }\mbox{\hyperlink{classCBuild_1_1MINGW__GCC}{MINGW\_GCC}} : \textcolor{keyword}{public} \mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild::Toolchain}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00037}00037     \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00038}00038     \textcolor{keyword}{public}:}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00044}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a95e6c223687ac0b861115ee459a046c8}{00044}}         \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a95e6c223687ac0b861115ee459a046c8}{MINGW\_GCC}}(std::string \textcolor{keywordtype}{id})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00045}00045         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00046}00046             this-\/>\textcolor{keywordtype}{id} = \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00047}00047             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}} = \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/gcc"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00048}00048             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}} = \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/gcc"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00049}00049             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}} = \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/ar cr"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00050}00050         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00057}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_af129971142f47e18ecd68729be1e5277}{00057}}         \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_af129971142f47e18ecd68729be1e5277}{MINGW\_GCC}}(std::string \textcolor{keywordtype}{id}, std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00058}00058         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00059}00059             this-\/>\textcolor{keywordtype}{id} = \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00060}00060             this-\/>name = \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00061}00061             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}} = \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/gcc"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00062}00062             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}} = \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/gcc"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00063}00063             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}} = \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/ar cr"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00064}00064         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00065}00065 }
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00066}00066     \textcolor{keyword}{protected}:}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00067}00067         \textcolor{comment}{// For docs see mingw-\/g++.hpp}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00068}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a6e686f741e4b227f92cc5580b9c18464}{00068}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a6e686f741e4b227f92cc5580b9c18464}{build}}()}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00069}00069         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00070}00070             std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00071}00071             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\_args}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00072}00072             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00073}00073                 args += elem;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00074}00074                 \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00075}00075             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00076}00076             \textcolor{keyword}{auto} files = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00077}00077             std::vector<std::string> hash\_files;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00078}00078             \textcolor{keywordflow}{if} (files.size() > 0)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00079}00079             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00080}00080                 \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < files.size(); i++)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00081}00081                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00082}00082                     std::string cmd = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}} + \textcolor{stringliteral}{"{} -\/c "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00083}00083                     cmd += files.at(i).key;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00084}00084                     cmd += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00085}00085                     cmd += \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00086}00086                     cmd += \textcolor{stringliteral}{"{} -\/o "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00087}00087                     cmd += files.at(i).data;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00088}00088                     \textcolor{comment}{// CBuild::print(cmd, CBuild::BLUE);}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00089}00089                     \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00090}00090                     hash\_files.push\_back(this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a83c45aea3e5d4c3dcb085420ac625b26}{gen\_hash\_file}}(files.at(i).key));}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00091}00091                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00092}00092             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00093}00093             \mbox{\hyperlink{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}{CBuild::save\_hashes}}(hash\_files, files.keys());}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00094}00094         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00095}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a56bca52c9bc3a7cf7f57245c22e0de52}{00095}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a56bca52c9bc3a7cf7f57245c22e0de52}{link}}()}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00096}00096         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00097}00097             std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00098}00098             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00099}00099             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00100}00100                 args += elem;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00101}00101                 \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00102}00102             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00103}00103             \textcolor{keyword}{auto} files = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(\textcolor{keyword}{true});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00104}00104             std::string flist;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00105}00105             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < files.size(); i++)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00106}00106             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00107}00107                 flist += files.at(i).data;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00108}00108                 flist += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00109}00109             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00110}00110             \textcolor{keywordflow}{if} (files.size() > 0)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00111}00111             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00112}00112                 std::string cmd = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}} + \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00113}00113                 cmd += flist;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00114}00114                 cmd += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00115}00115                 cmd += \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00116}00116                 cmd += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00117}00117                 cmd += \textcolor{stringliteral}{"{} -\/o "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00118}00118                 cmd += this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{gen\_out\_name}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00119}00119                 \textcolor{comment}{// CBuild::print(cmd, CBuild::BLUE);}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00120}00120                 \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00121}00121             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00122}00122         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00123}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_ae95c1e7a5fb8f10d988181c6d95e714b}{00123}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_ae95c1e7a5fb8f10d988181c6d95e714b}{link\_pack}}()}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00124}00124         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00125}00125             std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00126}00126             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00127}00127             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00128}00128                 args += elem;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00129}00129                 \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00130}00130             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00131}00131             \textcolor{keyword}{auto} files = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(\textcolor{keyword}{true});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00132}00132             std::string flist;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00133}00133             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < files.size(); i++)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00134}00134             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00135}00135                 flist += files.at(i).data;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00136}00136                 flist += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00137}00137             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00138}00138             \textcolor{keywordflow}{if} (files.size() > 0)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00139}00139             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00140}00140                 std::string cmd = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}} + \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00141}00141                 cmd += this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{gen\_out\_name}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00142}00142                 cmd += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00143}00143                 cmd += flist;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00144}00144                 cmd += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00145}00145                 \textcolor{comment}{// CBuild::print(cmd, CBuild::BLUE);}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00146}00146                 \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd.c\_str());}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00147}00147             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00148}00148         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00149}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9bea8ada9d6d902a653239ba27e11e86}{00149}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9bea8ada9d6d902a653239ba27e11e86}{post\_link}}()}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00150}00150         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00151}00151             \textcolor{keywordflow}{for} (std::string \textcolor{keywordtype}{id} : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ad18750bc8fcad84be54cbfb98661727f}{depends}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00152}00152             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00153}00153                 \textcolor{keyword}{auto} target = \mbox{\hyperlink{namespaceCBuild_1_1Registry_a2b1eddd86007d7ce185071dd004a5036}{CBuild::Registry::GetToolchain}}(\textcolor{keywordtype}{id}, \textcolor{keyword}{true});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00154}00154                 \textcolor{keywordflow}{if} (target != NULL)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00155}00155                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00156}00156                     \textcolor{keyword}{auto} out\_path = target-\/>gen\_out\_name(\textcolor{stringliteral}{"{}.exe"{}}, \textcolor{stringliteral}{"{}.dll"{}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00157}00157                     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} end\_slash = out\_path.find\_last\_of(\textcolor{charliteral}{'/'});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00158}00158                     std::string out = \mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}} + \textcolor{stringliteral}{"{}/"{}} + this-\/>\textcolor{keywordtype}{id} + \textcolor{stringliteral}{"{}/"{}} + \mbox{\hyperlink{CBuild__defs_8hpp_a0668ce80f2dd99a5dbc9af3dd145f370}{CBUILD\_BUILD\_OUT\_DIR}} + \textcolor{stringliteral}{"{}/"{}} + out\_path.substr(end\_slash + 1);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00159}00159                     \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{CBuild::fs::copy}}(out\_path, out);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00160}00160                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00161}00161                 }
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00162}00162             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00163}00163         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00164}00164     \textcolor{keyword}{public}:}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00165}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{00165}}         std::string \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{gen\_out\_name}}(std::string executable = \textcolor{stringliteral}{"{}.exe"{}}, std::string dyn\_lib = \textcolor{stringliteral}{"{}.dll"{}}, std::string stat\_lib = \textcolor{stringliteral}{"{}.a"{}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00166}00166         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00167}00167             std::string base = \mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}} + \textcolor{stringliteral}{"{}/"{}} + this-\/>\textcolor{keywordtype}{id} + \textcolor{stringliteral}{"{}/"{}} + \mbox{\hyperlink{CBuild__defs_8hpp_a0668ce80f2dd99a5dbc9af3dd145f370}{CBUILD\_BUILD\_OUT\_DIR}} + \textcolor{stringliteral}{"{}/"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00168}00168             \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}} != std::string(\textcolor{stringliteral}{"{}"{}}))}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00169}00169             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00170}00170                 \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}} == \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a1e3140ac4b5daffae90f95ab0d2666f2}{CBuild::EXECUTABLE}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00171}00171                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00172}00172                     base += this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00173}00173                     base += executable;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00174}00174                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00175}00175                 \textcolor{keywordflow}{else}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00176}00176                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00177}00177                     base += \textcolor{stringliteral}{"{}lib"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00178}00178                     base += this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00179}00179                     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}} == \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f}{CBuild::DYNAMIC\_LIBRARY}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00180}00180                     \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00181}00181                         base += dyn\_lib;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00182}00182                     \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00183}00183                     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00184}00184                     \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00185}00185                         base += stat\_lib;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00186}00186                     \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00187}00187                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00188}00188             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00189}00189             \textcolor{keywordflow}{else}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00190}00190             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00191}00191                 \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}} == \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a1e3140ac4b5daffae90f95ab0d2666f2}{CBuild::EXECUTABLE}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00192}00192                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00193}00193                     base += this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00194}00194                     base += executable;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00195}00195                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00196}00196                 \textcolor{keywordflow}{else}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00197}00197                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00198}00198                     base += \textcolor{stringliteral}{"{}lib"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00199}00199                     base += this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00200}00200                     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}} == \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f}{CBuild::DYNAMIC\_LIBRARY}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00201}00201                     \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00202}00202                         base += dyn\_lib;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00203}00203                     \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00204}00204                     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00205}00205                     \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00206}00206                         base += stat\_lib;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00207}00207                     \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00208}00208                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00209}00209             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00210}00210             \textcolor{keywordflow}{return} this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ad94fac4b38afc12b44b20f66bd46c3a3}{cmd\_str}}(base);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00211}00211         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00212}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a257f675200309e4e6b310d7ede3d59f1}{00212}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a257f675200309e4e6b310d7ede3d59f1}{call}}(std::vector<std::string> *\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}, \textcolor{keywordtype}{bool} \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}} = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{debug}} = \textcolor{keyword}{false})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00213}00213         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00214}00214             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Starting "{}} + this-\/>\textcolor{keywordtype}{id} + \textcolor{stringliteral}{"{} toolchain in build mode "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::color::RED}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00215}00215             this-\/>args = \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00216}00216             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}} = \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00217}00217             \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}} == \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f}{CBuild::DYNAMIC\_LIBRARY}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00218}00218                 this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}}.push\_back(\textcolor{stringliteral}{"{}-\/shared"{}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00219}00219             \textcolor{keywordflow}{if} (\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{debug}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00220}00220                 this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\_args}}.push\_back(\textcolor{stringliteral}{"{}-\/g"{}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00221}00221             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\_args}}.push\_back(\textcolor{stringliteral}{"{}-\/fPIC"{}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00222}00222             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a9484161cf7845614132b472b0bd087a8}{add\_link\_arg}}(\textcolor{stringliteral}{"{}-\/static-\/libgcc"{}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00223}00223             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a9484161cf7845614132b472b0bd087a8}{add\_link\_arg}}(\textcolor{stringliteral}{"{}-\/static-\/libstdc++"{}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00224}00224             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ade6d0d671052e834f6dbdb4c5a8e485c}{init}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00225}00225             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Calling tasks marked as PRE "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::color::GREEN}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00226}00226             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}{required}}.\mbox{\hyperlink{classlib_1_1map_a50270172eaef21e06c893ea4b1e40bcb}{size}}(); i++)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00227}00227             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00228}00228                 \textcolor{keyword}{auto} elem = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}{required}}.\mbox{\hyperlink{classlib_1_1map_ac1bc33a78f8af74f79bd69878d8409a9}{at}}(i);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00229}00229                 \textcolor{keywordflow}{if} (elem.data == \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9ca48260554740aee4470be239e88c42d4c}{CBuild::PRE}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00230}00230                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00231}00231                     \mbox{\hyperlink{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}{CBuild::Registry::CallTask}}(elem.key, \{\});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00232}00232                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00233}00233             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00234}00234             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Calling all required toolchains "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::color::GREEN}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00235}00235             \textcolor{keywordflow}{for} (std::string \textcolor{keywordtype}{id} : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ad18750bc8fcad84be54cbfb98661727f}{depends}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00236}00236             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00237}00237 }
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00238}00238                 \textcolor{keyword}{auto} target = \mbox{\hyperlink{namespaceCBuild_1_1Registry_a2b1eddd86007d7ce185071dd004a5036}{CBuild::Registry::GetToolchain}}(\textcolor{keywordtype}{id});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00239}00239                 \textcolor{keywordflow}{if} (target != NULL)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00240}00240                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00241}00241                     target-\/>call(\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}, \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{debug}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00242}00242                     \textcolor{keyword}{auto} out\_path = target-\/>gen\_out\_name();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00243}00243                     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} end\_slash = out\_path.find\_last\_of(\textcolor{charliteral}{'/'});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00244}00244                     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} end\_dot = out\_path.find\_last\_of(\textcolor{charliteral}{'.'});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00245}00245                     std::string out = out\_path.substr(end\_slash + 4, end\_dot -\/ end\_slash -\/ 4);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00246}00246                     this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a5d50b63ecb923242185f54942b35ee6f}{add\_library\_include}}(out);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00247}00247                     this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a7a855ae33674d98aca57ab935b169a50}{add\_library\_dir}}(\textcolor{stringliteral}{"{}."{}}, \mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}} + \textcolor{stringliteral}{"{}/"{}} + target-\/>get\_id() + \textcolor{stringliteral}{"{}/"{}} + \mbox{\hyperlink{CBuild__defs_8hpp_a0668ce80f2dd99a5dbc9af3dd145f370}{CBUILD\_BUILD\_OUT\_DIR}} + \textcolor{stringliteral}{"{}/"{}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00248}00248                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00249}00249             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00250}00250             \textcolor{keywordflow}{if} (!\mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00251}00251                 \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Using precompiled object were possible "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{CBuild::color::MAGENTA}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00252}00252             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running pre build tasks "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00253}00253             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a589b707f242aee3f846fb511242f0112}{pre\_build}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00254}00254             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running build tasks "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00255}00255             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Now you can see compiler output"{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{CBuild::MAGENTA}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00256}00256             this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a6e686f741e4b227f92cc5580b9c18464}{build}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00257}00257             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running post build tasks "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00258}00258             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a41b77cccb491ab0e6564a93fc72f4e4b}{post\_build}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00259}00259             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running pre link tasks "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00260}00260             this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_af10adffca42d4277aa86cfcd27cfba13}{pre\_link}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00261}00261             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running link tasks "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00262}00262             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Now you can see linker output"{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{CBuild::MAGENTA}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00263}00263             \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}} == \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a38f43fcafde9a74a2fd8e1840ea52cf8}{CBuild::STATIC\_LIBRARY}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00264}00264             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00265}00265                 this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_ae95c1e7a5fb8f10d988181c6d95e714b}{link\_pack}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00266}00266             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00267}00267             \textcolor{keywordflow}{else}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00268}00268             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00269}00269                 this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a56bca52c9bc3a7cf7f57245c22e0de52}{link}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00270}00270             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00271}00271             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running post link tasks "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00272}00272             this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9bea8ada9d6d902a653239ba27e11e86}{post\_link}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00273}00273             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Calling tasks marked as POST "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00274}00274             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}{required}}.\mbox{\hyperlink{classlib_1_1map_a50270172eaef21e06c893ea4b1e40bcb}{size}}(); i++)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00275}00275             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00276}00276                 \textcolor{keyword}{auto} elem = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}{required}}.\mbox{\hyperlink{classlib_1_1map_ac1bc33a78f8af74f79bd69878d8409a9}{at}}(i);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00277}00277                 \textcolor{keywordflow}{if} (elem.data == \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9caf95818e5b66b8e7c97df05a58b9126d3}{CBuild::POST}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00278}00278                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00279}00279                     \mbox{\hyperlink{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}{CBuild::Registry::CallTask}}(elem.key, \{\});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00280}00280                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00281}00281             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00282}00282             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}End of execution of toolchain "{}} + this-\/>\textcolor{keywordtype}{id} + \textcolor{stringliteral}{"{} "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::RED}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00283}00283         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00284}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_aa5467e768d237b8bd50139b3e8f4014a}{00284}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_aa5467e768d237b8bd50139b3e8f4014a}{run}}(std::vector<std::string> *\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00285}00285         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00286}00286             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Starting \(\backslash\)"{}"{}} + this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}} + \textcolor{stringliteral}{"{}\(\backslash\)"{} "{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::RED}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00287}00287             std::string pargs = \textcolor{stringliteral}{"{}"{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00288}00288             \textcolor{keywordflow}{if} (\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} != NULL)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00289}00289             \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00290}00290                 \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : *\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}})}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00291}00291                 \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00292}00292                     pargs += elem;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00293}00293                     pargs += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00294}00294                 \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00295}00295             \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00296}00296             std::string cmd;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00297}00297             cmd = \textcolor{stringliteral}{"{}wine64 "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00298}00298             cmd += this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{gen\_out\_name}}();}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00299}00299             cmd += \textcolor{stringliteral}{"{} "{}};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00300}00300             cmd += pargs;}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00301}00301             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}App output (if any):"{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{CBuild::MAGENTA}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00302}00302             \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00303}00303             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}End of app execution"{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::RED}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00304}00304         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00305}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{00305}}         \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{debug}}(std::vector<std::string> *\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}, std::vector<std::string> *pargs)}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00306}00306         \{}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00307}00307             \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}It is unimplemented for now!"{}}, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::RED}});}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00308}00308             \textcolor{comment}{// CBuild::print("{}Starting \(\backslash\)"{}"{} + this-\/>id + "{}\(\backslash\)"{} toolchain in debug mode "{}, CBuild::RED);}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00309}00309             \textcolor{comment}{// this-\/>call(args, true, true);}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00310}00310             \textcolor{comment}{// CBuild::print("{}Running builded app with gdb "{}, CBuild::GREEN);}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00311}00311             \textcolor{comment}{// std::string ppargs = "{}"{};}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00312}00312             \textcolor{comment}{// if (pargs != NULL)}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00313}00313             \textcolor{comment}{// \{}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00314}00314             \textcolor{comment}{//     for (auto elem : *pargs)}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00315}00315             \textcolor{comment}{//     \{}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00316}00316             \textcolor{comment}{//         ppargs += elem;}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00317}00317             \textcolor{comment}{//         ppargs += "{} "{};}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00318}00318             \textcolor{comment}{//     \}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00319}00319             \textcolor{comment}{// \}}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00320}00320             \textcolor{comment}{// std::string cmd;}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00321}00321             \textcolor{comment}{// cmd = "{}x86\_64-\/w64-\/mingw32-\/gdb "{};}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00322}00322             \textcolor{comment}{// cmd += this-\/>gen\_out\_name();}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00323}00323             \textcolor{comment}{// cmd += "{} "{};}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00324}00324             \textcolor{comment}{// cmd += ppargs;}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00325}00325             \textcolor{comment}{// // CBuild::print("{}Now you can see gdb shell "{}, CBuild::MAGENTA);}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00326}00326             \textcolor{comment}{// CBuild::system(cmd);}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00327}00327             \textcolor{comment}{// CBuild::print("{}End of app execution"{}, CBuild::RED);}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00328}00328         \}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00329}00329     \};}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00330}00330 \} \textcolor{comment}{// namespace CBuild}}
-\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00331}00331 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_CBUILD\_MINGW\_GCC\_TOOLCHAIN}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00023}00023\ \textcolor{comment}{//\ Project\ files}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Build_8hpp}{Build.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}../CBuild\_defs.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}../print.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}../register.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}../filesystem++.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00029}00029\ \textcolor{preprocessor}{\#include\ "{}../hash.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00030}00030\ \textcolor{preprocessor}{\#include\ "{}../system.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00031}00031\ \textcolor{comment}{//\ Code}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00032}00032\ \textcolor{preprocessor}{\#ifndef\ \_CBUILD\_MINGW\_GCC\_TOOLCHAIN}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00033}00033\ \textcolor{preprocessor}{\#define\ \_CBUILD\_MINGW\_GCC\_TOOLCHAIN}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00034}00034\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceCBuild}{CBuild}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00035}00035\ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00036}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC}{00036}}\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classCBuild_1_1MINGW__GCC}{MINGW\_GCC}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild::Toolchain}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00037}00037\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00038}00038\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00044}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a95e6c223687ac0b861115ee459a046c8}{00044}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a95e6c223687ac0b861115ee459a046c8}{MINGW\_GCC}}(std::string\ \textcolor{keywordtype}{id})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00045}00045\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\textcolor{keywordtype}{id}\ =\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}}\ =\ \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/gcc"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}}\ =\ \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/gcc"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}}\ =\ \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/ar\ cr"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00050}00050\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00057}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_af129971142f47e18ecd68729be1e5277}{00057}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_af129971142f47e18ecd68729be1e5277}{MINGW\_GCC}}(std::string\ \textcolor{keywordtype}{id},\ std::string\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00058}00058\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\textcolor{keywordtype}{id}\ =\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>name\ =\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}}\ =\ \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/gcc"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}}\ =\ \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/gcc"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}}\ =\ \textcolor{stringliteral}{"{}x86\_64-\/w64-\/mingw32-\/ar\ cr"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00064}00064\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00066}00066\ \ \ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ For\ docs\ see\ mingw-\/g++.hpp}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00068}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a6e686f741e4b227f92cc5580b9c18464}{00068}}\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a6e686f741e4b227f92cc5580b9c18464}{build}}()}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00069}00069\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\_args}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ args\ +=\ elem;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ files\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::string>\ hash\_files;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (files.size()\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ files.size();\ i++)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ cmd\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}}\ +\ \textcolor{stringliteral}{"{}\ -\/c\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ files.at(i).key;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ -\/o\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ files.at(i).data;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::print(cmd,\ CBuild::BLUE);}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ hash\_files.push\_back(this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a83c45aea3e5d4c3dcb085420ac625b26}{gen\_hash\_file}}(files.at(i).key));}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}{CBuild::save\_hashes}}(hash\_files,\ files.keys());}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00094}00094\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00095}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a56bca52c9bc3a7cf7f57245c22e0de52}{00095}}\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a56bca52c9bc3a7cf7f57245c22e0de52}{link}}()}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00096}00096\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ args\ +=\ elem;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ files\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ flist;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ files.size();\ i++)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flist\ +=\ files.at(i).data;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flist\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (files.size()\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ cmd\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}}\ +\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ flist;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ -\/o\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{gen\_out\_name}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::print(cmd,\ CBuild::BLUE);}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00122}00122\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00123}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_ae95c1e7a5fb8f10d988181c6d95e714b}{00123}}\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_ae95c1e7a5fb8f10d988181c6d95e714b}{link\_pack}}()}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ args\ +=\ elem;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ files\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ flist;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ files.size();\ i++)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00135}00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flist\ +=\ files.at(i).data;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flist\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00137}00137\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (files.size()\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00139}00139\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ cmd\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}}\ +\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{gen\_out\_name}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ flist;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::print(cmd,\ CBuild::BLUE);}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd.c\_str());}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00148}00148\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00149}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9bea8ada9d6d902a653239ba27e11e86}{00149}}\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9bea8ada9d6d902a653239ba27e11e86}{post\_link}}()}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00150}00150\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::string\ \textcolor{keywordtype}{id}\ :\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ad18750bc8fcad84be54cbfb98661727f}{depends}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ target\ =\ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a2b1eddd86007d7ce185071dd004a5036}{CBuild::Registry::GetToolchain}}(\textcolor{keywordtype}{id},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (target\ !=\ NULL)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ out\_path\ =\ target-\/>gen\_out\_name(\textcolor{stringliteral}{"{}.exe"{}},\ \textcolor{stringliteral}{"{}.dll"{}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ end\_slash\ =\ out\_path.find\_last\_of(\textcolor{charliteral}{'/'});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ out\ =\ \mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ this-\/>\textcolor{keywordtype}{id}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ \mbox{\hyperlink{CBuild__defs_8hpp_a0668ce80f2dd99a5dbc9af3dd145f370}{CBUILD\_BUILD\_OUT\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ out\_path.substr(end\_slash\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{CBuild::fs::copy}}(out\_path,\ out);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00161}00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00163}00163\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00164}00164\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00165}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{00165}}\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{gen\_out\_name}}(std::string\ executable\ =\ \textcolor{stringliteral}{"{}.exe"{}},\ std::string\ dyn\_lib\ =\ \textcolor{stringliteral}{"{}.dll"{}},\ std::string\ stat\_lib\ =\ \textcolor{stringliteral}{"{}.a"{}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00166}00166\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ base\ =\ \mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ this-\/>\textcolor{keywordtype}{id}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ \mbox{\hyperlink{CBuild__defs_8hpp_a0668ce80f2dd99a5dbc9af3dd145f370}{CBUILD\_BUILD\_OUT\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}}\ !=\ std::string(\textcolor{stringliteral}{"{}"{}}))}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}}\ ==\ \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a1e3140ac4b5daffae90f95ab0d2666f2}{CBuild::EXECUTABLE}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ executable;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ \textcolor{stringliteral}{"{}lib"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}}\ ==\ \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f}{CBuild::DYNAMIC\_LIBRARY}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ dyn\_lib;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ stat\_lib;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}}\ ==\ \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a1e3140ac4b5daffae90f95ab0d2666f2}{CBuild::EXECUTABLE}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ executable;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00196}00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00197}00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ \textcolor{stringliteral}{"{}lib"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}}\ ==\ \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f}{CBuild::DYNAMIC\_LIBRARY}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ dyn\_lib;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\ +=\ stat\_lib;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ad94fac4b38afc12b44b20f66bd46c3a3}{cmd\_str}}(base);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00211}00211\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00212}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a257f675200309e4e6b310d7ede3d59f1}{00212}}\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a257f675200309e4e6b310d7ede3d59f1}{call}}(std::vector<std::string>\ *\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}},\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}}\ =\ \textcolor{keyword}{false},\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{debug}}\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00213}00213\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Starting\ "{}}\ +\ this-\/>\textcolor{keywordtype}{id}\ +\ \textcolor{stringliteral}{"{}\ toolchain\ in\ build\ mode\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::color::RED}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>args\ =\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}}\ =\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00217}00217\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}}\ ==\ \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92ac6a37589a922a9ad8ef823f91ae75b1f}{CBuild::DYNAMIC\_LIBRARY}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}}.push\_back(\textcolor{stringliteral}{"{}-\/shared"{}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{debug}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\_args}}.push\_back(\textcolor{stringliteral}{"{}-\/g"{}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\_args}}.push\_back(\textcolor{stringliteral}{"{}-\/fPIC"{}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00222}00222\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a9484161cf7845614132b472b0bd087a8}{add\_link\_arg}}(\textcolor{stringliteral}{"{}-\/static-\/libgcc"{}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00223}00223\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a9484161cf7845614132b472b0bd087a8}{add\_link\_arg}}(\textcolor{stringliteral}{"{}-\/static-\/libstdc++"{}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ade6d0d671052e834f6dbdb4c5a8e485c}{init}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00225}00225\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Calling\ tasks\ marked\ as\ PRE\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::color::GREEN}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00226}00226\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}{required}}.\mbox{\hyperlink{classlib_1_1map_a50270172eaef21e06c893ea4b1e40bcb}{size}}();\ i++)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ elem\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}{required}}.\mbox{\hyperlink{classlib_1_1map_ac1bc33a78f8af74f79bd69878d8409a9}{at}}(i);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (elem.data\ ==\ \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9ca48260554740aee4470be239e88c42d4c}{CBuild::PRE}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00230}00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00231}00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}{CBuild::Registry::CallTask}}(elem.key,\ \{\});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00232}00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00233}00233\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Calling\ all\ required\ toolchains\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::color::GREEN}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::string\ \textcolor{keywordtype}{id}\ :\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ad18750bc8fcad84be54cbfb98661727f}{depends}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00237}00237\ }
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ target\ =\ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a2b1eddd86007d7ce185071dd004a5036}{CBuild::Registry::GetToolchain}}(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (target\ !=\ NULL)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ target-\/>call(\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}},\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}},\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{debug}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ out\_path\ =\ target-\/>gen\_out\_name();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ end\_slash\ =\ out\_path.find\_last\_of(\textcolor{charliteral}{'/'});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ end\_dot\ =\ out\_path.find\_last\_of(\textcolor{charliteral}{'.'});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ out\ =\ out\_path.substr(end\_slash\ +\ 4,\ end\_dot\ -\/\ end\_slash\ -\/\ 4);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a5d50b63ecb923242185f54942b35ee6f}{add\_library\_include}}(out);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a7a855ae33674d98aca57ab935b169a50}{add\_library\_dir}}(\textcolor{stringliteral}{"{}."{}},\ \mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ target-\/>get\_id()\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ \mbox{\hyperlink{CBuild__defs_8hpp_a0668ce80f2dd99a5dbc9af3dd145f370}{CBUILD\_BUILD\_OUT\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00251}00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Using\ precompiled\ object\ were\ possible\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{CBuild::color::MAGENTA}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running\ pre\ build\ tasks\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00253}00253\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a589b707f242aee3f846fb511242f0112}{pre\_build}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running\ build\ tasks\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00255}00255\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Now\ you\ can\ see\ compiler\ output"{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{CBuild::MAGENTA}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a6e686f741e4b227f92cc5580b9c18464}{build}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00257}00257\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running\ post\ build\ tasks\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a41b77cccb491ab0e6564a93fc72f4e4b}{post\_build}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00259}00259\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running\ pre\ link\ tasks\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_af10adffca42d4277aa86cfcd27cfba13}{pre\_link}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running\ link\ tasks\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00262}00262\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Now\ you\ can\ see\ linker\ output"{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{CBuild::MAGENTA}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>\mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92}{build\_type}}\ ==\ \mbox{\hyperlink{namespaceCBuild_a2aec3da8b6736303fc1c441bff49cc92a38f43fcafde9a74a2fd8e1840ea52cf8}{CBuild::STATIC\_LIBRARY}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00265}00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_ae95c1e7a5fb8f10d988181c6d95e714b}{link\_pack}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00267}00267\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00268}00268\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a56bca52c9bc3a7cf7f57245c22e0de52}{link}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00270}00270\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00271}00271\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Running\ post\ link\ tasks\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9bea8ada9d6d902a653239ba27e11e86}{post\_link}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00273}00273\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Calling\ tasks\ marked\ as\ POST\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{CBuild::GREEN}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00274}00274\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}{required}}.\mbox{\hyperlink{classlib_1_1map_a50270172eaef21e06c893ea4b1e40bcb}{size}}();\ i++)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00276}00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ elem\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}{required}}.\mbox{\hyperlink{classlib_1_1map_ac1bc33a78f8af74f79bd69878d8409a9}{at}}(i);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00277}00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (elem.data\ ==\ \mbox{\hyperlink{namespaceCBuild_a48dcc8465fd3ac71019d7edf3868fb9caf95818e5b66b8e7c97df05a58b9126d3}{CBuild::POST}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00279}00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}{CBuild::Registry::CallTask}}(elem.key,\ \{\});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00280}00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00281}00281\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00282}00282\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}End\ of\ execution\ of\ toolchain\ "{}}\ +\ this-\/>\textcolor{keywordtype}{id}\ +\ \textcolor{stringliteral}{"{}\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::RED}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00283}00283\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00284}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_aa5467e768d237b8bd50139b3e8f4014a}{00284}}\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_aa5467e768d237b8bd50139b3e8f4014a}{run}}(std::vector<std::string>\ *\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00285}00285\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00286}00286\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}Starting\ \(\backslash\)"{}"{}}\ +\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}}\ +\ \textcolor{stringliteral}{"{}\(\backslash\)"{}\ "{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::RED}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00287}00287\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ pargs\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00288}00288\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}\ !=\ NULL)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00290}00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ *\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}})}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00292}00292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pargs\ +=\ elem;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pargs\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00295}00295\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00296}00296\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ cmd;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ =\ \textcolor{stringliteral}{"{}wine64\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ this-\/>\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{gen\_out\_name}}();}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ pargs;}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00301}00301\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}App\ output\ (if\ any):"{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{CBuild::MAGENTA}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00302}00302\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00303}00303\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}End\ of\ app\ execution"{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::RED}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00304}00304\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00305}\mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{00305}}\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{debug}}(std::vector<std::string>\ *\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}},\ std::vector<std::string>\ *pargs)}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00306}00306\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00307}00307\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(\textcolor{stringliteral}{"{}It\ is\ unimplemented\ for\ now!"{}},\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{CBuild::RED}});}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::print("{}Starting\ \(\backslash\)"{}"{}\ +\ this-\/>id\ +\ "{}\(\backslash\)"{}\ toolchain\ in\ debug\ mode\ "{},\ CBuild::RED);}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ this-\/>call(args,\ true,\ true);}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00310}00310\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::print("{}Running\ builded\ app\ with\ gdb\ "{},\ CBuild::GREEN);}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ std::string\ ppargs\ =\ "{}"{};}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00312}00312\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ (pargs\ !=\ NULL)}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \{}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ for\ (auto\ elem\ :\ *pargs)}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \{}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ ppargs\ +=\ elem;}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ ppargs\ +=\ "{}\ "{};}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \}}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ std::string\ cmd;}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cmd\ =\ "{}x86\_64-\/w64-\/mingw32-\/gdb\ "{};}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cmd\ +=\ this-\/>gen\_out\_name();}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cmd\ +=\ "{}\ "{};}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cmd\ +=\ ppargs;}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ //\ CBuild::print("{}Now\ you\ can\ see\ gdb\ shell\ "{},\ CBuild::MAGENTA);}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::system(cmd);}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::print("{}End\ of\ app\ execution"{},\ CBuild::RED);}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00328}00328\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00329}00329\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00330}00330\ \}\ \textcolor{comment}{//\ namespace\ CBuild}}
+\DoxyCodeLine{\Hypertarget{mingw-gcc_8hpp_source_l00331}00331\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_CBUILD\_MINGW\_GCC\_TOOLCHAIN}}
 
 \end{DoxyCode}

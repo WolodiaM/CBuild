@@ -30,6 +30,12 @@
 #ifndef __FILEBUFF_HPP__
 #define __FILEBUFF_HPP__
 namespace CBuild {
+/**
+ * @brief Parse string to vector of strings
+ *
+ * @param in => std::string -> Input string
+ * @return std::vector<std::string> -> Returned list of lines
+ */
 std::vector<std::string> parse_lines(std::string in) {
 	std::vector<std::string> ret;
 	std::string buff;
@@ -46,28 +52,119 @@ std::vector<std::string> parse_lines(std::string in) {
 	}
 	return ret;
 }
-enum buffer_state { MATCH, FILE_NEWER, BUFFER_NEWER };
+/**
+ * @brief Represent atate of buffer
+ */
+enum buffer_state {
+	/**
+	 * @brief File match buffer
+	 */
+	MATCH,
+	/**
+	 * @brief File is newer, buffer is not updated
+	 */
+	FILE_NEWER,
+	/**
+	 * @brief Buffer is newer and file need update
+	 */
+	BUFFER_NEWER
+};
+/**
+ * @class filebuff
+ * @brief Base class of filebuffer
+ */
 class filebuff {
        protected:
+	/**
+	 * @brief Path to file
+	 */
 	std::string path;
+	/**
+	 * @brief Does file need to be automaticly
+	 */
 	bool autorefresh;
+	/**
+	 * @brief Currennt state of buffer. All operation that change buffer
+	 * need to set state to CBuild::BUFFER_NEWER or update file based on
+	 * autorefresh variable. All function that update buffer/file and
+	 * synchronise it need to set state to CBuild::MATCH.
+	 */
 	CBuild::buffer_state state;
+	/**
+	 * @brief Load buffer from file
+	 */
 	virtual void load_buffer() = 0;
+	/**
+	 * @brief Save buffer to file
+	 */
 	virtual void save_buffer() = 0;
 
        public:
+	/**
+	 * @brief Create filebuffer, simply store some vars
+	 *
+	 * @param file => std::string -> Path to file
+	 * @param autorefresh => bool -> set autorefresh var
+	 */
 	filebuff(std::string file, bool autorefresh = true) {
 		this->path = file;
 		this->autorefresh = autorefresh;
 		this->state = CBuild::buffer_state::FILE_NEWER;
 	}
+	/**
+	 * @brief Get character from file, return -1 on error
+	 *
+	 * @param pos => unsigned int -> Position of character in file
+	 * @return char -> Symbol
+	 */
 	virtual char get_char(unsigned int pos) = 0;
+	/**
+	 * @brief Get sequence of characters from file
+	 *
+	 * @param pos => unsigned int -> Postion of first character of line
+	 * @param size => unsigned int -> Number of characters in line
+	 * @return std::string -> String
+	 */
 	virtual std::string get_str(unsigned int pos, unsigned int size) = 0;
+	/**
+	 * @brief Set character in file
+	 *
+	 * @param ch => char -> Character
+	 * @param pos => unsigned int -> Character will be appended to file on
+	 * this pos
+	 */
 	virtual void set_char(char ch, unsigned int pos) = 0;
+	/**
+	 * @brief Set string in file
+	 *
+	 * @param ch => std::string -> String
+	 * @param pos => unsigned int -> String will be appended to file on this
+	 * pos
+	 */
 	virtual void set_str(std::string str, unsigned int pos) = 0;
+	/**
+	 * @brief Remove character from file
+	 *
+	 * @param pos => unsigned int -> Position of character thet need to be
+	 * removed
+	 */
 	virtual void del_char(unsigned int pos) = 0;
+	/**
+	 * @brief Remove sequence of characters from file
+	 *
+	 * @param pos => unsigned int -> Postion of first character of sequence
+	 * @param size => unsigned int -> Number of character to remove
+	 */
 	virtual void del_str(unsigned int pos, unsigned int size) = 0;
+	/**
+	 * @brief Update file/buffer based on internal state variable
+	 */
 	virtual void update() = 0;
+	/**
+	 * @brief Get state of file
+	 *
+	 * @return CBuild::buffer_state -> Current state of filebuffer
+	 */
 	CBuild::buffer_state get_state() { return this->state; }
 };
 class line_filebuff : public CBuild::filebuff {
@@ -294,11 +391,23 @@ class line_filebuff : public CBuild::filebuff {
 			this->state = CBuild::BUFFER_NEWER;
 		}
 	}
+	/**
+	 * @brief Get line from buffer
+	 *
+	 * @param pos => unsigned int -> Linenumber
+	 * @return std::string -> Line
+	 */
 	std::string get_line(unsigned int pos) {
 		auto it = this->buff.begin();
 		std::advance(it, pos);
 		return *it;
 	}
+	/**
+	 * @brief Set line in file
+	 *
+	 * @param str => std::string -> Line
+	 * @param pos => unsigned int -> Linenumber of new line
+	 */
 	void set_line(std::string str, unsigned int pos) {
 		auto it = this->buff.begin();
 		std::advance(it, pos);
@@ -309,6 +418,11 @@ class line_filebuff : public CBuild::filebuff {
 			this->state = CBuild::BUFFER_NEWER;
 		}
 	}
+	/**
+	 * @brief Delete line from file
+	 *
+	 * @param pos => unsigned int -> Linenumber
+	 */
 	void del_line(unsigned int pos) {
 		auto it = this->buff.begin();
 		std::advance(it, pos);

@@ -2,135 +2,135 @@
 \label{hash_8cpp_source}\index{CBuild/CBuild/src/hash.cpp@{CBuild/CBuild/src/hash.cpp}}
 \mbox{\hyperlink{hash_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00001}00001 }
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00023}00023 \textcolor{comment}{// C++ libraries}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00024}00024 \textcolor{preprocessor}{\#include "{}fstream"{}}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00025}00025 \textcolor{preprocessor}{\#include "{}iostream"{}}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00026}00026 \textcolor{preprocessor}{\#include "{}sstream"{}}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00027}00027 \textcolor{preprocessor}{\#include "{}iomanip"{}}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00028}00028 \textcolor{preprocessor}{\#include "{}openssl/sha.h"{}}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00029}00029 \textcolor{preprocessor}{\#include "{}string"{}}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00030}00030 \textcolor{preprocessor}{\#include "{}vector"{}}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00031}00031 \textcolor{comment}{// Project headers}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00032}00032 \textcolor{preprocessor}{\#include "{}../../headers/hash.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00033}00033 \textcolor{comment}{/* sha256 */}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00034}\mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{00034}} std::string \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}}(\textcolor{keyword}{const} std::string str)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00035}00035 \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00036}00036     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} hash[SHA256\_DIGEST\_LENGTH];}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00037}00037 }
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00038}00038     SHA256\_CTX \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00039}00039     SHA256\_Init(\&\mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}});}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00040}00040     SHA256\_Update(\&\mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}}, str.c\_str(), str.size());}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00041}00041     SHA256\_Final(hash, \&\mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}});}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00042}00042 }
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00043}00043     std::stringstream buff;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00044}00044 }
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00045}00045     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < SHA256\_DIGEST\_LENGTH; i++)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00046}00046     \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00047}00047         buff << std::hex << std::setw(2) << std::setfill('0') << static\_cast<int>(hash[i]);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00048}00048     \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00049}00049     \textcolor{keywordflow}{return} buff.str();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00050}00050 \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00051}\mbox{\hyperlink{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}{00051}} std::vector<std::string> \mbox{\hyperlink{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}{changed}};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00052}00052 \textcolor{comment}{/* hash.hpp */}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00053}\mbox{\hyperlink{namespaceCBuild_aae905ec357d685e121d099e5bc4ac853}{00053}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_aae905ec357d685e121d099e5bc4ac853}{CBuild::hash\_match\_store}}(std::string hash\_file, std::string code\_file)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00054}00054 \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00055}00055     \textcolor{comment}{// Open files}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00056}00056     std::ifstream hashf(hash\_file);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00057}00057     std::ifstream file(code\_file);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00058}00058     \textcolor{comment}{// Load code file}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00059}00059     std::stringstream buffer;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00060}00060     buffer << file.rdbuf();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00061}00061     \textcolor{comment}{// Get hash of file}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00062}00062     std::string hash = \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}}(buffer.str());}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00063}00063     \textcolor{comment}{// Load saved hash}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00064}00064     std::stringstream saved;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00065}00065     saved << hashf.rdbuf();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00066}00066     \textcolor{comment}{// Compare hashes}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00067}00067     \textcolor{keywordtype}{bool} ret = \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00068}00068     \textcolor{keywordflow}{if} (saved.str() == std::string(\textcolor{stringliteral}{"{}-\/"{}}))}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00069}00069     \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00070}00070         ret = \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00071}00071     \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00072}00072     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (saved.str() != hash)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00073}00073     \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00074}00074         ret = \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00075}00075     \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00076}00076     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (saved.str() == hash)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00077}00077     \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00078}00078         ret = \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00079}00079     \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00080}00080     \textcolor{comment}{// Close hash file ond overwrite its content with new hash}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00081}00081     hashf.close();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00082}00082     std::ofstream hashfw(hash\_file);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00083}00083     hashfw << hash;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00084}00084     \textcolor{comment}{// Close all files and return value}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00085}00085     file.close();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00086}00086     hashfw.close();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00087}00087     \textcolor{keywordflow}{return} ret;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00088}00088 \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00089}00089 }
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00090}\mbox{\hyperlink{namespaceCBuild_a0f4e5b83b3f6e800684965a69f13ca6f}{00090}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_a0f4e5b83b3f6e800684965a69f13ca6f}{CBuild::load\_hash}}(std::string hash, std::string code)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00091}00091 \{ \textcolor{comment}{// Load files}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00092}00092     std::ifstream hfile(hash);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00093}00093     std::ifstream cfile(code);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00094}00094     \textcolor{comment}{// Load code file content}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00095}00095     std::stringstream buffer;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00096}00096     buffer << cfile.rdbuf();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00097}00097     \textcolor{comment}{// Get hash of file}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00098}00098     std::string hash\_str = \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}}(buffer.str());}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00099}00099     \textcolor{comment}{// Load saved hash}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00100}00100     std::stringstream saved;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00101}00101     saved << hfile.rdbuf();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00102}00102     \textcolor{comment}{// Compare hashes}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00103}00103     \textcolor{comment}{// True  -\/ match}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00104}00104     \textcolor{comment}{// False -\/ not match}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00105}00105     \textcolor{keywordtype}{bool} ret = \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00106}00106     \textcolor{keywordflow}{if} (saved.str() == std::string(\textcolor{stringliteral}{"{}-\/"{}}))}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00107}00107     \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00108}00108         ret = \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00109}00109     \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00110}00110     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (saved.str() != hash\_str)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00111}00111     \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00112}00112         ret = \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00113}00113     \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00114}00114     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (saved.str() == hash\_str)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00115}00115     \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00116}00116         ret = \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00117}00117     \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00118}00118     \textcolor{comment}{// Close files}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00119}00119     cfile.close();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00120}00120     hfile.close();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00121}00121     \textcolor{comment}{// Return}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00122}00122     \textcolor{keywordflow}{return} ret;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00123}00123 \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00124}\mbox{\hyperlink{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}{00124}} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}{CBuild::save\_hashes}}(std::vector<std::string> hash\_files, std::vector<std::string> code\_files)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00125}00125 \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00126}00126     \textcolor{comment}{// Error}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00127}00127     \textcolor{keywordflow}{if} (hash\_files.size() != code\_files.size())}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00128}00128     \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00129}00129         puts(\textcolor{stringliteral}{"{}Error, too many files in one of list given for hashing!"{}});}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00130}00130         exit(0xAA);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00131}00131     \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00132}00132     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < hash\_files.size(); i++)}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00133}00133     \{}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00134}00134         \textcolor{comment}{// Load files from list}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00135}00135         std::string hash = hash\_files.at(i);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00136}00136         std::string code = code\_files.at(i);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00137}00137         \textcolor{comment}{// Load files}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00138}00138         std::ofstream hfile(hash);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00139}00139         std::ifstream cfile(code);}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00140}00140         \textcolor{comment}{// Load code file content}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00141}00141         std::stringstream buffer;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00142}00142         buffer << cfile.rdbuf();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00143}00143         \textcolor{comment}{// Get hash of file}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00144}00144         std::string hash\_str = \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}}(buffer.str());}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00145}00145         \textcolor{comment}{// Write hash to file}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00146}00146         hfile << hash\_str;}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00147}00147         \textcolor{comment}{// Close files}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00148}00148         cfile.close();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00149}00149         hfile.close();}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00150}00150     \}}
-\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00151}00151 \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00023}00023\ \textcolor{comment}{//\ C++\ libraries}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}fstream"{}}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}iostream"{}}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}sstream"{}}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}iomanip"{}}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}openssl/sha.h"{}}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00029}00029\ \textcolor{preprocessor}{\#include\ "{}string"{}}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00030}00030\ \textcolor{preprocessor}{\#include\ "{}vector"{}}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00031}00031\ \textcolor{comment}{//\ Project\ headers}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}../../headers/hash.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00033}00033\ \textcolor{comment}{/*\ sha256\ */}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00034}\mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{00034}}\ std::string\ \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}}(\textcolor{keyword}{const}\ std::string\ str)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00035}00035\ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00036}00036\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ hash[SHA256\_DIGEST\_LENGTH];}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00038}00038\ \ \ \ \ SHA256\_CTX\ \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00039}00039\ \ \ \ \ SHA256\_Init(\&\mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}});}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00040}00040\ \ \ \ \ SHA256\_Update(\&\mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}},\ str.c\_str(),\ str.size());}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00041}00041\ \ \ \ \ SHA256\_Final(hash,\ \&\mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}});}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00043}00043\ \ \ \ \ std::stringstream\ buff;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00045}00045\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ SHA256\_DIGEST\_LENGTH;\ i++)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00046}00046\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00047}00047\ \ \ \ \ \ \ \ \ buff\ <<\ std::hex\ <<\ std::setw(2)\ <<\ std::setfill('0')\ <<\ static\_cast<int>(hash[i]);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00048}00048\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00049}00049\ \ \ \ \ \textcolor{keywordflow}{return}\ buff.str();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00050}00050\ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00051}\mbox{\hyperlink{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}{00051}}\ std::vector<std::string>\ \mbox{\hyperlink{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}{changed}};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00052}00052\ \textcolor{comment}{/*\ hash.hpp\ */}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00053}\mbox{\hyperlink{namespaceCBuild_aae905ec357d685e121d099e5bc4ac853}{00053}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_aae905ec357d685e121d099e5bc4ac853}{CBuild::hash\_match\_store}}(std::string\ hash\_file,\ std::string\ code\_file)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00054}00054\ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00055}00055\ \ \ \ \ \textcolor{comment}{//\ Open\ files}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00056}00056\ \ \ \ \ std::ifstream\ hashf(hash\_file);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00057}00057\ \ \ \ \ std::ifstream\ file(code\_file);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00058}00058\ \ \ \ \ \textcolor{comment}{//\ Load\ code\ file}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00059}00059\ \ \ \ \ std::stringstream\ buffer;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00060}00060\ \ \ \ \ buffer\ <<\ file.rdbuf();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00061}00061\ \ \ \ \ \textcolor{comment}{//\ Get\ hash\ of\ file}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00062}00062\ \ \ \ \ std::string\ hash\ =\ \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}}(buffer.str());}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00063}00063\ \ \ \ \ \textcolor{comment}{//\ Load\ saved\ hash}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00064}00064\ \ \ \ \ std::stringstream\ saved;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00065}00065\ \ \ \ \ saved\ <<\ hashf.rdbuf();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00066}00066\ \ \ \ \ \textcolor{comment}{//\ Compare\ hashes}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00067}00067\ \ \ \ \ \textcolor{keywordtype}{bool}\ ret\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00068}00068\ \ \ \ \ \textcolor{keywordflow}{if}\ (saved.str()\ ==\ std::string(\textcolor{stringliteral}{"{}-\/"{}}))}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00069}00069\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00070}00070\ \ \ \ \ \ \ \ \ ret\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00071}00071\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00072}00072\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (saved.str()\ !=\ hash)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00073}00073\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00074}00074\ \ \ \ \ \ \ \ \ ret\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00075}00075\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00076}00076\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (saved.str()\ ==\ hash)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00077}00077\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00078}00078\ \ \ \ \ \ \ \ \ ret\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00079}00079\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00080}00080\ \ \ \ \ \textcolor{comment}{//\ Close\ hash\ file\ ond\ overwrite\ its\ content\ with\ new\ hash}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00081}00081\ \ \ \ \ hashf.close();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00082}00082\ \ \ \ \ std::ofstream\ hashfw(hash\_file);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00083}00083\ \ \ \ \ hashfw\ <<\ hash;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ Close\ all\ files\ and\ return\ value}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00085}00085\ \ \ \ \ file.close();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00086}00086\ \ \ \ \ hashfw.close();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00087}00087\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00088}00088\ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00090}\mbox{\hyperlink{namespaceCBuild_a0f4e5b83b3f6e800684965a69f13ca6f}{00090}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_a0f4e5b83b3f6e800684965a69f13ca6f}{CBuild::load\_hash}}(std::string\ hash,\ std::string\ code)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00091}00091\ \{\ \textcolor{comment}{//\ Load\ files}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00092}00092\ \ \ \ \ std::ifstream\ hfile(hash);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00093}00093\ \ \ \ \ std::ifstream\ cfile(code);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00094}00094\ \ \ \ \ \textcolor{comment}{//\ Load\ code\ file\ content}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00095}00095\ \ \ \ \ std::stringstream\ buffer;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00096}00096\ \ \ \ \ buffer\ <<\ cfile.rdbuf();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00097}00097\ \ \ \ \ \textcolor{comment}{//\ Get\ hash\ of\ file}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00098}00098\ \ \ \ \ std::string\ hash\_str\ =\ \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}}(buffer.str());}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00099}00099\ \ \ \ \ \textcolor{comment}{//\ Load\ saved\ hash}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00100}00100\ \ \ \ \ std::stringstream\ saved;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00101}00101\ \ \ \ \ saved\ <<\ hfile.rdbuf();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00102}00102\ \ \ \ \ \textcolor{comment}{//\ Compare\ hashes}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00103}00103\ \ \ \ \ \textcolor{comment}{//\ True\ \ -\/\ match}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00104}00104\ \ \ \ \ \textcolor{comment}{//\ False\ -\/\ not\ match}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00105}00105\ \ \ \ \ \textcolor{keywordtype}{bool}\ ret\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00106}00106\ \ \ \ \ \textcolor{keywordflow}{if}\ (saved.str()\ ==\ std::string(\textcolor{stringliteral}{"{}-\/"{}}))}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00107}00107\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00108}00108\ \ \ \ \ \ \ \ \ ret\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00109}00109\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00110}00110\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (saved.str()\ !=\ hash\_str)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00111}00111\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00112}00112\ \ \ \ \ \ \ \ \ ret\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00113}00113\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00114}00114\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (saved.str()\ ==\ hash\_str)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00115}00115\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00116}00116\ \ \ \ \ \ \ \ \ ret\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00117}00117\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00118}00118\ \ \ \ \ \textcolor{comment}{//\ Close\ files}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00119}00119\ \ \ \ \ cfile.close();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00120}00120\ \ \ \ \ hfile.close();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00121}00121\ \ \ \ \ \textcolor{comment}{//\ Return}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00122}00122\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00123}00123\ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00124}\mbox{\hyperlink{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}{00124}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceCBuild_a871a11601fbb965a86d3667186022cbf}{CBuild::save\_hashes}}(std::vector<std::string>\ hash\_files,\ std::vector<std::string>\ code\_files)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00125}00125\ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00126}00126\ \ \ \ \ \textcolor{comment}{//\ Error}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00127}00127\ \ \ \ \ \textcolor{keywordflow}{if}\ (hash\_files.size()\ !=\ code\_files.size())}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00128}00128\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00129}00129\ \ \ \ \ \ \ \ \ puts(\textcolor{stringliteral}{"{}Error,\ too\ many\ files\ in\ one\ of\ list\ given\ for\ hashing!"{}});}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00130}00130\ \ \ \ \ \ \ \ \ exit(0xAA);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00131}00131\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00132}00132\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ hash\_files.size();\ i++)}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00133}00133\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00134}00134\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Load\ files\ from\ list}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00135}00135\ \ \ \ \ \ \ \ \ std::string\ hash\ =\ hash\_files.at(i);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00136}00136\ \ \ \ \ \ \ \ \ std::string\ code\ =\ code\_files.at(i);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00137}00137\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Load\ files}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00138}00138\ \ \ \ \ \ \ \ \ std::ofstream\ hfile(hash);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00139}00139\ \ \ \ \ \ \ \ \ std::ifstream\ cfile(code);}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00140}00140\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Load\ code\ file\ content}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00141}00141\ \ \ \ \ \ \ \ \ std::stringstream\ buffer;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00142}00142\ \ \ \ \ \ \ \ \ buffer\ <<\ cfile.rdbuf();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00143}00143\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ hash\ of\ file}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00144}00144\ \ \ \ \ \ \ \ \ std::string\ hash\_str\ =\ \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}}(buffer.str());}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00145}00145\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Write\ hash\ to\ file}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00146}00146\ \ \ \ \ \ \ \ \ hfile\ <<\ hash\_str;}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Close\ files}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00148}00148\ \ \ \ \ \ \ \ \ cfile.close();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00149}00149\ \ \ \ \ \ \ \ \ hfile.close();}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00150}00150\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hash_8cpp_source_l00151}00151\ \}}
 
 \end{DoxyCode}

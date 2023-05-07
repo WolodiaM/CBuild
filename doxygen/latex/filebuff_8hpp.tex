@@ -1,0 +1,37 @@
+\hypertarget{filebuff_8hpp}{}\doxysection{CBuild/headers/filebuff.hpp File Reference}
+\label{filebuff_8hpp}\index{CBuild/headers/filebuff.hpp@{CBuild/headers/filebuff.hpp}}
+{\ttfamily \#include \char`\"{}fstream\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}iostream\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}list\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sstream\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}string\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}string\+\_\+view\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classCBuild_1_1filebuff}{CBuild\+::filebuff}}
+\begin{DoxyCompactList}\small\item\em Filebuffer abstract class. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classCBuild_1_1line__filebuff}{CBuild\+::line\+\_\+filebuff}}
+\item 
+class \mbox{\hyperlink{classCBuild_1_1str__filebuff}{CBuild\+::str\+\_\+filebuff}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild}{CBuild}}
+\begin{DoxyCompactList}\small\item\em Filebuffer for \mbox{\hyperlink{namespaceCBuild}{CBuild}} ecosystem. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551}{CBuild\+::buffer\+\_\+state}} \{ \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild\+::\+MATCH}}
+, \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a38006a325c9e498b1c0ef09eb79cfed7}{CBuild\+::\+FILE\+\_\+\+NEWER}}
+, \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild\+::\+BUFFER\+\_\+\+NEWER}}
+ \}
+\begin{DoxyCompactList}\small\item\em State of the filebuffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_a6aa17851864dae2c1f19cfbd2e89fa8d}{CBuild\+::parse\+\_\+lines}} (std\+::string in)
+\begin{DoxyCompactList}\small\item\em Parse std\+::string with \textquotesingle{}~\newline
+\textquotesingle{} to std\+::vector$<$std\+::string$>$ \end{DoxyCompactList}\end{DoxyCompactItemize}

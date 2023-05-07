@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['magenta_0',['MAGENTA',['../namespaceCBuild.html#a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34',1,'CBuild']]]
+  ['load_5fdeps_0',['LOAD_DEPS',['../namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2aaa9b94136eb4cfacd14b867c1103c409',1,'CBuild']]]
 ];
