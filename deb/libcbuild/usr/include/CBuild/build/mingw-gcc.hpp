@@ -22,12 +22,12 @@
  */
 // Project files
 #include "Build.hpp"
-#include "CBuild/CBuild_defs.hpp"
-#include "CBuild/print.hpp"
-#include "CBuild/register.hpp"
-#include "CBuild/filesystem++.hpp"
-#include "CBuild/hash.hpp"
-#include "CBuild/system.hpp"
+#include "../CBuild_defs.hpp"
+#include "../print.hpp"
+#include "../register.hpp"
+#include "../filesystem++.hpp"
+#include "../hash.hpp"
+#include "../system.hpp"
 // Code
 #ifndef _CBUILD_MINGW_GCC_TOOLCHAIN
 #define _CBUILD_MINGW_GCC_TOOLCHAIN

@@ -22,9 +22,9 @@
  */
 // Project files
 #include "Build.hpp"
-#include "CBuild/print.hpp"
-#include "CBuild/hash.hpp"
-#include "CBuild/system.hpp"
+#include "../print.hpp"
+#include "../hash.hpp"
+#include "../system.hpp"
 // Code
 #ifndef _CBUILD_GCC_TOOLCHAIN
 #define _CBUILD_GCC_TOOLCHAIN

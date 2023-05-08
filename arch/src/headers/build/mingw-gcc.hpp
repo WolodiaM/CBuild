@@ -1,7 +1,7 @@
 /**
- * @file mingw-g++.hpp
+ * @file mingw-gcc.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief mingw-g++ toolchain realization
+ * @brief mingw-gcc toolchain realization
  * @version 1.0
  * @date 2023-02-03
  *
@@ -22,49 +22,49 @@
  */
 // Project files
 #include "Build.hpp"
-#include "CBuild/CBuild_defs.hpp"
-#include "CBuild/print.hpp"
-#include "CBuild/register.hpp"
-#include "CBuild/filesystem++.hpp"
-#include "CBuild/hash.hpp"
-#include "CBuild/system.hpp"
+#include "../CBuild_defs.hpp"
+#include "../print.hpp"
+#include "../register.hpp"
+#include "../filesystem++.hpp"
+#include "../hash.hpp"
+#include "../system.hpp"
 // Code
-#ifndef _CBUILD_MINGW_GXX_TOOLCHAIN
-#define _CBUILD_MINGW_GXX_TOOLCHAIN
+#ifndef _CBUILD_MINGW_GCC_TOOLCHAIN
+#define _CBUILD_MINGW_GCC_TOOLCHAIN
 namespace CBuild
 {
-    class MINGW_GXX : public CBuild::Toolchain
+    class MINGW_GCC : public CBuild::Toolchain
     {
     public:
         /**
-         * @brief Construct a new MINGW_GXX object
+         * @brief Construct a new MINGW_GCC object
          *
          * @param id Id
          */
-        MINGW_GXX(std::string id)
+        MINGW_GCC(std::string id)
         {
             this->id = id;
-            this->linker = "x86_64-w64-mingw32-g++";
-            this->compiler = "x86_64-w64-mingw32-g++";
+            this->linker = "x86_64-w64-mingw32-gcc";
+            this->compiler = "x86_64-w64-mingw32-gcc";
             this->packer = "x86_64-w64-mingw32-ar cr";
         }
         /**
-         * @brief Construct a new MINGW_GXX object
+         * @brief Construct a new MINGW_GCC object
          *
          * @param id Id
          * @param name Name
          */
-        MINGW_GXX(std::string id, std::string name)
+        MINGW_GCC(std::string id, std::string name)
         {
             this->id = id;
             this->name = name;
-            this->linker = "x86_64-w64-mingw32-g++";
-            this->compiler = "x86_64-w64-mingw32-g++";
+            this->linker = "x86_64-w64-mingw32-gcc";
+            this->compiler = "x86_64-w64-mingw32-gcc";
             this->packer = "x86_64-w64-mingw32-ar cr";
         }
 
     protected:
-        // For docs see g++.hpp and Build.hpp
+        // For docs see mingw-g++.hpp
         void build()
         {
             std::string args;
@@ -143,22 +143,19 @@ namespace CBuild
                 cmd += flist;
                 cmd += " ";
                 // CBuild::print(cmd, CBuild::BLUE);
-                CBuild::system(cmd);
+                CBuild::system(cmd.c_str());
             }
         }
         void post_link()
         {
-            // For every dependency
             for (std::string id : this->depends)
             {
-                // Get name
                 auto target = CBuild::Registry::GetToolchain(id, true);
                 if (target != NULL)
                 {
                     auto out_path = target->gen_out_name(".exe", ".dll");
                     unsigned int end_slash = out_path.find_last_of('/');
                     std::string out = CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_BUILD_OUT_DIR + "/" + out_path.substr(end_slash + 1);
-                    // Copy it to dir, where windows can access it
                     CBuild::fs::copy(out_path, out);
                 }
                 
@@ -222,7 +219,6 @@ namespace CBuild
             if (debug)
                 this->compiler_args.push_back("-g");
             this->compiler_args.push_back("-fPIC");
-            // Need for compilation
             this->add_link_arg("-static-libgcc");
             this->add_link_arg("-static-libstdc++");
             this->init();
@@ -332,4 +328,4 @@ namespace CBuild
         }
     };
 } // namespace CBuild
-#endif // _CBUILD_MINGW_GXX_TOOLCHAIN
+#endif // _CBUILD_MINGW_GCC_TOOLCHAIN

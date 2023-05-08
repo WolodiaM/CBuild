@@ -2,7 +2,7 @@
 \label{classCBuild_1_1filebuff}\index{CBuild::filebuff@{CBuild::filebuff}}
 
 
-Filebuffer abstract class.  
+Base class of filebuffer.  
 
 
 
@@ -19,45 +19,43 @@ Inheritance diagram for CBuild\+::filebuff\+:\begin{figure}[H]
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classCBuild_1_1filebuff_a6c9fdf8e08fec0c5015215464cbd1a4b}{filebuff}} (std\+::string file, bool \mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}=true)
-\begin{DoxyCompactList}\small\item\em Construct new filebuff, set some starting variables. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Create filebuffer, simply store some vars. \end{DoxyCompactList}\item 
 virtual char \mbox{\hyperlink{classCBuild_1_1filebuff_af0ea3d8e0f783fdbd2c1347fadf78752}{get\+\_\+char}} (unsigned int pos)=0
-\begin{DoxyCompactList}\small\item\em Get character from file. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Get character from file, return -\/1 on error. \end{DoxyCompactList}\item 
 virtual std\+::string \mbox{\hyperlink{classCBuild_1_1filebuff_aa2028875fbefb921f1d923d74aa654e0}{get\+\_\+str}} (unsigned int pos, unsigned int size)=0
-\begin{DoxyCompactList}\small\item\em Get string from file. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Get sequence of characters from file. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCBuild_1_1filebuff_aa4cc267391bca36b9fd6bf106b1b94db}{set\+\_\+char}} (char ch, unsigned int pos)=0
-\begin{DoxyCompactList}\small\item\em Set (append) char after the pos in file. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Set character in file. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCBuild_1_1filebuff_a8e753d65e1e9fb3ba080908211fe225c}{set\+\_\+str}} (std\+::string str, unsigned int pos)=0
-\begin{DoxyCompactList}\small\item\em Set string after specified pos. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Set string in file. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCBuild_1_1filebuff_ad33bb9b00cd5d5ac2671c03a137c1d84}{del\+\_\+char}} (unsigned int pos)=0
-\begin{DoxyCompactList}\small\item\em Delete char on specified position. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Remove character from file. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCBuild_1_1filebuff_a6d120b47269121b6c57b560bc9f7083c}{del\+\_\+str}} (unsigned int pos, unsigned int size)=0
-\begin{DoxyCompactList}\small\item\em Delete string on specified position of specified size. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Remove sequence of characters from file. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCBuild_1_1filebuff_abee9eab34130d0c2b2733325c2416980}{update}} ()=0
-\begin{DoxyCompactList}\small\item\em Update file / buffer based on state. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Update file/buffer based on internal state variable. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551}{CBuild\+::buffer\+\_\+state}} \mbox{\hyperlink{classCBuild_1_1filebuff_a6dd21edfe823f1543288b40aab9dba6c}{get\+\_\+state}} ()
-\begin{DoxyCompactList}\small\item\em Get state of buffer. \end{DoxyCompactList}\item 
-virtual \mbox{\hyperlink{classCBuild_1_1filebuff_af22d93052e0c873f852c6da85a2b2f16}{$\sim$filebuff}} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get state of file. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 virtual void \mbox{\hyperlink{classCBuild_1_1filebuff_a38f70480329b7e1bde29af9587b4fe19}{load\+\_\+buffer}} ()=0
 \begin{DoxyCompactList}\small\item\em Load buffer from file. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCBuild_1_1filebuff_af54b321658c70aee40ffbb4022f33233}{save\+\_\+buffer}} ()=0
-\begin{DoxyCompactList}\small\item\em Load buffer from file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Save buffer to file. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
 std\+::string \mbox{\hyperlink{classCBuild_1_1filebuff_a78aeee86e95c04ed18ecd1c3e071a0c9}{path}}
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structCBuild_1_1Path}{Path}} to file. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}
-\begin{DoxyCompactList}\small\item\em Does file need to be autoupdated on buffer changes. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Does file need to be automaticly. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551}{CBuild\+::buffer\+\_\+state}} \mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}}
-\begin{DoxyCompactList}\small\item\em Current state of buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Currennt state of buffer. All operation that change buffer need to set state to \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild\+::\+BUFFER\+\_\+\+NEWER}} or update file based on autorefresh variable. All function that update buffer/file and synchronise it need to set state to \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild\+::\+MATCH}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Filebuffer abstract class. 
+Base class of filebuffer. 
 
 Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00076}{76}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
 
@@ -72,32 +70,22 @@ Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00076}{76}} of file \m
 
 
 
-Construct new filebuff, set some starting variables. 
+Create filebuffer, simply store some vars. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em file} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} Buferized file \\
+{\em file} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} \mbox{\hyperlink{structCBuild_1_1Path}{Path}} to file \\
 \hline
-{\em autorefresh} & =\texorpdfstring{$>$}{>} bool -\/\texorpdfstring{$>$}{>} Does file need to be autoupdated on bugffer updates \\
+{\em autorefresh} & =\texorpdfstring{$>$}{>} bool -\/\texorpdfstring{$>$}{>} set autorefresh var \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00107}{107}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
+Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00109}{109}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
 
 
 
 References \mbox{\hyperlink{filebuff_8hpp_source_l00085}{autorefresh}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00066}{CBuild\+::\+FILE\+\_\+\+NEWER}}.
-
-\mbox{\Hypertarget{classCBuild_1_1filebuff_af22d93052e0c873f852c6da85a2b2f16}\label{classCBuild_1_1filebuff_af22d93052e0c873f852c6da85a2b2f16}} 
-\index{CBuild::filebuff@{CBuild::filebuff}!````~filebuff@{$\sim$filebuff}}
-\index{````~filebuff@{$\sim$filebuff}!CBuild::filebuff@{CBuild::filebuff}}
-\doxysubsubsection{\texorpdfstring{$\sim$filebuff()}{~filebuff()}}
-{\footnotesize\ttfamily virtual CBuild\+::filebuff\+::$\sim$filebuff (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
-
-
-
-Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00164}{164}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
 
 
 
@@ -110,11 +98,11 @@ Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00164}{164}} of file \
 
 
 
-Delete char on specified position. 
+Remove character from file. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Position \\
+{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Position of character thet need to be removed \\
 \hline
 \end{DoxyParams}
 
@@ -129,13 +117,13 @@ Implemented in \mbox{\hyperlink{classCBuild_1_1line__filebuff_a7c193822ba662866b
 
 
 
-Delete string on specified position of specified size. 
+Remove sequence of characters from file. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Position \\
+{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Postion of first character of sequence \\
 \hline
-{\em size} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Number of symbols \\
+{\em size} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Number of character to remove \\
 \hline
 \end{DoxyParams}
 
@@ -150,7 +138,7 @@ Implemented in \mbox{\hyperlink{classCBuild_1_1line__filebuff_ab4a5d8e5ae90b3584
 
 
 
-Get character from file. 
+Get character from file, return -\/1 on error. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -158,7 +146,7 @@ Get character from file.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-char -\/\texorpdfstring{$>$}{>} Returned char of -\/1 
+char -\/\texorpdfstring{$>$}{>} Symbol 
 \end{DoxyReturn}
 
 
@@ -172,18 +160,18 @@ Implemented in \mbox{\hyperlink{classCBuild_1_1line__filebuff_a0cb0d041e41fbe093
 
 
 
-Get state of buffer. 
+Get state of file. 
 
 \begin{DoxyReturn}{Returns}
-\mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551}{CBuild\+::buffer\+\_\+state}} -\/\texorpdfstring{$>$}{>} State 
+\mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551}{CBuild\+::buffer\+\_\+state}} -\/\texorpdfstring{$>$}{>} Current state of filebuffer 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00163}{163}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
+Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00168}{168}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{filebuff_8hpp_source_l00089}{state}}.
+References \mbox{\hyperlink{filebuff_8hpp_source_l00092}{state}}.
 
 \mbox{\Hypertarget{classCBuild_1_1filebuff_aa2028875fbefb921f1d923d74aa654e0}\label{classCBuild_1_1filebuff_aa2028875fbefb921f1d923d74aa654e0}} 
 \index{CBuild::filebuff@{CBuild::filebuff}!get\_str@{get\_str}}
@@ -193,17 +181,17 @@ References \mbox{\hyperlink{filebuff_8hpp_source_l00089}{state}}.
 
 
 
-Get string from file. 
+Get sequence of characters from file. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Starting character of string \\
+{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Postion of first character of line \\
 \hline
-{\em size} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Number of chars in string \\
+{\em size} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Number of characters in line \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::string -\/\texorpdfstring{$>$}{>} Returned string or \char`\"{}\char`\"{} 
+std\+::string -\/\texorpdfstring{$>$}{>} String 
 \end{DoxyReturn}
 
 
@@ -231,7 +219,7 @@ Implemented in \mbox{\hyperlink{classCBuild_1_1line__filebuff_af83ea9973c52e914f
 
 
 
-Load buffer from file. 
+Save buffer to file. 
 
 
 
@@ -245,13 +233,13 @@ Implemented in \mbox{\hyperlink{classCBuild_1_1line__filebuff_a0266702d38aed5c37
 
 
 
-Set (append) char after the pos in file. 
+Set character in file. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em ch} & =\texorpdfstring{$>$}{>} char -\/\texorpdfstring{$>$}{>} char to set \\
+{\em ch} & =\texorpdfstring{$>$}{>} char -\/\texorpdfstring{$>$}{>} Character \\
 \hline
-{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} position \\
+{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Character will be appended to file on this pos \\
 \hline
 \end{DoxyParams}
 
@@ -266,13 +254,13 @@ Implemented in \mbox{\hyperlink{classCBuild_1_1line__filebuff_ace55fa84cec51dd7f
 
 
 
-Set string after specified pos. 
+Set string in file. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em str} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} String to set \\
+{\em ch} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} String \\
 \hline
-{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Position \\
+{\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} String will be appended to file on this pos \\
 \hline
 \end{DoxyParams}
 
@@ -287,7 +275,7 @@ Implemented in \mbox{\hyperlink{classCBuild_1_1line__filebuff_a27f993bcecaa63d81
 
 
 
-Update file / buffer based on state. 
+Update file/buffer based on internal state variable. 
 
 
 
@@ -304,7 +292,7 @@ Implemented in \mbox{\hyperlink{classCBuild_1_1line__filebuff_a9936beac564015d34
 
 
 
-Does file need to be autoupdated on buffer changes. 
+Does file need to be automaticly. 
 
 
 
@@ -312,7 +300,7 @@ Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00085}{85}} of file \m
 
 
 
-Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00308}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00493}{CBuild\+::str\+\_\+filebuff\+::del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00405}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00333}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00504}{CBuild\+::str\+\_\+filebuff\+::del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00107}{filebuff()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00248}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00469}{CBuild\+::str\+\_\+filebuff\+::set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00395}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00274}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+str()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00482}{CBuild\+::str\+\_\+filebuff\+::set\+\_\+str()}}.
+Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00312}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00514}{CBuild\+::str\+\_\+filebuff\+::del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00426}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00337}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00525}{CBuild\+::str\+\_\+filebuff\+::del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00109}{filebuff()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00252}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00490}{CBuild\+::str\+\_\+filebuff\+::set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00411}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00278}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+str()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00503}{CBuild\+::str\+\_\+filebuff\+::set\+\_\+str()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1filebuff_a78aeee86e95c04ed18ecd1c3e071a0c9}\label{classCBuild_1_1filebuff_a78aeee86e95c04ed18ecd1c3e071a0c9}} 
 \index{CBuild::filebuff@{CBuild::filebuff}!path@{path}}
@@ -330,7 +318,7 @@ Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00081}{81}} of file \m
 
 
 
-Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00169}{CBuild\+::line\+\_\+filebuff\+::load\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00432}{CBuild\+::str\+\_\+filebuff\+::load\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00178}{CBuild\+::line\+\_\+filebuff\+::save\+\_\+buffer()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00439}{CBuild\+::str\+\_\+filebuff\+::save\+\_\+buffer()}}.
+Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00173}{CBuild\+::line\+\_\+filebuff\+::load\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00453}{CBuild\+::str\+\_\+filebuff\+::load\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00182}{CBuild\+::line\+\_\+filebuff\+::save\+\_\+buffer()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00460}{CBuild\+::str\+\_\+filebuff\+::save\+\_\+buffer()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}\label{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}} 
 \index{CBuild::filebuff@{CBuild::filebuff}!state@{state}}
@@ -340,15 +328,15 @@ Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00169}{CBuild\+::line\+\_\+
 
 
 
-Current state of buffer. 
+Currennt state of buffer. All operation that change buffer need to set state to \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild\+::\+BUFFER\+\_\+\+NEWER}} or update file based on autorefresh variable. All function that update buffer/file and synchronise it need to set state to \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild\+::\+MATCH}}. 
 
 
 
-Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00089}{89}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
+Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00092}{92}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00308}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00493}{CBuild\+::str\+\_\+filebuff\+::del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00405}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00333}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00504}{CBuild\+::str\+\_\+filebuff\+::del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00163}{get\+\_\+state()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00169}{CBuild\+::line\+\_\+filebuff\+::load\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00432}{CBuild\+::str\+\_\+filebuff\+::load\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00439}{CBuild\+::str\+\_\+filebuff\+::save\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00248}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00469}{CBuild\+::str\+\_\+filebuff\+::set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00395}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00274}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00482}{CBuild\+::str\+\_\+filebuff\+::set\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00415}{CBuild\+::line\+\_\+filebuff\+::update()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00515}{CBuild\+::str\+\_\+filebuff\+::update()}}.
+Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00312}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00514}{CBuild\+::str\+\_\+filebuff\+::del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00426}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00337}{CBuild\+::line\+\_\+filebuff\+::del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00525}{CBuild\+::str\+\_\+filebuff\+::del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00168}{get\+\_\+state()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00173}{CBuild\+::line\+\_\+filebuff\+::load\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00453}{CBuild\+::str\+\_\+filebuff\+::load\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00460}{CBuild\+::str\+\_\+filebuff\+::save\+\_\+buffer()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00252}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00490}{CBuild\+::str\+\_\+filebuff\+::set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00411}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00278}{CBuild\+::line\+\_\+filebuff\+::set\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00503}{CBuild\+::str\+\_\+filebuff\+::set\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00436}{CBuild\+::line\+\_\+filebuff\+::update()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00536}{CBuild\+::str\+\_\+filebuff\+::update()}}.
 
 
 

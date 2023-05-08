@@ -106,6 +106,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2404dcec344234f77320e48f42314cd2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1fs.html#a2404dcec344234f77320e48f42314cd2">set_var</a> (std::string file, std::string var_type, std::string var_name, std::string data)</td></tr>
 <tr class="memdesc:a2404dcec344234f77320e48f42314cd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set value of variable with type var_type wth name var_name to data.  <br /></td></tr>
 <tr class="separator:a2404dcec344234f77320e48f42314cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c6451e4dba7aa53cbeaa1749a7c0882"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1fs.html#a3c6451e4dba7aa53cbeaa1749a7c0882">path_to_file</a> (std::string in)</td></tr>
+<tr class="memdesc:a3c6451e4dba7aa53cbeaa1749a7c0882"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert path to filename by replacing '\' by '.'.  <br /></td></tr>
+<tr class="separator:a3c6451e4dba7aa53cbeaa1749a7c0882"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef722b53b2f3a9a154cfee0298c364b4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1fs.html#aef722b53b2f3a9a154cfee0298c364b4">dir</a> (std::string path, std::string search)</td></tr>
 <tr class="memdesc:aef722b53b2f3a9a154cfee0298c364b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search files using provided regex.  <br /></td></tr>
 <tr class="separator:aef722b53b2f3a9a154cfee0298c364b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,7 +192,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="filesystem_09_09_8cpp_source.html#l00068">dir()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00114">dir_rec()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="filesystem_09_09_8cpp_source.html#l00062">dir()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00102">dir_rec()</a>.</p>
 
 </div>
 </div>
@@ -229,7 +232,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool -&gt; success or failure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00198">198</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00167">167</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="mingw-g_09_09_8hpp_source.html#l00149">CBuild::MINGW_GXX::post_link()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00149">CBuild::MINGW_GCC::post_link()</a>.</p>
 
@@ -271,11 +274,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool -&gt; success or failure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00238">238</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00199">199</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="filesystem_09_09_8hpp_source.html#l00048">DIR</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00044">DIRECTORY</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00040">FILE</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00064">HARDLINK</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00060">SYMLINK_DIR</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00056">SYMLINK_DIRECTORY</a>, and <a class="el" href="filesystem_09_09_8hpp_source.html#l00052">SYMLINK_FILE</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00101">CBuild::Init::call()</a>, <a class="el" href="Build_8cpp_source.html#l00215">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="Build_8cpp_source.html#l00386">CBuild::Toolchain::init()</a>, and <a class="el" href="CBuild_8cpp_source.html#l00276">CBuild::loop()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00101">CBuild::Init::call()</a>, <a class="el" href="Build_8cpp_source.html#l00215">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="Build_8cpp_source.html#l00386">CBuild::Toolchain::init()</a>, <a class="el" href="CBuild_8cpp_source.html#l00276">CBuild::loop()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00347">replace()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00381">set_var()</a>.</p>
 
 </div>
 </div>
@@ -304,7 +307,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::string&gt; -&gt; list of found files </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00068">68</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00062">62</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceCBuild_1_1fs.html#ae5f953371b71cb3646780beda3688035">c_cpp_file()</a>.</p>
 
@@ -346,7 +349,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::string&gt; -&gt; list of found files </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00044">44</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00042">42</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00215">CBuild::Toolchain::gen_file_list()</a>.</p>
 
@@ -376,7 +379,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::string&gt; -&gt; list of found files </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00114">114</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00102">102</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceCBuild_1_1fs.html#ae5f953371b71cb3646780beda3688035">c_cpp_file()</a>.</p>
 
@@ -417,7 +420,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::string&gt; -&gt; list of found files </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00090">90</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00080">80</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
 </div>
 </div>
@@ -446,7 +449,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool -&gt; does object exist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00505">505</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00341">341</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00101">CBuild::Init::call()</a>, <a class="el" href="Build_8cpp_source.html#l00215">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="Build_8cpp_source.html#l00386">CBuild::Toolchain::init()</a>, and <a class="el" href="CBuild_8cpp_source.html#l00276">CBuild::loop()</a>.</p>
 
@@ -488,11 +491,42 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool -&gt; success or failure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00217">217</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00182">182</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="filesystem_09_09_8cpp_source.html#l00157">remove()</a>.</p>
+<p class="reference">References <a class="el" href="filesystem_09_09_8cpp_source.html#l00137">remove()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="filesystem_09_09_8cpp_source.html#l00423">replace()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00459">set_var()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="filesystem_09_09_8cpp_source.html#l00347">replace()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00381">set_var()</a>.</p>
+
+</div>
+</div>
+<a id="a3c6451e4dba7aa53cbeaa1749a7c0882" name="a3c6451e4dba7aa53cbeaa1749a7c0882"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c6451e4dba7aa53cbeaa1749a7c0882">&#9670;&#160;</a></span>path_to_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string CBuild::fs::path_to_file </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert path to filename by replacing '\' by '.'. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>=&gt; std::string -&gt; Input path </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::string -&gt; Filename </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00430">430</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="filesystem_09_09_8cpp_source.html#l00347">replace()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00381">set_var()</a>.</p>
 
 </div>
 </div>
@@ -531,9 +565,9 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool -&gt; success or failure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00157">157</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00137">137</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00276">CBuild::loop()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00217">move()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00423">replace()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00459">set_var()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00276">CBuild::loop()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00182">move()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00347">replace()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00381">set_var()</a>.</p>
 
 </div>
 </div>
@@ -579,7 +613,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool -&gt; success or failure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00137">137</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00121">121</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
 </div>
 </div>
@@ -626,9 +660,9 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int -&gt; -1 = error, else - number of replaced tokens </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00423">423</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00347">347</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00029">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00033">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00217">move()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00157">remove()</a>.</p>
+<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00029">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00033">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00199">create()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00040">FILE</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00182">move()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00430">path_to_file()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00137">remove()</a>.</p>
 
 </div>
 </div>
@@ -682,9 +716,9 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int -&gt; -1 - error, else - number of replaced tokens </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00459">459</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00381">381</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00029">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00033">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00217">move()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00157">remove()</a>.</p>
+<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00029">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00033">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00199">create()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00040">FILE</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00182">move()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00430">path_to_file()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00137">remove()</a>.</p>
 
 </div>
 </div>

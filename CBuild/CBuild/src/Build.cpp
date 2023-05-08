@@ -280,7 +280,7 @@ lib::map<std::string, std::string> CBuild::Toolchain::gen_file_list(
 		for (auto elem : this->targets) {
 			// If folder
 			if (elem.folder) {
-				// For evry file in folder
+				// For every file in folder
 				std::vector<std::string> files =
 				    CBuild::fs::dir(elem.path);
 				for (auto f : files) {
@@ -416,7 +416,8 @@ void CBuild::Toolchain::init() {
 void CBuild::Toolchain::load_project_deps(std::string curr_path) {
 	for (auto elem : this->project_deps) {
 		// Generate and execute command for build dependencies
-		std::string cmd = "cd " + elem.path + " && ./CBuild.run -b " + elem.id;
+		std::string cmd =
+		    "cd " + elem.path + " && ./CBuild.run -b " + elem.id;
 		CBuild::system(cmd);
 		// Copy files
 		CBuild::system("cp -r " + elem.path + "/" + CBUILD_BUILD_DIR +
@@ -458,8 +459,10 @@ void CBuild::Toolchain::call(std::vector<std::string> *args, bool force,
 	this->add_compile_arg("-Wl,-z,origin");
 	this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
 	this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-	this->add_compile_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
-	this->add_link_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
+	this->add_compile_arg("-I" + CBUILD_CACHE_DIR + "/" +
+			      CBUILD_PROJECT_DEPS_HEADERS);
+	this->add_link_arg("-I" + CBUILD_CACHE_DIR + "/" +
+			   CBUILD_PROJECT_DEPS_HEADERS);
 	// For packing in deb fomat
 	if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
 		std::string lib = this->gen_out_name();

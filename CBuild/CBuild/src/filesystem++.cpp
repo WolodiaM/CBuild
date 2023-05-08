@@ -351,6 +351,7 @@ int CBuild::fs::replace(std::string file, std::string token, std::string data) {
 		CBuild::fs::path_to_file(file) + ".tmp";
 	// std::cout << cache << "\n";
 	// Open two files
+	CBuild::fs::create({cache}, CBuild::fs::FILE);
 	std::ofstream tmp_file(cache);
 	std::ifstream main_file;
 	main_file.open(file);
@@ -385,6 +386,7 @@ int CBuild::fs::set_var(std::string file, std::string var_type,
 		CBuild::fs::path_to_file(file) + ".tmp";
 	// std::cout << cache << "\n";
 	// Open two files
+	CBuild::fs::create({cache}, CBuild::fs::FILE);
 	std::ofstream tmp_file(cache);
 	std::ifstream main_file;
 	main_file.open(file);

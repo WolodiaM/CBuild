@@ -167,7 +167,7 @@ class pack_deb : public pack_base {
 	}
 
        public:
-	pack_deb() : pack_base("pack_deb", "./deb_tmp/") {}
+	pack_deb() : pack_base("pack_deb", "./deb/") {}
 	void call(std::vector<std::string> args __attribute_maybe_unused__) {
 		// Changelog
 		this->editChangelog();
@@ -233,12 +233,79 @@ class pack_deb : public pack_base {
 		    this->work_folder + "/libcbuild/DEBIAN/control", "$VERSION",
 		    this->version_str());
 		//  Pack package
-		//  CBuild::system(
-		//      "cd " + this->work_folder +
-		//      " && dpkg-deb --root-owner-group --build libcbuild");
+		CBuild::system(
+		    "cd " + this->work_folder +
+		    " && dpkg-deb --root-owner-group --build libcbuild");
 		//  Run lintian
-		//  CBuild::system("lintian ./" + this->work_folder +
-		//  	       "/libcbuild.deb");
+		// CBuild::system("lintian ./" + this->work_folder +
+		// 	       "/libcbuild.deb");
+	}
+};
+class pack_aur : public pack_base {
+       private:
+	void create_pkgbuild() {
+		CBuild::fs::create({this->work_folder + "/PKGBUILD"},
+				   CBuild::fs::FILE);
+		CBuild::line_filebuff pkg(this->work_folder + "/PKGBUILD");
+		pkg.set_line("pkgname=\"libcbuild\"", 0);
+		pkg.set_line("pkgver=\"" + this->version_str() + "\"", 1);
+		pkg.set_line("pkgrel=\"1\"", 2);
+		pkg.set_line(
+		    "pkgdesc=\"Build system for c++ with scripts written in "
+		    "c++\"",
+		    3);
+		pkg.set_line("arch=(\"x86_64\")", 4);
+		pkg.set_line(
+		    "depends=(\"glibc>=2.17\" \"gcc-libs>=4.9\" \"nss>=3.0\")",
+		    5);
+		pkg.set_line("license=(\"GPL3\")", 6);
+		auto files = CBuild::fs::dir_rec(this->work_folder, ".*\\..*");
+		std::string buff = "";
+		for (auto elem : files) {
+			buff += "\"";
+			buff += elem;
+			buff += "\"";
+		}
+		pkg.set_line("source=(" + buff + ")", 7);
+		pkg.set_line("sha512sums=(\"SKIP\")", 8);
+		pkg.set_line("package() {", 9);
+		pkg.set_line(
+		    "\tinstall -Dm755 \"$srcdir/CBuild_rebuild\" "
+		    "\"$pkgdir/usr/bin/CBuild_rebuild\"",
+		    10);
+		pkg.set_line(
+		    "\tinstall -Dm755 \"$srcdir/libCBuild.so\" "
+		    "\"$pkgdir/usr/lib/libCBuild.so\"",
+		    11);
+		pkg.set_line("\tmkdir -p \"$pkgdir/usr/include/CBuild\"", 12);
+		pkg.set_line(
+		    "\tcp -r $srcdir/headers/* \"$pkgdir/usr/include/\"", 13);
+		pkg.set_line("\tchmod +x \"$pkgdir/usr/bin/CBuild_rebuild\"",
+			     14);
+		pkg.set_line("}", 15);
+		pkg.update();
+	}
+
+       public:
+	pack_aur() : pack_base("pack_aur", "./arch/") {}
+	void call(std::vector<std::string> args __attribute_maybe_unused__) {
+		// Clear
+		CBuild::system("rm -r " + this->work_folder + "/*");
+		// Copy files
+		CBuild::fs::create({this->work_folder + "/src"},
+				   CBuild::fs::DIR);
+		CBuild::fs::copy("CBuild/CBuild/libCBuild.so",
+				 this->work_folder + "/src/");
+		CBuild::fs::copy("CBuild/CBuild/libCBuild.so",
+				 this->work_folder);
+		CBuild::system("cp -r CBuild/headers " + this->work_folder +
+			       "/src/");
+		CBuild::fs::copy("rebuild.sh",
+				 this->work_folder + "/src/CBuild_rebuild");
+		CBuild::fs::copy("rebuild.sh",
+				 this->work_folder + "/CBuild_rebuild");
+		// Create PKGBUILD
+		this->create_pkgbuild();
 	}
 };
 #endif	// __PACK_HPP__

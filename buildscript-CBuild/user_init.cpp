@@ -52,6 +52,7 @@ void init() {
 	libCBuild.depends_on("mull_lib");
 	libCBuild.set_type(CBuild::DYNAMIC_LIBRARY);
 	libCBuild.add_requirment("copyLib", CBuild::POST);
+	libCBuild.add_requirment("proccesVersion", CBuild::PRE);
 	libCBuild.add_library_include("crypto");
 	CBuild::Registry::RegisterTarget(&libCBuild);
 	CBuild::Registry::RegistryTask(&cpy);

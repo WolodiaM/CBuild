@@ -1,0 +1,14 @@
+ - Static scratch field in hash class for map of file_path-file_hash
+ - Map of hashes from hash files
+ - Load cpp file
+ 	- Strip comments
+	- Load list of needed headers
+	- Get hash
+	- Store hash of file in map
+	- Iterate over list of headers and if in map - skip, else:
+		- Load hpp file
+		- Strip comments
+		- Get hash
+		- Store hash in map
+	- Check if cpp hash match and if all hpp hashes match, if something not - add file for recompilation
+- Use not-deprecased function from OpenSSL!
