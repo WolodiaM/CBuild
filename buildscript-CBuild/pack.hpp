@@ -255,9 +255,7 @@ class pack_aur : public pack_base {
 		    "c++\"",
 		    3);
 		pkg.set_line("arch=(\"x86_64\")", 4);
-		pkg.set_line(
-		    "depends=(\"glibc>=2.17\" \"gcc-libs>=4.9\" \"nss>=3.0\")",
-		    5);
+		pkg.set_line("depends=(\"glibc>=2.17\" \"gcc-libs>=4.9\")", 5);
 		pkg.set_line("license=(\"GPL3\")", 6);
 		auto files = CBuild::fs::dir_rec(this->work_folder, ".*\\..*");
 		std::string buff = "";
@@ -279,7 +277,8 @@ class pack_aur : public pack_base {
 		    11);
 		pkg.set_line("\tmkdir -p \"$pkgdir/usr/include/CBuild\"", 12);
 		pkg.set_line(
-		    "\tcp -r $srcdir/headers/* \"$pkgdir/usr/include/\"", 13);
+		    "\tcp -r $srcdir/headers/* \"$pkgdir/usr/include/CBuild/\"",
+		    13);
 		pkg.set_line("\tchmod +x \"$pkgdir/usr/bin/CBuild_rebuild\"",
 			     14);
 		pkg.set_line("}", 15);

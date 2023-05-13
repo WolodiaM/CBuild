@@ -53,6 +53,12 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 				args->push_back_check("force", "force");
 			} catch (std::exception &e) {
 			}
+			// Verbose flag
+		} else if (tmp == std::string("-v")) {
+			try {
+				args->push_back_check("verbose", "verbose");
+			} catch (std::exception &e) {
+			}
 			// Makefile gen
 		} else if (tmp == std::string("-gm")) {
 			try {
@@ -73,7 +79,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 			if (i < argc) {
 				tmp = argv[i];
 				if (tmp.at(0) == '-') {
-					puts("-ld <toolchain name>");
+					CBuild::print("-ld <toolchain name>");
 					exit(0xFF);
 				} else {
 					try {
@@ -83,7 +89,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 					}
 				}
 			} else {
-				puts("-ld <toolchain name>");
+				CBuild::print("-ld <toolchain name>");
 				exit(0xFF);
 			}
 			// Compile
@@ -95,7 +101,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 			if (i < argc) {
 				tmp = argv[i];
 				if (tmp.at(0) == '-') {
-					puts("-b <toolchain name>");
+					CBuild::print("-b <toolchain name>");
 					exit(0xFF);
 				} else {
 					try {
@@ -105,7 +111,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 					}
 				}
 			} else {
-				puts("-b <toolchain name>");
+				CBuild::print("-b <toolchain name>");
 				exit(0xFF);
 			}
 			// Run
@@ -117,7 +123,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 			if (i < argc) {
 				tmp = argv[i];
 				if (tmp.at(0) == '-') {
-					puts("-r <toolchain name>");
+					CBuild::print("-r <toolchain name>");
 					exit(0xFF);
 				} else {
 					try {
@@ -142,7 +148,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 			if (i < argc) {
 				tmp = argv[i];
 				if (tmp.at(0) == '-') {
-					puts("-br <toolchain name>");
+					CBuild::print("-br <toolchain name>");
 					exit(0xFF);
 				} else {
 					try {
@@ -152,7 +158,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 					}
 				}
 			} else {
-				puts("-br <toolchain name>");
+				CBuild::print("-br <toolchain name>");
 				exit(0xFF);
 			}
 			// Debug
@@ -164,7 +170,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 			if (i < argc) {
 				tmp = argv[i];
 				if (tmp.at(0) == '-') {
-					puts("-d <toolchain name>");
+					CBuild::print("-d <toolchain name>");
 					exit(0xFF);
 				} else {
 					try {
@@ -174,7 +180,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 					}
 				}
 			} else {
-				puts("-d <toolchain name>");
+				CBuild::print("-d <toolchain name>");
 				exit(0xFF);
 			}
 			// Cleran builded app
@@ -186,7 +192,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 			if (i < argc) {
 				tmp = argv[i];
 				if (tmp.at(0) == '-') {
-					puts("-c <toolchain name>");
+					CBuild::print("-c <toolchain name>");
 					exit(0xFF);
 				} else {
 					try {
@@ -196,7 +202,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 					}
 				}
 			} else {
-				puts("-c <toolchain name>");
+				CBuild::print("-c <toolchain name>");
 				exit(0xFF);
 			}
 			// Run task
@@ -208,13 +214,13 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
 			if (i < argc) {
 				tmp = argv[i];
 				if (tmp.at(0) == '-') {
-					puts("-t <task name>");
+					CBuild::print("-t <task name>");
 					exit(0xFF);
 				} else {
 					args->push_back_check("task_id", tmp);
 				}
 			} else {
-				puts("-t <task name>");
+				CBuild::print("-t <task name>");
 				exit(0xFF);
 			}
 			// Add argument
@@ -316,8 +322,10 @@ void CBuild::loop(CBuild::RType mode,
 			} else if (elem.key.at(0) == 'p' &&
 				   elem.key.at(1) == 'a') {
 				ppargs.push_back(elem.data);
-			} else if (elem.key == "force") {
+			} else if (elem.key == std::string("force")) {
 				force = true;
+			} else if (elem.key == std::string("verbose")) {
+				CBuild::print_verbose();
 			}
 		} catch (std::exception &e) {
 		}

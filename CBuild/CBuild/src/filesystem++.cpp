@@ -30,7 +30,6 @@
 #include "vector"
 // Project files
 #include "../../headers/CBuild_defs.hpp"
-#include "../../headers/files.hpp"
 #include "../../headers/filesystem++.hpp"
 /* CBuild::fs namespace */
 namespace CBuild {
@@ -343,93 +342,14 @@ bool CBuild::fs::exists(std::string path) {
 	p.assign(path);
 	return std::filesystem::exists(p);
 }
-/* files.hpp */
-int CBuild::fs::replace(std::string file, std::string token, std::string data) {
-	// Path to tmp file
-	std::string cache;
-	cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" +
-		CBuild::fs::path_to_file(file) + ".tmp";
-	// std::cout << cache << "\n";
-	// Open two files
-	CBuild::fs::create({cache}, CBuild::fs::FILE);
-	std::ofstream tmp_file(cache);
-	std::ifstream main_file;
-	main_file.open(file);
-	// Number of replaced tokens
-	static int check_num;
-	check_num = 0;
-	// Read and copy file to temp file line by line
-	std::string line;
-	while (std::getline(main_file, line)) {
-		// If token found - replace it and increment counter
-		while (line.find(token) != std::string::npos) {
-			line.replace(line.find(token), token.size(), data);
-			check_num++;
-		}
-		tmp_file << line << "\n";
+std::string CBuild::fs::normalize_path(std::string path,
+				       std::string base_path) {
+	if (base_path == std::string("")) {
+		return std::filesystem::canonical(std ::filesystem::path(path));
+	} else {
+		return std::filesystem::canonical(
+		    std::filesystem::path(base_path) /
+		    std ::filesystem::path(path));
 	}
-	// Close files
-	main_file.close();
-	tmp_file.close();
-	// Replace file by it's temp version
-	CBuild::fs::remove(file, true);
-	CBuild::fs::move(cache, file);
-	// Return number of replaced element or -1 if nothing has been replaced
-	if (check_num == 0) return -1;
-	return check_num;
 }
-int CBuild::fs::set_var(std::string file, std::string var_type,
-			std::string var_name, std::string data) {
-	// Path to tmp file
-	std::string cache;
-	cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" +
-		CBuild::fs::path_to_file(file) + ".tmp";
-	// std::cout << cache << "\n";
-	// Open two files
-	CBuild::fs::create({cache}, CBuild::fs::FILE);
-	std::ofstream tmp_file(cache);
-	std::ifstream main_file;
-	main_file.open(file);
-	// Number of replaced tokens
-	static int check_num;
-	check_num = 0;
-	// Read and copy file to temp file line by line
-	std::string line;
-	while (std::getline(main_file, line)) {
-		// We can refer to #define by define
-		if (var_type == "define") var_type = "#define";
-		// If variable found
-		if ((line.find(var_type) != std::string::npos) &&
-		    (line.find(var_name) != std::string::npos)) {
-			// All content before variable
-			std::string prefix =
-			    line.substr(0, line.find(var_type));
-			// All content after variable
-			std::string postfix =
-			    line.substr(line.find(var_name) + var_name.size(),
-					line.size() - 1);
-			// Variable
-			std::string var =
-			    var_type + " " + var_name + " = " + data;
-			// Recreate line
-			line = prefix + var + postfix;
-			check_num++;
-		}
-		tmp_file << line << "\n";
-	}
-	// Close files
-	main_file.close();
-	tmp_file.close();
-	// Replace file by it's temp version
-	CBuild::fs::remove(file, true);
-	CBuild::fs::move(cache, file);
-	// Return number of replaced element or -1 if nothing has been replaced
-	if (check_num == 0) return -1;
-	return check_num;
-}
-std::string CBuild::fs::path_to_file(std::string in) {
-	while (in.find("/") != std::string::npos) {
-		in.replace(in.find("/"), std::string("/").size(), ".");
-	}
-	return in;
-}
+

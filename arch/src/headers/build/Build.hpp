@@ -160,13 +160,6 @@ class Toolchain {
 	 * @return std::string -> file path
 	 */
 	virtual std::string gen_out_file(std::string file);
-	/**
-	 * @brief Generate hash file for .cpp file
-	 *
-	 * @param file => std::string -> input file
-	 * @return std::string -> file path
-	 */
-	virtual std::string gen_hash_file(std::string file);
 
        public:
 	/**
@@ -200,7 +193,7 @@ class Toolchain {
        public:
 	Toolchain() {}
 	virtual ~Toolchain() {}
-	virtual std::string get_id() { return this->id; }
+	std::string get_id() { return this->id; }
 	/**
 	 * @brief Call tollchain to execute
 	 *
@@ -331,8 +324,8 @@ class Toolchain {
 	/**
 	 * @brief Add another CBuild project as dependency
 	 *
-	 * @param path => std::string -> Relative (from CBuild.run, not end with
-	 * '/' !) path to needed toolchain
+	 * @param path => std::string -> Relative (from CBuild.run) path to
+	 * needed toolchain
 	 * @param name => std::string -> name of build target (for lib linking)
 	 * @param id => std::string -> Id of needed toolchain for calling target
 	 * build

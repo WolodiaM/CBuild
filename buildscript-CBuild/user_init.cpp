@@ -49,11 +49,11 @@ void init() {
 	libCBuild.set_standart("c++20");
 	libCBuild.add_folder("CBuild/CBuild/src/");
 	libCBuild.warn();
-	libCBuild.depends_on("mull_lib");
 	libCBuild.set_type(CBuild::DYNAMIC_LIBRARY);
 	libCBuild.add_requirment("copyLib", CBuild::POST);
 	libCBuild.add_requirment("proccesVersion", CBuild::PRE);
-	libCBuild.add_library_include("crypto");
+	libCBuild.add_compile_arg("-g");
+	libCBuild.add_link_arg("-g");
 	CBuild::Registry::RegisterTarget(&libCBuild);
 	CBuild::Registry::RegistryTask(&cpy);
 	load_tasks();

@@ -11,4 +11,4 @@ Description: Build system for c++ that use scripts writen in c++ ;).
  when need to be called), to any other language.
  It allow to use full c++ api and any libraries in build scripts.
  Git repo of CBuild: https://github.com/WolodiaM-CBuild/CBuild
-Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9), libssl3
+Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9)

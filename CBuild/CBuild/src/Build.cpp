@@ -194,133 +194,143 @@ std::string CBuild::Toolchain::gen_out_file(std::string file) {
 	base += file;
 	return base;
 }
-std::string CBuild::Toolchain::gen_hash_file(std::string file) {
-	// path to base diretory for hash files
-	std::string base =
-	    CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_HASH_DIR + "/";
-	// Find dot in file name
-	unsigned long pos = file.find_last_of(".");
-	// Cut it out
-	file = file.substr(0, pos);
-	// Replace all slashes by dots
-	while (file.find("/") != std::string::npos) {
-		file.replace(file.find("/"), std::string("/").size(), ".");
-	}
-	// Add .hash extension
-	file += ".hash";
-	// Return full path
-	base += file;
-	return base;
-}
 lib::map<std::string, std::string> CBuild::Toolchain::gen_file_list(
     bool force_) {
-	// Return variable
+	// File - object
 	lib::map<std::string, std::string> ret;
-	// Not force
-	if (!force_) {
-		// For every target path
-		for (auto elem : this->targets) {
-			// If folder
-			if (elem.folder) {
-				// For every file in folder
-				std::vector<std::string> files =
-				    CBuild::fs::dir(elem.path);
-				for (auto file : files) {
-					// Check if hash file exists
-					if (!CBuild::fs::exists(
-						this->gen_hash_file(file))) {
-						CBuild::fs::create(
-						    {this->gen_hash_file(file)},
-						    CBuild::fs::FILE);
-						std::ofstream f(
-						    this->gen_hash_file(file));
-						f << "-";
-						f.close();
-					}
-					// Push file only if hash is different
-					if (!CBuild::load_hash(
-						this->gen_hash_file(file),
-						file)) {
-						ret.push_back(
-						    this->cmd_str(file),
-						    this->cmd_str(
-							this->gen_out_file(
-							    file)));
-					}
-				}
+	std::vector<std::string> for_recomp, filelist;
+	for (auto elem : this->targets) {
+		if (elem.folder) {
+			auto files = CBuild::fs::dir(elem.path);
+			for (auto file : files) {
+				filelist.push_back(
+				    CBuild::fs::normalize_path(file));
 			}
-			// If file
-			else {
-				std::string file = elem.path;
-				// Check if hash file exists
-				if (!CBuild::fs::exists(
-					this->gen_hash_file(file))) {
-					CBuild::fs::create(
-					    {this->gen_hash_file(file)},
-					    CBuild::fs::FILE);
-					std::ofstream f(
-					    this->gen_hash_file(file));
-					f << "-";
-					f.close();
-				}
-				// Push file only if hash is different
-				if (!CBuild::load_hash(
-					this->gen_hash_file(file), file)) {
-					ret.push_back(
-					    this->cmd_str(file),
-					    this->cmd_str(
-						this->gen_out_file(file)));
-				}
-			}
+		} else {
+			filelist.push_back(
+			    CBuild::fs::normalize_path(elem.path));
 		}
 	}
-	// Force
-	else {
-		// For every target path
-		for (auto elem : this->targets) {
-			// If folder
-			if (elem.folder) {
-				// For every file in folder
-				std::vector<std::string> files =
-				    CBuild::fs::dir(elem.path);
-				for (auto f : files) {
-					// Push file
-					ret.push_back(
-					    this->cmd_str(f),
-					    this->cmd_str(
-						this->gen_out_file(f)));
-					// Generate hash file
-					if (!CBuild::fs::exists(
-						this->gen_hash_file(f))) {
-						CBuild::fs::create(
-						    {this->gen_hash_file(f)},
-						    CBuild::fs::FILE);
-						std::ofstream fl(
-						    this->gen_hash_file(f));
-						fl << "-";
-						fl.close();
-					}
-				}
-			}
-			// If file
-			else {
-				// Push file
-				ret.push_back(this->cmd_str(elem.path),
-					      this->cmd_str(this->gen_out_file(
-						  elem.path)));
-				// Generate hash file
-				if (!CBuild::fs::exists(
-					this->gen_hash_file(elem.path))) {
-					CBuild::fs::create(
-					    {this->gen_hash_file(elem.path)},
-					    CBuild::fs::FILE);
-					std::ofstream f(
-					    this->gen_hash_file(elem.path));
-					f << "-";
-					f.close();
-				}
-			}
+	for_recomp = CBuild::get_files(filelist, this->id);
+	if (this->force) {
+		for_recomp = filelist;
+	}
+	// Not force
+	// if (!force_) {
+	// 	// For every target path
+	// 	for (auto elem : this->targets) {
+	// 		// If folder
+	// 		if (elem.folder) {
+	// 			// For every file in folder
+	// 			std::vector<std::string> files =
+	// 			    CBuild::fs::dir(elem.path);
+	// 			for (auto file : files) {
+	// 				// Check if hash file exists
+	// 				if (!CBuild::fs::exists(
+	// 					this->gen_hash_file(file))) {
+	// 					CBuild::fs::create(
+	// 					    {this->gen_hash_file(file)},
+	// 					    CBuild::fs::FILE);
+	// 					std::ofstream f(
+	// 					    this->gen_hash_file(file));
+	// 					f << "-";
+	// 					f.close();
+	// 				}
+	// 				// Push file only if hash is different
+	// 				if (!CBuild::load_hash(
+	// 					this->gen_hash_file(file),
+	// 					file)) {
+	// 					ret.push_back(
+	// 					    this->cmd_str(file),
+	// 					    this->cmd_str(
+	// 						this->gen_out_file(
+	// 						    file)));
+	// 				}
+	// 			}
+	// 		}
+	// 		// If file
+	// 		else {
+	// 			std::string file = elem.path;
+	// 			// Check if hash file exists
+	// 			if (!CBuild::fs::exists(
+	// 				this->gen_hash_file(file))) {
+	// 				CBuild::fs::create(
+	// 				    {this->gen_hash_file(file)},
+	// 				    CBuild::fs::FILE);
+	// 				std::ofstream f(
+	// 				    this->gen_hash_file(file));
+	// 				f << "-";
+	// 				f.close();
+	// 			}
+	// 			// Push file only if hash is different
+	// 			if (!CBuild::load_hash(
+	// 				this->gen_hash_file(file), file)) {
+	// 				ret.push_back(
+	// 				    this->cmd_str(file),
+	// 				    this->cmd_str(
+	// 					this->gen_out_file(file)));
+	// 			}
+	// 		}
+	// 	}
+	// }
+	// // Force
+	// else {
+	// 	// For every target path
+	// 	for (auto elem : this->targets) {
+	// 		// If folder
+	// 		if (elem.folder) {
+	// 			// For every file in folder
+	// 			std::vector<std::string> files =
+	// 			    CBuild::fs::dir(elem.path);
+	// 			for (auto f : files) {
+	// 				// Push file
+	// 				ret.push_back(
+	// 				    this->cmd_str(f),
+	// 				    this->cmd_str(
+	// 					this->gen_out_file(f)));
+	// 				// Generate hash file
+	// 				if (!CBuild::fs::exists(
+	// 					this->gen_hash_file(f))) {
+	// 					CBuild::fs::create(
+	// 					    {this->gen_hash_file(f)},
+	// 					    CBuild::fs::FILE);
+	// 					std::ofstream fl(
+	// 					    this->gen_hash_file(f));
+	// 					fl << "-";
+	// 					fl.close();
+	// 				}
+	// 			}
+	// 		}
+	// 		// If file
+	// 		else {
+	// 			// Push file
+	// 			ret.push_back(this->cmd_str(elem.path),
+	// 				      this->cmd_str(this->gen_out_file(
+	// 					  elem.path)));
+	// 			// Generate hash file
+	// 			if (!CBuild::fs::exists(
+	// 				this->gen_hash_file(elem.path))) {
+	// 				CBuild::fs::create(
+	// 				    {this->gen_hash_file(elem.path)},
+	// 				    CBuild::fs::FILE);
+	// 				std::ofstream f(
+	// 				    this->gen_hash_file(elem.path));
+	// 				f << "-";
+	// 				f.close();
+	// 			}
+	// 		}
+	// 	}
+	// }
+	for (auto elem : for_recomp) {
+		try {
+			ret.push_back(this->cmd_str(elem),
+				      this->cmd_str(this->gen_out_file(elem)));
+		} catch (std::exception &e) {
 		}
+	}
+	CBuild::print_full("CBuild::Build::gen_file_list() - dbg: ");
+	for (unsigned int i = 0; i < ret.size(); i++) {
+		CBuild::print_full(ret.at(i).key);
 	}
 	return ret;
 }

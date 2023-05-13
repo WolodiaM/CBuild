@@ -68,6 +68,10 @@
  */
 #define CBUILD_PROJECT_DEPS_HEADERS std::string("headers")
 /**
+ * @brief Hash table save file
+ */
+#define CBUILD_HASH_FILE std::string("hash")
+/**
  * @brief CBuilddifferent representation of CBuild version
  */
 #define CBUILD_VERSION_MAJOR (int)$VERSION_MAJOR

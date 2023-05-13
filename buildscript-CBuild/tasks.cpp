@@ -26,6 +26,7 @@
 #include "string"
 // Scripts headers
 #include "pack.hpp"
+#include "test.hpp"
 #include "user_init.hpp"
 // Task classes
 class procces_version : public pack_base {
@@ -137,6 +138,7 @@ pack_aur packa;
 procces_version pv;
 modify_version mv;
 mkppa ppa;
+test t;
 // Init
 void load_tasks() {
 	CBuild::Registry::RegistryTask(&packd);
@@ -144,4 +146,5 @@ void load_tasks() {
 	CBuild::Registry::RegistryTask(&pv);
 	CBuild::Registry::RegistryTask(&mv);
 	CBuild::Registry::RegistryTask(&ppa);
+	CBuild::Registry::RegistryTask(&t);
 }
