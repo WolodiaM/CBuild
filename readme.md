@@ -20,7 +20,6 @@ project
     |  
     |--- src (project code goes here)  
     |--- CBuild.run (main CBuild executable)  
-    |--- build.sh (build script rebuild file (for now))  
 </pre>
 main.cpp -> main file of Cbuild executable, change only if you know how CBuild work internally.  
 user_init.hpp -> headers of user scripts, have 1 function, that need to be called in main.cpp (init()).  
