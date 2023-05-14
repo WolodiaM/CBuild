@@ -127,10 +127,13 @@ class GXX : public CBuild::Toolchain {
 			args += " ";
 		}
 		// Get all files
-		auto files = this->gen_file_list(true);
+		auto files =
+		    CBuild::fs::dir(CBUILD_BUILD_DIR + "/" + this->id + "/" +
+					CBUILD_BUILD_CACHE_DIR + "/",
+				    ".*\\.(o|obj)");
 		std::string flist;
 		for (unsigned int i = 0; i < files.size(); i++) {
-			flist += files.at(i).data;
+			flist += files.at(i);
 			flist += " ";
 		}
 		if (files.size() > 0) {

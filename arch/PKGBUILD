@@ -1,5 +1,5 @@
 pkgname="libcbuild"
-pkgver="7.0"
+pkgver="7.1"
 pkgrel="1"
 pkgdesc="Build system for c++ with scripts written in c++"
 arch=("x86_64")

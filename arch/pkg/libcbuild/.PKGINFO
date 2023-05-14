@@ -2,12 +2,12 @@
 # using fakeroot version 1.31
 pkgname = libcbuild
 pkgbase = libcbuild
-pkgver = 7.0-1
+pkgver = 7.1-1
 pkgdesc = Build system for c++ with scripts written in c++
 url = 
-builddate = 1683887691
+builddate = 1684053412
 packager = Unknown Packager
-size = 1175236
+size = 1175604
 arch = x86_64
 license = GPL3
 depend = glibc>=2.17
