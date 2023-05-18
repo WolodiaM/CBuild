@@ -45,5 +45,5 @@ mingw debugger
  * arch folder - 3.1M
  * ppa/ubuntu folder - 5.4M
  * doxygen folder + doxygen.conf - 5.3M   
-All sizes and generated using `du -hcs <folder/file0> <folder/file1> ...`
+All sizes are generated using `du -hcs <folder/file0> <folder/file1> ...`
 
