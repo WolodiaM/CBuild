@@ -55,5 +55,4 @@ void init()
 }  
 </pre>
 It uses g++ as compiler, and c++20.
-# Other info
-[info](info.md)
+# [Other info](info.md)
