@@ -175,6 +175,9 @@ CBuild::cpp last_file_tmp;
  * @return std::string -> Content of file
  */
 std::string get_file_content(std::string path) {
+	CBuild::files.clear();
+	CBuild::hash_table_new.clear();
+	CBuild::hash_table_old.clear();
 	std::string ret = "";
 	std::ifstream f(path);
 	std::string line;

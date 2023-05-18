@@ -130,6 +130,7 @@ class mkppa : public CBuild::Task {
 		    "cd ppa/ubuntu && gpg --default-key "
 		    "\"w_melnyk@outlook.com\" --clearsign -o - Release > "
 		    "InRelease");
+		CBuild::system("cp -r ppa/* ../CBuild_extra/ppa/");
 	}
 };
 // Tasks

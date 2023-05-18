@@ -32,7 +32,7 @@
 #include "../CBuild/headers/print.hpp"
 #include "../CBuild/headers/system.hpp"
 #include "../CBuild/headers/task/Task.hpp"
-// Code
+// Coe
 #ifndef __PACK_HPP__
 #define __PACK_HPP__
 // Functions
@@ -246,43 +246,39 @@ class pack_aur : public pack_base {
 	void create_pkgbuild() {
 		CBuild::fs::create({this->work_folder + "/PKGBUILD"},
 				   CBuild::fs::FILE);
-		CBuild::line_filebuff pkg(this->work_folder + "/PKGBUILD");
-		pkg.set_line("pkgname=\"libcbuild\"", 0);
-		pkg.set_line("pkgver=\"" + this->version_str() + "\"", 1);
-		pkg.set_line("pkgrel=\"1\"", 2);
-		pkg.set_line(
-		    "pkgdesc=\"Build system for c++ with scripts written in "
-		    "c++\"",
-		    3);
-		pkg.set_line("arch=(\"x86_64\")", 4);
-		pkg.set_line("depends=(\"glibc>=2.17\" \"gcc-libs>=4.9\")", 5);
-		pkg.set_line("license=(\"GPL3\")", 6);
+		std::ofstream pkg(this->work_folder + "/PKGBUILD");
+		pkg << "pkgname=\"libcbuild\"\n";
+		pkg << "pkgver=\"" + this->version_str() + "\"\n";
+		pkg << "pkgrel=\"1\"\n";
+		pkg << "pkgdesc=\"Build system for c++ with scripts written in "
+		       "c++\"\n";
+		pkg << "arch=(\"x86_64\")\n";
+		pkg << "depends=(\"glibc>=2.17\" \"gcc-libs>=4.9\")\n";
+		pkg << "license=(\"GPL3\")\n";
 		auto files = CBuild::fs::dir_rec(this->work_folder, ".*\\..*");
 		std::string buff = "";
 		for (auto elem : files) {
 			buff += "\"";
 			buff += elem;
-			buff += "\"";
+			buff += "\"\n";
 		}
-		pkg.set_line("source=(" + buff + ")", 7);
-		pkg.set_line("sha512sums=(\"SKIP\")", 8);
-		pkg.set_line("package() {", 9);
-		pkg.set_line(
-		    "\tinstall -Dm755 \"$srcdir/CBuild_rebuild\" "
-		    "\"$pkgdir/usr/bin/CBuild_rebuild\"",
-		    10);
-		pkg.set_line(
-		    "\tinstall -Dm755 \"$srcdir/libCBuild.so\" "
-		    "\"$pkgdir/usr/lib/libCBuild.so\"",
-		    11);
-		pkg.set_line("\tmkdir -p \"$pkgdir/usr/include/CBuild\"", 12);
-		pkg.set_line(
-		    "\tcp -r $srcdir/headers/* \"$pkgdir/usr/include/CBuild/\"",
-		    13);
-		pkg.set_line("\tchmod +x \"$pkgdir/usr/bin/CBuild_rebuild\"",
-			     14);
-		pkg.set_line("}", 15);
-		pkg.update();
+
+		pkg << "source=( " << buff << ")\n";
+
+		pkg << "sha512sums=("
+		    << "\"SKIP\""
+		    << ")\n";
+		pkg << "package() {\n";
+		pkg << "\tinstall -Dm755 \"$srcdir/CBuild_rebuild\" "
+		       "\"$pkgdir/usr/bin/CBuild_rebuild\"\n";
+		pkg << "\tinstall -Dm755 \"$srcdir/libCBuild.so\" "
+		       "\"$pkgdir/usr/lib/libCBuild.so\"\n";
+		pkg << "\tmkdir -p \"$pkgdir/usr/include/CBuild\"\n";
+		pkg << "\tcp -r $srcdir/headers/* "
+		       "\"$pkgdir/usr/include/CBuild/\"\n";
+		pkg << "\tchmod +x \"$pkgdir/usr/bin/CBuild_rebuild\"\n";
+		pkg << "}\n";
+		pkg.close();
 	}
 
        public:

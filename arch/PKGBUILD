@@ -1,11 +1,37 @@
 pkgname="libcbuild"
-pkgver="7.1"
+pkgver="7.3"
 pkgrel="1"
 pkgdesc="Build system for c++ with scripts written in c++"
 arch=("x86_64")
 depends=("glibc>=2.17" "gcc-libs>=4.9")
 license=("GPL3")
-source=("./arch/PKGBUILD""./arch/src""./arch/src/headers""./arch/src/headers/hash.hpp""./arch/src/headers/register.hpp""./arch/src/headers/CBuild_defs.hpp""./arch/src/headers/task""./arch/src/headers/task/Task.hpp""./arch/src/headers/CBuild.hpp""./arch/src/headers/filebuff.hpp""./arch/src/headers/print.hpp""./arch/src/headers/build""./arch/src/headers/build/mingw-gcc.hpp""./arch/src/headers/build/Build.hpp""./arch/src/headers/build/gcc.hpp""./arch/src/headers/build/mingw-g++.hpp""./arch/src/headers/build/g++.hpp""./arch/src/headers/system.hpp""./arch/src/headers/files.hpp""./arch/src/headers/map.hpp""./arch/src/headers/filesystem++.hpp""./arch/src/libCBuild.so""./arch/src/CBuild_rebuild""./arch/libCBuild.so""./arch/CBuild_rebuild")
+source=( "./arch/PKGBUILD"
+"./arch/src"
+"./arch/src/headers"
+"./arch/src/headers/hash.hpp"
+"./arch/src/headers/register.hpp"
+"./arch/src/headers/CBuild_defs.hpp"
+"./arch/src/headers/task"
+"./arch/src/headers/task/Task.hpp"
+"./arch/src/headers/CBuild.hpp"
+"./arch/src/headers/filebuff.hpp"
+"./arch/src/headers/print.hpp"
+"./arch/src/headers/build"
+"./arch/src/headers/build/mingw-gcc.hpp"
+"./arch/src/headers/build/Build.hpp"
+"./arch/src/headers/build/gcc.hpp"
+"./arch/src/headers/build/mingw-g++.hpp"
+"./arch/src/headers/build/g++.hpp"
+"./arch/src/headers/system.hpp"
+"./arch/src/headers/files.hpp"
+"./arch/src/headers/map.hpp"
+"./arch/src/headers/filesystem++.hpp"
+"./arch/src/libCBuild.so"
+"./arch/src/CBuild_rebuild"
+"./arch/libCBuild.so"
+"./arch/CBuild_rebuild"
+)
+pkgname="libcbuild"
 sha512sums=("SKIP")
 package() {
 	install -Dm755 "$srcdir/CBuild_rebuild" "$pkgdir/usr/bin/CBuild_rebuild"
