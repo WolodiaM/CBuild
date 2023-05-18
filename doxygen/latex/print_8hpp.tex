@@ -5,8 +5,8 @@
 Custom print that support color codes.  
 
 
-{\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}string\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -31,7 +31,11 @@ enum \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{CBuild\
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild\+::print}} (std\+::string msg, color fg=\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{CBuild\+::\+WHITE}})
-\begin{DoxyCompactList}\small\item\em Print colored text to STDOUT. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Print colored text to STDOUT. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_ac4072b567b20516e02402f3b95964953}{CBuild\+::print\+\_\+full}} (std\+::string msg, color fg=\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{CBuild\+::\+WHITE}})
+\begin{DoxyCompactList}\small\item\em Print colored text to STDOUT if verbose flag is set. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_a212b885e390d7f0d9cd16a187c692625}{CBuild\+::print\+\_\+verbose}} ()
+\begin{DoxyCompactList}\small\item\em Enable verbose flag. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

@@ -52,8 +52,8 @@ void init() {
 	libCBuild.set_type(CBuild::DYNAMIC_LIBRARY);
 	libCBuild.add_requirment("copyLib", CBuild::POST);
 	libCBuild.add_requirment("proccesVersion", CBuild::PRE);
-	libCBuild.add_compile_arg("-g");
-	libCBuild.add_link_arg("-g");
+	// libCBuild.add_compile_arg("-g");
+	// libCBuild.add_link_arg("-g");
 	CBuild::Registry::RegisterTarget(&libCBuild);
 	CBuild::Registry::RegistryTask(&cpy);
 	load_tasks();

@@ -76,37 +76,77 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">hash.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>SHA256 implementation.  
+<p>File hashing implementation.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;fstream&quot;</code><br />
+<div class="textblock"><code>#include &quot;filesystem&quot;</code><br />
+<code>#include &quot;fstream&quot;</code><br />
 <code>#include &quot;iomanip&quot;</code><br />
 <code>#include &quot;iostream&quot;</code><br />
-<code>#include &quot;openssl/sha.h&quot;</code><br />
+<code>#include &quot;regex&quot;</code><br />
 <code>#include &quot;sstream&quot;</code><br />
 <code>#include &quot;string&quot;</code><br />
 <code>#include &quot;vector&quot;</code><br />
+<code>#include &quot;<a class="el" href="CBuild__defs_8hpp_source.html">../../headers/CBuild_defs.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hash_8hpp_source.html">../../headers/hash.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="map_8hpp_source.html">../../headers/map.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="print_8hpp_source.html">../../headers/print.hpp</a>&quot;</code><br />
 </div>
 <p><a href="hash_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCBuild_1_1cpp.html">CBuild::cpp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct for saving properties of file.  <a href="structCBuild_1_1cpp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceCBuild"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html">CBuild</a></td></tr>
+<tr class="memdesc:namespaceCBuild"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filebuffer for <a class="el" href="namespaceCBuild.html" title="Filebuffer for CBuild ecosystem.">CBuild</a> ecosystem. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a386a8e3a9b24783a353a51bfa2f9a1d6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hash_8cpp.html#a386a8e3a9b24783a353a51bfa2f9a1d6">sha256</a> (const std::string str)</td></tr>
-<tr class="separator:a386a8e3a9b24783a353a51bfa2f9a1d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ffa216b04c3b14936cb05091e2b6d63"><td class="memItemLeft" align="right" valign="top">std::regex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a7ffa216b04c3b14936cb05091e2b6d63">CBuild::comment_regex1</a> (&quot;\\/\\/.*&quot;)</td></tr>
+<tr class="separator:a7ffa216b04c3b14936cb05091e2b6d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae735c4bf4a343f65bdb54baf3dc1021f"><td class="memItemLeft" align="right" valign="top">std::regex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#ae735c4bf4a343f65bdb54baf3dc1021f">CBuild::comment_regex2</a> (&quot;/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/&quot;)</td></tr>
+<tr class="separator:ae735c4bf4a343f65bdb54baf3dc1021f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29ddf8caf20b6d19af8764612a6c860f"><td class="memItemLeft" align="right" valign="top">std::regex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a29ddf8caf20b6d19af8764612a6c860f">CBuild::include_search</a> (&quot;#include\\s+[\&quot;&lt;]([^\&quot;&gt;]+)[\&quot;&gt;]&quot;)</td></tr>
+<tr class="separator:a29ddf8caf20b6d19af8764612a6c860f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a433729ea224814d205310f3477eaf089"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a433729ea224814d205310f3477eaf089">CBuild::get_file_content</a> (std::string path)</td></tr>
+<tr class="memdesc:a433729ea224814d205310f3477eaf089"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get content of file, stripped from comments.  <br /></td></tr>
+<tr class="separator:a433729ea224814d205310f3477eaf089"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abee2bcd5f14e2ca24f51a173b0cd7d9f"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#abee2bcd5f14e2ca24f51a173b0cd7d9f">CBuild::hash</a> (std::string path)</td></tr>
+<tr class="memdesc:abee2bcd5f14e2ca24f51a173b0cd7d9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get hash of file.  <br /></td></tr>
+<tr class="separator:abee2bcd5f14e2ca24f51a173b0cd7d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad47c326f75f473e4224b24cb6c5482fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#ad47c326f75f473e4224b24cb6c5482fa">CBuild::save_hash_table</a> (std::string toolchain)</td></tr>
+<tr class="memdesc:ad47c326f75f473e4224b24cb6c5482fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save hash table from map.  <br /></td></tr>
+<tr class="separator:ad47c326f75f473e4224b24cb6c5482fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af50be8c99b891d00f8461165faaa6ee3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#af50be8c99b891d00f8461165faaa6ee3">CBuild::load_hash_table</a> (std::string toolchain)</td></tr>
+<tr class="memdesc:af50be8c99b891d00f8461165faaa6ee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load hash table to map.  <br /></td></tr>
+<tr class="separator:af50be8c99b891d00f8461165faaa6ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ae981c6abc8931db34cff2d35fe9f4a99"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hash_8cpp.html#ae981c6abc8931db34cff2d35fe9f4a99">changed</a></td></tr>
-<tr class="separator:ae981c6abc8931db34cff2d35fe9f4a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ef4cf9cc7888f2035c900fb94c5eeaa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, uint64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a6ef4cf9cc7888f2035c900fb94c5eeaa">CBuild::hash_table_old</a></td></tr>
+<tr class="separator:a6ef4cf9cc7888f2035c900fb94c5eeaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c4f4181471b6cb81d2852f229a589ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, uint64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a6c4f4181471b6cb81d2852f229a589ba">CBuild::hash_table_new</a></td></tr>
+<tr class="separator:a6c4f4181471b6cb81d2852f229a589ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f4b1ae7a694a5e31c9ac6fdf5d60cfe"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structCBuild_1_1cpp.html">CBuild::cpp</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a2f4b1ae7a694a5e31c9ac6fdf5d60cfe">CBuild::files</a></td></tr>
+<tr class="separator:a2f4b1ae7a694a5e31c9ac6fdf5d60cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaebad4a9dad6c451f7ae2a27b126faef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCBuild_1_1cpp.html">CBuild::cpp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#aaebad4a9dad6c451f7ae2a27b126faef">CBuild::last_file_tmp</a></td></tr>
+<tr class="separator:aaebad4a9dad6c451f7ae2a27b126faef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>SHA256 implementation. </p>
+<div class="textblock"><p>File hashing implementation. </p>
 <dl class="section author"><dt>Author</dt><dd>WolodiaM (<a href="#" onclick="location.href='mai'+'lto:'+'w_m'+'el'+'nyk'+'@o'+'utl'+'oo'+'k.c'+'om'; return false;">w_mel<span class="obfuscator">.nosp@m.</span>nyk@<span class="obfuscator">.nosp@m.</span>outlo<span class="obfuscator">.nosp@m.</span>ok.c<span class="obfuscator">.nosp@m.</span>om</a>) </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2023-02-13</dd></dl>
@@ -114,49 +154,7 @@ Variables</h2></td></tr>
 <p>Copyright (C) 2023 WolodiaM This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>. </p>
 
 <p class="definition">Definition in file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a386a8e3a9b24783a353a51bfa2f9a1d6" name="a386a8e3a9b24783a353a51bfa2f9a1d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a386a8e3a9b24783a353a51bfa2f9a1d6">&#9670;&#160;</a></span>sha256()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string sha256 </td>
-          <td>(</td>
-          <td class="paramtype">const std::string&#160;</td>
-          <td class="paramname"><em>str</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8cpp_source.html#l00034">34</a> of file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8cpp_source.html#l00034">sha256()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00052">CBuild::hash_match_store()</a>, <a class="el" href="hash_8cpp_source.html#l00083">CBuild::load_hash()</a>, <a class="el" href="hash_8cpp_source.html#l00111">CBuild::save_hashes()</a>, and <a class="el" href="hash_8cpp_source.html#l00034">sha256()</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="ae981c6abc8931db34cff2d35fe9f4a99" name="ae981c6abc8931db34cff2d35fe9f4a99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae981c6abc8931db34cff2d35fe9f4a99">&#9670;&#160;</a></span>changed</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;std::string&gt; changed</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8cpp_source.html#l00050">50</a> of file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6

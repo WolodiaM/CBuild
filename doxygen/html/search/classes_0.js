@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filebuff_0',['filebuff',['../classCBuild_1_1filebuff.html',1,'CBuild']]]
+  ['cpp_0',['cpp',['../structCBuild_1_1cpp.html',1,'CBuild']]]
 ];

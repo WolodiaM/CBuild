@@ -1,5 +1,5 @@
 pkgname="libcbuild"
-pkgver="7.3"
+pkgver="7.4"
 pkgrel="1"
 pkgdesc="Build system for c++ with scripts written in c++"
 arch=("x86_64")
@@ -31,7 +31,6 @@ source=( "./arch/PKGBUILD"
 "./arch/libCBuild.so"
 "./arch/CBuild_rebuild"
 )
-pkgname="libcbuild"
 sha512sums=("SKIP")
 package() {
 	install -Dm755 "$srcdir/CBuild_rebuild" "$pkgdir/usr/bin/CBuild_rebuild"

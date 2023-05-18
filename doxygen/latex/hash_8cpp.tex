@@ -2,31 +2,63 @@
 \label{hash_8cpp}\index{CBuild/CBuild/src/hash.cpp@{CBuild/CBuild/src/hash.cpp}}
 
 
-SHA256 implementation.  
+File hashing implementation.  
 
 
+{\ttfamily \#include \char`\"{}filesystem\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}fstream\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}iomanip\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}iostream\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}openssl/sha.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}regex\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}sstream\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}string\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/\+CBuild\+\_\+defs.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../headers/hash.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/map.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/print.\+hpp\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{structCBuild_1_1cpp}{CBuild\+::cpp}}
+\begin{DoxyCompactList}\small\item\em Struct for saving properties of file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild}{CBuild}}
+\begin{DoxyCompactList}\small\item\em Filebuffer for \mbox{\hyperlink{namespaceCBuild}{CBuild}} ecosystem. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::string \mbox{\hyperlink{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}{sha256}} (const std\+::string str)
-\end{DoxyCompactItemize}
+std\+::regex \mbox{\hyperlink{namespaceCBuild_a7ffa216b04c3b14936cb05091e2b6d63}{CBuild\+::comment\+\_\+regex1}} (\char`\"{}\textbackslash{}\textbackslash{}/\textbackslash{}\textbackslash{}/.$\ast$\char`\"{})
+\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_ae735c4bf4a343f65bdb54baf3dc1021f}{CBuild\+::comment\+\_\+regex2}} (\char`\"{}/\textbackslash{}\textbackslash{}$\ast$\mbox{[}$^\wedge$$\ast$\mbox{]}$\ast$\textbackslash{}\textbackslash{}$\ast$+(?\+:\mbox{[}$^\wedge$/$\ast$\mbox{]}\mbox{[}$^\wedge$$\ast$\mbox{]}$\ast$\textbackslash{}\textbackslash{}$\ast$+)$\ast$/\char`\"{})
+\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_a29ddf8caf20b6d19af8764612a6c860f}{CBuild\+::include\+\_\+search}} (\char`\"{}\#include\textbackslash{}\textbackslash{}s+\mbox{[}\textbackslash{}\char`\"{}$<$\mbox{]}(\mbox{[}$^\wedge$\textbackslash{}\char`\"{}$>$\mbox{]}+)\mbox{[}\textbackslash{}\char`\"{}$>$\mbox{]}\char`\"{})
+\item 
+std\+::string \mbox{\hyperlink{namespaceCBuild_a433729ea224814d205310f3477eaf089}{CBuild\+::get\+\_\+file\+\_\+content}} (std\+::string path)
+\begin{DoxyCompactList}\small\item\em Get content of file, stripped from comments. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{namespaceCBuild_abee2bcd5f14e2ca24f51a173b0cd7d9f}{CBuild\+::hash}} (std\+::string path)
+\begin{DoxyCompactList}\small\item\em Get hash of file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_ad47c326f75f473e4224b24cb6c5482fa}{CBuild\+::save\+\_\+hash\+\_\+table}} (std\+::string toolchain)
+\begin{DoxyCompactList}\small\item\em Save hash table from map. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_af50be8c99b891d00f8461165faaa6ee3}{CBuild\+::load\+\_\+hash\+\_\+table}} (std\+::string toolchain)
+\begin{DoxyCompactList}\small\item\em Load hash table to map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}{changed}}
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, uint64\+\_\+t $>$ \mbox{\hyperlink{namespaceCBuild_a6ef4cf9cc7888f2035c900fb94c5eeaa}{CBuild\+::hash\+\_\+table\+\_\+old}}
+\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, uint64\+\_\+t $>$ \mbox{\hyperlink{namespaceCBuild_a6c4f4181471b6cb81d2852f229a589ba}{CBuild\+::hash\+\_\+table\+\_\+new}}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{structCBuild_1_1cpp}{CBuild\+::cpp}} $>$ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{CBuild\+::files}}
+\item 
+\mbox{\hyperlink{structCBuild_1_1cpp}{CBuild\+::cpp}} \mbox{\hyperlink{namespaceCBuild_aaebad4a9dad6c451f7ae2a27b126faef}{CBuild\+::last\+\_\+file\+\_\+tmp}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-SHA256 implementation. 
+File hashing implementation. 
 
 \begin{DoxyAuthor}{Author}
 WolodiaM (\href{mailto:w_melnyk@outlook.com}{\texttt{ w\+\_\+melnyk@outlook.\+com}}) 
@@ -42,38 +74,4 @@ WolodiaM (\href{mailto:w_melnyk@outlook.com}{\texttt{ w\+\_\+melnyk@outlook.\+co
 Copyright (C) 2023 WolodiaM This program is free software\+: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see \href{https://www.gnu.org/licenses/}{\texttt{ https\+://www.\+gnu.\+org/licenses/}}. 
 
 Definition in file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
-
-
-
-\doxysubsection{Function Documentation}
-\mbox{\Hypertarget{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}\label{hash_8cpp_a386a8e3a9b24783a353a51bfa2f9a1d6}} 
-\index{hash.cpp@{hash.cpp}!sha256@{sha256}}
-\index{sha256@{sha256}!hash.cpp@{hash.cpp}}
-\doxysubsubsection{\texorpdfstring{sha256()}{sha256()}}
-{\footnotesize\ttfamily std\+::string sha256 (\begin{DoxyParamCaption}\item[{const std\+::string}]{str }\end{DoxyParamCaption})}
-
-
-
-Definition at line \mbox{\hyperlink{hash_8cpp_source_l00034}{34}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
-
-
-
-References \mbox{\hyperlink{hash_8cpp_source_l00034}{sha256()}}.
-
-
-
-Referenced by \mbox{\hyperlink{hash_8cpp_source_l00052}{CBuild\+::hash\+\_\+match\+\_\+store()}}, \mbox{\hyperlink{hash_8cpp_source_l00083}{CBuild\+::load\+\_\+hash()}}, \mbox{\hyperlink{hash_8cpp_source_l00111}{CBuild\+::save\+\_\+hashes()}}, and \mbox{\hyperlink{hash_8cpp_source_l00034}{sha256()}}.
-
-
-
-\doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}\label{hash_8cpp_ae981c6abc8931db34cff2d35fe9f4a99}} 
-\index{hash.cpp@{hash.cpp}!changed@{changed}}
-\index{changed@{changed}!hash.cpp@{hash.cpp}}
-\doxysubsubsection{\texorpdfstring{changed}{changed}}
-{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ changed}
-
-
-
-Definition at line \mbox{\hyperlink{hash_8cpp_source_l00050}{50}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
 

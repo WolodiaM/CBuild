@@ -1,0 +1,105 @@
+\hypertarget{files_8cpp_source}{}\doxysection{files.\+cpp}
+\label{files_8cpp_source}\index{CBuild/CBuild/src/files.cpp@{CBuild/CBuild/src/files.cpp}}
+\mbox{\hyperlink{files_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00021}00021\ \textcolor{comment}{//\ C++\ libraries}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00022}00022\ \textcolor{preprocessor}{\#include\ "{}fstream"{}}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}iostream"{}}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}string"{}}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00025}00025\ \textcolor{comment}{//\ Project\ headers}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}../../headers/CBuild\_defs.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}../../headers/files.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}../../headers/filesystem++.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00029}00029\ \textcolor{comment}{/*\ files.hpp\ */}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00030}\mbox{\hyperlink{namespaceCBuild_1_1fs_a66838af175563ee1fbadaa29b10aa706}{00030}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a66838af175563ee1fbadaa29b10aa706}{CBuild::fs::replace}}(std::string\ file,\ std::string\ token,\ std::string\ data)\ \{}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00031}00031\ \ \ \ \ \textcolor{comment}{//\ Path\ to\ tmp\ file}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00032}00032\ \ \ \ \ std::string\ cache;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00033}00033\ \ \ \ \ cache\ =\ \mbox{\hyperlink{CBuild__defs_8hpp_ab0d61221c2cbb8a54d68db65df592532}{CBUILD\_CACHE\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ \mbox{\hyperlink{CBuild__defs_8hpp_a7bc97744c79e15b6260fbe0f6054bdd3}{CBUILD\_COPY\_CACHE\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00034}00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a3c6451e4dba7aa53cbeaa1749a7c0882}{CBuild::fs::path\_to\_file}}(file)\ +\ \textcolor{stringliteral}{"{}.tmp"{}};}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00035}00035\ \ \ \ \ \textcolor{comment}{//\ std::cout\ <<\ cache\ <<\ "{}\(\backslash\)n"{};}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00036}00036\ \ \ \ \ \textcolor{comment}{//\ Open\ two\ files}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00037}00037\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{CBuild::fs::create}}(\{cache\},\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{CBuild::fs::FILE}});}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00038}00038\ \ \ \ \ std::ofstream\ tmp\_file(cache);}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00039}00039\ \ \ \ \ std::ifstream\ main\_file;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00040}00040\ \ \ \ \ main\_file.open(file);}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00041}00041\ \ \ \ \ \textcolor{comment}{//\ Number\ of\ replaced\ tokens}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00042}00042\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ check\_num;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00043}00043\ \ \ \ \ check\_num\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00044}00044\ \ \ \ \ \textcolor{comment}{//\ Read\ and\ copy\ file\ to\ temp\ file\ line\ by\ line}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00045}00045\ \ \ \ \ std::string\ line;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00046}00046\ \ \ \ \ \textcolor{keywordflow}{while}\ (std::getline(main\_file,\ line))\ \{}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00047}00047\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ token\ found\ -\/\ replace\ it\ and\ increment\ counter}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00048}00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (line.find(token)\ !=\ std::string::npos)\ \{}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ line.replace(line.find(token),\ token.size(),\ data);}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ check\_num++;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00051}00051\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00052}00052\ \ \ \ \ \ \ \ \ tmp\_file\ <<\ line\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00053}00053\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00054}00054\ \ \ \ \ \textcolor{comment}{//\ Close\ files}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00055}00055\ \ \ \ \ main\_file.close();}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00056}00056\ \ \ \ \ tmp\_file.close();}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00057}00057\ \ \ \ \ \textcolor{comment}{//\ Replace\ file\ by\ it's\ temp\ version}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00058}00058\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{CBuild::fs::remove}}(file,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00059}00059\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}{CBuild::fs::move}}(cache,\ file);}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00060}00060\ \ \ \ \ \textcolor{comment}{//\ Return\ number\ of\ replaced\ element\ or\ -\/1\ if\ nothing\ has\ been\ replaced}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00061}00061\ \ \ \ \ \textcolor{keywordflow}{if}\ (check\_num\ ==\ 0)\ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00062}00062\ \ \ \ \ \textcolor{keywordflow}{return}\ check\_num;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00063}00063\ \}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00064}\mbox{\hyperlink{namespaceCBuild_1_1fs_a2404dcec344234f77320e48f42314cd2}{00064}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a2404dcec344234f77320e48f42314cd2}{CBuild::fs::set\_var}}(std::string\ file,\ std::string\ var\_type,}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ var\_name,\ std::string\ data)\ \{}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00066}00066\ \ \ \ \ \textcolor{comment}{//\ Path\ to\ tmp\ file}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00067}00067\ \ \ \ \ std::string\ cache;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00068}00068\ \ \ \ \ cache\ =\ \mbox{\hyperlink{CBuild__defs_8hpp_ab0d61221c2cbb8a54d68db65df592532}{CBUILD\_CACHE\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ \mbox{\hyperlink{CBuild__defs_8hpp_a7bc97744c79e15b6260fbe0f6054bdd3}{CBUILD\_COPY\_CACHE\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00069}00069\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a3c6451e4dba7aa53cbeaa1749a7c0882}{CBuild::fs::path\_to\_file}}(file)\ +\ \textcolor{stringliteral}{"{}.tmp"{}};}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00070}00070\ \ \ \ \ \textcolor{comment}{//\ std::cout\ <<\ cache\ <<\ "{}\(\backslash\)n"{};}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00071}00071\ \ \ \ \ \textcolor{comment}{//\ Open\ two\ files}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00072}00072\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{CBuild::fs::create}}(\{cache\},\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{CBuild::fs::FILE}});}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00073}00073\ \ \ \ \ std::ofstream\ tmp\_file(cache);}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00074}00074\ \ \ \ \ std::ifstream\ main\_file;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00075}00075\ \ \ \ \ main\_file.open(file);}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00076}00076\ \ \ \ \ \textcolor{comment}{//\ Number\ of\ replaced\ tokens}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00077}00077\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ check\_num;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00078}00078\ \ \ \ \ check\_num\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//\ Read\ and\ copy\ file\ to\ temp\ file\ line\ by\ line}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00080}00080\ \ \ \ \ std::string\ line;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00081}00081\ \ \ \ \ \textcolor{keywordflow}{while}\ (std::getline(main\_file,\ line))\ \{}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00082}00082\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ can\ refer\ to\ \#define\ by\ define}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (var\_type\ ==\ \textcolor{stringliteral}{"{}define"{}})\ var\_type\ =\ \textcolor{stringliteral}{"{}\#define"{}};}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00084}00084\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ variable\ found}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((line.find(var\_type)\ !=\ std::string::npos)\ \&\&}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ (line.find(var\_name)\ !=\ std::string::npos))\ \{}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ All\ content\ before\ variable}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ prefix\ =}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ line.substr(0,\ line.find(var\_type));}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ All\ content\ after\ variable}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ postfix\ =}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ line.substr(line.find(var\_name)\ +\ var\_name.size(),}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ line.size()\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Variable}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ var\ =}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ var\_type\ +\ \textcolor{stringliteral}{"{}\ "{}}\ +\ var\_name\ +\ \textcolor{stringliteral}{"{}\ =\ "{}}\ +\ data;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Recreate\ line}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ line\ =\ prefix\ +\ var\ +\ postfix;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ check\_num++;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00100}00100\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00101}00101\ \ \ \ \ \ \ \ \ tmp\_file\ <<\ line\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00102}00102\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00103}00103\ \ \ \ \ \textcolor{comment}{//\ Close\ files}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00104}00104\ \ \ \ \ main\_file.close();}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00105}00105\ \ \ \ \ tmp\_file.close();}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00106}00106\ \ \ \ \ \textcolor{comment}{//\ Replace\ file\ by\ it's\ temp\ version}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00107}00107\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{CBuild::fs::remove}}(file,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00108}00108\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}{CBuild::fs::move}}(cache,\ file);}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00109}00109\ \ \ \ \ \textcolor{comment}{//\ Return\ number\ of\ replaced\ element\ or\ -\/1\ if\ nothing\ has\ been\ replaced}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00110}00110\ \ \ \ \ \textcolor{keywordflow}{if}\ (check\_num\ ==\ 0)\ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00111}00111\ \ \ \ \ \textcolor{keywordflow}{return}\ check\_num;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00112}00112\ \}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00113}\mbox{\hyperlink{namespaceCBuild_1_1fs_a3c6451e4dba7aa53cbeaa1749a7c0882}{00113}}\ std::string\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a3c6451e4dba7aa53cbeaa1749a7c0882}{CBuild::fs::path\_to\_file}}(std::string\ in)\ \{}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00114}00114\ \ \ \ \ \textcolor{keywordflow}{while}\ (in.find(\textcolor{stringliteral}{"{}/"{}})\ !=\ std::string::npos)\ \{}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00115}00115\ \ \ \ \ \ \ \ \ in.replace(in.find(\textcolor{stringliteral}{"{}/"{}}),\ std::string(\textcolor{stringliteral}{"{}/"{}}).size(),\ \textcolor{stringliteral}{"{}."{}});}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00116}00116\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00117}00117\ \ \ \ \ \textcolor{keywordflow}{return}\ in;}
+\DoxyCodeLine{\Hypertarget{files_8cpp_source_l00118}00118\ \}}
+
+\end{DoxyCode}

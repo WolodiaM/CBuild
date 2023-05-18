@@ -28,7 +28,7 @@ virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a0ce3ae723a5a5cd558e51fdb
 \item 
 virtual \mbox{\hyperlink{classCBuild_1_1Toolchain_a20b5937c4218a656cf4b6ccadcce1d0b}{$\sim$\+Toolchain}} ()
 \item 
-virtual std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a2489c6794e28fd6a8143fedd506407a3}{get\+\_\+id}} ()
+std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a0fc948049659930b087bf93ccc1a6f1a}{get\+\_\+id}} ()
 \item 
 virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_afc878456770e7581db33502fba56e7b5}{call}} (std\+::vector$<$ std\+::string $>$ $\ast$\mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}, bool \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}}=false, bool \mbox{\hyperlink{classCBuild_1_1Toolchain_a16ceca74d4c19e759912109326154d08}{debug}}=false)
 \begin{DoxyCompactList}\small\item\em Call tollchain to execute. \end{DoxyCompactList}\item 
@@ -102,8 +102,6 @@ virtual \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::
 \begin{DoxyCompactList}\small\item\em Generate list of files that need to be compiles. \end{DoxyCompactList}\item 
 virtual std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_adcc30e51100a389f7178d2be9c2bcf04}{gen\+\_\+out\+\_\+file}} (std\+::string file)
 \begin{DoxyCompactList}\small\item\em Generate output object file from input file. \end{DoxyCompactList}\item 
-virtual std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a83c45aea3e5d4c3dcb085420ac625b26}{gen\+\_\+hash\+\_\+file}} (std\+::string file)
-\begin{DoxyCompactList}\small\item\em Generate hash file for .cpp file. \end{DoxyCompactList}\item 
 virtual std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_ad94fac4b38afc12b44b20f66bd46c3a3}{cmd\+\_\+str}} (std\+::string in)
 \begin{DoxyCompactList}\small\item\em Replace spaces by \char`\"{}\textbackslash{} \char`\"{}. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_ade6d0d671052e834f6dbdb4c5a8e485c}{init}} ()
@@ -145,7 +143,7 @@ bool \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72
 \doxysubsection{Detailed Description}
 
 
-Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00033}{33}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
+Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00034}{34}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
 
 
 
@@ -192,7 +190,7 @@ Construct a new \mbox{\hyperlink{classCBuild_1_1GCC}{GCC}} object.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00054}{54}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
+Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00053}{53}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
 
 
 
@@ -217,11 +215,11 @@ Implements \mbox{\hyperlink{classCBuild_1_1Toolchain_a304690847efa8191ec66b1c966
 
 
 
-Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00065}{65}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
+Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00063}{63}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{Build_8hpp_source_l00112}{CBuild\+::\+Toolchain\+::args}}, \mbox{\hyperlink{Build_8hpp_source_l00089}{CBuild\+::\+Toolchain\+::compiler}}, \mbox{\hyperlink{Build_8hpp_source_l00081}{CBuild\+::\+Toolchain\+::compiler\+\_\+args}}, \mbox{\hyperlink{Build_8hpp_source_l00116}{CBuild\+::\+Toolchain\+::force}}, \mbox{\hyperlink{Build_8cpp_source_l00215}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, \mbox{\hyperlink{Build_8cpp_source_l00197}{CBuild\+::\+Toolchain\+::gen\+\_\+hash\+\_\+file()}}, \mbox{\hyperlink{hash_8cpp_source_l00111}{CBuild\+::save\+\_\+hashes()}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+References \mbox{\hyperlink{Build_8hpp_source_l00112}{CBuild\+::\+Toolchain\+::args}}, \mbox{\hyperlink{Build_8hpp_source_l00089}{CBuild\+::\+Toolchain\+::compiler}}, \mbox{\hyperlink{Build_8hpp_source_l00081}{CBuild\+::\+Toolchain\+::compiler\+\_\+args}}, \mbox{\hyperlink{hash_8cpp_source_l00168}{CBuild\+::files}}, \mbox{\hyperlink{Build_8hpp_source_l00116}{CBuild\+::\+Toolchain\+::force}}, \mbox{\hyperlink{Build_8cpp_source_l00197}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1GCC_a0d6da921c254bb411e096cd65c4c9cdc}\label{classCBuild_1_1GCC_a0d6da921c254bb411e096cd65c4c9cdc}} 
 \index{CBuild::GCC@{CBuild::GCC}!link@{link}}
@@ -239,11 +237,11 @@ Implements \mbox{\hyperlink{classCBuild_1_1Toolchain_adf746115d76976ccd9916a3799
 
 
 
-Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00092}{92}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
+Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00084}{84}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{Build_8hpp_source_l00112}{CBuild\+::\+Toolchain\+::args}}, \mbox{\hyperlink{Build_8cpp_source_l00215}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, \mbox{\hyperlink{Build_8cpp_source_l00327}{CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{Build_8hpp_source_l00085}{CBuild\+::\+Toolchain\+::link\+\_\+args}}, \mbox{\hyperlink{Build_8hpp_source_l00093}{CBuild\+::\+Toolchain\+::linker}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+References \mbox{\hyperlink{Build_8hpp_source_l00112}{CBuild\+::\+Toolchain\+::args}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00049}{CBUILD\+\_\+\+BUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00041}{CBuild\+::fs\+::dir()}}, \mbox{\hyperlink{hash_8cpp_source_l00168}{CBuild\+::files}}, \mbox{\hyperlink{Build_8cpp_source_l00337}{CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{Build_8hpp_source_l00085}{CBuild\+::\+Toolchain\+::link\+\_\+args}}, \mbox{\hyperlink{Build_8hpp_source_l00093}{CBuild\+::\+Toolchain\+::linker}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1GCC_a4ea0321bb0b8e8186aed50b7452d9317}\label{classCBuild_1_1GCC_a4ea0321bb0b8e8186aed50b7452d9317}} 
 \index{CBuild::GCC@{CBuild::GCC}!link\_pack@{link\_pack}}
@@ -261,11 +259,11 @@ Implements \mbox{\hyperlink{classCBuild_1_1Toolchain_a121ee5ea85b59529c7aa05ca8c
 
 
 
-Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00120}{120}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
+Definition at line \mbox{\hyperlink{gcc_8hpp_source_l00112}{112}} of file \mbox{\hyperlink{gcc_8hpp_source}{gcc.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{Build_8hpp_source_l00112}{CBuild\+::\+Toolchain\+::args}}, \mbox{\hyperlink{Build_8cpp_source_l00215}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, \mbox{\hyperlink{Build_8cpp_source_l00327}{CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{Build_8hpp_source_l00085}{CBuild\+::\+Toolchain\+::link\+\_\+args}}, \mbox{\hyperlink{Build_8hpp_source_l00097}{CBuild\+::\+Toolchain\+::packer}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+References \mbox{\hyperlink{Build_8hpp_source_l00112}{CBuild\+::\+Toolchain\+::args}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00049}{CBUILD\+\_\+\+BUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00041}{CBuild\+::fs\+::dir()}}, \mbox{\hyperlink{hash_8cpp_source_l00168}{CBuild\+::files}}, \mbox{\hyperlink{Build_8cpp_source_l00337}{CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{Build_8hpp_source_l00085}{CBuild\+::\+Toolchain\+::link\+\_\+args}}, \mbox{\hyperlink{Build_8hpp_source_l00097}{CBuild\+::\+Toolchain\+::packer}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
 
 
 

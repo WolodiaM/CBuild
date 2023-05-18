@@ -5,8 +5,8 @@
 filesystem++ api  
 
 
-{\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}string\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -50,7 +50,9 @@ bool \mbox{\hyperlink{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}{C
 bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{CBuild\+::fs\+::create}} (std\+::vector$<$ std\+::string $>$ paths, \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{CBuild\+::fs\+::type}} what)
 \begin{DoxyCompactList}\small\item\em Create element. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{CBuild\+::fs\+::exists}} (std\+::string path)
-\begin{DoxyCompactList}\small\item\em Check if file exists. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Check if file exists. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespaceCBuild_1_1fs_a1077211cdc9fcebea48f6a20b7da8fe6}{CBuild\+::fs\+::normalize\+\_\+path}} (std\+::string path, std\+::string base\+\_\+path=\char`\"{}\char`\"{})
+\begin{DoxyCompactList}\small\item\em Get absolute path to file using relative path and base path. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

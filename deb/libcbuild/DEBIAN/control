@@ -1,5 +1,5 @@
 Package: libcbuild
-Version: 7.3
+Version: 7.4
 Section: utils
 Priority: optional
 Architecture: amd64
