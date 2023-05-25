@@ -148,6 +148,12 @@ bool exists(std::string path);
  * @return std::string -> Absolute path
  */
 std::string normalize_path(std::string path, std::string base_path = "");
+/**
+ * @brief Get base file path (path dir in what file is)
+ *
+ * @param file => std::string -> Filepath
+ */
+std::string base(std::string file);
 }  // namespace fs
 }  // namespace CBuild
 #endif	// __CBUILD_FILESYSTEM_HPP__

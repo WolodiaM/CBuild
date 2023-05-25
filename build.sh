@@ -19,10 +19,10 @@ function build_build()
     echo Building core dynamic library
     files=`dir CBuild/CBuild/src/*.cpp`
     echo Core files - ${files}
-    g++ -c ${files} -fPIC -std=c++20 -g -lcrypto -Wall -Wextra -Wno-comments -Wno-deprecated-copy -Wl,-soname,libCBuild.so
+    g++ -c ${files} -fPIC -std=c++20 -g -Wall -Wextra -Wno-comments -Wno-deprecated-copy -Wl,-soname,libCBuild.so
     objects=`dir *.o`
     echo Core objects - ${objects}
-    g++ ${objects} -lcrypto -shared -g -o libCBuild.so -Wl,-soname,libCBuild.so
+    g++ ${objects} -shared -g -o libCBuild.so -Wl,-soname,libCBuild.so
     rm -r ${objects}
     mv libCBuild.so CBuild/CBuild
 }

@@ -352,4 +352,6 @@ std::string CBuild::fs::normalize_path(std::string path,
 		    std ::filesystem::path(path));
 	}
 }
-
+std::string CBuild::fs::base(std::string file) {
+	return std::filesystem::path(file).parent_path();
+}

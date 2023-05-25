@@ -1,14 +1,12 @@
 /**
- * @file hash.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief Hashing files
- * @version 1.0
- * @date 2023-02-04
+ * @brief Hasher v3.0 for CBuild
+ * @date Fri May 19 11:21:22 AM EEST 2023
  *
  *
  * @license GPL v3.0 or later
  *
- * Copyright (C) 2023  WolodiaM
+ * Copyright (C) 2022  WolodiaM
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -24,37 +22,9 @@
 #include "string"
 #include "vector"
 // Code
-#ifndef __CBUILD_HASH_HPP__
-#define __CBUILD_HASH_HPP__
+#ifndef __HASH_HPP__
+#define __HASH_HPP__
 namespace CBuild {
-/**
- * @brief Check if saved hash match new hash of file and update saved hash
- *
- * @param hash_file => std::string -> path to hash file
- * @param code_file => std::string -> path to code file
- * @return true -> file hash equal to saved
- * @return false -> file hash different from saved
- */
-// bool hash_match_store(std::string hash_file, std::string code_file);
-/**
- * @brief Load hash
- *
- * @param hash_files => std::string -> hash files
- * @param code_files => std::string -> code files
- * @return true -> file hash equal to saved
- * @return false -> file hash different from saved
- */
-// bool load_hash(std::string hash, std::string code);
-/**
- * @brief Store hashes
- *
- * @param hash_files => std::vector<std::string> -> hash files
- * @param code_files => std::vector<std::string> -> code files
- */
-void save_hashes(std::vector<std::string> hash_files,
-		 std::vector<std::string> code_files);
-
-// New hasher
 /**
  * @brief Get changed files
  *
@@ -63,5 +33,9 @@ void save_hashes(std::vector<std::string> hash_files,
  */
 std::vector<std::string> get_files(std::vector<std::string> files,
 				   std::string toolchain_id);
+/**
+ * @brief Print temporary file array
+ */
+void print_files();
 }  // namespace CBuild
-#endif	// __CBUILD_HASH_HPP__
+#endif	// __HASH_HPP__

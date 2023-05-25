@@ -1,14 +1,12 @@
 /**
- * @file hash.cpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief File hashing implementation
- * @version 1.0
- * @date 2023-02-13
+ * @brief Hasher v3.0 implementation
+ * @date Fri May 19 11:32:50 AM EEST 2023
  *
  *
  * @license GPL v3.0 or later
  *
- * Copyright (C) 2023  WolodiaM
+ * Copyright (C) 2022  WolodiaM
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,348 +19,364 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // C++ libraries
-#include "filesystem"
 #include "fstream"
-#include "iomanip"
+#include "inttypes.h"
 #include "iostream"
 #include "regex"
 #include "sstream"
 #include "string"
 #include "vector"
-// Project headers
+// CBuild headers
 #include "../../headers/CBuild_defs.hpp"
+#include "../../headers/filesystem++.hpp"
 #include "../../headers/hash.hpp"
 #include "../../headers/map.hpp"
+#include "../../headers/optional.hpp"
 #include "../../headers/print.hpp"
-/* sha256 */
-// std::string sha256(const std::string str) {
-// 	unsigned char hash[SHA256_DIGEST_LENGTH];
-//
-// 	SHA256_CTX sha256;
-// 	SHA256_Init(&sha256);
-// 	SHA256_Update(&sha256, str.c_str(), str.size());
-// 	SHA256_Final(hash, &sha256);
-//
-// 	std::stringstream buff;
-//
-// 	for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-// 		buff << std::hex << std::setw(2) << std::setfill('0')
-// 		     << static_cast<int>(hash[i]);
-// 	}
-// 	return buff.str();
-// }
-// std::vector<std::string> changed;
-// /* hash.hpp */
-// bool CBuild::hash_match_store(std::string hash_file, std::string code_file) {
-// 	// Open files
-// 	std::ifstream hashf(hash_file);
-// 	std::ifstream file(code_file);
-// 	// Load code file
-// 	std::stringstream buffer;
-// 	buffer << file.rdbuf();
-// 	// Get hash of file
-// 	std::string hash = sha256(buffer.str());
-// 	// Load saved hash
-// 	std::stringstream saved;
-// 	saved << hashf.rdbuf();
-// 	// Compare hashes
-// 	bool ret = false;
-// 	if (saved.str() == std::string("-")) {
-// 		ret = false;
-// 	} else if (saved.str() != hash) {
-// 		ret = false;
-// 	} else if (saved.str() == hash) {
-// 		ret = true;
-// 	}
-// 	// Close hash file ond overwrite its content with new hash
-// 	hashf.close();
-// 	std::ofstream hashfw(hash_file);
-// 	hashfw << hash;
-// 	// Close all files and return value
-// 	file.close();
-// 	hashfw.close();
-// 	return ret;
-// }
-//
-// bool CBuild::load_hash(std::string hash, std::string code) {  // Load files
-// 	std::ifstream hfile(hash);
-// 	std::ifstream cfile(code);
-// 	// Load code file content
-// 	std::stringstream buffer;
-// 	buffer << cfile.rdbuf();
-// 	// Get hash of file
-// 	std::string hash_str = sha256(buffer.str());
-// 	// Load saved hash
-// 	std::stringstream saved;
-// 	saved << hfile.rdbuf();
-// 	// Compare hashes
-// 	// True  - match
-// 	// False - not match
-// 	bool ret = false;
-// 	if (saved.str() == std::string("-")) {
-// 		ret = false;
-// 	} else if (saved.str() != hash_str) {
-// 		ret = false;
-// 	} else if (saved.str() == hash_str) {
-// 		ret = true;
-// 	}
-// 	// Close files
-// 	cfile.close();
-// 	hfile.close();
-// 	// Return
-// 	return ret;
-// }
-// void CBuild::save_hashes(std::vector<std::string> hash_files,
-// 			 std::vector<std::string> code_files) {
-// 	// Error
-// 	if (hash_files.size() != code_files.size()) {
-// 		CBuild::print(
-// 		    "Error, too many files in one of list given for hashing!");
-// 		exit(0xAA);
-// 	}
-// 	for (unsigned int i = 0; i < hash_files.size(); i++) {
-// 		// Load files from list
-// 		std::string hash = hash_files.at(i);
-// 		std::string code = code_files.at(i);
-// 		// Load files
-// 		std::ofstream hfile(hash);
-// 		std::ifstream cfile(code);
-// 		// Load code file content
-// 		std::stringstream buffer;
-// 		buffer << cfile.rdbuf();
-// 		// Get hash of file
-// 		std::string hash_str = sha256(buffer.str());
-// 		// Write hash to file
-// 		hfile << hash_str;
-// 		// Close files
-// 		cfile.close();
-// 		hfile.close();
-// 	}
-// }
-// New hasher
+// Code
+/* namespace CBuild */
 namespace CBuild {
 /**
- * @class cpp
- * @brief Struct for saving properties of file
- *
+ * @brief Constants
  */
-struct cpp {
-	/**
-	 * @brief Absolute path to cpp file
-	 */
-	std::string cpp_path_abs;
-	/**
-	 * @brief Absolute pathes to included headers
-	 */
-	std::vector<std::string> hpp_paths_abs;
-};
-// Strip c++-stile comments
-std::regex comment_regex1("\\/\\/.*");
-// Strip c-style and doxygen comments
-std::regex comment_regex2("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/");
-// Include search regex
-std::regex include_search("#include\\s+[\"<]([^\">]+)[\">]");
-// Table of file-hash
-lib::map<std::string, uint64_t> hash_table_old, hash_table_new;
-// Headers return variable
-std::vector<CBuild::cpp> files;
-// Last file
-CBuild::cpp last_file_tmp;
+namespace consts {
 /**
- * @brief Get content of file, stripped from comments
+ * @brief Regex for stripping c++ line comments from file
+ */
+std::regex cxx_line_comment("//.*");
+/**
+ * @brief Regex for stripping c multiline comments from file comtent
+ */
+std::regex c_multiline_comment("/\\*([\\s\\S]*?)\\*/",
+			       std::regex_constants::multiline);
+/**
+ * @brief Regex for stripping doxygen comments from file comtent
+ */
+std::regex doxygen_comment("/\\*\\*([\\s\\S]*?)\\*/",
+			   std::regex_constants::multiline);
+/**
+ * @brief Get include directives from file and parse file name in it
+ */
+std::regex include_parser("#include\\s+[\"<]([^\">]+)[\">]");
+/**
+ * @brief For checking for source file
+ */
+std::regex check_type("\\.(cpp|cxx|cc|c)");
+}  // namespace consts
+namespace types {
+/**
+ * @class file
+ * @brief File structure
+ */
+struct file {
+	/**
+	 * @brief Absolute file path
+	 */
+	std::string abs_path;
+	/**
+	 * @brief Project includes
+	 */
+	std::vector<CBuild::types::file> includes;
+	/**
+	 * @brief New file hash
+	 */
+	uint64_t hash_new;
+	/**
+	 * @brief Old file hash
+	 */
+	lib::optional<uint64_t> hash_old;
+	/**
+	 * @brief Does file is cpp file
+	 */
+	bool cpp;
+	/**
+	 * @brief Does file changed
+	 */
+	bool change;
+	/**
+	 * @brief Create new file structure, simply init all values
+	 *
+	 * @param path => string -> Absolute file path
+	 */
+	file(std::string path) {
+		this->change = false;
+		this->hash_new = 0;
+		this->hash_old.clear();
+		this->abs_path = path;
+		this->includes.clear();
+		if (std::regex_search(this->abs_path,
+				      CBuild::consts::check_type)) {
+			this->cpp = true;
+		} else {
+			this->cpp = false;
+		}
+	}
+};
+/**
+ * @class file_content
+ * @brief Temporary struct for file content
+ */
+struct file_content {
+	/**
+	 * @brief Content of file
+	 */
+	std::string content;
+	/**
+	 * @brief Absolute path to file
+	 */
+	std::string path;
+	/**
+	 * @brief Includes
+	 */
+	std::vector<std::string> includes;
+};
+}  // namespace types
+namespace vars {
+std::vector<CBuild::types::file> filelist;
+lib::map<std::string, uint64_t> headers;
+lib::map<std::string, uint64_t> old_hashes;
+}  // namespace vars
+/**
+ * @brief Get content of file
  *
  * @param path => std::string -> Path to file
- * @return std::string -> Content of file
+ * @return std::string -> File content
  */
-std::string get_file_content(std::string path) {
-	CBuild::files.clear();
-	CBuild::hash_table_new.clear();
-	CBuild::hash_table_old.clear();
-	std::string ret = "";
-	std::ifstream f(path);
-	std::string line;
-	CBuild::cpp file;
-	file.cpp_path_abs = std::filesystem::absolute(path).string();
-	// Load file and strip comments
-	while (std::getline(f, line)) {
-		line = std::regex_replace(line, CBuild::comment_regex1, "");
-		ret += line;
-		ret += "\n";
+CBuild::types::file_content get_file_data(std::string path,
+					  std::string included_from = "") {
+	// Return variable
+	std::string p = path;
+	// Set path to file
+	try {
+		p = CBuild::fs::normalize_path(path, included_from);
+	} catch (const std::exception& e) {
 	}
-	f.close();
-	ret = std::regex_replace(ret, CBuild::comment_regex2, "");
-	// Get included files
+	CBuild::types::file_content f;
+	f.path = p;
+	// Load file content to string
+	std::ifstream file(path);
+	std::stringstream buff;
+	buff << file.rdbuf();
+	file.close();
+	std::string str = buff.str();
+	// Strip comments from file
+	str = std::regex_replace(str, CBuild::consts::cxx_line_comment, "");
+	str = std::regex_replace(str, CBuild::consts::c_multiline_comment, "");
+	str = std::regex_replace(str, CBuild::consts::doxygen_comment, "");
+	f.content = str;
+	// Get includes
 	std::smatch match;
-	std::string::const_iterator search_start(ret.cbegin());
-	auto base = std::filesystem::path(path).parent_path();
-	while (std::regex_search(search_start, ret.cend(), match,
-				 CBuild::include_search)) {
+	std::string::const_iterator start(str.cbegin());
+	// Base file path
+	std::string base = CBuild::fs::base(path);
+	while (std::regex_search(start, str.cend(), match,
+				 CBuild::consts::include_parser)) {
+		// Get file
 		std::string head = match[1];
 		bool err = false;
+		// Convert to absolute path and check for system includes
 		try {
-			head = std::filesystem::canonical(
-				   base / std::filesystem::path(head))
-				   .string();
+			head = CBuild::fs::normalize_path(head, base);
 		} catch (const std::exception& e) {
 			err = true;
 		}
-		if (!err) file.hpp_paths_abs.push_back(head);
-		search_start = match.suffix().first;
+		// Push path, if it is project include
+		if (!err) {
+			f.includes.push_back(head);
+		}
+		start = match.suffix().first;
 	}
-	CBuild::last_file_tmp = file;
-	return ret;
+	return f;
 }
 /**
- * @brief Get hash of file
+ * @brief djb2 hashing function for std::string
  *
- * @param path => std::string -> Path to file
- * @return uint64_t -> Hash of file
+ * @param str => std::string -> Input string
+ * @return uint64_t -> Hash of data
  */
-uint64_t hash(std::string path) {
-	std::string str = CBuild::get_file_content(path);
-	// FNV-1a
-	// uint64_t hash = 14695981039346656037ULL;
-	// for (char c : str) {
-	// 	hash ^= static_cast<uint64_t>(c);
-	// 	hash *= 1099511628211ULL;
-	// }
-	// djb2
+uint64_t hash(std::string str) {
 	uint64_t hash = 5381;
 	for (auto ch : str) {
 		hash = ((hash << 5) + hash) + ch;
 	}
 	return hash;
 }
+// /**
+//  * @brief FNV-1a hashing function for std::string
+//  *
+//  * @param str => std::string -> Input string
+//  * @return uint64_t -> Hash of data
+//  */
+// uint64_t hash(std::string str) {
+// 	uint64_t hash = 14695981039346656037ULL;
+//	for (char c : str) {
+// 		hash ^= static_cast<uint64_t>(c);
+// 		hash *= 1099511628211ULL;
+// 	}
+// 	return hash;
+// }
 /**
- * @brief Save hash table from map
+ * @brief
  *
- * @param toolchain => std::string -> Toolchain id
+ * @param files
+ * @param toolchain_id
  */
-void save_hash_table(std::string toolchain) {
-	std::filesystem::remove(
-	    std::filesystem::path(CBUILD_BUILD_DIR + "/" + toolchain + "/" +
-				  CBUILD_HASH_DIR + "/" + CBUILD_HASH_FILE));
-	std::ofstream file(CBUILD_BUILD_DIR + "/" + toolchain + "/" +
+void procces_files(std::vector<std::string> files, std::string toolchain_id) {
+	CBuild::print_full("\t\t\tCBuild hash v3.0", CBuild::color::MAGENTA);
+	// For every input file
+	for (auto file : files) {
+		// Get file data
+		auto data = CBuild::get_file_data(file);
+		auto cpp = CBuild::types::file(data.path);
+		// Get file hash
+		cpp.hash_new = CBuild::hash(data.content);
+		CBuild::print_full(
+		    "Calculating hash for \"" + cpp.abs_path + "\"",
+		    CBuild::color::GREEN);
+		CBuild::print_full("Need to calculate hash...",
+				   CBuild::color::RED);
+		auto old = CBuild::vars::old_hashes.get(cpp.abs_path);
+		if (old != NULL) {
+			cpp.hash_old.set(*old);
+		}
+		// For every invclude
+		for (auto inc : data.includes) {
+			// Get file data
+			auto hdata = CBuild::get_file_data(inc, cpp.abs_path);
+
+			auto hpp = CBuild::types::file(hdata.path);
+			// Check if hash is already stored in hash
+			const uint64_t* hash = NULL;
+			CBuild::print_full(
+			    "Calculating hash for \"" + hpp.abs_path + "\"",
+			    CBuild::color::GREEN);
+			if ((hash = CBuild::vars::headers.get(hpp.abs_path)) !=
+			    NULL) {
+				// Use stored hash
+				hpp.hash_new = *hash;
+				CBuild::print_full("Using hash from cache.",
+						   CBuild::color::GREEN);
+			} else {
+				// Calculate file hash
+				hpp.hash_new = CBuild::hash(hdata.content);
+				CBuild::print_full("Need to calculate hash...",
+						   CBuild::color::RED);
+			}
+			auto old = CBuild::vars::old_hashes.get(hpp.abs_path);
+			if (old != NULL) {
+				hpp.hash_old.set(*old);
+			}
+			// Store hash
+			try {
+				CBuild::vars::headers.push_back_check(
+				    hpp.abs_path, hpp.hash_new);
+			} catch (std::exception& e) {
+			}
+			// Store proccesed include
+			cpp.includes.push_back(hpp);
+		}
+		// Store proccesed file
+		CBuild::vars::filelist.push_back(cpp);
+	}
+}
+/**
+ * @brief Store new hashes to file
+ *
+ * @param toolchain_id => std::string -> Id of toolchain
+ */
+void store_hash(std::string toolchain_id) {
+	std::ofstream file(CBUILD_BUILD_DIR + "/" + toolchain_id + "/" +
 			   CBUILD_HASH_DIR + "/" + CBUILD_HASH_FILE);
-	for (unsigned int i = 0; i < CBuild::hash_table_new.size(); i++) {
-		file << CBuild::hash_table_new.at(i).key << " " << std::hex
-		     << CBuild::hash_table_new.at(i).data << "\n";
+	for (auto cpp : CBuild::vars::filelist) {
+		file << cpp.abs_path << " " << std::hex << cpp.hash_new << "\n";
+	}
+	for (int i = 0; i < CBuild::vars::headers.size(); i++) {
+		auto hpp = CBuild::vars::headers.at(i);
+		file << hpp.key << " " << std::hex << hpp.data << "\n";
 	}
 	file.close();
 }
 /**
- * @brief Load hash table to map
+ * @brief Load old hashes
  *
- * @param toolchain => std::string -> Toolchain id
+ * @param toolchain_id => std::string -> Id of toolchain
  */
-void load_hash_table(std::string toolchain) {
-	std::ifstream file(CBUILD_BUILD_DIR + "/" + toolchain + "/" +
-			   CBUILD_HASH_DIR + "/" + CBUILD_HASH_FILE);
-	std::string sbuff;
-	uint64_t ubuff;
-	while (file >> sbuff >> std::hex >> ubuff) {
-		CBuild::hash_table_old.push_back_check(sbuff, ubuff);
+void load_hash(std::string toolchain_id) {
+	std::string path = CBUILD_BUILD_DIR + "/" + toolchain_id + "/" +
+			   CBUILD_HASH_DIR + "/" + CBUILD_HASH_FILE;
+	if (!CBuild::fs::exists(path)) {
+		return;
+	}
+	std::ifstream file(path);
+	std::string line;
+	while (std::getline(file, line)) {
+		std::istringstream iss(line);
+		std::string key;
+		uint64_t value;
+		iss >> key >> std::hex >> value;
+
+		try {
+			CBuild::vars::old_hashes.push_back_check(key, value);
+		} catch (const std::exception& e) {
+		}
 	}
 	file.close();
 }
 }  // namespace CBuild
+/* hash.hpp */
+void CBuild::print_files() {
+	CBuild::print_full("\t\t\tCBuild hash v3.0 - Filelist",
+			   CBuild::color::MAGENTA);
+	std::stringstream buff;
+	for (auto file : CBuild::vars::filelist) {
+		buff << "\t\t" << file.abs_path << "\n"
+		     << std::hex << "New hash: " << file.hash_new
+		     << ", old hash: ";
+		if (file.hash_old.is()) {
+			buff << std::hex << file.hash_old.get() << "\n";
+		} else {
+			buff << " null\n";
+		}
+		CBuild::print_full(buff.str());
+		buff.str("");
+		for (auto hfile : file.includes) {
+			buff << "\t\t\t" << hfile.abs_path << "\n"
+			     << std::hex << "\tNew hash: " << hfile.hash_new
+			     << ", old hash: ";
+			if (hfile.hash_old.is()) {
+				buff << std::hex << hfile.hash_old.get()
+				     << "\n";
+			} else {
+				buff << " null\n";
+			}
+			CBuild::print_full(buff.str());
+			buff.str("");
+		}
+	}
+}
 std::vector<std::string> CBuild::get_files(std::vector<std::string> files,
 					   std::string toolchain_id) {
-	// Load old hashes
-	CBuild::load_hash_table(toolchain_id);
+	// Variables
 	std::vector<std::string> ret;
-	// Generate new hashes
-	for (auto elem : files) {
-		bool err = false;
-		try {
-			CBuild::hash_table_new.push_back_check(
-			    std::filesystem::canonical(
-				std::filesystem::path(elem))
-				.string(),
-			    CBuild::hash(elem));
-		} catch (std::exception& e) {
-			err = true;
-		}
-		if (!err) CBuild::files.push_back(CBuild::last_file_tmp);
-	}
-	for (unsigned int i = 0; i < CBuild::files.size(); i++) {
-		auto cpp = CBuild::files.at(i);
-		for (unsigned int j = 0; j < cpp.hpp_paths_abs.size(); j++) {
-			auto hpp = cpp.hpp_paths_abs.at(j);
-			try {
-				CBuild::hash_table_new.push_back_check(
-				    std::filesystem::canonical(
-					std::filesystem::path(hpp))
-					.string(),
-				    CBuild::hash(hpp));
-			} catch (std::exception& e) {
-			}
-		}
-	}
-	// Check files
-	CBuild::print_full("CBuild hash v2.0 - dbg:");
-	std::stringstream str;
-	for (auto file : CBuild::files) {
-		const uint64_t* old_hash =
-		    CBuild::hash_table_old.get(file.cpp_path_abs);
-		const uint64_t* new_hash =
-		    CBuild::hash_table_new.get(file.cpp_path_abs);
-		str.str("");
-		str << "File (c): " << file.cpp_path_abs << ", hash: old - "
-		    << (old_hash == NULL ? 0 : *old_hash) << ", new - "
-		    << (new_hash == NULL ? 0 : *new_hash)
-		    << ", match: " << std::boolalpha
-		    << ((old_hash != NULL && new_hash != NULL)
-			    ? (*old_hash == *new_hash)
-			    : false);
-		CBuild::print_full(str.str());
-		if (old_hash == NULL && new_hash != NULL) {
-			ret.push_back(file.cpp_path_abs);
-		} else if (old_hash != NULL && new_hash != NULL) {
-			if (*old_hash != *new_hash) {
-				ret.push_back(file.cpp_path_abs);
-			} else {
-				for (auto hpp : file.hpp_paths_abs) {
-					auto old_hpp_hash =
-					    CBuild::hash_table_old.get(hpp);
-					auto new_hpp_hash =
-					    CBuild::hash_table_new.get(hpp);
-					str.str("");
-					str << "File (h): " << hpp
-					    << ", hash: old - "
-					    << ((old_hpp_hash == NULL)
-						    ? 0
-						    : *old_hpp_hash)
-					    << ", new - "
-					    << ((new_hpp_hash == NULL)
-						    ? 0
-						    : *new_hpp_hash)
-					    << ", match: " << std::boolalpha
-					    << ((old_hpp_hash != NULL &&
-						 new_hpp_hash != NULL)
-						    ? (*old_hpp_hash ==
-						       *new_hpp_hash)
-						    : false);
-					CBuild::print_full(str.str());
-					if (old_hpp_hash == NULL &&
-					    new_hpp_hash != NULL) {
-						ret.push_back(
-						    file.cpp_path_abs);
-					} else if (old_hpp_hash != NULL &&
-						   new_hpp_hash != NULL) {
-						if (*old_hpp_hash !=
-						    *new_hpp_hash)
-							ret.push_back(
-							    file.cpp_path_abs);
-					}
+	// Gather all file info and relevant hashes
+	CBuild::load_hash(toolchain_id);
+	CBuild::procces_files(files, toolchain_id);
+	CBuild::store_hash(toolchain_id);
+	// Check differences in hashes
+	for (auto file : CBuild::vars::filelist) {
+		if ((!file.hash_old.is()) ||
+		    (file.hash_new != file.hash_old.get())) {
+			ret.push_back(file.abs_path);
+		} else {
+			for (auto inc : file.includes) {
+				if ((!inc.hash_old.is()) ||
+				    (inc.hash_new != inc.hash_old.get())) {
+					ret.push_back(file.abs_path);
+				} else {
 				}
 			}
 		}
 	}
-	// for (auto elem : ret) {
-	// 	std::cout << elem << "\n";
-	// }
-	// Save new hashes
-	CBuild::save_hash_table(toolchain_id);
+	// Return value
 	return ret;
 }

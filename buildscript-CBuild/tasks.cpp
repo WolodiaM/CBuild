@@ -93,9 +93,11 @@ class modify_version : public pack_base {
 			} else if (cmd == std::string("dec_maj") ||
 				   cmd == std::string("dec_major")) {
 				this->vmj -= 1;
+				this->vmn = 0;
 			} else if (cmd == std::string("dec_min") ||
 				   cmd == std::string("dec_minor")) {
 				this->vmn -= 1;
+				this->vmn = 0;
 			} else if (cmd == std::string("help") ||
 				   cmd == std::string("h")) {
 				this->print_help();
@@ -135,7 +137,6 @@ class mkppa : public CBuild::Task {
 };
 // Tasks
 pack_deb packd;
-pack_aur packa;
 procces_version pv;
 modify_version mv;
 mkppa ppa;
@@ -143,7 +144,6 @@ test t;
 // Init
 void load_tasks() {
 	CBuild::Registry::RegistryTask(&packd);
-	CBuild::Registry::RegistryTask(&packa);
 	CBuild::Registry::RegistryTask(&pv);
 	CBuild::Registry::RegistryTask(&mv);
 	CBuild::Registry::RegistryTask(&ppa);
