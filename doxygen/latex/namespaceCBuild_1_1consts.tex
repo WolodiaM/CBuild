@@ -1,0 +1,96 @@
+\hypertarget{namespaceCBuild_1_1consts}{}\doxysection{CBuild\+::consts Namespace Reference}
+\label{namespaceCBuild_1_1consts}\index{CBuild::consts@{CBuild::consts}}
+
+
+Constants.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_aac9b86b3cee610833d70b8d752dbda99}{cxx\+\_\+line\+\_\+comment}} (\char`\"{}//.$\ast$\char`\"{})
+\begin{DoxyCompactList}\small\item\em Regex for stripping c++ line comments from file. \end{DoxyCompactList}\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_a57e26a2810de59fed5c3e6a652a9c9a3}{c\+\_\+multiline\+\_\+comment}} (\char`\"{}/\textbackslash{}\textbackslash{}$\ast$(\mbox{[}\textbackslash{}\textbackslash{}s\textbackslash{}\textbackslash{}S\mbox{]}$\ast$?)\textbackslash{}\textbackslash{}$\ast$/\char`\"{}, std\+::regex\+\_\+constants\+::multiline)
+\begin{DoxyCompactList}\small\item\em Regex for stripping c multiline comments from file comtent. \end{DoxyCompactList}\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_af85e1233794d920c14a2368fa02f69f7}{doxygen\+\_\+comment}} (\char`\"{}/\textbackslash{}\textbackslash{}$\ast$\textbackslash{}\textbackslash{}$\ast$(\mbox{[}\textbackslash{}\textbackslash{}s\textbackslash{}\textbackslash{}S\mbox{]}$\ast$?)\textbackslash{}\textbackslash{}$\ast$/\char`\"{}, std\+::regex\+\_\+constants\+::multiline)
+\begin{DoxyCompactList}\small\item\em Regex for stripping doxygen comments from file comtent. \end{DoxyCompactList}\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_aa19d5305adc96357062023357f61f385}{include\+\_\+parser}} (\char`\"{}\#include\textbackslash{}\textbackslash{}s+\mbox{[}\textbackslash{}\char`\"{}$<$\mbox{]}(\mbox{[}$^\wedge$\textbackslash{}\char`\"{}$>$\mbox{]}+)\mbox{[}\textbackslash{}\char`\"{}$>$\mbox{]}\char`\"{})
+\begin{DoxyCompactList}\small\item\em Get include directives from file and parse file name in it. \end{DoxyCompactList}\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_a25e74b6667a1dac60e12c06bd7d26335}{check\+\_\+type}} (\char`\"{}\textbackslash{}\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{})
+\begin{DoxyCompactList}\small\item\em For checking for source file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Constants. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceCBuild_1_1consts_a57e26a2810de59fed5c3e6a652a9c9a3}\label{namespaceCBuild_1_1consts_a57e26a2810de59fed5c3e6a652a9c9a3}} 
+\index{CBuild::consts@{CBuild::consts}!c\_multiline\_comment@{c\_multiline\_comment}}
+\index{c\_multiline\_comment@{c\_multiline\_comment}!CBuild::consts@{CBuild::consts}}
+\doxysubsubsection{\texorpdfstring{c\_multiline\_comment()}{c\_multiline\_comment()}}
+{\footnotesize\ttfamily std\+::regex CBuild\+::consts\+::c\+\_\+multiline\+\_\+comment (\begin{DoxyParamCaption}\item[{\char`\"{}/\textbackslash{}\textbackslash{}$\ast$(\mbox{[}\textbackslash{}\textbackslash{}s\textbackslash{}\textbackslash{}S\mbox{]}$\ast$?)\textbackslash{}\textbackslash{}$\ast$/\char`\"{}}]{,  }\item[{std\+::regex\+\_\+constants\+::multiline}]{ }\end{DoxyParamCaption})}
+
+
+
+Regex for stripping c multiline comments from file comtent. 
+
+
+
+Referenced by \mbox{\hyperlink{hash_8cpp_source_l00146}{CBuild\+::get\+\_\+file\+\_\+data()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1consts_a25e74b6667a1dac60e12c06bd7d26335}\label{namespaceCBuild_1_1consts_a25e74b6667a1dac60e12c06bd7d26335}} 
+\index{CBuild::consts@{CBuild::consts}!check\_type@{check\_type}}
+\index{check\_type@{check\_type}!CBuild::consts@{CBuild::consts}}
+\doxysubsubsection{\texorpdfstring{check\_type()}{check\_type()}}
+{\footnotesize\ttfamily std\+::regex CBuild\+::consts\+::check\+\_\+type (\begin{DoxyParamCaption}\item[{\char`\"{}\textbackslash{}\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+
+
+For checking for source file. 
+
+
+
+Referenced by \mbox{\hyperlink{hash_8cpp_source_l00101}{CBuild\+::types\+::file\+::file()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1consts_aac9b86b3cee610833d70b8d752dbda99}\label{namespaceCBuild_1_1consts_aac9b86b3cee610833d70b8d752dbda99}} 
+\index{CBuild::consts@{CBuild::consts}!cxx\_line\_comment@{cxx\_line\_comment}}
+\index{cxx\_line\_comment@{cxx\_line\_comment}!CBuild::consts@{CBuild::consts}}
+\doxysubsubsection{\texorpdfstring{cxx\_line\_comment()}{cxx\_line\_comment()}}
+{\footnotesize\ttfamily std\+::regex CBuild\+::consts\+::cxx\+\_\+line\+\_\+comment (\begin{DoxyParamCaption}\item[{\char`\"{}//.$\ast$\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+
+
+Regex for stripping c++ line comments from file. 
+
+
+
+Referenced by \mbox{\hyperlink{hash_8cpp_source_l00146}{CBuild\+::get\+\_\+file\+\_\+data()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1consts_af85e1233794d920c14a2368fa02f69f7}\label{namespaceCBuild_1_1consts_af85e1233794d920c14a2368fa02f69f7}} 
+\index{CBuild::consts@{CBuild::consts}!doxygen\_comment@{doxygen\_comment}}
+\index{doxygen\_comment@{doxygen\_comment}!CBuild::consts@{CBuild::consts}}
+\doxysubsubsection{\texorpdfstring{doxygen\_comment()}{doxygen\_comment()}}
+{\footnotesize\ttfamily std\+::regex CBuild\+::consts\+::doxygen\+\_\+comment (\begin{DoxyParamCaption}\item[{\char`\"{}/\textbackslash{}\textbackslash{}$\ast$\textbackslash{}\textbackslash{}$\ast$(\mbox{[}\textbackslash{}\textbackslash{}s\textbackslash{}\textbackslash{}S\mbox{]}$\ast$?)\textbackslash{}\textbackslash{}$\ast$/\char`\"{}}]{,  }\item[{std\+::regex\+\_\+constants\+::multiline}]{ }\end{DoxyParamCaption})}
+
+
+
+Regex for stripping doxygen comments from file comtent. 
+
+
+
+Referenced by \mbox{\hyperlink{hash_8cpp_source_l00146}{CBuild\+::get\+\_\+file\+\_\+data()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1consts_aa19d5305adc96357062023357f61f385}\label{namespaceCBuild_1_1consts_aa19d5305adc96357062023357f61f385}} 
+\index{CBuild::consts@{CBuild::consts}!include\_parser@{include\_parser}}
+\index{include\_parser@{include\_parser}!CBuild::consts@{CBuild::consts}}
+\doxysubsubsection{\texorpdfstring{include\_parser()}{include\_parser()}}
+{\footnotesize\ttfamily std\+::regex CBuild\+::consts\+::include\+\_\+parser (\begin{DoxyParamCaption}\item[{\char`\"{}\#include\textbackslash{}\textbackslash{}s+(\mbox{[}$^\wedge$\textbackslash{}\char`\"{}$>$\mbox{]}+)\char`\"{}}]{\mbox{[}\textbackslash{}\char`\"{}$<$\mbox{]}\mbox{[}\textbackslash{}\char`\"{}$>$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Get include directives from file and parse file name in it. 
+
+
+
+Referenced by \mbox{\hyperlink{hash_8cpp_source_l00146}{CBuild\+::get\+\_\+file\+\_\+data()}}.
+

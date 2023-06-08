@@ -2,36 +2,37 @@
 \label{filesystem_09_09_8hpp_source}\index{CBuild/headers/filesystem++.hpp@{CBuild/headers/filesystem++.hpp}}
 \mbox{\hyperlink{filesystem_09_09_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00001}00001\ }
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00023}00023\ \textcolor{comment}{//\ C++\ libraries}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}string"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}vector"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00026}00026\ \textcolor{preprocessor}{\#ifndef\ \_\_CBUILD\_FILESYSTEM\_HPP\_\_}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00027}00027\ \textcolor{preprocessor}{\#define\ \_\_CBUILD\_FILESYSTEM\_HPP\_\_}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00028}00028\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceCBuild}{CBuild}}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00029}00029\ \textcolor{keyword}{namespace\ }fs\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00033}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{00033}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00037}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{00037}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{FILE}},}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00041}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca147be5f09382f8628291195a291d6c22}{00041}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca147be5f09382f8628291195a291d6c22}{DIRECTORY}},}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00045}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca8411d0ba0382070f24a0e2a9015f62b9}{00045}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca8411d0ba0382070f24a0e2a9015f62b9}{DIR}},}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00050}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca5b0881c558badf9d5f51675e03cdb275}{00050}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca5b0881c558badf9d5f51675e03cdb275}{SYMLINK\_FILE}},}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00055}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca73dc6faf9da93d2d1269f29037f634a0}{00055}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca73dc6faf9da93d2d1269f29037f634a0}{SYMLINK\_DIRECTORY}},}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00059}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca48cc85a15d49d801d3c509e976bc64b4}{00059}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca48cc85a15d49d801d3c509e976bc64b4}{SYMLINK\_DIR}},}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00064}00064\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca1edf4b605a5dc28ccf9fbfc318829a2d}{HARDLINK}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00065}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca1edf4b605a5dc28ccf9fbfc318829a2d}{00065}}\ \}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{type}};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00073}00073\ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{dir}}(std::string\ path,\ std::string\ search);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00080}00080\ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{dir}}(std::string\ path);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00088}00088\ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{dir\_rec}}(std::string\ path,\ std::string\ search);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00095}00095\ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{dir\_rec}}(std::string\ path);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00102}00102\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{remove}}(std::string\ path,\ \textcolor{keywordtype}{bool}\ force\ =\ \textcolor{keyword}{false});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00110}00110\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{copy}}(std::string\ start,\ std::string\ end);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00118}00118\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}{move}}(std::string\ start,\ std::string\ end);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00127}00127\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}{rename}}(std::string\ start,\ std::string\ end);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00135}00135\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{create}}(std::vector<std::string>\ paths,\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{CBuild::fs::type}}\ what);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00142}00142\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{exists}}(std::string\ path);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00150}00150\ std::string\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a1077211cdc9fcebea48f6a20b7da8fe6}{normalize\_path}}(std::string\ path,\ std::string\ base\_path\ =\ \textcolor{stringliteral}{"{}"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00151}00151\ \}\ \ \textcolor{comment}{//\ namespace\ fs}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00152}00152\ \}\ \ \textcolor{comment}{//\ namespace\ CBuild}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00153}00153\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_\_CBUILD\_FILESYSTEM\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00023}00023 \textcolor{comment}{// C++ libraries}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00024}00024 \textcolor{preprocessor}{\#include "{}string"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00025}00025 \textcolor{preprocessor}{\#include "{}vector"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00026}00026 \textcolor{preprocessor}{\#ifndef \_\_CBUILD\_FILESYSTEM\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00027}00027 \textcolor{preprocessor}{\#define \_\_CBUILD\_FILESYSTEM\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00028}00028 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceCBuild}{CBuild}} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00029}00029 \textcolor{keyword}{namespace }fs \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00033}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{00033}} \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00037}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{00037}}   \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{FILE}},}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00041}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca147be5f09382f8628291195a291d6c22}{00041}}   \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca147be5f09382f8628291195a291d6c22}{DIRECTORY}},}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00045}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca8411d0ba0382070f24a0e2a9015f62b9}{00045}}   \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca8411d0ba0382070f24a0e2a9015f62b9}{DIR}},}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00050}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca5b0881c558badf9d5f51675e03cdb275}{00050}}   \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca5b0881c558badf9d5f51675e03cdb275}{SYMLINK\_FILE}},}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00055}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca73dc6faf9da93d2d1269f29037f634a0}{00055}}   \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca73dc6faf9da93d2d1269f29037f634a0}{SYMLINK\_DIRECTORY}},}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00059}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca48cc85a15d49d801d3c509e976bc64b4}{00059}}   \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca48cc85a15d49d801d3c509e976bc64b4}{SYMLINK\_DIR}},}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00064}00064   \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca1edf4b605a5dc28ccf9fbfc318829a2d}{HARDLINK}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00065}\mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca1edf4b605a5dc28ccf9fbfc318829a2d}{00065}} \} \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{type}};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00073}00073 std::vector<std::string> \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{dir}}(std::string path, std::string search);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00080}00080 std::vector<std::string> \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{dir}}(std::string path);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00088}00088 std::vector<std::string> \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{dir\_rec}}(std::string path, std::string search);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00095}00095 std::vector<std::string> \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{dir\_rec}}(std::string path);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00103}00103 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{remove}}(std::string path, \textcolor{keywordtype}{bool} force = \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00111}00111 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{copy}}(std::string start, std::string end);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00119}00119 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}{move}}(std::string start, std::string end);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00128}00128 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}{rename}}(std::string start, std::string end);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00136}00136 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{create}}(std::vector<std::string> paths, \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{CBuild::fs::type}} what);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00143}00143 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{exists}}(std::string path);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00151}00151 std::string \mbox{\hyperlink{namespaceCBuild_1_1fs_a1077211cdc9fcebea48f6a20b7da8fe6}{normalize\_path}}(std::string path, std::string base\_path = \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00157}00157 std::string \mbox{\hyperlink{namespaceCBuild_1_1fs_a1c11acabc60bb22db19562a4013a8af7}{base}}(std::string file);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00158}00158 \} \textcolor{comment}{// namespace fs}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00159}00159 \} \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8hpp_source_l00160}00160 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_\_CBUILD\_FILESYSTEM\_HPP\_\_}}
 
 \end{DoxyCode}

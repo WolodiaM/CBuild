@@ -2,38 +2,38 @@
 \label{system_8cpp_source}\index{CBuild/CBuild/src/system.cpp@{CBuild/CBuild/src/system.cpp}}
 \mbox{\hyperlink{system_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00001}00001\ }
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00023}00023\ \textcolor{comment}{//\ C++\ libraries}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}stdlib.h"{}}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}string"{}}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}vector"{}}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00027}00027\ \textcolor{comment}{//\ Project\ headers}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}../../headers/print.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00029}00029\ \textcolor{preprocessor}{\#include\ "{}../../headers/system.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00030}00030\ \textcolor{comment}{/*\ namespace\ CBuild\ */}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00031}00031\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceCBuild}{CBuild}}\ \{}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00032}\mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{00032}}\ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{log}};}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00033}00033\ \}\ \ \textcolor{comment}{//\ namespace\ CBuild}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00034}00034\ \textcolor{comment}{/*\ system.hpp\ */}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00035}\mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{00035}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(std::string\ cmd)\ \{}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00036}00036\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{CBuild::log}}.push\_back(cmd);}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00037}00037\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(cmd,\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}{CBuild::color::BLUE}});}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00038}00038\ \ \ \ \ std::system(cmd.c\_str());}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00039}00039\ \}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00040}\mbox{\hyperlink{namespaceCBuild_aa40c654650af39ec69106e9ac1e80834}{00040}}\ std::string\ \mbox{\hyperlink{namespaceCBuild_aa40c654650af39ec69106e9ac1e80834}{CBuild::system\_piped}}(std::string\ cmd,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ buffsize)\ \{}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00041}00041\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{CBuild::log}}.push\_back(cmd);}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00042}00042\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(cmd,\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}{CBuild::color::BLUE}});}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00043}00043\ \ \ \ \ std::string\ ret;}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00044}00044\ \ \ \ \ \textcolor{keywordtype}{char}*\ buffer\ =\ (\textcolor{keywordtype}{char}*)malloc(buffsize);}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00045}00045\ \ \ \ \ FILE*\ pipe\ =\ popen(cmd.c\_str(),\ \textcolor{stringliteral}{"{}r"{}});}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00046}00046\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ bytesread;}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00047}00047\ \ \ \ \ \textcolor{keywordflow}{while}\ ((bytesread\ =\ fread(buffer,\ \textcolor{keyword}{sizeof}(buffer[0]),\ \textcolor{keyword}{sizeof}(buffer),}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pipe))\ !=\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00049}00049\ \ \ \ \ \ \ \ \ ret\ +=\ std::string(buffer,\ bytesread);}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00050}00050\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00051}00051\ \ \ \ \ pclose(pipe);}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00052}00052\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00053}00053\ \}}
-\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00054}\mbox{\hyperlink{namespaceCBuild_a454c89f17e1bbea2bd4bdb0be34027b7}{00054}}\ std::vector<std::string>*\ \mbox{\hyperlink{namespaceCBuild_a454c89f17e1bbea2bd4bdb0be34027b7}{CBuild::get\_log}}()\ \{\ \textcolor{keywordflow}{return}\ \&\mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{CBuild::log}};\ \}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00023}00023 \textcolor{comment}{// C++ libraries}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00024}00024 \textcolor{preprocessor}{\#include "{}stdlib.h"{}}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00025}00025 \textcolor{preprocessor}{\#include "{}string"{}}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00026}00026 \textcolor{preprocessor}{\#include "{}vector"{}}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00027}00027 \textcolor{comment}{// Project headers}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00028}00028 \textcolor{preprocessor}{\#include "{}../../headers/print.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00029}00029 \textcolor{preprocessor}{\#include "{}../../headers/system.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00030}00030 \textcolor{comment}{/* namespace CBuild */}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00031}00031 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceCBuild}{CBuild}} \{}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00032}\mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{00032}} std::vector<std::string> \mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{log}};}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00033}00033 \}  \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00034}00034 \textcolor{comment}{/* system.hpp */}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00035}\mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{00035}} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(std::string cmd) \{}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00036}00036     \mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{CBuild::log}}.push\_back(cmd);}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00037}00037     \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(cmd, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}{CBuild::color::BLUE}});}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00038}00038     \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{std::system}}(cmd.c\_str());}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00039}00039 \}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00040}\mbox{\hyperlink{namespaceCBuild_aa40c654650af39ec69106e9ac1e80834}{00040}} std::string \mbox{\hyperlink{namespaceCBuild_aa40c654650af39ec69106e9ac1e80834}{CBuild::system\_piped}}(std::string cmd, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} buffsize) \{}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00041}00041     \mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{CBuild::log}}.push\_back(cmd);}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00042}00042     \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(cmd, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}{CBuild::color::BLUE}});}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00043}00043     std::string ret;}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00044}00044     \textcolor{keywordtype}{char}* buffer = (\textcolor{keywordtype}{char}*)malloc(buffsize);}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00045}00045     \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{FILE}}* pipe = popen(cmd.c\_str(), \textcolor{stringliteral}{"{}r"{}});}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00046}00046     \textcolor{keywordtype}{size\_t} bytesread;}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00047}00047     \textcolor{keywordflow}{while} ((bytesread = fread(buffer, \textcolor{keyword}{sizeof}(buffer[0]), \textcolor{keyword}{sizeof}(buffer),}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00048}00048                   pipe)) != 0) \{}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00049}00049         ret += std::string(buffer, bytesread);}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00050}00050     \}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00051}00051     pclose(pipe);}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00052}00052     \textcolor{keywordflow}{return} ret;}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00053}00053 \}}
+\DoxyCodeLine{\Hypertarget{system_8cpp_source_l00054}\mbox{\hyperlink{namespaceCBuild_a454c89f17e1bbea2bd4bdb0be34027b7}{00054}} std::vector<std::string>* \mbox{\hyperlink{namespaceCBuild_a454c89f17e1bbea2bd4bdb0be34027b7}{CBuild::get\_log}}() \{ \textcolor{keywordflow}{return} \&\mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{CBuild::log}}; \}}
 
 \end{DoxyCode}

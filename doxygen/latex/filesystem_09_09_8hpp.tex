@@ -36,9 +36,9 @@ std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722
 std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_a68fced753f8789df81c229ff7068cc7e}{CBuild\+::fs\+::dir}} (std\+::string path)
 \begin{DoxyCompactList}\small\item\em Search files using standard regex (\char`\"{}.$\ast$\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{}) \end{DoxyCompactList}\item 
 std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{CBuild\+::fs\+::dir\+\_\+rec}} (std\+::string path, std\+::string search)
-\item 
+\begin{DoxyCompactList}\small\item\em Recursively search files using provided regex. \end{DoxyCompactList}\item 
 std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_aee249da4a350096ea1011652df0e982a}{CBuild\+::fs\+::dir\+\_\+rec}} (std\+::string path)
-\item 
+\begin{DoxyCompactList}\small\item\em Recursively search files using standard regex (\char`\"{}.$\ast$\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{}) \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{CBuild\+::fs\+::remove}} (std\+::string path, bool force=false)
 \begin{DoxyCompactList}\small\item\em Delete files or directories. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{CBuild\+::fs\+::copy}} (std\+::string start, std\+::string end)
@@ -52,7 +52,9 @@ bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{C
 bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{CBuild\+::fs\+::exists}} (std\+::string path)
 \begin{DoxyCompactList}\small\item\em Check if file exists. \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{namespaceCBuild_1_1fs_a1077211cdc9fcebea48f6a20b7da8fe6}{CBuild\+::fs\+::normalize\+\_\+path}} (std\+::string path, std\+::string base\+\_\+path=\char`\"{}\char`\"{})
-\begin{DoxyCompactList}\small\item\em Get absolute path to file using relative path and base path. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get absolute path to file using relative path and base path. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespaceCBuild_1_1fs_a1c11acabc60bb22db19562a4013a8af7}{CBuild\+::fs\+::base}} (std\+::string file)
+\begin{DoxyCompactList}\small\item\em Get base file path (path dir in what file is) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

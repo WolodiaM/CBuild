@@ -2,112 +2,112 @@
 \label{gcc_8hpp_source}\index{CBuild/headers/build/gcc.hpp@{CBuild/headers/build/gcc.hpp}}
 \mbox{\hyperlink{gcc_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00001}00001\ }
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00023}00023\ \textcolor{comment}{//\ Project\ files}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}../CBuild\_defs.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}../filesystem++.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}../hash.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}../print.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}../system.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00029}00029\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Build_8hpp}{Build.hpp}}"{}}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00030}00030\ \textcolor{comment}{//\ Code}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00031}00031\ \textcolor{preprocessor}{\#ifndef\ \_CBUILD\_GCC\_TOOLCHAIN}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00032}00032\ \textcolor{preprocessor}{\#define\ \_CBUILD\_GCC\_TOOLCHAIN}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00033}00033\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceCBuild}{CBuild}}\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00034}\mbox{\hyperlink{classCBuild_1_1GCC}{00034}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classCBuild_1_1GCC}{GCC}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild::Toolchain}}\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00035}00035\ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00041}\mbox{\hyperlink{classCBuild_1_1GCC_a5acd2b16f59eb489c8a5763edac2da06}{00041}}\ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1GCC_a5acd2b16f59eb489c8a5763edac2da06}{GCC}}(std::string\ \textcolor{keywordtype}{id})\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00042}00042\ \ \ \ \ \ \ \ \ this-\/>\textcolor{keywordtype}{id}\ =\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00043}00043\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}}\ =\ \textcolor{stringliteral}{"{}gcc"{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00044}00044\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}}\ =\ \textcolor{stringliteral}{"{}gcc"{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00045}00045\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}}\ =\ \textcolor{stringliteral}{"{}ar\ cr"{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00046}00046\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00053}\mbox{\hyperlink{classCBuild_1_1GCC_abd69d4edca01791870f4fe8774369322}{00053}}\ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1GCC_abd69d4edca01791870f4fe8774369322}{GCC}}(std::string\ \textcolor{keywordtype}{id},\ std::string\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}})\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00054}00054\ \ \ \ \ \ \ \ \ this-\/>\textcolor{keywordtype}{id}\ =\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00055}00055\ \ \ \ \ \ \ \ \ this-\/>name\ =\ \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00056}00056\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}}\ =\ \textcolor{stringliteral}{"{}gcc"{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00057}00057\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}}\ =\ \textcolor{stringliteral}{"{}gcc"{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00058}00058\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}}\ =\ \textcolor{stringliteral}{"{}ar\ cr"{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00059}00059\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00060}00060\ }
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00061}00061\ \ \ \ \ \ \ \ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00062}00062\ \ \ \ \ \textcolor{comment}{//\ For\ docs\ see\ g++.hpp}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00063}\mbox{\hyperlink{classCBuild_1_1GCC_a3903a0ac26c4076681d08cd4383e6344}{00063}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1GCC_a3903a0ac26c4076681d08cd4383e6344}{build}}()\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00064}00064\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\_args}})\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ args\ +=\ elem;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00068}00068\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}});}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00070}00070\ \ \ \ \ \ \ \ \ std::vector<std::string>\ hash\_files;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00071}00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.size()\ >\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.size();\ i++)\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ cmd\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}}\ +\ \textcolor{stringliteral}{"{}\ -\/c\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.at(i).key;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ -\/o\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.at(i).data;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::print(cmd.c\_str(),\ CBuild::BLUE);}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00082}00082\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00083}00083\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00084}\mbox{\hyperlink{classCBuild_1_1GCC_a0d6da921c254bb411e096cd65c4c9cdc}{00084}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1GCC_a0d6da921c254bb411e096cd65c4c9cdc}{link}}()\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00085}00085\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00086}00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}})\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ args\ +=\ elem;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00089}00089\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00090}00090\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ files}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}\ =}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{CBuild::fs::dir}}(\mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ this-\/>\textcolor{keywordtype}{id}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{CBuild__defs_8hpp_a2ba05b1f4d1e778ad6957d8de394ee98}{CBUILD\_BUILD\_CACHE\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}},}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}.*\(\backslash\)\(\backslash\).(o|obj)"{}});}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00095}00095\ \ \ \ \ \ \ \ \ std::string\ flist;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00096}00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.size();\ i++)\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ flist\ +=\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.at(i);}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ flist\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00099}00099\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00100}00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.size()\ >\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ cmd\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}}\ +\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ flist;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ -\/o\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}{gen\_out\_name}}();}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::print(cmd.c\_str(),\ CBuild::BLUE);}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00110}00110\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00111}00111\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00112}\mbox{\hyperlink{classCBuild_1_1GCC_a4ea0321bb0b8e8186aed50b7452d9317}{00112}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classCBuild_1_1GCC_a4ea0321bb0b8e8186aed50b7452d9317}{link\_pack}}()\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00113}00113\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00114}00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}})\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ args\ +=\ elem;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}}\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00117}00117\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00118}00118\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}\ =}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{CBuild::fs::dir}}(\mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +\ this-\/>\textcolor{keywordtype}{id}\ +\ \textcolor{stringliteral}{"{}/"{}}\ +}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{CBuild__defs_8hpp_a2ba05b1f4d1e778ad6957d8de394ee98}{CBUILD\_BUILD\_CACHE\_DIR}}\ +\ \textcolor{stringliteral}{"{}/"{}},}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}.*\(\backslash\)\(\backslash\).(o|obj)"{}});}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00122}00122\ \ \ \ \ \ \ \ \ std::string\ flist;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00123}00123\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.size();\ i++)\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ flist\ +=\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.at(i);}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ flist\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.size()\ >\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ cmd\ =\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}}\ +\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}{gen\_out\_name}}();}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ flist;}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ cmd\ +=\ \textcolor{stringliteral}{"{}\ "{}};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CBuild::print(cmd.c\_str(),\ CBuild::BLUE);}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00135}00135\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00136}00136\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00137}00137\ \};}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00138}00138\ \}\ \ \textcolor{comment}{//\ namespace\ CBuild}}
-\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00139}00139\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_CBUILD\_GCC\_TOOLCHAIN}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00023}00023 \textcolor{comment}{// Project files}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00024}00024 \textcolor{preprocessor}{\#include "{}../CBuild\_defs.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00025}00025 \textcolor{preprocessor}{\#include "{}../filesystem++.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00026}00026 \textcolor{preprocessor}{\#include "{}../hash.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00027}00027 \textcolor{preprocessor}{\#include "{}../print.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00028}00028 \textcolor{preprocessor}{\#include "{}../system.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00029}00029 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{Build_8hpp}{Build.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00030}00030 \textcolor{comment}{// Code}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00031}00031 \textcolor{preprocessor}{\#ifndef \_CBUILD\_GCC\_TOOLCHAIN}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00032}00032 \textcolor{preprocessor}{\#define \_CBUILD\_GCC\_TOOLCHAIN}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00033}00033 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceCBuild}{CBuild}} \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00034}\mbox{\hyperlink{classCBuild_1_1GCC}{00034}} \textcolor{keyword}{class }\mbox{\hyperlink{classCBuild_1_1GCC}{GCC}} : \textcolor{keyword}{public} \mbox{\hyperlink{classCBuild_1_1Toolchain}{CBuild::Toolchain}} \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00035}00035        \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00041}\mbox{\hyperlink{classCBuild_1_1GCC_a5acd2b16f59eb489c8a5763edac2da06}{00041}}     \mbox{\hyperlink{classCBuild_1_1GCC_a5acd2b16f59eb489c8a5763edac2da06}{GCC}}(std::string \textcolor{keywordtype}{id}) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00042}00042         this-\/>\textcolor{keywordtype}{id} = \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00043}00043         this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}} = \textcolor{stringliteral}{"{}gcc"{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00044}00044         this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}} = \textcolor{stringliteral}{"{}gcc"{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00045}00045         this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}} = \textcolor{stringliteral}{"{}ar cr"{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00046}00046     \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00053}\mbox{\hyperlink{classCBuild_1_1GCC_abd69d4edca01791870f4fe8774369322}{00053}}     \mbox{\hyperlink{classCBuild_1_1GCC_abd69d4edca01791870f4fe8774369322}{GCC}}(std::string \textcolor{keywordtype}{id}, std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}}) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00054}00054         this-\/>\textcolor{keywordtype}{id} = \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00055}00055         this-\/>name = \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00056}00056         this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}} = \textcolor{stringliteral}{"{}gcc"{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00057}00057         this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}} = \textcolor{stringliteral}{"{}gcc"{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00058}00058         this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}} = \textcolor{stringliteral}{"{}ar cr"{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00059}00059     \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00060}00060 }
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00061}00061        \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00062}00062     \textcolor{comment}{// For docs see g++.hpp}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00063}\mbox{\hyperlink{classCBuild_1_1GCC_a3903a0ac26c4076681d08cd4383e6344}{00063}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1GCC_a3903a0ac26c4076681d08cd4383e6344}{build}}() \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00064}00064         std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00065}00065         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}{compiler\_args}}) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00066}00066             args += elem;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00067}00067             \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00068}00068         \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00069}00069         \textcolor{keyword}{auto} files = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a8526f1890ebf648aff951d0ba128ff84}{gen\_file\_list}}(this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}{force}});}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00070}00070         std::vector<std::string> hash\_files;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00071}00071         \textcolor{keywordflow}{if} (files.size() > 0) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00072}00072             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < files.size(); i++) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00073}00073                 std::string cmd = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}{compiler}} + \textcolor{stringliteral}{"{} -\/c "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00074}00074                 cmd += files.at(i).key;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00075}00075                 cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00076}00076                 cmd += \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00077}00077                 cmd += \textcolor{stringliteral}{"{} -\/o "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00078}00078                 cmd += files.at(i).data;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00079}00079                 \textcolor{comment}{// CBuild::print(cmd.c\_str(), CBuild::BLUE);}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00080}00080                 \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00081}00081             \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00082}00082         \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00083}00083     \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00084}\mbox{\hyperlink{classCBuild_1_1GCC_a0d6da921c254bb411e096cd65c4c9cdc}{00084}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1GCC_a0d6da921c254bb411e096cd65c4c9cdc}{link}}() \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00085}00085         std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00086}00086         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}}) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00087}00087             args += elem;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00088}00088             \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00089}00089         \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00090}00090         \textcolor{comment}{// Get files}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00091}00091         \textcolor{keyword}{auto} files =}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00092}00092             \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{CBuild::fs::dir}}(\mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}} + \textcolor{stringliteral}{"{}/"{}} + this-\/>\textcolor{keywordtype}{id} + \textcolor{stringliteral}{"{}/"{}} +}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00093}00093                     \mbox{\hyperlink{CBuild__defs_8hpp_a2ba05b1f4d1e778ad6957d8de394ee98}{CBUILD\_BUILD\_CACHE\_DIR}} + \textcolor{stringliteral}{"{}/"{}},}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00094}00094                     \textcolor{stringliteral}{"{}.*\(\backslash\)\(\backslash\).(o|obj)"{}});}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00095}00095         std::string flist;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00096}00096         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < files.size(); i++) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00097}00097             flist += files.at(i);}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00098}00098             flist += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00099}00099         \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00100}00100         \textcolor{keywordflow}{if} (files.size() > 0) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00101}00101             std::string cmd = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}{linker}} + \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00102}00102             cmd += flist;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00103}00103             cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00104}00104             cmd += \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00105}00105             cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00106}00106             cmd += \textcolor{stringliteral}{"{} -\/o "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00107}00107             cmd += this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}{gen\_out\_name}}();}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00108}00108             \textcolor{comment}{// CBuild::print(cmd.c\_str(), CBuild::BLUE);}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00109}00109             \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00110}00110         \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00111}00111     \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00112}\mbox{\hyperlink{classCBuild_1_1GCC_a4ea0321bb0b8e8186aed50b7452d9317}{00112}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1GCC_a4ea0321bb0b8e8186aed50b7452d9317}{link\_pack}}() \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00113}00113         std::string \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00114}00114         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}{link\_args}}) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00115}00115             args += elem;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00116}00116             \mbox{\hyperlink{classCBuild_1_1Toolchain_af5cd1dde6aba3754ceb79c3829e23ee8}{args}} += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00117}00117         \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00118}00118         \textcolor{keyword}{auto} files =}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00119}00119             \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{CBuild::fs::dir}}(\mbox{\hyperlink{CBuild__defs_8hpp_afdf24158b48b2226dae2818dcbe3d90a}{CBUILD\_BUILD\_DIR}} + \textcolor{stringliteral}{"{}/"{}} + this-\/>\textcolor{keywordtype}{id} + \textcolor{stringliteral}{"{}/"{}} +}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00120}00120                     \mbox{\hyperlink{CBuild__defs_8hpp_a2ba05b1f4d1e778ad6957d8de394ee98}{CBUILD\_BUILD\_CACHE\_DIR}} + \textcolor{stringliteral}{"{}/"{}},}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00121}00121                     \textcolor{stringliteral}{"{}.*\(\backslash\)\(\backslash\).(o|obj)"{}});}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00122}00122         std::string flist;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00123}00123         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < files.size(); i++) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00124}00124             flist += files.at(i);}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00125}00125             flist += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00126}00126         \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00127}00127         \textcolor{keywordflow}{if} (files.size() > 0) \{}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00128}00128             std::string cmd = this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}{packer}} + \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00129}00129             cmd += this-\/>\mbox{\hyperlink{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}{gen\_out\_name}}();}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00130}00130             cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00131}00131             cmd += flist;}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00132}00132             cmd += \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00133}00133             \textcolor{comment}{// CBuild::print(cmd.c\_str(), CBuild::BLUE);}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00134}00134             \mbox{\hyperlink{namespaceCBuild_ad61776d6fd3f656d37644d65a631a434}{CBuild::system}}(cmd);}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00135}00135         \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00136}00136     \}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00137}00137 \};}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00138}00138 \}  \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{gcc_8hpp_source_l00139}00139 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_CBUILD\_GCC\_TOOLCHAIN}}
 
 \end{DoxyCode}

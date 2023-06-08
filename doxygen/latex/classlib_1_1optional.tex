@@ -1,0 +1,224 @@
+\hypertarget{classlib_1_1optional}{}\doxysection{lib\+::optional\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classlib_1_1optional}\index{lib::optional$<$ T $>$@{lib::optional$<$ T $>$}}
+
+
+Optional data type.  
+
+
+
+
+{\ttfamily \#include $<$optional.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlib_1_1optional_aa8aee2913173ae45739decc39d89b998}{optional}} ()
+\begin{DoxyCompactList}\small\item\em Create new optional datatype. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlib_1_1optional_ada1197f68152cafbc5f149f5183717dd}{optional}} (T val)
+\begin{DoxyCompactList}\small\item\em Create new optional datatype. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlib_1_1optional_ac83f7125164e98e43250614da52a1c25}{set}} (T val)
+\begin{DoxyCompactList}\small\item\em Set value. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlib_1_1optional_aa9aa609d28f46a280e8f7f21764a807f}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Clear value. \end{DoxyCompactList}\item 
+T \mbox{\hyperlink{classlib_1_1optional_ac76c27a7068815126f80a9a67d0f3720}{get}} ()
+\begin{DoxyCompactList}\small\item\em Get value. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classlib_1_1optional_aea6eaee3a799bab2fd81f6a9ca7c1b31}{is}} ()
+\begin{DoxyCompactList}\small\item\em If value is not null. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+T \mbox{\hyperlink{classlib_1_1optional_a7e75c4c60d82395fa0f3d294cb4f83ff}{var}}
+\begin{DoxyCompactList}\small\item\em Intrnal variable. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classlib_1_1optional_a18c4131a61966a16e2fa37891bf3069e}{null}}
+\begin{DoxyCompactList}\small\item\em Does values is saved. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class lib\+::optional$<$ T $>$}
+Optional data type. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & -\/\texorpdfstring{$>$}{>} Type of internal data \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line \mbox{\hyperlink{optional_8hpp_source_l00033}{33}} of file \mbox{\hyperlink{optional_8hpp_source}{optional.\+hpp}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlib_1_1optional_aa8aee2913173ae45739decc39d89b998}\label{classlib_1_1optional_aa8aee2913173ae45739decc39d89b998}} 
+\index{lib::optional$<$ T $>$@{lib::optional$<$ T $>$}!optional@{optional}}
+\index{optional@{optional}!lib::optional$<$ T $>$@{lib::optional$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{optional()}{optional()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$ T $>$\+::optional (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Create new optional datatype. 
+
+
+
+Definition at line \mbox{\hyperlink{optional_8hpp_source_l00048}{48}} of file \mbox{\hyperlink{optional_8hpp_source}{optional.\+hpp}}.
+
+\mbox{\Hypertarget{classlib_1_1optional_ada1197f68152cafbc5f149f5183717dd}\label{classlib_1_1optional_ada1197f68152cafbc5f149f5183717dd}} 
+\index{lib::optional$<$ T $>$@{lib::optional$<$ T $>$}!optional@{optional}}
+\index{optional@{optional}!lib::optional$<$ T $>$@{lib::optional$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{optional()}{optional()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$ T $>$\+::optional (\begin{DoxyParamCaption}\item[{T}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Create new optional datatype. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & =\texorpdfstring{$>$}{>} T -\/\texorpdfstring{$>$}{>} Value \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{optional_8hpp_source_l00054}{54}} of file \mbox{\hyperlink{optional_8hpp_source}{optional.\+hpp}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlib_1_1optional_aa9aa609d28f46a280e8f7f21764a807f}\label{classlib_1_1optional_aa9aa609d28f46a280e8f7f21764a807f}} 
+\index{lib::optional$<$ T $>$@{lib::optional$<$ T $>$}!clear@{clear}}
+\index{clear@{clear}!lib::optional$<$ T $>$@{lib::optional$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$ T $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Clear value. 
+
+
+
+Definition at line \mbox{\hyperlink{optional_8hpp_source_l00070}{70}} of file \mbox{\hyperlink{optional_8hpp_source}{optional.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{hash_8cpp_source_l00101}{CBuild\+::types\+::file\+::file()}}.
+
+\mbox{\Hypertarget{classlib_1_1optional_ac76c27a7068815126f80a9a67d0f3720}\label{classlib_1_1optional_ac76c27a7068815126f80a9a67d0f3720}} 
+\index{lib::optional$<$ T $>$@{lib::optional$<$ T $>$}!get@{get}}
+\index{get@{get}!lib::optional$<$ T $>$@{lib::optional$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T \mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$ T $>$\+::get (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get value. 
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & -\/\texorpdfstring{$>$}{>} If type is null \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+T -\/\texorpdfstring{$>$}{>} Value, if any 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{optional_8hpp_source_l00076}{76}} of file \mbox{\hyperlink{optional_8hpp_source}{optional.\+hpp}}.
+
+
+
+References \mbox{\hyperlink{optional_8hpp_source_l00038}{lib\+::optional$<$ T $>$\+::var}}.
+
+\mbox{\Hypertarget{classlib_1_1optional_aea6eaee3a799bab2fd81f6a9ca7c1b31}\label{classlib_1_1optional_aea6eaee3a799bab2fd81f6a9ca7c1b31}} 
+\index{lib::optional$<$ T $>$@{lib::optional$<$ T $>$}!is@{is}}
+\index{is@{is}!lib::optional$<$ T $>$@{lib::optional$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{is()}{is()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$ T $>$\+::is (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+If value is not null. 
+
+\begin{DoxyReturn}{Returns}
+bool -\/\texorpdfstring{$>$}{>} true / false 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{optional_8hpp_source_l00088}{88}} of file \mbox{\hyperlink{optional_8hpp_source}{optional.\+hpp}}.
+
+
+
+References \mbox{\hyperlink{optional_8hpp_source_l00042}{lib\+::optional$<$ T $>$\+::null}}.
+
+\mbox{\Hypertarget{classlib_1_1optional_ac83f7125164e98e43250614da52a1c25}\label{classlib_1_1optional_ac83f7125164e98e43250614da52a1c25}} 
+\index{lib::optional$<$ T $>$@{lib::optional$<$ T $>$}!set@{set}}
+\index{set@{set}!lib::optional$<$ T $>$@{lib::optional$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$ T $>$\+::set (\begin{DoxyParamCaption}\item[{T}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & =\texorpdfstring{$>$}{>} T -\/\texorpdfstring{$>$}{>} Value \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{optional_8hpp_source_l00063}{63}} of file \mbox{\hyperlink{optional_8hpp_source}{optional.\+hpp}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlib_1_1optional_a18c4131a61966a16e2fa37891bf3069e}\label{classlib_1_1optional_a18c4131a61966a16e2fa37891bf3069e}} 
+\index{lib::optional$<$ T $>$@{lib::optional$<$ T $>$}!null@{null}}
+\index{null@{null}!lib::optional$<$ T $>$@{lib::optional$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{null}{null}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$ T $>$\+::null\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Does values is saved. 
+
+
+
+Definition at line \mbox{\hyperlink{optional_8hpp_source_l00042}{42}} of file \mbox{\hyperlink{optional_8hpp_source}{optional.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{optional_8hpp_source_l00088}{lib\+::optional$<$ T $>$\+::is()}}.
+
+\mbox{\Hypertarget{classlib_1_1optional_a7e75c4c60d82395fa0f3d294cb4f83ff}\label{classlib_1_1optional_a7e75c4c60d82395fa0f3d294cb4f83ff}} 
+\index{lib::optional$<$ T $>$@{lib::optional$<$ T $>$}!var@{var}}
+\index{var@{var}!lib::optional$<$ T $>$@{lib::optional$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{var}{var}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T \mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$ T $>$\+::var\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Intrnal variable. 
+
+
+
+Definition at line \mbox{\hyperlink{optional_8hpp_source_l00038}{38}} of file \mbox{\hyperlink{optional_8hpp_source}{optional.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{optional_8hpp_source_l00076}{lib\+::optional$<$ T $>$\+::get()}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+CBuild/headers/\mbox{\hyperlink{optional_8hpp}{optional.\+hpp}}\end{DoxyCompactItemize}

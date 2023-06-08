@@ -2,339 +2,341 @@
 \label{filesystem_09_09_8cpp_source}\index{CBuild/CBuild/src/filesystem++.cpp@{CBuild/CBuild/src/filesystem++.cpp}}
 \mbox{\hyperlink{filesystem_09_09_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00001}00001\ }
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00023}00023\ \textcolor{comment}{//\ C++\ libraries}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}filesystem"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}fstream"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}iostream"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}regex"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}stdlib.h"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00029}00029\ \textcolor{preprocessor}{\#include\ "{}string"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00030}00030\ \textcolor{preprocessor}{\#include\ "{}vector"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00031}00031\ \textcolor{comment}{//\ Project\ files}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}../../headers/CBuild\_defs.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00033}00033\ \textcolor{preprocessor}{\#include\ "{}../../headers/filesystem++.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00034}00034\ \textcolor{comment}{/*\ CBuild::fs\ namespace\ */}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00035}00035\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceCBuild}{CBuild}}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00036}00036\ \textcolor{keyword}{namespace\ }fs\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00037}\mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{00037}}\ std::regex\ \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\_cpp\_file}}(\textcolor{stringliteral}{"{}.*\(\backslash\)\(\backslash\).(cpp|cxx|cc|c)"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00038}00038\ \}\ \ \textcolor{comment}{//\ namespace\ fs}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00039}00039\ \}\ \ \textcolor{comment}{//\ namespace\ CBuild}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00040}00040\ \textcolor{comment}{/*\ filesystem++.hpp\ */}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00041}\mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{00041}}\ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{CBuild::fs::dir}}(std::string\ path,\ std::string\ search)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00042}00042\ \ \ \ \ \textcolor{comment}{//\ List\ of\ all\ found\ files}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00043}00043\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00044}00044\ \ \ \ \ \textcolor{comment}{//\ List\ of\ files\ that\ need\ to\ be\ returned}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00045}00045\ \ \ \ \ std::vector<std::string>\ ret;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00046}00046\ \ \ \ \ \textcolor{comment}{//\ Regex\ for\ search,\ use\ ECMAScript\ syntax}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00047}00047\ \ \ \ \ std::regex\ reg(search,\ std::regex::ECMAScript);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00048}00048\ \ \ \ \ \textcolor{comment}{//\ Found\ all\ files\ in\ directory\ and\ store\ in\ array}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00049}00049\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&entry\ :\ std::filesystem::directory\_iterator(path))\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00050}00050\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.push\_back(entry.path().generic\_string());}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00051}00051\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00052}00052\ \ \ \ \ \textcolor{comment}{//\ Check\ all\ elements\ with\ regex\ and\ \ add\ it\ to\ return\ array}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00053}00053\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}})\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::regex\_match(elem,\ reg))\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ ret.push\_back(elem);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00056}00056\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00057}00057\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00058}00058\ \ \ \ \ \textcolor{comment}{//\ Return\ list\ of\ found\ files\ that\ match\ given\ regex}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00059}00059\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00060}00060\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00061}\mbox{\hyperlink{namespaceCBuild_1_1fs_a68fced753f8789df81c229ff7068cc7e}{00061}}\ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{CBuild::fs::dir}}(std::string\ path)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00062}00062\ \ \ \ \ \textcolor{comment}{//\ List\ of\ found\ files}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00063}00063\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00064}00064\ \ \ \ \ \textcolor{comment}{//\ List\ of\ returned\ files}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00065}00065\ \ \ \ \ std::vector<std::string>\ ret;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00066}00066\ \ \ \ \ \textcolor{comment}{//\ Get\ all\ files\ and\ store\ it's\ paths\ in\ array}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00067}00067\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&entry\ :\ std::filesystem::directory\_iterator(path))\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00068}00068\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.push\_back(entry.path().generic\_string());}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00069}00069\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00070}00070\ \ \ \ \ \textcolor{comment}{//\ Check\ every\ file\ with\ internal\ regex\ and\ add\ to\ return\ array}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00071}00071\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}})\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::regex\_match(elem,\ \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\_cpp\_file}}))\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ ret.push\_back(elem);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00074}00074\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00075}00075\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00076}00076\ \ \ \ \ \textcolor{comment}{//\ Return\ list\ of\ found\ files}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00077}00077\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00078}00078\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00079}\mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{00079}}\ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{CBuild::fs::dir\_rec}}(std::string\ path,}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ search)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//\ List\ of\ all\ found\ files}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00082}00082\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00083}00083\ \ \ \ \ \textcolor{comment}{//\ List\ of\ files\ for\ return}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00084}00084\ \ \ \ \ std::vector<std::string>\ ret;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00085}00085\ \ \ \ \ \textcolor{comment}{//\ Create\ regex}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00086}00086\ \ \ \ \ std::regex\ reg(search);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00087}00087\ \ \ \ \ \textcolor{comment}{//\ Check\ all\ directories\ recursively\ and\ add\ to\ array}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00088}00088\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&entry\ :}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00089}00089\ \ \ \ \ \ \ \ \ \ std::filesystem::recursive\_directory\_iterator(path))\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00090}00090\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.push\_back(entry.path().generic\_string());}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00091}00091\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00092}00092\ \ \ \ \ \textcolor{comment}{//\ Check\ all\ files\ with\ given\ regex\ and\ add\ to\ return\ array}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00093}00093\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}})\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00094}00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::regex\_match(elem,\ reg))\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ ret.push\_back(elem);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00096}00096\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00097}00097\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00098}00098\ \ \ \ \ \textcolor{comment}{//\ Return\ list\ of\ found\ files}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00099}00099\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00100}00100\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00101}\mbox{\hyperlink{namespaceCBuild_1_1fs_aee249da4a350096ea1011652df0e982a}{00101}}\ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{CBuild::fs::dir\_rec}}(std::string\ path)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00102}00102\ \ \ \ \ \textcolor{comment}{//\ List\ of\ all\ found\ files}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00103}00103\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00104}00104\ \ \ \ \ \textcolor{comment}{//\ List\ of\ files\ for\ return}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00105}00105\ \ \ \ \ std::vector<std::string>\ ret;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00106}00106\ \ \ \ \ \textcolor{comment}{//\ Check\ all\ directories\ recursively\ and\ add\ to\ array}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00107}00107\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&entry\ :}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00108}00108\ \ \ \ \ \ \ \ \ \ std::filesystem::recursive\_directory\_iterator(path))\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00109}00109\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}}.push\_back(entry.path().generic\_string());}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00110}00110\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00111}00111\ \ \ \ \ \textcolor{comment}{//\ Check\ all\ files\ with\ internal\ regex\ and\ add\ to\ return\ array}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00112}00112\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ elem\ :\ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{files}})\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00113}00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::regex\_match(elem,\ \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\_cpp\_file}}))\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ ret.push\_back(elem);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00115}00115\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00116}00116\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00117}00117\ \ \ \ \ \textcolor{comment}{//\ Return\ list\ of\ found\ filews}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00118}00118\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00119}00119\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00120}\mbox{\hyperlink{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}{00120}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}{CBuild::fs::rename}}(std::string\ start,\ std::string\ end)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00121}00121\ \ \ \ \ \textcolor{comment}{//\ Two\ paths}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00122}00122\ \ \ \ \ std::filesystem::path\ from,\ to;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00123}00123\ \ \ \ \ \textcolor{comment}{//\ Create\ paths\ from\ strings}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00124}00124\ \ \ \ \ from.assign(start);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00125}00125\ \ \ \ \ to.assign(end);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00126}00126\ \ \ \ \ \textcolor{comment}{//\ Try\ to\ rename\ file}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00127}00127\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00128}00128\ \ \ \ \ \ \ \ \ std::filesystem::rename(from,\ to);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00129}00129\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00130}00130\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00131}00131\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00132}00132\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00133}00133\ \ \ \ \ \textcolor{comment}{//\ All\ good}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00134}00134\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00135}00135\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00136}\mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{00136}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{CBuild::fs::remove}}(std::string\ path,\ \textcolor{keywordtype}{bool}\ force)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00137}00137\ \ \ \ \ \textcolor{comment}{//\ Create\ path\ from\ string}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00138}00138\ \ \ \ \ std::filesystem::path\ p;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00139}00139\ \ \ \ \ p.assign(path);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00140}00140\ \ \ \ \ \textcolor{comment}{//\ If\ we\ need\ force\ remove}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00141}00141\ \ \ \ \ \textcolor{keywordflow}{if}\ (force)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00142}00142\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ force\ remove}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00143}00143\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::filesystem::remove\_all(p)\ ==\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00148}00148\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00151}00151\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00152}00152\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00153}00153\ \ \ \ \ \textcolor{comment}{//\ We\ can\ use\ "{}lite"{}\ remove}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00154}00154\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00155}00155\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ force\ remove}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00156}00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::filesystem::remove(p)\ ==\ \textcolor{keyword}{false})\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00158}00158\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00161}00161\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00162}00162\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00163}00163\ \ \ \ \ \textcolor{comment}{//\ All\ good}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00164}00164\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00165}00165\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00166}\mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{00166}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{CBuild::fs::copy}}(std::string\ start,\ std::string\ end)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00167}00167\ \ \ \ \ \textcolor{comment}{//\ Create\ paths\ from\ strings}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00168}00168\ \ \ \ \ std::filesystem::path\ from,\ to;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00169}00169\ \ \ \ \ from.assign(start);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00170}00170\ \ \ \ \ to.assign(end);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00171}00171\ \ \ \ \ \textcolor{comment}{//\ Try\ to\ copy\ elements}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00172}00172\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00173}00173\ \ \ \ \ \ \ \ \ std::filesystem::copy(from,\ to);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00174}00174\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00175}00175\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00176}00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00177}00177\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00178}00178\ \ \ \ \ \textcolor{comment}{//\ All\ good}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00179}00179\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00180}00180\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00181}\mbox{\hyperlink{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}{00181}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}{CBuild::fs::move}}(std::string\ start,\ std::string\ end)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00182}00182\ \ \ \ \ \textcolor{comment}{//\ Create\ paths\ from\ strings}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00183}00183\ \ \ \ \ std::filesystem::path\ from,\ to;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00184}00184\ \ \ \ \ from.assign(start);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00185}00185\ \ \ \ \ to.assign(end);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00186}00186\ \ \ \ \ \textcolor{comment}{//\ Try\ to\ copy\ files}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00187}00187\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00188}00188\ \ \ \ \ \ \ \ \ std::filesystem::copy(from,\ to);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00189}00189\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{CBuild::fs::remove}}(start,\ \textcolor{keyword}{true})\ ==\ \textcolor{keyword}{false})}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \textcolor{comment}{//\ Something\ wrong\ with\ removal}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00191}00191\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00192}00192\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00193}00193\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00194}00194\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00195}00195\ \ \ \ \ \textcolor{comment}{//\ All\ good}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00196}00196\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00197}00197\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00198}\mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{00198}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{CBuild::fs::create}}(std::vector<std::string>\ paths,\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{CBuild::fs::type}}\ what)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00199}00199\ \ \ \ \ \textcolor{comment}{//\ Check\ type\ of\ new\ element}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00200}00200\ \ \ \ \ \textcolor{keywordflow}{switch}\ (what)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00201}00201\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ creating\ simple\ file}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00202}00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{CBuild::fs::type::FILE}}:\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Argument\ number\ check}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ path\ =\ \textcolor{stringliteral}{"{}"{}};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ path\ =\ paths.at(0);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Invalid\ count\ of\ elements"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00212}00212\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ to\ create\ file\ using\ std::ofstream}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::ofstream\ file(path);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (file.bad())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00217}00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ file.close();}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00222}00222\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00223}00223\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ creating\ directory}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00224}00224\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca8411d0ba0382070f24a0e2a9015f62b9}{CBuild::fs::DIR}}:}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00225}00225\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca147be5f09382f8628291195a291d6c22}{CBuild::fs::type::DIRECTORY}}:\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00226}00226\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ std::filesystem::path\ p;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p.assign(paths.at(0));}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00230}00230\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00231}00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ arguments\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00232}00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00233}00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Invalid\ count\ of\ elements"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ to\ create\ new\ directory}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::filesystem::create\_directory(p);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00243}00243\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00244}00244\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ creating\ symlink\ to\ file}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00245}00245\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca5b0881c558badf9d5f51675e03cdb275}{CBuild::fs::type::SYMLINK\_FILE}}:\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ std::filesystem::path\ file,\ link;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ file.assign(paths.at(0));}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00251}00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00253}00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Invalid\ count\ of\ elements"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00255}00255\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00257}00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ link.assign(paths.at(1));}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00259}00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Invalid\ count\ of\ elements"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00262}00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ to\ create\ new\ symlink,\ can\ be\ unsupported}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00265}00265\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::filesystem::create\_symlink(file,\ link);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00267}00267\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00268}00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00270}00270\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00271}00271\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00272}00272\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ creating\ symlink\ to\ directory}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00273}00273\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca48cc85a15d49d801d3c509e976bc64b4}{CBuild::fs::type::SYMLINK\_DIR}}:}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00274}00274\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca73dc6faf9da93d2d1269f29037f634a0}{CBuild::fs::type::SYMLINK\_DIRECTORY}}:\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00276}00276\ \ \ \ \ \ \ \ \ \ \ \ \ std::filesystem::path\ directory,\ link;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00277}00277\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ directory.assign(paths.at(0));}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00279}00279\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00280}00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00281}00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00282}00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Invalid\ count\ of\ elements"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00286}00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ link.assign(paths.at(1));}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00287}00287\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00288}00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00290}00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Invalid\ count\ of\ elements"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00292}00292\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ try\ to\ create\ symlink,\ can\ be\ unsupported}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00295}00295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::filesystem::create\_directory\_symlink(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00296}00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ directory,\ link);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00301}00301\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00302}00302\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ creating\ hardlink,\ can\ be\ unsupported}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00303}00303\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca1edf4b605a5dc28ccf9fbfc318829a2d}{CBuild::fs::type::HARDLINK}}:\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00304}00304\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Checking\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00305}00305\ \ \ \ \ \ \ \ \ \ \ \ \ std::filesystem::path\ element,\ link;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00306}00306\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00307}00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ element.assign(paths.at(0));}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00310}00310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Invalid\ count\ of\ elements"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00312}00312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ link.assign(paths.at(1));}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ argument\ count}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Invalid\ count\ of\ elements"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ to\ create\ hardlink,\ can\ be\ unsupported}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::filesystem::create\_hard\_link(element,}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ link);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (std::exception\ \&e)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Something\ goes\ wrong}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00328}00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00329}00329\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00330}00330\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00331}00331\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00332}00332\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ type\ of\ new\ element}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00333}00333\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Invalid\ type\ of\ new\ element"{}});}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00334}00334\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00335}00335\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00336}00336\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00337}00337\ \ \ \ \ \textcolor{comment}{//\ All\ good}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00338}00338\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00339}00339\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00340}\mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{00340}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{CBuild::fs::exists}}(std::string\ path)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00341}00341\ \ \ \ \ std::filesystem::path\ p;}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00342}00342\ \ \ \ \ p.assign(path);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00343}00343\ \ \ \ \ \textcolor{keywordflow}{return}\ std::filesystem::exists(p);}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00344}00344\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00345}\mbox{\hyperlink{namespaceCBuild_1_1fs_a1077211cdc9fcebea48f6a20b7da8fe6}{00345}}\ std::string\ \mbox{\hyperlink{namespaceCBuild_1_1fs_a1077211cdc9fcebea48f6a20b7da8fe6}{CBuild::fs::normalize\_path}}(std::string\ path,}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00346}00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ base\_path)\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00347}00347\ \ \ \ \ \textcolor{keywordflow}{if}\ (base\_path\ ==\ std::string(\textcolor{stringliteral}{"{}"{}}))\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00348}00348\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::filesystem::canonical(std\ ::filesystem::path(path));}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00349}00349\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00350}00350\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::filesystem::canonical(}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00351}00351\ \ \ \ \ \ \ \ \ \ \ \ \ std::filesystem::path(base\_path)\ /}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00352}00352\ \ \ \ \ \ \ \ \ \ \ \ \ std\ ::filesystem::path(path));}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00353}00353\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00354}00354\ \}}
-\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00355}00355\ }
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00023}00023 \textcolor{comment}{// C++ libraries}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00024}00024 \textcolor{preprocessor}{\#include "{}filesystem"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00025}00025 \textcolor{preprocessor}{\#include "{}fstream"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00026}00026 \textcolor{preprocessor}{\#include "{}iostream"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00027}00027 \textcolor{preprocessor}{\#include "{}regex"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00028}00028 \textcolor{preprocessor}{\#include "{}stdlib.h"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00029}00029 \textcolor{preprocessor}{\#include "{}string"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00030}00030 \textcolor{preprocessor}{\#include "{}vector"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00031}00031 \textcolor{comment}{// Project files}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00032}00032 \textcolor{preprocessor}{\#include "{}../../headers/CBuild\_defs.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00033}00033 \textcolor{preprocessor}{\#include "{}../../headers/filesystem++.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00034}00034 \textcolor{comment}{/* CBuild::fs namespace */}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00035}00035 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceCBuild}{CBuild}} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00036}00036 \textcolor{keyword}{namespace }fs \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00037}\mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{00037}} std::regex \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\_cpp\_file}}(\textcolor{stringliteral}{"{}.*\(\backslash\)\(\backslash\).(cpp|cxx|cc|c)"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00038}00038 \}  \textcolor{comment}{// namespace fs}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00039}00039 \}  \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00040}00040 \textcolor{comment}{/* filesystem++.hpp */}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00041}\mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{00041}} std::vector<std::string> \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{CBuild::fs::dir}}(std::string path, std::string search) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00042}00042     \textcolor{comment}{// List of all found files}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00043}00043     std::vector<std::string> files;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00044}00044     \textcolor{comment}{// List of files that need to be returned}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00045}00045     std::vector<std::string> ret;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00046}00046     \textcolor{comment}{// Regex for search, use ECMAScript syntax}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00047}00047     std::regex reg(search, std::regex::ECMAScript);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00048}00048     \textcolor{comment}{// Found all files in directory and store in array}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00049}00049     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&entry : std::filesystem::directory\_iterator(path)) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00050}00050         files.push\_back(entry.path().generic\_string());}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00051}00051     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00052}00052     \textcolor{comment}{// Check all elements with regex and  add it to return array}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00053}00053     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : files) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00054}00054         \textcolor{keywordflow}{if} (std::regex\_match(elem, reg)) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00055}00055             ret.push\_back(elem);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00056}00056         \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00057}00057     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00058}00058     \textcolor{comment}{// Return list of found files that match given regex}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00059}00059     \textcolor{keywordflow}{return} ret;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00060}00060 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00061}\mbox{\hyperlink{namespaceCBuild_1_1fs_a68fced753f8789df81c229ff7068cc7e}{00061}} std::vector<std::string> \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}{CBuild::fs::dir}}(std::string path) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00062}00062     \textcolor{comment}{// List of found files}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00063}00063     std::vector<std::string> files;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00064}00064     \textcolor{comment}{// List of returned files}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00065}00065     std::vector<std::string> ret;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00066}00066     \textcolor{comment}{// Get all files and store it's paths in array}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00067}00067     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&entry : std::filesystem::directory\_iterator(path)) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00068}00068         files.push\_back(entry.path().generic\_string());}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00069}00069     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00070}00070     \textcolor{comment}{// Check every file with internal regex and add to return array}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00071}00071     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : files) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00072}00072         \textcolor{keywordflow}{if} (std::regex\_match(elem, \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\_cpp\_file}})) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00073}00073             ret.push\_back(elem);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00074}00074         \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00075}00075     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00076}00076     \textcolor{comment}{// Return list of found files}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00077}00077     \textcolor{keywordflow}{return} ret;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00078}00078 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00079}\mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{00079}} std::vector<std::string> \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{CBuild::fs::dir\_rec}}(std::string path,}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00080}00080                          std::string search) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00081}00081     \textcolor{comment}{// List of all found files}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00082}00082     std::vector<std::string> files;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00083}00083     \textcolor{comment}{// List of files for return}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00084}00084     std::vector<std::string> ret;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00085}00085     \textcolor{comment}{// Create regex}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00086}00086     std::regex reg(search);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00087}00087     \textcolor{comment}{// Check all directories recursively and add to array}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00088}00088     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&entry :}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00089}00089          std::filesystem::recursive\_directory\_iterator(path)) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00090}00090         files.push\_back(entry.path().generic\_string());}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00091}00091     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00092}00092     \textcolor{comment}{// Check all files with given regex and add to return array}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00093}00093     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : files) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00094}00094         \textcolor{keywordflow}{if} (std::regex\_match(elem, reg)) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00095}00095             ret.push\_back(elem);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00096}00096         \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00097}00097     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00098}00098     \textcolor{comment}{// Return list of found files}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00099}00099     \textcolor{keywordflow}{return} ret;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00100}00100 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00101}\mbox{\hyperlink{namespaceCBuild_1_1fs_aee249da4a350096ea1011652df0e982a}{00101}} std::vector<std::string> \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{CBuild::fs::dir\_rec}}(std::string path) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00102}00102     \textcolor{comment}{// List of all found files}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00103}00103     std::vector<std::string> files;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00104}00104     \textcolor{comment}{// List of files for return}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00105}00105     std::vector<std::string> ret;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00106}00106     \textcolor{comment}{// Check all directories recursively and add to array}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00107}00107     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&entry :}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00108}00108          std::filesystem::recursive\_directory\_iterator(path)) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00109}00109         files.push\_back(entry.path().generic\_string());}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00110}00110     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00111}00111     \textcolor{comment}{// Check all files with internal regex and add to return array}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00112}00112     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} elem : files) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00113}00113         \textcolor{keywordflow}{if} (std::regex\_match(elem, \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\_cpp\_file}})) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00114}00114             ret.push\_back(elem);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00115}00115         \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00116}00116     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00117}00117     \textcolor{comment}{// Return list of found filews}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00118}00118     \textcolor{keywordflow}{return} ret;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00119}00119 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00120}\mbox{\hyperlink{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}{00120}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}{CBuild::fs::rename}}(std::string start, std::string end) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00121}00121     \textcolor{comment}{// Two paths}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00122}00122     std::filesystem::path from, to;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00123}00123     \textcolor{comment}{// Create paths from strings}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00124}00124     from.assign(start);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00125}00125     to.assign(end);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00126}00126     \textcolor{comment}{// Try to rename file}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00127}00127     \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00128}00128         \mbox{\hyperlink{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}{std::filesystem::rename}}(from, to);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00129}00129     \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00130}00130         \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00131}00131         \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00132}00132     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00133}00133     \textcolor{comment}{// All good}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00134}00134     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00135}00135 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00136}\mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{00136}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{CBuild::fs::remove}}(std::string path, \textcolor{keywordtype}{bool} force) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00137}00137     \textcolor{comment}{// Create path from string}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00138}00138     std::filesystem::path p;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00139}00139     p.assign(path);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00140}00140     \textcolor{comment}{// If we need force remove}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00141}00141     \textcolor{keywordflow}{if} (force) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00142}00142         \textcolor{comment}{// Try force remove}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00143}00143         \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00144}00144             \textcolor{keywordflow}{if} (std::filesystem::remove\_all(p) == 0) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00145}00145                 \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00146}00146                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00147}00147             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00148}00148         \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00149}00149             \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00150}00150             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00151}00151         \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00152}00152     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00153}00153     \textcolor{comment}{// We can use "{}lite"{} remove}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00154}00154     \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00155}00155         \textcolor{comment}{// Try force remove}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00156}00156         \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00157}00157             \textcolor{keywordflow}{if} (\mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{std::filesystem::remove}}(p) == \textcolor{keyword}{false}) \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00158}00158         \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00159}00159             \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00160}00160             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00161}00161         \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00162}00162     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00163}00163     \textcolor{comment}{// All good}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00164}00164     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00165}00165 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00166}\mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{00166}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{CBuild::fs::copy}}(std::string start, std::string end) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00167}00167     \textcolor{comment}{// Create paths from strings}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00168}00168     std::filesystem::path from, to;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00169}00169     from.assign(start);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00170}00170     to.assign(end);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00171}00171     \textcolor{comment}{// Try to copy elements}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00172}00172     \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00173}00173         \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{std::filesystem::copy}}(from, to);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00174}00174     \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00175}00175         \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00176}00176         \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00177}00177     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00178}00178     \textcolor{comment}{// All good}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00179}00179     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00180}00180 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00181}\mbox{\hyperlink{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}{00181}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}{CBuild::fs::move}}(std::string start, std::string end) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00182}00182     \textcolor{comment}{// Create paths from strings}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00183}00183     std::filesystem::path from, to;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00184}00184     from.assign(start);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00185}00185     to.assign(end);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00186}00186     \textcolor{comment}{// Try to copy files}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00187}00187     \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00188}00188         \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{std::filesystem::copy}}(from, to);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00189}00189         \textcolor{keywordflow}{if} (\mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{CBuild::fs::remove}}(start, \textcolor{keyword}{true}) == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00190}00190             \textcolor{keywordflow}{return} \textcolor{keyword}{false};  \textcolor{comment}{// Something wrong with removal}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00191}00191     \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00192}00192         \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00193}00193         \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00194}00194     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00195}00195     \textcolor{comment}{// All good}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00196}00196     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00197}00197 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00198}\mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{00198}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}{CBuild::fs::create}}(std::vector<std::string> paths, \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842ac}{CBuild::fs::type}} what) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00199}00199     \textcolor{comment}{// Check type of new element}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00200}00200     \textcolor{keywordflow}{switch} (what) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00201}00201         \textcolor{comment}{// We creating simple file}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00202}00202         \textcolor{keywordflow}{case} \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca08008f1dcb607fc5448e0baf41590613}{CBuild::fs::type::FILE}}: \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00203}00203             \textcolor{comment}{// Argument number check}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00204}00204             std::string path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00205}00205             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00206}00206                 path = paths.at(0);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00207}00207             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00208}00208                 \textcolor{comment}{// Invalid argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00209}00209                 \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00210}00210                     \textcolor{stringliteral}{"{}Invalid count of elements"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00211}00211                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00212}00212             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00213}00213             \textcolor{comment}{// Try to create file using std::ofstream}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00214}00214             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00215}00215                 std::ofstream file(path);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00216}00216                 \textcolor{keywordflow}{if} (file.bad()) \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00217}00217                 file.close();}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00218}00218             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00219}00219                 \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00220}00220                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00221}00221             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00222}00222         \} \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00223}00223         \textcolor{comment}{// We creating directory}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00224}00224         \textcolor{keywordflow}{case} \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca8411d0ba0382070f24a0e2a9015f62b9}{CBuild::fs::DIR}}:}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00225}00225         \textcolor{keywordflow}{case} \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca147be5f09382f8628291195a291d6c22}{CBuild::fs::type::DIRECTORY}}: \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00226}00226             \textcolor{comment}{// Check argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00227}00227             std::filesystem::path p;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00228}00228             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00229}00229                 p.assign(paths.at(0));}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00230}00230             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00231}00231                 \textcolor{comment}{// Invalid arguments count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00232}00232                 \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00233}00233                     \textcolor{stringliteral}{"{}Invalid count of elements"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00234}00234                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00235}00235             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00236}00236             \textcolor{comment}{// Try to create new directory}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00237}00237             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00238}00238                 std::filesystem::create\_directory(p);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00239}00239             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00240}00240                 \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00241}00241                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00242}00242             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00243}00243         \} \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00244}00244         \textcolor{comment}{// We creating symlink to file}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00245}00245         \textcolor{keywordflow}{case} \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca5b0881c558badf9d5f51675e03cdb275}{CBuild::fs::type::SYMLINK\_FILE}}: \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00246}00246             \textcolor{comment}{// Check argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00247}00247             std::filesystem::path file, link;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00248}00248             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00249}00249                 file.assign(paths.at(0));}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00250}00250             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00251}00251                 \textcolor{comment}{// Invalid argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00252}00252                 \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00253}00253                     \textcolor{stringliteral}{"{}Invalid count of elements"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00254}00254                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00255}00255             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00256}00256             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00257}00257                 link.assign(paths.at(1));}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00258}00258             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00259}00259                 \textcolor{comment}{// Invalid argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00260}00260                 \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00261}00261                     \textcolor{stringliteral}{"{}Invalid count of elements"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00262}00262                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00263}00263             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00264}00264             \textcolor{comment}{// Try to create new symlink, can be unsupported}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00265}00265             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00266}00266                 std::filesystem::create\_symlink(file, link);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00267}00267             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00268}00268                 \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00269}00269                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00270}00270             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00271}00271         \} \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00272}00272         \textcolor{comment}{// We creating symlink to directory}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00273}00273         \textcolor{keywordflow}{case} \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca48cc85a15d49d801d3c509e976bc64b4}{CBuild::fs::type::SYMLINK\_DIR}}:}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00274}00274         \textcolor{keywordflow}{case} \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca73dc6faf9da93d2d1269f29037f634a0}{CBuild::fs::type::SYMLINK\_DIRECTORY}}: \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00275}00275             \textcolor{comment}{// Check argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00276}00276             std::filesystem::path directory, link;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00277}00277             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00278}00278                 directory.assign(paths.at(0));}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00279}00279             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00280}00280                 \textcolor{comment}{// Invalid argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00281}00281                 \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00282}00282                     \textcolor{stringliteral}{"{}Invalid count of elements"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00283}00283                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00284}00284             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00285}00285             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00286}00286                 link.assign(paths.at(1));}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00287}00287             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00288}00288                 \textcolor{comment}{// Invalid argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00289}00289                 \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00290}00290                     \textcolor{stringliteral}{"{}Invalid count of elements"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00291}00291                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00292}00292             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00293}00293             \textcolor{comment}{// try to create symlink, can be unsupported}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00294}00294             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00295}00295                 std::filesystem::create\_directory\_symlink(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00296}00296                     directory, link);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00297}00297             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00298}00298                 \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00299}00299                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00300}00300             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00301}00301         \} \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00302}00302         \textcolor{comment}{// We creating hardlink, can be unsupported}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00303}00303         \textcolor{keywordflow}{case} \mbox{\hyperlink{namespaceCBuild_1_1fs_a76437b93b13f5404cbfb231ac74842aca1edf4b605a5dc28ccf9fbfc318829a2d}{CBuild::fs::type::HARDLINK}}: \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00304}00304             \textcolor{comment}{// Checking argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00305}00305             std::filesystem::path element, link;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00306}00306             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00307}00307                 element.assign(paths.at(0));}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00308}00308             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00309}00309                 \textcolor{comment}{// Invalid argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00310}00310                 \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00311}00311                     \textcolor{stringliteral}{"{}Invalid count of elements"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00312}00312                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00313}00313             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00314}00314             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00315}00315                 link.assign(paths.at(1));}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00316}00316             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00317}00317                 \textcolor{comment}{// Invalid argument count}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00318}00318                 \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00319}00319                     \textcolor{stringliteral}{"{}Invalid count of elements"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00320}00320                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00321}00321             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00322}00322             \textcolor{comment}{// Try to create hardlink, can be unsupported}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00323}00323             \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00324}00324                 std::filesystem::create\_hard\_link(element,}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00325}00325                                   link);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00326}00326             \} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00327}00327                 \textcolor{comment}{// Something goes wrong}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00328}00328                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00329}00329             \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00330}00330         \} \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00331}00331         \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00332}00332             \textcolor{comment}{// Invalid type of new element}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00333}00333             \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Invalid type of new element"{}});}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00334}00334             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00335}00335             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00336}00336     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00337}00337     \textcolor{comment}{// All good}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00338}00338     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00339}00339 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00340}\mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{00340}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{CBuild::fs::exists}}(std::string path) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00341}00341     std::filesystem::path p;}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00342}00342     p.assign(path);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00343}00343     \textcolor{keywordflow}{return} \mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{std::filesystem::exists}}(p);}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00344}00344 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00345}\mbox{\hyperlink{namespaceCBuild_1_1fs_a1077211cdc9fcebea48f6a20b7da8fe6}{00345}} std::string \mbox{\hyperlink{namespaceCBuild_1_1fs_a1077211cdc9fcebea48f6a20b7da8fe6}{CBuild::fs::normalize\_path}}(std::string path,}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00346}00346                        std::string base\_path) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00347}00347     \textcolor{keywordflow}{if} (base\_path == std::string(\textcolor{stringliteral}{"{}"{}})) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00348}00348         \textcolor{keywordflow}{return} std::filesystem::canonical(std ::filesystem::path(path));}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00349}00349     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00350}00350         \textcolor{keywordflow}{return} std::filesystem::canonical(}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00351}00351             std::filesystem::path(base\_path) /}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00352}00352             std ::filesystem::path(path));}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00353}00353     \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00354}00354 \}}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00355}\mbox{\hyperlink{namespaceCBuild_1_1fs_a1c11acabc60bb22db19562a4013a8af7}{00355}} std::string \mbox{\hyperlink{namespaceCBuild_1_1fs_a1c11acabc60bb22db19562a4013a8af7}{CBuild::fs::base}}(std::string file) \{}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00356}00356     \textcolor{keywordflow}{return} std::filesystem::path(file).parent\_path();}
+\DoxyCodeLine{\Hypertarget{filesystem_09_09_8cpp_source_l00357}00357 \}}
 
 \end{DoxyCode}

@@ -1,77 +1,65 @@
 \hypertarget{hash_8cpp}{}\doxysection{CBuild/\+CBuild/src/hash.cpp File Reference}
 \label{hash_8cpp}\index{CBuild/CBuild/src/hash.cpp@{CBuild/CBuild/src/hash.cpp}}
-
-
-File hashing implementation.  
-
-
-{\ttfamily \#include \char`\"{}filesystem\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}fstream\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}iomanip\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}inttypes.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}iostream\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}regex\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}sstream\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}string\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}vector\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../headers/\+CBuild\+\_\+defs.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/filesystem++.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../headers/hash.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../headers/map.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../headers/optional.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../headers/print.\+hpp\char`\"{}}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{structCBuild_1_1cpp}{CBuild\+::cpp}}
-\begin{DoxyCompactList}\small\item\em Struct for saving properties of file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+class \mbox{\hyperlink{structCBuild_1_1types_1_1file}{CBuild\+::types\+::file}}
+\begin{DoxyCompactList}\small\item\em File structure. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{structCBuild_1_1types_1_1file__content}{CBuild\+::types\+::file\+\_\+content}}
+\begin{DoxyCompactList}\small\item\em Temporary struct for file content. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespaceCBuild}{CBuild}}
-\begin{DoxyCompactList}\small\item\em Filebuffer for \mbox{\hyperlink{namespaceCBuild}{CBuild}} ecosystem. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Filebuffer for \mbox{\hyperlink{namespaceCBuild}{CBuild}} ecosystem. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespaceCBuild_1_1consts}{CBuild\+::consts}}
+\begin{DoxyCompactList}\small\item\em Constants. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespaceCBuild_1_1types}{CBuild\+::types}}
+\item 
+namespace \mbox{\hyperlink{namespaceCBuild_1_1vars}{CBuild\+::vars}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::regex \mbox{\hyperlink{namespaceCBuild_a7ffa216b04c3b14936cb05091e2b6d63}{CBuild\+::comment\+\_\+regex1}} (\char`\"{}\textbackslash{}\textbackslash{}/\textbackslash{}\textbackslash{}/.$\ast$\char`\"{})
-\item 
-std\+::regex \mbox{\hyperlink{namespaceCBuild_ae735c4bf4a343f65bdb54baf3dc1021f}{CBuild\+::comment\+\_\+regex2}} (\char`\"{}/\textbackslash{}\textbackslash{}$\ast$\mbox{[}$^\wedge$$\ast$\mbox{]}$\ast$\textbackslash{}\textbackslash{}$\ast$+(?\+:\mbox{[}$^\wedge$/$\ast$\mbox{]}\mbox{[}$^\wedge$$\ast$\mbox{]}$\ast$\textbackslash{}\textbackslash{}$\ast$+)$\ast$/\char`\"{})
-\item 
-std\+::regex \mbox{\hyperlink{namespaceCBuild_a29ddf8caf20b6d19af8764612a6c860f}{CBuild\+::include\+\_\+search}} (\char`\"{}\#include\textbackslash{}\textbackslash{}s+\mbox{[}\textbackslash{}\char`\"{}$<$\mbox{]}(\mbox{[}$^\wedge$\textbackslash{}\char`\"{}$>$\mbox{]}+)\mbox{[}\textbackslash{}\char`\"{}$>$\mbox{]}\char`\"{})
-\item 
-std\+::string \mbox{\hyperlink{namespaceCBuild_a433729ea224814d205310f3477eaf089}{CBuild\+::get\+\_\+file\+\_\+content}} (std\+::string path)
-\begin{DoxyCompactList}\small\item\em Get content of file, stripped from comments. \end{DoxyCompactList}\item 
-uint64\+\_\+t \mbox{\hyperlink{namespaceCBuild_abee2bcd5f14e2ca24f51a173b0cd7d9f}{CBuild\+::hash}} (std\+::string path)
-\begin{DoxyCompactList}\small\item\em Get hash of file. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{namespaceCBuild_ad47c326f75f473e4224b24cb6c5482fa}{CBuild\+::save\+\_\+hash\+\_\+table}} (std\+::string toolchain)
-\begin{DoxyCompactList}\small\item\em Save hash table from map. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{namespaceCBuild_af50be8c99b891d00f8461165faaa6ee3}{CBuild\+::load\+\_\+hash\+\_\+table}} (std\+::string toolchain)
-\begin{DoxyCompactList}\small\item\em Load hash table to map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_aac9b86b3cee610833d70b8d752dbda99}{CBuild\+::consts\+::cxx\+\_\+line\+\_\+comment}} (\char`\"{}//.$\ast$\char`\"{})
+\begin{DoxyCompactList}\small\item\em Regex for stripping c++ line comments from file. \end{DoxyCompactList}\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_a57e26a2810de59fed5c3e6a652a9c9a3}{CBuild\+::consts\+::c\+\_\+multiline\+\_\+comment}} (\char`\"{}/\textbackslash{}\textbackslash{}$\ast$(\mbox{[}\textbackslash{}\textbackslash{}s\textbackslash{}\textbackslash{}S\mbox{]}$\ast$?)\textbackslash{}\textbackslash{}$\ast$/\char`\"{}, std\+::regex\+\_\+constants\+::multiline)
+\begin{DoxyCompactList}\small\item\em Regex for stripping c multiline comments from file comtent. \end{DoxyCompactList}\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_af85e1233794d920c14a2368fa02f69f7}{CBuild\+::consts\+::doxygen\+\_\+comment}} (\char`\"{}/\textbackslash{}\textbackslash{}$\ast$\textbackslash{}\textbackslash{}$\ast$(\mbox{[}\textbackslash{}\textbackslash{}s\textbackslash{}\textbackslash{}S\mbox{]}$\ast$?)\textbackslash{}\textbackslash{}$\ast$/\char`\"{}, std\+::regex\+\_\+constants\+::multiline)
+\begin{DoxyCompactList}\small\item\em Regex for stripping doxygen comments from file comtent. \end{DoxyCompactList}\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_aa19d5305adc96357062023357f61f385}{CBuild\+::consts\+::include\+\_\+parser}} (\char`\"{}\#include\textbackslash{}\textbackslash{}s+\mbox{[}\textbackslash{}\char`\"{}$<$\mbox{]}(\mbox{[}$^\wedge$\textbackslash{}\char`\"{}$>$\mbox{]}+)\mbox{[}\textbackslash{}\char`\"{}$>$\mbox{]}\char`\"{})
+\begin{DoxyCompactList}\small\item\em Get include directives from file and parse file name in it. \end{DoxyCompactList}\item 
+std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1consts_a25e74b6667a1dac60e12c06bd7d26335}{CBuild\+::consts\+::check\+\_\+type}} (\char`\"{}\textbackslash{}\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{})
+\begin{DoxyCompactList}\small\item\em For checking for source file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structCBuild_1_1types_1_1file__content}{CBuild\+::types\+::file\+\_\+content}} \mbox{\hyperlink{namespaceCBuild_a0e339ae35b9b8537929544fd8b389432}{CBuild\+::get\+\_\+file\+\_\+data}} (std\+::string path, std\+::string included\+\_\+from=\char`\"{}\char`\"{})
+\begin{DoxyCompactList}\small\item\em Get content of file. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{namespaceCBuild_a0d07ddbe1051ff2577c6a36113276a1e}{CBuild\+::hash}} (std\+::string str)
+\begin{DoxyCompactList}\small\item\em djb2 hashing function for std\+::string \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_a5d267a9d8597b9a95cdf225f6b82b0ec}{CBuild\+::procces\+\_\+files}} (std\+::vector$<$ std\+::string $>$ files, std\+::string toolchain\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Procces file data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_a3d4243555b61d071c748b8d26ea7f988}{CBuild\+::store\+\_\+hash}} (std\+::string toolchain\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Store new hashes to file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_a373eaec320905ff2435a161438889188}{CBuild\+::load\+\_\+hash}} (std\+::string toolchain\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Load old hashes. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, uint64\+\_\+t $>$ \mbox{\hyperlink{namespaceCBuild_a6ef4cf9cc7888f2035c900fb94c5eeaa}{CBuild\+::hash\+\_\+table\+\_\+old}}
+std\+::vector$<$ \mbox{\hyperlink{structCBuild_1_1types_1_1file}{CBuild\+::types\+::file}} $>$ \mbox{\hyperlink{namespaceCBuild_1_1vars_a3121142688700d7474239e3c00011243}{CBuild\+::vars\+::filelist}}
 \item 
-\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, uint64\+\_\+t $>$ \mbox{\hyperlink{namespaceCBuild_a6c4f4181471b6cb81d2852f229a589ba}{CBuild\+::hash\+\_\+table\+\_\+new}}
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, uint64\+\_\+t $>$ \mbox{\hyperlink{namespaceCBuild_1_1vars_a5393f2ac070bf41e3a81c951b7681118}{CBuild\+::vars\+::headers}}
 \item 
-std\+::vector$<$ \mbox{\hyperlink{structCBuild_1_1cpp}{CBuild\+::cpp}} $>$ \mbox{\hyperlink{namespaceCBuild_a2f4b1ae7a694a5e31c9ac6fdf5d60cfe}{CBuild\+::files}}
-\item 
-\mbox{\hyperlink{structCBuild_1_1cpp}{CBuild\+::cpp}} \mbox{\hyperlink{namespaceCBuild_aaebad4a9dad6c451f7ae2a27b126faef}{CBuild\+::last\+\_\+file\+\_\+tmp}}
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, uint64\+\_\+t $>$ \mbox{\hyperlink{namespaceCBuild_1_1vars_a2ad665038ce4a32d5cd744b53c6f594c}{CBuild\+::vars\+::old\+\_\+hashes}}
 \end{DoxyCompactItemize}
-
-
-\doxysubsection{Detailed Description}
-File hashing implementation. 
-
-\begin{DoxyAuthor}{Author}
-WolodiaM (\href{mailto:w_melnyk@outlook.com}{\texttt{ w\+\_\+melnyk@outlook.\+com}}) 
-\end{DoxyAuthor}
-\begin{DoxyVersion}{Version}
-1.\+0 
-\end{DoxyVersion}
-\begin{DoxyDate}{Date}
-2023-\/02-\/13
-\end{DoxyDate}
-@license GPL v3.\+0 or later
-
-Copyright (C) 2023 WolodiaM This program is free software\+: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see \href{https://www.gnu.org/licenses/}{\texttt{ https\+://www.\+gnu.\+org/licenses/}}. 
-
-Definition in file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
-

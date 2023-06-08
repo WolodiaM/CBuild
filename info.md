@@ -36,13 +36,13 @@ mingw debugger
         * gzip
         * dpkg-deb
 # Sizes of files
- * All (except .git/ .vscode/ build/ cache/ src/ compile_command.json Makefile scripts/) - 19M
- * Source code (hpp + cpp + rebuild.sh) - 220K
- * Build script (build.sh + build.run + buildscript-CBuild/ ) - 916K
+ * All (except .git/ .vscode/ build/ cache/ src/ compile_command.json Makefile scripts/ CBuild.run) - 18M
+ * Source code (hpp + cpp + rebuild.sh) - 228K
+ * Build script (build.sh + build.run + buildscript-CBuild/ ) - 928K
  * libCBuild.so (with -g) - 4.8M    ! updated not as frequently as other values to to not compiling with this flag
- * libCBuild.so (without -g) - 1.5M
- * deb folder - 2.0M
- * ppa/ubuntu folder - 5.4M
- * doxygen folder + doxygen.conf - 5.3M   
+ * libCBuild.so (without -g) - 1.8M
+ * deb folder - 1.7M
+ * ppa/ubuntu folder - 7.1M
+ * doxygen folder + doxygen.conf - 5.9M  
 All sizes are generated using `du -hcs <folder/file0> <folder/file1> ...`
 

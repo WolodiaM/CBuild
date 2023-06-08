@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['state_0',['state',['../classCBuild_1_1filebuff.html#af01bcd5ccacd22a38194ea0526b8b198',1,'CBuild::filebuff']]]
+  ['required_0',['required',['../classCBuild_1_1Toolchain.html#a8b81d073c57651d8483eb728c40140ba',1,'CBuild::Toolchain::required()'],['../classCBuild_1_1Task.html#ad16da892db862248185ea47115312468',1,'CBuild::Task::required()']]]
 ];

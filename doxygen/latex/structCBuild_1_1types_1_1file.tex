@@ -1,0 +1,152 @@
+\hypertarget{structCBuild_1_1types_1_1file}{}\doxysection{CBuild\+::types\+::file Class Reference}
+\label{structCBuild_1_1types_1_1file}\index{CBuild::types::file@{CBuild::types::file}}
+
+
+File structure.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structCBuild_1_1types_1_1file_a1bb2a0c85fd287b45c231ac8b9f4f824}{file}} (std\+::string path)
+\begin{DoxyCompactList}\small\item\em Create new file structure, simply init all values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{structCBuild_1_1types_1_1file_aa5725ef76169986141f318f4afceb68e}{abs\+\_\+path}}
+\begin{DoxyCompactList}\small\item\em Absolute file path. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{structCBuild_1_1types_1_1file}{CBuild\+::types\+::file}} $>$ \mbox{\hyperlink{structCBuild_1_1types_1_1file_a5ccf9f1d5795351bb2a0d0ea2bdd2d0f}{includes}}
+\begin{DoxyCompactList}\small\item\em Project includes. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{structCBuild_1_1types_1_1file_a40cf7cf311ddeab0be02f463649d7fee}{hash\+\_\+new}}
+\begin{DoxyCompactList}\small\item\em New file hash. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$ uint64\+\_\+t $>$ \mbox{\hyperlink{structCBuild_1_1types_1_1file_aad44dcda929fdf2ef558c026f3427a99}{hash\+\_\+old}}
+\begin{DoxyCompactList}\small\item\em Old file hash. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structCBuild_1_1types_1_1file_a59761096a872ca9115547229d9563ae3}{cpp}}
+\begin{DoxyCompactList}\small\item\em Does file is cpp file. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structCBuild_1_1types_1_1file_adab39ed01550b1167f33c65a63943dfe}{change}}
+\begin{DoxyCompactList}\small\item\em Does file changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File structure. 
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00071}{71}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structCBuild_1_1types_1_1file_a1bb2a0c85fd287b45c231ac8b9f4f824}\label{structCBuild_1_1types_1_1file_a1bb2a0c85fd287b45c231ac8b9f4f824}} 
+\index{CBuild::types::file@{CBuild::types::file}!file@{file}}
+\index{file@{file}!CBuild::types::file@{CBuild::types::file}}
+\doxysubsubsection{\texorpdfstring{file()}{file()}}
+{\footnotesize\ttfamily CBuild\+::types\+::file\+::file (\begin{DoxyParamCaption}\item[{std\+::string}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Create new file structure, simply init all values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & =\texorpdfstring{$>$}{>} string -\/\texorpdfstring{$>$}{>} Absolute file path \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00101}{101}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{namespaceCBuild_1_1consts_a25e74b6667a1dac60e12c06bd7d26335}{CBuild\+::consts\+::check\+\_\+type()}}, and \mbox{\hyperlink{optional_8hpp_source_l00070}{lib\+::optional$<$ T $>$\+::clear()}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structCBuild_1_1types_1_1file_aa5725ef76169986141f318f4afceb68e}\label{structCBuild_1_1types_1_1file_aa5725ef76169986141f318f4afceb68e}} 
+\index{CBuild::types::file@{CBuild::types::file}!abs\_path@{abs\_path}}
+\index{abs\_path@{abs\_path}!CBuild::types::file@{CBuild::types::file}}
+\doxysubsubsection{\texorpdfstring{abs\_path}{abs\_path}}
+{\footnotesize\ttfamily std\+::string CBuild\+::types\+::file\+::abs\+\_\+path}
+
+
+
+Absolute file path. 
+
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00075}{75}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+\mbox{\Hypertarget{structCBuild_1_1types_1_1file_adab39ed01550b1167f33c65a63943dfe}\label{structCBuild_1_1types_1_1file_adab39ed01550b1167f33c65a63943dfe}} 
+\index{CBuild::types::file@{CBuild::types::file}!change@{change}}
+\index{change@{change}!CBuild::types::file@{CBuild::types::file}}
+\doxysubsubsection{\texorpdfstring{change}{change}}
+{\footnotesize\ttfamily bool CBuild\+::types\+::file\+::change}
+
+
+
+Does file changed. 
+
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00095}{95}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+\mbox{\Hypertarget{structCBuild_1_1types_1_1file_a59761096a872ca9115547229d9563ae3}\label{structCBuild_1_1types_1_1file_a59761096a872ca9115547229d9563ae3}} 
+\index{CBuild::types::file@{CBuild::types::file}!cpp@{cpp}}
+\index{cpp@{cpp}!CBuild::types::file@{CBuild::types::file}}
+\doxysubsubsection{\texorpdfstring{cpp}{cpp}}
+{\footnotesize\ttfamily bool CBuild\+::types\+::file\+::cpp}
+
+
+
+Does file is cpp file. 
+
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00091}{91}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+\mbox{\Hypertarget{structCBuild_1_1types_1_1file_a40cf7cf311ddeab0be02f463649d7fee}\label{structCBuild_1_1types_1_1file_a40cf7cf311ddeab0be02f463649d7fee}} 
+\index{CBuild::types::file@{CBuild::types::file}!hash\_new@{hash\_new}}
+\index{hash\_new@{hash\_new}!CBuild::types::file@{CBuild::types::file}}
+\doxysubsubsection{\texorpdfstring{hash\_new}{hash\_new}}
+{\footnotesize\ttfamily uint64\+\_\+t CBuild\+::types\+::file\+::hash\+\_\+new}
+
+
+
+New file hash. 
+
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00083}{83}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+\mbox{\Hypertarget{structCBuild_1_1types_1_1file_aad44dcda929fdf2ef558c026f3427a99}\label{structCBuild_1_1types_1_1file_aad44dcda929fdf2ef558c026f3427a99}} 
+\index{CBuild::types::file@{CBuild::types::file}!hash\_old@{hash\_old}}
+\index{hash\_old@{hash\_old}!CBuild::types::file@{CBuild::types::file}}
+\doxysubsubsection{\texorpdfstring{hash\_old}{hash\_old}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlib_1_1optional}{lib\+::optional}}$<$uint64\+\_\+t$>$ CBuild\+::types\+::file\+::hash\+\_\+old}
+
+
+
+Old file hash. 
+
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00087}{87}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+\mbox{\Hypertarget{structCBuild_1_1types_1_1file_a5ccf9f1d5795351bb2a0d0ea2bdd2d0f}\label{structCBuild_1_1types_1_1file_a5ccf9f1d5795351bb2a0d0ea2bdd2d0f}} 
+\index{CBuild::types::file@{CBuild::types::file}!includes@{includes}}
+\index{includes@{includes}!CBuild::types::file@{CBuild::types::file}}
+\doxysubsubsection{\texorpdfstring{includes}{includes}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{structCBuild_1_1types_1_1file}{CBuild\+::types\+::file}}$>$ CBuild\+::types\+::file\+::includes}
+
+
+
+Project includes. 
+
+
+
+Definition at line \mbox{\hyperlink{hash_8cpp_source_l00079}{79}} of file \mbox{\hyperlink{hash_8cpp_source}{hash.\+cpp}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+CBuild/\+CBuild/src/\mbox{\hyperlink{hash_8cpp}{hash.\+cpp}}\end{DoxyCompactItemize}

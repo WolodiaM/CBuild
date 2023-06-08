@@ -1,0 +1,41 @@
+\hypertarget{optional_8hpp_source}{}\doxysection{optional.\+hpp}
+\label{optional_8hpp_source}\index{CBuild/headers/optional.hpp@{CBuild/headers/optional.hpp}}
+\mbox{\hyperlink{optional_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00021}00021 \textcolor{comment}{// C++ libraries}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00022}00022 \textcolor{preprocessor}{\#include "{}stdexcept"{}}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00023}00023 \textcolor{comment}{// Code}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00024}00024 \textcolor{preprocessor}{\#ifndef \_\_OPTIONAL\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00025}00025 \textcolor{preprocessor}{\#define \_\_OPTIONAL\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00026}00026 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelib}{lib}} \{}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00032}00032 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00033}\mbox{\hyperlink{classlib_1_1optional}{00033}} \textcolor{keyword}{class }\mbox{\hyperlink{classlib_1_1optional}{optional}} \{}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00034}00034        \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00038}\mbox{\hyperlink{classlib_1_1optional_a7e75c4c60d82395fa0f3d294cb4f83ff}{00038}}     T \mbox{\hyperlink{classlib_1_1optional_a7e75c4c60d82395fa0f3d294cb4f83ff}{var}};}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00042}\mbox{\hyperlink{classlib_1_1optional_a18c4131a61966a16e2fa37891bf3069e}{00042}}     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlib_1_1optional_a18c4131a61966a16e2fa37891bf3069e}{null}};}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00043}00043 }
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00044}00044        \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00048}\mbox{\hyperlink{classlib_1_1optional_aa8aee2913173ae45739decc39d89b998}{00048}}     \mbox{\hyperlink{classlib_1_1optional_aa8aee2913173ae45739decc39d89b998}{optional}}() \{ this-\/>null = \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00054}\mbox{\hyperlink{classlib_1_1optional_ada1197f68152cafbc5f149f5183717dd}{00054}}     \mbox{\hyperlink{classlib_1_1optional_ada1197f68152cafbc5f149f5183717dd}{optional}}(T val) \{}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00055}00055         this-\/>var = val;}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00056}00056         this-\/>null = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00057}00057     \}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00063}\mbox{\hyperlink{classlib_1_1optional_ac83f7125164e98e43250614da52a1c25}{00063}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlib_1_1optional_ac83f7125164e98e43250614da52a1c25}{set}}(T val) \{}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00064}00064         this-\/>var = val;}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00065}00065         this-\/>null = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00066}00066     \}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00070}\mbox{\hyperlink{classlib_1_1optional_aa9aa609d28f46a280e8f7f21764a807f}{00070}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlib_1_1optional_aa9aa609d28f46a280e8f7f21764a807f}{clear}}() \{ this-\/>null = \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00076}\mbox{\hyperlink{classlib_1_1optional_ac76c27a7068815126f80a9a67d0f3720}{00076}}     T \mbox{\hyperlink{classlib_1_1optional_ac76c27a7068815126f80a9a67d0f3720}{get}}() \{}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00077}00077         \textcolor{keywordflow}{if} (this-\/>null == \textcolor{keyword}{false}) \{}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00078}00078             \textcolor{keywordflow}{return} this-\/>\mbox{\hyperlink{classlib_1_1optional_a7e75c4c60d82395fa0f3d294cb4f83ff}{var}};}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00079}00079         \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00080}00080             \textcolor{keywordflow}{throw} \textcolor{keyword}{new} std::runtime\_error(\textcolor{stringliteral}{"{}Datatype is null"{}});}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00081}00081         \}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00082}00082     \}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00088}\mbox{\hyperlink{classlib_1_1optional_aea6eaee3a799bab2fd81f6a9ca7c1b31}{00088}}     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlib_1_1optional_aea6eaee3a799bab2fd81f6a9ca7c1b31}{is}}() \{ \textcolor{keywordflow}{return} !this-\/>\mbox{\hyperlink{classlib_1_1optional_a18c4131a61966a16e2fa37891bf3069e}{null}}; \}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00089}00089 \};}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00090}00090 \}  \textcolor{comment}{// namespace lib}}
+\DoxyCodeLine{\Hypertarget{optional_8hpp_source_l00091}00091 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_\_OPTIONAL\_HPP\_\_}}
+
+\end{DoxyCode}

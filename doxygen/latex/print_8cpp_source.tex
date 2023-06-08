@@ -2,37 +2,46 @@
 \label{print_8cpp_source}\index{CBuild/CBuild/src/print.cpp@{CBuild/CBuild/src/print.cpp}}
 \mbox{\hyperlink{print_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00001}00001\ }
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00023}00023\ \textcolor{comment}{//\ C++\ libraries}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}stdio.h"{}}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00025}00025\ \textcolor{comment}{//\ Project\ headers}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}../../headers/print.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00027}00027\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceCBuild}{CBuild}}\ \{}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00028}\mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{00028}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{verbose}}\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00029}00029\ \}\ \ \textcolor{comment}{//\ namespace\ CBuild}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00030}00030\ \textcolor{comment}{/*\ print.hpp\ */}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00031}\mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{00031}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(std::string\ msg,\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}}\ fg)\ \{}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00032}00032\ \ \ \ \ \textcolor{comment}{//\ Create\ buffer}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00033}00033\ \ \ \ \ std::string\ buff;}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00034}00034\ \ \ \ \ \textcolor{comment}{//\ Load\ ANSI\ start\ code\ in\ buffer}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00035}00035\ \ \ \ \ buff\ =\ \textcolor{stringliteral}{"{}\(\backslash\)u001b["{}};}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00036}00036\ \ \ \ \ \textcolor{comment}{//\ Load\ color}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00037}00037\ \ \ \ \ \textcolor{keywordtype}{int}\ f\ =\ fg;}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00038}00038\ \ \ \ \ \textcolor{comment}{//\ Push\ collor\ to\ buffer}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00039}00039\ \ \ \ \ buff\ +=\ std::to\_string(f);}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00040}00040\ \ \ \ \ \textcolor{comment}{//\ Push\ ANSI\ end\ code\ to\ buffer}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00041}00041\ \ \ \ \ buff\ +=\ \textcolor{stringliteral}{"{}m"{}};}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00042}00042\ \ \ \ \ \textcolor{comment}{//\ Push\ message\ to\ buffer}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00043}00043\ \ \ \ \ buff\ +=\ msg;}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00044}00044\ \ \ \ \ \textcolor{comment}{//\ Push\ ANSI\ reset\ code\ to\ buffer}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00045}00045\ \ \ \ \ buff\ +=\ \textcolor{stringliteral}{"{}\(\backslash\)u001b[0m"{}};}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00046}00046\ \ \ \ \ \textcolor{comment}{//\ Print\ buffer\ with\ \(\backslash\)n}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00047}00047\ \ \ \ \ puts(buff.c\_str());}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00048}00048\ \ \ \ \ fflush(stdout);}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00049}00049\ \}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00050}\mbox{\hyperlink{namespaceCBuild_ac4072b567b20516e02402f3b95964953}{00050}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceCBuild_ac4072b567b20516e02402f3b95964953}{CBuild::print\_full}}(std::string\ msg,\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}}\ fg)\ \{}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00051}00051\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{CBuild::verbose}})\ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(msg,\ fg);}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00052}00052\ \}}
-\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00053}\mbox{\hyperlink{namespaceCBuild_a212b885e390d7f0d9cd16a187c692625}{00053}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceCBuild_a212b885e390d7f0d9cd16a187c692625}{CBuild::print\_verbose}}()\ \{\ \mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{CBuild::verbose}}\ =\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00023}00023 \textcolor{comment}{// C++ libraries}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00024}00024 \textcolor{preprocessor}{\#include "{}stdio.h"{}}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00025}00025 \textcolor{comment}{// Project headers}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00026}00026 \textcolor{preprocessor}{\#include "{}../../headers/print.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00027}00027 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceCBuild}{CBuild}} \{}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00028}\mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{00028}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{verbose}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00029}\mbox{\hyperlink{namespaceCBuild_aaa4bc6796da5548c676f3c6bc35f968c}{00029}} \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespaceCBuild_aaa4bc6796da5548c676f3c6bc35f968c}{none}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00030}\mbox{\hyperlink{namespaceCBuild_a0416a0ae5e92ebeba5062dda6da192ba}{00030}} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_a0416a0ae5e92ebeba5062dda6da192ba}{print\_internal}}(std::string msg, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{CBuild::color}} fg) \{}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00031}00031   \textcolor{comment}{// Create buffer}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00032}00032   std::string buff;}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00033}00033   \textcolor{comment}{// Load ANSI start code in buffer}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00034}00034   buff = \textcolor{stringliteral}{"{}\(\backslash\)u001b["{}};}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00035}00035   \textcolor{comment}{// Load color}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00036}00036   \textcolor{keywordtype}{int} f = fg;}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00037}00037   \textcolor{comment}{// Push collor to buffer}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00038}00038   buff += std::to\_string(f);}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00039}00039   \textcolor{comment}{// Push ANSI end code to buffer}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00040}00040   buff += \textcolor{stringliteral}{"{}m"{}};}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00041}00041   \textcolor{comment}{// Push message to buffer}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00042}00042   buff += msg;}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00043}00043   \textcolor{comment}{// Push ANSI reset code to buffer}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00044}00044   buff += \textcolor{stringliteral}{"{}\(\backslash\)u001b[0m"{}};}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00045}00045   \textcolor{comment}{// Print buffer with \(\backslash\)n}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00046}00046   puts(buff.c\_str());}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00047}00047   fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00048}00048 \}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00049}00049 \} \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00050}00050 \textcolor{comment}{/* print.hpp */}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00051}\mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{00051}} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{CBuild::print}}(std::string msg, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}} fg) \{}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00052}00052   \textcolor{comment}{// If print enabled -\/ do it}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00053}00053   \textcolor{keywordflow}{if} (!\mbox{\hyperlink{namespaceCBuild_aaa4bc6796da5548c676f3c6bc35f968c}{CBuild::none}})}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00054}00054     \mbox{\hyperlink{namespaceCBuild_a0416a0ae5e92ebeba5062dda6da192ba}{CBuild::print\_internal}}(msg, fg);}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00055}00055 \}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00056}\mbox{\hyperlink{namespaceCBuild_ac4072b567b20516e02402f3b95964953}{00056}} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_ac4072b567b20516e02402f3b95964953}{CBuild::print\_full}}(std::string msg, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}} fg) \{}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00057}00057   \textcolor{comment}{// If verbose print enabled -\/ do it}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00058}00058   \textcolor{keywordflow}{if} (\mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{CBuild::verbose}} \&\& !\mbox{\hyperlink{namespaceCBuild_aaa4bc6796da5548c676f3c6bc35f968c}{CBuild::none}})}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00059}00059     \mbox{\hyperlink{namespaceCBuild_a0416a0ae5e92ebeba5062dda6da192ba}{CBuild::print\_internal}}(msg, fg);}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00060}00060 \}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00061}\mbox{\hyperlink{namespaceCBuild_a212b885e390d7f0d9cd16a187c692625}{00061}} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_a212b885e390d7f0d9cd16a187c692625}{CBuild::print\_verbose}}() \{ \mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{CBuild::verbose}} = \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{\Hypertarget{print_8cpp_source_l00062}\mbox{\hyperlink{namespaceCBuild_a9bd68953b93a009fc59c25f8c411649e}{00062}} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_a9bd68953b93a009fc59c25f8c411649e}{CBuild::print\_none}}() \{ \mbox{\hyperlink{namespaceCBuild_aaa4bc6796da5548c676f3c6bc35f968c}{CBuild::none}} = \textcolor{keyword}{true}; \}}
 
 \end{DoxyCode}

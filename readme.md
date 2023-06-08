@@ -2,11 +2,13 @@
 Full feathured build system for C / C++.
 All build scripts go into scripts folder.
 All build scripts is written in C++ (can be written in C but CBuild does not have any C API).
-All html and TeX are because of doxygen
+All html and TeX are because of doxygen ;)
+
+# [Some usage info](usage.md), also via CBuild.run --help
 
 # Example
 This is folder structure:  
-<pre>
+```
 project  
     |  
     |- - build (will be created by CBuild)  
@@ -20,12 +22,12 @@ project
     |  
     |--- src (project code goes here)  
     |--- CBuild.run (main CBuild executable)  
-</pre>
+```
 main.cpp -> main file of Cbuild executable, change only if you know how CBuild work internally.  
 user_init.hpp -> headers of user scripts, have 1 function, that need to be called in main.cpp (init()).  
 user_init.cpp -> implemenet init() form headers, thie function will be ruuned at a start of Cbuild, before all core functions.  
 example build script for lib and app that use it:
-<pre>
+```
 // C++ libraries  
 #include "stdio.h"  
 // Userspace headers  
@@ -53,6 +55,7 @@ void init()
 	lib.set_type(CBuild::DYNAMIC_LIBRARY);  
 	CBuild::Registry::RegisterTarget(&lib);  
 }  
-</pre>
+```
 It uses g++ as compiler, and c++20.
+
 # [Other info](info.md)

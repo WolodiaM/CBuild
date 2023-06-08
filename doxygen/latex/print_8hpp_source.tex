@@ -2,28 +2,29 @@
 \label{print_8hpp_source}\index{CBuild/headers/print.hpp@{CBuild/headers/print.hpp}}
 \mbox{\hyperlink{print_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00001}00001\ }
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00023}00023\ \textcolor{comment}{//\ C++\ libraries}}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}string"{}}}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}vector"{}}}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00026}00026\ \textcolor{comment}{//\ Code}}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00027}00027\ \textcolor{preprocessor}{\#ifndef\ \_\_CBUILD\_PRINT\_HPP\_\_}}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00028}00028\ \textcolor{preprocessor}{\#define\ \_\_CBUILD\_PRINT\_HPP\_\_}}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00029}00029\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceCBuild}{CBuild}}\ \{}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00033}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{00033}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00034}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a8bd0cf7a4d1d3a65b9c8f616054c5950}{00034}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a8bd0cf7a4d1d3a65b9c8f616054c5950}{BLACK}}\ =\ 30,}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00035}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{00035}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{RED}}\ =\ 31,}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00036}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{00036}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{GREEN}}\ =\ 32,}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00037}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a2a67edb9753b55a661c1557c45fc2a76}{00037}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a2a67edb9753b55a661c1557c45fc2a76}{YELLOW}}\ =\ 33,}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00038}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}{00038}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}{BLUE}}\ =\ 34,}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00039}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{00039}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{MAGENTA}}\ =\ 35,}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00040}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a0440f78b5c38b9bfbfa19039d01ecdbc}{00040}}\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a0440f78b5c38b9bfbfa19039d01ecdbc}{CYAN}}\ =\ 36,}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00041}00041\ \ \ \ \ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{WHITE}}\ =\ 37}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00042}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{00042}}\ \}\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}};}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00049}00049\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{print}}(std::string\ msg,\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}}\ fg\ =\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{CBuild::WHITE}});}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00056}00056\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceCBuild_ac4072b567b20516e02402f3b95964953}{print\_full}}(std::string\ msg,\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}}\ fg\ =\ \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{CBuild::WHITE}});}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00060}00060\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceCBuild_a212b885e390d7f0d9cd16a187c692625}{print\_verbose}}();}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00061}00061\ \}\ \ \textcolor{comment}{//\ namespace\ CBuild}}
-\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00062}00062\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_\_CBUILD\_PRINT\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00023}00023 \textcolor{comment}{// C++ libraries}}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00024}00024 \textcolor{preprocessor}{\#include "{}string"{}}}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00025}00025 \textcolor{preprocessor}{\#include "{}vector"{}}}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00026}00026 \textcolor{comment}{// Code}}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00027}00027 \textcolor{preprocessor}{\#ifndef \_\_CBUILD\_PRINT\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00028}00028 \textcolor{preprocessor}{\#define \_\_CBUILD\_PRINT\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00029}00029 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceCBuild}{CBuild}} \{}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00033}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{00033}} \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00034}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a8bd0cf7a4d1d3a65b9c8f616054c5950}{00034}}   \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a8bd0cf7a4d1d3a65b9c8f616054c5950}{BLACK}} = 30,}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00035}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{00035}}   \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a54e1cf55ef36246337b32c5e614c5376}{RED}} = 31,}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00036}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{00036}}   \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025abbd143fe8219d71cb789dd08c7fa4292}{GREEN}} = 32,}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00037}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a2a67edb9753b55a661c1557c45fc2a76}{00037}}   \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a2a67edb9753b55a661c1557c45fc2a76}{YELLOW}} = 33,}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00038}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}{00038}}   \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a6c6f2818d2732cb0e428f4fa6ee7a302}{BLUE}} = 34,}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00039}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{00039}}   \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34}{MAGENTA}} = 35,}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00040}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a0440f78b5c38b9bfbfa19039d01ecdbc}{00040}}   \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a0440f78b5c38b9bfbfa19039d01ecdbc}{CYAN}} = 36,}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00041}00041   \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{WHITE}} = 37}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00042}\mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{00042}} \} \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}};}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00049}00049 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{print}}(std::string msg, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}} fg = \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{CBuild::WHITE}});}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00056}00056 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_ac4072b567b20516e02402f3b95964953}{print\_full}}(std::string msg, \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025}{color}} fg = \mbox{\hyperlink{namespaceCBuild_a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31}{CBuild::WHITE}});}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00060}00060 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_a212b885e390d7f0d9cd16a187c692625}{print\_verbose}}();}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00064}00064 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceCBuild_a9bd68953b93a009fc59c25f8c411649e}{print\_none}}();}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00065}00065 \} \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{print_8hpp_source_l00066}00066 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_\_CBUILD\_PRINT\_HPP\_\_}}
 
 \end{DoxyCode}

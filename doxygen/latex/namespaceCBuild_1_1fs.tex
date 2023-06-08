@@ -28,9 +28,9 @@ std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_aef722
 std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_a68fced753f8789df81c229ff7068cc7e}{dir}} (std\+::string path)
 \begin{DoxyCompactList}\small\item\em Search files using standard regex (\char`\"{}.$\ast$\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{}) \end{DoxyCompactList}\item 
 std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}{dir\+\_\+rec}} (std\+::string path, std\+::string search)
-\item 
+\begin{DoxyCompactList}\small\item\em Recursively search files using provided regex. \end{DoxyCompactList}\item 
 std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1fs_aee249da4a350096ea1011652df0e982a}{dir\+\_\+rec}} (std\+::string path)
-\item 
+\begin{DoxyCompactList}\small\item\em Recursively search files using standard regex (\char`\"{}.$\ast$\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{}) \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a21e487513e97c55b658a1d06d9124c95}{remove}} (std\+::string path, bool force=false)
 \begin{DoxyCompactList}\small\item\em Delete files or directories. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a64eb637be267cfa1e72d5409240981d6}{copy}} (std\+::string start, std\+::string end)
@@ -45,6 +45,8 @@ bool \mbox{\hyperlink{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}{e
 \begin{DoxyCompactList}\small\item\em Check if file exists. \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{namespaceCBuild_1_1fs_a1077211cdc9fcebea48f6a20b7da8fe6}{normalize\+\_\+path}} (std\+::string path, std\+::string base\+\_\+path=\char`\"{}\char`\"{})
 \begin{DoxyCompactList}\small\item\em Get absolute path to file using relative path and base path. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespaceCBuild_1_1fs_a1c11acabc60bb22db19562a4013a8af7}{base}} (std\+::string file)
+\begin{DoxyCompactList}\small\item\em Get base file path (path dir in what file is) \end{DoxyCompactList}\item 
 std\+::regex \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\+\_\+cpp\+\_\+file}} (\char`\"{}.$\ast$\textbackslash{}\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{})
 \end{DoxyCompactItemize}
 
@@ -97,6 +99,29 @@ Definition at line \mbox{\hyperlink{filesystem_09_09_8hpp_source_l00033}{33}} of
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceCBuild_1_1fs_a1c11acabc60bb22db19562a4013a8af7}\label{namespaceCBuild_1_1fs_a1c11acabc60bb22db19562a4013a8af7}} 
+\index{CBuild::fs@{CBuild::fs}!base@{base}}
+\index{base@{base}!CBuild::fs@{CBuild::fs}}
+\doxysubsubsection{\texorpdfstring{base()}{base()}}
+{\footnotesize\ttfamily std\+::string CBuild\+::fs\+::base (\begin{DoxyParamCaption}\item[{std\+::string}]{file }\end{DoxyParamCaption})}
+
+
+
+Get base file path (path dir in what file is) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} Filepath \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00355}{355}} of file \mbox{\hyperlink{filesystem_09_09_8cpp_source}{filesystem++.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00192}{CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+file()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00159}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00156}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{Build_8cpp_source_l00348}{CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+name()}}, and \mbox{\hyperlink{hash_8cpp_source_l00146}{CBuild\+::get\+\_\+file\+\_\+data()}}.
+
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}\label{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}} 
 \index{CBuild::fs@{CBuild::fs}!c\_cpp\_file@{c\_cpp\_file}}
 \index{c\_cpp\_file@{c\_cpp\_file}!CBuild::fs@{CBuild::fs}}
@@ -133,7 +158,11 @@ Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00166}{166}} o
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00138}{CBuild\+::\+MINGW\+\_\+\+GXX\+::post\+\_\+link()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00138}{CBuild\+::\+MINGW\+\_\+\+GCC\+::post\+\_\+link()}}.
+References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00166}{copy()}}.
+
+
+
+Referenced by \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00166}{copy()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00181}{move()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00138}{CBuild\+::\+MINGW\+\_\+\+GXX\+::post\+\_\+link()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00138}{CBuild\+::\+MINGW\+\_\+\+GCC\+::post\+\_\+link()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}\label{namespaceCBuild_1_1fs_a1579893d0fe2547296ae5cad50d8b444}} 
 \index{CBuild::fs@{CBuild::fs}!create@{create}}
@@ -165,7 +194,7 @@ References \mbox{\hyperlink{filesystem_09_09_8hpp_source_l00045}{DIR}}, \mbox{\h
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00104}{CBuild\+::\+Init\+::call()}}, \mbox{\hyperlink{Build_8cpp_source_l00396}{CBuild\+::\+Toolchain\+::init()}}, \mbox{\hyperlink{CBuild_8cpp_source_l00282}{CBuild\+::loop()}}, \mbox{\hyperlink{files_8cpp_source_l00030}{replace()}}, and \mbox{\hyperlink{files_8cpp_source_l00064}{set\+\_\+var()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00042}{CBuild\+::\+Init\+::call()}}, \mbox{\hyperlink{Build_8cpp_source_l00407}{CBuild\+::\+Toolchain\+::init()}}, \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}, \mbox{\hyperlink{files_8cpp_source_l00030}{replace()}}, and \mbox{\hyperlink{files_8cpp_source_l00064}{set\+\_\+var()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_a68fced753f8789df81c229ff7068cc7e}\label{namespaceCBuild_1_1fs_a68fced753f8789df81c229ff7068cc7e}} 
 \index{CBuild::fs@{CBuild::fs}!dir@{dir}}
@@ -191,7 +220,7 @@ Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00061}{61}} of
 
 
 
-References \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\+\_\+cpp\+\_\+file()}}, and \mbox{\hyperlink{hash_8cpp_source_l00168}{CBuild\+::files}}.
+References \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\+\_\+cpp\+\_\+file()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}\label{namespaceCBuild_1_1fs_aef722b53b2f3a9a154cfee0298c364b4}} 
 \index{CBuild::fs@{CBuild::fs}!dir@{dir}}
@@ -219,11 +248,7 @@ Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00041}{41}} of
 
 
 
-References \mbox{\hyperlink{hash_8cpp_source_l00168}{CBuild\+::files}}.
-
-
-
-Referenced by \mbox{\hyperlink{Build_8cpp_source_l00197}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00091}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00084}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00122}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00112}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}.
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00211}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00091}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00084}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00122}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00112}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_aee249da4a350096ea1011652df0e982a}\label{namespaceCBuild_1_1fs_aee249da4a350096ea1011652df0e982a}} 
 \index{CBuild::fs@{CBuild::fs}!dir\_rec@{dir\_rec}}
@@ -231,7 +256,9 @@ Referenced by \mbox{\hyperlink{Build_8cpp_source_l00197}{CBuild\+::\+Toolchain\+
 \doxysubsubsection{\texorpdfstring{dir\_rec()}{dir\_rec()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ CBuild\+::fs\+::dir\+\_\+rec (\begin{DoxyParamCaption}\item[{std\+::string}]{path }\end{DoxyParamCaption})}
 
-@berief Recursively search files using standard regex (\char`\"{}.$\ast$\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{})
+
+
+Recursively search files using standard regex (\char`\"{}.$\ast$\textbackslash{}.(cpp$\vert$cxx$\vert$cc$\vert$c)\char`\"{}) 
 
 
 \begin{DoxyParams}{Parameters}
@@ -247,7 +274,7 @@ Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00101}{101}} o
 
 
 
-References \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\+\_\+cpp\+\_\+file()}}, and \mbox{\hyperlink{hash_8cpp_source_l00168}{CBuild\+::files}}.
+References \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688035}{c\+\_\+cpp\+\_\+file()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}\label{namespaceCBuild_1_1fs_ad7d83e5e03be4832b45ddcfa644cf60c}} 
 \index{CBuild::fs@{CBuild::fs}!dir\_rec@{dir\_rec}}
@@ -255,7 +282,9 @@ References \mbox{\hyperlink{namespaceCBuild_1_1fs_ae5f953371b71cb3646780beda3688
 \doxysubsubsection{\texorpdfstring{dir\_rec()}{dir\_rec()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ CBuild\+::fs\+::dir\+\_\+rec (\begin{DoxyParamCaption}\item[{std\+::string}]{path,  }\item[{std\+::string}]{search }\end{DoxyParamCaption})}
 
-@berief Recursively search files using provided regex
+
+
+Recursively search files using provided regex. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -270,10 +299,6 @@ std\+::vector$<$std\+::string$>$ -\/\texorpdfstring{$>$}{>} list of found files
 
 
 Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00079}{79}} of file \mbox{\hyperlink{filesystem_09_09_8cpp_source}{filesystem++.\+cpp}}.
-
-
-
-References \mbox{\hyperlink{hash_8cpp_source_l00168}{CBuild\+::files}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}\label{namespaceCBuild_1_1fs_a15031cfab0809c7499e2c2e033d7cfdf}} 
 \index{CBuild::fs@{CBuild::fs}!exists@{exists}}
@@ -299,7 +324,11 @@ Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00340}{340}} o
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00104}{CBuild\+::\+Init\+::call()}}, \mbox{\hyperlink{Build_8cpp_source_l00396}{CBuild\+::\+Toolchain\+::init()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00282}{CBuild\+::loop()}}.
+References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00340}{exists()}}.
+
+
+
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00042}{CBuild\+::\+Init\+::call()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00340}{exists()}}, \mbox{\hyperlink{Build_8cpp_source_l00407}{CBuild\+::\+Toolchain\+::init()}}, \mbox{\hyperlink{hash_8cpp_source_l00299}{CBuild\+::load\+\_\+hash()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}\label{namespaceCBuild_1_1fs_aa7cd165488ce33026fc5d25e725cbf9d}} 
 \index{CBuild::fs@{CBuild::fs}!move@{move}}
@@ -327,7 +356,7 @@ Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00181}{181}} o
 
 
 
-References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00136}{remove()}}.
+References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00166}{copy()}}, and \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00136}{remove()}}.
 
 
 
@@ -359,7 +388,7 @@ Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00345}{345}} o
 
 
 
-Referenced by \mbox{\hyperlink{Build_8cpp_source_l00197}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}.
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00211}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, and \mbox{\hyperlink{hash_8cpp_source_l00146}{CBuild\+::get\+\_\+file\+\_\+data()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_a3c6451e4dba7aa53cbeaa1749a7c0882}\label{namespaceCBuild_1_1fs_a3c6451e4dba7aa53cbeaa1749a7c0882}} 
 \index{CBuild::fs@{CBuild::fs}!path\_to\_file@{path\_to\_file}}
@@ -401,6 +430,8 @@ Delete files or directories.
 \begin{DoxyParams}{Parameters}
 {\em path} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} path to file or directory \\
 \hline
+{\em force} & =\texorpdfstring{$>$}{>} remove\+\_\+all in place of remove \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 bool -\/\texorpdfstring{$>$}{>} success or failure 
@@ -411,7 +442,11 @@ Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00136}{136}} o
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00282}{CBuild\+::loop()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00181}{move()}}, \mbox{\hyperlink{files_8cpp_source_l00030}{replace()}}, and \mbox{\hyperlink{files_8cpp_source_l00064}{set\+\_\+var()}}.
+References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00136}{remove()}}.
+
+
+
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00181}{move()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00136}{remove()}}, \mbox{\hyperlink{files_8cpp_source_l00030}{replace()}}, and \mbox{\hyperlink{files_8cpp_source_l00064}{set\+\_\+var()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}\label{namespaceCBuild_1_1fs_ae8d781d734c80698e006e667c8afab27}} 
 \index{CBuild::fs@{CBuild::fs}!rename@{rename}}
@@ -441,6 +476,14 @@ bool -\/\texorpdfstring{$>$}{>} success or failure
 
 
 Definition at line \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00120}{120}} of file \mbox{\hyperlink{filesystem_09_09_8cpp_source}{filesystem++.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00120}{rename()}}.
+
+
+
+Referenced by \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00120}{rename()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1fs_a66838af175563ee1fbadaa29b10aa706}\label{namespaceCBuild_1_1fs_a66838af175563ee1fbadaa29b10aa706}} 
 \index{CBuild::fs@{CBuild::fs}!replace@{replace}}

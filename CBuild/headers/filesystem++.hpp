@@ -31,37 +31,37 @@ namespace fs {
  * @brief Type for element creating
  */
 typedef enum {
-	/**
-	 * @brief Standard file
-	 */
-	FILE,
-	/**
-	 * @brief Standard directory
-	 */
-	DIRECTORY,
-	/**
-	 * @brief Alias for DIRECTORY
-	 */
-	DIR,
-	/**
-	 * @brief Standard symlink (can be unsupported or supported partially)
-	 * (thought std::filesystem::create_symlink)
-	 */
-	SYMLINK_FILE,
-	/**
-	 * @brief Standard symlink (can be unsupported or supported partially)
-	 * (std::filesystem::create_directory_symlink)
-	 */
-	SYMLINK_DIRECTORY,
-	/**
-	 * @brief Alias for SYMLINK_DIRECTORY
-	 */
-	SYMLINK_DIR,
-	/**
-	 * @brief Standard hardlink (can be unsupported or supported partially)
-	 * (though std::filesystem::create_hard_link)
-	 */
-	HARDLINK
+  /**
+   * @brief Standard file
+   */
+  FILE,
+  /**
+   * @brief Standard directory
+   */
+  DIRECTORY,
+  /**
+   * @brief Alias for DIRECTORY
+   */
+  DIR,
+  /**
+   * @brief Standard symlink (can be unsupported or supported partially)
+   * (thought std::filesystem::create_symlink)
+   */
+  SYMLINK_FILE,
+  /**
+   * @brief Standard symlink (can be unsupported or supported partially)
+   * (std::filesystem::create_directory_symlink)
+   */
+  SYMLINK_DIRECTORY,
+  /**
+   * @brief Alias for SYMLINK_DIRECTORY
+   */
+  SYMLINK_DIR,
+  /**
+   * @brief Standard hardlink (can be unsupported or supported partially)
+   * (though std::filesystem::create_hard_link)
+   */
+  HARDLINK
 } type;
 /**
  * @brief Search files using provided regex
@@ -79,7 +79,7 @@ std::vector<std::string> dir(std::string path, std::string search);
  */
 std::vector<std::string> dir(std::string path);
 /**
- * @berief Recursively search files using provided regex
+ * @brief Recursively search files using provided regex
  *
  * @param path => std::string -> Starting path for search
  * @param search => std::string -> Search regex
@@ -87,7 +87,7 @@ std::vector<std::string> dir(std::string path);
  */
 std::vector<std::string> dir_rec(std::string path, std::string search);
 /**
- * @berief Recursively search files using standard regex (".*\.(cpp|cxx|cc|c)")
+ * @brief Recursively search files using standard regex (".*\.(cpp|cxx|cc|c)")
  *
  * @param path => std::string -> Starting path for search
  * @return std::vector<std::string> -> list of found files
@@ -97,6 +97,7 @@ std::vector<std::string> dir_rec(std::string path);
  * @brief Delete files or directories
  *
  * @param path => std::string -> path to file or directory
+ * @param force => remove_all in place of remove
  * @return bool -> success or failure
  */
 bool remove(std::string path, bool force = false);
@@ -154,6 +155,6 @@ std::string normalize_path(std::string path, std::string base_path = "");
  * @param file => std::string -> Filepath
  */
 std::string base(std::string file);
-}  // namespace fs
-}  // namespace CBuild
-#endif	// __CBUILD_FILESYSTEM_HPP__
+} // namespace fs
+} // namespace CBuild
+#endif // __CBUILD_FILESYSTEM_HPP__

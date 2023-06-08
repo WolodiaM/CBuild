@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['required_0',['required',['../classCBuild_1_1Toolchain.html#a8b81d073c57651d8483eb728c40140ba',1,'CBuild::Toolchain::required()'],['../classCBuild_1_1Task.html#ad16da892db862248185ea47115312468',1,'CBuild::Task::required()']]]
+  ['packer_0',['packer',['../classCBuild_1_1Toolchain.html#a0e13f0ae4d3a229ce508eb17d7b14966',1,'CBuild::Toolchain']]],
+  ['path_1',['path',['../structCBuild_1_1Path.html#ac88fda7338fc584b68db076d3ff0ab28',1,'CBuild::Path::path()'],['../structCBuild_1_1Project__dependency.html#a94a56a6410c4232e9667db307754cf21',1,'CBuild::Project_dependency::path()'],['../classCBuild_1_1filebuff.html#a78aeee86e95c04ed18ecd1c3e071a0c9',1,'CBuild::filebuff::path()'],['../structCBuild_1_1types_1_1file__content.html#a7e2ca7e668921278cd6f614d0e232f05',1,'CBuild::types::file_content::path()']]],
+  ['project_5fdeps_2',['project_deps',['../classCBuild_1_1Toolchain.html#a01989e313c5c77386b2be0989192df47',1,'CBuild::Toolchain']]]
 ];

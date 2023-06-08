@@ -2,8 +2,7 @@
 \label{classCBuild_1_1Help}\index{CBuild::Help@{CBuild::Help}}
 
 
-\mbox{\hyperlink{classCBuild_1_1Help}{Help}} print task.  
-
+{\ttfamily \#include $<$CBuild\+\_\+help\+\_\+task.\+hpp$>$}
 
 Inheritance diagram for CBuild\+::Help\+:\begin{figure}[H]
 \begin{center}
@@ -16,25 +15,19 @@ Inheritance diagram for CBuild\+::Help\+:\begin{figure}[H]
 \item 
 \mbox{\hyperlink{classCBuild_1_1Help_a183dcc38e321e9ebffff251986a41af5}{Help}} ()
 \item 
-void \mbox{\hyperlink{classCBuild_1_1Help_a9a05b5e28b3dbdf56a882a6e3208f5c7}{call}} (std\+::vector$<$ std\+::string $>$ \+\_\+\+\_\+attribute\+\_\+maybe\+\_\+unused\+\_\+\+\_\+)
+void \mbox{\hyperlink{classCBuild_1_1Help_aa5c41e59259c5068a2ddb75f5d084b1f}{call}} (std\+::vector$<$ std\+::string $>$ args)
 \begin{DoxyCompactList}\small\item\em Executed on task call. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}}}
+\doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classCBuild_1_1Task_a9297bdfeb11038bccecb089d55465355}{Task}} (std\+::string \mbox{\hyperlink{classCBuild_1_1Task_a26e2c5d24e42a50c46e0fe7af19bfe63}{name}}, std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classCBuild_1_1Task_ad16da892db862248185ea47115312468}{required}})
-\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classCBuild_1_1Task}{Task}} object. \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{classCBuild_1_1Task_a4dcc3f843434738f49b17399d55d9e3f}{call}} (std\+::vector$<$ std\+::string $>$ args)=0
-\begin{DoxyCompactList}\small\item\em Executed on task call. \end{DoxyCompactList}\item 
-std\+::string \mbox{\hyperlink{classCBuild_1_1Task_a22f75b4023d2bc430d11ff2c8f1b4405}{self\+\_\+name}} ()
-\begin{DoxyCompactList}\small\item\em Return task name. \end{DoxyCompactList}\item 
-std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classCBuild_1_1Task_aba4e56dd74f0ed4846aacc5cfe40bd76}{self\+\_\+required}} ()
-\begin{DoxyCompactList}\small\item\em Return required tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+std\+::string \mbox{\hyperlink{classCBuild_1_1Help_a578b23ef628666b3b42846328d6e08d2}{data}} = \char`\"{}CBuild help -\/ v8.\+2\textbackslash{}n\+Command line options\+:\textbackslash{}n\textbackslash{}t \`{}-\/f\`{} -\/ force recompilation of all files.\textbackslash{}n\textbackslash{}t \`{}-\/v\`{} -\/ \mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{verbose}} output, some addition info and some debugging info, mask \`{}-\/-\/no-\/cli-\/out\`{} if used before.\textbackslash{}n\textbackslash{}t \`{}-\/-\/no-\/cli-\/out\`{} -\/ no output from CBuild at all, mask \`{}-\/v\`{} if used before.\textbackslash{}n\textbackslash{}t \`{}-\/gm\`{} -\/ generate Makefile based on output from CBuild, simly \mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{log}} all executed command and pack it in Makefile syntax, so, sadly, CBuild\+::fs calls not propagate to Makefile.\textbackslash{}n\textbackslash{}t \`{}-\/gc\`{} -\/ generate compile\+\_\+commands.\+json, with simmilar to \`{}-\/gm\`{} limitation\textbackslash{}n\textbackslash{}t \`{}-\/ld $<$toolchain\+\_\+name$>$\`{} -\/ load dependencies of some target, only for CBuild dependencies.\textbackslash{}n\textbackslash{}t \`{}-\/b $<$toolchain\+\_\+name$>$\`{} -\/ build specified target.\textbackslash{}n\textbackslash{}t \`{}-\/r $<$toolchain\+\_\+name$>$\`{} -\/ run specified target.\textbackslash{}n\textbackslash{}t \`{}-\/br $<$toolchain\+\_\+name$>$\`{} -\/ build and then run specified target.\textbackslash{}n\textbackslash{}t \`{}-\/d $<$toolchain\+\_\+name$>$\`{} -\/ build and then run specified target in debug mode. Now work only with gdb on linux.\textbackslash{}n\textbackslash{}t \`{}-\/c $<$toolchain\+\_\+name$>$\`{} -\/ clear all data of specified target.\textbackslash{}n\textbackslash{}t \`{}-\/t $<$task\+\_\+name$>$\`{} -\/ run specified task.\textbackslash{}n\textbackslash{}t \`{}-\/a $<$arg$>$\`{} -\/ set some argument (see it as \#define arg, without value). It can be used by ran toolchain or ran task. No preprocessing, simple propagation for user-\/defined arguments.\textbackslash{}n\textbackslash{}t \`{}-\/pa $<$arg$>$\`{} -\/ specified argument for ran app, propagated to app ran by \`{}-\/r\`{} and \`{}-\/br\`{}, in \`{}-\/d\`{} arguments propagates to gdb.\textbackslash{}n\textbackslash{}t \`{}-\/-\/\mbox{\hyperlink{namespaceCBuild_ae2b7da512099900682e8b038e0b2bc4f}{rebuild}}\`{} -\/ \mbox{\hyperlink{namespaceCBuild_ae2b7da512099900682e8b038e0b2bc4f}{rebuild}} CBuild executable.\textbackslash{}n\textbackslash{}t \`{}-\/-\/init\`{} -\/ init CBuild folder structure, not always required.\textbackslash{}n\textbackslash{}t \`{}-\/-\/help\`{} -\/ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{print}} help message -\/ this information.\textbackslash{}n\+CBuild folder structure\+: \textbackslash{}n$<$project\+\_\+root$>$\textbackslash{}n $\vert$\textbackslash{}n $\vert$ -\/ src \+: Project sources folder\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ -\/ main.\+cpp \+: Have main() function implemented\textbackslash{}n $\vert$\textbackslash{}n $\vert$ -\/ scripts\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ -\/ main.\+cpp \+: Main file of CBuild user scripts, init CBuild and \mbox{\hyperlink{classCBuild_1_1Help_aa5c41e59259c5068a2ddb75f5d084b1f}{call}} user init\textbackslash{}n $\vert$ $\vert$ -\/ user\+\_\+init.\+cpp \+: Implement user init function, have build sript implemented\textbackslash{}n $\vert$ $\vert$ -\/ user\+\_\+init.\+hpp \+: Header to glue together two .cpp files\textbackslash{}n $\vert$ -\/ cache \+: CBuild der for some temporary data\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ -\/ headers \+: Header of included CBuild projects\textbackslash{}n $\vert$ $\vert$ -\/ libs \+: .so / .a files of included CBuild projects\textbackslash{}n $\vert$ $\vert$ -\/ tmp \+: Directory for temporary runtime data of CBuild \textbackslash{}n $\vert$\textbackslash{}n $\vert$ -\/ build\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ -\/ $<$toolchain\+\_\+name$>$\textbackslash{}n $\vert$ $\vert$ $\vert$ -\/ \mbox{\hyperlink{namespaceCBuild_a0d07ddbe1051ff2577c6a36113276a1e}{hash}} \+: Hash storage directory\textbackslash{}n $\vert$ $\vert$ $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ $\vert$ $\vert$ -\/ \mbox{\hyperlink{namespaceCBuild_a0d07ddbe1051ff2577c6a36113276a1e}{hash}} \+: Hash database for specified target\textbackslash{}n $\vert$ $\vert$ $\vert$ -\/ objs \+: Saved .o files of specified target\textbackslash{}n $\vert$ $\vert$ $\vert$ -\/ out \+: Output files of specified target\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$\textbackslash{}n $\vert$ -\/ CBuild.\+run \+: Main executable of CBuild\textbackslash{}n\char`\"{}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-\mbox{\hyperlink{classCBuild_1_1Help}{Help}} print task. 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00037}{37}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+Definition at line \mbox{\hyperlink{CBuild__help__task_8hpp_source_l00028}{28}} of file \mbox{\hyperlink{CBuild__help__task_8hpp_source}{CBuild\+\_\+help\+\_\+task.\+hpp}}.
 
 
 
@@ -47,12 +40,12 @@ Definition at line \mbox{\hyperlink{register_8cpp_source_l00037}{37}} of file \m
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00040}{40}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{CBuild__help__task_8hpp_source_l00033}{33}} of file \mbox{\hyperlink{CBuild__help__task_8hpp_source}{CBuild\+\_\+help\+\_\+task.\+hpp}}.
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classCBuild_1_1Help_a9a05b5e28b3dbdf56a882a6e3208f5c7}\label{classCBuild_1_1Help_a9a05b5e28b3dbdf56a882a6e3208f5c7}} 
+\mbox{\Hypertarget{classCBuild_1_1Help_aa5c41e59259c5068a2ddb75f5d084b1f}\label{classCBuild_1_1Help_aa5c41e59259c5068a2ddb75f5d084b1f}} 
 \index{CBuild::Help@{CBuild::Help}!call@{call}}
 \index{call@{call}!CBuild::Help@{CBuild::Help}}
 \doxysubsubsection{\texorpdfstring{call()}{call()}}
@@ -73,14 +66,31 @@ Implements \mbox{\hyperlink{classCBuild_1_1Task_a4dcc3f843434738f49b17399d55d9e3
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00042}{42}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{CBuild__help__task_8hpp_source_l00034}{34}} of file \mbox{\hyperlink{CBuild__help__task_8hpp_source}{CBuild\+\_\+help\+\_\+task.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{print_8cpp_source_l00031}{CBuild\+::print()}}.
+References \mbox{\hyperlink{CBuild__help__task_8hpp_source_l00030}{data}}, and \mbox{\hyperlink{print_8cpp_source_l00051}{CBuild\+::print()}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCBuild_1_1Help_a578b23ef628666b3b42846328d6e08d2}\label{classCBuild_1_1Help_a578b23ef628666b3b42846328d6e08d2}} 
+\index{CBuild::Help@{CBuild::Help}!data@{data}}
+\index{data@{data}!CBuild::Help@{CBuild::Help}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Help\+::data = \char`\"{}CBuild help -\/ v8.\+2\textbackslash{}n\+Command line options\+:\textbackslash{}n\textbackslash{}t \`{}-\/f\`{} -\/ force recompilation of all files.\textbackslash{}n\textbackslash{}t \`{}-\/v\`{} -\/ \mbox{\hyperlink{namespaceCBuild_ac4c5e7190138df900269d654a33aa6d3}{verbose}} output, some addition info and some debugging info, mask \`{}-\/-\/no-\/cli-\/out\`{} if used before.\textbackslash{}n\textbackslash{}t \`{}-\/-\/no-\/cli-\/out\`{} -\/ no output from CBuild at all, mask \`{}-\/v\`{} if used before.\textbackslash{}n\textbackslash{}t \`{}-\/gm\`{} -\/ generate Makefile based on output from CBuild, simly \mbox{\hyperlink{namespaceCBuild_ad14c8b8fe9709fdb08a99f212b6a721f}{log}} all executed command and pack it in Makefile syntax, so, sadly, CBuild\+::fs calls not propagate to Makefile.\textbackslash{}n\textbackslash{}t \`{}-\/gc\`{} -\/ generate compile\+\_\+commands.\+json, with simmilar to \`{}-\/gm\`{} limitation\textbackslash{}n\textbackslash{}t \`{}-\/ld $<$toolchain\+\_\+name$>$\`{} -\/ load dependencies of some target, only for CBuild dependencies.\textbackslash{}n\textbackslash{}t \`{}-\/b $<$toolchain\+\_\+name$>$\`{} -\/ build specified target.\textbackslash{}n\textbackslash{}t \`{}-\/r $<$toolchain\+\_\+name$>$\`{} -\/ run specified target.\textbackslash{}n\textbackslash{}t \`{}-\/br $<$toolchain\+\_\+name$>$\`{} -\/ build and then run specified target.\textbackslash{}n\textbackslash{}t \`{}-\/d $<$toolchain\+\_\+name$>$\`{} -\/ build and then run specified target in debug mode. Now work only with gdb on linux.\textbackslash{}n\textbackslash{}t \`{}-\/c $<$toolchain\+\_\+name$>$\`{} -\/ clear all data of specified target.\textbackslash{}n\textbackslash{}t \`{}-\/t $<$task\+\_\+name$>$\`{} -\/ run specified task.\textbackslash{}n\textbackslash{}t \`{}-\/a $<$arg$>$\`{} -\/ set some argument (see it as \#define arg, without value). It can be used by ran toolchain or ran task. No preprocessing, simple propagation for user-\/defined arguments.\textbackslash{}n\textbackslash{}t \`{}-\/pa $<$arg$>$\`{} -\/ specified argument for ran app, propagated to app ran by \`{}-\/r\`{} and \`{}-\/br\`{}, in \`{}-\/d\`{} arguments propagates to gdb.\textbackslash{}n\textbackslash{}t \`{}-\/-\/\mbox{\hyperlink{namespaceCBuild_ae2b7da512099900682e8b038e0b2bc4f}{rebuild}}\`{} -\/ \mbox{\hyperlink{namespaceCBuild_ae2b7da512099900682e8b038e0b2bc4f}{rebuild}} CBuild executable.\textbackslash{}n\textbackslash{}t \`{}-\/-\/init\`{} -\/ init CBuild folder structure, not always required.\textbackslash{}n\textbackslash{}t \`{}-\/-\/help\`{} -\/ \mbox{\hyperlink{namespaceCBuild_a28dd2faae5a0a378163e73ec858d5bb7}{print}} help message -\/ this information.\textbackslash{}n\+CBuild folder structure\+: \textbackslash{}n$<$project\+\_\+root$>$\textbackslash{}n $\vert$\textbackslash{}n $\vert$ -\/ src \+: Project sources folder\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ -\/ main.\+cpp \+: Have main() function implemented\textbackslash{}n $\vert$\textbackslash{}n $\vert$ -\/ scripts\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ -\/ main.\+cpp \+: Main file of CBuild user scripts, init CBuild and \mbox{\hyperlink{classCBuild_1_1Help_aa5c41e59259c5068a2ddb75f5d084b1f}{call}} user init\textbackslash{}n $\vert$ $\vert$ -\/ user\+\_\+init.\+cpp \+: Implement user init function, have build sript implemented\textbackslash{}n $\vert$ $\vert$ -\/ user\+\_\+init.\+hpp \+: Header to glue together two .cpp files\textbackslash{}n $\vert$ -\/ cache \+: CBuild der for some temporary data\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ -\/ headers \+: Header of included CBuild projects\textbackslash{}n $\vert$ $\vert$ -\/ libs \+: .so / .a files of included CBuild projects\textbackslash{}n $\vert$ $\vert$ -\/ tmp \+: Directory for temporary runtime data of CBuild \textbackslash{}n $\vert$\textbackslash{}n $\vert$ -\/ build\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ -\/ $<$toolchain\+\_\+name$>$\textbackslash{}n $\vert$ $\vert$ $\vert$ -\/ \mbox{\hyperlink{namespaceCBuild_a0d07ddbe1051ff2577c6a36113276a1e}{hash}} \+: Hash storage directory\textbackslash{}n $\vert$ $\vert$ $\vert$ $\vert$\textbackslash{}n $\vert$ $\vert$ $\vert$ $\vert$ -\/ \mbox{\hyperlink{namespaceCBuild_a0d07ddbe1051ff2577c6a36113276a1e}{hash}} \+: Hash database for specified target\textbackslash{}n $\vert$ $\vert$ $\vert$ -\/ objs \+: Saved .o files of specified target\textbackslash{}n $\vert$ $\vert$ $\vert$ -\/ out \+: Output files of specified target\textbackslash{}n $\vert$ $\vert$\textbackslash{}n $\vert$\textbackslash{}n $\vert$ -\/ CBuild.\+run \+: Main executable of CBuild\textbackslash{}n\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{CBuild__help__task_8hpp_source_l00030}{30}} of file \mbox{\hyperlink{CBuild__help__task_8hpp_source}{CBuild\+\_\+help\+\_\+task.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{CBuild__help__task_8hpp_source_l00034}{call()}}.
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-CBuild/\+CBuild/src/\mbox{\hyperlink{register_8cpp}{register.\+cpp}}\end{DoxyCompactItemize}
+CBuild/headers/task/\mbox{\hyperlink{CBuild__help__task_8hpp}{CBuild\+\_\+help\+\_\+task.\+hpp}}\end{DoxyCompactItemize}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['init_0',['Init',['../classCBuild_1_1Init.html',1,'CBuild']]]
+  ['line_5ffilebuff_0',['line_filebuff',['../classCBuild_1_1line__filebuff.html',1,'CBuild']]]
 ];
