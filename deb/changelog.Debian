@@ -1,3 +1,25 @@
+cbuild (8.3) stable; urgency=high
+
+  [WolodiaM]
+  * Fixed bugs in CBuild::Registry
+  * Fixed possible bug in CBuild::Registry
+
+ -- WolodiaM <w_melnyk@outlook.com>  Thu, 08 Jun 2023 22:49:04 +0200
+
+cbuild (8.2) stable; urgency=high
+
+  [WolodiaM]
+  * Added support for -jx argument in base CBuild::Build class via function 
+    Build::set_thread_count(int threads) (yes, it is mostly base on gcc)
+  * Add support for -j via same function when called with -1
+  * Add -j to CBuild_rebuild, for better performance
+  * Add --no-cli-out, disable all CBuild output, only cmpiler output is visible,
+    cannot be used with -v
+  * Build: help task now be automatically generated via buildsystem, so, 
+    help now be slighly better
+
+ -- WolodiaM <w_melnyk@outlook.com>  Thu, 08 Jun 2023 21:21:06 +0200
+
 cbuild (8.1) stable; urgency=high
 
   [WolodiaM]
@@ -74,7 +96,7 @@ cbuild (6.4) stable; urgency=high
   [ WolodiaM ]
   * Fix for bug in CBuild::fs::replace and CBuild::fs::set_var where CBuild
     not creating cache file because of broken path to filename conversion
-    * Added filebuffer api
+  * Added filebuffer api
 
  -- WolodiaM <w_melnyk@outlook.com>  Sun, 7 May 2023 17:31:00 +0200
 

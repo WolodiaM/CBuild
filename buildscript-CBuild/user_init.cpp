@@ -32,13 +32,12 @@
 #include "../CBuild/headers/task/Task.hpp"
 // Custom Tasks
 class copyLib : public CBuild::Task {
-       public:
-	copyLib(std::string name) : CBuild::Task(name, {}) {}
-	void call(std::vector<std::string> args __attribute_maybe_unused__) {
-		CBuild::system(
-		    "cp -r build/cbuild/out/libCBuild.so "
-		    "CBuild/CBuild/libCBuild.so");
-	}
+public:
+  copyLib(std::string name) : CBuild::Task(name, {}) {}
+  void call(std::vector<std::string> args __attribute_maybe_unused__) {
+    CBuild::system("cp -r build/cbuild/out/libCBuild.so "
+                   "CBuild/CBuild/libCBuild.so");
+  }
 };
 
 // Toolchains and Tasks
@@ -46,15 +45,16 @@ CBuild::GXX libCBuild("cbuild", "CBuild");
 copyLib cpy("copyLib");
 
 void init() {
-	libCBuild.set_standart("c++20");
-	libCBuild.add_folder("CBuild/CBuild/src/");
-	libCBuild.warn();
-	libCBuild.set_type(CBuild::DYNAMIC_LIBRARY);
-	libCBuild.add_requirment("copyLib", CBuild::POST);
-	libCBuild.add_requirment("proccesVersion", CBuild::PRE);
-	libCBuild.add_compile_arg("-g");
-	libCBuild.add_link_arg("-g");
-	CBuild::Registry::RegisterTarget(&libCBuild);
-	CBuild::Registry::RegistryTask(&cpy);
-	load_tasks();
+  libCBuild.set_standart("c++20");
+  libCBuild.add_folder("CBuild/CBuild/src/");
+  libCBuild.warn();
+  libCBuild.set_type(CBuild::DYNAMIC_LIBRARY);
+  libCBuild.add_requirment("copyLib", CBuild::POST);
+  libCBuild.add_requirment("proccesVersion", CBuild::PRE);
+  libCBuild.add_requirment("proccesHelp", CBuild::PRE);
+  // libCBuild.add_compile_arg("-g");
+  // libCBuild.add_link_arg("-g");
+  CBuild::Registry::RegisterTarget(&libCBuild);
+  CBuild::Registry::RegistryTask(&cpy);
+  load_tasks();
 }

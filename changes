@@ -1,2 +1,4 @@
-8.0 New hasher v3.0
-8.1 fix critical include error
+Add support for -jx in base Build class (yes it is heavily based on gcc for linux)
+Add support for -j in base Build class
+Add -j to CBuild_rebuild
+--no-cli-out for disabling cli output fully (only compiler output)

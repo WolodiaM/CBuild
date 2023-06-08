@@ -31,14 +31,14 @@ namespace CBuild {
  * @brief Text color
  */
 typedef enum {
-	BLACK = 30,
-	RED = 31,
-	GREEN = 32,
-	YELLOW = 33,
-	BLUE = 34,
-	MAGENTA = 35,
-	CYAN = 36,
-	WHITE = 37
+  BLACK = 30,
+  RED = 31,
+  GREEN = 32,
+  YELLOW = 33,
+  BLUE = 34,
+  MAGENTA = 35,
+  CYAN = 36,
+  WHITE = 37
 } color;
 /**
  * @brief Print colored text to STDOUT
@@ -58,5 +58,9 @@ void print_full(std::string msg, color fg = CBuild::WHITE);
  * @brief Enable verbose flag
  */
 void print_verbose();
-}  // namespace CBuild
-#endif	// __CBUILD_PRINT_HPP__
+/**
+ * @brief Fully disable all print though CBuild::print
+ */
+void print_none();
+} // namespace CBuild
+#endif // __CBUILD_PRINT_HPP__

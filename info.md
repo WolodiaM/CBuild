@@ -17,13 +17,13 @@ mingw debugger
 ### Shell commands:
  * For main run
     * rm
-        * debuger, default:
-            * gdb
-        * compiler, default:
-            * gcc
-            * g++
-            * g++-mingw-w64-x86-64-win32
-            * gcc-mingw-w64-x86-64-win32
+    * debuger, default:
+        * gdb
+    * compiler, default:
+        * gcc
+        * g++
+        * g++-mingw-w64-x86-64-win32
+        * gcc-mingw-w64-x86-64-win32
  * For build.run executable for building cbuild
     * Required
         * cp
@@ -39,10 +39,9 @@ mingw debugger
  * All (except .git/ .vscode/ build/ cache/ src/ compile_command.json Makefile scripts/) - 19M
  * Source code (hpp + cpp + rebuild.sh) - 220K
  * Build script (build.sh + build.run + buildscript-CBuild/ ) - 916K
- * libCBuild.so (with -g) - 4.8M
+ * libCBuild.so (with -g) - 4.8M    ! updated not as frequently as other values to to not compiling with this flag
  * libCBuild.so (without -g) - 1.5M
  * deb folder - 2.0M
- * arch folder - 3.1M
  * ppa/ubuntu folder - 5.4M
  * doxygen folder + doxygen.conf - 5.3M   
 All sizes are generated using `du -hcs <folder/file0> <folder/file1> ...`
