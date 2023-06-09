@@ -31,42 +31,42 @@ namespace CBuild {
  * @brief Run mode
  */
 typedef enum {
-	/**
-	 * @brief Run task
-	 */
-	TASK,
-	/**
-	 * @brief Build target
-	 */
-	BUILD,
-	/**
-	 * @brief Run target
-	 */
-	RUN,
-	/**
-	 * @brief Build and run target
-	 */
-	BUILD_RUN,
-	/**
-	 * @brief Build and run target in debug mode
-	 */
-	DEBUG,
-	/**
-	 * @brief Clear build output and cache
-	 */
-	CLEAR,
-	/**
-	 * @brief Rebuild user executable
-	 */
-	REBUILD,
-	/**
-	 * @brief Load other project deps
-	 */
-	LOAD_DEPS,
-	/**
-	 * @brief Some error occurred
-	 */
-	ERROR
+  /**
+   * @brief Run task
+   */
+  TASK,
+  /**
+   * @brief Build target
+   */
+  BUILD,
+  /**
+   * @brief Run target
+   */
+  RUN,
+  /**
+   * @brief Build and run target
+   */
+  BUILD_RUN,
+  /**
+   * @brief Build and run target in debug mode
+   */
+  DEBUG,
+  /**
+   * @brief Clear build output and cache
+   */
+  CLEAR,
+  /**
+   * @brief Rebuild user executable
+   */
+  REBUILD,
+  /**
+   * @brief Load other project deps
+   */
+  LOAD_DEPS,
+  /**
+   * @brief Some error occurred
+   */
+  ERROR
 } RType;
 /**
  * @brief Parse arguments
@@ -76,13 +76,13 @@ typedef enum {
  * @param argv => char** -> argv from main
  * @return RType -> type of CBuild task
  */
-RType parse(lib::map<std::string, std::string>* args, int argc, char** argv);
+RType parse(lib::map<std::string, std::string> *args, int argc, char **argv);
 /**
  * @brief loop of CBuild
  * @param mode => CBuild::RType -> from CBuild::parse function
  * @param args => lib::map<std::string, std::string>* -> args from CBuild::parse
  */
-void loop(RType mode, lib::map<std::string, std::string>* args);
+void loop(RType mode, lib::map<std::string, std::string> *args);
 /**
  * @brief Rebuild userspace part of CBuild
  * @param scripts => std::string -> path to scripts dir
@@ -107,10 +107,19 @@ int get_version_major();
  */
 int get_version_minor();
 /**
- * @brief Get full CBuild version as int array of two components, no oveflow or rewrite check !
+ * @brief Get full CBuild version as int array of two components, no oveflow or
+ * rewrite check !
  *
  * @return int* -> array of two parst of CBuild version
  */
-int* get_version_array();
-}  // namespace CBuild
-#endif	// __CBUILD_CORE_HPP__
+int *get_version_array();
+/**
+ * @brief Generate random string with specified range, on Linux can use
+ * /dev/urandom
+ *
+ * @param length => usigned int -> String lenght
+ * @return std::string -> Returned string
+ */
+std::string get_random_string(unsigned int length);
+} // namespace CBuild
+#endif // __CBUILD_CORE_HPP__

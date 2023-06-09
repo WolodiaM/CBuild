@@ -75,5 +75,5 @@
  * @brief CBuilddifferent representation of CBuild version
  */
 #define CBUILD_VERSION_MAJOR (int)8
-#define CBUILD_VERSION_MINOR (int)2
-#define CBUILD_VERSION_STR std::string("8.2")
+#define CBUILD_VERSION_MINOR (int)4
+#define CBUILD_VERSION_STR std::string("8.4")

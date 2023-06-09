@@ -24,6 +24,7 @@
 #include "fstream"
 #include "iomanip"
 #include "iostream"
+#include "random"
 #include "regex"
 #include "sstream"
 #include "stdio.h"
@@ -63,7 +64,7 @@ CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
     } else if (tmp == std::string("--no-cli-out")) {
       try {
         args->push_back_check("out", "none");
-      } catch (std::exception e) {
+      } catch (std::exception &e) {
       }
       // Makefile gen
     } else if (tmp == std::string("-gm")) {
@@ -478,7 +479,7 @@ void CBuild::loop(CBuild::RType mode,
     } else if (mode == CBuild::TASK) {
       name += *(args->get("task_id"));
     } else {
-      name += "cbuild";
+      name += CBuild::get_random_string(6);
     }
     // Write all executed command to Makefile
     makefile << "\n";
@@ -515,8 +516,9 @@ void CBuild::loop(CBuild::RType mode,
       // Get line data
       std::string cmd = log->at(i);
       // Does it is compilation command
-      std::regex has_file(".*\\.(cpp|cc|c|cxx)(?!o).*");
-      if (std::regex_match(cmd, has_file)) {
+      std::regex pattern("(\\S+)\\s+-c\\s+(\\S+)\\s+(.*)\\s+-o\\s+(\\S+)",
+                         std::regex_constants::icase);
+      if (std::regex_match(cmd, pattern)) {
         // Preload some data to .json
         if (first == false)
           ccj << ",\n";
@@ -603,3 +605,44 @@ std::string CBuild::get_version_string() { return CBUILD_VERSION_STR; }
 int CBuild::get_version_major() { return CBUILD_VERSION_MAJOR; }
 int CBuild::get_version_minor() { return CBUILD_VERSION_MINOR; }
 int *CBuild::get_version_array() { return CBuild::version; }
+std::string CBuild::get_random_string(unsigned int length) {
+  // Random string and uniform distribution, for generating char
+  const std::string characters =
+      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-";
+  std::uniform_int_distribution<> dis(0, characters.size() - 1);
+  // Random generator
+  std::mt19937_64 gen;
+#ifdef __linux__
+  // Open random device
+  std::ifstream urandom("/dev/urandom", std::ios::binary);
+  if (!urandom) {
+    goto pseudo;
+  }
+
+  // Get random data from /dev/urandom
+  std::random_device::result_type seed;
+  urandom.read(reinterpret_cast<char *>(&seed), sizeof(seed));
+
+  // Seed random generator
+  {
+    CBuild::print_full("Using /dev/urandom for seed", CBuild::MAGENTA);
+    std::seed_seq seedSeq{seed};
+    gen.seed(seedSeq);
+    goto gen;
+  }
+pseudo:
+#endif
+  // Seed random generator - fallback
+  {
+    CBuild::print_full("Using std::random_device for seed", CBuild::MAGENTA);
+    std::random_device rd;
+    gen.seed(rd());
+  }
+gen:
+  // Generate random string with specified length
+  std::string randomString;
+  for (unsigned int i = 0; i < length; ++i) {
+    randomString += characters[dis(gen)];
+  }
+  return randomString;
+}

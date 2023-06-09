@@ -48,3 +48,6 @@
  |
  | - CBuild.run             : Main executable of CBuild
 ```
+## Programmer info
+### Compiler calling convention:
+All compilation is done in two steps: compilation `<compiler> -c <file> <arguments> -o <object>` and then linking `<compiler/linker> <object> <arguments> -o <output binary>`

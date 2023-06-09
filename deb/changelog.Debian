@@ -1,3 +1,12 @@
+cbuild (8.4) stable; urgency=high
+
+  [WolodiaM]
+  * Fix bugs in CBuild::line_filebuffer
+  * Fix bug in generating compile_commands.json
+  * Improve Makefile generation
+
+ -- WolodiaM <w_melnyk@outlook.com>  Fri, 09 Jun 2023 11:07:49 +0200
+
 cbuild (8.3) stable; urgency=high
 
   [WolodiaM]

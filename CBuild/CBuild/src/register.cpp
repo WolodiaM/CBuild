@@ -89,7 +89,7 @@ void CBuild::Registry::RegistryTask(CBuild::Task *task) {
   // Save task ptr connected to it's name
   try {
     Registry::tasks.push_back_check(task->self_name(), task);
-  } catch (std::exception e) {
+  } catch (std::exception &e) {
     CBuild::print_full("Error: trying to register task with the same id: " +
                            task->self_name(),
                        CBuild::RED);
@@ -122,7 +122,7 @@ void CBuild::Registry::RegisterTarget(CBuild::Toolchain *target) {
   // Save toolchain ptr connected to it's name
   try {
     Registry::targets.push_back_check(target->get_id(), target);
-  } catch (std::exception e) {
+  } catch (std::exception &e) {
     CBuild::print_full(
         "Error: trying to register toolchain with the same id: " +
             target->get_id(),
@@ -165,7 +165,7 @@ void CBuild::Registry::RegisterKeyword(std::string key, CBuild::Task *func) {
   // Connect argument to this task
   try {
     Registry::keywords.push_back_check(key, func->self_name());
-  } catch (std::exception e) {
+  } catch (std::exception &e) {
     CBuild::print_full("Error: trying to register simmilar keyword: " + key,
                        CBuild::RED);
   }

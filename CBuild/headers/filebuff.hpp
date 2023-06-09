@@ -380,16 +380,25 @@ public:
   /**
    * @brief Get line from buffer
    *
+   * @throw std::runtime_error -> If pos is bigger then file
+   *
    * @param pos => unsigned int -> Linenumber
    * @return std::string -> Line
    */
   std::string get_line(unsigned int pos) {
     auto it = this->buff.begin();
     std::advance(it, pos);
+    if ((long unsigned int)std::distance(buff.begin(), it) >= buff.size()) {
+      throw std::runtime_error(
+          "Error in CBuild::line_filebuff - line out of range, " +
+          std::to_string(pos) + " >= " + std::to_string(buff.size()));
+    }
     return *it;
   }
   /**
    * @brief Set line in file
+   *
+   * @throw std::runtime_error -> If pos is bigger then file
    *
    * @param str => std::string -> Line
    * @param pos => unsigned int -> Linenumber of new line
@@ -397,6 +406,11 @@ public:
   void set_line(std::string str, unsigned int pos) {
     auto it = this->buff.begin();
     std::advance(it, pos);
+    if ((long unsigned int)std::distance(buff.begin(), it) >= buff.size()) {
+      throw std::runtime_error(
+          "Error in CBuild::line_filebuff - line out of range, " +
+          std::to_string(pos) + " >= " + std::to_string(buff.size()));
+    }
     this->buff.insert(it, str);
     if (this->autorefresh) {
       this->save_buffer();
@@ -407,11 +421,18 @@ public:
   /**
    * @brief Delete line from file
    *
+   * @throw std::runtime_error -> If pos is bigger then file
+   *
    * @param pos => unsigned int -> Linenumber
    */
   void del_line(unsigned int pos) {
     auto it = this->buff.begin();
     std::advance(it, pos);
+    if ((long unsigned int)std::distance(buff.begin(), it) >= buff.size()) {
+      throw std::runtime_error(
+          "Error in CBuild::line_filebuff - line out of range, " +
+          std::to_string(pos) + " >= " + std::to_string(buff.size()));
+    }
     this->buff.erase(it);
     if (this->autorefresh) {
       this->save_buffer();

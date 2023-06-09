@@ -200,6 +200,7 @@ public:
    * @param args => std::vector<std::string>* -> argument for call,
    * pointer, nonull
    * @param force => bool -> force argument, used internally
+   * @param debug => boo -> does we run in build mode
    */
   virtual void call(std::vector<std::string> *args, bool force = false,
                     bool debug = false);
@@ -225,7 +226,7 @@ public:
    * @brief Add new define
    *
    * @param define => std:string -> Define name
-   * @param arg => std:string -> Value for define, default - ""
+   * @param val => std:string -> Value for define, default - ""
    */
   virtual void add_define(std::string define, std::string val = "");
   /**

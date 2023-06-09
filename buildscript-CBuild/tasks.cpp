@@ -166,6 +166,24 @@ public:
       replace += line;
       i++;
     }
+    i += 2;
+    in_while = true;
+    replace += "Some useful information: \\n";
+    while (in_while) {
+      try {
+        line = md.get_line(i);
+      } catch (std::exception &e) {
+        in_while = false;
+        break;
+      }
+      if (line.at(0) == '#') {
+        replace += "    " + line.substr(3) + ": \\n";
+      } else {
+        replace += "\\t - " + line + "\\n";
+      }
+      i++;
+    }
+    // CBuild::print(replace);
     CBuild::fs::remove(this->output);
     CBuild::fs::copy(this->input, this->output);
     CBuild::fs::replace(this->output, "@HELP_MSG@", replace);
