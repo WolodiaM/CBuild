@@ -138,19 +138,6 @@ void CBuild::Toolchain::set_standart(std::string std_) {
 void CBuild::Toolchain::set_type(CBuild::build_type type) {
   this->build_type = type;
 }
-void CBuild::Toolchain::set_thread_count(int threads) {
-  // Check for -1
-  if (threads < 0) {
-    // Set argument and exit
-    this->add_compile_arg("-j");
-    this->add_link_arg("-j");
-    return;
-  }
-  // Else add args with fixed usage of threads
-  std::string arg = "-j" + std::to_string(threads);
-  this->add_compile_arg(arg);
-  this->add_link_arg(arg);
-}
 void CBuild::Toolchain::depends_on(std::string target) {
   // Push target in list of dependencies
   this->depends.push_back(target);

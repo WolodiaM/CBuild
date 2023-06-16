@@ -334,13 +334,6 @@ public:
    */
   virtual void depends_on_project(std::string path, std::string name,
                                   std::string id, std::string headers_path);
-  /**
-   * @brief Set the thread count for compiler, use -jx flag
-   * ! If -1 use -j, for autom optimization
-   *
-   * @param threads => int -> Number of used threads, or -1 for auto selection
-   */
-  void set_thread_count(int threads);
 };
 } // namespace CBuild
 #endif // __CBUILD_TOOLCHAIN_HPP__

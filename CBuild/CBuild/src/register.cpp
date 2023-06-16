@@ -93,6 +93,7 @@ void CBuild::Registry::RegistryTask(CBuild::Task *task) {
     CBuild::print_full("Error: trying to register task with the same id: " +
                            task->self_name(),
                        CBuild::RED);
+    return;
   }
   // Save task excution state connected to it's name
   Registry::task_executed.push_back(task->self_name(), false);
@@ -127,16 +128,17 @@ void CBuild::Registry::RegisterTarget(CBuild::Toolchain *target) {
         "Error: trying to register toolchain with the same id: " +
             target->get_id(),
         CBuild::RED);
+    return;
   }
   // Save toolchain excution state connected to it's name
-  Registry::task_executed.push_back(target->get_id(), false);
+  Registry::target_executed.push_back(target->get_id(), false);
 }
 CBuild::Toolchain *CBuild::Registry::GetToolchain(std::string name,
                                                   bool force) {
   // If we not in force build
   if (!force) {
     // Check if toolchain was executed before
-    auto check = Registry::task_executed.get_ptr(name);
+    auto check = Registry::target_executed.get_ptr(name);
     if (check != NULL && check->data == false) {
       // Return toolchain pointer if not
       auto elem = Registry::targets.get_ptr(name);
@@ -206,4 +208,27 @@ std::string CBuild::Registry::GetRebuildArgs() {
   ret += Registry::name;
   // Return string
   return ret;
+}
+void CBuild::Registry::ToolchainAll(bool force, std::string path,
+                                    std::vector<std::string> *args) {
+  for (int i = 0; i < Registry::targets.size(); i++) {
+    auto elem = Registry::targets.at(i);
+    auto check = Registry::target_executed.get_ptr(elem.key);
+    if (check != NULL && check->data == false) {
+      check->data = true;
+      auto ptr = elem.data;
+      if (ptr != NULL) {
+        ptr->load_project_deps(path);
+        ptr->call(args, force);
+      }
+    }
+  }
+  // auto check = Registry::target_executed.get_ptr(name);
+  // if (check != NULL && check->data == false) {
+  //   // Return toolchain pointer if not
+  //   auto elem = Registry::targets.get_ptr(name);
+  //   // Mark toolcian as executed
+  //   check->data = true;
+  //   return elem->data;
+  // }
 }

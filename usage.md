@@ -7,6 +7,7 @@
  * `-gc` - generate compile_commands.json, with simmilar to `-gm` limitation
  * `-ld <toolchain_name>` - load dependencies of some target, only for CBuild dependencies.
  * `-b <toolchain_name>` - build specified target.
+ * `-b all` - build all registered targets.
  * `-r <toolchain_name>` - run specified target.
  * `-br <toolchain_name>` - build and then run specified target.
  * `-d <toolchain_name>` - build and then run specified target in debug mode. Now work only with gdb on linux.

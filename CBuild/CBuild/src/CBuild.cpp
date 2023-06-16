@@ -335,18 +335,22 @@ void CBuild::loop(CBuild::RType mode,
   switch (mode) {
   // Build
   case CBuild::BUILD: {
-    // Load toolchain
-    std::string id = *(args->get("toolchain_id"));
-    CBuild::Toolchain *target = CBuild::Registry::GetToolchain(id);
-    // Error
-    if (target == NULL) {
-      printf("Toolchain %s not found. Exiting...\n", id.c_str());
-      exit(0xFF);
+    if (*(args->get("toolchain_id")) == std::string("all")) {
+      CBuild::Registry::ToolchainAll(force, *(args->get("curr_path")), &pargs);
+    } else {
+      // Load toolchain
+      std::string id = *(args->get("toolchain_id"));
+      CBuild::Toolchain *target = CBuild::Registry::GetToolchain(id);
+      // Error
+      if (target == NULL) {
+        printf("Toolchain %s not found. Exiting...\n", id.c_str());
+        exit(0xFF);
+      }
+      // Load libs
+      target->load_project_deps(*(args->get("curr_path")));
+      // Call tolchain in build mode
+      target->call(&pargs, force);
     }
-    // Load libs
-    target->load_project_deps(*(args->get("curr_path")));
-    // Call tolchain in build mode
-    target->call(&pargs, force);
   } break;
   // Build and run
   case CBuild::BUILD_RUN: {

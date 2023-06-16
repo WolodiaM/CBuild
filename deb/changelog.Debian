@@ -1,3 +1,12 @@
+cbuild (8.5) stable; urgency=high
+
+  [WolodiaM]
+  * Remove ability to specify -j bacause of misread in documentation
+  * Add '-b all' to build all registered targets
+  * Some bugfixes in CBuild::Registry
+
+ -- WolodiaM <w_melnyk@outlook.com>  Fri, 16 Jun 2023 22:04:18 +0200
+
 cbuild (8.4) stable; urgency=high
 
   [WolodiaM]
