@@ -105,8 +105,8 @@ void CBuild::Toolchain::add_library_dir(std::string inc, std::string lib) {
     this->add_link_arg(ltmp);
   }
 }
-void CBuild::Toolchain::add_requirment(std::string task_,
-                                       CBuild::stage run_stage) {
+void CBuild::Toolchain::add_requirment(std::string   task_,
+				       CBuild::stage run_stage) {
   // Add required task only if it's id is non-empty
   if (task_ != std::string("")) {
     this->required.push_back_check(task_, run_stage);
@@ -143,13 +143,13 @@ void CBuild::Toolchain::depends_on(std::string target) {
   this->depends.push_back(target);
 }
 void CBuild::Toolchain::depends_on_project(std::string path, std::string name,
-                                           std::string id,
-                                           std::string headers_path) {
+					   std::string id,
+					   std::string headers_path) {
   CBuild::Project_dependency dep;
   dep.headers_path = headers_path;
-  dep.id = id;
-  dep.name = name;
-  dep.path = path;
+  dep.id	   = id;
+  dep.name	   = name;
+  dep.path	   = path;
   this->project_deps.push_back(dep);
 }
 /* Build.hpp - files */
@@ -159,7 +159,7 @@ void CBuild::Toolchain::add_file(std::string path) {
     // Create new path to file
     CBuild::Path p;
     p.folder = false;
-    p.path = path;
+    p.path   = path;
     // Push it to list of targets for compilation
     this->targets.push_back(p);
   }
@@ -170,7 +170,7 @@ void CBuild::Toolchain::add_folder(std::string path) {
     // Create new path to folder
     CBuild::Path p;
     p.folder = true;
-    p.path = path;
+    p.path   = path;
     // Push it to list of targets for compilation
     this->targets.push_back(p);
   }
@@ -198,12 +198,12 @@ lib::map<std::string, std::string>
 CBuild::Toolchain::gen_file_list(bool force_) {
   // File - object
   lib::map<std::string, std::string> ret;
-  std::vector<std::string> for_recomp, filelist;
+  std::vector<std::string>	     for_recomp, filelist;
   for (auto elem : this->targets) {
     if (elem.folder) {
       auto files = CBuild::fs::dir(elem.path);
       for (auto file : files) {
-        filelist.push_back(CBuild::fs::normalize_path(file));
+	filelist.push_back(CBuild::fs::normalize_path(file));
       }
     } else {
       filelist.push_back(CBuild::fs::normalize_path(elem.path));
@@ -322,7 +322,7 @@ CBuild::Toolchain::gen_file_list(bool force_) {
   for (auto elem : for_recomp) {
     try {
       ret.push_back(this->cmd_str(elem),
-                    this->cmd_str(this->gen_out_file(elem)));
+		    this->cmd_str(this->gen_out_file(elem)));
     } catch (std::exception &e) {
     }
   }
@@ -333,8 +333,8 @@ CBuild::Toolchain::gen_file_list(bool force_) {
   return ret;
 }
 std::string CBuild::Toolchain::gen_out_name(std::string executable,
-                                            std::string dyn_lib,
-                                            std::string stat_lib) {
+					    std::string dyn_lib,
+					    std::string stat_lib) {
   // Base path
   std::string base =
       CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_BUILD_OUT_DIR + "/";
@@ -352,9 +352,9 @@ std::string CBuild::Toolchain::gen_out_name(std::string executable,
       base += this->name;
       // Based on type push different file extensions
       if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
-        base += dyn_lib;
+	base += dyn_lib;
       } else {
-        base += stat_lib;
+	base += stat_lib;
       }
     }
   }
@@ -372,9 +372,9 @@ std::string CBuild::Toolchain::gen_out_name(std::string executable,
       base += this->id;
       // Based on type push different file extensions
       if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
-        base += dyn_lib;
+	base += dyn_lib;
       } else {
-        base += stat_lib;
+	base += stat_lib;
       }
     }
   }
@@ -403,22 +403,22 @@ void CBuild::Toolchain::init() {
     CBuild::fs::create({CBUILD_BUILD_DIR + "/" + this->id}, CBuild::fs::DIR);
   }
   if (!CBuild::fs::exists(CBUILD_BUILD_DIR + "/" + this->id + "/" +
-                          CBUILD_BUILD_CACHE_DIR)) {
+			  CBUILD_BUILD_CACHE_DIR)) {
     CBuild::fs::create(
-        {CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_BUILD_CACHE_DIR},
-        CBuild::fs::DIR);
+	{CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_BUILD_CACHE_DIR},
+	CBuild::fs::DIR);
   }
   if (!CBuild::fs::exists(CBUILD_BUILD_DIR + "/" + this->id + "/" +
-                          CBUILD_BUILD_OUT_DIR)) {
+			  CBUILD_BUILD_OUT_DIR)) {
     CBuild::fs::create(
-        {CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_BUILD_OUT_DIR},
-        CBuild::fs::DIR);
+	{CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_BUILD_OUT_DIR},
+	CBuild::fs::DIR);
   }
   if (!CBuild::fs::exists(CBUILD_BUILD_DIR + "/" + this->id + "/" +
-                          CBUILD_HASH_DIR)) {
+			  CBUILD_HASH_DIR)) {
     CBuild::fs::create(
-        {CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_HASH_DIR},
-        CBuild::fs::DIR);
+	{CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_HASH_DIR},
+	CBuild::fs::DIR);
   }
 }
 void CBuild::Toolchain::load_project_deps(std::string curr_path) {
@@ -428,28 +428,28 @@ void CBuild::Toolchain::load_project_deps(std::string curr_path) {
     CBuild::system(cmd);
     // Copy files
     CBuild::system("cp -r " + elem.path + "/" + CBUILD_BUILD_DIR + "/" +
-                   elem.id + "/" + CBUILD_BUILD_OUT_DIR + "/*.* " +
-                   CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
+		   elem.id + "/" + CBUILD_BUILD_OUT_DIR + "/*.* " +
+		   CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
     CBuild::system("cp -r " + elem.headers_path + "/ " + CBUILD_CACHE_DIR +
-                   "/" + CBUILD_PROJECT_DEPS_HEADERS + "/" + elem.id);
+		   "/" + CBUILD_PROJECT_DEPS_HEADERS + "/" + elem.id);
     // Add lib in dependencies
     this->add_library_dir(CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS,
-                          CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
+			  CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
     this->add_library_include(elem.name);
     this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN/../../../" +
-                          CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR +
-                          "\"");
+			  CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR +
+			  "\"");
     this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN/../../../" + CBUILD_CACHE_DIR +
-                       "/" + CBUILD_PROJECT_DEPS_DIR + "\"");
+		       "/" + CBUILD_PROJECT_DEPS_DIR + "\"");
   }
 }
 /* Build.hpp - main */
 void CBuild::Toolchain::call(std::vector<std::string> *args, bool force,
-                             bool debug) {
+			     bool debug) {
   CBuild::print("Starting " + this->id + " toolchain in build mode ",
-                CBuild::color::RED);
+		CBuild::color::RED);
   // Save scratch variables
-  this->args = args;
+  this->args  = args;
   this->force = force;
   // Special link tag for dynamick libraries
   if (this->build_type == CBuild::DYNAMIC_LIBRARY)
@@ -464,14 +464,14 @@ void CBuild::Toolchain::call(std::vector<std::string> *args, bool force,
   this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
   this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
   this->add_compile_arg("-I" + CBUILD_CACHE_DIR + "/" +
-                        CBUILD_PROJECT_DEPS_HEADERS);
+			CBUILD_PROJECT_DEPS_HEADERS);
   this->add_link_arg("-I" + CBUILD_CACHE_DIR + "/" +
-                     CBUILD_PROJECT_DEPS_HEADERS);
+		     CBUILD_PROJECT_DEPS_HEADERS);
   // For packing in deb fomat
   if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
     std::string lib = this->gen_out_name();
-    int pos = lib.find_last_of('/');
-    lib = lib.substr(pos + 1);
+    int		pos = lib.find_last_of('/');
+    lib		    = lib.substr(pos + 1);
     this->add_link_arg(" -Wl,-soname," + lib);
     this->add_compile_arg(" -Wl,-soname," + lib);
   }
@@ -493,25 +493,25 @@ void CBuild::Toolchain::call(std::vector<std::string> *args, bool force,
     if (target != NULL) {
       target->call(args, force, debug);
       // get lib name
-      auto out_path = target->gen_out_name();
+      auto	   out_path  = target->gen_out_name();
       unsigned int end_slash = out_path.find_last_of('/');
-      unsigned int end_dot = out_path.find_last_of('.');
+      unsigned int end_dot   = out_path.find_last_of('.');
       std::string out = out_path.substr(end_slash + 4, end_dot - end_slash - 4);
       // Add lib include
       this->add_library_include(out);
       // Add all needed for linking to that library
       this->add_library_dir(".", CBUILD_BUILD_DIR + "/" + target->get_id() +
-                                     "/" + CBUILD_BUILD_OUT_DIR + "/");
+				     "/" + CBUILD_BUILD_OUT_DIR + "/");
       this->add_compile_arg("-Wl,-rpath,\"\\$ORIGIN/../../" + target->get_id() +
-                            "/" + CBUILD_BUILD_OUT_DIR + "\"");
+			    "/" + CBUILD_BUILD_OUT_DIR + "\"");
       this->add_link_arg("-Wl,-rpath,\"\\$ORIGIN/../../" + target->get_id() +
-                         "/" + CBUILD_BUILD_OUT_DIR + "\"");
+			 "/" + CBUILD_BUILD_OUT_DIR + "\"");
     }
   }
   // 5 steps
   if (!force)
     CBuild::print("Using precompiled object were possible ",
-                  CBuild::color::MAGENTA);
+		  CBuild::color::MAGENTA);
   CBuild::print("Running pre build tasks ", CBuild::GREEN);
   this->pre_build();
   CBuild::print("Running build tasks ", CBuild::GREEN);
@@ -563,9 +563,9 @@ void CBuild::Toolchain::run(std::vector<std::string> *args) {
   CBuild::print("End of app execution", CBuild::RED);
 }
 void CBuild::Toolchain::debug(std::vector<std::string> *args,
-                              std::vector<std::string> *pargs) {
+			      std::vector<std::string> *pargs) {
   CBuild::print("Starting \"" + this->id + "\" toolchain in debug mode ",
-                CBuild::RED);
+		CBuild::RED);
   // Build in debug mode
   this->call(args, true, true);
   CBuild::print("Running builded app with gdb ", CBuild::GREEN);

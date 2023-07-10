@@ -49,12 +49,12 @@ void init() {
   libCBuild.add_folder("CBuild/CBuild/src/");
   libCBuild.warn();
   libCBuild.set_type(CBuild::DYNAMIC_LIBRARY);
-  libCBuild.add_requirment("copyLib", CBuild::POST);
   libCBuild.add_requirment("proccesVersion", CBuild::PRE);
   libCBuild.add_requirment("proccesHelp", CBuild::PRE);
   // libCBuild.add_compile_arg("-g");
   // libCBuild.add_link_arg("-g");
   CBuild::Registry::RegisterTarget(&libCBuild);
   CBuild::Registry::RegistryTask(&cpy);
+  CBuild::Registry::RegisterKeyword("-cp", &cpy);
   load_tasks();
 }

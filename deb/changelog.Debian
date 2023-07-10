@@ -1,3 +1,10 @@
+cbuild (8.6) stable; urgency=high
+
+  [WolodiaM]
+  * Fix in CBuild_rebuild script
+
+ -- WolodiaM <w_melnyk@outlook.com>  Mon, 10 Jul 2023 09:45:49 +0200
+
 cbuild (8.5) stable; urgency=high
 
   [WolodiaM]

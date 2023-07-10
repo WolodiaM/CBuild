@@ -206,6 +206,7 @@ public:
     CBuild::print("\t`-t test` - not used test task");
     CBuild::print(
         "\t`-t copyLib` - Copy so file to proper dir from output dir");
+    CBuild::print("\t`-cp` - call `-t copyLib`");
     CBuild::print("\t`--build-help` - this message");
     CBuild::print("libCBuild toolchain id - `cbuild`");
   }

@@ -24,4 +24,4 @@
 #define __CBUILD_USER_INIT_HPP__
 void init();
 void load_tasks();
-#endif	// __CBUILD_USER_INIT_HPP__
+#endif  // __CBUILD_USER_INIT_HPP__

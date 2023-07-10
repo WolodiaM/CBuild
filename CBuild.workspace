@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="CBuild" Database="" Version="10000">
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug">
+      <Environment/>
+      <Project Name="CBuild" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release">
+      <Environment/>
+      <Project Name="CBuild" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

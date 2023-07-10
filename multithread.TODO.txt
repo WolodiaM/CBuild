@@ -1,0 +1,173 @@
+#include <iostream>
+#include <thread>
+#include <vector>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+
+std::mutex queueMutex;
+std::condition_variable queueCV;
+std::vector<std::thread> threads;
+std::queue<std::string> fileQueue;
+bool stopThreads = false;
+
+void compileFile(const std::string& filename) {
+    std::string command = "compiler " + filename + " -o " + getObjectFileName(filename);
+    std::system(command.c_str());
+}
+
+std::string getObjectFileName(const std::string& filename) {
+    // Logic to generate the object file name from the source file name
+    // For example, convert "source.cpp" to "source.o"
+    // Return the object file name
+}
+
+void compilationThread() {
+    while (true) {
+        std::string filename;
+
+        {
+            std::unique_lock<std::mutex> lock(queueMutex);
+            queueCV.wait(lock, [] { return !fileQueue.empty() || stopThreads; });
+
+            if (stopThreads && fileQueue.empty()) {
+                return;
+            }
+
+            filename = fileQueue.front();
+            fileQueue.pop();
+        }
+
+        compileFile(filename);
+    }
+}
+
+void build() {
+    // Retrieve old hashes of files
+    // Construct list of files to be compiled
+    std::vector<std::string> files = { "file1.cpp", "file2.cpp", "file3.cpp" };
+
+    // Determine the number of compilation threads (e.g., from user input or std::thread::hardware_concurrency())
+    unsigned int numThreads = 2; // Set the desired number of threads
+
+    // Create a vector to store the compilation threads
+    threads.reserve(numThreads);
+
+    // Initialize the stop flag for threads
+    stopThreads = false;
+
+    // Start the compilation threads
+    for (unsigned int i = 0; i < numThreads; ++i) {
+        threads.emplace_back(compilationThread);
+    }
+
+    // Fill the file queue with files to be compiled
+    for (const auto& file : files) {
+        std::lock_guard<std::mutex> lock(queueMutex);
+        fileQueue.push(file);
+    }
+
+    // Notify the threads that there are files in the queue
+    queueCV.notify_all();
+
+    // Wait for all compilation threads to finish
+    for (auto& thread : threads) {
+        thread.join();
+    }
+
+    // Clean up resources
+    threads.clear();
+    while (!fileQueue.empty()) {
+        fileQueue.pop();
+    }
+}
+
+int main() {
+    // Call the build function to initiate the compilation process
+    build();
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <iostream>
+#include <thread>
+#include <vector>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+
+std::mutex queueMutex;
+std::condition_variable queueCV;
+std::queue<int> dataQueue;
+bool stopThreads = false;
+
+void processData(int data) {
+    // Perform computation or task on the data
+    std::cout << "Processing data: " << data << std::endl;
+    // ... Your computation logic here ...
+}
+
+void consumerThread() {
+    while (true) {
+        int data;
+
+        {
+            std::unique_lock<std::mutex> lock(queueMutex);
+            queueCV.wait(lock, [] { return !dataQueue.empty() || stopThreads; });
+
+            if (stopThreads && dataQueue.empty()) {
+                return;
+            }
+
+            data = dataQueue.front();
+            dataQueue.pop();
+        }
+
+        // Release the queue mutex and process the data
+        processData(data);
+    }
+}
+
+int main() {
+    // Example usage
+    std::vector<int> items = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; // List of items to process
+    int numThreads = 2; // Set the desired number of threads
+
+    std::vector<std::thread> threads;
+    threads.reserve(numThreads);
+
+    // Start the consumer threads
+    for (int i = 0; i < numThreads; ++i) {
+        threads.emplace_back(consumerThread);
+    }
+
+    // Push items into the queue
+    {
+        std::lock_guard<std::mutex> lock(queueMutex);
+        for (int item : items) {
+            dataQueue.push(item);
+        }
+    }
+
+    queueCV.notify_all();
+
+    // Wait for the consumer threads to finish
+    for (auto& thread : threads) {
+        thread.join();
+    }
+
+    return 0;
+}
+
