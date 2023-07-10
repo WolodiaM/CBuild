@@ -362,7 +362,7 @@ std::string CBuild::Toolchain::gen_out_name(std::string executable,
   else {
     // If this is executable add file excutable extension
     if (this->build_type == CBuild::EXECUTABLE) {
-      base += this->name;
+      base += this->id;
       base += executable;
     }
     // We build lib
