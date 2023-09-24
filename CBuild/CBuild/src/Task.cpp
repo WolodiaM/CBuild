@@ -2,9 +2,7 @@
  * @file Task.cpp
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Task implementation
- * @version 1.0
  * @date 2023-01-28
- *
  *
  * @license GPL v3.0 or later
  *
@@ -23,15 +21,15 @@
 #include "../../headers/task/Task.hpp"
 /* Task.hpp */
 CBuild::Task::Task(std::string name, std::vector<std::string> required) {
-	// Save name and required tasks
-	this->name = name;
-	this->required = required;
+  // Save name and required tasks
+  this->name	 = name;
+  this->required = required;
 }
 std::string CBuild::Task::self_name() {
-	// Return name
-	return this->name;
+  // Return name
+  return this->name;
 }
 std::vector<std::string> CBuild::Task::self_required() {
-	// Return required tasks
-	return this->required;
+  // Return required tasks
+  return this->required;
 }

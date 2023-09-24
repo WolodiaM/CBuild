@@ -14,14 +14,16 @@ Simple map implementation with some stack operation added.
 \item 
 \mbox{\hyperlink{classlib_1_1map_a74a217582a9fbee212ace38b1cfa4faf}{map}} ()
 \begin{DoxyCompactList}\small\item\em Construct a new map object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlib_1_1map_a538f48690cf2a9ee615b397833005b26}{map}} (std\+::initializer\+\_\+list$<$ \mbox{\hyperlink{classlib_1_1mapData}{lib\+::map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$ init\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Consruct a new map object and initialize it. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classlib_1_1map_a86895b673b75024f268278eb36501929}{push\+\_\+back}} (\mbox{\hyperlink{classlib_1_1mapData}{lib\+::map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ element)
 \begin{DoxyCompactList}\small\item\em Push new element to map, stack operation ! Dangerous not perform chak if this elemnt exists in map. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classlib_1_1map_a10a43f21389cbed80b578ab280a89b73}{push\+\_\+back}} (\+\_\+K key, \+\_\+D data)
 \begin{DoxyCompactList}\small\item\em Push new element to map, stack operation ! Dangerous not perform chak if this elemnt exists in map. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classlib_1_1map_a34ea2e11557719a8a03c1bbf6af3ebc3}{push\+\_\+back\+\_\+check}} (\mbox{\hyperlink{classlib_1_1mapData}{lib\+::map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ element)
-\begin{DoxyCompactList}\small\item\em Push data, but check if key exists, if exist -\/ trow exception. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Add data, but check if key exists, if exist -\/ trow exception. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classlib_1_1map_ab85716332cb2425980a416287da7b7f6}{push\+\_\+back\+\_\+check}} (\+\_\+K key, \+\_\+D data)
-\begin{DoxyCompactList}\small\item\em Push data, but check if key exists, if exist -\/ trow exception. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Add data, but check if key exists, if exist -\/ trow exception. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classlib_1_1mapData}{lib\+::map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ \mbox{\hyperlink{classlib_1_1map_a3b07f0ae9a1df2ba2f1ad351df9b485e}{pop\+\_\+back}} ()
 \begin{DoxyCompactList}\small\item\em Pop last element, remove it and return back it\textquotesingle{}s copy. \end{DoxyCompactList}\item 
 const \+\_\+D $\ast$ \mbox{\hyperlink{classlib_1_1map_a8cf6c56d2994d7f3b3f355646a959abf}{get}} (\+\_\+K key)
@@ -39,7 +41,7 @@ void \mbox{\hyperlink{classlib_1_1map_a653e6cd2bfa0ac7be88d4f1c731a358d}{clear}}
 void \mbox{\hyperlink{classlib_1_1map_a230172b977b6419b4f95b46696905ac7}{remove}} (\+\_\+\+\_\+\+SIZE\+\_\+\+TYPE\+\_\+\+\_\+ idx)
 \begin{DoxyCompactList}\small\item\em Remove element from map and return copy of this element. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classlib_1_1map_a53f6e4effcc236cbb07e09be96ececa5}{remove}} (\+\_\+K key)
-\begin{DoxyCompactList}\small\item\em remove element with given key \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Remove element with given key. \end{DoxyCompactList}\item 
 std\+::vector$<$ \+\_\+K $>$ \mbox{\hyperlink{classlib_1_1map_a460f2a4e6517c57f25d1d58a73c1d599}{keys}} ()
 \begin{DoxyCompactList}\small\item\em Get keys list. \end{DoxyCompactList}\item 
 \+\_\+\+\_\+\+SIZE\+\_\+\+TYPE\+\_\+\+\_\+ \mbox{\hyperlink{classlib_1_1map_a50270172eaef21e06c893ea4b1e40bcb}{size}} ()
@@ -59,7 +61,19 @@ std\+::vector$<$ \+\_\+K $>$ \mbox{\hyperlink{classlib_1_1map_a460f2a4e6517c57f2
 \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$ \mbox{\hyperlink{classlib_1_1map_adcc8ca07c33825a21e36806e8a398612}{operator=}} (\mbox{\hyperlink{classlib_1_1mapData}{lib\+::map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ val)
 \begin{DoxyCompactList}\small\item\em Reset map, set first it\textquotesingle{}s element to val. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{classlib_1_1map_aa283f5f678d8c4698dab7e5a4d77c8ce}{operator==}} (\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$ val)
-\begin{DoxyCompactList}\small\item\em Check if content of two maps is equal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Check if content of two maps is equal. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$\+::iterator \mbox{\hyperlink{classlib_1_1map_a44bf2013042377de82c0e091174d5f61}{begin}} ()
+\begin{DoxyCompactList}\small\item\em Begin iterator. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$\+::iterator \mbox{\hyperlink{classlib_1_1map_aad1859545aad87121147f9d00b005c4f}{end}} ()
+\begin{DoxyCompactList}\small\item\em End iterator. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$\+::const\+\_\+iterator \mbox{\hyperlink{classlib_1_1map_afb4a6fc4273737f3d1077f61a602c77d}{begin}} () const
+\begin{DoxyCompactList}\small\item\em Begin const iterator. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$\+::const\+\_\+iterator \mbox{\hyperlink{classlib_1_1map_a5def0cf26ecfe0f8d6098a7380c3a9e9}{end}} () const
+\begin{DoxyCompactList}\small\item\em End const iterator. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classlib_1_1map_a1475d81a46110163b67099374543a61b}{empty}} ()
+\begin{DoxyCompactList}\small\item\em Simmilar to std\+::vector\+::empty. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlib_1_1map_aff2c6c76dce8b480a509bbb08cef516f}{erase}} (\+\_\+K key)
+\end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -74,15 +88,15 @@ Simple map implementation with some stack operation added.
 
 
 \begin{DoxyTemplParams}{Template Parameters}
-{\em \+\_\+K} & Key, must have \char`\"{}==\char`\"{} operator implemented \\
+{\em \+\_\+K} & -\/\texorpdfstring{$>$}{>} Key, must have \char`\"{}==\char`\"{} operator implemented \\
 \hline
-{\em \+\_\+D} & Value ~\newline
+{\em \+\_\+D} & -\/\texorpdfstring{$>$}{>} Value ~\newline
  All types must implement \char`\"{}=\char`\"{} operator \\
 \hline
 \end{DoxyTemplParams}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00083}{83}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00078}{78}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
@@ -90,7 +104,7 @@ Definition at line \mbox{\hyperlink{map_8hpp_source_l00083}{83}} of file \mbox{\
 \mbox{\Hypertarget{classlib_1_1map_a74a217582a9fbee212ace38b1cfa4faf}\label{classlib_1_1map_a74a217582a9fbee212ace38b1cfa4faf}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!map@{map}}
 \index{map@{map}!lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}}
-\doxysubsubsection{\texorpdfstring{map()}{map()}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$class \+\_\+K , class \+\_\+D $>$ \\
 \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
@@ -100,11 +114,31 @@ Construct a new map object.
 
 
 
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00086}{86}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{map_8hpp_source_l00269}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator+()}}, and \mbox{\hyperlink{map_8hpp_source_l00280}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator+=()}}.
+
+\mbox{\Hypertarget{classlib_1_1map_a538f48690cf2a9ee615b397833005b26}\label{classlib_1_1map_a538f48690cf2a9ee615b397833005b26}} 
+\index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!map@{map}}
+\index{map@{map}!lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class \+\_\+K , class \+\_\+D $>$ \\
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ \mbox{\hyperlink{classlib_1_1mapData}{lib\+::map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$}]{init\+\_\+list }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Consruct a new map object and initialize it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em init\+\_\+list} & =\texorpdfstring{$>$}{>} std\+::initializer\+\_\+list -\/\texorpdfstring{$>$}{>} New map data \\
+\hline
+\end{DoxyParams}
+
+
 Definition at line \mbox{\hyperlink{map_8hpp_source_l00092}{92}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
-
-
-
-Referenced by \mbox{\hyperlink{map_8hpp_source_l00274}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator+()}}, and \mbox{\hyperlink{map_8hpp_source_l00286}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator+=()}}.
 
 
 
@@ -122,19 +156,55 @@ Array operation, get element at index.
 
 
 \begin{DoxyParams}{Parameters}
-{\em i} & Index \\
+{\em i} & =\texorpdfstring{$>$}{>} size\+\_\+t -\/\texorpdfstring{$>$}{>} index \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ Returned element 
+lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} returned element 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00215}{215}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00214}{214}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{Build_8cpp_source_l00211}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{Build_8cpp_source_l00198}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
+
+\mbox{\Hypertarget{classlib_1_1map_a44bf2013042377de82c0e091174d5f61}\label{classlib_1_1map_a44bf2013042377de82c0e091174d5f61}} 
+\index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!begin@{begin}}
+\index{begin@{begin}!lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class \+\_\+K , class \+\_\+D $>$ \\
+std\+::vector$<$ \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$\+::iterator \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Begin iterator. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$$>$\+::iterator -\/\texorpdfstring{$>$}{>} begin iterator 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00351}{351}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+
+\mbox{\Hypertarget{classlib_1_1map_afb4a6fc4273737f3d1077f61a602c77d}\label{classlib_1_1map_afb4a6fc4273737f3d1077f61a602c77d}} 
+\index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!begin@{begin}}
+\index{begin@{begin}!lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class \+\_\+K , class \+\_\+D $>$ \\
+std\+::vector$<$ \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$\+::const\+\_\+iterator \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Begin const iterator. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$$>$\+::const\+\_\+iterator -\/\texorpdfstring{$>$}{>} begin const iterator 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00366}{366}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a653e6cd2bfa0ac7be88d4f1c731a358d}\label{classlib_1_1map_a653e6cd2bfa0ac7be88d4f1c731a358d}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!clear@{clear}}
@@ -151,10 +221,6 @@ Erase all elements (simmilar to std\+::vector\+::clear())
 
 Definition at line \mbox{\hyperlink{map_8hpp_source_l00208}{208}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
-
-
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00038}{CBuild\+::parse()}}.
-
 \mbox{\Hypertarget{classlib_1_1map_a67152233c3a31487f75066d318079dfb}\label{classlib_1_1map_a67152233c3a31487f75066d318079dfb}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!contains@{contains}}
 \index{contains@{contains}!lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}}
@@ -168,13 +234,13 @@ Does map contains some value.
 
 
 \begin{DoxyParams}{Parameters}
-{\em value} & Value \\
+{\em value} & =\texorpdfstring{$>$}{>} \+\_\+D -\/\texorpdfstring{$>$}{>} Value \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-true Contains 
+true -\/\texorpdfstring{$>$}{>} Contains 
 
-false Not 
+false -\/\texorpdfstring{$>$}{>} Not contains 
 \end{DoxyReturn}
 
 
@@ -193,17 +259,79 @@ Does map contains some key.
 
 
 \begin{DoxyParams}{Parameters}
-{\em key} & Key \\
+{\em key} & =\texorpdfstring{$>$}{>} \+\_\+K -\/\texorpdfstring{$>$}{>} Key \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-true Contains 
+true -\/\texorpdfstring{$>$}{>} Contains 
 
-false Not 
+false -\/\texorpdfstring{$>$}{>} Not contains 
 \end{DoxyReturn}
 
 
 Definition at line \mbox{\hyperlink{map_8hpp_source_l00185}{185}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+
+\mbox{\Hypertarget{classlib_1_1map_a1475d81a46110163b67099374543a61b}\label{classlib_1_1map_a1475d81a46110163b67099374543a61b}} 
+\index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!empty@{empty}}
+\index{empty@{empty}!lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}}
+\doxysubsubsection{\texorpdfstring{empty()}{empty()}}
+{\footnotesize\ttfamily template$<$class \+\_\+K , class \+\_\+D $>$ \\
+bool \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Simmilar to std\+::vector\+::empty. 
+
+
+
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00379}{379}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+
+\mbox{\Hypertarget{classlib_1_1map_aad1859545aad87121147f9d00b005c4f}\label{classlib_1_1map_aad1859545aad87121147f9d00b005c4f}} 
+\index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!end@{end}}
+\index{end@{end}!lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class \+\_\+K , class \+\_\+D $>$ \\
+std\+::vector$<$ \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$\+::iterator \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+End iterator. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$$>$\+::iterator -\/\texorpdfstring{$>$}{>} end iterator 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00358}{358}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+
+\mbox{\Hypertarget{classlib_1_1map_a5def0cf26ecfe0f8d6098a7380c3a9e9}\label{classlib_1_1map_a5def0cf26ecfe0f8d6098a7380c3a9e9}} 
+\index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!end@{end}}
+\index{end@{end}!lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class \+\_\+K , class \+\_\+D $>$ \\
+std\+::vector$<$ \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}}$<$ \+\_\+K, \+\_\+D $>$ $>$\+::const\+\_\+iterator \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+End const iterator. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$$>$\+::const\+\_\+iterator -\/\texorpdfstring{$>$}{>} end const iterator 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00373}{373}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+
+\mbox{\Hypertarget{classlib_1_1map_aff2c6c76dce8b480a509bbb08cef516f}\label{classlib_1_1map_aff2c6c76dce8b480a509bbb08cef516f}} 
+\index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!erase@{erase}}
+\index{erase@{erase}!lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}}
+\doxysubsubsection{\texorpdfstring{erase()}{erase()}}
+{\footnotesize\ttfamily template$<$class \+\_\+K , class \+\_\+D $>$ \\
+void \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::erase (\begin{DoxyParamCaption}\item[{\+\_\+K}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00380}{380}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a8cf6c56d2994d7f3b3f355646a959abf}\label{classlib_1_1map_a8cf6c56d2994d7f3b3f355646a959abf}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!get@{get}}
@@ -218,11 +346,11 @@ Get element by it\textquotesingle{}s key.
 
 
 \begin{DoxyParams}{Parameters}
-{\em key} & Key \\
+{\em key} & =\texorpdfstring{$>$}{>} \+\_\+D -\/\texorpdfstring{$>$}{>} Key \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-const \+\_\+\+D$\ast$ -\/\texorpdfstring{$>$}{>} Returned element reference 
+const \+\_\+\+D$\ast$ -\/\texorpdfstring{$>$}{>} Returned element const reference 
 \end{DoxyReturn}
 
 
@@ -230,11 +358,11 @@ Definition at line \mbox{\hyperlink{map_8hpp_source_l00152}{152}} of file \mbox{
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00042}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::data}}, and \mbox{\hyperlink{map_8hpp_source_l00041}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
+References \mbox{\hyperlink{map_8hpp_source_l00040}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::data}}, and \mbox{\hyperlink{map_8hpp_source_l00039}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}, and \mbox{\hyperlink{map_8hpp_source_l00117}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back\+\_\+check()}}.
+Referenced by \mbox{\hyperlink{generator_8cpp_source_l00120}{CBuild\+::ccj\+\_\+out\+::generate()}}, \mbox{\hyperlink{generator_8cpp_source_l00038}{CBuild\+::makefile\+\_\+out\+::generate()}}, \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}, and \mbox{\hyperlink{map_8hpp_source_l00122}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back\+\_\+check()}}.
 
 \mbox{\Hypertarget{classlib_1_1map_ac9f1b7875dd85ccdc555647cda839395}\label{classlib_1_1map_ac9f1b7875dd85ccdc555647cda839395}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!get\_ptr@{get\_ptr}}
@@ -249,11 +377,11 @@ Get reference to key and value of map.
 
 
 \begin{DoxyParams}{Parameters}
-{\em key} & Key that is needed \\
+{\em key} & =\texorpdfstring{$>$}{>} \+\_\+K -\/\texorpdfstring{$>$}{>} key that is needed \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$$\ast$ reference 
+lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$$\ast$ -\/\texorpdfstring{$>$}{>} returned reference 
 \end{DoxyReturn}
 
 
@@ -261,11 +389,11 @@ Definition at line \mbox{\hyperlink{map_8hpp_source_l00168}{168}} of file \mbox{
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00041}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
+References \mbox{\hyperlink{map_8hpp_source_l00039}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
+Referenced by \mbox{\hyperlink{generator_8cpp_source_l00120}{CBuild\+::ccj\+\_\+out\+::generate()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a460f2a4e6517c57f25d1d58a73c1d599}\label{classlib_1_1map_a460f2a4e6517c57f25d1d58a73c1d599}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!keys@{keys}}
@@ -283,7 +411,7 @@ std\+::vector$<$\+\_\+\+K$>$ -\/\texorpdfstring{$>$}{>} list of keys
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00246}{246}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00244}{244}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a7e13537531870da70acc32b3791adcfc}\label{classlib_1_1map_a7e13537531870da70acc32b3791adcfc}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!operator+@{operator+}}
@@ -298,19 +426,19 @@ Add another map to this map.
 
 
 \begin{DoxyParams}{Parameters}
-{\em val} & Another map \\
+{\em val} & =\texorpdfstring{$>$}{>} lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} another map \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ Map 
+lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} map 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00299}{299}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00292}{292}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00085}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}, and \mbox{\hyperlink{map_8hpp_source_l00092}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map()}}.
+References \mbox{\hyperlink{map_8hpp_source_l00080}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}, and \mbox{\hyperlink{map_8hpp_source_l00086}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map()}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a743690dd066aedb54063a4a9a9a9f7d8}\label{classlib_1_1map_a743690dd066aedb54063a4a9a9a9f7d8}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!operator+@{operator+}}
@@ -325,19 +453,19 @@ Add one elment to map.
 
 
 \begin{DoxyParams}{Parameters}
-{\em val} & Element \\
+{\em val} & =\texorpdfstring{$>$}{>} lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} element \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ Map 
+lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} map 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00274}{274}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00269}{269}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00085}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}, and \mbox{\hyperlink{map_8hpp_source_l00092}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map()}}.
+References \mbox{\hyperlink{map_8hpp_source_l00080}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}, and \mbox{\hyperlink{map_8hpp_source_l00086}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map()}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a98fc3eb680d8f6b0ec693ac7b28ebe89}\label{classlib_1_1map_a98fc3eb680d8f6b0ec693ac7b28ebe89}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!operator+=@{operator+=}}
@@ -352,19 +480,19 @@ Add another map to this, modify it.
 
 
 \begin{DoxyParams}{Parameters}
-{\em val} & Another map \\
+{\em val} & =\texorpdfstring{$>$}{>} lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} another map \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ Map 
+lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} map 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00313}{313}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00305}{305}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00085}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}, and \mbox{\hyperlink{map_8hpp_source_l00092}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map()}}.
+References \mbox{\hyperlink{map_8hpp_source_l00080}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}, and \mbox{\hyperlink{map_8hpp_source_l00086}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map()}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a4782761ec663ef7ebca5a0042edb95b7}\label{classlib_1_1map_a4782761ec663ef7ebca5a0042edb95b7}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!operator+=@{operator+=}}
@@ -379,19 +507,19 @@ Add one element to map, modify it.
 
 
 \begin{DoxyParams}{Parameters}
-{\em val} & Element \\
+{\em val} & =\texorpdfstring{$>$}{>} lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} element \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ Map 
+lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} map 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00286}{286}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00280}{280}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00085}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}, and \mbox{\hyperlink{map_8hpp_source_l00092}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map()}}.
+References \mbox{\hyperlink{map_8hpp_source_l00080}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}, and \mbox{\hyperlink{map_8hpp_source_l00086}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map()}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a63abbd5ba6e8649e184296367a03b211}\label{classlib_1_1map_a63abbd5ba6e8649e184296367a03b211}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!operator=@{operator=}}
@@ -406,19 +534,19 @@ Copy content of second map to first.
 
 
 \begin{DoxyParams}{Parameters}
-{\em val} & Another map \\
+{\em val} & =\texorpdfstring{$>$}{>} lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} another map \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ Map 
+lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} map 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00328}{328}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00319}{319}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00085}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}.
+References \mbox{\hyperlink{map_8hpp_source_l00080}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}.
 
 \mbox{\Hypertarget{classlib_1_1map_adcc8ca07c33825a21e36806e8a398612}\label{classlib_1_1map_adcc8ca07c33825a21e36806e8a398612}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!operator=@{operator=}}
@@ -433,15 +561,15 @@ Reset map, set first it\textquotesingle{}s element to val.
 
 
 \begin{DoxyParams}{Parameters}
-{\em val} & \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}} variable \\
+{\em val} & =\texorpdfstring{$>$}{>} lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}} variable \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ Map 
+lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} map 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00338}{338}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00328}{328}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 \mbox{\Hypertarget{classlib_1_1map_aa283f5f678d8c4698dab7e5a4d77c8ce}\label{classlib_1_1map_aa283f5f678d8c4698dab7e5a4d77c8ce}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!operator==@{operator==}}
@@ -456,19 +584,19 @@ Check if content of two maps is equal.
 
 
 \begin{DoxyParams}{Parameters}
-{\em val} & map variable \\
+{\em val} & =\texorpdfstring{$>$}{>} lib\+::map$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} map variable \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-bool Standart comparion rules 
+bool -\/\texorpdfstring{$>$}{>} standart comparion rules 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00349}{349}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00338}{338}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00085}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}.
+References \mbox{\hyperlink{map_8hpp_source_l00080}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::content}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a8e40edc2792384aab7b04c7bf8423556}\label{classlib_1_1map_a8e40edc2792384aab7b04c7bf8423556}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
@@ -483,15 +611,15 @@ Typical array operation, simmilar to at but using operator \mbox{[}\mbox{]}.
 
 
 \begin{DoxyParams}{Parameters}
-{\em i} & Index \\
+{\em i} & =\texorpdfstring{$>$}{>} size\+\_\+t -\/\texorpdfstring{$>$}{>} Index \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ Returned element 
+lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} Returned element 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00265}{265}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00261}{261}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a3b07f0ae9a1df2ba2f1ad351df9b485e}\label{classlib_1_1map_a3b07f0ae9a1df2ba2f1ad351df9b485e}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!pop\_back@{pop\_back}}
@@ -505,11 +633,11 @@ Definition at line \mbox{\hyperlink{map_8hpp_source_l00265}{265}} of file \mbox{
 Pop last element, remove it and return back it\textquotesingle{}s copy. 
 
 \begin{DoxyReturn}{Returns}
-lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ Returned element 
+lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} Returned element 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00140}{140}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00142}{142}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a10a43f21389cbed80b578ab280a89b73}\label{classlib_1_1map_a10a43f21389cbed80b578ab280a89b73}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!push\_back@{push\_back}}
@@ -524,14 +652,14 @@ Push new element to map, stack operation ! Dangerous not perform chak if this el
 
 
 \begin{DoxyParams}{Parameters}
-{\em key} & Key \\
+{\em key} & =\texorpdfstring{$>$}{>} \+\_\+K -\/\texorpdfstring{$>$}{>} Key \\
 \hline
-{\em data} & Value \\
+{\em data} & =\texorpdfstring{$>$}{>} \+\_\+D -\/\texorpdfstring{$>$}{>} Value \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00108}{108}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00113}{113}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a86895b673b75024f268278eb36501929}\label{classlib_1_1map_a86895b673b75024f268278eb36501929}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!push\_back@{push\_back}}
@@ -546,16 +674,16 @@ Push new element to map, stack operation ! Dangerous not perform chak if this el
 
 
 \begin{DoxyParams}{Parameters}
-{\em element} & map\+\_\+entry object, that pack key and value to one variable \\
+{\em element} & =\texorpdfstring{$>$}{>} lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}} object, that pack key and value to one variable \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00099}{99}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00104}{104}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{Build_8cpp_source_l00211}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, \mbox{\hyperlink{CBuild_8cpp_source_l00038}{CBuild\+::parse()}}, and \mbox{\hyperlink{map_8hpp_source_l00117}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back\+\_\+check()}}.
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00198}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, and \mbox{\hyperlink{map_8hpp_source_l00122}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back\+\_\+check()}}.
 
 \mbox{\Hypertarget{classlib_1_1map_ab85716332cb2425980a416287da7b7f6}\label{classlib_1_1map_ab85716332cb2425980a416287da7b7f6}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!push\_back\_check@{push\_back\_check}}
@@ -566,27 +694,27 @@ void \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::p
 
 
 
-Push data, but check if key exists, if exist -\/ trow exception. 
+Add data, but check if key exists, if exist -\/ trow exception. 
 
 
 \begin{DoxyExceptions}{Exceptions}
-{\em exception-\/object} & exception description \\
+{\em runtime\+\_\+error} & -\/\texorpdfstring{$>$}{>} string with error descitption \\
 \hline
 \end{DoxyExceptions}
 
 \begin{DoxyParams}{Parameters}
-{\em key} & Key \\
+{\em key} & =\texorpdfstring{$>$}{>} \+\_\+K -\/\texorpdfstring{$>$}{>} key \\
 \hline
-{\em data} & Data \\
+{\em data} & =\texorpdfstring{$>$}{>} \+\_\+D -\/\texorpdfstring{$>$}{>} Data \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00129}{129}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00133}{133}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00152}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get()}}, and \mbox{\hyperlink{map_8hpp_source_l00099}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back()}}.
+References \mbox{\hyperlink{map_8hpp_source_l00152}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get()}}, and \mbox{\hyperlink{map_8hpp_source_l00104}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back()}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a34ea2e11557719a8a03c1bbf6af3ebc3}\label{classlib_1_1map_a34ea2e11557719a8a03c1bbf6af3ebc3}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!push\_back\_check@{push\_back\_check}}
@@ -597,29 +725,29 @@ void \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::p
 
 
 
-Push data, but check if key exists, if exist -\/ trow exception. 
+Add data, but check if key exists, if exist -\/ trow exception. 
 
 
 \begin{DoxyExceptions}{Exceptions}
-{\em exception-\/object} & exception description \\
+{\em runtime\+\_\+error} & -\/\texorpdfstring{$>$}{>} string with error descitption \\
 \hline
 \end{DoxyExceptions}
 
 \begin{DoxyParams}{Parameters}
-{\em element} & New element to push \\
+{\em element} & =\texorpdfstring{$>$}{>} lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} New element to push \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00117}{117}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00122}{122}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00152}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get()}}, \mbox{\hyperlink{map_8hpp_source_l00041}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}, and \mbox{\hyperlink{map_8hpp_source_l00099}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back()}}.
+References \mbox{\hyperlink{map_8hpp_source_l00152}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get()}}, \mbox{\hyperlink{map_8hpp_source_l00039}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}, and \mbox{\hyperlink{map_8hpp_source_l00104}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back()}}.
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00038}{CBuild\+::parse()}}.
+Referenced by \mbox{\hyperlink{cli__parser_8cpp_source_l00160}{CBuild\+::build\+\_\+handler()}}, \mbox{\hyperlink{cli__parser_8cpp_source_l00112}{CBuild\+::force\+\_\+handler()}}, \mbox{\hyperlink{cli__parser_8cpp_source_l00133}{CBuild\+::generator\+\_\+handler()}}, and \mbox{\hyperlink{cli__parser_8cpp_source_l00117}{CBuild\+::out\+\_\+handler()}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a230172b977b6419b4f95b46696905ac7}\label{classlib_1_1map_a230172b977b6419b4f95b46696905ac7}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!remove@{remove}}
@@ -639,7 +767,7 @@ Remove element from map and return copy of this element.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00221}{221}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00219}{219}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a53f6e4effcc236cbb07e09be96ececa5}\label{classlib_1_1map_a53f6e4effcc236cbb07e09be96ececa5}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!remove@{remove}}
@@ -650,20 +778,20 @@ void \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ \+\_\+K, \+\_\+D $>$\+::r
 
 
 
-remove element with given key 
+Remove element with given key. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em key} & Key of elent that is needed to be removed \\
+{\em key} & =\texorpdfstring{$>$}{>} \+\_\+K -\/\texorpdfstring{$>$}{>} Key of elent that is needed to be removed \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00230}{230}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00228}{228}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00041}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
+References \mbox{\hyperlink{map_8hpp_source_l00039}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
 
 \mbox{\Hypertarget{classlib_1_1map_a50270172eaef21e06c893ea4b1e40bcb}\label{classlib_1_1map_a50270172eaef21e06c893ea4b1e40bcb}} 
 \index{lib::map$<$ \_K, \_D $>$@{lib::map$<$ \_K, \_D $>$}!size@{size}}
@@ -677,15 +805,15 @@ References \mbox{\hyperlink{map_8hpp_source_l00041}{lib\+::map\+Data$<$ \+\_\+\+
 Size of map. 
 
 \begin{DoxyReturn}{Returns}
-{\bfseries{SIZE\+\_\+\+TYPE}} number of elements 
+size\+\_\+t -\/\texorpdfstring{$>$}{>} Number of elements 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00258}{258}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00255}{255}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{Build_8cpp_source_l00211}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{Build_8cpp_source_l00198}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
 
 
 
@@ -699,11 +827,11 @@ std\+::vector$<$\mbox{\hyperlink{classlib_1_1mapData}{map\+Data}}$<$\+\_\+K, \+\
 
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00085}{85}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00080}{80}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{map_8hpp_source_l00274}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator+()}}, \mbox{\hyperlink{map_8hpp_source_l00286}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator+=()}}, \mbox{\hyperlink{map_8hpp_source_l00328}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator=()}}, and \mbox{\hyperlink{map_8hpp_source_l00349}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator==()}}.
+Referenced by \mbox{\hyperlink{map_8hpp_source_l00269}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator+()}}, \mbox{\hyperlink{map_8hpp_source_l00280}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator+=()}}, \mbox{\hyperlink{map_8hpp_source_l00319}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator=()}}, and \mbox{\hyperlink{map_8hpp_source_l00338}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator==()}}.
 
 
 

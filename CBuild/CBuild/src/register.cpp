@@ -28,6 +28,9 @@
 // Project headers
 #include "../../headers/CBuild_defs.hpp"
 #include "../../headers/build/g++.hpp"
+#include "../../headers/generator/ccj.hpp"
+#include "../../headers/generator/generator.hpp"
+#include "../../headers/generator/makefile.hpp"
 #include "../../headers/print.hpp"
 #include "../../headers/register.hpp"
 #include "../../headers/task/CBuild_help_task.hpp"
@@ -49,7 +52,24 @@ public:
       CBuild::fs::create({CBUILD_CACHE_DIR}, CBuild::fs::DIRECTORY);
     if (!CBuild::fs::exists(CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR))
       CBuild::fs::create({CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR},
-                         CBuild::fs::DIRECTORY);
+			 CBuild::fs::DIRECTORY);
+  }
+};
+/**
+ * @brief Version task
+ */
+class Version : public CBuild::Task {
+public:
+  Version() : CBuild::Task("CBuild_version", {}) {}
+  void call(std::vector<std::string> __attribute_maybe_unused__) {
+    CBuild::print(std::string("CBuild version ") + CBUILD_VERSION_STR +
+		  std::string(" by WolodiaM"));
+    CBuild::print(std::string("Compiled by GCC ") + CBUILD_COMPILER_VERSION);
+    CBuild::print(std::string("Compiled on ") + CBUILD_COMPILATION_DATE +
+		  std::string(" at ") + CBUILD_COMPILATION_TIME);
+    CBuild::print("");
+    CBuild::print("Licensed under GPL v3 or later");
+    CBuild::print("Copyright (C) 2023 WolodiaM");
   }
 };
 } // namespace CBuild
@@ -57,8 +77,12 @@ public:
 namespace CBuild {
 namespace Registry {
 // System tasks
-CBuild::Help help;
-CBuild::Init initw;
+CBuild::Help	help;
+CBuild::Init	initw;
+CBuild::Version ver;
+// System generators
+CBuild::ccj_out	     ccjo;
+CBuild::makefile_out makefileo;
 // Registred data
 // Tasks pointers ;)
 lib::map<std::string, CBuild::Task *> tasks;
@@ -75,31 +99,37 @@ std::string name = "CBuild.run";
 // Custom rebuild args
 std::vector<std::string> cargs;
 std::vector<std::string> largs;
-// TODO other types ?
+// Output generators
+lib::map<std::string, CBuild::generator_base *> generators;
 } // namespace Registry
 } // namespace CBuild
 /* register.hpp */
 void CBuild::Registry::init() {
   // Register help task
-  Registry::RegistryTask(&CBuild::Registry::help);
+  Registry::RegisterKeyword("--help", &CBuild::Registry::help);
   // Register init task
-  Registry::RegistryTask(&CBuild::Registry::initw);
+  Registry::RegisterKeyword("--init", &CBuild::Registry::initw);
+  // Register version task
+  Registry::RegisterKeyword("--version", &CBuild::Registry::ver);
+  // Register system generators
+  Registry::RegisterGenerator(&CBuild::Registry::makefileo, "make");
+  Registry::RegisterGenerator(&CBuild::Registry::ccjo, "ccj");
 }
-void CBuild::Registry::RegistryTask(CBuild::Task *task) {
+void CBuild::Registry::RegisterTask(CBuild::Task *task) {
   // Save task ptr connected to it's name
   try {
     Registry::tasks.push_back_check(task->self_name(), task);
   } catch (std::exception &e) {
     CBuild::print_full("Error: trying to register task with the same id: " +
-                           task->self_name(),
-                       CBuild::RED);
+			   task->self_name(),
+		       CBuild::RED);
     return;
   }
   // Save task excution state connected to it's name
   Registry::task_executed.push_back(task->self_name(), false);
 }
-void CBuild::Registry::CallTask(std::string name,
-                                std::vector<std::string> args) {
+void CBuild::Registry::CallTask(std::string		 name,
+				std::vector<std::string> args) {
   // Load executed state of task
   auto check = Registry::task_executed.get_ptr(name);
   // Check if task exixtst and wasn't executed
@@ -117,7 +147,7 @@ void CBuild::Registry::CallTask(std::string name,
   }
   // Print error if task not found
   if (check == NULL)
-    CBuild::print("Task" + name + "not found. Exiting ...", CBuild::RED);
+    CBuild::print("Task " + name + " not found. Exiting ...", CBuild::RED);
 }
 void CBuild::Registry::RegisterTarget(CBuild::Toolchain *target) {
   // Save toolchain ptr connected to it's name
@@ -125,16 +155,16 @@ void CBuild::Registry::RegisterTarget(CBuild::Toolchain *target) {
     Registry::targets.push_back_check(target->get_id(), target);
   } catch (std::exception &e) {
     CBuild::print_full(
-        "Error: trying to register toolchain with the same id: " +
-            target->get_id(),
-        CBuild::RED);
+	"Error: trying to register toolchain with the same id: " +
+	    target->get_id(),
+	CBuild::RED);
     return;
   }
   // Save toolchain excution state connected to it's name
   Registry::target_executed.push_back(target->get_id(), false);
 }
 CBuild::Toolchain *CBuild::Registry::GetToolchain(std::string name,
-                                                  bool force) {
+						  bool	      force) {
   // If we not in force build
   if (!force) {
     // Check if toolchain was executed before
@@ -163,13 +193,13 @@ lib::map<std::string, CBuild::Toolchain *> CBuild::Registry::GetTargets() {
 }
 void CBuild::Registry::RegisterKeyword(std::string key, CBuild::Task *func) {
   // Register task
-  Registry::RegistryTask(func);
+  Registry::RegisterTask(func);
   // Connect argument to this task
   try {
     Registry::keywords.push_back_check(key, func->self_name());
   } catch (std::exception &e) {
     CBuild::print_full("Error: trying to register simmilar keyword: " + key,
-                       CBuild::RED);
+		       CBuild::RED);
   }
 }
 lib::map<std::string, std::string> CBuild::Registry::GetKeywordsList() {
@@ -210,16 +240,16 @@ std::string CBuild::Registry::GetRebuildArgs() {
   return ret;
 }
 void CBuild::Registry::ToolchainAll(bool force, std::string path,
-                                    std::vector<std::string> *args) {
-  for (int i = 0; i < Registry::targets.size(); i++) {
-    auto elem = Registry::targets.at(i);
+				    std::vector<std::string> *args) {
+  for (unsigned int i = 0; i < Registry::targets.size(); i++) {
+    auto elem  = Registry::targets.at(i);
     auto check = Registry::target_executed.get_ptr(elem.key);
     if (check != NULL && check->data == false) {
       check->data = true;
-      auto ptr = elem.data;
+      auto ptr	  = elem.data;
       if (ptr != NULL) {
-        ptr->load_project_deps(path);
-        ptr->call(args, force);
+	ptr->load_project_deps(path);
+	ptr->call(args, force);
       }
     }
   }
@@ -231,4 +261,41 @@ void CBuild::Registry::ToolchainAll(bool force, std::string path,
   //   check->data = true;
   //   return elem->data;
   // }
+}
+CBuild::generator_base *CBuild::Registry::GetGenerator(std::string id) {
+  auto elem = Registry::generators.get_ptr(id);
+  if (elem != NULL) {
+    return elem->data;
+  }
+  return NULL;
+}
+void CBuild::Registry::RegisterGenerator(CBuild::generator_base *gen,
+					 std::string		 id) {
+  try {
+    Registry::generators.push_back_check(id, gen);
+  } catch (std::exception &e) {
+    CBuild::print_full(
+	"Error: trying to register generator with simmilar id: " + id, RED);
+  }
+}
+std::vector<std::string> CBuild::Registry::GetGeneratorsList() {
+  std::vector<std::string> ret;
+  for (auto gen : CBuild::Registry::generators) {
+    ret.push_back(gen.key);
+  }
+  return ret;
+}
+std::vector<std::string> CBuild::Registry::GetToolchainsList() {
+  std::vector<std::string> ret;
+  for (auto tg : CBuild::Registry::targets) {
+    ret.push_back(tg.key);
+  }
+  return ret;
+}
+std::vector<std::string> CBuild::Registry::GetTasksList() {
+  std::vector<std::string> ret;
+  for (auto ts : CBuild::Registry::tasks) {
+    ret.push_back(ts.key);
+  }
+  return ret;
 }

@@ -2,9 +2,7 @@
  * @file Build.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Build toolchain headers
- * @version 1.0
  * @date 2023-01-28
- *
  *
  * @license GPL v3.0 or later
  *
@@ -22,8 +20,11 @@
  */
 // C++ libraries
 #include "../map.hpp"
+#include "array"
 #include "string"
 #include "vector"
+// Project headers
+#include "../generator/generator.hpp"
 // Code
 #ifndef __CBUILD_TOOLCHAIN_HPP__
 #define __CBUILD_TOOLCHAIN_HPP__
@@ -33,7 +34,7 @@ namespace CBuild {
  */
 typedef struct {
   std::string path;
-  bool folder;
+  bool	      folder;
 } Path;
 /**
  * @brief Project dependency data
@@ -103,6 +104,10 @@ protected:
    * @brief Project dependencies
    */
   std::vector<CBuild::Project_dependency> project_deps;
+  /**
+   * @brief We do dummy compilation
+   */
+  bool dummy = false;
 
 protected:
   // Scratch variables
@@ -149,6 +154,7 @@ protected:
   /**
    * @brief Generate list of files that need to be compiles
    *
+   * @param force_ => bool -> Do we do force compilation
    * @return lib::map<std::string, std::string> -> list of files, key -
    * code, value - object
    */
@@ -168,8 +174,8 @@ public:
    * @return std::string -> File name
    */
   virtual std::string gen_out_name(std::string executable = ".run",
-                                   std::string dyn_lib = ".so",
-                                   std::string stat_lib = ".a");
+				   std::string dyn_lib	  = ".so",
+				   std::string stat_lib	  = ".a");
   /**
    * @brief Load all project dependencies
    *
@@ -200,10 +206,11 @@ public:
    * @param args => std::vector<std::string>* -> argument for call,
    * pointer, nonull
    * @param force => bool -> force argument, used internally
-   * @param debug => boo -> does we run in build mode
+   * @param debug => bool -> does we run in build mode
+   * @param dummy => bool -> we dont build - we run this to evalueate all things
    */
   virtual void call(std::vector<std::string> *args, bool force = false,
-                    bool debug = false);
+		    bool debug = false, bool dummy = false);
   /**
    * @brief Run builded app
    *
@@ -217,7 +224,7 @@ public:
    * @param pargs => std::vector<std::string>* -> arguments for run
    */
   virtual void debug(std::vector<std::string> *args,
-                     std::vector<std::string> *pargs);
+		     std::vector<std::string> *pargs);
   /**
    * @brief Clear all caches and builded app
    */
@@ -278,8 +285,8 @@ public:
    * @param task_ => std:string -> task id
    * @param run_stage => CBuild::stage -> run stage of task
    */
-  virtual void add_requirment(std::string task_,
-                              CBuild::stage run_stage = CBuild::PRE);
+  virtual void add_requirment(std::string   task_,
+			      CBuild::stage run_stage = CBuild::PRE);
   /**
    * @brief This target depends on other target
    *
@@ -333,7 +340,33 @@ public:
    * @param headers_path => std::string -> path to headers dir
    */
   virtual void depends_on_project(std::string path, std::string name,
-                                  std::string id, std::string headers_path);
+				  std::string id, std::string headers_path);
+  /**
+   * @brief Get all three commands from class - compile, linker and packer
+   * @return std::array<std::string, 3> -> Compiler,
+   * linker, packer
+   */
+  std::array<std::string, 3> get_cmds();
+  /**
+   * @brief Generate list of all files, that is tracked by this target
+   *
+   * @return lib::map<std::string, std::string> -> List of files
+   */
+  lib::map<std::string, std::string> gen_file_list_force();
+  /**
+   * @brief Get preprocessed compile args
+   */
+  std::string get_compile_args();
+  /**
+   * @brief Crash compilation, needed when gcc throws error
+   */
+  void crash() __attribute__((__noreturn__));
+  /**
+   * @brief Call compiler
+   *
+   * @param cmd => std::string -> Shell command
+   */
+  void compile(std::string cmd);
 };
 } // namespace CBuild
 #endif // __CBUILD_TOOLCHAIN_HPP__

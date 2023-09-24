@@ -2,9 +2,7 @@
  * @file CBuild_defs.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Defines
- * @version 1.0
  * @date 2023-02-02
- *
  *
  * @license GPL v3.0 or later
  *
@@ -72,8 +70,14 @@
  */
 #define CBUILD_HASH_FILE std::string("hash")
 /**
- * @brief CBuilddifferent representation of CBuild version
+ * @brief Different representation of CBuild version
  */
 #define CBUILD_VERSION_MAJOR (int)$VERSION_MAJOR
 #define CBUILD_VERSION_MINOR (int)$VERSION_MINOR
 #define CBUILD_VERSION_STR std::string($VERSION)
+/**
+ * @brief Data about CBuild compialtion
+ */
+#define CBUILD_COMPILER_VERSION std::string(__VERSION__)
+#define CBUILD_COMPILATION_DATE std::string(__DATE__)
+#define CBUILD_COMPILATION_TIME std::string(__TIME__)

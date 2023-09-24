@@ -2,9 +2,7 @@
  * @file register.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Register any things
- * @version 1.0
  * @date 2023-01-28
- *
  *
  * @license GPL v3.0 or later
  *
@@ -23,7 +21,9 @@
 // C++ libraries
 // Project headers
 #include "build/Build.hpp"
+#include "generator/generator.hpp"
 #include "task/Task.hpp"
+// Code
 #ifndef __CBUILD_REGISTER_HPP__
 #define __CBUILD_REGISTER_HPP__
 namespace CBuild {
@@ -37,7 +37,7 @@ void init();
  *
  * @param task => CBuild::Task* -> pointer to staticly allocated task
  */
-void RegistryTask(CBuild::Task *task);
+void RegisterTask(CBuild::Task *task);
 /**
  * @brief Run tasks
  *
@@ -104,13 +104,45 @@ void AddCompileArg(std::string arg);
  */
 std::string GetRebuildArgs();
 /**
- * @brief Call and execute all toolchains\
+ * @brief Call and execute all toolchains
  *
  * @param force => bool -> Compilation type
  * @param path => std::string -> Base path
  * @param args => std::vector<std::string>* -> PArgs
  */
 void ToolchainAll(bool force, std::string path, std::vector<std::string> *args);
+/**
+ * @brief Get generator for specified id
+ *
+ * @param id => std::string -> Generator id
+ * @return CBuild::generator_base* -> Pointer to generator instance
+ */
+CBuild::generator_base *GetGenerator(std::string id);
+/**
+ * @brief Register generator for id
+ *
+ * @param gen => CBuild::generator_base* -> Generator instance
+ * @param id => std::string -> Geneator id
+ */
+void RegisterGenerator(CBuild::generator_base *gen, std::string id);
+/**
+ * @brief Get list of registered generators
+ *
+ * @return std::vector<std::string> -> List of generators
+ */
+std::vector<std::string> GetGeneratorsList();
+/**
+ * @brief Get list of registered toolchains
+ *
+ * @return std::vector<std::string> -> List of toolchains
+ */
+std::vector<std::string> GetToolchainsList();
+/**
+ * @brief Get list of registered tasks
+ *
+ * @return std::vector<std::string> -> List of tasks
+ */
+std::vector<std::string> GetTasksList();
 } // namespace Registry
 } // namespace CBuild
 #endif // __CBUILD_REGISTER_HPP__

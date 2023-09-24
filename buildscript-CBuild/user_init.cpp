@@ -36,13 +36,13 @@ public:
   copyLib(std::string name) : CBuild::Task(name, {}) {}
   void call(std::vector<std::string> args __attribute_maybe_unused__) {
     CBuild::system("cp -r build/cbuild/out/libCBuild.so "
-                   "CBuild/CBuild/libCBuild.so");
+		   "CBuild/CBuild/libCBuild.so");
   }
 };
 
 // Toolchains and Tasks
 CBuild::GXX libCBuild("cbuild", "CBuild");
-copyLib cpy("copyLib");
+copyLib	    cpy("copyLib");
 
 void init() {
   libCBuild.set_standart("c++20");
@@ -54,7 +54,7 @@ void init() {
   // libCBuild.add_compile_arg("-g");
   // libCBuild.add_link_arg("-g");
   CBuild::Registry::RegisterTarget(&libCBuild);
-  CBuild::Registry::RegistryTask(&cpy);
+  CBuild::Registry::RegisterTask(&cpy);
   CBuild::Registry::RegisterKeyword("-cp", &cpy);
   load_tasks();
 }

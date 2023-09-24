@@ -2,9 +2,7 @@
  * @file print.cpp
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Custom print that support colors
- * @version 1.0
  * @date 2023-02-14
- *
  *
  * @license GPL v3.0 or later
  *
@@ -26,7 +24,7 @@
 #include "../../headers/print.hpp"
 namespace CBuild {
 bool verbose = false;
-bool none = false;
+bool none    = false;
 void print_internal(std::string msg, CBuild::color fg) {
   // Create buffer
   std::string buff;

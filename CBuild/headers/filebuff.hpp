@@ -38,7 +38,7 @@ namespace CBuild {
  */
 std::vector<std::string> parse_lines(std::string in) {
   std::vector<std::string> ret;
-  std::string buff;
+  std::string              buff;
   for (char c : in) {
     if (c == '\n') {
       ret.push_back(buff);
@@ -107,9 +107,9 @@ public:
    * @param autorefresh => bool -> set autorefresh var
    */
   filebuff(std::string file, bool autorefresh = true) {
-    this->path = file;
+    this->path        = file;
     this->autorefresh = autorefresh;
-    this->state = CBuild::buffer_state::FILE_NEWER;
+    this->state       = CBuild::buffer_state::FILE_NEWER;
   }
   /**
    * @brief Get character from file, return -1 on error
@@ -170,9 +170,9 @@ public:
 class line_filebuff : public CBuild::filebuff {
 protected:
   std::list<std::string> buff;
-  void load_buffer() {
+  void                   load_buffer() {
     std::ifstream file(this->path);
-    std::string line;
+    std::string   line;
     while (std::getline(file, line)) {
       this->buff.push_back(line);
     }
@@ -206,7 +206,7 @@ public:
   }
   std::string get_str(unsigned int pos, unsigned int size) {
     signed long tmp_pos = pos;
-    std::string ret = "";
+    std::string ret     = "";
     for (unsigned int i = 0; i < this->buff.size(); i++) {
       auto it = this->buff.begin();
       std::advance(it, i);
@@ -214,7 +214,7 @@ public:
       // std::string line = this->buff.at(i);
       if ((tmp_pos - (signed long)line.length()) < 0) {
         signed long size_tmp = size;
-        bool first = true;
+        bool        first    = true;
         while (true) {
           if ((size_tmp - (signed long)line.length()) < 0) {
             if (first) {
@@ -235,7 +235,7 @@ public:
             std::advance(it, i);
             line = *it;
           }
-          first = false;
+          first    = false;
           size_tmp = size_tmp - line.length();
         }
       } else {
@@ -253,7 +253,7 @@ public:
       if ((tmp_pos - (signed long)line.length()) < 0) {
         std::string start, end;
         start = line.substr(0, tmp_pos);
-        end = line.substr(pos);
+        end   = line.substr(pos);
         it->clear();
         it->append(start);
         it->push_back(ch);
@@ -279,7 +279,7 @@ public:
       if ((tmp_pos - (signed long)line.length()) < 0) {
         std::string start, end;
         start = line.substr(0, tmp_pos);
-        end = line.substr(pos);
+        end   = line.substr(pos);
         it->clear();
         it->append(start);
         std::vector<std::string> processed_str = parse_lines(str);
@@ -310,7 +310,7 @@ public:
       if ((tmp_pos - (signed long)line.length()) < 0) {
         std::string start, end;
         start = line.substr(0, tmp_pos);
-        end = line.substr(tmp_pos + 1);
+        end   = line.substr(tmp_pos + 1);
         it->clear();
         it->append(start);
         it->append(end);
@@ -333,16 +333,16 @@ public:
       std::advance(it, i);
       std::string line = *it;
       if ((tmp_pos - (signed long)line.length()) < 0) {
-        bool multiline = false;
+        bool        multiline = false;
         std::string start, end;
-        start = line.substr(0, tmp_pos);
+        start                 = line.substr(0, tmp_pos);
         unsigned int del_size = 0;
         if (line.length() - pos > size) {
           end = line.substr(tmp_pos + size + 1);
         } else {
-          end = "";
+          end       = "";
           multiline = true;
-          del_size = line.substr(tmp_pos).length();
+          del_size  = line.substr(tmp_pos).length();
         }
         it->clear();
         it->append(start);
@@ -457,11 +457,11 @@ public:
 class str_filebuff : public CBuild::filebuff {
 protected:
   std::string buff;
-  void load_buffer() {
-    std::ifstream file(this->path);
+  void        load_buffer() {
+    std::ifstream     file(this->path);
     std::stringstream str;
     str << file.rdbuf();
-    this->buff = str.str();
+    this->buff  = str.str();
     this->state = CBuild::buffer_state::MATCH;
   }
   void save_buffer() {
@@ -496,8 +496,8 @@ public:
   void set_char(char ch, unsigned int pos) {
     if (pos < this->buff.length()) {
       std::string start, end;
-      start = this->buff.substr(0, pos);
-      end = this->buff.substr(pos);
+      start      = this->buff.substr(0, pos);
+      end        = this->buff.substr(pos);
       this->buff = start + ch + end;
     }
     if (this->autorefresh) {
@@ -508,8 +508,8 @@ public:
   }
   void set_str(std::string str, unsigned int pos) {
     std::string start, end;
-    start = this->buff.substr(0, pos);
-    end = this->buff.substr(pos);
+    start      = this->buff.substr(0, pos);
+    end        = this->buff.substr(pos);
     this->buff = start + str + end;
     if (this->autorefresh) {
       this->save_buffer();
@@ -519,8 +519,8 @@ public:
   }
   void del_char(unsigned int pos) {
     std::string start, end;
-    start = this->buff.substr(0, pos);
-    end = this->buff.substr(pos + 1);
+    start      = this->buff.substr(0, pos);
+    end        = this->buff.substr(pos + 1);
     this->buff = start + end;
     if (this->autorefresh) {
       this->save_buffer();
@@ -530,8 +530,8 @@ public:
   }
   void del_str(unsigned int pos, unsigned int size) {
     std::string start, end;
-    start = this->buff.substr(0, pos);
-    end = this->buff.substr(pos + size + 1);
+    start      = this->buff.substr(0, pos);
+    end        = this->buff.substr(pos + size + 1);
     this->buff = start + end;
     if (this->autorefresh) {
       this->save_buffer();

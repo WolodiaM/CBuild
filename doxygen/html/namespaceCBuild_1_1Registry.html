@@ -79,9 +79,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a9be19bd471349943095783bad96ed908"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a9be19bd471349943095783bad96ed908">init</a> ()</td></tr>
 <tr class="memdesc:a9be19bd471349943095783bad96ed908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal init.  <a href="namespaceCBuild_1_1Registry.html#a9be19bd471349943095783bad96ed908">More...</a><br /></td></tr>
 <tr class="separator:a9be19bd471349943095783bad96ed908"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8c4c391fb32f5f30b506917151e3f5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#aa8c4c391fb32f5f30b506917151e3f5e">RegistryTask</a> (<a class="el" href="classCBuild_1_1Task.html">CBuild::Task</a> *task)</td></tr>
-<tr class="memdesc:aa8c4c391fb32f5f30b506917151e3f5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register new task.  <a href="namespaceCBuild_1_1Registry.html#aa8c4c391fb32f5f30b506917151e3f5e">More...</a><br /></td></tr>
-<tr class="separator:aa8c4c391fb32f5f30b506917151e3f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e42b7607a1ed1f9903152a5b79169a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a3e42b7607a1ed1f9903152a5b79169a6">RegisterTask</a> (<a class="el" href="classCBuild_1_1Task.html">CBuild::Task</a> *task)</td></tr>
+<tr class="memdesc:a3e42b7607a1ed1f9903152a5b79169a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register new task.  <a href="namespaceCBuild_1_1Registry.html#a3e42b7607a1ed1f9903152a5b79169a6">More...</a><br /></td></tr>
+<tr class="separator:a3e42b7607a1ed1f9903152a5b79169a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51d72a89f7fa967febc3683eb2bead3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a51d72a89f7fa967febc3683eb2bead3c">CallTask</a> (std::string <a class="el" href="namespaceCBuild_1_1Registry.html#ad570aea7d453a3bde5ea92fb3fa7ff2c">name</a>, std::vector&lt; std::string &gt; args)</td></tr>
 <tr class="memdesc:a51d72a89f7fa967febc3683eb2bead3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run tasks.  <a href="namespaceCBuild_1_1Registry.html#a51d72a89f7fa967febc3683eb2bead3c">More...</a><br /></td></tr>
 <tr class="separator:a51d72a89f7fa967febc3683eb2bead3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,6 +112,24 @@ Functions</h2></td></tr>
 <tr class="memitem:aea482c73e78098645ac59484c470a378"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#aea482c73e78098645ac59484c470a378">GetRebuildArgs</a> ()</td></tr>
 <tr class="memdesc:aea482c73e78098645ac59484c470a378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the rebuild args for <a class="el" href="namespaceCBuild.html" title="Filebuffer for CBuild ecosystem.">CBuild</a> executable.  <a href="namespaceCBuild_1_1Registry.html#aea482c73e78098645ac59484c470a378">More...</a><br /></td></tr>
 <tr class="separator:aea482c73e78098645ac59484c470a378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc11a1c6c8872badacf6b98b178c8dad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#adc11a1c6c8872badacf6b98b178c8dad">ToolchainAll</a> (bool force, std::string path, std::vector&lt; std::string &gt; *args)</td></tr>
+<tr class="memdesc:adc11a1c6c8872badacf6b98b178c8dad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call and execute all toolchains.  <a href="namespaceCBuild_1_1Registry.html#adc11a1c6c8872badacf6b98b178c8dad">More...</a><br /></td></tr>
+<tr class="separator:adc11a1c6c8872badacf6b98b178c8dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c2b86220190432fab63e0e35dd4b013"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1generator__base.html">CBuild::generator_base</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a9c2b86220190432fab63e0e35dd4b013">GetGenerator</a> (std::string id)</td></tr>
+<tr class="memdesc:a9c2b86220190432fab63e0e35dd4b013"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get generator for specified id.  <a href="namespaceCBuild_1_1Registry.html#a9c2b86220190432fab63e0e35dd4b013">More...</a><br /></td></tr>
+<tr class="separator:a9c2b86220190432fab63e0e35dd4b013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eb12ac7f2bf89bed2526ff6a9722265"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a8eb12ac7f2bf89bed2526ff6a9722265">RegisterGenerator</a> (<a class="el" href="classCBuild_1_1generator__base.html">CBuild::generator_base</a> *gen, std::string id)</td></tr>
+<tr class="memdesc:a8eb12ac7f2bf89bed2526ff6a9722265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register generator for id.  <a href="namespaceCBuild_1_1Registry.html#a8eb12ac7f2bf89bed2526ff6a9722265">More...</a><br /></td></tr>
+<tr class="separator:a8eb12ac7f2bf89bed2526ff6a9722265"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c19ae2f5324c7ca9b45253e5611f152"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a9c19ae2f5324c7ca9b45253e5611f152">GetGeneratorsList</a> ()</td></tr>
+<tr class="memdesc:a9c19ae2f5324c7ca9b45253e5611f152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get list of registered generators.  <a href="namespaceCBuild_1_1Registry.html#a9c19ae2f5324c7ca9b45253e5611f152">More...</a><br /></td></tr>
+<tr class="separator:a9c19ae2f5324c7ca9b45253e5611f152"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a287e70c1cd1bf3bc2b225b1541fcc75d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a287e70c1cd1bf3bc2b225b1541fcc75d">GetToolchainsList</a> ()</td></tr>
+<tr class="memdesc:a287e70c1cd1bf3bc2b225b1541fcc75d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get list of registered toolchains.  <a href="namespaceCBuild_1_1Registry.html#a287e70c1cd1bf3bc2b225b1541fcc75d">More...</a><br /></td></tr>
+<tr class="separator:a287e70c1cd1bf3bc2b225b1541fcc75d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac88a2cbba3e17e112024f808d76d2f23"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#ac88a2cbba3e17e112024f808d76d2f23">GetTasksList</a> ()</td></tr>
+<tr class="memdesc:ac88a2cbba3e17e112024f808d76d2f23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get list of registered tasks.  <a href="namespaceCBuild_1_1Registry.html#ac88a2cbba3e17e112024f808d76d2f23">More...</a><br /></td></tr>
+<tr class="separator:ac88a2cbba3e17e112024f808d76d2f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -119,6 +137,12 @@ Variables</h2></td></tr>
 <tr class="separator:a898d68a1fde4c705d15ab0fa2d24f72c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a127c9a77ac7122e3da3f35d0c9a6c207"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1Init.html">CBuild::Init</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a127c9a77ac7122e3da3f35d0c9a6c207">initw</a></td></tr>
 <tr class="separator:a127c9a77ac7122e3da3f35d0c9a6c207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0a25f7e534a13f3e65ff9688056e09f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1Version.html">CBuild::Version</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#ac0a25f7e534a13f3e65ff9688056e09f">ver</a></td></tr>
+<tr class="separator:ac0a25f7e534a13f3e65ff9688056e09f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18d80878eb822620071205e0acfa15bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1ccj__out.html">CBuild::ccj_out</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a18d80878eb822620071205e0acfa15bf">ccjo</a></td></tr>
+<tr class="separator:a18d80878eb822620071205e0acfa15bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac77fcf96725fc778a205930c4e0e020e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1makefile__out.html">CBuild::makefile_out</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#ac77fcf96725fc778a205930c4e0e020e">makefileo</a></td></tr>
+<tr class="separator:ac77fcf96725fc778a205930c4e0e020e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a622b61aabaad12faedca87869fd5801f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, <a class="el" href="classCBuild_1_1Task.html">CBuild::Task</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a622b61aabaad12faedca87869fd5801f">tasks</a></td></tr>
 <tr class="separator:a622b61aabaad12faedca87869fd5801f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7610e0427b2f16ddcd1cd7c01dc11229"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a7610e0427b2f16ddcd1cd7c01dc11229">task_executed</a></td></tr>
@@ -135,6 +159,8 @@ Variables</h2></td></tr>
 <tr class="separator:a6eca36fd6b4fd820647efb4a0012827d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3c7a25d9c3252f87f44510df585e057"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#ae3c7a25d9c3252f87f44510df585e057">largs</a></td></tr>
 <tr class="separator:ae3c7a25d9c3252f87f44510df585e057"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61b245e775896edb91dae4753117d06c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, <a class="el" href="classCBuild_1_1generator__base.html">CBuild::generator_base</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a61b245e775896edb91dae4753117d06c">generators</a></td></tr>
+<tr class="separator:a61b245e775896edb91dae4753117d06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aad2852a78f5aa5c9f84dc53b065cdee8" name="aad2852a78f5aa5c9f84dc53b065cdee8"></a>
@@ -161,9 +187,9 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00186">186</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00218">218</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00076">cargs</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00100">cargs</a>.</p>
 
 </div>
 </div>
@@ -191,9 +217,9 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00182">182</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00214">214</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00077">largs</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00101">largs</a>.</p>
 
 </div>
 </div>
@@ -232,11 +258,70 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00100">100</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00131">131</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00100">CallTask()</a>, <a class="el" href="register_8cpp_source.html#l00074">name</a>, <a class="el" href="print_8cpp_source.html#l00051">CBuild::print()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>, <a class="el" href="register_8cpp_source.html#l00066">task_executed</a>, and <a class="el" href="register_8cpp_source.html#l00064">tasks</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00131">CallTask()</a>, <a class="el" href="register_8cpp_source.html#l00098">name</a>, <a class="el" href="print_8cpp_source.html#l00049">CBuild::print()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>, <a class="el" href="register_8cpp_source.html#l00090">task_executed</a>, and <a class="el" href="register_8cpp_source.html#l00088">tasks</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00460">CBuild::Toolchain::call()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00195">CBuild::MINGW_GXX::call()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00192">CBuild::MINGW_GCC::call()</a>, <a class="el" href="register_8cpp_source.html#l00100">CallTask()</a>, and <a class="el" href="CBuild_8cpp_source.html#l00277">CBuild::loop()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00465">CBuild::Toolchain::call()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00194">CBuild::MINGW_GXX::call()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00191">CBuild::MINGW_GCC::call()</a>, <a class="el" href="register_8cpp_source.html#l00131">CallTask()</a>, and <a class="el" href="CBuild_8cpp_source.html#l00285">CBuild::loop()</a>.</p>
+
+</div>
+</div>
+<a id="a9c2b86220190432fab63e0e35dd4b013" name="a9c2b86220190432fab63e0e35dd4b013"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c2b86220190432fab63e0e35dd4b013">&#9670;&nbsp;</a></span>GetGenerator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCBuild_1_1generator__base.html">CBuild::generator_base</a> * CBuild::Registry::GetGenerator </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get generator for specified id. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>=&gt; std::string -&gt; Generator id </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classCBuild_1_1generator__base.html" title="Base for any generator.">CBuild::generator_base</a>* -&gt; Pointer to generator instance </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00265">265</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00103">generators</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00285">CBuild::loop()</a>.</p>
+
+</div>
+</div>
+<a id="a9c19ae2f5324c7ca9b45253e5611f152" name="a9c19ae2f5324c7ca9b45253e5611f152"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c19ae2f5324c7ca9b45253e5611f152">&#9670;&nbsp;</a></span>GetGeneratorsList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; CBuild::Registry::GetGeneratorsList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get list of registered generators. </p>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::string&gt; -&gt; List of generators </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00281">281</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00103">generators</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="cli__parser_8cpp_source.html#l00133">CBuild::generator_handler()</a>.</p>
 
 </div>
 </div>
@@ -258,11 +343,9 @@ Variables</h2></td></tr>
 <p>Get list of all user registered keywords. </p>
 <dl class="section return"><dt>Returns</dt><dd>lib::map&lt;std::string, std::string&gt; where key - keyword, value - task id to call </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00173">173</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00205">205</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00072">keywords</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00038">CBuild::parse()</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00096">keywords</a>.</p>
 
 </div>
 </div>
@@ -284,11 +367,11 @@ Variables</h2></td></tr>
 <p>Get the rebuild args for <a class="el" href="namespaceCBuild.html" title="Filebuffer for CBuild ecosystem.">CBuild</a> executable. </p>
 <dl class="section return"><dt>Returns</dt><dd>std::string -&gt; formatted arguments </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00190">190</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00222">222</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00076">cargs</a>, <a class="el" href="register_8cpp_source.html#l00077">largs</a>, and <a class="el" href="register_8cpp_source.html#l00074">name</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00100">cargs</a>, <a class="el" href="register_8cpp_source.html#l00101">largs</a>, and <a class="el" href="register_8cpp_source.html#l00098">name</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00591">CBuild::rebuild()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00562">CBuild::rebuild()</a>.</p>
 
 </div>
 </div>
@@ -310,9 +393,33 @@ Variables</h2></td></tr>
 <p>Get list of all targets. </p>
 <dl class="section return"><dt>Returns</dt><dd>lib::map&lt;std::string, CBuild::Toolchain*&gt; </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00158">158</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00190">190</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00068">targets</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00092">targets</a>.</p>
+
+</div>
+</div>
+<a id="ac88a2cbba3e17e112024f808d76d2f23" name="ac88a2cbba3e17e112024f808d76d2f23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac88a2cbba3e17e112024f808d76d2f23">&#9670;&nbsp;</a></span>GetTasksList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; CBuild::Registry::GetTasksList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get list of registered tasks. </p>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::string&gt; -&gt; List of tasks </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00295">295</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00088">tasks</a>.</p>
 
 </div>
 </div>
@@ -352,11 +459,37 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classCBuild_1_1Toolchain.html" title="Toolchain class.">CBuild::Toolchain</a>* -&gt; pointer to toolchain or null if target with given id does not exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00134">134</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00166">166</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00074">name</a>, <a class="el" href="register_8cpp_source.html#l00068">targets</a>, and <a class="el" href="register_8cpp_source.html#l00066">task_executed</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00098">name</a>, <a class="el" href="register_8cpp_source.html#l00094">target_executed</a>, and <a class="el" href="register_8cpp_source.html#l00092">targets</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00460">CBuild::Toolchain::call()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00195">CBuild::MINGW_GXX::call()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00192">CBuild::MINGW_GCC::call()</a>, <a class="el" href="CBuild_8cpp_source.html#l00277">CBuild::loop()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00138">CBuild::MINGW_GXX::post_link()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00138">CBuild::MINGW_GCC::post_link()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00465">CBuild::Toolchain::call()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00194">CBuild::MINGW_GXX::call()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00191">CBuild::MINGW_GCC::call()</a>, <a class="el" href="generator_8cpp_source.html#l00120">CBuild::ccj_out::generate()</a>, <a class="el" href="CBuild_8cpp_source.html#l00285">CBuild::loop()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00145">CBuild::MINGW_GXX::post_link()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00142">CBuild::MINGW_GCC::post_link()</a>.</p>
+
+</div>
+</div>
+<a id="a287e70c1cd1bf3bc2b225b1541fcc75d" name="a287e70c1cd1bf3bc2b225b1541fcc75d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a287e70c1cd1bf3bc2b225b1541fcc75d">&#9670;&nbsp;</a></span>GetToolchainsList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; CBuild::Registry::GetToolchainsList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get list of registered toolchains. </p>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::string&gt; -&gt; List of toolchains </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00288">288</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00092">targets</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="cli__parser_8cpp_source.html#l00160">CBuild::build_handler()</a>.</p>
 
 </div>
 </div>
@@ -377,11 +510,54 @@ Variables</h2></td></tr>
 
 <p>Internal init. </p>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00082">82</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00107">107</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00060">help</a>, <a class="el" href="register_8cpp_source.html#l00061">initw</a>, and <a class="el" href="register_8cpp_source.html#l00088">RegistryTask()</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00084">ccjo</a>, <a class="el" href="register_8cpp_source.html#l00080">help</a>, <a class="el" href="register_8cpp_source.html#l00081">initw</a>, <a class="el" href="register_8cpp_source.html#l00085">makefileo</a>, <a class="el" href="register_8cpp_source.html#l00272">RegisterGenerator()</a>, <a class="el" href="register_8cpp_source.html#l00118">RegisterTask()</a>, and <a class="el" href="register_8cpp_source.html#l00082">ver</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00460">CBuild::Toolchain::call()</a>, and <a class="el" href="CBuild_8cpp_source.html#l00038">CBuild::parse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00465">CBuild::Toolchain::call()</a>, and <a class="el" href="cli__parser_8cpp_source.html#l00223">CBuild::parse()</a>.</p>
+
+</div>
+</div>
+<a id="a8eb12ac7f2bf89bed2526ff6a9722265" name="a8eb12ac7f2bf89bed2526ff6a9722265"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8eb12ac7f2bf89bed2526ff6a9722265">&#9670;&nbsp;</a></span>RegisterGenerator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CBuild::Registry::RegisterGenerator </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCBuild_1_1generator__base.html">CBuild::generator_base</a> *&#160;</td>
+          <td class="paramname"><em>gen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register generator for id. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gen</td><td>=&gt; <a class="el" href="classCBuild_1_1generator__base.html" title="Base for any generator.">CBuild::generator_base</a>* -&gt; Generator instance </td></tr>
+    <tr><td class="paramname">id</td><td>=&gt; std::string -&gt; Geneator id </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00272">272</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00103">generators</a>, <a class="el" href="print_8cpp_source.html#l00054">CBuild::print_full()</a>, and <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00107">init()</a>.</p>
 
 </div>
 </div>
@@ -420,9 +596,9 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00162">162</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00194">194</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00072">keywords</a>, <a class="el" href="print_8cpp_source.html#l00056">CBuild::print_full()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>, <a class="el" href="register_8cpp_source.html#l00088">RegistryTask()</a>, and <a class="el" href="Task_8cpp_source.html#l00030">CBuild::Task::self_name()</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00096">keywords</a>, <a class="el" href="print_8cpp_source.html#l00054">CBuild::print_full()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>, <a class="el" href="register_8cpp_source.html#l00118">RegisterTask()</a>, and <a class="el" href="Task_8cpp_source.html#l00028">CBuild::Task::self_name()</a>.</p>
 
 </div>
 </div>
@@ -450,20 +626,20 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00121">121</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00152">152</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00196">CBuild::Toolchain::get_id()</a>, <a class="el" href="print_8cpp_source.html#l00056">CBuild::print_full()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>, <a class="el" href="register_8cpp_source.html#l00068">targets</a>, and <a class="el" href="register_8cpp_source.html#l00066">task_executed</a>.</p>
+<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00197">CBuild::Toolchain::get_id()</a>, <a class="el" href="print_8cpp_source.html#l00054">CBuild::print_full()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>, <a class="el" href="register_8cpp_source.html#l00094">target_executed</a>, and <a class="el" href="register_8cpp_source.html#l00092">targets</a>.</p>
 
 </div>
 </div>
-<a id="aa8c4c391fb32f5f30b506917151e3f5e" name="aa8c4c391fb32f5f30b506917151e3f5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8c4c391fb32f5f30b506917151e3f5e">&#9670;&nbsp;</a></span>RegistryTask()</h2>
+<a id="a3e42b7607a1ed1f9903152a5b79169a6" name="a3e42b7607a1ed1f9903152a5b79169a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e42b7607a1ed1f9903152a5b79169a6">&#9670;&nbsp;</a></span>RegisterTask()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void CBuild::Registry::RegistryTask </td>
+          <td class="memname">void CBuild::Registry::RegisterTask </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classCBuild_1_1Task.html">CBuild::Task</a> *&#160;</td>
           <td class="paramname"><em>task</em></td><td>)</td>
@@ -480,11 +656,11 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00088">88</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00118">118</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8cpp_source.html#l00056">CBuild::print_full()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>, <a class="el" href="Task_8cpp_source.html#l00030">CBuild::Task::self_name()</a>, <a class="el" href="register_8cpp_source.html#l00066">task_executed</a>, and <a class="el" href="register_8cpp_source.html#l00064">tasks</a>.</p>
+<p class="reference">References <a class="el" href="print_8cpp_source.html#l00054">CBuild::print_full()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>, <a class="el" href="Task_8cpp_source.html#l00028">CBuild::Task::self_name()</a>, <a class="el" href="register_8cpp_source.html#l00090">task_executed</a>, and <a class="el" href="register_8cpp_source.html#l00088">tasks</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00082">init()</a>, and <a class="el" href="register_8cpp_source.html#l00162">RegisterKeyword()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00107">init()</a>, and <a class="el" href="register_8cpp_source.html#l00194">RegisterKeyword()</a>.</p>
 
 </div>
 </div>
@@ -512,9 +688,59 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00178">178</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00210">210</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00074">name</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00098">name</a>.</p>
+
+</div>
+</div>
+<a id="adc11a1c6c8872badacf6b98b178c8dad" name="adc11a1c6c8872badacf6b98b178c8dad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc11a1c6c8872badacf6b98b178c8dad">&#9670;&nbsp;</a></span>ToolchainAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CBuild::Registry::ToolchainAll </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>force</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; std::string &gt; *&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Call and execute all toolchains. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force</td><td>=&gt; bool -&gt; Compilation type </td></tr>
+    <tr><td class="paramname">path</td><td>=&gt; std::string -&gt; Base path </td></tr>
+    <tr><td class="paramname">args</td><td>=&gt; std::vector&lt;std::string&gt;* -&gt; PArgs </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00242">242</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00094">target_executed</a>, and <a class="el" href="register_8cpp_source.html#l00092">targets</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00285">CBuild::loop()</a>.</p>
 
 </div>
 </div>
@@ -531,9 +757,45 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00076">76</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00100">100</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00186">AddCompileArg()</a>, and <a class="el" href="register_8cpp_source.html#l00190">GetRebuildArgs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00218">AddCompileArg()</a>, and <a class="el" href="register_8cpp_source.html#l00222">GetRebuildArgs()</a>.</p>
+
+</div>
+</div>
+<a id="a18d80878eb822620071205e0acfa15bf" name="a18d80878eb822620071205e0acfa15bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18d80878eb822620071205e0acfa15bf">&#9670;&nbsp;</a></span>ccjo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCBuild_1_1ccj__out.html">CBuild::ccj_out</a> CBuild::Registry::ccjo</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00084">84</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00107">init()</a>.</p>
+
+</div>
+</div>
+<a id="a61b245e775896edb91dae4753117d06c" name="a61b245e775896edb91dae4753117d06c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61b245e775896edb91dae4753117d06c">&#9670;&nbsp;</a></span>generators</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt;std::string, <a class="el" href="classCBuild_1_1generator__base.html">CBuild::generator_base</a> *&gt; CBuild::Registry::generators</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00103">103</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00265">GetGenerator()</a>, <a class="el" href="register_8cpp_source.html#l00281">GetGeneratorsList()</a>, and <a class="el" href="register_8cpp_source.html#l00272">RegisterGenerator()</a>.</p>
 
 </div>
 </div>
@@ -549,9 +811,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00060">60</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00080">80</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00082">init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00107">init()</a>.</p>
 
 </div>
 </div>
@@ -567,9 +829,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00061">61</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00081">81</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00082">init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00107">init()</a>.</p>
 
 </div>
 </div>
@@ -585,9 +847,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00072">72</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00096">96</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00173">GetKeywordsList()</a>, and <a class="el" href="register_8cpp_source.html#l00162">RegisterKeyword()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00205">GetKeywordsList()</a>, and <a class="el" href="register_8cpp_source.html#l00194">RegisterKeyword()</a>.</p>
 
 </div>
 </div>
@@ -603,9 +865,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00077">77</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00101">101</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00182">AddLinkArg()</a>, and <a class="el" href="register_8cpp_source.html#l00190">GetRebuildArgs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00214">AddLinkArg()</a>, and <a class="el" href="register_8cpp_source.html#l00222">GetRebuildArgs()</a>.</p>
+
+</div>
+</div>
+<a id="ac77fcf96725fc778a205930c4e0e020e" name="ac77fcf96725fc778a205930c4e0e020e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac77fcf96725fc778a205930c4e0e020e">&#9670;&nbsp;</a></span>makefileo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCBuild_1_1makefile__out.html">CBuild::makefile_out</a> CBuild::Registry::makefileo</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00085">85</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00107">init()</a>.</p>
 
 </div>
 </div>
@@ -621,9 +901,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00074">74</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00098">98</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00100">CallTask()</a>, <a class="el" href="Build_8cpp_source.html#l00158">CBuild::Toolchain::depends_on_project()</a>, <a class="el" href="Build_8cpp_source.html#l00348">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="register_8cpp_source.html#l00190">GetRebuildArgs()</a>, <a class="el" href="register_8cpp_source.html#l00134">GetToolchain()</a>, <a class="el" href="CBuild_8cpp_source.html#l00277">CBuild::loop()</a>, <a class="el" href="Build_8cpp_source.html#l00558">CBuild::Toolchain::run()</a>, <a class="el" href="Task_8cpp_source.html#l00030">CBuild::Task::self_name()</a>, and <a class="el" href="register_8cpp_source.html#l00178">SetRebuildName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00131">CallTask()</a>, <a class="el" href="Build_8cpp_source.html#l00145">CBuild::Toolchain::depends_on_project()</a>, <a class="el" href="Build_8cpp_source.html#l00350">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="generator_8cpp_source.html#l00038">CBuild::makefile_out::generate()</a>, <a class="el" href="register_8cpp_source.html#l00222">GetRebuildArgs()</a>, <a class="el" href="register_8cpp_source.html#l00166">GetToolchain()</a>, <a class="el" href="Build_8cpp_source.html#l00559">CBuild::Toolchain::run()</a>, <a class="el" href="Task_8cpp_source.html#l00028">CBuild::Task::self_name()</a>, and <a class="el" href="register_8cpp_source.html#l00210">SetRebuildName()</a>.</p>
 
 </div>
 </div>
@@ -639,7 +919,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00070">70</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00094">94</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00166">GetToolchain()</a>, <a class="el" href="register_8cpp_source.html#l00152">RegisterTarget()</a>, and <a class="el" href="register_8cpp_source.html#l00242">ToolchainAll()</a>.</p>
 
 </div>
 </div>
@@ -655,9 +937,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00068">68</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00092">92</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00169">CBuild::Toolchain::add_file()</a>, <a class="el" href="Build_8cpp_source.html#l00180">CBuild::Toolchain::add_folder()</a>, <a class="el" href="Build_8cpp_source.html#l00211">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="register_8cpp_source.html#l00158">GetTargets()</a>, <a class="el" href="register_8cpp_source.html#l00134">GetToolchain()</a>, and <a class="el" href="register_8cpp_source.html#l00121">RegisterTarget()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00156">CBuild::Toolchain::add_file()</a>, <a class="el" href="Build_8cpp_source.html#l00167">CBuild::Toolchain::add_folder()</a>, <a class="el" href="Build_8cpp_source.html#l00198">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="register_8cpp_source.html#l00190">GetTargets()</a>, <a class="el" href="register_8cpp_source.html#l00166">GetToolchain()</a>, <a class="el" href="register_8cpp_source.html#l00288">GetToolchainsList()</a>, <a class="el" href="register_8cpp_source.html#l00152">RegisterTarget()</a>, and <a class="el" href="register_8cpp_source.html#l00242">ToolchainAll()</a>.</p>
 
 </div>
 </div>
@@ -673,9 +955,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00066">66</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00090">90</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00100">CallTask()</a>, <a class="el" href="register_8cpp_source.html#l00134">GetToolchain()</a>, <a class="el" href="register_8cpp_source.html#l00121">RegisterTarget()</a>, and <a class="el" href="register_8cpp_source.html#l00088">RegistryTask()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00131">CallTask()</a>, and <a class="el" href="register_8cpp_source.html#l00118">RegisterTask()</a>.</p>
 
 </div>
 </div>
@@ -691,9 +973,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00064">64</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00088">88</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00100">CallTask()</a>, and <a class="el" href="register_8cpp_source.html#l00088">RegistryTask()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00131">CallTask()</a>, <a class="el" href="register_8cpp_source.html#l00295">GetTasksList()</a>, and <a class="el" href="register_8cpp_source.html#l00118">RegisterTask()</a>.</p>
+
+</div>
+</div>
+<a id="ac0a25f7e534a13f3e65ff9688056e09f" name="ac0a25f7e534a13f3e65ff9688056e09f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0a25f7e534a13f3e65ff9688056e09f">&#9670;&nbsp;</a></span>ver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCBuild_1_1Version.html">CBuild::Version</a> CBuild::Registry::ver</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="register_8cpp_source.html#l00082">82</a> of file <a class="el" href="register_8cpp_source.html">register.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00107">init()</a>.</p>
 
 </div>
 </div>

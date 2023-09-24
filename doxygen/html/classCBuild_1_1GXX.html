@@ -170,21 +170,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aee91a9889d88b42f29e2a70a45ad0f38 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#aee91a9889d88b42f29e2a70a45ad0f38">depends_on_project</a> (std::string path, std::string <a class="el" href="classCBuild_1_1Toolchain.html#a42ef617b7966882e0c97d4158672ec15">name</a>, std::string <a class="el" href="classCBuild_1_1Toolchain.html#a6de8e7b8cca65e210d667b4f33b4fb03">id</a>, std::string headers_path)</td></tr>
 <tr class="memdesc:aee91a9889d88b42f29e2a70a45ad0f38 inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another <a class="el" href="namespaceCBuild.html" title="Filebuffer for CBuild ecosystem.">CBuild</a> project as dependency.  <a href="classCBuild_1_1Toolchain.html#aee91a9889d88b42f29e2a70a45ad0f38">More...</a><br /></td></tr>
 <tr class="separator:aee91a9889d88b42f29e2a70a45ad0f38 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afac032447eb8ed19b23f5c18c082ab6f inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#afac032447eb8ed19b23f5c18c082ab6f">set_thread_count</a> (int threads)</td></tr>
-<tr class="memdesc:afac032447eb8ed19b23f5c18c082ab6f inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the thread count for compiler, use -jx flag ! If -1 use -j, for autom optimization.  <a href="classCBuild_1_1Toolchain.html#afac032447eb8ed19b23f5c18c082ab6f">More...</a><br /></td></tr>
-<tr class="separator:afac032447eb8ed19b23f5c18c082ab6f inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac44b383e7b062d577057886d3c53a83e inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::string, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#ac44b383e7b062d577057886d3c53a83e">get_cmds</a> ()</td></tr>
+<tr class="memdesc:ac44b383e7b062d577057886d3c53a83e inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all three commands from class - compile, linker and packer.  <a href="classCBuild_1_1Toolchain.html#ac44b383e7b062d577057886d3c53a83e">More...</a><br /></td></tr>
+<tr class="separator:ac44b383e7b062d577057886d3c53a83e inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a451212189068322a8a4456b6ec98a0b1 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a451212189068322a8a4456b6ec98a0b1">gen_file_list_force</a> ()</td></tr>
+<tr class="memdesc:a451212189068322a8a4456b6ec98a0b1 inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate list of all files, that is tracked by this target.  <a href="classCBuild_1_1Toolchain.html#a451212189068322a8a4456b6ec98a0b1">More...</a><br /></td></tr>
+<tr class="separator:a451212189068322a8a4456b6ec98a0b1 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09ead0033006709357ac7ee6e1b0f66e inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a09ead0033006709357ac7ee6e1b0f66e">get_compile_args</a> ()</td></tr>
+<tr class="memdesc:a09ead0033006709357ac7ee6e1b0f66e inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get preprocessed compile args.  <a href="classCBuild_1_1Toolchain.html#a09ead0033006709357ac7ee6e1b0f66e">More...</a><br /></td></tr>
+<tr class="separator:a09ead0033006709357ac7ee6e1b0f66e inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a09469e91e25cc01bc380201f25cc7b9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1GXX.html#a09469e91e25cc01bc380201f25cc7b9b">build</a> ()</td></tr>
-<tr class="memdesc:a09469e91e25cc01bc380201f25cc7b9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build.  <a href="classCBuild_1_1GXX.html#a09469e91e25cc01bc380201f25cc7b9b">More...</a><br /></td></tr>
-<tr class="separator:a09469e91e25cc01bc380201f25cc7b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a176a3fa5aff2e1a023a0ef2eba0196bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1GXX.html#a176a3fa5aff2e1a023a0ef2eba0196bf">link</a> ()</td></tr>
-<tr class="memdesc:a176a3fa5aff2e1a023a0ef2eba0196bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linking.  <a href="classCBuild_1_1GXX.html#a176a3fa5aff2e1a023a0ef2eba0196bf">More...</a><br /></td></tr>
-<tr class="separator:a176a3fa5aff2e1a023a0ef2eba0196bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a956a1781d7e189a2b145a3f6c57aab6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1GXX.html#a956a1781d7e189a2b145a3f6c57aab6f">link_pack</a> ()</td></tr>
-<tr class="memdesc:a956a1781d7e189a2b145a3f6c57aab6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linking for static libraries.  <a href="classCBuild_1_1GXX.html#a956a1781d7e189a2b145a3f6c57aab6f">More...</a><br /></td></tr>
-<tr class="separator:a956a1781d7e189a2b145a3f6c57aab6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a877e3d672e4be2714f98c259658a957b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1GXX.html#a877e3d672e4be2714f98c259658a957b">build</a> () override</td></tr>
+<tr class="memdesc:a877e3d672e4be2714f98c259658a957b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build.  <a href="classCBuild_1_1GXX.html#a877e3d672e4be2714f98c259658a957b">More...</a><br /></td></tr>
+<tr class="separator:a877e3d672e4be2714f98c259658a957b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add83c06664b74760b9b827090b0931bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1GXX.html#add83c06664b74760b9b827090b0931bb">link</a> () override</td></tr>
+<tr class="memdesc:add83c06664b74760b9b827090b0931bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linking.  <a href="classCBuild_1_1GXX.html#add83c06664b74760b9b827090b0931bb">More...</a><br /></td></tr>
+<tr class="separator:add83c06664b74760b9b827090b0931bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a405b6d9d67356d90beccf9d422b5d903"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1GXX.html#a405b6d9d67356d90beccf9d422b5d903">link_pack</a> () override</td></tr>
+<tr class="memdesc:a405b6d9d67356d90beccf9d422b5d903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linking for static libraries.  <a href="classCBuild_1_1GXX.html#a405b6d9d67356d90beccf9d422b5d903">More...</a><br /></td></tr>
+<tr class="separator:a405b6d9d67356d90beccf9d422b5d903"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classCBuild_1_1Toolchain"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classCBuild_1_1Toolchain')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classCBuild_1_1Toolchain.html">CBuild::Toolchain</a></td></tr>
 <tr class="memitem:a589b707f242aee3f846fb511242f0112 inherit pro_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a589b707f242aee3f846fb511242f0112">pre_build</a> ()</td></tr>
 <tr class="memdesc:a589b707f242aee3f846fb511242f0112 inherit pro_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Before build.  <a href="classCBuild_1_1Toolchain.html#a589b707f242aee3f846fb511242f0112">More...</a><br /></td></tr>
@@ -268,7 +274,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00034">34</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00032">32</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acfc4d510a17f494e1c991abe79b81f8c" name="acfc4d510a17f494e1c991abe79b81f8c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acfc4d510a17f494e1c991abe79b81f8c">&#9670;&nbsp;</a></span>GXX() <span class="overload">[1/2]</span></h2>
@@ -302,9 +308,9 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00041">41</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00039">39</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00089">CBuild::Toolchain::compiler</a>, <a class="el" href="Build_8hpp_source.html#l00065">CBuild::Toolchain::id</a>, <a class="el" href="Build_8hpp_source.html#l00093">CBuild::Toolchain::linker</a>, and <a class="el" href="Build_8hpp_source.html#l00097">CBuild::Toolchain::packer</a>.</p>
+<p class="reference">References <a class="el" href="Build_8cpp_source.html#l00039">CBuild::Toolchain::add_compile_arg()</a>, <a class="el" href="Build_8cpp_source.html#l00045">CBuild::Toolchain::add_link_arg()</a>, <a class="el" href="Build_8hpp_source.html#l00090">CBuild::Toolchain::compiler</a>, <a class="el" href="Build_8hpp_source.html#l00066">CBuild::Toolchain::id</a>, <a class="el" href="Build_8hpp_source.html#l00094">CBuild::Toolchain::linker</a>, <a class="el" href="Build_8hpp_source.html#l00061">CBuild::Toolchain::name</a>, and <a class="el" href="Build_8hpp_source.html#l00098">CBuild::Toolchain::packer</a>.</p>
 
 </div>
 </div>
@@ -351,15 +357,15 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00054">54</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00057">57</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00089">CBuild::Toolchain::compiler</a>, <a class="el" href="Build_8hpp_source.html#l00065">CBuild::Toolchain::id</a>, <a class="el" href="Build_8hpp_source.html#l00093">CBuild::Toolchain::linker</a>, <a class="el" href="Build_8hpp_source.html#l00060">CBuild::Toolchain::name</a>, and <a class="el" href="Build_8hpp_source.html#l00097">CBuild::Toolchain::packer</a>.</p>
+<p class="reference">References <a class="el" href="Build_8cpp_source.html#l00039">CBuild::Toolchain::add_compile_arg()</a>, <a class="el" href="Build_8cpp_source.html#l00045">CBuild::Toolchain::add_link_arg()</a>, <a class="el" href="Build_8hpp_source.html#l00090">CBuild::Toolchain::compiler</a>, <a class="el" href="Build_8hpp_source.html#l00066">CBuild::Toolchain::id</a>, <a class="el" href="Build_8hpp_source.html#l00094">CBuild::Toolchain::linker</a>, <a class="el" href="Build_8hpp_source.html#l00061">CBuild::Toolchain::name</a>, and <a class="el" href="Build_8hpp_source.html#l00098">CBuild::Toolchain::packer</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a09469e91e25cc01bc380201f25cc7b9b" name="a09469e91e25cc01bc380201f25cc7b9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09469e91e25cc01bc380201f25cc7b9b">&#9670;&nbsp;</a></span>build()</h2>
+<a id="a877e3d672e4be2714f98c259658a957b" name="a877e3d672e4be2714f98c259658a957b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a877e3d672e4be2714f98c259658a957b">&#9670;&nbsp;</a></span>build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -376,7 +382,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -385,14 +391,14 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classCBuild_1_1Toolchain.html#a304690847efa8191ec66b1c966742d39">CBuild::Toolchain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00064">64</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00071">71</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00112">CBuild::Toolchain::args</a>, <a class="el" href="Build_8hpp_source.html#l00089">CBuild::Toolchain::compiler</a>, <a class="el" href="Build_8hpp_source.html#l00081">CBuild::Toolchain::compiler_args</a>, <a class="el" href="Build_8hpp_source.html#l00116">CBuild::Toolchain::force</a>, <a class="el" href="Build_8cpp_source.html#l00211">CBuild::Toolchain::gen_file_list()</a>, and <a class="el" href="system_8cpp_source.html#l00035">CBuild::system()</a>.</p>
+<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00113">CBuild::Toolchain::args</a>, <a class="el" href="Build_8hpp_source.html#l00090">CBuild::Toolchain::compiler</a>, <a class="el" href="Build_8hpp_source.html#l00082">CBuild::Toolchain::compiler_args</a>, <a class="el" href="Build_8hpp_source.html#l00117">CBuild::Toolchain::force</a>, <a class="el" href="Build_8cpp_source.html#l00198">CBuild::Toolchain::gen_file_list()</a>, and <a class="el" href="system_8cpp_source.html#l00034">CBuild::system()</a>.</p>
 
 </div>
 </div>
-<a id="a176a3fa5aff2e1a023a0ef2eba0196bf" name="a176a3fa5aff2e1a023a0ef2eba0196bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a176a3fa5aff2e1a023a0ef2eba0196bf">&#9670;&nbsp;</a></span>link()</h2>
+<a id="add83c06664b74760b9b827090b0931bb" name="add83c06664b74760b9b827090b0931bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add83c06664b74760b9b827090b0931bb">&#9670;&nbsp;</a></span>link()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -409,7 +415,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -418,14 +424,14 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classCBuild_1_1Toolchain.html#adf746115d76976ccd9916a37994b09e1">CBuild::Toolchain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00091">91</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00098">98</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00112">CBuild::Toolchain::args</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00049">CBUILD_BUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00041">CBUILD_BUILD_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00041">CBuild::fs::dir()</a>, <a class="el" href="Build_8cpp_source.html#l00348">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00085">CBuild::Toolchain::link_args</a>, <a class="el" href="Build_8hpp_source.html#l00093">CBuild::Toolchain::linker</a>, and <a class="el" href="system_8cpp_source.html#l00035">CBuild::system()</a>.</p>
+<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00113">CBuild::Toolchain::args</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00047">CBUILD_BUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00039">CBUILD_BUILD_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00039">CBuild::fs::dir()</a>, <a class="el" href="Build_8cpp_source.html#l00350">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00086">CBuild::Toolchain::link_args</a>, <a class="el" href="Build_8hpp_source.html#l00094">CBuild::Toolchain::linker</a>, and <a class="el" href="system_8cpp_source.html#l00034">CBuild::system()</a>.</p>
 
 </div>
 </div>
-<a id="a956a1781d7e189a2b145a3f6c57aab6f" name="a956a1781d7e189a2b145a3f6c57aab6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a956a1781d7e189a2b145a3f6c57aab6f">&#9670;&nbsp;</a></span>link_pack()</h2>
+<a id="a405b6d9d67356d90beccf9d422b5d903" name="a405b6d9d67356d90beccf9d422b5d903"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a405b6d9d67356d90beccf9d422b5d903">&#9670;&nbsp;</a></span>link_pack()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -442,7 +448,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -451,9 +457,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classCBuild_1_1Toolchain.html#a121ee5ea85b59529c7aa05ca8ca8255e">CBuild::Toolchain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00122">122</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00128">128</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00112">CBuild::Toolchain::args</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00049">CBUILD_BUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00041">CBUILD_BUILD_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00041">CBuild::fs::dir()</a>, <a class="el" href="Build_8cpp_source.html#l00348">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00085">CBuild::Toolchain::link_args</a>, <a class="el" href="Build_8hpp_source.html#l00097">CBuild::Toolchain::packer</a>, and <a class="el" href="system_8cpp_source.html#l00035">CBuild::system()</a>.</p>
+<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00113">CBuild::Toolchain::args</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00047">CBUILD_BUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00039">CBUILD_BUILD_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00039">CBuild::fs::dir()</a>, <a class="el" href="Build_8cpp_source.html#l00350">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00086">CBuild::Toolchain::link_args</a>, <a class="el" href="Build_8hpp_source.html#l00098">CBuild::Toolchain::packer</a>, and <a class="el" href="system_8cpp_source.html#l00034">CBuild::system()</a>.</p>
 
 </div>
 </div>

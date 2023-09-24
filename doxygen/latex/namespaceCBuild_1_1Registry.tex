@@ -5,7 +5,7 @@
 \item 
 void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9be19bd471349943095783bad96ed908}{init}} ()
 \begin{DoxyCompactList}\small\item\em Internal init. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{namespaceCBuild_1_1Registry_aa8c4c391fb32f5f30b506917151e3f5e}{Registry\+Task}} (\mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$task)
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a3e42b7607a1ed1f9903152a5b79169a6}{Register\+Task}} (\mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$task)
 \begin{DoxyCompactList}\small\item\em Register new task. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}{Call\+Task}} (std\+::string \mbox{\hyperlink{namespaceCBuild_1_1Registry_ad570aea7d453a3bde5ea92fb3fa7ff2c}{name}}, std\+::vector$<$ std\+::string $>$ args)
 \begin{DoxyCompactList}\small\item\em Run tasks. \end{DoxyCompactList}\item 
@@ -26,13 +26,31 @@ void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a552d1c75543fd4b4c1bbe19e011a6
 void \mbox{\hyperlink{namespaceCBuild_1_1Registry_aad2852a78f5aa5c9f84dc53b065cdee8}{Add\+Compile\+Arg}} (std\+::string arg)
 \begin{DoxyCompactList}\small\item\em Add compiler argument for \mbox{\hyperlink{namespaceCBuild}{CBuild}} rebuild. \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{namespaceCBuild_1_1Registry_aea482c73e78098645ac59484c470a378}{Get\+Rebuild\+Args}} ()
-\begin{DoxyCompactList}\small\item\em Get the rebuild args for \mbox{\hyperlink{namespaceCBuild}{CBuild}} executable. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get the rebuild args for \mbox{\hyperlink{namespaceCBuild}{CBuild}} executable. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_adc11a1c6c8872badacf6b98b178c8dad}{Toolchain\+All}} (bool force, std\+::string path, std\+::vector$<$ std\+::string $>$ $\ast$args)
+\begin{DoxyCompactList}\small\item\em Call and execute all toolchains. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}} $\ast$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9c2b86220190432fab63e0e35dd4b013}{Get\+Generator}} (std\+::string id)
+\begin{DoxyCompactList}\small\item\em Get generator for specified id. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a8eb12ac7f2bf89bed2526ff6a9722265}{Register\+Generator}} (\mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}} $\ast$gen, std\+::string id)
+\begin{DoxyCompactList}\small\item\em Register generator for id. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9c19ae2f5324c7ca9b45253e5611f152}{Get\+Generators\+List}} ()
+\begin{DoxyCompactList}\small\item\em Get list of registered generators. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a287e70c1cd1bf3bc2b225b1541fcc75d}{Get\+Toolchains\+List}} ()
+\begin{DoxyCompactList}\small\item\em Get list of registered toolchains. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_ac88a2cbba3e17e112024f808d76d2f23}{Get\+Tasks\+List}} ()
+\begin{DoxyCompactList}\small\item\em Get list of registered tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classCBuild_1_1Help}{CBuild\+::\+Help}} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a898d68a1fde4c705d15ab0fa2d24f72c}{help}}
 \item 
 \mbox{\hyperlink{classCBuild_1_1Init}{CBuild\+::\+Init}} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a127c9a77ac7122e3da3f35d0c9a6c207}{initw}}
+\item 
+\mbox{\hyperlink{classCBuild_1_1Version}{CBuild\+::\+Version}} \mbox{\hyperlink{namespaceCBuild_1_1Registry_ac0a25f7e534a13f3e65ff9688056e09f}{ver}}
+\item 
+\mbox{\hyperlink{classCBuild_1_1ccj__out}{CBuild\+::ccj\+\_\+out}} \mbox{\hyperlink{namespaceCBuild_1_1Registry_a18d80878eb822620071205e0acfa15bf}{ccjo}}
+\item 
+\mbox{\hyperlink{classCBuild_1_1makefile__out}{CBuild\+::makefile\+\_\+out}} \mbox{\hyperlink{namespaceCBuild_1_1Registry_ac77fcf96725fc778a205930c4e0e020e}{makefileo}}
 \item 
 \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, \mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$ $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a622b61aabaad12faedca87869fd5801f}{tasks}}
 \item 
@@ -49,6 +67,8 @@ std\+::string \mbox{\hyperlink{namespaceCBuild_1_1Registry_ad570aea7d453a3bde5ea
 std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a6eca36fd6b4fd820647efb4a0012827d}{cargs}}
 \item 
 std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_ae3c7a25d9c3252f87f44510df585e057}{largs}}
+\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, \mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}} $\ast$ $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a61b245e775896edb91dae4753117d06c}{generators}}
 \end{DoxyCompactItemize}
 
 
@@ -70,11 +90,11 @@ Add compiler argument for \mbox{\hyperlink{namespaceCBuild}{CBuild}} rebuild.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00186}{186}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00218}{218}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00076}{cargs}}.
+References \mbox{\hyperlink{register_8cpp_source_l00100}{cargs}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a552d1c75543fd4b4c1bbe19e011a6a22}\label{namespaceCBuild_1_1Registry_a552d1c75543fd4b4c1bbe19e011a6a22}} 
 \index{CBuild::Registry@{CBuild::Registry}!AddLinkArg@{AddLinkArg}}
@@ -93,11 +113,11 @@ Add linker arg for \mbox{\hyperlink{namespaceCBuild}{CBuild}} rebuild.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00182}{182}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00214}{214}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00077}{largs}}.
+References \mbox{\hyperlink{register_8cpp_source_l00101}{largs}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}\label{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}} 
 \index{CBuild::Registry@{CBuild::Registry}!CallTask@{CallTask}}
@@ -118,15 +138,70 @@ Run tasks.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00100}{100}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00131}{131}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00100}{Call\+Task()}}, \mbox{\hyperlink{register_8cpp_source_l00074}{name}}, \mbox{\hyperlink{print_8cpp_source_l00051}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, \mbox{\hyperlink{register_8cpp_source_l00066}{task\+\_\+executed}}, and \mbox{\hyperlink{register_8cpp_source_l00064}{tasks}}.
+References \mbox{\hyperlink{register_8cpp_source_l00131}{Call\+Task()}}, \mbox{\hyperlink{register_8cpp_source_l00098}{name}}, \mbox{\hyperlink{print_8cpp_source_l00049}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, \mbox{\hyperlink{register_8cpp_source_l00090}{task\+\_\+executed}}, and \mbox{\hyperlink{register_8cpp_source_l00088}{tasks}}.
 
 
 
-Referenced by \mbox{\hyperlink{Build_8cpp_source_l00460}{CBuild\+::\+Toolchain\+::call()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{register_8cpp_source_l00100}{Call\+Task()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00465}{CBuild\+::\+Toolchain\+::call()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{register_8cpp_source_l00131}{Call\+Task()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_a9c2b86220190432fab63e0e35dd4b013}\label{namespaceCBuild_1_1Registry_a9c2b86220190432fab63e0e35dd4b013}} 
+\index{CBuild::Registry@{CBuild::Registry}!GetGenerator@{GetGenerator}}
+\index{GetGenerator@{GetGenerator}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{GetGenerator()}{GetGenerator()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}} $\ast$ CBuild\+::\+Registry\+::\+Get\+Generator (\begin{DoxyParamCaption}\item[{std\+::string}]{id }\end{DoxyParamCaption})}
+
+
+
+Get generator for specified id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} Generator id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}}$\ast$ -\/\texorpdfstring{$>$}{>} Pointer to generator instance 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00265}{265}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{register_8cpp_source_l00103}{generators}}.
+
+
+
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_a9c19ae2f5324c7ca9b45253e5611f152}\label{namespaceCBuild_1_1Registry_a9c19ae2f5324c7ca9b45253e5611f152}} 
+\index{CBuild::Registry@{CBuild::Registry}!GetGeneratorsList@{GetGeneratorsList}}
+\index{GetGeneratorsList@{GetGeneratorsList}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{GetGeneratorsList()}{GetGeneratorsList()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ CBuild\+::\+Registry\+::\+Get\+Generators\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get list of registered generators. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::string$>$ -\/\texorpdfstring{$>$}{>} List of generators 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00281}{281}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{register_8cpp_source_l00103}{generators}}.
+
+
+
+Referenced by \mbox{\hyperlink{cli__parser_8cpp_source_l00133}{CBuild\+::generator\+\_\+handler()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a6b538efddd82cdc95d1506fba6a93b59}\label{namespaceCBuild_1_1Registry_a6b538efddd82cdc95d1506fba6a93b59}} 
 \index{CBuild::Registry@{CBuild::Registry}!GetKeywordsList@{GetKeywordsList}}
@@ -143,15 +218,11 @@ lib\+::map$<$std\+::string, std\+::string$>$ where key -\/ keyword, value -\/ ta
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00173}{173}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00205}{205}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00072}{keywords}}.
-
-
-
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00038}{CBuild\+::parse()}}.
+References \mbox{\hyperlink{register_8cpp_source_l00096}{keywords}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_aea482c73e78098645ac59484c470a378}\label{namespaceCBuild_1_1Registry_aea482c73e78098645ac59484c470a378}} 
 \index{CBuild::Registry@{CBuild::Registry}!GetRebuildArgs@{GetRebuildArgs}}
@@ -168,15 +239,15 @@ std\+::string -\/\texorpdfstring{$>$}{>} formatted arguments
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00190}{190}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00222}{222}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00076}{cargs}}, \mbox{\hyperlink{register_8cpp_source_l00077}{largs}}, and \mbox{\hyperlink{register_8cpp_source_l00074}{name}}.
+References \mbox{\hyperlink{register_8cpp_source_l00100}{cargs}}, \mbox{\hyperlink{register_8cpp_source_l00101}{largs}}, and \mbox{\hyperlink{register_8cpp_source_l00098}{name}}.
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00591}{CBuild\+::rebuild()}}.
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00562}{CBuild\+::rebuild()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a80b8ee3e1ed5dba24027e6e486e599b1}\label{namespaceCBuild_1_1Registry_a80b8ee3e1ed5dba24027e6e486e599b1}} 
 \index{CBuild::Registry@{CBuild::Registry}!GetTargets@{GetTargets}}
@@ -193,11 +264,32 @@ lib\+::map$<$std\+::string, CBuild\+::\+Toolchain$\ast$$>$
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00158}{158}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00190}{190}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00068}{targets}}.
+References \mbox{\hyperlink{register_8cpp_source_l00092}{targets}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_ac88a2cbba3e17e112024f808d76d2f23}\label{namespaceCBuild_1_1Registry_ac88a2cbba3e17e112024f808d76d2f23}} 
+\index{CBuild::Registry@{CBuild::Registry}!GetTasksList@{GetTasksList}}
+\index{GetTasksList@{GetTasksList}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{GetTasksList()}{GetTasksList()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ CBuild\+::\+Registry\+::\+Get\+Tasks\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get list of registered tasks. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::string$>$ -\/\texorpdfstring{$>$}{>} List of tasks 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00295}{295}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{register_8cpp_source_l00088}{tasks}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a2b1eddd86007d7ce185071dd004a5036}\label{namespaceCBuild_1_1Registry_a2b1eddd86007d7ce185071dd004a5036}} 
 \index{CBuild::Registry@{CBuild::Registry}!GetToolchain@{GetToolchain}}
@@ -221,15 +313,40 @@ Get the registered toolchain.
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00134}{134}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00166}{166}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00074}{name}}, \mbox{\hyperlink{register_8cpp_source_l00068}{targets}}, and \mbox{\hyperlink{register_8cpp_source_l00066}{task\+\_\+executed}}.
+References \mbox{\hyperlink{register_8cpp_source_l00098}{name}}, \mbox{\hyperlink{register_8cpp_source_l00094}{target\+\_\+executed}}, and \mbox{\hyperlink{register_8cpp_source_l00092}{targets}}.
 
 
 
-Referenced by \mbox{\hyperlink{Build_8cpp_source_l00460}{CBuild\+::\+Toolchain\+::call()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00138}{CBuild\+::\+MINGW\+\_\+\+GXX\+::post\+\_\+link()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00138}{CBuild\+::\+MINGW\+\_\+\+GCC\+::post\+\_\+link()}}.
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00465}{CBuild\+::\+Toolchain\+::call()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{generator_8cpp_source_l00120}{CBuild\+::ccj\+\_\+out\+::generate()}}, \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00145}{CBuild\+::\+MINGW\+\_\+\+GXX\+::post\+\_\+link()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00142}{CBuild\+::\+MINGW\+\_\+\+GCC\+::post\+\_\+link()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_a287e70c1cd1bf3bc2b225b1541fcc75d}\label{namespaceCBuild_1_1Registry_a287e70c1cd1bf3bc2b225b1541fcc75d}} 
+\index{CBuild::Registry@{CBuild::Registry}!GetToolchainsList@{GetToolchainsList}}
+\index{GetToolchainsList@{GetToolchainsList}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{GetToolchainsList()}{GetToolchainsList()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ CBuild\+::\+Registry\+::\+Get\+Toolchains\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get list of registered toolchains. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::string$>$ -\/\texorpdfstring{$>$}{>} List of toolchains 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00288}{288}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{register_8cpp_source_l00092}{targets}}.
+
+
+
+Referenced by \mbox{\hyperlink{cli__parser_8cpp_source_l00160}{CBuild\+::build\+\_\+handler()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a9be19bd471349943095783bad96ed908}\label{namespaceCBuild_1_1Registry_a9be19bd471349943095783bad96ed908}} 
 \index{CBuild::Registry@{CBuild::Registry}!init@{init}}
@@ -243,15 +360,44 @@ Internal init.
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00082}{82}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00107}{107}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00060}{help}}, \mbox{\hyperlink{register_8cpp_source_l00061}{initw}}, and \mbox{\hyperlink{register_8cpp_source_l00088}{Registry\+Task()}}.
+References \mbox{\hyperlink{register_8cpp_source_l00084}{ccjo}}, \mbox{\hyperlink{register_8cpp_source_l00080}{help}}, \mbox{\hyperlink{register_8cpp_source_l00081}{initw}}, \mbox{\hyperlink{register_8cpp_source_l00085}{makefileo}}, \mbox{\hyperlink{register_8cpp_source_l00272}{Register\+Generator()}}, \mbox{\hyperlink{register_8cpp_source_l00118}{Register\+Task()}}, and \mbox{\hyperlink{register_8cpp_source_l00082}{ver}}.
 
 
 
-Referenced by \mbox{\hyperlink{Build_8cpp_source_l00460}{CBuild\+::\+Toolchain\+::call()}}, and \mbox{\hyperlink{CBuild_8cpp_source_l00038}{CBuild\+::parse()}}.
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00465}{CBuild\+::\+Toolchain\+::call()}}, and \mbox{\hyperlink{cli__parser_8cpp_source_l00223}{CBuild\+::parse()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_a8eb12ac7f2bf89bed2526ff6a9722265}\label{namespaceCBuild_1_1Registry_a8eb12ac7f2bf89bed2526ff6a9722265}} 
+\index{CBuild::Registry@{CBuild::Registry}!RegisterGenerator@{RegisterGenerator}}
+\index{RegisterGenerator@{RegisterGenerator}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{RegisterGenerator()}{RegisterGenerator()}}
+{\footnotesize\ttfamily void CBuild\+::\+Registry\+::\+Register\+Generator (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}} $\ast$}]{gen,  }\item[{std\+::string}]{id }\end{DoxyParamCaption})}
+
+
+
+Register generator for id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em gen} & =\texorpdfstring{$>$}{>} \mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}}$\ast$ -\/\texorpdfstring{$>$}{>} Generator instance \\
+\hline
+{\em id} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} Geneator id \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00272}{272}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{register_8cpp_source_l00103}{generators}}, \mbox{\hyperlink{print_8cpp_source_l00054}{CBuild\+::print\+\_\+full()}}, and \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}.
+
+
+
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00107}{init()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_ac2a13262b5b36758289f9cca42ce13e2}\label{namespaceCBuild_1_1Registry_ac2a13262b5b36758289f9cca42ce13e2}} 
 \index{CBuild::Registry@{CBuild::Registry}!RegisterKeyword@{RegisterKeyword}}
@@ -272,11 +418,11 @@ Register new keyord for parsing, ! Dangerous, owerwriting existing keywords can 
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00162}{162}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00194}{194}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00072}{keywords}}, \mbox{\hyperlink{print_8cpp_source_l00056}{CBuild\+::print\+\_\+full()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, \mbox{\hyperlink{register_8cpp_source_l00088}{Registry\+Task()}}, and \mbox{\hyperlink{Task_8cpp_source_l00030}{CBuild\+::\+Task\+::self\+\_\+name()}}.
+References \mbox{\hyperlink{register_8cpp_source_l00096}{keywords}}, \mbox{\hyperlink{print_8cpp_source_l00054}{CBuild\+::print\+\_\+full()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, \mbox{\hyperlink{register_8cpp_source_l00118}{Register\+Task()}}, and \mbox{\hyperlink{Task_8cpp_source_l00028}{CBuild\+::\+Task\+::self\+\_\+name()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_ad02f9738893f725b263013012f886f26}\label{namespaceCBuild_1_1Registry_ad02f9738893f725b263013012f886f26}} 
 \index{CBuild::Registry@{CBuild::Registry}!RegisterTarget@{RegisterTarget}}
@@ -295,17 +441,17 @@ Register new target for build.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00121}{121}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00152}{152}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{Build_8hpp_source_l00196}{CBuild\+::\+Toolchain\+::get\+\_\+id()}}, \mbox{\hyperlink{print_8cpp_source_l00056}{CBuild\+::print\+\_\+full()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, \mbox{\hyperlink{register_8cpp_source_l00068}{targets}}, and \mbox{\hyperlink{register_8cpp_source_l00066}{task\+\_\+executed}}.
+References \mbox{\hyperlink{Build_8hpp_source_l00197}{CBuild\+::\+Toolchain\+::get\+\_\+id()}}, \mbox{\hyperlink{print_8cpp_source_l00054}{CBuild\+::print\+\_\+full()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, \mbox{\hyperlink{register_8cpp_source_l00094}{target\+\_\+executed}}, and \mbox{\hyperlink{register_8cpp_source_l00092}{targets}}.
 
-\mbox{\Hypertarget{namespaceCBuild_1_1Registry_aa8c4c391fb32f5f30b506917151e3f5e}\label{namespaceCBuild_1_1Registry_aa8c4c391fb32f5f30b506917151e3f5e}} 
-\index{CBuild::Registry@{CBuild::Registry}!RegistryTask@{RegistryTask}}
-\index{RegistryTask@{RegistryTask}!CBuild::Registry@{CBuild::Registry}}
-\doxysubsubsection{\texorpdfstring{RegistryTask()}{RegistryTask()}}
-{\footnotesize\ttfamily void CBuild\+::\+Registry\+::\+Registry\+Task (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$}]{task }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_a3e42b7607a1ed1f9903152a5b79169a6}\label{namespaceCBuild_1_1Registry_a3e42b7607a1ed1f9903152a5b79169a6}} 
+\index{CBuild::Registry@{CBuild::Registry}!RegisterTask@{RegisterTask}}
+\index{RegisterTask@{RegisterTask}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{RegisterTask()}{RegisterTask()}}
+{\footnotesize\ttfamily void CBuild\+::\+Registry\+::\+Register\+Task (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$}]{task }\end{DoxyParamCaption})}
 
 
 
@@ -318,15 +464,15 @@ Register new task.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00088}{88}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00118}{118}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{print_8cpp_source_l00056}{CBuild\+::print\+\_\+full()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, \mbox{\hyperlink{Task_8cpp_source_l00030}{CBuild\+::\+Task\+::self\+\_\+name()}}, \mbox{\hyperlink{register_8cpp_source_l00066}{task\+\_\+executed}}, and \mbox{\hyperlink{register_8cpp_source_l00064}{tasks}}.
+References \mbox{\hyperlink{print_8cpp_source_l00054}{CBuild\+::print\+\_\+full()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, \mbox{\hyperlink{Task_8cpp_source_l00028}{CBuild\+::\+Task\+::self\+\_\+name()}}, \mbox{\hyperlink{register_8cpp_source_l00090}{task\+\_\+executed}}, and \mbox{\hyperlink{register_8cpp_source_l00088}{tasks}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00082}{init()}}, and \mbox{\hyperlink{register_8cpp_source_l00162}{Register\+Keyword()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00107}{init()}}, and \mbox{\hyperlink{register_8cpp_source_l00194}{Register\+Keyword()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a52caf93d8f2358ace59cf256f3ed6ebf}\label{namespaceCBuild_1_1Registry_a52caf93d8f2358ace59cf256f3ed6ebf}} 
 \index{CBuild::Registry@{CBuild::Registry}!SetRebuildName@{SetRebuildName}}
@@ -345,11 +491,42 @@ Set the rebuilt \mbox{\hyperlink{namespaceCBuild}{CBuild}} executable name.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00178}{178}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00210}{210}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00074}{name}}.
+References \mbox{\hyperlink{register_8cpp_source_l00098}{name}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_adc11a1c6c8872badacf6b98b178c8dad}\label{namespaceCBuild_1_1Registry_adc11a1c6c8872badacf6b98b178c8dad}} 
+\index{CBuild::Registry@{CBuild::Registry}!ToolchainAll@{ToolchainAll}}
+\index{ToolchainAll@{ToolchainAll}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{ToolchainAll()}{ToolchainAll()}}
+{\footnotesize\ttfamily void CBuild\+::\+Registry\+::\+Toolchain\+All (\begin{DoxyParamCaption}\item[{bool}]{force,  }\item[{std\+::string}]{path,  }\item[{std\+::vector$<$ std\+::string $>$ $\ast$}]{args }\end{DoxyParamCaption})}
+
+
+
+Call and execute all toolchains. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em force} & =\texorpdfstring{$>$}{>} bool -\/\texorpdfstring{$>$}{>} Compilation type \\
+\hline
+{\em path} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} Base path \\
+\hline
+{\em args} & =\texorpdfstring{$>$}{>} std\+::vector$<$std\+::string$>$$\ast$ -\/\texorpdfstring{$>$}{>} PArgs \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00242}{242}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+References \mbox{\hyperlink{register_8cpp_source_l00094}{target\+\_\+executed}}, and \mbox{\hyperlink{register_8cpp_source_l00092}{targets}}.
+
+
+
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
 
 
 
@@ -362,11 +539,39 @@ References \mbox{\hyperlink{register_8cpp_source_l00074}{name}}.
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00076}{76}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00100}{100}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00186}{Add\+Compile\+Arg()}}, and \mbox{\hyperlink{register_8cpp_source_l00190}{Get\+Rebuild\+Args()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00218}{Add\+Compile\+Arg()}}, and \mbox{\hyperlink{register_8cpp_source_l00222}{Get\+Rebuild\+Args()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_a18d80878eb822620071205e0acfa15bf}\label{namespaceCBuild_1_1Registry_a18d80878eb822620071205e0acfa15bf}} 
+\index{CBuild::Registry@{CBuild::Registry}!ccjo@{ccjo}}
+\index{ccjo@{ccjo}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{ccjo}{ccjo}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCBuild_1_1ccj__out}{CBuild\+::ccj\+\_\+out}} CBuild\+::\+Registry\+::ccjo}
+
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00084}{84}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00107}{init()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_a61b245e775896edb91dae4753117d06c}\label{namespaceCBuild_1_1Registry_a61b245e775896edb91dae4753117d06c}} 
+\index{CBuild::Registry@{CBuild::Registry}!generators@{generators}}
+\index{generators@{generators}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{generators}{generators}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$std\+::string, \mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}} $\ast$$>$ CBuild\+::\+Registry\+::generators}
+
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00103}{103}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00265}{Get\+Generator()}}, \mbox{\hyperlink{register_8cpp_source_l00281}{Get\+Generators\+List()}}, and \mbox{\hyperlink{register_8cpp_source_l00272}{Register\+Generator()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a898d68a1fde4c705d15ab0fa2d24f72c}\label{namespaceCBuild_1_1Registry_a898d68a1fde4c705d15ab0fa2d24f72c}} 
 \index{CBuild::Registry@{CBuild::Registry}!help@{help}}
@@ -376,11 +581,11 @@ Referenced by \mbox{\hyperlink{register_8cpp_source_l00186}{Add\+Compile\+Arg()}
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00060}{60}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00080}{80}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00082}{init()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00107}{init()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a127c9a77ac7122e3da3f35d0c9a6c207}\label{namespaceCBuild_1_1Registry_a127c9a77ac7122e3da3f35d0c9a6c207}} 
 \index{CBuild::Registry@{CBuild::Registry}!initw@{initw}}
@@ -390,11 +595,11 @@ Referenced by \mbox{\hyperlink{register_8cpp_source_l00082}{init()}}.
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00061}{61}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00081}{81}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00082}{init()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00107}{init()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a9766563e4b786c01ab14376dd32eebe6}\label{namespaceCBuild_1_1Registry_a9766563e4b786c01ab14376dd32eebe6}} 
 \index{CBuild::Registry@{CBuild::Registry}!keywords@{keywords}}
@@ -404,11 +609,11 @@ Referenced by \mbox{\hyperlink{register_8cpp_source_l00082}{init()}}.
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00072}{72}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00096}{96}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00173}{Get\+Keywords\+List()}}, and \mbox{\hyperlink{register_8cpp_source_l00162}{Register\+Keyword()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00205}{Get\+Keywords\+List()}}, and \mbox{\hyperlink{register_8cpp_source_l00194}{Register\+Keyword()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_ae3c7a25d9c3252f87f44510df585e057}\label{namespaceCBuild_1_1Registry_ae3c7a25d9c3252f87f44510df585e057}} 
 \index{CBuild::Registry@{CBuild::Registry}!largs@{largs}}
@@ -418,11 +623,25 @@ Referenced by \mbox{\hyperlink{register_8cpp_source_l00173}{Get\+Keywords\+List(
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00077}{77}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00101}{101}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00182}{Add\+Link\+Arg()}}, and \mbox{\hyperlink{register_8cpp_source_l00190}{Get\+Rebuild\+Args()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00214}{Add\+Link\+Arg()}}, and \mbox{\hyperlink{register_8cpp_source_l00222}{Get\+Rebuild\+Args()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_ac77fcf96725fc778a205930c4e0e020e}\label{namespaceCBuild_1_1Registry_ac77fcf96725fc778a205930c4e0e020e}} 
+\index{CBuild::Registry@{CBuild::Registry}!makefileo@{makefileo}}
+\index{makefileo@{makefileo}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{makefileo}{makefileo}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCBuild_1_1makefile__out}{CBuild\+::makefile\+\_\+out}} CBuild\+::\+Registry\+::makefileo}
+
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00085}{85}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00107}{init()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_ad570aea7d453a3bde5ea92fb3fa7ff2c}\label{namespaceCBuild_1_1Registry_ad570aea7d453a3bde5ea92fb3fa7ff2c}} 
 \index{CBuild::Registry@{CBuild::Registry}!name@{name}}
@@ -432,11 +651,11 @@ Referenced by \mbox{\hyperlink{register_8cpp_source_l00182}{Add\+Link\+Arg()}}, 
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00074}{74}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00098}{98}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00100}{Call\+Task()}}, \mbox{\hyperlink{Build_8cpp_source_l00158}{CBuild\+::\+Toolchain\+::depends\+\_\+on\+\_\+project()}}, \mbox{\hyperlink{Build_8cpp_source_l00348}{CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{register_8cpp_source_l00190}{Get\+Rebuild\+Args()}}, \mbox{\hyperlink{register_8cpp_source_l00134}{Get\+Toolchain()}}, \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}, \mbox{\hyperlink{Build_8cpp_source_l00558}{CBuild\+::\+Toolchain\+::run()}}, \mbox{\hyperlink{Task_8cpp_source_l00030}{CBuild\+::\+Task\+::self\+\_\+name()}}, and \mbox{\hyperlink{register_8cpp_source_l00178}{Set\+Rebuild\+Name()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00131}{Call\+Task()}}, \mbox{\hyperlink{Build_8cpp_source_l00145}{CBuild\+::\+Toolchain\+::depends\+\_\+on\+\_\+project()}}, \mbox{\hyperlink{Build_8cpp_source_l00350}{CBuild\+::\+Toolchain\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{generator_8cpp_source_l00038}{CBuild\+::makefile\+\_\+out\+::generate()}}, \mbox{\hyperlink{register_8cpp_source_l00222}{Get\+Rebuild\+Args()}}, \mbox{\hyperlink{register_8cpp_source_l00166}{Get\+Toolchain()}}, \mbox{\hyperlink{Build_8cpp_source_l00559}{CBuild\+::\+Toolchain\+::run()}}, \mbox{\hyperlink{Task_8cpp_source_l00028}{CBuild\+::\+Task\+::self\+\_\+name()}}, and \mbox{\hyperlink{register_8cpp_source_l00210}{Set\+Rebuild\+Name()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_aca54837e829e5a288440c5ec214b1843}\label{namespaceCBuild_1_1Registry_aca54837e829e5a288440c5ec214b1843}} 
 \index{CBuild::Registry@{CBuild::Registry}!target\_executed@{target\_executed}}
@@ -446,7 +665,11 @@ Referenced by \mbox{\hyperlink{register_8cpp_source_l00100}{Call\+Task()}}, \mbo
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00070}{70}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00094}{94}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00166}{Get\+Toolchain()}}, \mbox{\hyperlink{register_8cpp_source_l00152}{Register\+Target()}}, and \mbox{\hyperlink{register_8cpp_source_l00242}{Toolchain\+All()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a9051b3f36a18fe20cfbda218824a950e}\label{namespaceCBuild_1_1Registry_a9051b3f36a18fe20cfbda218824a950e}} 
 \index{CBuild::Registry@{CBuild::Registry}!targets@{targets}}
@@ -456,11 +679,11 @@ Definition at line \mbox{\hyperlink{register_8cpp_source_l00070}{70}} of file \m
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00068}{68}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00092}{92}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{Build_8cpp_source_l00169}{CBuild\+::\+Toolchain\+::add\+\_\+file()}}, \mbox{\hyperlink{Build_8cpp_source_l00180}{CBuild\+::\+Toolchain\+::add\+\_\+folder()}}, \mbox{\hyperlink{Build_8cpp_source_l00211}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, \mbox{\hyperlink{register_8cpp_source_l00158}{Get\+Targets()}}, \mbox{\hyperlink{register_8cpp_source_l00134}{Get\+Toolchain()}}, and \mbox{\hyperlink{register_8cpp_source_l00121}{Register\+Target()}}.
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00156}{CBuild\+::\+Toolchain\+::add\+\_\+file()}}, \mbox{\hyperlink{Build_8cpp_source_l00167}{CBuild\+::\+Toolchain\+::add\+\_\+folder()}}, \mbox{\hyperlink{Build_8cpp_source_l00198}{CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list()}}, \mbox{\hyperlink{register_8cpp_source_l00190}{Get\+Targets()}}, \mbox{\hyperlink{register_8cpp_source_l00166}{Get\+Toolchain()}}, \mbox{\hyperlink{register_8cpp_source_l00288}{Get\+Toolchains\+List()}}, \mbox{\hyperlink{register_8cpp_source_l00152}{Register\+Target()}}, and \mbox{\hyperlink{register_8cpp_source_l00242}{Toolchain\+All()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a7610e0427b2f16ddcd1cd7c01dc11229}\label{namespaceCBuild_1_1Registry_a7610e0427b2f16ddcd1cd7c01dc11229}} 
 \index{CBuild::Registry@{CBuild::Registry}!task\_executed@{task\_executed}}
@@ -470,11 +693,11 @@ Referenced by \mbox{\hyperlink{Build_8cpp_source_l00169}{CBuild\+::\+Toolchain\+
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00066}{66}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00090}{90}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00100}{Call\+Task()}}, \mbox{\hyperlink{register_8cpp_source_l00134}{Get\+Toolchain()}}, \mbox{\hyperlink{register_8cpp_source_l00121}{Register\+Target()}}, and \mbox{\hyperlink{register_8cpp_source_l00088}{Registry\+Task()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00131}{Call\+Task()}}, and \mbox{\hyperlink{register_8cpp_source_l00118}{Register\+Task()}}.
 
 \mbox{\Hypertarget{namespaceCBuild_1_1Registry_a622b61aabaad12faedca87869fd5801f}\label{namespaceCBuild_1_1Registry_a622b61aabaad12faedca87869fd5801f}} 
 \index{CBuild::Registry@{CBuild::Registry}!tasks@{tasks}}
@@ -484,9 +707,23 @@ Referenced by \mbox{\hyperlink{register_8cpp_source_l00100}{Call\+Task()}}, \mbo
 
 
 
-Definition at line \mbox{\hyperlink{register_8cpp_source_l00064}{64}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00088}{88}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00100}{Call\+Task()}}, and \mbox{\hyperlink{register_8cpp_source_l00088}{Registry\+Task()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00131}{Call\+Task()}}, \mbox{\hyperlink{register_8cpp_source_l00295}{Get\+Tasks\+List()}}, and \mbox{\hyperlink{register_8cpp_source_l00118}{Register\+Task()}}.
+
+\mbox{\Hypertarget{namespaceCBuild_1_1Registry_ac0a25f7e534a13f3e65ff9688056e09f}\label{namespaceCBuild_1_1Registry_ac0a25f7e534a13f3e65ff9688056e09f}} 
+\index{CBuild::Registry@{CBuild::Registry}!ver@{ver}}
+\index{ver@{ver}!CBuild::Registry@{CBuild::Registry}}
+\doxysubsubsection{\texorpdfstring{ver}{ver}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCBuild_1_1Version}{CBuild\+::\+Version}} CBuild\+::\+Registry\+::ver}
+
+
+
+Definition at line \mbox{\hyperlink{register_8cpp_source_l00082}{82}} of file \mbox{\hyperlink{register_8cpp_source}{register.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00107}{init()}}.
 

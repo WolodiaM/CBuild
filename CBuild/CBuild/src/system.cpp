@@ -2,9 +2,7 @@
  * @file system.cpp
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief custom system() wrapper
- * @version 1.0
  * @date 2023-03-11
- *
  *
  * @license GPL v3.0 or later
  *
@@ -30,25 +28,34 @@
 /* namespace CBuild */
 namespace CBuild {
 std::vector<std::string> log;
-}  // namespace CBuild
+bool			 enabled = true;
+} // namespace CBuild
 /* system.hpp */
-void CBuild::system(std::string cmd) {
-	CBuild::log.push_back(cmd);
-	CBuild::print(cmd, CBuild::color::BLUE);
-	std::system(cmd.c_str());
+int CBuild::system(std::string cmd) {
+  CBuild::log.push_back(cmd);
+  int ret = -1;
+  if (CBuild::enabled) {
+    CBuild::print(cmd, CBuild::color::BLUE);
+    ret = std::system(cmd.c_str());
+  }
+  return ret;
 }
 std::string CBuild::system_piped(std::string cmd, unsigned int buffsize) {
-	CBuild::log.push_back(cmd);
-	CBuild::print(cmd, CBuild::color::BLUE);
-	std::string ret;
-	char* buffer = (char*)malloc(buffsize);
-	FILE* pipe = popen(cmd.c_str(), "r");
-	size_t bytesread;
-	while ((bytesread = fread(buffer, sizeof(buffer[0]), sizeof(buffer),
-				  pipe)) != 0) {
-		ret += std::string(buffer, bytesread);
-	}
-	pclose(pipe);
-	return ret;
+  CBuild::log.push_back(cmd);
+  if (CBuild::enabled) {
+    CBuild::print(cmd, CBuild::color::BLUE);
+    std::string ret    = "";
+    char       *buffer = (char *)malloc(buffsize);
+    FILE       *pipe   = popen(cmd.c_str(), "r");
+    size_t	bytesread;
+    while ((bytesread =
+		fread(buffer, sizeof(buffer[0]), sizeof(buffer), pipe)) != 0) {
+      ret += std::string(buffer, bytesread);
+    }
+    pclose(pipe);
+    return ret;
+  }
+  return "";
 }
-std::vector<std::string>* CBuild::get_log() { return &CBuild::log; }
+std::vector<std::string> *CBuild::get_log() { return &CBuild::log; }
+void			  CBuild::disable_system() { CBuild::enabled = false; }

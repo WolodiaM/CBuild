@@ -35,16 +35,16 @@ Simple pair of values, have \char`\"{}==\char`\"{} operator implemented.
 
 
 \begin{DoxyTemplParams}{Template Parameters}
-{\em \+\_\+K} & Key, if this will be added to map need to have \char`\"{}==\char`\"{} operator implemented \\
+{\em \+\_\+K} & -\/\texorpdfstring{$>$}{>} Key, if this will be added to map need to have \char`\"{}==\char`\"{} operator implemented \\
 \hline
-{\em \+\_\+D} & Value ~\newline
+{\em \+\_\+D} & -\/\texorpdfstring{$>$}{>} Value ~\newline
  All types must implement \char`\"{}=\char`\"{} operator ~\newline
- If operator \char`\"{}==\char`\"{} is used all types must implement it\textquotesingle{}s own operators \char`\"{}==\char`\"{} \\
+ All types must implement \char`\"{}==\char`\"{} operator \\
 \hline
 \end{DoxyTemplParams}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00039}{39}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00037}{37}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
@@ -63,7 +63,7 @@ Construct a new map data object, ~\newline
 
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00049}{49}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00047}{47}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 \mbox{\Hypertarget{classlib_1_1mapData_a7b37ba74177713d4e11daed3aaf08a92}\label{classlib_1_1mapData_a7b37ba74177713d4e11daed3aaf08a92}} 
 \index{lib::mapData$<$ \_K, \_D $>$@{lib::mapData$<$ \_K, \_D $>$}!mapData@{mapData}}
@@ -78,18 +78,18 @@ Construct a new map data object.
 
 
 \begin{DoxyParams}{Parameters}
-{\em key} & Key \\
+{\em key} & =\texorpdfstring{$>$}{>} \+\_\+K -\/\texorpdfstring{$>$}{>} Key \\
 \hline
-{\em data} & Value \\
+{\em data} & =\texorpdfstring{$>$}{>} \+\_\+D -\/\texorpdfstring{$>$}{>} Value \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00056}{56}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00054}{54}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00042}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::data}}, and \mbox{\hyperlink{map_8hpp_source_l00041}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
+References \mbox{\hyperlink{map_8hpp_source_l00040}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::data}}, and \mbox{\hyperlink{map_8hpp_source_l00039}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
 
 
 
@@ -107,21 +107,21 @@ If ((this.\+key == val.\+key) \&\& (this.\+data == val.\+data))
 
 
 \begin{DoxyParams}{Parameters}
-{\em val} & Another \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}} \\
+{\em val} & =\texorpdfstring{$>$}{>} lib\+::map\+Data$<$\+\_\+\+K, \+\_\+\+D$>$ -\/\texorpdfstring{$>$}{>} Another \mbox{\hyperlink{classlib_1_1mapData}{map\+Data}} \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-true Two object is equals 
+true -\/\texorpdfstring{$>$}{>} Two object is equals 
 
-false Two object is different 
+false -\/\texorpdfstring{$>$}{>} Two object is different 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00067}{67}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00064}{64}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00042}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::data}}, and \mbox{\hyperlink{map_8hpp_source_l00041}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
+References \mbox{\hyperlink{map_8hpp_source_l00040}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::data}}, and \mbox{\hyperlink{map_8hpp_source_l00039}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::key}}.
 
 
 
@@ -135,11 +135,11 @@ References \mbox{\hyperlink{map_8hpp_source_l00042}{lib\+::map\+Data$<$ \+\_\+\+
 
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00042}{42}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00040}{40}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{map_8hpp_source_l00152}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get()}}, \mbox{\hyperlink{map_8hpp_source_l00056}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map\+Data()}}, and \mbox{\hyperlink{map_8hpp_source_l00067}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator==()}}.
+Referenced by \mbox{\hyperlink{map_8hpp_source_l00152}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get()}}, \mbox{\hyperlink{map_8hpp_source_l00054}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map\+Data()}}, and \mbox{\hyperlink{map_8hpp_source_l00064}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator==()}}.
 
 \mbox{\Hypertarget{classlib_1_1mapData_a06c61b8c11d375d5948ed2a3b2494071}\label{classlib_1_1mapData_a06c61b8c11d375d5948ed2a3b2494071}} 
 \index{lib::mapData$<$ \_K, \_D $>$@{lib::mapData$<$ \_K, \_D $>$}!key@{key}}
@@ -150,11 +150,11 @@ Referenced by \mbox{\hyperlink{map_8hpp_source_l00152}{lib\+::map$<$ \+\_\+\+K, 
 
 
 
-Definition at line \mbox{\hyperlink{map_8hpp_source_l00041}{41}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
+Definition at line \mbox{\hyperlink{map_8hpp_source_l00039}{39}} of file \mbox{\hyperlink{map_8hpp_source}{map.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{map_8hpp_source_l00152}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get()}}, \mbox{\hyperlink{map_8hpp_source_l00168}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get\+\_\+ptr()}}, \mbox{\hyperlink{map_8hpp_source_l00056}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map\+Data()}}, \mbox{\hyperlink{map_8hpp_source_l00067}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator==()}}, \mbox{\hyperlink{map_8hpp_source_l00117}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back\+\_\+check()}}, and \mbox{\hyperlink{map_8hpp_source_l00230}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::remove()}}.
+Referenced by \mbox{\hyperlink{map_8hpp_source_l00152}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get()}}, \mbox{\hyperlink{map_8hpp_source_l00168}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::get\+\_\+ptr()}}, \mbox{\hyperlink{map_8hpp_source_l00054}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::map\+Data()}}, \mbox{\hyperlink{map_8hpp_source_l00064}{lib\+::map\+Data$<$ \+\_\+\+K, \+\_\+\+D $>$\+::operator==()}}, \mbox{\hyperlink{map_8hpp_source_l00122}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back\+\_\+check()}}, and \mbox{\hyperlink{map_8hpp_source_l00228}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::remove()}}.
 
 
 

@@ -13,7 +13,9 @@ var searchData=
   ['add_5fundef_10',['add_undef',['../classCBuild_1_1Toolchain.html#a08bad46725b79244023721ffb3907bc2',1,'CBuild::Toolchain']]],
   ['addcompilearg_11',['AddCompileArg',['../namespaceCBuild_1_1Registry.html#aad2852a78f5aa5c9f84dc53b065cdee8',1,'CBuild::Registry']]],
   ['addlinkarg_12',['AddLinkArg',['../namespaceCBuild_1_1Registry.html#a552d1c75543fd4b4c1bbe19e011a6a22',1,'CBuild::Registry']]],
-  ['args_13',['args',['../classCBuild_1_1Toolchain.html#af5cd1dde6aba3754ceb79c3829e23ee8',1,'CBuild::Toolchain']]],
-  ['at_14',['at',['../classlib_1_1map.html#ac1bc33a78f8af74f79bd69878d8409a9',1,'lib::map']]],
-  ['autorefresh_15',['autorefresh',['../classCBuild_1_1filebuff.html#a803e7f4c78f5b23d68bd5bfe5b283e56',1,'CBuild::filebuff']]]
+  ['arg_5ftype_13',['ARG_TYPE',['../namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e',1,'CBuild']]],
+  ['args_14',['args',['../classCBuild_1_1Toolchain.html#af5cd1dde6aba3754ceb79c3829e23ee8',1,'CBuild::Toolchain']]],
+  ['arguments_15',['arguments',['../namespaceCBuild.html#a0a7a071857bd1c57dbff2d47bf9882b8',1,'CBuild']]],
+  ['at_16',['at',['../classlib_1_1map.html#ac1bc33a78f8af74f79bd69878d8409a9',1,'lib::map']]],
+  ['autorefresh_17',['autorefresh',['../classCBuild_1_1filebuff.html#a803e7f4c78f5b23d68bd5bfe5b283e56',1,'CBuild::filebuff']]]
 ];

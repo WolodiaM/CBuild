@@ -1,0 +1,122 @@
+/*
+ * <body>
+ * <div class="index">
+ * <h1>Text</h1>
+ * </div>
+ * </body>
+ * body .index h1 {}
+ */
+/* Base */
+body {
+    /* Background settings */
+    background-color: #1F1F1F;
+    /* background-color: #FFFFE6; */
+    /* Text settings */
+    font-family: 'Times New Roman', Times, serif;
+    color: #FFFFE6;
+}
+/* Title */
+body .title {
+    /* Text align */
+    text-align: center;
+    text-align-last: center;
+    /* Text settings */
+    font-size: 60pt;
+    font-style: oblique;
+    /* Text propertyes */
+    text-shadow: #FC0 1px 0px 10px;
+    color: cadetblue;
+}
+body .title-line hr {
+    /* Line style */
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px double #110f85;
+}
+/* Doxygen link */
+body .doxygen {
+    /* Image size */
+    width: 50%;
+    height: auto;
+    /* Align */
+    margin-left: 25%;
+}
+body .doxygen :focus {
+    outline-style: none;
+}
+/* SourceForge link */
+body .sourceforge {
+    /* Image size */
+    width: 50%;
+    height: auto;
+    /* Align */
+    margin-left: 25%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+body .sourceforge :focus {
+    outline-style: none;
+}
+/* Wiki link */
+body .wiki {
+    /* Image size */
+    width: 50%;
+    height: auto;
+    /* Align */
+    margin-left: 25%;
+    /* Font options */
+    font-size: 30pt;
+    text-align-last: center;
+}
+body .wiki a {
+    text-decoration: none;
+    color: #FFFFE6;
+    font-weight: 900;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+body .wiki :focus {
+    outline-style: none;
+}
+/* Separator line */
+body .sep-line hr {
+    /* Line style */
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid #110f85;
+}
+/* Footer */
+body .footer {
+    margin: 10px;
+}
+body .footer .author {
+    /* Border */
+    border: 5pt;
+    border-style: dotted;
+    border-color: burlywood;
+    /* Text */
+    text-align: center;
+    font-size: larger;
+    color: #FFFFE6;
+}
+body .footer .author p a {
+    /* Text */
+    text-align: center;
+    color: #FFFFE6;
+}
+body .footer .communication {
+    /* Border */
+    border: 5pt;
+    border-style: dotted;
+    border-color: burlywood;
+    /* Text */
+    text-align: center;
+    font-size: larger;
+    color: #FFFFE6;
+}
+body .footer .communication p a {
+    /* Text */
+    text-align: center;
+    color: #FFFFE6;
+}

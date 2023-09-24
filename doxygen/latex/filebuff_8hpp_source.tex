@@ -269,145 +269,160 @@
 \DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00377}00377       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
 \DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00378}00378     \}}
 \DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00379}00379   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00386}\mbox{\hyperlink{classCBuild_1_1line__filebuff_a1e6ebf66cca418558ac0180d1b02e609}{00386}}   std::string \mbox{\hyperlink{classCBuild_1_1line__filebuff_a1e6ebf66cca418558ac0180d1b02e609}{get\_line}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00387}00387     \textcolor{keyword}{auto} it = this-\/>buff.begin();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00388}00388     std::advance(it, pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00389}00389     \textcolor{keywordflow}{return} *it;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00390}00390   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00397}\mbox{\hyperlink{classCBuild_1_1line__filebuff_a6321b6e15dde23dee7abfce006800e52}{00397}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1line__filebuff_a6321b6e15dde23dee7abfce006800e52}{set\_line}}(std::string str, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00398}00398     \textcolor{keyword}{auto} it = this-\/>buff.begin();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00399}00399     std::advance(it, pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00400}00400     this-\/>buff.insert(it, str);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00401}00401     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00402}00402       this-\/>\mbox{\hyperlink{classCBuild_1_1line__filebuff_a0266702d38aed5c3736e861b3abffcef}{save\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00403}00403     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00404}00404       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00405}00405     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00406}00406   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00412}\mbox{\hyperlink{classCBuild_1_1line__filebuff_a77d974d27539a47567f02d5ad68882dd}{00412}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1line__filebuff_a77d974d27539a47567f02d5ad68882dd}{del\_line}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00413}00413     \textcolor{keyword}{auto} it = this-\/>buff.begin();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00414}00414     std::advance(it, pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00415}00415     this-\/>buff.erase(it);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00416}00416     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00417}00417       this-\/>\mbox{\hyperlink{classCBuild_1_1line__filebuff_a0266702d38aed5c3736e861b3abffcef}{save\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00418}00418     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00419}00419       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00420}00420     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00421}00421   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00422}\mbox{\hyperlink{classCBuild_1_1line__filebuff_a9936beac564015d34f78c86847ca89b5}{00422}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1line__filebuff_a9936beac564015d34f78c86847ca89b5}{update}}() \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00423}00423     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild::MATCH}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00424}00424       \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00425}00425     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00426}00426       this-\/>\mbox{\hyperlink{classCBuild_1_1line__filebuff_a0266702d38aed5c3736e861b3abffcef}{save\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00427}00427       \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00428}00428     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a38006a325c9e498b1c0ef09eb79cfed7}{CBuild::FILE\_NEWER}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00429}00429       this-\/>\mbox{\hyperlink{classCBuild_1_1line__filebuff_af83ea9973c52e914ff96565a2936c6d2}{load\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00430}00430       \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00431}00431     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00432}00432       \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00433}00433     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00434}00434   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00435}00435 \};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00436}\mbox{\hyperlink{classCBuild_1_1str__filebuff}{00436}} \textcolor{keyword}{class }\mbox{\hyperlink{classCBuild_1_1str__filebuff}{str\_filebuff}} : \textcolor{keyword}{public} \mbox{\hyperlink{classCBuild_1_1filebuff}{CBuild::filebuff}} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00437}00437 \textcolor{keyword}{protected}:}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00438}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{00438}}   std::string \mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{buff}};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00439}\mbox{\hyperlink{classCBuild_1_1str__filebuff_ae7b19aaad52a3c8dcc8594bf8a162024}{00439}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_ae7b19aaad52a3c8dcc8594bf8a162024}{load\_buffer}}() \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00440}00440     std::ifstream file(this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a78aeee86e95c04ed18ecd1c3e071a0c9}{path}});}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00441}00441     std::stringstream str;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00442}00442     str << file.rdbuf();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00443}00443     this-\/>buff = str.str();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00444}00444     this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild::buffer\_state::MATCH}};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00445}00445   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00446}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{00446}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}() \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00447}00447     std::ofstream file(this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a78aeee86e95c04ed18ecd1c3e071a0c9}{path}});}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00448}00448     file.write(this-\/>buff.c\_str(), this-\/>buff.length());}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00449}00449     this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild::buffer\_state::MATCH}};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00450}00450   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00451}00451 }
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00452}00452 \textcolor{keyword}{public}:}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00453}\mbox{\hyperlink{classCBuild_1_1str__filebuff_ab340675c4ca2e9036ff9a802fd73c05c}{00453}}   \mbox{\hyperlink{classCBuild_1_1str__filebuff_ab340675c4ca2e9036ff9a802fd73c05c}{str\_filebuff}}(std::string file, \textcolor{keywordtype}{bool} refresh = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} new\_file = \textcolor{keyword}{false})}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00454}00454       : \mbox{\hyperlink{classCBuild_1_1filebuff}{filebuff}}(file, refresh) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00455}00455     \textcolor{keywordflow}{if} (!new\_file) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00456}00456       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_ae7b19aaad52a3c8dcc8594bf8a162024}{load\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00457}00457     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00458}00458   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00459}\mbox{\hyperlink{classCBuild_1_1str__filebuff_aee5ddf7c83fbb632766502db407b2db9}{00459}}   \textcolor{keywordtype}{char} \mbox{\hyperlink{classCBuild_1_1str__filebuff_aee5ddf7c83fbb632766502db407b2db9}{get\_char}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00460}00460     \textcolor{keywordflow}{if} (pos < this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{buff}}.length()) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00461}00461       \textcolor{keywordflow}{return} this-\/>buff.at(pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00462}00462     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00463}00463       \textcolor{keywordflow}{return} -\/1;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00464}00464     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00465}00465   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00466}\mbox{\hyperlink{classCBuild_1_1str__filebuff_ad14762fc946205566e6b75eab4b1c735}{00466}}   std::string \mbox{\hyperlink{classCBuild_1_1str__filebuff_ad14762fc946205566e6b75eab4b1c735}{get\_str}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00467}00467     \textcolor{keywordflow}{if} ((pos + size) < this-\/>buff.length()) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00468}00468       \textcolor{keywordflow}{return} this-\/>buff.substr(pos, pos + size);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00469}00469     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (pos < this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{buff}}.length()) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00470}00470       \textcolor{keywordflow}{return} this-\/>buff.substr(pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00471}00471     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00472}00472       \textcolor{keywordflow}{return} std::string(\textcolor{stringliteral}{"{}"{}});}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00473}00473     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00474}00474   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00475}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a44a6c84168e6d31bc078f3422c7b5e7c}{00475}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a44a6c84168e6d31bc078f3422c7b5e7c}{set\_char}}(\textcolor{keywordtype}{char} ch, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00476}00476     \textcolor{keywordflow}{if} (pos < this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{buff}}.length()) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00477}00477       std::string start, end;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00478}00478       start = this-\/>buff.substr(0, pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00479}00479       end = this-\/>buff.substr(pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00480}00480       this-\/>buff = start + ch + end;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00481}00481     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00482}00482     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00483}00483       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00484}00484     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00485}00485       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00486}00486     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00487}00487   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00488}\mbox{\hyperlink{classCBuild_1_1str__filebuff_ab0e4b9b8047a28360d61f197dec4547f}{00488}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_ab0e4b9b8047a28360d61f197dec4547f}{set\_str}}(std::string str, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00489}00489     std::string start, end;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00490}00490     start = this-\/>buff.substr(0, pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00491}00491     end = this-\/>buff.substr(pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00492}00492     this-\/>buff = start + str + end;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00493}00493     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00494}00494       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00495}00495     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00496}00496       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00497}00497     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00498}00498   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00499}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a63a3bb1c2386a887d9515e864ff100ae}{00499}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a63a3bb1c2386a887d9515e864ff100ae}{del\_char}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00500}00500     std::string start, end;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00501}00501     start = this-\/>buff.substr(0, pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00502}00502     end = this-\/>buff.substr(pos + 1);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00503}00503     this-\/>buff = start + end;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00504}00504     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00505}00505       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00506}00506     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00507}00507       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00508}00508     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00509}00509   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00510}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a7dee9fffe16d7269e27fc16b94a2038a}{00510}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a7dee9fffe16d7269e27fc16b94a2038a}{del\_str}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00511}00511     std::string start, end;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00512}00512     start = this-\/>buff.substr(0, pos);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00513}00513     end = this-\/>buff.substr(pos + size + 1);}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00514}00514     this-\/>buff = start + end;}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00515}00515     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00516}00516       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00517}00517     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00518}00518       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00519}00519     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00520}00520   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00521}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a7e121b8f7242c81db65d390e201be2fe}{00521}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a7e121b8f7242c81db65d390e201be2fe}{update}}() \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00522}00522     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild::MATCH}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00523}00523       \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00524}00524     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00525}00525       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00526}00526       \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00527}00527     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a38006a325c9e498b1c0ef09eb79cfed7}{CBuild::FILE\_NEWER}}) \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00528}00528       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_ae7b19aaad52a3c8dcc8594bf8a162024}{load\_buffer}}();}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00529}00529       \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00530}00530     \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00531}00531       \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00532}00532     \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00533}00533   \}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00534}00534 \};}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00535}00535 \} \textcolor{comment}{// namespace CBuild}}
-\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00536}00536 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_\_FILEBUFF\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00388}\mbox{\hyperlink{classCBuild_1_1line__filebuff_a1e6ebf66cca418558ac0180d1b02e609}{00388}}   std::string \mbox{\hyperlink{classCBuild_1_1line__filebuff_a1e6ebf66cca418558ac0180d1b02e609}{get\_line}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00389}00389     \textcolor{keyword}{auto} it = this-\/>buff.begin();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00390}00390     std::advance(it, pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00391}00391     \textcolor{keywordflow}{if} ((\textcolor{keywordtype}{long} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int})std::distance(\mbox{\hyperlink{classCBuild_1_1line__filebuff_add7aae13dda5b888de5bd0f7dd067e33}{buff}}.begin(), it) >= \mbox{\hyperlink{classCBuild_1_1line__filebuff_add7aae13dda5b888de5bd0f7dd067e33}{buff}}.size()) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00392}00392       \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00393}00393           \textcolor{stringliteral}{"{}Error in CBuild::line\_filebuff -\/ line out of range, "{}} +}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00394}00394           std::to\_string(pos) + \textcolor{stringliteral}{"{} >= "{}} + std::to\_string(\mbox{\hyperlink{classCBuild_1_1line__filebuff_add7aae13dda5b888de5bd0f7dd067e33}{buff}}.size()));}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00395}00395     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00396}00396     \textcolor{keywordflow}{return} *it;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00397}00397   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00406}\mbox{\hyperlink{classCBuild_1_1line__filebuff_a6321b6e15dde23dee7abfce006800e52}{00406}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1line__filebuff_a6321b6e15dde23dee7abfce006800e52}{set\_line}}(std::string str, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00407}00407     \textcolor{keyword}{auto} it = this-\/>buff.begin();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00408}00408     std::advance(it, pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00409}00409     \textcolor{keywordflow}{if} ((\textcolor{keywordtype}{long} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int})std::distance(\mbox{\hyperlink{classCBuild_1_1line__filebuff_add7aae13dda5b888de5bd0f7dd067e33}{buff}}.begin(), it) >= \mbox{\hyperlink{classCBuild_1_1line__filebuff_add7aae13dda5b888de5bd0f7dd067e33}{buff}}.size()) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00410}00410       \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00411}00411           \textcolor{stringliteral}{"{}Error in CBuild::line\_filebuff -\/ line out of range, "{}} +}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00412}00412           std::to\_string(pos) + \textcolor{stringliteral}{"{} >= "{}} + std::to\_string(\mbox{\hyperlink{classCBuild_1_1line__filebuff_add7aae13dda5b888de5bd0f7dd067e33}{buff}}.size()));}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00413}00413     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00414}00414     this-\/>buff.insert(it, str);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00415}00415     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00416}00416       this-\/>\mbox{\hyperlink{classCBuild_1_1line__filebuff_a0266702d38aed5c3736e861b3abffcef}{save\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00417}00417     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00418}00418       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00419}00419     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00420}00420   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00428}\mbox{\hyperlink{classCBuild_1_1line__filebuff_a77d974d27539a47567f02d5ad68882dd}{00428}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1line__filebuff_a77d974d27539a47567f02d5ad68882dd}{del\_line}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00429}00429     \textcolor{keyword}{auto} it = this-\/>buff.begin();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00430}00430     std::advance(it, pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00431}00431     \textcolor{keywordflow}{if} ((\textcolor{keywordtype}{long} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int})std::distance(\mbox{\hyperlink{classCBuild_1_1line__filebuff_add7aae13dda5b888de5bd0f7dd067e33}{buff}}.begin(), it) >= \mbox{\hyperlink{classCBuild_1_1line__filebuff_add7aae13dda5b888de5bd0f7dd067e33}{buff}}.size()) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00432}00432       \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00433}00433           \textcolor{stringliteral}{"{}Error in CBuild::line\_filebuff -\/ line out of range, "{}} +}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00434}00434           std::to\_string(pos) + \textcolor{stringliteral}{"{} >= "{}} + std::to\_string(\mbox{\hyperlink{classCBuild_1_1line__filebuff_add7aae13dda5b888de5bd0f7dd067e33}{buff}}.size()));}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00435}00435     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00436}00436     this-\/>buff.erase(it);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00437}00437     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00438}00438       this-\/>\mbox{\hyperlink{classCBuild_1_1line__filebuff_a0266702d38aed5c3736e861b3abffcef}{save\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00439}00439     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00440}00440       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00441}00441     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00442}00442   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00443}\mbox{\hyperlink{classCBuild_1_1line__filebuff_a9936beac564015d34f78c86847ca89b5}{00443}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1line__filebuff_a9936beac564015d34f78c86847ca89b5}{update}}() \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00444}00444     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild::MATCH}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00445}00445       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00446}00446     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00447}00447       this-\/>\mbox{\hyperlink{classCBuild_1_1line__filebuff_a0266702d38aed5c3736e861b3abffcef}{save\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00448}00448       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00449}00449     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a38006a325c9e498b1c0ef09eb79cfed7}{CBuild::FILE\_NEWER}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00450}00450       this-\/>\mbox{\hyperlink{classCBuild_1_1line__filebuff_af83ea9973c52e914ff96565a2936c6d2}{load\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00451}00451       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00452}00452     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00453}00453       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00454}00454     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00455}00455   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00456}00456 \};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00457}\mbox{\hyperlink{classCBuild_1_1str__filebuff}{00457}} \textcolor{keyword}{class }\mbox{\hyperlink{classCBuild_1_1str__filebuff}{str\_filebuff}} : \textcolor{keyword}{public} \mbox{\hyperlink{classCBuild_1_1filebuff}{CBuild::filebuff}} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00458}00458 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00459}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{00459}}   std::string \mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{buff}};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00460}\mbox{\hyperlink{classCBuild_1_1str__filebuff_ae7b19aaad52a3c8dcc8594bf8a162024}{00460}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_ae7b19aaad52a3c8dcc8594bf8a162024}{load\_buffer}}() \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00461}00461     std::ifstream file(this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a78aeee86e95c04ed18ecd1c3e071a0c9}{path}});}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00462}00462     std::stringstream str;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00463}00463     str << file.rdbuf();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00464}00464     this-\/>buff = str.str();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00465}00465     this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild::buffer\_state::MATCH}};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00466}00466   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00467}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{00467}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}() \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00468}00468     std::ofstream file(this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a78aeee86e95c04ed18ecd1c3e071a0c9}{path}});}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00469}00469     file.write(this-\/>buff.c\_str(), this-\/>buff.length());}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00470}00470     this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild::buffer\_state::MATCH}};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00471}00471   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00472}00472 }
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00473}00473 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00474}\mbox{\hyperlink{classCBuild_1_1str__filebuff_ab340675c4ca2e9036ff9a802fd73c05c}{00474}}   \mbox{\hyperlink{classCBuild_1_1str__filebuff_ab340675c4ca2e9036ff9a802fd73c05c}{str\_filebuff}}(std::string file, \textcolor{keywordtype}{bool} refresh = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} new\_file = \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00475}00475       : \mbox{\hyperlink{classCBuild_1_1filebuff}{filebuff}}(file, refresh) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00476}00476     \textcolor{keywordflow}{if} (!new\_file) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00477}00477       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_ae7b19aaad52a3c8dcc8594bf8a162024}{load\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00478}00478     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00479}00479   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00480}\mbox{\hyperlink{classCBuild_1_1str__filebuff_aee5ddf7c83fbb632766502db407b2db9}{00480}}   \textcolor{keywordtype}{char} \mbox{\hyperlink{classCBuild_1_1str__filebuff_aee5ddf7c83fbb632766502db407b2db9}{get\_char}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00481}00481     \textcolor{keywordflow}{if} (pos < this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{buff}}.length()) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00482}00482       \textcolor{keywordflow}{return} this-\/>buff.at(pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00483}00483     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00484}00484       \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00485}00485     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00486}00486   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00487}\mbox{\hyperlink{classCBuild_1_1str__filebuff_ad14762fc946205566e6b75eab4b1c735}{00487}}   std::string \mbox{\hyperlink{classCBuild_1_1str__filebuff_ad14762fc946205566e6b75eab4b1c735}{get\_str}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00488}00488     \textcolor{keywordflow}{if} ((pos + size) < this-\/>buff.length()) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00489}00489       \textcolor{keywordflow}{return} this-\/>buff.substr(pos, pos + size);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00490}00490     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (pos < this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{buff}}.length()) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00491}00491       \textcolor{keywordflow}{return} this-\/>buff.substr(pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00492}00492     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00493}00493       \textcolor{keywordflow}{return} std::string(\textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00494}00494     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00495}00495   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00496}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a44a6c84168e6d31bc078f3422c7b5e7c}{00496}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a44a6c84168e6d31bc078f3422c7b5e7c}{set\_char}}(\textcolor{keywordtype}{char} ch, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00497}00497     \textcolor{keywordflow}{if} (pos < this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a2a93b8c43404c2c0bbc14b1e1eb6e158}{buff}}.length()) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00498}00498       std::string start, end;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00499}00499       start = this-\/>buff.substr(0, pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00500}00500       end = this-\/>buff.substr(pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00501}00501       this-\/>buff = start + ch + end;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00502}00502     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00503}00503     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00504}00504       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00505}00505     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00506}00506       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00507}00507     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00508}00508   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00509}\mbox{\hyperlink{classCBuild_1_1str__filebuff_ab0e4b9b8047a28360d61f197dec4547f}{00509}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_ab0e4b9b8047a28360d61f197dec4547f}{set\_str}}(std::string str, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00510}00510     std::string start, end;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00511}00511     start = this-\/>buff.substr(0, pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00512}00512     end = this-\/>buff.substr(pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00513}00513     this-\/>buff = start + str + end;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00514}00514     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00515}00515       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00516}00516     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00517}00517       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00518}00518     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00519}00519   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00520}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a63a3bb1c2386a887d9515e864ff100ae}{00520}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a63a3bb1c2386a887d9515e864ff100ae}{del\_char}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00521}00521     std::string start, end;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00522}00522     start = this-\/>buff.substr(0, pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00523}00523     end = this-\/>buff.substr(pos + 1);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00524}00524     this-\/>buff = start + end;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00525}00525     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00526}00526       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00527}00527     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00528}00528       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00529}00529     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00530}00530   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00531}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a7dee9fffe16d7269e27fc16b94a2038a}{00531}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a7dee9fffe16d7269e27fc16b94a2038a}{del\_str}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00532}00532     std::string start, end;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00533}00533     start = this-\/>buff.substr(0, pos);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00534}00534     end = this-\/>buff.substr(pos + size + 1);}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00535}00535     this-\/>buff = start + end;}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00536}00536     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_a803e7f4c78f5b23d68bd5bfe5b283e56}{autorefresh}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00537}00537       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00538}00538     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00539}00539       this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} = \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00540}00540     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00541}00541   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00542}\mbox{\hyperlink{classCBuild_1_1str__filebuff_a7e121b8f7242c81db65d390e201be2fe}{00542}}   \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1str__filebuff_a7e121b8f7242c81db65d390e201be2fe}{update}}() \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00543}00543     \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028}{CBuild::MATCH}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00544}00544       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00545}00545     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a2070d9c8a31db569425d4fb0ad5c15f3}{CBuild::BUFFER\_NEWER}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00546}00546       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_a0cbd953fbedea2dbd013c9e13f245288}{save\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00547}00547       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00548}00548     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this-\/>\mbox{\hyperlink{classCBuild_1_1filebuff_af01bcd5ccacd22a38194ea0526b8b198}{state}} == \mbox{\hyperlink{namespaceCBuild_a42ffacee4ee5bbf4b683a72f1152f551a38006a325c9e498b1c0ef09eb79cfed7}{CBuild::FILE\_NEWER}}) \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00549}00549       this-\/>\mbox{\hyperlink{classCBuild_1_1str__filebuff_ae7b19aaad52a3c8dcc8594bf8a162024}{load\_buffer}}();}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00550}00550       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00551}00551     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00552}00552       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00553}00553     \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00554}00554   \}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00555}00555 \};}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00556}00556 \} \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{filebuff_8hpp_source_l00557}00557 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_\_FILEBUFF\_HPP\_\_}}
 
 \end{DoxyCode}

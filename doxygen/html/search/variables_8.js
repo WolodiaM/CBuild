@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['largs_0',['largs',['../namespaceCBuild_1_1Registry.html#ae3c7a25d9c3252f87f44510df585e057',1,'CBuild::Registry']]],
-  ['link_5fargs_1',['link_args',['../classCBuild_1_1Toolchain.html#a451820ac388b5e31cc6801cbd4a43aa7',1,'CBuild::Toolchain']]],
-  ['linker_2',['linker',['../classCBuild_1_1Toolchain.html#ab9da3f227c466e8275516ea49fb8db64',1,'CBuild::Toolchain']]],
-  ['log_3',['log',['../namespaceCBuild.html#ad14c8b8fe9709fdb08a99f212b6a721f',1,'CBuild']]]
+  ['id_0',['id',['../structCBuild_1_1Project__dependency.html#a6b616beec6a2deb848936f44f14b219f',1,'CBuild::Project_dependency::id()'],['../classCBuild_1_1Toolchain.html#a6de8e7b8cca65e210d667b4f33b4fb03',1,'CBuild::Toolchain::id()']]],
+  ['includes_1',['includes',['../structCBuild_1_1types_1_1file.html#a5ccf9f1d5795351bb2a0d0ea2bdd2d0f',1,'CBuild::types::file::includes()'],['../structCBuild_1_1types_1_1file__content.html#a60fc54d0824a40cd62b14024fc7e4103',1,'CBuild::types::file_content::includes()']]],
+  ['initw_2',['initw',['../namespaceCBuild_1_1Registry.html#a127c9a77ac7122e3da3f35d0c9a6c207',1,'CBuild::Registry']]]
 ];

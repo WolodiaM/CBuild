@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="main.css" rel="stylesheet" type="text/css" />
+    <!--Prism JS css-->
+    <link href="https://www.unpkg.com/prismjs@1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://www.unpkg.com/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://www.unpkg.com/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" type="text/css" />
+	<title>CBuild wiki</title>
+</head>
+
+<body>
+    <!--Prism JS scripts-->
+    <script src="https://www.unpkg.com/prismjs@1.29.0/components/prism-core.min.js" type="text/javascript"></script>
+    <script src="https://www.unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" type="text/javascript"></script>
+    <script src="https://www.unpkg.com/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js" type="text/javascript"></script>
+    <script src="https://www.unpkg.com/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js" type="text/javascript"></script>
+    <script src="https://www.unpkg.com/prismjs@1.29.0/plugins/show-language/prism-show-language.min.js" type="text/javascript"></script>
+    <script src="https://www.unpkg.com/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js" type="text/javascript"></script>
+    <!--Title-->
+    <div class="title">CBuild wiki: Main page</div>
+    <div class="title-line"><hr/></div>
+    <!--Text-->
+    <div class="text">
+    <!--Simple buildscript, from template-->
+    <h6>Basic buildscript</h6>
+    <div class="sep-line"><hr/></div>
+    <div class="code-header">
+        <p>scripts/main.cpp, implements main() function, provided by CBuild core. It is not advisible to edit this file if you do not want to make something very special/not standard.</p>
+    </div>
+    <div class="code">
+    <pre class="line-numbers"><code class="language-cpp">/**
+ * &lt;doxygen file header and license header&gt;
+ */
+// C++ libraries
+#include "filesystem"
+#include "stdlib.h"
+#include "string"
+#include "vector"
+// CBuild headers
+#include "CBuild/CBuild.hpp"
+// Userspace headers
+#include "user_init.hpp"
+// Rebuild call
+void rebuild() {
+  auto path = std::string(std::filesystem::current_path().c_str());
+  path += "/scripts";
+  CBuild::rebuild(path);
+}
+// Main function
+int main(int argc, char **argv, char **envp) {
+  // Run user init
+  init();
+  // Hold parsed command line arguments, see CBuild::parse in CBuild.cpp for
+  // more details
+  lib::map&lt;std::string, std::string&gt; args;
+  // Parse arguments, and also get type of run
+  CBuild::RType mode = CBuild::parse(&args, argc, argv);
+  // We have some error
+  if (mode == CBuild::ERROR)
+    exit(0xFF);
+  // If we need to rebuild
+  if (mode == CBuild::REBUILD)
+    rebuild();
+  // Add base path
+  args.push_back("curr_path",
+                 std::string(std::filesystem::current_path().c_str()));
+  // Run main loop of CBuild (execute given toolchain / module and exit)
+  CBuild::loop(mode, &args);
+  // Safe exit without errors
+  return 0;
+}</code></pre>
+    </div>
+    <div class="code-header">
+        <p>scripts/user_init.hpp, header used to glue all cpp files together, part of user scripts.</p>
+    </div>
+    <div class="code">
+    <pre class="line-numbers"><code class="language-cpp">/**
+ * &lt;doxygen file header and license header&gt;
+ */
+#ifndef __CBUILD_USER_INIT_HPP__
+#define __CBUILD_USER_INIT_HPP__
+void init();
+#endif // __CBUILD_USER_INIT_HPP__</code></pre>
+    </div>
+    <div class="code-header">
+        <p>scripts/user_init.cpp, main buildscript file, this is place where you need to write buildscript (but it is not required). Script here builds dynamic library and executable that depends on it. Also it have compilation for windows and linux, done in very dumb way.</p>
+    </div>
+    <div class="code">
+    <pre class="line-numbers"><code class="language-cpp">/**
+ * &lt;doxygen file header and license header&gt;
+ */
+// C++ libraries
+#include "stdio.h"
+// Userspace headers
+#include "user_init.hpp"
+// CBuild headers
+#include "CBuild/build/g++.hpp"
+#include "CBuild/build/mingw-g++.hpp"
+#include "CBuild/print.hpp"
+#include "CBuild/register.hpp"
+#include "CBuild/task/Task.hpp"
+
+CBuild::GXX       multiplication("mull", "Multiplication test");
+CBuild::GXX       multiplication_lib("mull_lib", "mull");
+CBuild::MINGW_GXX multiplication_win("mullw", "Multiplication test");
+CBuild::MINGW_GXX multiplication_lib_win("mullw_lib", "mull");
+
+void init() {
+  multiplication.set_standart("c++20");
+  multiplication.add_file("src/main.cpp");
+  multiplication.warn();
+  multiplication.set_type(CBuild::EXECUTABLE);
+  multiplication.depends_on("mull_lib");
+  CBuild::Registry::RegisterTarget(&multiplication);
+  multiplication_lib.set_standart("c++20");
+  multiplication_lib.add_file("src/test.cpp");
+  multiplication_lib.warn();
+  multiplication_lib.set_type(CBuild::DYNAMIC_LIBRARY);
+  CBuild::Registry::RegisterTarget(&multiplication_lib);
+  multiplication_win.set_standart("c++20");
+  multiplication_win.add_file("src/main.cpp");
+  multiplication_win.warn();
+  multiplication_win.set_type(CBuild::EXECUTABLE);
+  multiplication_win.depends_on("mullw_lib");
+  CBuild::Registry::RegisterTarget(&multiplication_win);
+  multiplication_lib_win.set_standart("c++20");
+  multiplication_lib_win.add_file("src/test.cpp");
+  multiplication_lib_win.warn();
+  multiplication_lib_win.set_type(CBuild::DYNAMIC_LIBRARY);
+  CBuild::Registry::RegisterTarget(&multiplication_lib_win);
+}</code></pre>
+    </div>
+    <p>This is simple buildscript template. If you do not need to do some very specific tasks you simple can extend/reduce this buildscript.</p>
+    <!--CBuild API-->
+    <div class="sep-line"><hr/></div>
+    <h6>Basics of CBuild external API</h6>
+    <div class="sep-line"><hr/></div>
+    <p>CBuild provide full-feathured API for specifying build attributes. It has only one problem - it is based on gcc, so expect some problems with clang. If you want to see all functions of <b>CBuild::Toolchain</b> class please use IDE with autocompetition support or check <b>CBuild/build/Build.hpp</b> header.</p>
+    <p>Also CBuild provides <b>CBuild::Task</b> class that can be used if you need to do some things, like preprocess files, postprocess some runtime data or make some build related things that is not connected with compilation proccess. This is very simple abstract class (if you need to create task you need to create new class that use <b>CBuild::Task</b> as base class. If you do this you need to create constructor, that takes <b>std::string</b> as task id and <b>std::vector&lt;std::string&gt;</b> as list of required task ids. Also, you need to provide implementation for main task function - <b>void call(std::vector&lt;std::string&gt; args)</b>, that will be called when this task is called. Here you can do anything what you want, <b>CBuild::Task</b> is simple abstractiong to add ability to register function in <b>CBuild::Registry</b> ;). In some point in future CBuild may has some basic tasks included with a core.</p>
+    <p>This all basic classes, used in CBuild. There is also <b>CBuild::generator_base</b> that can be registered and used to provide abilites simmilar to integrated in CBuild generators of <b>compile_commands.json</b> and <b>Makefile</b>. But for almost all buildscript this ability is not realy necessary.</p>
+    <p>Also, there is <b>CBuild::Registry</b> namespace, this namespace is used to register all things inside CBuild core. If your only requirments is ability to compile some c/c++ project, you need only functions that match this signature <b>CBuild::Registry::Register...(...* arg)</b>. Look for these functions in <b>CBuild/register.hpp</b> file or use your IDE's autocompetition.</p>
+    <p>If you are writing simple buildscript, you dont need other CBuild functionality, but if you are interested in what things are inside CBuild headers, you can check comments inside <b>hpp</b> files inside <b>CBuild</b> directory, check doxygen documentation on this website or you can directly check files inside CBuild git repository.</p>
+    <!--Tips and tricks-->
+    <div class="sep-line"><hr/></div>
+    <h6>CBuild tips and tricks</h6>
+    <div class="sep-line"><hr/></div>
+        <!--Include external library-->
+        <h5>Using external dependency in your buildscript</h5>
+        <div class="sub-sep-line"><hr/></div>
+        <p>In <b>CBuild::Registry</b> namespace there is two functions - <b>void SetRebuildName(std::string _name)</b> and <b>void AddLinkArg(std::string arg)</b>. This functions is here because user may want to tweak some compilation arguments of CBuild scripts. So, let's say there is some library, like <b>libfoo.so</b>, this library is in <b>&lt;project_root&gt;/libs/</b> folder, headers is in <b>&lt;project_root&gt;/libs/include</b> folder. So, to accomplish this you need two buildscript recompilations, before doing first you need to: get current path using <b>std::filesystem</b> class (this can be done when using relative paths but it can not work, so you would be in better luck when you will be using absolute paths). Then you need to specify <b>-Llibs</b>, <b>-Ilibs/include</b> and <b>-lfoo</b> as linker and compiler arguments using functions, described above. Then you need recompile buildscript. This is first recompilation. Now you can use any functions from that library, and when your buildscript is done, you can recompile it in second time. Huray!!! Now you wrote your first buildscript that uses external dependency!</p>
+        <!--Split script to multiple files-->
+        <div class="sub-sep-line"><hr/></div>
+        <h5>Using multiple files in your buildscript</h5>
+        <div class="sub-sep-line"><hr/></div>
+        <p>This is a pretty easy task. You simply need to add a function definition to a <b>hpp</b> file inside <b>scripts</b> directory, and then you need to create a <b>cpp</b> file that implements this function. As a header you can use <b>user_init.hpp</b> or any other header that you create. Also, you do not need to specify that you create new <b>cpp</b> file, all files inside <b>scripts</b> directory are threated as buildscript sources.</p>
+        <!--Preprocess files before compilation-->
+        <div class="sub-sep-line"><hr/></div>
+        <h5>File proccessing</h5>
+        <div class="sub-sep-line"><hr/></div>
+        <p>There are two main file proccessing types: <i>preprocessing</i> and <i>postprocessing</i>. File preprocessing for compilation is mostly a header proccessing, like runtime fill of variables. This can be done using functions from <b>CBuild/files.hpp</b> file. There is set_var() and replace() function. First replace all variable occurence and I found it not realy useful. Second simply replace token with some <i>std::string</i>, and it is realy useful to add some defines like <i>version</i> or some autogenerated <i>help message</i> etc. File postprocessing is mostly involved in some file copying or moving and this can be accomplished using <b>CBuild::fs</b> namespace's functions, <b>std::filesystem</b> namespace's functions or <b>CBuild::system()</b> function with call to <b>cp</b>, <b>mv</b> etc.</p>
+        <!--Use arguments-->
+        <div class="sub-sep-line"><hr/></div>
+        <h5>Use of custom arguments</h5>
+        <div class="sub-sep-line"><hr/></div>
+        <p>Let's say we need to pass some argument to <b>build()</b> function of our toolchain. So, to speecify an argument you need to add this command line argument to CBuild executable call: <b>-a &lt;argument&gt;</b>. Then, in your build function you can use this syntax to retrieave all arguments in <b>std::vector&lt;std::string&gt;*</b> - <b>this-&gt;args</b>, to get access to function of this array - <b>this-&gt;args-&gt;...</b>. Then you can parse this check for some argument in your code.</p>
+        <!--Cross-compilation toolchain-->
+        <div class="sub-sep-line"><hr/></div>
+        <h5>Cross-compilation toolchain</h5>
+        <div class="sub-sep-line"><hr/></div>
+        <p>Let's say we want to target some different architecture/OS. So, let's say we have this compilers: <b>gcc-x86_64</b> and <b>gcc-arm64</b>. One way to achieve cross compilation is an addition of second target, but this is a very dumb way, so - how to create proper toolchain to compile using different compilers. With this implementation you simply need to call <b>set_target()</b> function with value from <b>Target</b> enum.</p>
+        <div class="code-header">
+        <p>Toolchain that use two compilers, implementation</p>
+        </div>
+        <div class="code">
+        <pre class="line-numbers"><code class="language-cpp">/**
+ * &lt;doxygen file header and license header&gt;
+ */
+// We use gcc toolchain as our base
+#include "CBuild/build/gcc.hpp"
+#ifndef __CROSS_GCC__
+#define __CROSS_GCC__
+typedef enum {
+    X86_64,
+    ARM64
+} Target;
+class cross_gcc : CBuild::gcc {
+    protected:
+        Target target;
+    public:
+        void build() override {
+            if (this-&gt;target == Target::X86_64) {
+                // Things specific to x86_64
+            } else if (this-&gt;target == Target::ARM64) {
+                // Things specific to arm
+            }
+            // Other part of build
+        }
+        // Other funcs that you need/want to implement
+        void set_target(Target target) {
+            this-&gt;target = target;
+            if (this-&gt;target == Target::X86_64) {
+                this-&gt;compiler = "g++-x86_64";
+                this-&gt;linker = "g++-x86_64";
+                this-&gt;packer = "ar-x86_64 cr";
+            } else if (this-&gt;target = Target::ARM64) {
+                this-&gt;compiler = "g++-arm64";
+                this-&gt;linker = "g++-arm64";
+                this-&gt;packer = "ar-arm64 cr";
+            }
+        }
+};
+#endif // __CROSS_GCC__</code></pre>
+        </div>
+    <p>Here is a different approach. With this aproach you need to provide <b>-a target:x86_64</b> or <b>-a target:arm64</b> when building, and it defaults to a <b>x86_64</b> target.</p>
+    <div class="code-header">
+        <p>Toolchain that use two compilers and select one at runtime, implementation</p>
+        </div>
+        <div class="code">
+        <pre class="line-numbers"><code class="language-cpp">/**
+ * &lt;doxygen file header and license header&gt;
+ */
+// We use gcc toolchain as our base
+#include "CBuild/build/gcc.hpp"
+#ifndef __CROSS_GCC__
+#define __CROSS_GCC__
+typedef enum {
+    X86_64,
+    ARM64
+} Target;
+class cross_gcc : CBuild::gcc {
+    protected:
+        Target target;
+    public:
+        void pre_build() override {
+            this-&gt;target = Target:X86_64;
+            for (auto elem : (*(this-&gt;args))) {
+                if(elem == std:string("target:x86_64")) {
+                    this-&gt;target = Target::X86_64;
+                    this-&gt;compiler = "g++-x86_64";
+                    this-&gt;linker = "g++-x86_64";
+                    this-&gt;packer = "ar-x86_64 cr"
+                } else if (elem == std::string("target:arm64") {
+                    this-&gt;target = Target::ARM64;
+                    this-&gt;compiler = "g++-arm64";
+                    this-&gt;linker = "g++-arm64";
+                    this-&gt;packer = "ar-arm64 cr";
+                }
+            }
+        }
+        void build() override {
+            if (this-&gt;target == Target::X86_64) {
+                // Things specific to x86_64
+            } else if (this-&gt;target == Target::ARM64) {
+                // Things specific to arm
+            }
+            // Other part of build
+        }
+        // Other funcs that you need/want to implement
+};
+#endif // __CROSS_GCC__</code></pre>
+        </div>
+    </div>
+    <!--Test-->
+    <!--<div class="text">
+    <div class="code-header">
+        <p>main.cpp file</p>
+    </div>
+    <div class="code">
+    <pre class="line-numbers"><code class="language-cpp">#include "stdio.h"
+
+int main(int argc, char** argv) {
+    puts(argv[0]);
+    if (argc > 1) puts(argv[1]);
+    return 0;
+}</code></pre>
+    </div>
+    </div>-->
+    <!--Back-->
+    <div class="sep-line"><hr/></div>
+    <div class="back">
+        <a href="wiki.html">BACK</a>
+    </div>
+    <!--Footer of the page-->
+    <div class="footer">
+        <div class="author">
+            <p>Author - WolodiaM</p>
+            <p><a href="https://sourceforge.net/u/wolodiam/profile/">WolodiaM at SourceForge</a></p>
+        </div>
+        <div class="communication">
+            <p><a href="mailto:w_melnyk@outlook.com">w_melnyk@outlook.com</a></p>
+            <p><a href="https://sourceforge.net/projects/cbuild/reviews/">Reviews</a></p>
+            <p><a href="https://sourceforge.net/p/cbuild/code/ci/master/tree/">Git</a></p>
+            <p><a href="https://sourceforge.net/p/cbuild/discussion/">Discussion</a></p>
+            <p><a href="https://sourceforge.net/projects/cbuild/">SourceForge project page</a></p>
+            <p><a href="../index.html">This wiki</a></p>
+        </div>
+        <div class="credits">
+            <p><a href="https://prismjs.com/">Prism is used for syntax highlighting</a></p>
+        </div>
+</body>

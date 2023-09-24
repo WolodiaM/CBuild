@@ -5,8 +5,9 @@
 Register any things.  
 
 
-{\ttfamily \#include \char`\"{}task/\+Task.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}build/\+Build.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}generator/generator.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}task/\+Task.\+hpp\char`\"{}}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -19,7 +20,7 @@ namespace \mbox{\hyperlink{namespaceCBuild_1_1Registry}{CBuild\+::\+Registry}}
 \item 
 void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9be19bd471349943095783bad96ed908}{CBuild\+::\+Registry\+::init}} ()
 \begin{DoxyCompactList}\small\item\em Internal init. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{namespaceCBuild_1_1Registry_aa8c4c391fb32f5f30b506917151e3f5e}{CBuild\+::\+Registry\+::\+Registry\+Task}} (\mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$task)
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a3e42b7607a1ed1f9903152a5b79169a6}{CBuild\+::\+Registry\+::\+Register\+Task}} (\mbox{\hyperlink{classCBuild_1_1Task}{CBuild\+::\+Task}} $\ast$task)
 \begin{DoxyCompactList}\small\item\em Register new task. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a51d72a89f7fa967febc3683eb2bead3c}{CBuild\+::\+Registry\+::\+Call\+Task}} (std\+::string name, std\+::vector$<$ std\+::string $>$ args)
 \begin{DoxyCompactList}\small\item\em Run tasks. \end{DoxyCompactList}\item 
@@ -40,7 +41,19 @@ void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a552d1c75543fd4b4c1bbe19e011a6
 void \mbox{\hyperlink{namespaceCBuild_1_1Registry_aad2852a78f5aa5c9f84dc53b065cdee8}{CBuild\+::\+Registry\+::\+Add\+Compile\+Arg}} (std\+::string arg)
 \begin{DoxyCompactList}\small\item\em Add compiler argument for \mbox{\hyperlink{namespaceCBuild}{CBuild}} rebuild. \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{namespaceCBuild_1_1Registry_aea482c73e78098645ac59484c470a378}{CBuild\+::\+Registry\+::\+Get\+Rebuild\+Args}} ()
-\begin{DoxyCompactList}\small\item\em Get the rebuild args for \mbox{\hyperlink{namespaceCBuild}{CBuild}} executable. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get the rebuild args for \mbox{\hyperlink{namespaceCBuild}{CBuild}} executable. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_adc11a1c6c8872badacf6b98b178c8dad}{CBuild\+::\+Registry\+::\+Toolchain\+All}} (bool force, std\+::string path, std\+::vector$<$ std\+::string $>$ $\ast$args)
+\begin{DoxyCompactList}\small\item\em Call and execute all toolchains. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}} $\ast$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9c2b86220190432fab63e0e35dd4b013}{CBuild\+::\+Registry\+::\+Get\+Generator}} (std\+::string id)
+\begin{DoxyCompactList}\small\item\em Get generator for specified id. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceCBuild_1_1Registry_a8eb12ac7f2bf89bed2526ff6a9722265}{CBuild\+::\+Registry\+::\+Register\+Generator}} (\mbox{\hyperlink{classCBuild_1_1generator__base}{CBuild\+::generator\+\_\+base}} $\ast$gen, std\+::string id)
+\begin{DoxyCompactList}\small\item\em Register generator for id. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a9c19ae2f5324c7ca9b45253e5611f152}{CBuild\+::\+Registry\+::\+Get\+Generators\+List}} ()
+\begin{DoxyCompactList}\small\item\em Get list of registered generators. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_a287e70c1cd1bf3bc2b225b1541fcc75d}{CBuild\+::\+Registry\+::\+Get\+Toolchains\+List}} ()
+\begin{DoxyCompactList}\small\item\em Get list of registered toolchains. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceCBuild_1_1Registry_ac88a2cbba3e17e112024f808d76d2f23}{CBuild\+::\+Registry\+::\+Get\+Tasks\+List}} ()
+\begin{DoxyCompactList}\small\item\em Get list of registered tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -49,9 +62,6 @@ Register any things.
 \begin{DoxyAuthor}{Author}
 WolodiaM (\href{mailto:w_melnyk@outlook.com}{\texttt{ w\+\_\+melnyk@outlook.\+com}}) 
 \end{DoxyAuthor}
-\begin{DoxyVersion}{Version}
-1.\+0 
-\end{DoxyVersion}
 \begin{DoxyDate}{Date}
 2023-\/01-\/28
 \end{DoxyDate}

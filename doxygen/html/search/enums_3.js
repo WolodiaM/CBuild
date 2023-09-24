@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['stage_0',['stage',['../namespaceCBuild.html#a48dcc8465fd3ac71019d7edf3868fb9c',1,'CBuild']]]
+  ['rtype_0',['RType',['../namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2',1,'CBuild']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['warn_0',['warn',['../classCBuild_1_1Toolchain.html#ae60a20f278ece81c719eb99ca29bac58',1,'CBuild::Toolchain']]]
+  ['version_0',['Version',['../classCBuild_1_1Version.html#a6f1515df0408168308d6289303038a79',1,'CBuild::Version']]]
 ];

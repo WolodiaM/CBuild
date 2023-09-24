@@ -1,3 +1,8 @@
+ - Add profiler support (-pg)
+ - Check if set_var() works correctly
+ - Check for compiler failure, using non-zero return value
  - Implement multithread compilation: see multithread.TODO.txt
  - CLI autocompetition
+ - Ability to run multiple tasks and build targets
+ - Ability to not overwrite compile_commands.json but append to it
  - Doc / Wiki !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

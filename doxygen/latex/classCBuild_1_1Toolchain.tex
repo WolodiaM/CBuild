@@ -70,8 +70,12 @@ virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_a9ff804f2e7c2dd63822d48f7
 \begin{DoxyCompactList}\small\item\em Set the type of build. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCBuild_1_1Toolchain_aee91a9889d88b42f29e2a70a45ad0f38}{depends\+\_\+on\+\_\+project}} (std\+::string path, std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}{name}}, std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}{id}}, std\+::string headers\+\_\+path)
 \begin{DoxyCompactList}\small\item\em Add another \mbox{\hyperlink{namespaceCBuild}{CBuild}} project as dependency. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classCBuild_1_1Toolchain_afac032447eb8ed19b23f5c18c082ab6f}{set\+\_\+thread\+\_\+count}} (int threads)
-\begin{DoxyCompactList}\small\item\em Set the thread count for compiler, use -\/jx flag ! If -\/1 use -\/j, for autom optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+std\+::array$<$ std\+::string, 3 $>$ \mbox{\hyperlink{classCBuild_1_1Toolchain_ac44b383e7b062d577057886d3c53a83e}{get\+\_\+cmds}} ()
+\begin{DoxyCompactList}\small\item\em Get all three commands from class -\/ compile, linker and packer. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{classCBuild_1_1Toolchain_a451212189068322a8a4456b6ec98a0b1}{gen\+\_\+file\+\_\+list\+\_\+force}} ()
+\begin{DoxyCompactList}\small\item\em Generate list of all files, that is tracked by this target. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classCBuild_1_1Toolchain_a09ead0033006709357ac7ee6e1b0f66e}{get\+\_\+compile\+\_\+args}} ()
+\begin{DoxyCompactList}\small\item\em Get preprocessed compile args. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -133,7 +137,7 @@ bool \mbox{\hyperlink{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72
 \doxysubsection{Detailed Description}
 \mbox{\hyperlink{classCBuild_1_1Toolchain}{Toolchain}} class. 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00055}{55}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00056}{56}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
@@ -146,7 +150,7 @@ Definition at line \mbox{\hyperlink{Build_8hpp_source_l00055}{55}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00194}{194}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00195}{195}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a20b5937c4218a656cf4b6ccadcce1d0b}\label{classCBuild_1_1Toolchain_a20b5937c4218a656cf4b6ccadcce1d0b}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!````~Toolchain@{$\sim$Toolchain}}
@@ -156,7 +160,7 @@ Definition at line \mbox{\hyperlink{Build_8hpp_source_l00194}{194}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00195}{195}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00196}{196}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
@@ -182,7 +186,11 @@ Definition at line \mbox{\hyperlink{Build_8cpp_source_l00039}{39}} of file \mbox
 
 
 
-References \mbox{\hyperlink{Build_8hpp_source_l00081}{compiler\+\_\+args}}.
+References \mbox{\hyperlink{Build_8hpp_source_l00082}{compiler\+\_\+args}}.
+
+
+
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00039}{CBuild\+::\+GCC\+::\+GCC()}}, and \mbox{\hyperlink{g_09_09_8hpp_source_l00039}{CBuild\+::\+GXX\+::\+GXX()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a73d043b2570d5ab7608a5bf7669abe98}\label{classCBuild_1_1Toolchain_a73d043b2570d5ab7608a5bf7669abe98}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!add\_define@{add\_define}}
@@ -222,11 +230,11 @@ Add file for compilation.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00169}{169}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00156}{156}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{Build_8hpp_source_l00036}{CBuild\+::\+Path\+::folder}}, \mbox{\hyperlink{Build_8hpp_source_l00035}{CBuild\+::\+Path\+::path}}, and \mbox{\hyperlink{register_8cpp_source_l00068}{CBuild\+::\+Registry\+::targets}}.
+References \mbox{\hyperlink{Build_8hpp_source_l00037}{CBuild\+::\+Path\+::folder}}, \mbox{\hyperlink{Build_8hpp_source_l00036}{CBuild\+::\+Path\+::path}}, and \mbox{\hyperlink{register_8cpp_source_l00092}{CBuild\+::\+Registry\+::targets}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a505c62bffd19ee603cd13b700e4fb513}\label{classCBuild_1_1Toolchain_a505c62bffd19ee603cd13b700e4fb513}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!add\_folder@{add\_folder}}
@@ -245,11 +253,11 @@ Add folder to compile path, scan is not recursive.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00180}{180}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00167}{167}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{Build_8hpp_source_l00036}{CBuild\+::\+Path\+::folder}}, \mbox{\hyperlink{Build_8hpp_source_l00035}{CBuild\+::\+Path\+::path}}, and \mbox{\hyperlink{register_8cpp_source_l00068}{CBuild\+::\+Registry\+::targets}}.
+References \mbox{\hyperlink{Build_8hpp_source_l00037}{CBuild\+::\+Path\+::folder}}, \mbox{\hyperlink{Build_8hpp_source_l00036}{CBuild\+::\+Path\+::path}}, and \mbox{\hyperlink{register_8cpp_source_l00092}{CBuild\+::\+Registry\+::targets}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a1bdc2c91714340b724bb7d0bf857fc7b}\label{classCBuild_1_1Toolchain_a1bdc2c91714340b724bb7d0bf857fc7b}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!add\_include@{add\_include}}
@@ -293,7 +301,7 @@ Definition at line \mbox{\hyperlink{Build_8cpp_source_l00094}{94}} of file \mbox
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a5d50b63ecb923242185f54942b35ee6f}\label{classCBuild_1_1Toolchain_a5d50b63ecb923242185f54942b35ee6f}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!add\_library\_include@{add\_library\_include}}
@@ -316,7 +324,7 @@ Definition at line \mbox{\hyperlink{Build_8cpp_source_l00084}{84}} of file \mbox
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a9484161cf7845614132b472b0bd087a8}\label{classCBuild_1_1Toolchain_a9484161cf7845614132b472b0bd087a8}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!add\_link\_arg@{add\_link\_arg}}
@@ -339,7 +347,7 @@ Definition at line \mbox{\hyperlink{Build_8cpp_source_l00045}{45}} of file \mbox
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00039}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00039}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a3b6835aae93380a71f5dd5d00e973d25}\label{classCBuild_1_1Toolchain_a3b6835aae93380a71f5dd5d00e973d25}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!add\_requirment@{add\_requirment}}
@@ -393,7 +401,7 @@ Build.
 
 
 
-Implemented in \mbox{\hyperlink{classCBuild_1_1GXX_a09469e91e25cc01bc380201f25cc7b9b}{CBuild\+::\+GXX}}, \mbox{\hyperlink{classCBuild_1_1GCC_a3903a0ac26c4076681d08cd4383e6344}{CBuild\+::\+GCC}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_ad6b4338a8a7f90399b03f263409a296a}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a6e686f741e4b227f92cc5580b9c18464}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+Implemented in \mbox{\hyperlink{classCBuild_1_1GXX_a877e3d672e4be2714f98c259658a957b}{CBuild\+::\+GXX}}, \mbox{\hyperlink{classCBuild_1_1GCC_af62215b66c8631e16cf43995cbb8149e}{CBuild\+::\+GCC}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_ab5ac7e8ffd8abe22e1323001247bd874}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abe1baa179c5305395491a6572b8fd386}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_afc878456770e7581db33502fba56e7b5}\label{classCBuild_1_1Toolchain_afc878456770e7581db33502fba56e7b5}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!call@{call}}
@@ -416,19 +424,19 @@ Call tollchain to execute.
 \end{DoxyParams}
 
 
-Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a76a20f42b0993323549840508cabd384}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a257f675200309e4e6b310d7ede3d59f1}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a5e03ba06a05ac741fea6d3de0ea99071}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a20ed5e4c7ffa4a7b74a68632fabf9042}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00460}{460}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00465}{465}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{register_8cpp_source_l00100}{CBuild\+::\+Registry\+::\+Call\+Task()}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00045}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00029}{CBUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00069}{CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+HEADERS}}, \mbox{\hyperlink{Build_8hpp_source_l00051}{CBuild\+::\+DYNAMIC\+\_\+\+LIBRARY}}, \mbox{\hyperlink{register_8cpp_source_l00134}{CBuild\+::\+Registry\+::\+Get\+Toolchain()}}, \mbox{\hyperlink{print_8hpp_source_l00036}{CBuild\+::\+GREEN}}, \mbox{\hyperlink{register_8cpp_source_l00082}{CBuild\+::\+Registry\+::init()}}, \mbox{\hyperlink{print_8hpp_source_l00039}{CBuild\+::\+MAGENTA}}, \mbox{\hyperlink{Build_8hpp_source_l00050}{CBuild\+::\+POST}}, \mbox{\hyperlink{Build_8hpp_source_l00050}{CBuild\+::\+PRE}}, \mbox{\hyperlink{print_8cpp_source_l00051}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, and \mbox{\hyperlink{Build_8hpp_source_l00051}{CBuild\+::\+STATIC\+\_\+\+LIBRARY}}.
+References \mbox{\hyperlink{register_8cpp_source_l00131}{CBuild\+::\+Registry\+::\+Call\+Task()}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00039}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00043}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00027}{CBUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00067}{CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+HEADERS}}, \mbox{\hyperlink{Build_8hpp_source_l00052}{CBuild\+::\+DYNAMIC\+\_\+\+LIBRARY}}, \mbox{\hyperlink{register_8cpp_source_l00166}{CBuild\+::\+Registry\+::\+Get\+Toolchain()}}, \mbox{\hyperlink{print_8hpp_source_l00036}{CBuild\+::\+GREEN}}, \mbox{\hyperlink{register_8cpp_source_l00107}{CBuild\+::\+Registry\+::init()}}, \mbox{\hyperlink{print_8hpp_source_l00039}{CBuild\+::\+MAGENTA}}, \mbox{\hyperlink{Build_8hpp_source_l00051}{CBuild\+::\+POST}}, \mbox{\hyperlink{Build_8hpp_source_l00051}{CBuild\+::\+PRE}}, \mbox{\hyperlink{print_8cpp_source_l00049}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, and \mbox{\hyperlink{Build_8hpp_source_l00052}{CBuild\+::\+STATIC\+\_\+\+LIBRARY}}.
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a05e9cec7cd87361d20d64424f2350c09}\label{classCBuild_1_1Toolchain_a05e9cec7cd87361d20d64424f2350c09}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!clear@{clear}}
@@ -442,15 +450,15 @@ Clear all caches and builded app.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00603}{603}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00604}{604}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00039}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, and \mbox{\hyperlink{system_8cpp_source_l00034}{CBuild\+::system()}}.
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_ad94fac4b38afc12b44b20f66bd46c3a3}\label{classCBuild_1_1Toolchain_ad94fac4b38afc12b44b20f66bd46c3a3}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!cmd\_str@{cmd\_str}}
@@ -472,11 +480,11 @@ std\+::string Returned string
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00396}{396}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00398}{398}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00159}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00156}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00160}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00157}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a16ceca74d4c19e759912109326154d08}\label{classCBuild_1_1Toolchain_a16ceca74d4c19e759912109326154d08}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!debug@{debug}}
@@ -497,19 +505,19 @@ Build program in debug mode and after run gdb on it.
 \end{DoxyParams}
 
 
-Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_aea46c240733400ed5fe7b3d66f5d95b7}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a4a4979840801f5830174d9a5a9d23d91}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a13b00717a5dc9ae9effca8ce492bdc91}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a89b403f3463935dd5250dcda3610e7db}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00578}{578}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00579}{579}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{print_8hpp_source_l00036}{CBuild\+::\+GREEN}}, \mbox{\hyperlink{print_8hpp_source_l00039}{CBuild\+::\+MAGENTA}}, \mbox{\hyperlink{print_8cpp_source_l00051}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+References \mbox{\hyperlink{print_8hpp_source_l00036}{CBuild\+::\+GREEN}}, \mbox{\hyperlink{print_8hpp_source_l00039}{CBuild\+::\+MAGENTA}}, \mbox{\hyperlink{print_8cpp_source_l00049}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, and \mbox{\hyperlink{system_8cpp_source_l00034}{CBuild\+::system()}}.
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_afa959e39632096b2e3fdd28c4b8edf5f}\label{classCBuild_1_1Toolchain_afa959e39632096b2e3fdd28c4b8edf5f}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!depends\_on@{depends\_on}}
@@ -528,7 +536,7 @@ This target depends on other target.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00154}{154}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00141}{141}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_aee91a9889d88b42f29e2a70a45ad0f38}\label{classCBuild_1_1Toolchain_aee91a9889d88b42f29e2a70a45ad0f38}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!depends\_on\_project@{depends\_on\_project}}
@@ -553,11 +561,11 @@ Add another \mbox{\hyperlink{namespaceCBuild}{CBuild}} project as dependency.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00158}{158}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00145}{145}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{Build_8hpp_source_l00045}{CBuild\+::\+Project\+\_\+dependency\+::headers\+\_\+path}}, \mbox{\hyperlink{Build_8hpp_source_l00043}{CBuild\+::\+Project\+\_\+dependency\+::id}}, \mbox{\hyperlink{register_8cpp_source_l00074}{CBuild\+::\+Registry\+::name}}, \mbox{\hyperlink{Build_8hpp_source_l00044}{CBuild\+::\+Project\+\_\+dependency\+::name}}, and \mbox{\hyperlink{Build_8hpp_source_l00042}{CBuild\+::\+Project\+\_\+dependency\+::path}}.
+References \mbox{\hyperlink{Build_8hpp_source_l00046}{CBuild\+::\+Project\+\_\+dependency\+::headers\+\_\+path}}, \mbox{\hyperlink{Build_8hpp_source_l00044}{CBuild\+::\+Project\+\_\+dependency\+::id}}, \mbox{\hyperlink{register_8cpp_source_l00098}{CBuild\+::\+Registry\+::name}}, \mbox{\hyperlink{Build_8hpp_source_l00045}{CBuild\+::\+Project\+\_\+dependency\+::name}}, and \mbox{\hyperlink{Build_8hpp_source_l00043}{CBuild\+::\+Project\+\_\+dependency\+::path}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a48707e88ecc35220c48b4d54367fea4e}\label{classCBuild_1_1Toolchain_a48707e88ecc35220c48b4d54367fea4e}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!error@{error}}
@@ -588,15 +596,32 @@ lib\+::map$<$std\+::string, std\+::string$>$ -\/\texorpdfstring{$>$}{>} list of 
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00211}{211}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00198}{198}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{map_8hpp_source_l00215}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::at()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00041}{CBuild\+::fs\+::dir()}}, \mbox{\hyperlink{hash_8cpp_source_l00134}{CBuild\+::vars\+::filelist}}, \mbox{\hyperlink{hash_8cpp_source_l00349}{CBuild\+::get\+\_\+files()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00345}{CBuild\+::fs\+::normalize\+\_\+path()}}, \mbox{\hyperlink{print_8cpp_source_l00056}{CBuild\+::print\+\_\+full()}}, \mbox{\hyperlink{map_8hpp_source_l00099}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back()}}, \mbox{\hyperlink{map_8hpp_source_l00258}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::size()}}, and \mbox{\hyperlink{register_8cpp_source_l00068}{CBuild\+::\+Registry\+::targets}}.
+References \mbox{\hyperlink{map_8hpp_source_l00214}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::at()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00039}{CBuild\+::fs\+::dir()}}, \mbox{\hyperlink{hash_8cpp_source_l00133}{CBuild\+::vars\+::filelist}}, \mbox{\hyperlink{hash_8cpp_source_l00348}{CBuild\+::get\+\_\+files()}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00335}{CBuild\+::fs\+::normalize\+\_\+path()}}, \mbox{\hyperlink{print_8cpp_source_l00054}{CBuild\+::print\+\_\+full()}}, \mbox{\hyperlink{map_8hpp_source_l00104}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::push\+\_\+back()}}, \mbox{\hyperlink{map_8hpp_source_l00255}{lib\+::map$<$ \+\_\+\+K, \+\_\+\+D $>$\+::size()}}, and \mbox{\hyperlink{register_8cpp_source_l00092}{CBuild\+::\+Registry\+::targets}}.
 
 
 
-Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00064}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00063}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}.
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00071}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00070}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00072}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00070}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a451212189068322a8a4456b6ec98a0b1}\label{classCBuild_1_1Toolchain_a451212189068322a8a4456b6ec98a0b1}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!gen\_file\_list\_force@{gen\_file\_list\_force}}
+\index{gen\_file\_list\_force@{gen\_file\_list\_force}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{gen\_file\_list\_force()}{gen\_file\_list\_force()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ CBuild\+::\+Toolchain\+::gen\+\_\+file\+\_\+list\+\_\+force (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Generate list of all files, that is tracked by this target. 
+
+\begin{DoxyReturn}{Returns}
+lib\+::map$<$std\+::string, std\+::string$>$ -\/\texorpdfstring{$>$}{>} List of files 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00335}{335}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_adcc30e51100a389f7178d2be9c2bcf04}\label{classCBuild_1_1Toolchain_adcc30e51100a389f7178d2be9c2bcf04}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!gen\_out\_file@{gen\_out\_file}}
@@ -618,11 +643,11 @@ std\+::string -\/\texorpdfstring{$>$}{>} file path
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00192}{192}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00179}{179}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00355}{CBuild\+::fs\+::base()}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00049}{CBUILD\+\_\+\+BUILD\+\_\+\+CACHE\+\_\+\+DIR}}, and \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}.
+References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00344}{CBuild\+::fs\+::base()}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00047}{CBUILD\+\_\+\+BUILD\+\_\+\+CACHE\+\_\+\+DIR}}, and \mbox{\hyperlink{CBuild__defs_8hpp_source_l00039}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}\label{classCBuild_1_1Toolchain_a702acaa202accd20d845f48243b95f2b}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!gen\_out\_name@{gen\_out\_name}}
@@ -639,19 +664,50 @@ std\+::string -\/\texorpdfstring{$>$}{>} File name
 \end{DoxyReturn}
 
 
-Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_abe27573491bf28a353eca5ce6a73c40e}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_abb334793d0a2f6eb8190fdd3ca48d5ad}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a55c846d823df2719f1d43673a125bded}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9b48fef011f101f9aeac93bd442c56fe}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00348}{348}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00350}{350}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00355}{CBuild\+::fs\+::base()}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00045}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{Build_8hpp_source_l00051}{CBuild\+::\+DYNAMIC\+\_\+\+LIBRARY}}, \mbox{\hyperlink{Build_8hpp_source_l00051}{CBuild\+::\+EXECUTABLE}}, and \mbox{\hyperlink{register_8cpp_source_l00074}{CBuild\+::\+Registry\+::name}}.
+References \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00344}{CBuild\+::fs\+::base()}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00039}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00043}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{Build_8hpp_source_l00052}{CBuild\+::\+DYNAMIC\+\_\+\+LIBRARY}}, \mbox{\hyperlink{Build_8hpp_source_l00052}{CBuild\+::\+EXECUTABLE}}, and \mbox{\hyperlink{register_8cpp_source_l00098}{CBuild\+::\+Registry\+::name}}.
 
 
 
-Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00091}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00084}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00122}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, and \mbox{\hyperlink{gcc_8hpp_source_l00112}{CBuild\+::\+GCC\+::link\+\_\+pack()}}.
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00098}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00091}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00128}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, and \mbox{\hyperlink{gcc_8hpp_source_l00118}{CBuild\+::\+GCC\+::link\+\_\+pack()}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_ac44b383e7b062d577057886d3c53a83e}\label{classCBuild_1_1Toolchain_ac44b383e7b062d577057886d3c53a83e}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!get\_cmds@{get\_cmds}}
+\index{get\_cmds@{get\_cmds}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{get\_cmds()}{get\_cmds()}}
+{\footnotesize\ttfamily std\+::array$<$ std\+::string, 3 $>$ CBuild\+::\+Toolchain\+::get\+\_\+cmds (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get all three commands from class -\/ compile, linker and packer. 
+
+\begin{DoxyReturn}{Returns}
+std\+::array$<$std\+::string, 3$>$ -\/\texorpdfstring{$>$}{>} Compiler, linker, packer 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00461}{461}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+
+\mbox{\Hypertarget{classCBuild_1_1Toolchain_a09ead0033006709357ac7ee6e1b0f66e}\label{classCBuild_1_1Toolchain_a09ead0033006709357ac7ee6e1b0f66e}} 
+\index{CBuild::Toolchain@{CBuild::Toolchain}!get\_compile\_args@{get\_compile\_args}}
+\index{get\_compile\_args@{get\_compile\_args}!CBuild::Toolchain@{CBuild::Toolchain}}
+\doxysubsubsection{\texorpdfstring{get\_compile\_args()}{get\_compile\_args()}}
+{\footnotesize\ttfamily std\+::string CBuild\+::\+Toolchain\+::get\+\_\+compile\+\_\+args (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get preprocessed compile args. 
+
+
+
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00342}{342}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a0fc948049659930b087bf93ccc1a6f1a}\label{classCBuild_1_1Toolchain_a0fc948049659930b087bf93ccc1a6f1a}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!get\_id@{get\_id}}
@@ -661,15 +717,15 @@ Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00091}{CBuild\+::\+GXX\+::li
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00196}{196}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00197}{197}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{Build_8hpp_source_l00065}{id}}.
+References \mbox{\hyperlink{Build_8hpp_source_l00066}{id}}.
 
 
 
-Referenced by \mbox{\hyperlink{register_8cpp_source_l00121}{CBuild\+::\+Registry\+::\+Register\+Target()}}.
+Referenced by \mbox{\hyperlink{register_8cpp_source_l00152}{CBuild\+::\+Registry\+::\+Register\+Target()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_ade6d0d671052e834f6dbdb4c5a8e485c}\label{classCBuild_1_1Toolchain_ade6d0d671052e834f6dbdb4c5a8e485c}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!init@{init}}
@@ -683,15 +739,15 @@ Initialize folder structure.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00407}{407}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00409}{409}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00049}{CBUILD\+\_\+\+BUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00045}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00037}{CBUILD\+\_\+\+HASH\+\_\+\+DIR}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00198}{CBuild\+::fs\+::create()}}, \mbox{\hyperlink{filesystem_09_09_8hpp_source_l00045}{CBuild\+::fs\+::\+DIR}}, and \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00340}{CBuild\+::fs\+::exists()}}.
+References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00047}{CBUILD\+\_\+\+BUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00039}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00043}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00035}{CBUILD\+\_\+\+HASH\+\_\+\+DIR}}, \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00197}{CBuild\+::fs\+::create()}}, \mbox{\hyperlink{filesystem_09_09_8hpp_source_l00045}{CBuild\+::fs\+::\+DIR}}, and \mbox{\hyperlink{filesystem_09_09_8cpp_source_l00330}{CBuild\+::fs\+::exists()}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_adf746115d76976ccd9916a37994b09e1}\label{classCBuild_1_1Toolchain_adf746115d76976ccd9916a37994b09e1}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!link@{link}}
@@ -705,7 +761,7 @@ Linking.
 
 
 
-Implemented in \mbox{\hyperlink{classCBuild_1_1GXX_a176a3fa5aff2e1a023a0ef2eba0196bf}{CBuild\+::\+GXX}}, \mbox{\hyperlink{classCBuild_1_1GCC_a0d6da921c254bb411e096cd65c4c9cdc}{CBuild\+::\+GCC}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a50d9d4ee89661a25fa468b01090317a2}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a56bca52c9bc3a7cf7f57245c22e0de52}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+Implemented in \mbox{\hyperlink{classCBuild_1_1GXX_add83c06664b74760b9b827090b0931bb}{CBuild\+::\+GXX}}, \mbox{\hyperlink{classCBuild_1_1GCC_ab493f756876b474e8c0a71acc305a2e6}{CBuild\+::\+GCC}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_ac22b09f6a0cde227970c8ac46babb6ed}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9f97df0ac1b7896c5fe203cc559d10ad}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a121ee5ea85b59529c7aa05ca8ca8255e}\label{classCBuild_1_1Toolchain_a121ee5ea85b59529c7aa05ca8ca8255e}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!link\_pack@{link\_pack}}
@@ -719,7 +775,7 @@ Linking for static libraries.
 
 
 
-Implemented in \mbox{\hyperlink{classCBuild_1_1GXX_a956a1781d7e189a2b145a3f6c57aab6f}{CBuild\+::\+GXX}}, \mbox{\hyperlink{classCBuild_1_1GCC_a4ea0321bb0b8e8186aed50b7452d9317}{CBuild\+::\+GCC}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a68b7028f94984f6ab2c9fbe952cf57d8}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_ae95c1e7a5fb8f10d988181c6d95e714b}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+Implemented in \mbox{\hyperlink{classCBuild_1_1GXX_a405b6d9d67356d90beccf9d422b5d903}{CBuild\+::\+GXX}}, \mbox{\hyperlink{classCBuild_1_1GCC_aa5686ff8fd1690fec702bcfb046f6fef}{CBuild\+::\+GCC}}, \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a7f8ccde9c8a2fb278c58a9d4d96c6aa7}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a3270f7a445c01a530edb3b9dafe7275f}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a0ce3ae723a5a5cd558e51fdbf9cce075}\label{classCBuild_1_1Toolchain_a0ce3ae723a5a5cd558e51fdbf9cce075}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!load\_project\_deps@{load\_project\_deps}}
@@ -738,15 +794,15 @@ Load all project dependencies.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00437}{437}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00439}{439}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00041}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00045}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00029}{CBUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00065}{CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00069}{CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+HEADERS}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+References \mbox{\hyperlink{CBuild__defs_8hpp_source_l00039}{CBUILD\+\_\+\+BUILD\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00043}{CBUILD\+\_\+\+BUILD\+\_\+\+OUT\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00027}{CBUILD\+\_\+\+CACHE\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00063}{CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+DIR}}, \mbox{\hyperlink{CBuild__defs_8hpp_source_l00067}{CBUILD\+\_\+\+PROJECT\+\_\+\+DEPS\+\_\+\+HEADERS}}, and \mbox{\hyperlink{system_8cpp_source_l00034}{CBuild\+::system()}}.
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a41b77cccb491ab0e6564a93fc72f4e4b}\label{classCBuild_1_1Toolchain_a41b77cccb491ab0e6564a93fc72f4e4b}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!post\_build@{post\_build}}
@@ -760,11 +816,11 @@ After build.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00127}{127}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00128}{128}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a2a40fc15c0e3bc3f743cd354ab3d190f}\label{classCBuild_1_1Toolchain_a2a40fc15c0e3bc3f743cd354ab3d190f}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!post\_link@{post\_link}}
@@ -778,11 +834,11 @@ After linking.
 
 
 
-Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a6f5822e7553afb2809067166a0997b03}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a9bea8ada9d6d902a653239ba27e11e86}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_af75680ccdf154b80816fd64818b6866d}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_a31cb97f0cb77794ea25d78913b57ad83}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00135}{135}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00136}{136}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a589b707f242aee3f846fb511242f0112}\label{classCBuild_1_1Toolchain_a589b707f242aee3f846fb511242f0112}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!pre\_build@{pre\_build}}
@@ -796,11 +852,11 @@ Before build.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00123}{123}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00124}{124}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_af10adffca42d4277aa86cfcd27cfba13}\label{classCBuild_1_1Toolchain_af10adffca42d4277aa86cfcd27cfba13}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!pre\_link@{pre\_link}}
@@ -814,11 +870,11 @@ Before linking.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00131}{131}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00132}{132}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a223c889464b4b798a347d8f20123880d}\label{classCBuild_1_1Toolchain_a223c889464b4b798a347d8f20123880d}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!run@{run}}
@@ -837,19 +893,19 @@ Run builded app.
 \end{DoxyParams}
 
 
-Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a6ae384ec2d68c69ace93601a7edba67e}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_aa5467e768d237b8bd50139b3e8f4014a}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
+Reimplemented in \mbox{\hyperlink{classCBuild_1_1MINGW__GXX_a93ea8ab7f22461a32935286201a42b91}{CBuild\+::\+MINGW\+\_\+\+GXX}}, and \mbox{\hyperlink{classCBuild_1_1MINGW__GCC_aeb87a976438337db736f33671fcba3eb}{CBuild\+::\+MINGW\+\_\+\+GCC}}.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00558}{558}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
+Definition at line \mbox{\hyperlink{Build_8cpp_source_l00559}{559}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 
 
-References \mbox{\hyperlink{print_8hpp_source_l00039}{CBuild\+::\+MAGENTA}}, \mbox{\hyperlink{register_8cpp_source_l00074}{CBuild\+::\+Registry\+::name}}, \mbox{\hyperlink{print_8cpp_source_l00051}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, and \mbox{\hyperlink{system_8cpp_source_l00035}{CBuild\+::system()}}.
+References \mbox{\hyperlink{print_8hpp_source_l00039}{CBuild\+::\+MAGENTA}}, \mbox{\hyperlink{register_8cpp_source_l00098}{CBuild\+::\+Registry\+::name}}, \mbox{\hyperlink{print_8cpp_source_l00049}{CBuild\+::print()}}, \mbox{\hyperlink{print_8hpp_source_l00035}{CBuild\+::\+RED}}, and \mbox{\hyperlink{system_8cpp_source_l00034}{CBuild\+::system()}}.
 
 
 
-Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00277}{CBuild\+::loop()}}.
+Referenced by \mbox{\hyperlink{CBuild_8cpp_source_l00285}{CBuild\+::loop()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a0ab6111fe320549f06bf8594e2a9e88c}\label{classCBuild_1_1Toolchain_a0ab6111fe320549f06bf8594e2a9e88c}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!set\_standart@{set\_standart}}
@@ -869,25 +925,6 @@ Set standart for code (-\/std=std\+\_\+)
 
 
 Definition at line \mbox{\hyperlink{Build_8cpp_source_l00131}{131}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
-
-\mbox{\Hypertarget{classCBuild_1_1Toolchain_afac032447eb8ed19b23f5c18c082ab6f}\label{classCBuild_1_1Toolchain_afac032447eb8ed19b23f5c18c082ab6f}} 
-\index{CBuild::Toolchain@{CBuild::Toolchain}!set\_thread\_count@{set\_thread\_count}}
-\index{set\_thread\_count@{set\_thread\_count}!CBuild::Toolchain@{CBuild::Toolchain}}
-\doxysubsubsection{\texorpdfstring{set\_thread\_count()}{set\_thread\_count()}}
-{\footnotesize\ttfamily void CBuild\+::\+Toolchain\+::set\+\_\+thread\+\_\+count (\begin{DoxyParamCaption}\item[{int}]{threads }\end{DoxyParamCaption})}
-
-
-
-Set the thread count for compiler, use -\/jx flag ! If -\/1 use -\/j, for autom optimization. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em threads} & =\texorpdfstring{$>$}{>} int -\/\texorpdfstring{$>$}{>} Number of used threads, or -\/1 for auto selection \\
-\hline
-\end{DoxyParams}
-
-
-Definition at line \mbox{\hyperlink{Build_8cpp_source_l00141}{141}} of file \mbox{\hyperlink{Build_8cpp_source}{Build.\+cpp}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a9ff804f2e7c2dd63822d48f779242e8a}\label{classCBuild_1_1Toolchain_a9ff804f2e7c2dd63822d48f779242e8a}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!set\_type@{set\_type}}
@@ -951,11 +988,11 @@ Argument pointer (scratch variable)
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00112}{112}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00113}{113}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00064}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00063}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00091}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00084}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00122}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00112}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00270}{CBuild\+::\+MINGW\+\_\+\+GXX\+::run()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00266}{CBuild\+::\+MINGW\+\_\+\+GCC\+::run()}}.
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00071}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00070}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00072}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00070}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00098}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00091}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00093}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00091}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00128}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00118}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00120}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00118}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00259}{CBuild\+::\+MINGW\+\_\+\+GXX\+::run()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00256}{CBuild\+::\+MINGW\+\_\+\+GCC\+::run()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_ae76177499acce9818eb21f26520f5088}\label{classCBuild_1_1Toolchain_ae76177499acce9818eb21f26520f5088}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!build\_type@{build\_type}}
@@ -969,7 +1006,7 @@ Type of build.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00101}{101}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00102}{102}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}\label{classCBuild_1_1Toolchain_ae488ee58b732d5dbe07cb5b0ffd58b5c}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!compiler@{compiler}}
@@ -983,11 +1020,11 @@ Compiler command.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00089}{89}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00090}{90}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00064}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00063}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00041}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00041}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00042}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00042}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00071}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00070}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00072}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00070}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00039}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00039}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}\label{classCBuild_1_1Toolchain_a75b402ac16a3cbd2905bff923f1053ce}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!compiler\_args@{compiler\_args}}
@@ -1001,11 +1038,11 @@ Compiler args (specified and generated)
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00081}{81}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00082}{82}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{Build_8cpp_source_l00039}{add\+\_\+compile\+\_\+arg()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00064}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00063}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{Build_8cpp_source_l00039}{add\+\_\+compile\+\_\+arg()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00071}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00070}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00072}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00070}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_ad18750bc8fcad84be54cbfb98661727f}\label{classCBuild_1_1Toolchain_ad18750bc8fcad84be54cbfb98661727f}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!depends@{depends}}
@@ -1019,11 +1056,11 @@ All other targets, that is needed for this target.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00073}{73}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00074}{74}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00138}{CBuild\+::\+MINGW\+\_\+\+GXX\+::post\+\_\+link()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00138}{CBuild\+::\+MINGW\+\_\+\+GCC\+::post\+\_\+link()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00145}{CBuild\+::\+MINGW\+\_\+\+GXX\+::post\+\_\+link()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00142}{CBuild\+::\+MINGW\+\_\+\+GCC\+::post\+\_\+link()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}\label{classCBuild_1_1Toolchain_a0dd5a570f01f944bccbcaf23f4418b72}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!force@{force}}
@@ -1037,11 +1074,11 @@ Force argument (scratch variable)
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00116}{116}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00117}{117}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00064}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00063}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00064}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{g_09_09_8hpp_source_l00071}{CBuild\+::\+GXX\+::build()}}, \mbox{\hyperlink{gcc_8hpp_source_l00070}{CBuild\+::\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00072}{CBuild\+::\+MINGW\+\_\+\+GXX\+::build()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00070}{CBuild\+::\+MINGW\+\_\+\+GCC\+::build()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}\label{classCBuild_1_1Toolchain_a6de8e7b8cca65e210d667b4f33b4fb03}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!id@{id}}
@@ -1055,11 +1092,11 @@ Must be initialized in derived classes.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00065}{65}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00066}{66}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00041}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00159}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00156}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{Build_8hpp_source_l00196}{get\+\_\+id()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00041}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00042}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00042}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00039}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00160}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00157}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{Build_8hpp_source_l00197}{get\+\_\+id()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00039}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}\label{classCBuild_1_1Toolchain_a451820ac388b5e31cc6801cbd4a43aa7}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!link\_args@{link\_args}}
@@ -1073,11 +1110,11 @@ Linker args (specified and generated)
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00085}{85}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00086}{86}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00091}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00084}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00122}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00112}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00098}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00091}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00093}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00091}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00128}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00118}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00120}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00118}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}\label{classCBuild_1_1Toolchain_ab9da3f227c466e8275516ea49fb8db64}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!linker@{linker}}
@@ -1091,11 +1128,11 @@ Linker command.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00093}{93}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00094}{94}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00041}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00041}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00091}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00084}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00085}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00042}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00042}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00039}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00039}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00098}{CBuild\+::\+GXX\+::link()}}, \mbox{\hyperlink{gcc_8hpp_source_l00091}{CBuild\+::\+GCC\+::link()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00093}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00091}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}\label{classCBuild_1_1Toolchain_a42ef617b7966882e0c97d4158672ec15}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!name@{name}}
@@ -1109,11 +1146,11 @@ Name of output, if undefined (\char`\"{}\char`\"{}), for output name used id.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00060}{60}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00061}{61}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00053}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00159}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00156}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00054}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00054}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00054}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00270}{CBuild\+::\+MINGW\+\_\+\+GXX\+::run()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00266}{CBuild\+::\+MINGW\+\_\+\+GCC\+::run()}}.
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00039}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00160}{CBuild\+::\+MINGW\+\_\+\+GXX\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00157}{CBuild\+::\+MINGW\+\_\+\+GCC\+::gen\+\_\+out\+\_\+name()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00039}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00259}{CBuild\+::\+MINGW\+\_\+\+GXX\+::run()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00256}{CBuild\+::\+MINGW\+\_\+\+GCC\+::run()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}\label{classCBuild_1_1Toolchain_a0e13f0ae4d3a229ce508eb17d7b14966}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!packer@{packer}}
@@ -1127,11 +1164,11 @@ ar command for packing static libraries
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00097}{97}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00098}{98}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00041}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00041}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00122}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00112}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00113}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00042}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00042}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
+Referenced by \mbox{\hyperlink{gcc_8hpp_source_l00039}{CBuild\+::\+GCC\+::\+GCC()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00039}{CBuild\+::\+GXX\+::\+GXX()}}, \mbox{\hyperlink{g_09_09_8hpp_source_l00128}{CBuild\+::\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{gcc_8hpp_source_l00118}{CBuild\+::\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00120}{CBuild\+::\+MINGW\+\_\+\+GXX\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00118}{CBuild\+::\+MINGW\+\_\+\+GCC\+::link\+\_\+pack()}}, \mbox{\hyperlink{mingw-gcc_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GCC\+::\+MINGW\+\_\+\+GCC()}}, and \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00043}{CBuild\+::\+MINGW\+\_\+\+GXX\+::\+MINGW\+\_\+\+GXX()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a01989e313c5c77386b2be0989192df47}\label{classCBuild_1_1Toolchain_a01989e313c5c77386b2be0989192df47}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!project\_deps@{project\_deps}}
@@ -1145,7 +1182,7 @@ Project dependencies.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00105}{105}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00106}{106}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}\label{classCBuild_1_1Toolchain_a8b81d073c57651d8483eb728c40140ba}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!required@{required}}
@@ -1159,11 +1196,11 @@ Save task id with run stage sprecified for this task.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00069}{69}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00070}{70}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 
-Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00195}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00192}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
+Referenced by \mbox{\hyperlink{mingw-g_09_09_8hpp_source_l00194}{CBuild\+::\+MINGW\+\_\+\+GXX\+::call()}}, and \mbox{\hyperlink{mingw-gcc_8hpp_source_l00191}{CBuild\+::\+MINGW\+\_\+\+GCC\+::call()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1Toolchain_a1b2edd263ef95925304f80ca52000bc7}\label{classCBuild_1_1Toolchain_a1b2edd263ef95925304f80ca52000bc7}} 
 \index{CBuild::Toolchain@{CBuild::Toolchain}!targets@{targets}}
@@ -1177,7 +1214,7 @@ Target files or folders.
 
 
 
-Definition at line \mbox{\hyperlink{Build_8hpp_source_l00077}{77}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
+Definition at line \mbox{\hyperlink{Build_8hpp_source_l00078}{78}} of file \mbox{\hyperlink{Build_8hpp_source}{Build.\+hpp}}.
 
 
 

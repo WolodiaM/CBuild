@@ -31,8 +31,9 @@ namespace CBuild {
  * @brief Call stdlib system() and print cmd to shell
  *
  * @param cmd => std::string -> command
+ * @return int -> Shell return code
  */
-void system(std::string cmd);
+int system(std::string cmd);
 /**
  * @brief Execute command and return it's output
  *
@@ -45,6 +46,10 @@ std::string system_piped(std::string cmd, unsigned int buffsize);
  *
  * @return std::vector<std::string>* -> pointer to command log
  */
-std::vector<std::string>* get_log();
-}  // namespace CBuild
-#endif	// __CBUILD_SYSTEM_HPP__
+std::vector<std::string> *get_log();
+/**
+ * @brief Disable system call to commands
+ */
+void disable_system();
+} // namespace CBuild
+#endif // __CBUILD_SYSTEM_HPP__

@@ -35,6 +35,14 @@ namespace fs {
 int replace(std::string file, std::string token, std::string data);
 /**
  * @brief Set value of variable with type var_type wth name var_name to data
+ * This function loocks for variable like this: `<var_type> <var_name>`, then
+ * it gets all before <var_type> and saves it to variable. Then it gets all
+ * after first `;` and saves it to variable or if we do define, simply skips
+ * this part, (so be careful with including something after define, or after
+ * replacing multiline define). Then it reconstruct variable part to `<var_type>
+ * <var_name> = <date>` or `#define <var_name> <date>` if we do define (var_name
+ * == `define` or `#define`). Then it reconstruct line from prefix, variable and
+ * postfix and writes it to file.
  * @param file => std::string -> Path to file for replacing
  * @param var_type => std::string -> Type of variable
  * @param var_name => std::string -> Name of variable
@@ -42,7 +50,7 @@ int replace(std::string file, std::string token, std::string data);
  * @return int -> -1 - error, else - number of replaced tokens
  */
 int set_var(std::string file, std::string var_type, std::string var_name,
-	    std::string data);
+            std::string data);
 /**
  * @brief Convert path to filename by replacing '\' by '.'
  *
@@ -50,7 +58,7 @@ int set_var(std::string file, std::string var_type, std::string var_name,
  * @return std::string -> Filename
  */
 std::string path_to_file(std::string in);
-}  // namespace fs
-}  // namespace CBuild
+} // namespace fs
+} // namespace CBuild
 
-#endif	// __CBUILD_FILE_HPP__
+#endif // __CBUILD_FILE_HPP__

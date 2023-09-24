@@ -1,0 +1,123 @@
+\hypertarget{classCBuild_1_1generator__base}{}\doxysection{CBuild\+::generator\+\_\+base Class Reference}
+\label{classCBuild_1_1generator__base}\index{CBuild::generator\_base@{CBuild::generator\_base}}
+
+
+Base for any generator.  
+
+
+
+
+{\ttfamily \#include $<$generator.\+hpp$>$}
+
+Inheritance diagram for CBuild\+::generator\+\_\+base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCBuild_1_1generator__base}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCBuild_1_1generator__base_a8e639d98e107bb1c6b0cad8a1cd0ee6e}{generator\+\_\+base}} (std\+::string out)
+\begin{DoxyCompactList}\small\item\em Create and save output file name. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCBuild_1_1generator__base_a117148216db87aa1c88d1c72782d67f1}{generate}} (\mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{CBuild\+::\+RType}} mode, \mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ $\ast$args)=0
+\begin{DoxyCompactList}\small\item\em Generate some output. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classCBuild_1_1generator__base_adce7962b27cabb92eaab4f2df6f01a84}{init}} ()=0
+\begin{DoxyCompactList}\small\item\em Some init. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{classCBuild_1_1generator__base_a51b807ff9b7b05cd1758564412bdc56e}{OUT}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base for any generator. 
+
+Definition at line \mbox{\hyperlink{generator_8hpp_source_l00036}{36}} of file \mbox{\hyperlink{generator_8hpp_source}{generator.\+hpp}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCBuild_1_1generator__base_a8e639d98e107bb1c6b0cad8a1cd0ee6e}\label{classCBuild_1_1generator__base_a8e639d98e107bb1c6b0cad8a1cd0ee6e}} 
+\index{CBuild::generator\_base@{CBuild::generator\_base}!generator\_base@{generator\_base}}
+\index{generator\_base@{generator\_base}!CBuild::generator\_base@{CBuild::generator\_base}}
+\doxysubsubsection{\texorpdfstring{generator\_base()}{generator\_base()}}
+{\footnotesize\ttfamily CBuild\+::generator\+\_\+base\+::generator\+\_\+base (\begin{DoxyParamCaption}\item[{std\+::string}]{out }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Create and save output file name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em out} & =\texorpdfstring{$>$}{>} std\+:;string -\/\texorpdfstring{$>$}{>} Output file \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{generator_8hpp_source_l00046}{46}} of file \mbox{\hyperlink{generator_8hpp_source}{generator.\+hpp}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCBuild_1_1generator__base_a117148216db87aa1c88d1c72782d67f1}\label{classCBuild_1_1generator__base_a117148216db87aa1c88d1c72782d67f1}} 
+\index{CBuild::generator\_base@{CBuild::generator\_base}!generate@{generate}}
+\index{generate@{generate}!CBuild::generator\_base@{CBuild::generator\_base}}
+\doxysubsubsection{\texorpdfstring{generate()}{generate()}}
+{\footnotesize\ttfamily virtual void CBuild\+::generator\+\_\+base\+::generate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{CBuild\+::\+RType}}}]{mode,  }\item[{\mbox{\hyperlink{classlib_1_1map}{lib\+::map}}$<$ std\+::string, std\+::string $>$ $\ast$}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Generate some output. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & =\texorpdfstring{$>$}{>} \mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{CBuild\+::\+RType}} -\/\texorpdfstring{$>$}{>} \mbox{\hyperlink{namespaceCBuild}{CBuild}} arg \\
+\hline
+{\em args} & =\texorpdfstring{$>$}{>} lib\+::map$<$std\+::string, std\+::string$>$ -\/\texorpdfstring{$>$}{>} \mbox{\hyperlink{namespaceCBuild}{CBuild}} arg \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classCBuild_1_1ccj__out_a4d45cb727a10ec6340f9297915659abd}{CBuild\+::ccj\+\_\+out}}, and \mbox{\hyperlink{classCBuild_1_1makefile__out_a401b0601c1d633705ef9684e5041a008}{CBuild\+::makefile\+\_\+out}}.
+
+\mbox{\Hypertarget{classCBuild_1_1generator__base_adce7962b27cabb92eaab4f2df6f01a84}\label{classCBuild_1_1generator__base_adce7962b27cabb92eaab4f2df6f01a84}} 
+\index{CBuild::generator\_base@{CBuild::generator\_base}!init@{init}}
+\index{init@{init}!CBuild::generator\_base@{CBuild::generator\_base}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily virtual bool CBuild\+::generator\+\_\+base\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Some init. 
+
+\begin{DoxyReturn}{Returns}
+bool -\/\texorpdfstring{$>$}{>} Work as logger/capture execution thread (true/false) 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classCBuild_1_1ccj__out_a4da18a904066c30deb6c589b49f0137d}{CBuild\+::ccj\+\_\+out}}, and \mbox{\hyperlink{classCBuild_1_1makefile__out_a42c3b938e460d7ae22b77495950c2fc1}{CBuild\+::makefile\+\_\+out}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCBuild_1_1generator__base_a51b807ff9b7b05cd1758564412bdc56e}\label{classCBuild_1_1generator__base_a51b807ff9b7b05cd1758564412bdc56e}} 
+\index{CBuild::generator\_base@{CBuild::generator\_base}!OUT@{OUT}}
+\index{OUT@{OUT}!CBuild::generator\_base@{CBuild::generator\_base}}
+\doxysubsubsection{\texorpdfstring{OUT}{OUT}}
+{\footnotesize\ttfamily std\+::string CBuild\+::generator\+\_\+base\+::\+OUT\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{generator_8hpp_source_l00038}{38}} of file \mbox{\hyperlink{generator_8hpp_source}{generator.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{generator_8cpp_source_l00038}{CBuild\+::makefile\+\_\+out\+::generate()}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+CBuild/headers/generator/\mbox{\hyperlink{generator_8hpp}{generator.\+hpp}}\end{DoxyCompactItemize}

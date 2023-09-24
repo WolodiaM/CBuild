@@ -1,0 +1,29 @@
+\hypertarget{generator_8hpp_source}{}\doxysection{generator.\+hpp}
+\label{generator_8hpp_source}\index{CBuild/headers/generator/generator.hpp@{CBuild/headers/generator/generator.hpp}}
+\mbox{\hyperlink{generator_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00022}00022 \textcolor{comment}{// C++ libraries}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00023}00023 \textcolor{preprocessor}{\#include "{}string"{}}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00024}00024 \textcolor{comment}{// Project includes}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00025}00025 \textcolor{preprocessor}{\#include "{}../CBuild.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00026}00026 \textcolor{preprocessor}{\#include "{}../map.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00027}00027 \textcolor{preprocessor}{\#include "{}../system.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00028}00028 \textcolor{comment}{// Code}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00029}00029 \textcolor{preprocessor}{\#ifndef \_\_CBUILD\_GENERATOR\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00030}00030 \textcolor{preprocessor}{\#define \_\_CBUILD\_GENERATOR\_HPP\_\_}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00031}00031 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceCBuild}{CBuild}} \{}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00036}\mbox{\hyperlink{classCBuild_1_1generator__base}{00036}} \textcolor{keyword}{class }\mbox{\hyperlink{classCBuild_1_1generator__base}{generator\_base}} \{}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00037}00037 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00038}\mbox{\hyperlink{classCBuild_1_1generator__base_a51b807ff9b7b05cd1758564412bdc56e}{00038}}   std::string \mbox{\hyperlink{classCBuild_1_1generator__base_a51b807ff9b7b05cd1758564412bdc56e}{OUT}};}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00039}00039 }
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00040}00040 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00046}\mbox{\hyperlink{classCBuild_1_1generator__base_a8e639d98e107bb1c6b0cad8a1cd0ee6e}{00046}}   \mbox{\hyperlink{classCBuild_1_1generator__base_a8e639d98e107bb1c6b0cad8a1cd0ee6e}{generator\_base}}(std::string out) \{ this-\/>OUT = out; \}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00053}\mbox{\hyperlink{classCBuild_1_1generator__base_a117148216db87aa1c88d1c72782d67f1}{00053}}   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classCBuild_1_1generator__base_a117148216db87aa1c88d1c72782d67f1}{generate}}(\mbox{\hyperlink{namespaceCBuild_a7c7ed9679b1479745032dd97abbd7ce2}{CBuild::RType}}              mode,}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00054}00054             \mbox{\hyperlink{classlib_1_1map}{lib::map<std::string, std::string>}} *args) = 0;}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00060}\mbox{\hyperlink{classCBuild_1_1generator__base_adce7962b27cabb92eaab4f2df6f01a84}{00060}}   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classCBuild_1_1generator__base_adce7962b27cabb92eaab4f2df6f01a84}{init}}() = 0;}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00061}00061 \};}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00062}00062 \} \textcolor{comment}{// namespace CBuild}}
+\DoxyCodeLine{\Hypertarget{generator_8hpp_source_l00063}00063 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_\_CBUILD\_GENERATOR\_HPP\_\_}}
+
+\end{DoxyCode}

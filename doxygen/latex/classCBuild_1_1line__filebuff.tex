@@ -112,17 +112,22 @@ References \mbox{\hyperlink{filebuff_8hpp_source_l00085}{CBuild\+::filebuff\+::a
 Delete line from file. 
 
 
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & -\/\texorpdfstring{$>$}{>} If pos is bigger then file\\
+\hline
+\end{DoxyExceptions}
+
 \begin{DoxyParams}{Parameters}
 {\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Linenumber \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00412}{412}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
+Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00428}{428}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{filebuff_8hpp_source_l00085}{CBuild\+::filebuff\+::autorefresh}}, \mbox{\hyperlink{filebuff_8hpp_source_l00070}{CBuild\+::\+BUFFER\+\_\+\+NEWER}}, \mbox{\hyperlink{filebuff_8hpp_source_l00182}{save\+\_\+buffer()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00092}{CBuild\+::filebuff\+::state}}.
+References \mbox{\hyperlink{filebuff_8hpp_source_l00085}{CBuild\+::filebuff\+::autorefresh}}, \mbox{\hyperlink{filebuff_8hpp_source_l00172}{buff}}, \mbox{\hyperlink{filebuff_8hpp_source_l00070}{CBuild\+::\+BUFFER\+\_\+\+NEWER}}, \mbox{\hyperlink{filebuff_8hpp_source_l00182}{save\+\_\+buffer()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00092}{CBuild\+::filebuff\+::state}}.
 
 \mbox{\Hypertarget{classCBuild_1_1line__filebuff_ab4a5d8e5ae90b35848ab111882a005c5}\label{classCBuild_1_1line__filebuff_ab4a5d8e5ae90b35848ab111882a005c5}} 
 \index{CBuild::line\_filebuff@{CBuild::line\_filebuff}!del\_str@{del\_str}}
@@ -190,6 +195,11 @@ Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00196}{196}} of file \
 Get line from buffer. 
 
 
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & -\/\texorpdfstring{$>$}{>} If pos is bigger then file\\
+\hline
+\end{DoxyExceptions}
+
 \begin{DoxyParams}{Parameters}
 {\em pos} & =\texorpdfstring{$>$}{>} unsigned int -\/\texorpdfstring{$>$}{>} Linenumber \\
 \hline
@@ -199,7 +209,11 @@ std\+::string -\/\texorpdfstring{$>$}{>} Line
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00386}{386}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
+Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00388}{388}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
+
+
+
+References \mbox{\hyperlink{filebuff_8hpp_source_l00172}{buff}}.
 
 \mbox{\Hypertarget{classCBuild_1_1line__filebuff_ae573a0a0231acb96e73b38a2f759c0bb}\label{classCBuild_1_1line__filebuff_ae573a0a0231acb96e73b38a2f759c0bb}} 
 \index{CBuild::line\_filebuff@{CBuild::line\_filebuff}!get\_str@{get\_str}}
@@ -253,7 +267,7 @@ References \mbox{\hyperlink{filebuff_8hpp_source_l00062}{CBuild\+::\+MATCH}}, \m
 
 
 
-Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00190}{line\+\_\+filebuff()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00422}{update()}}.
+Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00190}{line\+\_\+filebuff()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00443}{update()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1line__filebuff_a0266702d38aed5c3736e861b3abffcef}\label{classCBuild_1_1line__filebuff_a0266702d38aed5c3736e861b3abffcef}} 
 \index{CBuild::line\_filebuff@{CBuild::line\_filebuff}!save\_buffer@{save\_buffer}}
@@ -279,7 +293,7 @@ References \mbox{\hyperlink{filebuff_8hpp_source_l00081}{CBuild\+::filebuff\+::p
 
 
 
-Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00304}{del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00412}{del\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00329}{del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00247}{set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00397}{set\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00273}{set\+\_\+str()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00422}{update()}}.
+Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00304}{del\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00428}{del\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00329}{del\+\_\+str()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00247}{set\+\_\+char()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00406}{set\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00273}{set\+\_\+str()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00443}{update()}}.
 
 \mbox{\Hypertarget{classCBuild_1_1line__filebuff_ace55fa84cec51dd7f61ac749e6e5c86e}\label{classCBuild_1_1line__filebuff_ace55fa84cec51dd7f61ac749e6e5c86e}} 
 \index{CBuild::line\_filebuff@{CBuild::line\_filebuff}!set\_char@{set\_char}}
@@ -321,6 +335,11 @@ References \mbox{\hyperlink{filebuff_8hpp_source_l00085}{CBuild\+::filebuff\+::a
 Set line in file. 
 
 
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & -\/\texorpdfstring{$>$}{>} If pos is bigger then file\\
+\hline
+\end{DoxyExceptions}
+
 \begin{DoxyParams}{Parameters}
 {\em str} & =\texorpdfstring{$>$}{>} std\+::string -\/\texorpdfstring{$>$}{>} Line \\
 \hline
@@ -329,11 +348,11 @@ Set line in file.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00397}{397}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
+Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00406}{406}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
 
 
 
-References \mbox{\hyperlink{filebuff_8hpp_source_l00085}{CBuild\+::filebuff\+::autorefresh}}, \mbox{\hyperlink{filebuff_8hpp_source_l00070}{CBuild\+::\+BUFFER\+\_\+\+NEWER}}, \mbox{\hyperlink{filebuff_8hpp_source_l00182}{save\+\_\+buffer()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00092}{CBuild\+::filebuff\+::state}}.
+References \mbox{\hyperlink{filebuff_8hpp_source_l00085}{CBuild\+::filebuff\+::autorefresh}}, \mbox{\hyperlink{filebuff_8hpp_source_l00172}{buff}}, \mbox{\hyperlink{filebuff_8hpp_source_l00070}{CBuild\+::\+BUFFER\+\_\+\+NEWER}}, \mbox{\hyperlink{filebuff_8hpp_source_l00182}{save\+\_\+buffer()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00092}{CBuild\+::filebuff\+::state}}.
 
 \mbox{\Hypertarget{classCBuild_1_1line__filebuff_a27f993bcecaa63d81e5064d659bf4fd5}\label{classCBuild_1_1line__filebuff_a27f993bcecaa63d81e5064d659bf4fd5}} 
 \index{CBuild::line\_filebuff@{CBuild::line\_filebuff}!set\_str@{set\_str}}
@@ -380,7 +399,7 @@ Implements \mbox{\hyperlink{classCBuild_1_1filebuff_abee9eab34130d0c2b2733325c24
 
 
 
-Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00422}{422}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
+Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00443}{443}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
 
 
 
@@ -398,6 +417,10 @@ References \mbox{\hyperlink{filebuff_8hpp_source_l00070}{CBuild\+::\+BUFFER\+\_\
 
 
 Definition at line \mbox{\hyperlink{filebuff_8hpp_source_l00172}{172}} of file \mbox{\hyperlink{filebuff_8hpp_source}{filebuff.\+hpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{filebuff_8hpp_source_l00428}{del\+\_\+line()}}, \mbox{\hyperlink{filebuff_8hpp_source_l00388}{get\+\_\+line()}}, and \mbox{\hyperlink{filebuff_8hpp_source_l00406}{set\+\_\+line()}}.
 
 
 
