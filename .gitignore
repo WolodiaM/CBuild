@@ -1,17 +1,14 @@
 # VSCode
 .vscode
+# clangd
+.cache
 # CBuild main gitnore
 build/**
 cache
 # CBuild dev gitnore
-scripts
-src/main.cpp
-src/test.hpp
-src/test.cpp
-CBuild.run
 CBuild build system prerequirments.rtf
 CBuild/CBuild/libCBuild.so
 Makefile
 private_gpg_key.asc
-releases
-compile_commands.json
+private.pgp
+doxygen/passwd
