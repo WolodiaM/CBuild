@@ -19,7 +19,10 @@
  * `--init` - init CBuild folder structure, not always required.
  * `--help` - print help message - this information.
  * `--version` - print curent version of CBuild
- * `--get-cli-autocompetition` - generate autocompetition data for bash, usage with custom autocompetition script
+ * `--task-list` - print list of all registered tasks
+ * `--target-list` - print list of all registered targets
+ * `--generator-list` - print list of all registered generators
+ * `--commands-list` - print list of all registered user commands
 ## Folder structure
 ```
 <project_root>

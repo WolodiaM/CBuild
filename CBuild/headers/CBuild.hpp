@@ -31,42 +31,42 @@ namespace CBuild {
  * @brief Run mode
  */
 typedef enum {
-  /**
-   * @brief Run task
-   */
-  TASK,
-  /**
-   * @brief Build target
-   */
-  BUILD,
-  /**
-   * @brief Run target
-   */
-  RUN,
-  /**
-   * @brief Build and run target
-   */
-  BUILD_RUN,
-  /**
-   * @brief Build and run target in debug mode
-   */
-  DEBUG,
-  /**
-   * @brief Clear build output and cache
-   */
-  CLEAR,
-  /**
-   * @brief Rebuild user executable
-   */
-  REBUILD,
-  /**
-   * @brief Load other project deps
-   */
-  LOAD_DEPS,
-  /**
-   * @brief Some error occurred
-   */
-  ERROR
+    /**
+     * @brief Run task
+     */
+    TASK,
+    /**
+     * @brief Build target
+     */
+    BUILD,
+    /**
+     * @brief Run target
+     */
+    RUN,
+    /**
+     * @brief Build and run target
+     */
+    BUILD_RUN,
+    /**
+     * @brief Build and run target in debug mode
+     */
+    DEBUG,
+    /**
+     * @brief Clear build output and cache
+     */
+    CLEAR,
+    /**
+     * @brief Rebuild user executable
+     */
+    REBUILD,
+    /**
+     * @brief Load other project deps
+     */
+    LOAD_DEPS,
+    /**
+     * @brief Some error occurred
+     */
+    ERROR
 } RType;
 /**
  * @brief Parse arguments

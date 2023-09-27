@@ -4,3 +4,7 @@ Fixed typos
 Fixed minor bugs
 New cli parser
 Fixes in set_var() function
+Check for compiler failure, using non-zero return value
+Ability for add custom `--version` handler, add data from buildscript
+No compiler warning without warnings disabling
+Add profiler support (-pg)

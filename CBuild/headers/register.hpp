@@ -99,6 +99,12 @@ void AddLinkArg(std::string arg);
  */
 void AddCompileArg(std::string arg);
 /**
+ * @brief Set handler to add output to `--version`
+ *
+ * @param handler => void (*)() -> Handler
+ */
+void SetVersionHandler(void (*handler)());
+/**
  * @brief Get the rebuild args for CBuild executable
  * @return std::string -> formatted arguments
  */

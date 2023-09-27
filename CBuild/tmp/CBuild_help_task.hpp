@@ -26,11 +26,13 @@
 #include "Task.hpp"
 namespace CBuild {
 class Help : public CBuild::Task {
-private:
-  std::string data = "@HELP_MSG@";
+  private:
+    std::string data = "@HELP_MSG@";
 
-public:
-  Help() : CBuild::Task("CBuild_help", {}){};
-  void call(std::vector<std::string> args) { CBuild::print(data); }
+  public:
+    Help() : CBuild::Task("CBuild_help", {}){};
+    void call(std::vector<std::string> args __attribute_maybe_unused__) {
+        CBuild::print(data);
+    }
 };
 } // namespace CBuild

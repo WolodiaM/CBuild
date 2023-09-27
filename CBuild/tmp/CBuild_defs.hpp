@@ -76,8 +76,14 @@
 #define CBUILD_VERSION_MINOR (int)$VERSION_MINOR
 #define CBUILD_VERSION_STR std::string($VERSION)
 /**
- * @brief Data about CBuild compialtion
+ * @brief Data about CBuild compilation
  */
 #define CBUILD_COMPILER_VERSION std::string(__VERSION__)
 #define CBUILD_COMPILATION_DATE std::string(__DATE__)
 #define CBUILD_COMPILATION_TIME std::string(__TIME__)
+/**
+ * @brief For cli autocompletion
+ */
+#define CBUILD_AUTOCOMPLETION_BASH std::string("bash_return")
+#define CBUILD_AUTOCOMPLETION_ZSH std::string("zsh_return")
+#define CBUILD_AUTOCOMPLETION_ZSH_DESCRIPTION std::string("zsh_return_desc")

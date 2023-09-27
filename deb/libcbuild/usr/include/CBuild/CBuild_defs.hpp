@@ -2,9 +2,7 @@
  * @file CBuild_defs.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Defines
- * @version 1.0
  * @date 2023-02-02
- *
  *
  * @license GPL v3.0 or later
  *
@@ -72,8 +70,20 @@
  */
 #define CBUILD_HASH_FILE std::string("hash")
 /**
- * @brief CBuilddifferent representation of CBuild version
+ * @brief Different representation of CBuild version
  */
-#define CBUILD_VERSION_MAJOR (int)8
-#define CBUILD_VERSION_MINOR (int)5
-#define CBUILD_VERSION_STR std::string("8.5")
+#define CBUILD_VERSION_MAJOR (int)9
+#define CBUILD_VERSION_MINOR (int)2
+#define CBUILD_VERSION_STR std::string("9.2")
+/**
+ * @brief Data about CBuild compilation
+ */
+#define CBUILD_COMPILER_VERSION std::string(__VERSION__)
+#define CBUILD_COMPILATION_DATE std::string(__DATE__)
+#define CBUILD_COMPILATION_TIME std::string(__TIME__)
+/**
+ * @brief For cli autocompletion
+ */
+#define CBUILD_AUTOCOMPLETION_BASH std::string("bash_return")
+#define CBUILD_AUTOCOMPLETION_ZSH std::string("zsh_return")
+#define CBUILD_AUTOCOMPLETION_ZSH_DESCRIPTION std::string("zsh_return_desc")

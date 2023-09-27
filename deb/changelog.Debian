@@ -1,3 +1,34 @@
+cbuild (9.2) stable; urgency=high
+
+  [WolodiaM]
+  * Add ability to set major version in call to `-Wl,-soname`
+
+ -- WolodiaM <w_melnyk@outlook.com>  Wed, 27 Sep 2023 17:56:21 +0200
+
+cbuild (9.1) stable; urgency=high
+
+  [WolodiaM]
+  * Fix in command line parser, always throw error on `-a` and `-pa`
+
+ -- WolodiaM <w_melnyk@outlook.com>  Wed, 27 Sep 2023 16:27:36 +0200
+
+cbuild (9.0) stable; urgency=high
+
+  [WolodiaM]
+  * Added generator_base class, changed internal generators to this type
+  * Fixed some typos
+  * Fixed some bugs
+  * Now generation of compile_commands.json not require full rebuild
+  * New parser for command line arguments
+  * Fixed bug in CBuild::fs::set_var()
+  * Now build system properly pnics on compilation error
+  * Check for compilation error based on return value from compiler
+  * Ability to add custom handler to `--version`, simple function
+  * Added support for profiler
+  * Zero warnings from compilation!
+
+ -- WolodiaM <w_melnyk@outlook.com>  Wed, 27 Sep 2023 16:10:28 +0200
+
 cbuild (8.7) stable; urgency=high
 
   [WolodiaM]
@@ -45,7 +76,7 @@ cbuild (8.2) stable; urgency=high
     Build::set_thread_count(int threads) (yes, it is mostly base on gcc)
   * Add support for -j via same function when called with -1
   * Add -j to CBuild_rebuild, for better performance
-  * Add --no-cli-out, disable all CBuild output, only cmpiler output is visible,
+  * Add --no-cli-out, disable all CBuild output, only compiler output is visible,
     cannot be used with -v
   * Build: help task now be automatically generated via buildsystem, so, 
     help now be slighly better

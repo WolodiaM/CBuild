@@ -26,35 +26,35 @@ namespace CBuild {
 bool verbose = false;
 bool none    = false;
 void print_internal(std::string msg, CBuild::color fg) {
-  // Create buffer
-  std::string buff;
-  // Load ANSI start code in buffer
-  buff = "\u001b[";
-  // Load color
-  int f = fg;
-  // Push collor to buffer
-  buff += std::to_string(f);
-  // Push ANSI end code to buffer
-  buff += "m";
-  // Push message to buffer
-  buff += msg;
-  // Push ANSI reset code to buffer
-  buff += "\u001b[0m";
-  // Print buffer with \n
-  puts(buff.c_str());
-  fflush(stdout);
+    // Create buffer
+    std::string buff;
+    // Load ANSI start code in buffer
+    buff = "\u001b[";
+    // Load color
+    int f = fg;
+    // Push collor to buffer
+    buff += std::to_string(f);
+    // Push ANSI end code to buffer
+    buff += "m";
+    // Push message to buffer
+    buff += msg;
+    // Push ANSI reset code to buffer
+    buff += "\u001b[0m";
+    // Print buffer with \n
+    puts(buff.c_str());
+    fflush(stdout);
 }
 } // namespace CBuild
 /* print.hpp */
 void CBuild::print(std::string msg, color fg) {
-  // If print enabled - do it
-  if (!CBuild::none)
-    CBuild::print_internal(msg, fg);
+    // If print enabled - do it
+    if (!CBuild::none)
+        CBuild::print_internal(msg, fg);
 }
 void CBuild::print_full(std::string msg, color fg) {
-  // If verbose print enabled - do it
-  if (CBuild::verbose && !CBuild::none)
-    CBuild::print_internal(msg, fg);
+    // If verbose print enabled - do it
+    if (CBuild::verbose && !CBuild::none)
+        CBuild::print_internal(msg, fg);
 }
 void CBuild::print_verbose() { CBuild::verbose = true; }
 void CBuild::print_none() { CBuild::none = true; }

@@ -1,0 +1,57 @@
+[
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/Task.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.Task.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/Task.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/hash.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.hash.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/hash.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/system.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.system.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/system.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/files.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.files.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/files.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/cli_parser.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.cli_parser.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/cli_parser.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/filesystem++.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.filesystem++.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/filesystem++.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/Build.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.Build.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/Build.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/generator.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.generator.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/generator.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/register.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.register.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/register.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/print.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.print.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/print.cpp"
+},
+{
+	"directory": "/home/wolodiam/dev/c++/CBuild",
+	"command": "g++ -c \/home\/wolodiam\/dev\/c++\/CBuild\/CBuild\/CBuild\/src\/CBuild.cpp -Wl,-z,origin  -Wl,-rpath,\"\\$ORIGIN\" -std=c++20 -Wall -Wextra -Wno-comments -fPIC -Icache\/headers  -Wl,-soname,libCBuild.so  -o build\/cbuild\/objs\/.home.wolodiam.dev.c++.CBuild.CBuild.CBuild.src.CBuild.o",
+	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/CBuild.cpp"
+}
+]

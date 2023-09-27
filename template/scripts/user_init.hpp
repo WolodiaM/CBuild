@@ -1,12 +1,14 @@
 /**
- * @file Task.cpp
+ * @file user_init.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief Task implementation
- * @date 2023-01-28
+ * @brief Some userspace  functions exposed to main app
+ * @version 1.0
+ * @date <date>
+ *
  *
  * @license GPL v3.0 or later
  *
- * Copyright (C) 2023  WolodiaM
+ * Copyright (C) 2022  WolodiaM
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,18 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "../../headers/task/Task.hpp"
-/* Task.hpp */
-CBuild::Task::Task(std::string name, std::vector<std::string> required) {
-    // Save name and required tasks
-    this->name     = name;
-    this->required = required;
-}
-std::string CBuild::Task::self_name() {
-    // Return name
-    return this->name;
-}
-std::vector<std::string> CBuild::Task::self_required() {
-    // Return required tasks
-    return this->required;
-}
+#ifndef __CBUILD_USER_INIT_HPP__
+#define __CBUILD_USER_INIT_HPP__
+void init();
+#endif // __CBUILD_USER_INIT_HPP__

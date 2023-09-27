@@ -72,12 +72,18 @@
 /**
  * @brief Different representation of CBuild version
  */
-#define CBUILD_VERSION_MAJOR (int)8
-#define CBUILD_VERSION_MINOR (int)7
-#define CBUILD_VERSION_STR std::string("8.7")
+#define CBUILD_VERSION_MAJOR (int)9
+#define CBUILD_VERSION_MINOR (int)2
+#define CBUILD_VERSION_STR std::string("9.2")
 /**
- * @brief Data about CBuild compialtion
+ * @brief Data about CBuild compilation
  */
 #define CBUILD_COMPILER_VERSION std::string(__VERSION__)
 #define CBUILD_COMPILATION_DATE std::string(__DATE__)
 #define CBUILD_COMPILATION_TIME std::string(__TIME__)
+/**
+ * @brief For cli autocompletion
+ */
+#define CBUILD_AUTOCOMPLETION_BASH std::string("bash_return")
+#define CBUILD_AUTOCOMPLETION_ZSH std::string("zsh_return")
+#define CBUILD_AUTOCOMPLETION_ZSH_DESCRIPTION std::string("zsh_return_desc")

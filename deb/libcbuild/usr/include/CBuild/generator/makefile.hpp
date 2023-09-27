@@ -1,11 +1,10 @@
 /**
- * @file system.hpp
+ * @file makefile.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief Custom system() wraper
- * @version 1.0
- * @date 2023-03-11
+ * @brief Makefile generator
+ * @date 2023-07-24
  *
- *
+ * @copyright (C) 2023 WolodiaM
  * @license GPL v3.0 or later
  *
  * Copyright (C) 2023  WolodiaM
@@ -22,34 +21,20 @@
  */
 // C++ libraries
 #include "string"
-#include "vector"
+// Project includes
+#include "../CBuild_defs.hpp"
+#include "../map.hpp"
+#include "generator.hpp"
 // Code
-#ifndef __CBUILD_SYSTEM_HPP__
-#define __CBUILD_SYSTEM_HPP__
+#ifndef __CBUILD_MAKEFILE_HPP__
+#define __CBUILD_MAKEFILE_HPP__
 namespace CBuild {
-/**
- * @brief Call stdlib system() and print cmd to shell
- *
- * @param cmd => std::string -> command
- * @return int -> Shell return code
- */
-int system(std::string cmd);
-/**
- * @brief Execute command and return it's output
- *
- * @param cmd => stt:;string -> command
- * @param buffsize => unsigned int -> Size of output buffer, malloc and fread
- */
-std::string system_piped(std::string cmd, unsigned int buffsize);
-/**
- * @brief Get the internall command log
- *
- * @return std::vector<std::string>* -> pointer to command log
- */
-std::vector<std::string> *get_log();
-/**
- * @brief Disable system call to commands
- */
-void disable_system();
+class makefile_out : public CBuild::generator_base {
+public:
+  makefile_out() : CBuild::generator_base(CBUILD_MAKEFILE) {}
+  virtual void generate(CBuild::RType			    mode,
+			lib::map<std::string, std::string> *args);
+  virtual bool init();
+};
 } // namespace CBuild
-#endif // __CBUILD_SYSTEM_HPP__
+#endif // __CBUILD_MAKEFILE_HPP__
