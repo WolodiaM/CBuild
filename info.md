@@ -27,15 +27,16 @@ mingw debugger
         * gzip
         * dpkg-deb
 # Sizes of files
- * All (except .git/ .vscode/ build/ cache/ src/ Makefile scripts/ CBuild.run) - 21M
- * Source code (hpp + cpp + rebuild.sh) - 284K
- * Build script (build.sh + build.run + buildscript-CBuild/ ) - 944K
+ * All (except .git/ .vscode/ build/ cache/) - 22M
+ * Source code (rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 320K
+ * Build script (build.sh + build.run + buildscript-CBuild/ ) - 960K
  * libCBuild.so (without -g) - 1.9M
- * deb folder - 1.8M
- * ppa/ubuntu folder - 8.1M
- * doxygen folder + doxygen.conf - 6.7M  
+ * deb folder - 2.0M
+ * ppa/ubuntu folder - 8.4M
+ * doxygen folder + doxygen.conf - 7.0M  
+ * template size - 712K   
 All sizes are generated using `du -hcs <folder/file0> <folder/file1> ...`
 # Profiling
-gmon.out - rofiling data for gprof
+gmon.out - profiling data for gprof
 analisis.txt - output of `gprof ./build.run gmon.out > analisis.txt`
 

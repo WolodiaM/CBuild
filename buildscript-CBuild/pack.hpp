@@ -285,6 +285,10 @@ class pack_deb : public pack_base {
         // Run lintian
         CBuild::system("lintian --no-tag-display-limit ./" + this->work_folder +
                        "/libcbuild.deb");
+        // Reminders
+        CBuild::print("Dont forget to change sizes in info.md and in "
+                      "doxygen/wiki/info.html",
+                      CBuild::RED);
     }
 };
 #endif // __PACK_HPP__

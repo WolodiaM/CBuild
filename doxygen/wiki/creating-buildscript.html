@@ -19,7 +19,7 @@
     <script src="https://www.unpkg.com/prismjs@1.29.0/plugins/show-language/prism-show-language.min.js" type="text/javascript"></script>
     <script src="https://www.unpkg.com/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js" type="text/javascript"></script>
     <!--Title-->
-    <div class="title">CBuild wiki: Main page</div>
+    <div class="title">CBuild wiki: Creating buildscript</div>
     <div class="title-line"><hr/></div>
     <!--Text-->
     <div class="text">
@@ -216,9 +216,9 @@ class cross_gcc : CBuild::gcc {
     <p>Here is a different approach. With this aproach you need to provide <b>-a target:x86_64</b> or <b>-a target:arm64</b> when building, and it defaults to a <b>x86_64</b> target.</p>
     <div class="code-header">
         <p>Toolchain that use two compilers and select one at runtime, implementation</p>
-        </div>
-        <div class="code">
-        <pre class="line-numbers"><code class="language-cpp">/**
+    </div>
+    <div class="code">
+    <pre class="line-numbers"><code class="language-cpp">/**
  * &lt;doxygen file header and license header&gt;
  */
 // We use gcc toolchain as our base
@@ -261,6 +261,11 @@ class cross_gcc : CBuild::gcc {
 };
 #endif // __CROSS_GCC__</code></pre>
         </div>
+        <!--Broken binary-->
+        <div class="sub-sep-line"><hr/></div>
+        <h5>If your buildscript binary broken...</h5>
+        <div class="sub-sep-line"><hr/></div>
+        <p>If your buildscript is broken you always can rebuild it using this command: <b>CBuild_rebuild scripts/ "&lt;your custom build args for buildscript&gt;" "&lt;your custom link args for buildscript&gt;" &lt;your buildscript name or <i>CBuild.run</i>&gt;</b></p>
     </div>
     <!--Test-->
     <!--<div class="text">

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="main.css" rel="stylesheet" type="text/css" />
+	<title>CBuild wiki</title>
+</head>
+
+<body>
+    <!--Title-->
+    <div class="title">CBuild wiki: Usage info</div>
+    <div class="title-line"><hr/></div>
+    <!--Text-->
+    <div class="text">
+        <h6>CLI arguments</h6>
+        <div class="sep-line"><hr/></div>
+        <div class="list">
+        <ul>
+ 			<li><p><b>-f</b> - force recompilation of all files.</p></li>
+            <li><p><b>-v</b> - verbose output, some addition info and some debugging info, mask <b>--no-cli-out</b> if used before.</p></li>
+            <li><p><b>--no-cli-out</b> - no output from CBuild at all, mask <b>-v</b> if used before.</p></li>
+ 			<li><p><b>-g make</b> - generate Makefile based on output from CBuild, simly log all executed command and pack it in Makefile syntax, so, sadly, CBuild::fs calls not propagate to Makefile.</p></li>
+ 			<li><p><b>-g ccj</b> - generate compile_commands.json, use internal command evaluator in CBuild::Toolchain, from the box work only for toolchains, that use standard compiler calling convention, see below.</p></li>
+ 			<li><p><b>-ld &lt;toolchain_name&gt;</b> - load dependencies of specified target, only for CBuild dependencies.</p></li>
+ 			<li><p><b>-b &lt;toolchain_name&gt;</b> - build specified target.</p></li>
+ 			<li><p><b>-b all</b> - build all registered targets</p></li>
+ 			<li><p><b>-r &lt;toolchain_name&gt;</b> - run specified target.</p></li>
+ 			<li><p><b>-br &lt;toolchain_name&gt;</b> - build and then run specified target.</p></li>
+ 			<li><p><b>-d &lt;toolchain_name&gt;</b> - build and then run specified target in debug mode. Now work only with gdb on linux.</p></li>
+ 			<li><p><b>-c &lt;toolchain_name&gt;</b> - clear all data of specified target.</p></li>
+ 			<li><p><b>-t &lt;task_name&gt;</b> - run specified task.</p></li>
+ 			<li><p><b>-a &lt;arg&gt;</b> - set some argument (see it as #define arg, without value). It can be used by ran toolchain or ran task. No preprocessing, simple propagation for user-defined arguments, preserver order in what arguments is specified.</p></li>
+            <li><p><b>-pa &lt;arg&gt;</b> - specify argument for ran app, propagated to app ran by <b>-r</b> and <b>-br</b>, in <b>-d</b> arguments propagates to debugger.</p></li>
+ 			<li><p><b>--rebuild</b> - rebuild CBuild executable.</p></li>
+ 			<li><p><b>--init</b> - init CBuild folder structure, not always required.</p></li>
+ 			<li><p><b>--help</b> - print help message - this information.</p></li>
+ 			<li><p><b>--version</b> - print curent version of CBuild</p></li>
+ 			<li><p><b>--task-list</b> - print list of all registered tasks</p></li>
+ 			<li><p><b>--target-list</b> - print list of all registered targets</p></li>
+ 			<li><p><b>--generator-list</b> - print list of all registered generators</p></li>
+ 			<li><p><b>--commands-list</b> - print list of all registered user commands</p></li>
+        </ul>
+        </div>
+        <div class="sep-line"><hr/></div>
+        <div class="file-tree-head">
+        <h6>Folder structure</h6>
+        </div>
+        <div class="file-tree">
+            <pre>
+&lt;project_root&gt;
+ |
+ | - src                    : Project sources folder
+ |    |
+ |    | - main.cpp          : Have main() function implemented
+ |
+ | - scripts
+ |    |
+ |    | - main.cpp          : Main file of CBuild user scripts, init CBuild and call user init
+ |    | - user_init.cpp     : Implement user init function, have build sript implemented
+ |    | - user_init.hpp     : Header to glue together two .cpp files
+ | - cache                  : CBuild dir for some temporary data
+ |    |
+ |    | - headers           : Header of included CBuild projects
+ |    | - libs              : .so / .a files of included CBuild projects
+ |    | - tmp               : Directory for temporary runtime data of CBuild
+ |
+ | - build
+ |    |
+ |    | - &lt;toolchain_name&gt;
+ |    |    | - hash         : Hash storage directory
+ |    |    |    |
+ |    |    |    | - hash    : Hash database for specified target
+ |    |    | - objs         : Saved .o files of specified target
+ |    |    | - out          : Output files of specified target
+ |    |
+ |
+ | - CBuild.run             : Main executable of CBuild
+            </pre>
+        </div>
+        <div class="sep-line"><hr/></div>
+        <h6>Some misceleanous info</h6>
+        <div class="sep-line"><hr/></div>
+            <h5>Compiler calling convention</h5>
+            <div class="sub-sep-line"><hr/></div>
+            <p>All compilations is done in two steps: compilation <b>&lt;compiler&gt; -c &lt;file&gt; &lt;arguments&gt; -o &lt;object&gt;</b> and then linking <b>&lt;linker&gt; &lt;objects&gt; &lt;arguments&gt; -o &lt;output binary&gt;</b></p>
+    </div>
+    <!--Back-->
+    <div class="sep-line"><hr/></div>
+    <div class="back">
+        <a href="wiki.html">BACK</a>
+    </div>
+    <!--Footer of the page-->
+    <div class="footer">
+        <div class="author">
+            <p>Author - WolodiaM</p>
+            <p><a href="https://sourceforge.net/u/wolodiam/profile/">WolodiaM at SourceForge</a></p>
+        </div>
+        <div class="communication">
+            <p><a href="mailto:w_melnyk@outlook.com">w_melnyk@outlook.com</a></p>
+            <p><a href="https://sourceforge.net/projects/cbuild/reviews/">Reviews</a></p>
+            <p><a href="https://sourceforge.net/p/cbuild/code/ci/master/tree/">Git</a></p>
+            <p><a href="https://sourceforge.net/p/cbuild/discussion/">Discussion</a></p>
+            <p><a href="https://sourceforge.net/projects/cbuild/">SourceForge project page</a></p>
+            <p><a href="../index.html">This wiki</a></p>
+        </div>
+</body>

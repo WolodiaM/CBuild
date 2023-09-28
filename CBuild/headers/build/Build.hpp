@@ -158,11 +158,11 @@ class Toolchain {
     /**
      * @brief Generate list of files that need to be compiles
      *
-     * @param force_ => bool -> Do we do force compilation
-     * @return lib::map<std::string, std::string> -> list of files, key -
-     * code, value - object
+     * @param force => bool -> Do we do force compilation
+     * @return lib::map<std::string, std::string> -> list of files, key - code,
+     * value - object
      */
-    virtual lib::map<std::string, std::string> gen_file_list(bool force_);
+    virtual lib::map<std::string, std::string> gen_file_list(bool force);
     /**
      * @brief Generate output object file from input file
      *

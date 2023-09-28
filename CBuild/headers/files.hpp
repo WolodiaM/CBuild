@@ -36,7 +36,7 @@ int replace(std::string file, std::string token, std::string data);
 /**
  * @brief Set value of variable with type var_type wth name var_name to data
  * This function loocks for variable like this: `<var_type> <var_name>`, then
- * it gets all before <var_type> and saves it to variable. Then it gets all
+ * it gets all before `<var_type>` and saves it to variable. Then it gets all
  * after first `;` and saves it to variable or if we do define, simply skips
  * this part, (so be careful with including something after define, or after
  * replacing multiline define). Then it reconstruct variable part to `<var_type>
