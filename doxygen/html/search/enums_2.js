@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['color_659',['color',['../namespaceCBuild.html#a3291e277899194e904c57c9133ff5025',1,'CBuild']]]
+  ['color_676',['color',['../namespaceCBuild.html#a3291e277899194e904c57c9133ff5025',1,'CBuild']]]
 ];

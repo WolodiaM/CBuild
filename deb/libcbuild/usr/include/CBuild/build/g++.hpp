@@ -23,134 +23,132 @@
 #include "../filesystem++.hpp"
 #include "../hash.hpp"
 #include "../print.hpp"
-#include "Build.hpp"
+#include "./Build.hpp"
 // Code
 #ifndef _CBUILD_GXX_TOOLCHAIN
 #define _CBUILD_GXX_TOOLCHAIN
 namespace CBuild {
 class GXX : public CBuild::Toolchain {
-public:
-  /**
-   * @brief Construct a new GXX object
-   *
-   * @param id Id
-   */
-  GXX(std::string id) {
-    // Set id of toolchain and assign executables constants
-    this->id       = id;
-    this->name     = "";
-    this->linker   = "g++";
-    this->compiler = "g++";
-    this->packer   = "ar cr";
-    this->add_link_arg("-Wl,-z,origin");
-    this->add_compile_arg("-Wl,-z,origin");
-    this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-    this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-  }
-  /**
-   * @brief Construct a new GXX object
-   *
-   * @param id Id
-   * @param name Name
-   */
-  GXX(std::string id, std::string name) {
-    // Set id and name of toolchain and assign executables constants
-    this->id       = id;
-    this->name     = name;
-    this->linker   = "g++";
-    this->compiler = "g++";
-    this->packer   = "ar cr";
-    this->add_link_arg("-Wl,-z,origin");
-    this->add_compile_arg("-Wl,-z,origin");
-    this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-    this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-  }
+  public:
+    /**
+     * @brief Construct a new GXX object
+     *
+     * @param id Id
+     */
+    GXX(std::string id) {
+        // Set id of toolchain and assign executables constants
+        this->id       = id;
+        this->name     = "";
+        this->linker   = "g++";
+        this->compiler = "g++";
+        this->packer   = "ar cr";
+        this->add_link_arg("-Wl,-z,origin");
+        this->add_compile_arg("-Wl,-z,origin");
+        this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
+        this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
+    }
+    /**
+     * @brief Construct a new GXX object
+     *
+     * @param id Id
+     * @param name Name
+     */
+    GXX(std::string id, std::string name) {
+        // Set id and name of toolchain and assign executables constants
+        this->id       = id;
+        this->name     = name;
+        this->linker   = "g++";
+        this->compiler = "g++";
+        this->packer   = "ar cr";
+        this->add_link_arg("-Wl,-z,origin");
+        this->add_compile_arg("-Wl,-z,origin");
+        this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
+        this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
+    }
 
-protected:
-  void build() override {
-    // Get all args
-    std::string args;
-    for (auto elem : this->compiler_args) {
-      args += elem;
-      args += " ";
+  protected:
+    void build() override {
+        // Get all args
+        std::string args;
+        for (auto elem : this->compiler_args) {
+            args += elem;
+            args += " ";
+        }
+        // Get all files
+        auto files = this->gen_file_list(this->force);
+        if (files.size() > 0) {
+            // Compile file by file
+            for (unsigned int i = 0; i < files.size(); i++) {
+                // Construct command
+                std::string cmd = this->compiler + " -c ";
+                cmd += files.at(i).key;
+                cmd += " ";
+                cmd += args;
+                cmd += " -o ";
+                cmd += files.at(i).data;
+                // Execute command
+                this->compile(cmd);
+            }
+        }
     }
-    // Get all files
-    auto files = this->gen_file_list(this->force);
-    if (files.size() > 0) {
-      // Compile file by file
-      for (unsigned int i = 0; i < files.size(); i++) {
-        // Construct command
-        std::string cmd = this->compiler + " -c ";
-        cmd += files.at(i).key;
-        cmd += " ";
-        cmd += args;
-        cmd += " -o ";
-        cmd += files.at(i).data;
-        // Call command
-        // CBuild::print(cmd.c_str(),
-        // CBuild::color::BLUE);
-        this->compile(cmd);
-      }
+    void link() override {
+        // Get args
+        std::string args;
+        for (auto elem : this->link_args) {
+            args += elem;
+            args += " ";
+        }
+        // Get files
+        auto files = CBuild::fs::dir(CBUILD_BUILD_DIR + "/" + this->id + "/" +
+                                         CBUILD_BUILD_CACHE_DIR + "/",
+                                     ".*\\.(o|obj)");
+        std::string flist;
+        for (unsigned int i = 0; i < files.size(); i++) {
+            flist += files.at(i);
+            flist += " ";
+        }
+        if (files.size() > 0) {
+            // Construct command
+            std::string cmd = this->linker + " ";
+            cmd += flist;
+            cmd += " ";
+            cmd += args;
+            cmd += " ";
+            cmd += " -o ";
+            cmd += this->gen_out_name();
+            // Call command
+            // CBuild::print(cmd.c_str(), CBuild::color::BLUE);
+            this->compile(cmd);
+        }
     }
-  }
-  void link() override {
-    // Get args
-    std::string args;
-    for (auto elem : this->link_args) {
-      args += elem;
-      args += " ";
+    void link_pack() override {
+        // Get args
+        std::string args;
+        for (auto elem : this->link_args) {
+            args += elem;
+            args += " ";
+        }
+        // Get all files
+        auto files = CBuild::fs::dir(CBUILD_BUILD_DIR + "/" + this->id + "/" +
+                                         CBUILD_BUILD_CACHE_DIR + "/",
+                                     ".*\\.(o|obj)");
+        std::string flist;
+        for (unsigned int i = 0; i < files.size(); i++) {
+            flist += files.at(i);
+            flist += " ";
+        }
+        if (files.size() > 0) {
+            // Construct command
+            std::string cmd = this->packer + " ";
+            cmd += this->gen_out_name();
+            cmd += " ";
+            cmd += flist;
+            cmd += " ";
+            // Call command
+            // CBuild::print(cmd.c_str(), CBuild::color::BLUE);
+            this->compile(cmd);
+        }
     }
-    // Get files
-    auto files = CBuild::fs::dir(CBUILD_BUILD_DIR + "/" + this->id + "/" +
-                                     CBUILD_BUILD_CACHE_DIR + "/",
-                                 ".*\\.(o|obj)");
-    std::string flist;
-    for (unsigned int i = 0; i < files.size(); i++) {
-      flist += files.at(i);
-      flist += " ";
-    }
-    if (files.size() > 0) {
-      // Construct command
-      std::string cmd = this->linker + " ";
-      cmd += flist;
-      cmd += " ";
-      cmd += args;
-      cmd += " ";
-      cmd += " -o ";
-      cmd += this->gen_out_name();
-      // Call command
-      // CBuild::print(cmd.c_str(), CBuild::color::BLUE);
-      this->compile(cmd);
-    }
-  }
-  void link_pack() override {
-    // Get args
-    std::string args;
-    for (auto elem : this->link_args) {
-      args += elem;
-      args += " ";
-    }
-    // Get all files
-    auto files = CBuild::fs::dir(CBUILD_BUILD_DIR + "/" + this->id + "/" +
-                                     CBUILD_BUILD_CACHE_DIR + "/",
-                                 ".*\\.(o|obj)");
-    std::string flist;
-    for (unsigned int i = 0; i < files.size(); i++) {
-      flist += files.at(i);
-      flist += " ";
-    }
-    if (files.size() > 0) {
-      // Construct command
-      std::string cmd = this->packer + " ";
-      cmd += this->gen_out_name();
-      cmd += " ";
-      cmd += flist;
-      cmd += " ";
-      // Call command
-      // CBuild::print(cmd.c_str(), CBuild::color::BLUE);
-      this->compile(cmd);
-    }
-  }
 };
 } // namespace CBuild
 #endif // _CBUILD_GXX_TOOLCHAIN

@@ -29,12 +29,31 @@
 #ifndef __CBUILD_CCJ_HPP__
 #define __CBUILD_CCJ_HPP__
 namespace CBuild {
+/**
+ * @class ccj_out
+ * @brief Generates compile_commands.json
+ *
+ */
 class ccj_out : public CBuild::generator_base {
-public:
-  ccj_out() : CBuild::generator_base(CBUILD_COMPILE_COMMAND_JSON) {}
-  virtual void generate(CBuild::RType			    mode,
-			lib::map<std::string, std::string> *args);
-  virtual bool init();
+  public:
+    /**
+     * @brief Create new compile_commands.json generator
+     */
+    ccj_out() : CBuild::generator_base(CBUILD_COMPILE_COMMAND_JSON) {}
+    /**
+     * @brief Generate some output
+     *
+     * @param mode => CBuild::RType -> CBuild arg
+     * @param args => lib::map<std::string, std::string> -> CBuild arg
+     */
+    virtual void generate(CBuild::RType                       mode,
+                          lib::map<std::string, std::string> *args);
+    /**
+     * @brief Some init
+     *
+     * @return bool -> Work as logger/capture execution thread (true/false)
+     */
+    virtual bool init();
 };
 } // namespace CBuild
 #endif // __CBUILD_CCJ_HPP__

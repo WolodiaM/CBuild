@@ -31,14 +31,14 @@ namespace CBuild {
  * @brief Text color
  */
 typedef enum {
-  BLACK = 30,
-  RED = 31,
-  GREEN = 32,
-  YELLOW = 33,
-  BLUE = 34,
-  MAGENTA = 35,
-  CYAN = 36,
-  WHITE = 37
+    BLACK   = 30,
+    RED     = 31,
+    GREEN   = 32,
+    YELLOW  = 33,
+    BLUE    = 34,
+    MAGENTA = 35,
+    CYAN    = 36,
+    WHITE   = 37
 } color;
 /**
  * @brief Print colored text to STDOUT

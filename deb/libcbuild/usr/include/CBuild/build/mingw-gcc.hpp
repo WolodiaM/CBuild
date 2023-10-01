@@ -24,7 +24,7 @@
 #include "../hash.hpp"
 #include "../print.hpp"
 #include "../register.hpp"
-#include "Build.hpp"
+#include "./Build.hpp"
 // Code
 #ifndef _CBUILD_MINGW_GCC_TOOLCHAIN
 #define _CBUILD_MINGW_GCC_TOOLCHAIN

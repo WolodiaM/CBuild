@@ -1,4 +1,2 @@
- - Implement multithread compilation: see multithread.TODO.txt
  - Ability to run multiple tasks and build targets
  - Ability to not overwrite compile_commands.json but append to it
- - Doc / Wiki !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

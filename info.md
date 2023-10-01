@@ -1,5 +1,6 @@
 ## Unimplemented and not seen in near future
 mingw debugger
+multithreading, last attempt to create multithreaded compilation code produce code, that produce results two times longer, even using two cores, not one
 
 # Depends
 ### Libs:
@@ -27,14 +28,14 @@ mingw debugger
         * gzip
         * dpkg-deb
 # Sizes of files
- * All (except .git/ .vscode/ build/ cache/) - 22M
- * Source code (rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 320K
+ * All (except .git/ .vscode/ build/ cache/) - 23M
+ * Source code (rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 328K
  * Build script (build.sh + build.run + buildscript-CBuild/ ) - 960K
- * libCBuild.so (without -g) - 1.9M
+ * libCBuild.so (without -g) - 2.0M
  * deb folder - 2.0M
- * ppa/ubuntu folder - 8.4M
+ * ppa/ubuntu folder - 8.7M
  * doxygen folder + doxygen.conf - 7.0M  
- * template size - 712K   
+ * template size - 688K   
 All sizes are generated using `du -hcs <folder/file0> <folder/file1> ...`
 # Profiling
 gmon.out - profiling data for gprof

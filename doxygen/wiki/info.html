@@ -17,6 +17,7 @@
         <div class="list">
             <ul>
                 <li><p>mingw debugger</p></li>
+                <li><p>multithreading, last attempt to create multithreaded compilation code produce code, that produce results two times longer, even using two cores, not one</p></li>
             </ul>
         </div>
         <div class="sep-line"><hr/></div>
@@ -55,14 +56,14 @@
             <div class="sep-line"><hr/></div>
             <ul>
                 <!--!du -hcs buildscript-CBuild/ CBuild/ deb doxygen/ ppa/ template/ .gitignore analisis.txt build.run build.sh changes compile_commands.json doxygen.conf gmon.out info.md LICENSE multithread.TODO.txt private.pgp readme.md rebuild.sh requirments.md TODO.txt usage.md-->
-                <li><p>All (except .git/ .vscode/ build/ cache/) - 22M</p></li>
-                <li><p>Source code (rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 320K</p></li>
+                <li><p>All (except .git/ .vscode/ build/ cache/) - 23M</p></li>
+                <li><p>Source code (rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 328K</p></li>
                 <li><p>Build script (build.sh + build.run + buildscript-CBuild/ ) - 960K</p></li>
-                <li><p>libCBuild.so (without -g) - 1.9M</p></li>
+                <li><p>libCBuild.so (without -g) - 2.0M</p></li>
                 <li><p>deb folder - 2.0M</p></li>
-                <li><p>ppa/ubuntu folder - 8.4M</p></li>
+                <li><p>ppa/ubuntu folder - 8.7M</p></li>
                 <li><p>doxygen folder + doxygen.conf - 7.0M</p></li>
-                <li><p>template size - 712K</p></li>
+                <li><p>template size - 688K</p></li>
             </ul>
             <p>All sizes are generated using <b>du -hcs &lt;folder/file0&gt; &lt;folder/file1&gt; ...</b></p>
             <div class="sep-line"><hr/></div>

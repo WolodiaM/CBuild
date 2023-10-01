@@ -29,12 +29,31 @@
 #ifndef __CBUILD_MAKEFILE_HPP__
 #define __CBUILD_MAKEFILE_HPP__
 namespace CBuild {
+/**
+ * @class makefile_out
+ * @brief Generate Makefile from task/target, works as command logger
+ *
+ */
 class makefile_out : public CBuild::generator_base {
-public:
-  makefile_out() : CBuild::generator_base(CBUILD_MAKEFILE) {}
-  virtual void generate(CBuild::RType			    mode,
-			lib::map<std::string, std::string> *args);
-  virtual bool init();
+  public:
+    /**
+     * @brief Create new Makefile generator
+     */
+    makefile_out() : CBuild::generator_base(CBUILD_MAKEFILE) {}
+    /**
+     * @brief Generate some output
+     *
+     * @param mode => CBuild::RType -> CBuild arg
+     * @param args => lib::map<std::string, std::string> -> CBuild arg
+     */
+    virtual void generate(CBuild::RType                       mode,
+                          lib::map<std::string, std::string> *args);
+    /**
+     * @brief Some init
+     *
+     * @return bool -> Work as logger/capture execution thread (true/false)
+     */
+    virtual bool init();
 };
 } // namespace CBuild
 #endif // __CBUILD_MAKEFILE_HPP__

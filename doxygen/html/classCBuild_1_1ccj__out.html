@@ -74,6 +74,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Generates compile_commands.json.  
+ <a href="classCBuild_1_1ccj__out.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="ccj_8hpp_source.html">ccj.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CBuild::ccj_out:</div>
@@ -88,6 +91,7 @@ Inheritance diagram for CBuild::ccj_out:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1c57701871504bc3fbea339dc6766ab2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1ccj__out.html#a1c57701871504bc3fbea339dc6766ab2">ccj_out</a> ()</td></tr>
+<tr class="memdesc:a1c57701871504bc3fbea339dc6766ab2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new compile_commands.json generator.  <a href="classCBuild_1_1ccj__out.html#a1c57701871504bc3fbea339dc6766ab2">More...</a><br /></td></tr>
 <tr class="separator:a1c57701871504bc3fbea339dc6766ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d45cb727a10ec6340f9297915659abd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1ccj__out.html#a4d45cb727a10ec6340f9297915659abd">generate</a> (<a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">CBuild::RType</a> mode, <a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt; *args)</td></tr>
 <tr class="memdesc:a4d45cb727a10ec6340f9297915659abd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate some output.  <a href="classCBuild_1_1ccj__out.html#a4d45cb727a10ec6340f9297915659abd">More...</a><br /></td></tr>
@@ -107,8 +111,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a51b807ff9b7b05cd1758564412bdc56e inherit pro_attribs_classCBuild_1_1generator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="ccj_8hpp_source.html#l00032">32</a> of file <a class="el" href="ccj_8hpp_source.html">ccj.hpp</a>.</p>
+<div class="textblock"><p>Generates compile_commands.json. </p>
+
+<p class="definition">Definition at line <a class="el" href="ccj_8hpp_source.html#l00037">37</a> of file <a class="el" href="ccj_8hpp_source.html">ccj.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1c57701871504bc3fbea339dc6766ab2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c57701871504bc3fbea339dc6766ab2">&#9670;&nbsp;</a></span>ccj_out()</h2>
@@ -133,7 +138,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ccj_8hpp_source.html#l00034">34</a> of file <a class="el" href="ccj_8hpp_source.html">ccj.hpp</a>.</p>
+<p>Create new compile_commands.json generator. </p>
+
+<p class="definition">Definition at line <a class="el" href="ccj_8hpp_source.html#l00042">42</a> of file <a class="el" href="ccj_8hpp_source.html">ccj.hpp</a>.</p>
 
 </div>
 </div>
@@ -183,9 +190,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classCBuild_1_1generator__base.html#a117148216db87aa1c88d1c72782d67f1">CBuild::generator_base</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="generator_8cpp_source.html#l00120">120</a> of file <a class="el" href="generator_8cpp_source.html">generator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="generator_8cpp_source.html#l00190">190</a> of file <a class="el" href="generator_8cpp_source.html">generator.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="CBuild_8hpp_source.html#l00041">CBuild::BUILD</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00197">CBuild::fs::create()</a>, <a class="el" href="generator_8cpp_source.html#l00109">CBuild::eval_cmd()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00330">CBuild::fs::exists()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00037">CBuild::fs::FILE</a>, <a class="el" href="map_8hpp_source.html#l00156">lib::map&lt; _K, _D &gt;::get()</a>, <a class="el" href="map_8hpp_source.html#l00172">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00230">CBuild::Registry::GetToolchain()</a>, <a class="el" href="print_8hpp_source.html#l00039">CBuild::MAGENTA</a>, <a class="el" href="print_8cpp_source.html#l00049">CBuild::print()</a>, and <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>.</p>
+<p class="reference">References <a class="el" href="map_8hpp_source.html#l00218">lib::map&lt; _K, _D &gt;::at()</a>, <a class="el" href="CBuild_8hpp_source.html#l00041">CBuild::BUILD</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00197">CBuild::fs::create()</a>, <a class="el" href="filebuff_8hpp_source.html#l00428">CBuild::line_filebuff::del_line()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00039">CBuild::fs::dir()</a>, <a class="el" href="generator_8cpp_source.html#l00112">CBuild::eval_cmd()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00330">CBuild::fs::exists()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00037">CBuild::fs::FILE</a>, <a class="el" href="map_8hpp_source.html#l00156">lib::map&lt; _K, _D &gt;::get()</a>, <a class="el" href="filebuff_8hpp_source.html#l00388">CBuild::line_filebuff::get_line()</a>, <a class="el" href="map_8hpp_source.html#l00172">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00230">CBuild::Registry::GetToolchain()</a>, <a class="el" href="print_8hpp_source.html#l00039">CBuild::MAGENTA</a>, <a class="el" href="generator_8cpp_source.html#l00148">CBuild::preprocess_json_str()</a>, <a class="el" href="print_8cpp_source.html#l00049">CBuild::print()</a>, <a class="el" href="print_8cpp_source.html#l00054">CBuild::print_full()</a>, <a class="el" href="map_8hpp_source.html#l00108">lib::map&lt; _K, _D &gt;::push_back()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::RED</a>, <a class="el" href="filebuff_8hpp_source.html#l00406">CBuild::line_filebuff::set_line()</a>, <a class="el" href="map_8hpp_source.html#l00259">lib::map&lt; _K, _D &gt;::size()</a>, and <a class="el" href="filebuff_8hpp_source.html#l00443">CBuild::line_filebuff::update()</a>.</p>
 
 </div>
 </div>
@@ -217,9 +224,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classCBuild_1_1generator__base.html#adce7962b27cabb92eaab4f2df6f01a84">CBuild::generator_base</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="generator_8cpp_source.html#l00224">224</a> of file <a class="el" href="generator_8cpp_source.html">generator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="generator_8cpp_source.html#l00326">326</a> of file <a class="el" href="generator_8cpp_source.html">generator.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="system_8cpp_source.html#l00061">CBuild::disable_system()</a>.</p>
+<p class="reference">References <a class="el" href="system_8cpp_source.html#l00063">CBuild::disable_system()</a>.</p>
 
 </div>
 </div>

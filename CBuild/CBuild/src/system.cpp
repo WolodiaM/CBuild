@@ -37,6 +37,8 @@ int CBuild::system(std::string cmd) {
     if (CBuild::enabled) {
         CBuild::print(cmd, CBuild::color::BLUE);
         ret = std::system(cmd.c_str());
+    } else {
+        ret = 0;
     }
     return ret;
 }

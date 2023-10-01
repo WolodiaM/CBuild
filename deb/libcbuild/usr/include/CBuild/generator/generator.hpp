@@ -34,30 +34,30 @@ namespace CBuild {
  * @brief Base for any generator
  */
 class generator_base {
-protected:
-  std::string OUT;
+  protected:
+    std::string OUT;
 
-public:
-  /**
-   * @brief Create and save output file name
-   *
-   * @param out => std:;string -> Output file
-   */
-  generator_base(std::string out) { this->OUT = out; }
-  /**
-   * @brief Generate some output
-   *
-   * @param mode => CBuild::RType -> CBuild arg
-   * @param args => lib::map<std::string, std::string> -> CBuild arg
-   */
-  virtual void generate(CBuild::RType			    mode,
-			lib::map<std::string, std::string> *args) = 0;
-  /**
-   * @brief Some init
-   *
-   * @return bool -> Work as logger/capture execution thread (true/false)
-   */
-  virtual bool init() = 0;
+  public:
+    /**
+     * @brief Create and save output file name
+     *
+     * @param out => std::string -> Output file
+     */
+    generator_base(std::string out) { this->OUT = out; }
+    /**
+     * @brief Generate some output
+     *
+     * @param mode => CBuild::RType -> CBuild arg
+     * @param args => lib::map<std::string, std::string> -> CBuild arg
+     */
+    virtual void generate(CBuild::RType                       mode,
+                          lib::map<std::string, std::string> *args) = 0;
+    /**
+     * @brief Some init
+     *
+     * @return bool -> Work as logger/capture execution thread (true/false)
+     */
+    virtual bool init() = 0;
 };
 } // namespace CBuild
 #endif // __CBUILD_GENERATOR_HPP__

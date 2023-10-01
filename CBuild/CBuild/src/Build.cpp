@@ -25,6 +25,7 @@
 #include "iostream"
 #include "stdlib.h"
 #include "string"
+#include "thread"
 #include "vector"
 // Project headers
 #include "../../headers/CBuild_defs.hpp"
@@ -158,6 +159,10 @@ void CBuild::Toolchain::set_profiling_mode() {
 }
 void CBuild::Toolchain::set_version_major(int version) {
     this->version_major = version;
+}
+void CBuild::Toolchain::multithreaded_target() {
+    this->add_compile_arg("-pthread");
+    this->add_link_arg("-pthread");
 }
 /* Build.hpp - files */
 void CBuild::Toolchain::add_file(std::string path) {
@@ -501,13 +506,14 @@ void CBuild::Toolchain::call(std::vector<std::string> *args, bool force,
     this->force = force;
     this->dummy = dummy;
     // Special link tag for dynamick libraries
-    if (this->build_type == CBuild::DYNAMIC_LIBRARY)
+    if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
+        this->compiler_args.push_back("-fPIC");
         this->link_args.push_back("-shared");
+    }
     // Debug mode of compilation
     if (debug)
         this->compiler_args.push_back("-g");
     // Some standart compile and link args
-    this->compiler_args.push_back("-fPIC");
     this->add_compile_arg("-I" + CBUILD_CACHE_DIR + "/" +
                           CBUILD_PROJECT_DEPS_HEADERS);
     this->add_link_arg("-I" + CBUILD_CACHE_DIR + "/" +

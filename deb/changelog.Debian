@@ -1,3 +1,13 @@
+cbuild (9.3) stable; urgency=high
+
+  [WolodiaM]
+  * Ability to compile multithread binaries for linux (-pthread arg)
+  * Fix bug in CBuild::system()
+  * Changed generator for compile_commands.json
+  * Now compile_commands.json can be changed/appended without clearing
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sun, 01 Oct 2023 13:51:44 +0200
+
 cbuild (9.2) stable; urgency=high
 
   [WolodiaM]

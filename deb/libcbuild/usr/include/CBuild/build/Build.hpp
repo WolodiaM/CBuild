@@ -158,11 +158,11 @@ class Toolchain {
     /**
      * @brief Generate list of files that need to be compiles
      *
-     * @param force_ => bool -> Do we do force compilation
-     * @return lib::map<std::string, std::string> -> list of files, key -
-     * code, value - object
+     * @param force => bool -> Do we do force compilation
+     * @return lib::map<std::string, std::string> -> list of files, key - code,
+     * value - object
      */
-    virtual lib::map<std::string, std::string> gen_file_list(bool force_);
+    virtual lib::map<std::string, std::string> gen_file_list(bool force);
     /**
      * @brief Generate output object file from input file
      *
@@ -311,6 +311,10 @@ class Toolchain {
      */
     virtual void error();
     /**
+     * @brief Add `-pthread` argument
+     */
+    virtual void multithreaded_target();
+    /**
      * @brief Set standart for code (-std=std_)
      *
      * @param std_ => std::string -> Stadart name
@@ -361,27 +365,27 @@ class Toolchain {
      * @return std::array<std::string, 3> -> Compiler,
      * linker, packer
      */
-    std::array<std::string, 3> get_cmds();
+    virtual std::array<std::string, 3> get_cmds();
     /**
      * @brief Generate list of all files, that is tracked by this target
      *
      * @return lib::map<std::string, std::string> -> List of files
      */
-    lib::map<std::string, std::string> gen_file_list_force();
+    virtual lib::map<std::string, std::string> gen_file_list_force();
     /**
      * @brief Get preprocessed compile args
      */
-    std::string get_compile_args();
+    virtual std::string get_compile_args();
     /**
      * @brief Crash compilation, needed when gcc throws error
      */
-    void crash() __attribute__((__noreturn__));
+    virtual void crash() __attribute__((__noreturn__));
     /**
      * @brief Call compiler
      *
      * @param cmd => std::string -> Shell command
      */
-    void compile(std::string cmd);
+    virtual void compile(std::string cmd);
 };
 } // namespace CBuild
 #endif // __CBUILD_TOOLCHAIN_HPP__

@@ -74,6 +74,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Generate Makefile from task/target, works as command logger.  
+ <a href="classCBuild_1_1makefile__out.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="makefile_8hpp_source.html">makefile.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CBuild::makefile_out:</div>
@@ -88,6 +91,7 @@ Inheritance diagram for CBuild::makefile_out:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a34d2a3589dfc868c0f5b3690d0833840"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1makefile__out.html#a34d2a3589dfc868c0f5b3690d0833840">makefile_out</a> ()</td></tr>
+<tr class="memdesc:a34d2a3589dfc868c0f5b3690d0833840"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new Makefile generator.  <a href="classCBuild_1_1makefile__out.html#a34d2a3589dfc868c0f5b3690d0833840">More...</a><br /></td></tr>
 <tr class="separator:a34d2a3589dfc868c0f5b3690d0833840"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a401b0601c1d633705ef9684e5041a008"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1makefile__out.html#a401b0601c1d633705ef9684e5041a008">generate</a> (<a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">CBuild::RType</a> mode, <a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt; *args)</td></tr>
 <tr class="memdesc:a401b0601c1d633705ef9684e5041a008"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate some output.  <a href="classCBuild_1_1makefile__out.html#a401b0601c1d633705ef9684e5041a008">More...</a><br /></td></tr>
@@ -107,8 +111,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a51b807ff9b7b05cd1758564412bdc56e inherit pro_attribs_classCBuild_1_1generator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="makefile_8hpp_source.html#l00032">32</a> of file <a class="el" href="makefile_8hpp_source.html">makefile.hpp</a>.</p>
+<div class="textblock"><p>Generate Makefile from task/target, works as command logger. </p>
+
+<p class="definition">Definition at line <a class="el" href="makefile_8hpp_source.html#l00037">37</a> of file <a class="el" href="makefile_8hpp_source.html">makefile.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a34d2a3589dfc868c0f5b3690d0833840"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34d2a3589dfc868c0f5b3690d0833840">&#9670;&nbsp;</a></span>makefile_out()</h2>
@@ -133,7 +138,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makefile_8hpp_source.html#l00034">34</a> of file <a class="el" href="makefile_8hpp_source.html">makefile.hpp</a>.</p>
+<p>Create new Makefile generator. </p>
+
+<p class="definition">Definition at line <a class="el" href="makefile_8hpp_source.html#l00042">42</a> of file <a class="el" href="makefile_8hpp_source.html">makefile.hpp</a>.</p>
 
 </div>
 </div>
@@ -183,9 +190,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classCBuild_1_1generator__base.html#a117148216db87aa1c88d1c72782d67f1">CBuild::generator_base</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="generator_8cpp_source.html#l00038">38</a> of file <a class="el" href="generator_8cpp_source.html">generator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="generator_8cpp_source.html#l00041">41</a> of file <a class="el" href="generator_8cpp_source.html">generator.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="CBuild_8hpp_source.html#l00041">CBuild::BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00049">CBuild::BUILD_RUN</a>, <a class="el" href="CBuild_8hpp_source.html#l00057">CBuild::CLEAR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00197">CBuild::fs::create()</a>, <a class="el" href="CBuild_8hpp_source.html#l00053">CBuild::DEBUG</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00330">CBuild::fs::exists()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00037">CBuild::fs::FILE</a>, <a class="el" href="map_8hpp_source.html#l00156">lib::map&lt; _K, _D &gt;::get()</a>, <a class="el" href="system_8cpp_source.html#l00060">CBuild::get_log()</a>, <a class="el" href="CBuild_8cpp_source.html#l00582">CBuild::get_random_string()</a>, <a class="el" href="system_8cpp_source.html#l00030">CBuild::log</a>, <a class="el" href="print_8hpp_source.html#l00039">CBuild::MAGENTA</a>, <a class="el" href="register_8cpp_source.html#l00152">CBuild::Registry::name</a>, <a class="el" href="generator_8hpp_source.html#l00038">CBuild::generator_base::OUT</a>, <a class="el" href="print_8cpp_source.html#l00049">CBuild::print()</a>, <a class="el" href="CBuild_8hpp_source.html#l00045">CBuild::RUN</a>, and <a class="el" href="CBuild_8hpp_source.html#l00037">CBuild::TASK</a>.</p>
+<p class="reference">References <a class="el" href="CBuild_8hpp_source.html#l00041">CBuild::BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00049">CBuild::BUILD_RUN</a>, <a class="el" href="CBuild_8hpp_source.html#l00057">CBuild::CLEAR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00197">CBuild::fs::create()</a>, <a class="el" href="CBuild_8hpp_source.html#l00053">CBuild::DEBUG</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00330">CBuild::fs::exists()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00037">CBuild::fs::FILE</a>, <a class="el" href="map_8hpp_source.html#l00156">lib::map&lt; _K, _D &gt;::get()</a>, <a class="el" href="system_8cpp_source.html#l00062">CBuild::get_log()</a>, <a class="el" href="CBuild_8cpp_source.html#l00582">CBuild::get_random_string()</a>, <a class="el" href="system_8cpp_source.html#l00030">CBuild::log</a>, <a class="el" href="print_8hpp_source.html#l00039">CBuild::MAGENTA</a>, <a class="el" href="register_8cpp_source.html#l00152">CBuild::Registry::name</a>, <a class="el" href="generator_8hpp_source.html#l00038">CBuild::generator_base::OUT</a>, <a class="el" href="print_8cpp_source.html#l00049">CBuild::print()</a>, <a class="el" href="CBuild_8hpp_source.html#l00045">CBuild::RUN</a>, and <a class="el" href="CBuild_8hpp_source.html#l00037">CBuild::TASK</a>.</p>
 
 </div>
 </div>
@@ -217,7 +224,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classCBuild_1_1generator__base.html#adce7962b27cabb92eaab4f2df6f01a84">CBuild::generator_base</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="generator_8cpp_source.html#l00096">96</a> of file <a class="el" href="generator_8cpp_source.html">generator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="generator_8cpp_source.html#l00099">99</a> of file <a class="el" href="generator_8cpp_source.html">generator.cpp</a>.</p>
 
 </div>
 </div>
