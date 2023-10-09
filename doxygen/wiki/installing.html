@@ -10,20 +10,22 @@
     <!--Title-->
     <div class="title">CBuild wiki: Main page</div>
     <div class="title-line"><hr/></div>
-    <!--List of pages-->
-    <div class="wiki-pages">
-    <ul>
-        <li><a href="installing.html">Installing CBuild</a></li>
-        <li><a href="internal-structure.html">Internal structure of CBuild</a></li>
-        <li><a href="creating-buildscript.html">How to create buildscript for your project using CBuild</a></li>
-        <li><a href="usage.html">Usage info, from usage.md</a></li>
-        <li><a href="info.html">Some interesting (or not) information about CBuild</a></li>
-    </ul>
+    <!--Text-->
+    <div class="text">
+        <h6>Debian/Ubuntu - apt</h6>
+        <p>Install ppa:</p>
+        <pre>curl -s --compressed "https://cbuild.sourceforge.io/ppa/ubuntu/KEY.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/cbuild.gpg &gt; /dev/null
+        sudo curl -s --compressed -o /etc/apt/sources.list.d/cbuild.list "https://cbuild.sourceforge.io/ppa/ubuntu/cbuild.list"
+        sudo apt update</pre>
+        <p>Installing package:</p>
+        <pre>sudo apt install libcbuild</pre>
+        <p>Problems with key ;) Dont know why ;)</p>
+        <p>For now use update.sh/CBuild_update script</p>
     </div>
     <!--Back-->
     <div class="sep-line"><hr/></div>
     <div class="back">
-        <a href="../index.html">BACK</a>
+        <a href="wiki.html">BACK</a>
     </div>
     <!--Footer of the page-->
     <div class="footer">

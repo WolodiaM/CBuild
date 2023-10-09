@@ -29,6 +29,7 @@
 // Scripts headers
 #include "pack.hpp"
 #include "test.hpp"
+#include "uploads.hpp"
 #include "user_init.hpp"
 // Task classes
 class procces_version : public pack_base {
@@ -119,7 +120,7 @@ class mkppa : public CBuild::Task {
         v.getline(str, 10);
         v.close();
         auto version = std::string(str).substr(0, 3);
-        CBuild::system("gpg --import private_gpg_key.asc");
+        CBuild::system("gpg --import private.pgp");
         CBuild::fs::copy("deb/libcbuild.deb",
                          "ppa/ubuntu/libcbuild-" + version + ".deb");
         CBuild::system("cd ppa/ubuntu && dpkg-scanpackages --multiversion . > "
@@ -132,7 +133,6 @@ class mkppa : public CBuild::Task {
         CBuild::system("cd ppa/ubuntu && gpg --default-key "
                        "\"w_melnyk@outlook.com\" --clearsign -o - Release > "
                        "InRelease");
-        CBuild::system("cp -r ppa/* ../CBuild_extra/ppa/");
     }
 };
 class procces_help : public pack_base {
@@ -226,6 +226,9 @@ modify_version  mv;
 mkppa           ppa;
 test            t;
 bhelp           help;
+upload          upl_dox("upload-doxygen", "doxygen/upload-doxygen.sh");
+upload          upl_wiki("upload-wiki", "doxygen/upload-wiki.sh");
+upload          upl_ppa("upload-ppa", "doxygen/upload-ppa.sh");
 // Init
 void load_tasks() {
     CBuild::Registry::RegisterTask(&packd);
@@ -235,5 +238,8 @@ void load_tasks() {
     CBuild::Registry::RegisterTask(&ppa);
     CBuild::Registry::RegisterTask(&help);
     CBuild::Registry::RegisterTask(&t);
+    CBuild::Registry::RegisterTask(&upl_dox);
+    CBuild::Registry::RegisterTask(&upl_wiki);
+    CBuild::Registry::RegisterTask(&upl_ppa);
     CBuild::Registry::RegisterKeyword("--build-help", &help);
 }

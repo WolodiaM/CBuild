@@ -113,55 +113,55 @@ class pack_deb : public pack_base {
   private:
     std::string changelog = "changelog.Debian";
     void        editChangelog() {
-               CBuild::line_filebuff chf(this->work_folder + this->changelog);
-               std::stringstream     buff;
-               buff << "cbuild (";
-               buff << this->version_str();
-               buff << ") stable; urgency=high";
-               chf.set_line(buff.str(), 0);
-               chf.set_line("", 1);
-               chf.set_line("  [WolodiaM]", 2);
-               buff.str("");
-               buff << " -- WolodiaM <w_melnyk@outlook.com>  ";
-               time_t t           = time(NULL);
-               tm     time_struct = *localtime(&t);
-               buff << get_day(time_struct.tm_wday);
-               buff << ", ";
-               buff << std::setfill('0') << std::setw(2)
-                    << std::to_string(time_struct.tm_mday);
-               buff << " ";
-               buff << get_mon(time_struct.tm_mon);
-               buff << " ";
-               buff << std::to_string((1900 + time_struct.tm_year));
-               buff << " ";
-               buff << std::setfill('0') << std::setw(2)
-                    << std::to_string(time_struct.tm_hour);
-               buff << ":";
-               buff << std::setfill('0') << std::setw(2)
-                    << std::to_string(time_struct.tm_min);
-               buff << ":";
-               buff << std::setfill('0') << std::setw(2)
-                    << std::to_string(time_struct.tm_sec);
-               buff << " +0200";
-               std::string              input = "";
-               std::vector<std::string> changes;
-               std::cout << "Write change log here, blank line end input:"
-                         << std::endl;
-               while (true) {
-                   std::getline(std::cin, input);
-                   if (input.empty()) {
-                       break;
+        CBuild::line_filebuff chf(this->work_folder + this->changelog);
+        std::stringstream     buff;
+        buff << "cbuild (";
+        buff << this->version_str();
+        buff << ") stable; urgency=high";
+        chf.set_line(buff.str(), 0);
+        chf.set_line("", 1);
+        chf.set_line("  [WolodiaM]", 2);
+        buff.str("");
+        buff << " -- WolodiaM <w_melnyk@outlook.com>  ";
+        time_t t           = time(NULL);
+        tm     time_struct = *localtime(&t);
+        buff << get_day(time_struct.tm_wday);
+        buff << ", ";
+        buff << std::setfill('0') << std::setw(2)
+             << std::to_string(time_struct.tm_mday);
+        buff << " ";
+        buff << get_mon(time_struct.tm_mon);
+        buff << " ";
+        buff << std::to_string((1900 + time_struct.tm_year));
+        buff << " ";
+        buff << std::setfill('0') << std::setw(2)
+             << std::to_string(time_struct.tm_hour);
+        buff << ":";
+        buff << std::setfill('0') << std::setw(2)
+             << std::to_string(time_struct.tm_min);
+        buff << ":";
+        buff << std::setfill('0') << std::setw(2)
+             << std::to_string(time_struct.tm_sec);
+        buff << " +0200";
+        std::string              input = "";
+        std::vector<std::string> changes;
+        std::cout << "Write change log here, blank line end input:"
+                  << std::endl;
+        while (true) {
+            std::getline(std::cin, input);
+            if (input.empty()) {
+                break;
             }
-                   changes.push_back(input);
+            changes.push_back(input);
         }
-               unsigned int i = 3;
-               for (; i < changes.size() + 3; i++) {
-                   chf.set_line(std::string("  * ") + changes.at(i - 3), i);
+        unsigned int i = 3;
+        for (; i < changes.size() + 3; i++) {
+            chf.set_line(std::string("  * ") + changes.at(i - 3), i);
         }
-               chf.set_line("", i);
-               chf.set_line(buff.str(), i + 1);
-               chf.set_line("", i + 2);
-               chf.update();
+        chf.set_line("", i);
+        chf.set_line(buff.str(), i + 1);
+        chf.set_line("", i + 2);
+        chf.update();
     }
 
   public:
@@ -215,6 +215,10 @@ class pack_deb : public pack_base {
                            "/libcbuild/usr/bin/CBuild_rebuild");
         CBuild::fs::copy("rebuild.sh", this->work_folder +
                                            "/libcbuild/usr/bin/CBuild_rebuild");
+        CBuild::fs::remove(this->work_folder +
+                           "/libcbuild/usr/bin/CBuild_update");
+        CBuild::fs::copy("update.sh", this->work_folder +
+                                          "/libcbuild/usr/bin/CBuild_update");
         // Lib
         CBuild::fs::remove(this->work_folder +
                            "/libcbuild/usr/lib/libCBuild.so");
@@ -265,6 +269,8 @@ class pack_deb : public pack_base {
             "/libcbuild/usr/include/CBuild/task/CBuild_help_task.hpp");
         CBuild::system("chmod +x " + this->work_folder +
                        "/libcbuild/usr/bin/CBuild_rebuild");
+        CBuild::system("chmod +x " + this->work_folder +
+                       "/libcbuild/usr/bin/CBuild_update");
         CBuild::system("chmod 0755 " + this->work_folder +
                        "/libcbuild/usr/include/CBuild/build/");
         CBuild::system("chmod 0755 " + this->work_folder +
