@@ -1,4 +1,0 @@
-Add ability to compile multithreaded binaries
-Fix bug in CBuild::system()
-Changed generator for compile_commands.json
-Now file can be chaged without clearing

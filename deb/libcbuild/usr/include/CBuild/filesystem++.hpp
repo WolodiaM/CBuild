@@ -128,8 +128,8 @@ bool move(std::string start, std::string end);
 bool rename(std::string start, std::string end);
 /**
  * @brief Create element
- * @param paths => std::vector<std::string> -> Path to new element, ans some
- * other arguments (for symlinks)
+ * @param paths => std::vector<std::string> -> Path to new element or path to
+ * file and then to link for symlinks and hardlinks
  * @param what => CBuild::fs::type -> What create (custom enum type)
  * @return bool -> success or failure
  */

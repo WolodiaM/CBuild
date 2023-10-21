@@ -34,40 +34,39 @@
 #include "../CBuild/headers/task/Task.hpp"
 // Custom Tasks
 class copyLib : public CBuild::Task {
-  public:
-    copyLib(std::string name) : CBuild::Task(name, {}) {}
-    void call(std::vector<std::string> args __attribute_maybe_unused__) {
-        CBuild::system("cp -r build/cbuild/out/libCBuild.so "
-                       "CBuild/CBuild/libCBuild.so");
-    }
+public:
+  copyLib(std::string name) : CBuild::Task(name, {}) {}
+  void call(std::vector<std::string> args __attribute_maybe_unused__) {
+    CBuild::system("cp -r build/cbuild/out/* CBuild/CBuild/");
+  }
 };
 
 // Toolchains and Tasks
 CBuild::GXX libCBuild("cbuild", "CBuild");
-copyLib     cpy("copyLib");
+copyLib cpy("copyLib");
 
 void ver() { CBuild::print("CBuild buildscript version 3.0"); }
 
 void init() {
-    libCBuild.set_standart("c++20");
-    libCBuild.add_folder("CBuild/CBuild/src/");
-    libCBuild.warn();
-    libCBuild.set_type(CBuild::DYNAMIC_LIBRARY);
-    libCBuild.add_requirment("proccessVersion", CBuild::PRE);
-    libCBuild.add_requirment("proccessHelp", CBuild::PRE);
-    // libCBuild.add_compile_arg("-g");
-    // libCBuild.add_link_arg("-g");
-    // Version
-    std::ifstream version("./ppa/ubuntu/version");
-    char          str[10];
-    version.getline(str, 10);
-    version.close();
-    std::string vstr = std::string(str).substr(0, 3);
-    libCBuild.set_version_major(std::stoi(vstr.substr(0, 1)));
-    CBuild::Registry::RegisterTarget(&libCBuild);
-    CBuild::Registry::RegisterTask(&cpy);
-    CBuild::Registry::RegisterKeyword("-cp", &cpy);
-    load_tasks();
-    // Version handler
-    CBuild::Registry::SetVersionHandler(&ver);
+  libCBuild.set_standart("c++20");
+  libCBuild.add_folder("CBuild/CBuild/src/");
+  libCBuild.warn();
+  libCBuild.set_type(CBuild::DYNAMIC_LIBRARY);
+  libCBuild.add_requirment("proccessVersion", CBuild::PRE);
+  libCBuild.add_requirment("proccessHelp", CBuild::PRE);
+  // libCBuild.add_compile_arg("-g");
+  // libCBuild.add_link_arg("-g");
+  // Version
+  std::ifstream version("./ppa/ubuntu/version");
+  char str[10];
+  version.getline(str, 10);
+  version.close();
+  std::string vstr = std::string(str).substr(0, 3);
+  libCBuild.set_version_major(std::stoi(vstr.substr(0, 1)));
+  CBuild::Registry::RegisterTarget(&libCBuild);
+  CBuild::Registry::RegisterTask(&cpy);
+  CBuild::Registry::RegisterKeyword("-cp", &cpy);
+  load_tasks();
+  // Version handler
+  CBuild::Registry::SetVersionHandler(&ver);
 }

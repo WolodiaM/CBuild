@@ -37,7 +37,7 @@ int system(std::string cmd);
 /**
  * @brief Execute command and return it's output
  *
- * @param cmd => stt:;string -> command
+ * @param cmd => stt::string -> command
  * @param buffsize => unsigned int -> Size of output buffer, malloc and fread
  */
 std::string system_piped(std::string cmd, unsigned int buffsize);

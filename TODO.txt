@@ -4,9 +4,10 @@
         *? CC -MD  -MF parser, https://stackoverflow.com/questions/5584435/how-to-print-dependencies-from-llvm-clang-equivalent-of-gcc-md
  -  Change structure for cli parsing:
         *!  Add ability to preparse args before user init, and pass it to user init
+        *! Or add second user init fucs after arg parsing but before loop
         *! Add ability to add full command parsers
  -? Add better logging
- -! Add ability to add and object files
+ -! Add ability to add an object files
  -! Change link file skanning to Toolchain::generate_file_list(true) and document order of objects when compiling
  -  Add docs for emebeding recomp script and some hacks used in CBuild buildscript
- -? libclang optional dependency
+ - Add links to lib<name>.so.<major> if we compile shared library, at the end of call(), needed for proper runtime library search
