@@ -236,7 +236,7 @@ class cross_gcc : CBuild::gcc {
         void pre_build() override {
             this-&gt;target = Target:X86_64;
             for (auto elem : (*(this-&gt;args))) {
-                if(elem == std:string("target:x86_64")) {
+                if(elem == std::string("target:x86_64")) {
                     this-&gt;target = Target::X86_64;
                     this-&gt;compiler = "g++-x86_64";
                     this-&gt;linker = "g++-x86_64";

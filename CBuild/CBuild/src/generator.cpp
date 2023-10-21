@@ -217,7 +217,7 @@ void CBuild::ccj_out::generate(CBuild::RType                       mode,
         data.push_back({file.key,
                         {.base_path = dir,
                          .cmd     = CBuild::eval_cmd(std::array<std::string, 4>{
-                                 file.key, file.data, cmds[0], targs}),
+                             file.key, file.data, cmds[0], targs}),
                          .file    = file.key,
                          .in_file = false}});
     }
