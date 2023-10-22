@@ -29,13 +29,13 @@ multithreading, last attempt to create multithreaded compilation code produce co
         * dpkg-deb
 # Sizes of files
  * All (except .git/ .vscode/ build/ cache/) - 24M
- * Source code (update.sh + rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 332K
- * Build script (build.sh + build.run + buildscript-CBuild/ ) - 980K
- * libCBuild.so (without -g) - 2.0M
- * deb folder - 2.0M
- * ppa/ubuntu folder - 9.2M
- * doxygen folder + doxygen.conf - 7.1M  
- * template size - 688K   
+ * Source code (update.sh + rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 324K
+ * Build script (build.sh + build.run + buildscript-CBuild/ ) - 984K
+ * libCBuild.so (without -g) - 1.8M
+ * deb folder - 1.9M
+ * ppa/ubuntu folder - 9.7M
+ * doxygen folder + doxygen.conf - 7.3M  
+ * template size - 684K   
 All sizes are generated using `du -hcs <folder/file0> <folder/file1> ...`
 # Profiling
 gmon.out - profiling data for gprof

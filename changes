@@ -1,0 +1,2 @@
+Fix critical bug in CBuild/hash.cpp
+Dont create symlink to executables and static libs

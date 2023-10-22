@@ -592,7 +592,8 @@ void CBuild::Toolchain::call(std::vector<std::string> *args, bool force,
   // Last, 6-th step
   CBuild::print("Running post link tasks ", CBuild::GREEN);
   this->post_link();
-  if (this->version_major != -1) {
+  if (this->build_type == CBuild::DYNAMIC_LIBRARY &&
+      this->version_major != -1) {
     CBuild::print("Creating symlink lib<id>.so.<major>", CBuild::GREEN);
     CBuild::system("rm -rf " + CBUILD_BUILD_DIR + "/" + this->get_id() + "/" +
                    CBUILD_BUILD_OUT_DIR + "/*.so.*");

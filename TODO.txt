@@ -10,4 +10,4 @@
  -! Add ability to add an object files
  -! Change link file skanning to Toolchain::generate_file_list(true) and document order of objects when compiling
  -  Add docs for emebeding recomp script and some hacks used in CBuild buildscript
- - Add links to lib<name>.so.<major> if we compile shared library, at the end of call(), needed for proper runtime library search
+ - Add links to lib<name>.so.<major> only if we compile shared library
