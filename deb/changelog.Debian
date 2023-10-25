@@ -1,3 +1,11 @@
+cbuild (9.8) stable; urgency=high
+
+  [WolodiaM]
+  * Fix bug where `-l` was not generated for dependancy toolchain
+    if that toolchain was called before
+
+ -- WolodiaM <w_melnyk@outlook.com>  Wed, 25 Oct 2023 10:23:12 +0200
+
 cbuild (9.7) stable; urgency=high
 
   [WolodiaM]

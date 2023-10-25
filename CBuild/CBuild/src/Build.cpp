@@ -549,9 +549,12 @@ void CBuild::Toolchain::call(std::vector<std::string> *args, bool force,
   // Call all dependencies (toolchains)
   for (std::string id : this->depends) {
     // Call target
-    auto target = CBuild::Registry::GetToolchain(id);
+    auto target = CBuild::Registry::GetToolchain(id, force);
     if (target != NULL) {
       target->call(args, force, debug, dummy);
+    }
+    target = CBuild::Registry::GetToolchain(id, true);
+    if (target != NULL) {
       // get lib name
       auto out_path = target->gen_out_name();
       unsigned int end_slash = out_path.find_last_of('/');

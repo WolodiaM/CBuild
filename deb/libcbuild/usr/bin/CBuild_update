@@ -29,7 +29,7 @@ if [[ "$ERR" -ne "200" ]]; then
 fi
 # Install package
 echo "Warning: Dependency checking are disabled, you need to have glibc6 and libstdc++6 with c++20 support!"
-echo "Dpends line from package control: libc6 (>= 2.17), libstdc++6 (>= 4.9)"
+echo "Depends line from package control: libc6 (>= 2.17), libstdc++6 (>= 4.9)"
 sudo dpkg --force-depends -i "$CACHE_DIR/$CACHE_DEB_FILE"
 # Clear cache dir
 rm -rf $CACHE_DIR

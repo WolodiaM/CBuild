@@ -33,7 +33,7 @@ multithreading, last attempt to create multithreaded compilation code produce co
  * Build script (build.sh + build.run + buildscript-CBuild/ ) - 984K
  * libCBuild.so (without -g) - 1.8M
  * deb folder - 1.9M
- * ppa/ubuntu folder - 9.7M
+ * ppa/ubuntu folder - 10M
  * doxygen folder + doxygen.conf - 7.3M  
  * template size - 684K   
 All sizes are generated using `du -hcs <folder/file0> <folder/file1> ...`
