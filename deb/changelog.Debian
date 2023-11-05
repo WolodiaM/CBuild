@@ -1,3 +1,16 @@
+cbuild (9.9) stable; urgency=high
+
+  [WolodiaM]
+  * Fix critical bug in CBuild/hash.cpp
+  * Now CBuild screates symlinks only for shared library (bugfix, before symlinks were created for all targets)
+  * Ability to add custom env variables to CBuild::system and CBuild::system_piped calls
+  * "-br", "-r" and "-d" now properly prints target name (or falls back to id)
+  * Ability to add new parse handlers to CBuild cli parser
+  * Better way to find object files for defined target
+  * Peoject initialization script
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sun, 05 Nov 2023 13:53:42 +0200
+
 cbuild (9.8) stable; urgency=high
 
   [WolodiaM]

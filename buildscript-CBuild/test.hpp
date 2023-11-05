@@ -19,20 +19,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // C++ libraries
-#include "../CBuild/headers/filesystem++.hpp"
-#include "../CBuild/headers/hash.hpp"
 #include "../CBuild/headers/task/Task.hpp"
-#include "iostream"
 // Tests
 class test : public CBuild::Task {
-       public:
-	test() : CBuild::Task("test", {}) {}
-	void call(std::vector<std::string> args __attribute_maybe_unused__) {
-		auto files =
-		    CBuild::fs::dir_rec("CBuild/CBuild/src", ".*\\..*");
-		auto fs = CBuild::get_files(files, "cbuild");
-		for (auto f : fs) {
-			std::cout << f << std::endl;
-		}
-	}
+public:
+  test() : CBuild::Task("test", {}) {}
+  void call(std::vector<std::string> args __attribute_maybe_unused__) {}
 };

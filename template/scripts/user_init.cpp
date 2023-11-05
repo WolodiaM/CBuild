@@ -31,8 +31,8 @@
 #include "CBuild/register.hpp"
 #include "CBuild/task/Task.hpp"
 
-CBuild::GXX       multiplication("mull", "Multiplication test");
-CBuild::GXX       multiplication_lib("mull_lib", "mull");
+CBuild::GXX multiplication("mull", "Multiplication test");
+CBuild::GXX multiplication_lib("mull_lib", "mull");
 CBuild::MINGW_GXX multiplication_win("mullw", "Multiplication test");
 CBuild::MINGW_GXX multiplication_lib_win("mullw_lib", "mull");
 

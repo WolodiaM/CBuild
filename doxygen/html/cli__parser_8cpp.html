@@ -77,8 +77,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">cli_parser.cpp File Reference</div></div>
@@ -90,6 +88,7 @@ $(function() {
 <div class="textblock"><code>#include &quot;string&quot;</code><br />
 <code>#include &quot;vector&quot;</code><br />
 <code>#include &quot;<a class="el" href="CBuild_8hpp_source.html">../../headers/CBuild.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cli__parse__handler_8hpp_source.html">../../headers/cli_parse_handler.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="map_8hpp_source.html">../../headers/map.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="print_8hpp_source.html">../../headers/print.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="register_8hpp_source.html">../../headers/register.hpp</a>&quot;</code><br />
@@ -101,26 +100,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceCBuild" id="r_namespaceCBuild"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html">CBuild</a></td></tr>
 <tr class="memdesc:namespaceCBuild"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filebuffer for <a class="el" href="namespaceCBuild.html" title="Filebuffer for CBuild ecosystem.">CBuild</a> ecosystem. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ae393e2aaff8aa3b93db84da7c46e4142" id="r_ae393e2aaff8aa3b93db84da7c46e4142"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">CBuild::handler</a> = <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e">ARG_TYPE</a>(*)(<a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt; *, char **, int, int, <a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">CBuild::RType</a> *)</td></tr>
-<tr class="memdesc:ae393e2aaff8aa3b93db84da7c46e4142"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handler for specific argument.  <br /></td></tr>
-<tr class="separator:ae393e2aaff8aa3b93db84da7c46e4142"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a8688123f45343a910135f603f0b7d37e" id="r_a8688123f45343a910135f603f0b7d37e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e">CBuild::ARG_TYPE</a> { <br />
-&#160;&#160;<a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37ea11997d47e97191c1ce2c77e61b22185c">CBuild::BLANK_ARG</a> = 0
-, <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37ea1027a9b52f856acd86202b96399bedff">CBuild::SIMPLE_ARG</a> = 1
-, <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37ea2b9e22113dca93a6c31c39464238bf7d">CBuild::TASK_ARG</a> = 2
-, <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37eae1cd3a49466eafc58f46d3f856253bce">CBuild::TOOLCHAIN_ARG</a> = 2
-, <br />
-&#160;&#160;<a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37eaa846da845b18b5bc66743690a3605d8b">CBuild::GENERICK_ARG</a> = 2
-, <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37ea1a5d5ce49fcc0764d1215497a8a0e189">CBuild::GENERATOR_ARG</a> = 2
-<br />
- }</td></tr>
-<tr class="separator:a8688123f45343a910135f603f0b7d37e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -149,9 +128,9 @@ Variables</h2></td></tr>
 <tr class="separator:a1bbccbf3bdc6f0a21a668f72fb5d335e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20a88529f35d070a5ab89480a5a79b49" id="r_a20a88529f35d070a5ab89480a5a79b49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a20a88529f35d070a5ab89480a5a79b49">CBuild::parg</a> = 0</td></tr>
 <tr class="separator:a20a88529f35d070a5ab89480a5a79b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a7a071857bd1c57dbff2d47bf9882b8" id="r_a0a7a071857bd1c57dbff2d47bf9882b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, <a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">handler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a0a7a071857bd1c57dbff2d47bf9882b8">CBuild::arguments</a></td></tr>
-<tr class="memdesc:a0a7a071857bd1c57dbff2d47bf9882b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">All handlers.  <br /></td></tr>
-<tr class="separator:a0a7a071857bd1c57dbff2d47bf9882b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c5c7210964474318c1768485d163fc3" id="r_a0c5c7210964474318c1768485d163fc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, <a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">handler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a0c5c7210964474318c1768485d163fc3">CBuild::parsers_list</a></td></tr>
+<tr class="memdesc:a0c5c7210964474318c1768485d163fc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">All handlers.  <br /></td></tr>
+<tr class="separator:a0c5c7210964474318c1768485d163fc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="namespaceCBuild.html" title="Filebuffer for CBuild ecosystem.">CBuild</a> cli arguments parser. </p>

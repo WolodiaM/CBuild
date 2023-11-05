@@ -226,10 +226,12 @@ CBuild::Toolchain::gen_file_list(bool force_ __attribute_maybe_unused__) {
   // internal CBuild structure, else get hashes
   if (this->dummy == true) {
     for_recomp = filelist;
+  } else if (this->gen_file_list_for_linking) {
+    for_recomp = filelist;
   } else {
     for_recomp = CBuild::get_files(filelist, this->id);
   }
-  // Real force
+  // Real force, we need to recalculate hashes here
   if (this->force) {
     for_recomp = filelist;
   }
@@ -618,7 +620,9 @@ void CBuild::Toolchain::call(std::vector<std::string> *args, bool force,
   CBuild::print("End of execution of toolchain " + this->id + " ", CBuild::RED);
 }
 void CBuild::Toolchain::run(std::vector<std::string> *args) {
-  CBuild::print("Starting \"" + this->name + "\" ", CBuild::RED);
+  CBuild::print("Starting \"" + ((this->name == "") ? this->id : this->name) +
+                    "\" ",
+                CBuild::RED);
   // Parse args
   std::string pargs = "";
   if (args != NULL) {
@@ -639,7 +643,8 @@ void CBuild::Toolchain::run(std::vector<std::string> *args) {
 }
 void CBuild::Toolchain::debug(std::vector<std::string> *args,
                               std::vector<std::string> *pargs) {
-  CBuild::print("Starting \"" + this->id + "\" toolchain in debug mode ",
+  CBuild::print("Starting \"" + ((this->name == "") ? this->id : this->name) +
+                    "\" toolchain in debug mode ",
                 CBuild::RED);
   // Build in debug mode
   this->call(args, true, true);

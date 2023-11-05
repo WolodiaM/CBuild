@@ -28,6 +28,7 @@
 #include "user_init.hpp"
 // CBuild headers
 #include "../CBuild/headers/build/g++.hpp"
+#include "../CBuild/headers/build/gcc.hpp"
 #include "../CBuild/headers/filesystem++.hpp"
 #include "../CBuild/headers/print.hpp"
 #include "../CBuild/headers/register.hpp"
@@ -44,6 +45,7 @@ public:
 // Toolchains and Tasks
 CBuild::GXX libCBuild("cbuild", "CBuild");
 copyLib cpy("copyLib");
+CBuild::GCC test("test");
 
 void ver() { CBuild::print("CBuild buildscript version 3.0"); }
 

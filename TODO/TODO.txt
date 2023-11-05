@@ -1,14 +1,13 @@
--? Add ability to set env vars for targets
 -  Better dependency parsing, generate full dependency tree:
     *  Normal fileparser, used before
-    *? CC -MD  -MF parser, https://stackoverflow.com/questions/5584435/how-to-print-dependencies-from-llvm-clang-equivalent-of-gcc-md
+    *? CC -MM  -MF parser, https://stackoverflow.com/questions/5584435/how-to-print-dependencies-from-llvm-clang-equivalent-of-gcc-md
 -  Change structure for cli parsing:
     *!  Add ability to preparse args before user init, and pass it to user init
     *! Or add second user init fucs after arg parsing but before loop
-    *! Add ability to add full command parsers
 -? Add better logging
--! Add ability to add an object files
--! Change link file skanning to Toolchain::generate_file_list(true) and document order of objects when compiling
 -  Add docs for emebeding recomp script and some hacks used in CBuild buildscript
-- Disable linking if no object files changed
+-! Disable linking if no object files changed
 - Check for change in registered defines/etc for thinking about recompilation, force recompilation of all files if toolchain-specified define changed.
+- Threat rebuild as internal toolchain, apply hashing
+-!!!!!! Use paths relative to CBuild.run
+-? VSCode integration

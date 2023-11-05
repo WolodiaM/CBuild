@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Rebuild CBuild user scripts
 # $1 - user scripts dir
 # $2 - custom user build args args in format "-arg1 -arg2"

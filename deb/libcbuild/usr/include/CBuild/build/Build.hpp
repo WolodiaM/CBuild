@@ -116,6 +116,10 @@ protected:
    * @brief gen_out_name() dont prepend base path
    */
   bool gen_out_name_without_base_path = false;
+  /**
+   * @brief Generate file list for linking - force and no changes to hashes
+   */
+  bool gen_file_list_for_linking = false;
 
 protected:
   // Scratch variables

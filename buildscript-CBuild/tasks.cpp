@@ -25,6 +25,8 @@
 #include "../CBuild/headers/register.hpp"
 #include "../CBuild/headers/task/Task.hpp"
 // C++ headers
+#include "fstream"
+#include "iostream"
 #include "string"
 // Scripts headers
 #include "pack.hpp"
@@ -217,7 +219,38 @@ public:
         "\t`-t upload-doxygen` - upload doxygen-generated html to web");
     CBuild::print("\t`-t upload-wiki` - upload CBuild wiki to web");
     CBuild::print("\t`-t upload-ppa` - upload ubuntu ppa repo to web");
+    CBuild::print("\t`-t create_init_script` - preprocess project init script");
     CBuild::print("libCBuild toolchain id - `cbuild`");
+  }
+};
+
+class create_temlate_init : public CBuild::Task {
+public:
+  create_temlate_init() : CBuild::Task("create_init_script", {}){};
+  void call(std::vector<std::string> args __attribute_maybe_unused__) {
+    CBuild::fs::remove("project_init.sh");
+    CBuild::fs::copy("project_init.sh.temlate", "project_init.sh");
+    std::fstream f("template/scripts/main.cpp");
+    f.seekg(0, std::ios::end);
+    std::streampos fileSize = f.tellg();
+    f.seekg(0, std::ios::beg);
+    std::string fileContents;
+    fileContents.resize(static_cast<std::size_t>(fileSize));
+    f.read(&fileContents[0], fileSize);
+    f.close();
+    std::string replacement = "\\n";
+    size_t found = fileContents.find('\n');
+    while (found != std::string::npos) {
+      fileContents.replace(found, 1, replacement);
+      found = fileContents.find('\n', found + replacement.length());
+    }
+    replacement = "\\\"";
+    found = fileContents.find('"');
+    while (found != std::string::npos) {
+      fileContents.replace(found, 1, replacement);
+      found = fileContents.find('\"', found + replacement.length());
+    }
+    CBuild::fs::replace("project_init.sh", "#MAIN.CPP", fileContents);
   }
 };
 // Tasks
@@ -228,6 +261,7 @@ modify_version mv;
 mkppa ppa;
 test t;
 bhelp help;
+create_temlate_init init_template;
 upload upl_dox("upload-doxygen", "doxygen/upload-doxygen.sh");
 upload upl_wiki("upload-wiki", "doxygen/upload-wiki.sh");
 upload upl_ppa("upload-ppa", "doxygen/upload-ppa.sh");
@@ -243,5 +277,6 @@ void load_tasks() {
   CBuild::Registry::RegisterTask(&upl_dox);
   CBuild::Registry::RegisterTask(&upl_wiki);
   CBuild::Registry::RegisterTask(&upl_ppa);
+  CBuild::Registry::RegisterTask(&init_template);
   CBuild::Registry::RegisterKeyword("--build-help", &help);
 }

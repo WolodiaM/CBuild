@@ -1,95 +1,171 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="utf-8">
-	<link href="main.css" rel="stylesheet" type="text/css" />
-	<title>CBuild wiki</title>
+    <meta charset="utf-8">
+    <link href="main.css" rel="stylesheet" type="text/css" />
+    <title>CBuild wiki</title>
 </head>
 
 <body>
     <!--Title-->
     <div class="title">CBuild wiki: Info</div>
-    <div class="title-line"><hr/></div>
+    <div class="title-line">
+        <hr />
+    </div>
     <!--Text-->
     <div class="text">
         <h6>Unimplemented and not seen in near future</h6>
-        <div class="sep-line"><hr/></div>
+        <div class="sep-line">
+            <hr />
+        </div>
         <div class="list">
             <ul>
-                <li><p>mingw debugger</p></li>
-                <li><p>multithreading, last attempt to create multithreaded compilation code produce code, that produce results two times longer, even using two cores, not one</p></li>
+                <li>
+                    <p>mingw debugger</p>
+                </li>
+                <li>
+                    <p>multithreading, last attempt to create multithreaded compilation code produce code, that produce
+                        results two times longer, even using two cores, not one</p>
+                </li>
             </ul>
         </div>
-        <div class="sep-line"><hr/></div>
+        <div class="sep-line">
+            <hr />
+        </div>
         <h6>Dependings</h6>
-        <div class="sep-line"><hr/></div>
+        <div class="sep-line">
+            <hr />
+        </div>
         <div class="list">
             <ul>
-                <li><p><b>Libs:</b></p>
+                <li>
+                    <p><b>Libs:</b></p>
                     <ul>
-                        <li><p>libc6</p></li>
-                        <li><p>libstdc++</p></li>
-                    </ul></li>
-                <li><p><b>Shell commands:</b></p>
+                        <li>
+                            <p>libc6</p>
+                        </li>
+                        <li>
+                            <p>libstdc++</p>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <p><b>Shell commands:</b></p>
                     <ul>
-                        <li><p><i>For main run</i></p>
+                        <li>
+                            <p><i>For main run</i></p>
                             <ul>
-                                <li><p>rm</p></li>
-                                <li><p>debuger, default: gdb</p></li>
-                                <li><p>compiler, default: gcc/g++/g++-mingw-w64-x86-64-win32/gcc-mingw-w64-x86-64-win32</p></li>
-                            </ul></li>
-                            <li><p><i>For build.run executable for building cbuild</i></p>
-                                <ul>
-                                    <li><p>cp</p></li>
-                                    <li><p>mv</p></li>
-                                    <li><p>cd</p></li>
-                                    <li><p>gpg</p></li>
-                                    <li><p>dpkg-scanpackages</p></li>
-                                    <li><p>apt-ftparchive</p></li>
-                                    <li><p>gzip</p></li>
-                                    <li><p>dpkg-deb</p></li>
-                                </ul></li>
-                </ul></li>
+                                <li>
+                                    <p>rm</p>
+                                </li>
+                                <li>
+                                    <p>debuger, default: gdb</p>
+                                </li>
+                                <li>
+                                    <p>compiler, default: gcc/g++/g++-mingw-w64-x86-64-win32/gcc-mingw-w64-x86-64-win32
+                                    </p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p><i>For build.run executable for building cbuild</i></p>
+                            <ul>
+                                <li>
+                                    <p>cp</p>
+                                </li>
+                                <li>
+                                    <p>mv</p>
+                                </li>
+                                <li>
+                                    <p>cd</p>
+                                </li>
+                                <li>
+                                    <p>gpg</p>
+                                </li>
+                                <li>
+                                    <p>dpkg-scanpackages</p>
+                                </li>
+                                <li>
+                                    <p>apt-ftparchive</p>
+                                </li>
+                                <li>
+                                    <p>gzip</p>
+                                </li>
+                                <li>
+                                    <p>dpkg-deb</p>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
             </ul>
-            <div class="sep-line"><hr/></div>
+            <div class="sep-line">
+                <hr />
+            </div>
             <h6>Sizes of files</h6>
-            <div class="sep-line"><hr/></div>
+            <div class="sep-line">
+                <hr />
+            </div>
             <ul>
-                <!--!du -hcs buildscript-CBuild/ CBuild/ deb/ doxygen/ ppa/ template/ .gitignore analisis.txt build.run build.sh changes compile_commands.json doxygen.conf gmon.out info.md update.sh LICENSE  private.pgp readme.md rebuild.sh requirments.md TODO.txt usage.md-->
-                <li><p>All (except .git/ .vscode/ build/ cache/) - 24M</p></li>
-                <li><p>Source code (update.sh + rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 324K</p></li>
-                <li><p>Build script (build.sh + build.run + buildscript-CBuild/ ) - 984K</p></li>
-                <li><p>libCBuild.so (without -g) - 1.8M</p></li>
-                <li><p>deb folder - 1.9M</p></li>
-                <li><p>ppa/ubuntu folder - 10M</p></li>
-                <li><p>doxygen folder + doxygen.conf - 7.3M</p></li>
-                <li><p>template size - 684K</p></li>
+                <!--!du -hcs buildscript-CBuild/ CBuild/ deb/ doxygen/ ppa/ template/ .gitignore analisis.txt build.run build.sh compile_commands.json doxygen.conf gmon.out info.md update.sh LICENSE  private.pgp readme.md rebuild.sh requirments.md TODO gprof usage.md-->
+                <li>
+                    <p>All (except .git/ .vscode/ build/ cache/) - 25M</p>
+                </li>
+                <li>
+                    <p>Source code (update.sh + rebuild.sh + project_init.sh + project_init.sh.temlate + CBuild/headers/
+                        + CBuild/tmp/ + CBuild/CBuild/src/) - 340K</p>
+                </li>
+                <li>
+                    <p>Build script (build.sh + build.run + buildscript-CBuild/ ) - 996K</p>
+                </li>
+                <li>
+                    <p>libCBuild.so (without -g) - 1.8M</p>
+                </li>
+                <li>
+                    <p>deb folder - 1.9M</p>
+                </li>
+                <li>
+                    <p>ppa/ubuntu folder - 11M</p>
+                </li>
+                <li>
+                    <p>doxygen folder + doxygen.conf - 7.4M</p>
+                </li>
+                <li>
+                    <p>template size - 684K</p>
+                </li>
             </ul>
             <p>All sizes are generated using <b>du -hcs &lt;folder/file0&gt; &lt;folder/file1&gt; ...</b></p>
-            <div class="sep-line"><hr/></div>
+            <div class="sep-line">
+                <hr />
+            </div>
             <h6>Profiling</h6>
-            <div class="sep-line"><hr/></div>
+            <div class="sep-line">
+                <hr />
+            </div>
             <p>gmon.out - profiling data for gprof</p>
             <p>analisis.txt - output of <b>gprof ./build.run gmon.out &gt; analisis.txt</b></p>
 
-    </div>
-    <!--Back-->
-    <div class="sep-line"><hr/></div>
-    <div class="back">
-        <a href="wiki.html">BACK</a>
-    </div>
-    <!--Footer of the page-->
-    <div class="footer">
-        <div class="author">
-            <p>Author - WolodiaM</p>
-            <p><a href="https://sourceforge.net/u/wolodiam/profile/">WolodiaM at SourceForge</a></p>
         </div>
-        <div class="communication">
-            <p><a href="mailto:w_melnyk@outlook.com">w_melnyk@outlook.com</a></p>
-            <p><a href="https://sourceforge.net/projects/cbuild/reviews/">Reviews</a></p>
-            <p><a href="https://sourceforge.net/p/cbuild/code/ci/master/tree/">Git</a></p>
-            <p><a href="https://sourceforge.net/p/cbuild/discussion/">Discussion</a></p>
-            <p><a href="https://sourceforge.net/projects/cbuild/">SourceForge project page</a></p>
-            <p><a href="../index.html">This wiki</a></p>
+        <!--Back-->
+        <div class="sep-line">
+            <hr />
         </div>
+        <div class="back">
+            <a href="wiki.html">BACK</a>
+        </div>
+        <!--Footer of the page-->
+        <div class="footer">
+            <div class="author">
+                <p>Author - WolodiaM</p>
+                <p><a href="https://sourceforge.net/u/wolodiam/profile/">WolodiaM at SourceForge</a></p>
+            </div>
+            <div class="communication">
+                <p><a href="mailto:w_melnyk@outlook.com">w_melnyk@outlook.com</a></p>
+                <p><a href="https://sourceforge.net/projects/cbuild/reviews/">Reviews</a></p>
+                <p><a href="https://sourceforge.net/p/cbuild/code/ci/master/tree/">Git</a></p>
+                <p><a href="https://sourceforge.net/p/cbuild/discussion/">Discussion</a></p>
+                <p><a href="https://sourceforge.net/projects/cbuild/">SourceForge project page</a></p>
+                <p><a href="../index.html">This wiki</a></p>
+            </div>
 </body>

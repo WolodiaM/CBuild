@@ -204,13 +204,16 @@ public:
     CBuild::fs::create({this->work_folder + "/libcbuild/DEBIAN"},
                        CBuild::fs::DIR);
     CBuild::system("chmod 0755 " + this->work_folder + "/libcbuild/DEBIAN");
-    // Rebuild script
+    // Scripts
     CBuild::fs::remove(this->work_folder + "/libcbuild/usr/bin/CBuild_rebuild");
     CBuild::fs::copy("rebuild.sh",
                      this->work_folder + "/libcbuild/usr/bin/CBuild_rebuild");
     CBuild::fs::remove(this->work_folder + "/libcbuild/usr/bin/CBuild_update");
     CBuild::fs::copy("update.sh",
                      this->work_folder + "/libcbuild/usr/bin/CBuild_update");
+    CBuild::fs::remove(this->work_folder + "/libcbuild/usr/bin/CBuild_init");
+    CBuild::fs::copy("project_init.sh",
+                     this->work_folder + "/libcbuild/usr/bin/CBuild_init");
     // Lib
     CBuild::fs::remove(this->work_folder + "/libcbuild/usr/lib/libCBuild.so");
     CBuild::system("rm -rf " + this->work_folder + "libcbuild/usr/lib/*");
@@ -258,6 +261,8 @@ public:
                    "/libcbuild/usr/bin/CBuild_rebuild");
     CBuild::system("chmod +x " + this->work_folder +
                    "/libcbuild/usr/bin/CBuild_update");
+    CBuild::system("chmod +x " + this->work_folder +
+                   "/libcbuild/usr/bin/CBuild_init");
     CBuild::system("chmod 0755 " + this->work_folder +
                    "/libcbuild/usr/include/CBuild/build/");
     CBuild::system("chmod 0755 " + this->work_folder +
