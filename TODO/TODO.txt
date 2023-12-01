@@ -1,9 +1,6 @@
 -  Better dependency parsing, generate full dependency tree:
     *  Normal fileparser, used before
     *? CC -MM  -MF parser, https://stackoverflow.com/questions/5584435/how-to-print-dependencies-from-llvm-clang-equivalent-of-gcc-md
--  Change structure for cli parsing:
-    *!  Add ability to preparse args before user init, and pass it to user init
-    *! Or add second user init fucs after arg parsing but before loop
 -? Add better logging
 -  Add docs for emebeding recomp script and some hacks used in CBuild buildscript
 -! Disable linking if no object files changed
@@ -11,3 +8,4 @@
 - Threat rebuild as internal toolchain, apply hashing
 -!!!!!! Use paths relative to CBuild.run
 -? VSCode integration
+-! Ability to use pkg-config

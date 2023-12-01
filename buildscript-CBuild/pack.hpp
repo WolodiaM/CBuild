@@ -93,15 +93,15 @@ protected:
     char str[10];
     version.getline(str, 10);
     version.close();
-    return std::string(str).substr(0, 3);
+    return std::string(str).substr(0, std::string(str).find('v'));
   }
   int version_major() {
     std::string vstr = this->version_str();
-    return std::stoi(vstr.substr(0, 1));
+    return std::stoi(vstr.substr(0, vstr.find('.')));
   }
   int version_minor() {
     std::string vstr = this->version_str();
-    return std::stoi(vstr.substr(2));
+    return std::stoi(vstr.substr(vstr.find('.') + 1));
   }
 
 public:
@@ -219,13 +219,13 @@ public:
     CBuild::system("rm -rf " + this->work_folder + "libcbuild/usr/lib/*");
     CBuild::fs::copy("CBuild/CBuild/libCBuild.so",
                      this->work_folder + "/libcbuild/usr/lib");
-    CBuild::system("ln -s " + std::string("libCBuild.so ") + this->work_folder +
-                   "libcbuild/usr/lib/libCBuild.so." +
-                   std::to_string(this->version_major()));
-    CBuild::system("ln -s " +
-                   std ::string(std::string("libCBuild.so") + "." +
-                                std::to_string(this->version_major()) + " ") +
-                   this->work_folder + "libcbuild/usr/lib/libCBuild.so." +
+    CBuild::system("cd " + this->work_folder + "/libcbuild/usr/lib/" +
+                   std::string(" && ln -s ") + std::string("libCBuild.so ") +
+                   "libCBuild.so." + std::to_string(this->version_major()));
+    CBuild::system("cd " + this->work_folder + "/libcbuild/usr/lib/" +
+                   std::string(" && ln -s ") + std::string("libCBuild.so") +
+                   std::string(".") + std::to_string(this->version_major()) +
+                   " " + "libCBuild.so." +
                    std::to_string(this->version_major()) + std::string(".") +
                    std::to_string(this->version_minor()));
 
@@ -277,6 +277,8 @@ public:
                    "/libcbuild/usr/share/man");
     CBuild::system("chmod 0755 " + this->work_folder +
                    "/libcbuild/usr/share/man/man1");
+    CBuild::system("chmod -x " + this->work_folder +
+                   "/libcbuild/usr/share/doc/libcbuild/changelog.gz");
     // Pack package
     CBuild::system("rm " + this->work_folder + "/libcbuild.deb");
     CBuild::system("cd " + this->work_folder +

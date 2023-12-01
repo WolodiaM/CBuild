@@ -120,7 +120,7 @@ public:
     char str[10];
     v.getline(str, 10);
     v.close();
-    auto version = std::string(str).substr(0, 3);
+    auto version = std::string(str).substr(0, std::string(str).find('v'));
     CBuild::system("gpg --import private.pgp");
     CBuild::fs::copy("deb/libcbuild.deb",
                      "ppa/ubuntu/libcbuild-" + version + ".deb");
@@ -223,7 +223,6 @@ public:
     CBuild::print("libCBuild toolchain id - `cbuild`");
   }
 };
-
 class create_temlate_init : public CBuild::Task {
 public:
   create_temlate_init() : CBuild::Task("create_init_script", {}){};
@@ -253,6 +252,19 @@ public:
     CBuild::fs::replace("project_init.sh", "#MAIN.CPP", fileContents);
   }
 };
+class create_arch : public CBuild::Task {
+public:
+  create_arch() : CBuild::Task("create-arch", {}){};
+  void call(std::vector<std::string> args __attribute_maybe_unused__) {
+    CBuild::fs::remove("./doxygen/latest.tar.gz");
+    std::string cmd = "tar -czvf ";
+    cmd += "./doxygen/latest.tar.gz";
+    cmd += " -C ";
+    cmd += "./deb/libcbuild/usr/";
+    cmd += " -P bin include lib share";
+    CBuild::system(cmd);
+  }
+};
 // Tasks
 pack_deb packd;
 procces_version pv;
@@ -262,9 +274,11 @@ mkppa ppa;
 test t;
 bhelp help;
 create_temlate_init init_template;
+create_arch ca;
 upload upl_dox("upload-doxygen", "doxygen/upload-doxygen.sh");
 upload upl_wiki("upload-wiki", "doxygen/upload-wiki.sh");
 upload upl_ppa("upload-ppa", "doxygen/upload-ppa.sh");
+upload upl_arch("upload-arch", "doxygen/upload-latest.sh");
 // Init
 void load_tasks() {
   CBuild::Registry::RegisterTask(&packd);
@@ -277,6 +291,8 @@ void load_tasks() {
   CBuild::Registry::RegisterTask(&upl_dox);
   CBuild::Registry::RegisterTask(&upl_wiki);
   CBuild::Registry::RegisterTask(&upl_ppa);
+  CBuild::Registry::RegisterTask(&upl_arch);
   CBuild::Registry::RegisterTask(&init_template);
+  CBuild::Registry::RegisterTask(&ca);
   CBuild::Registry::RegisterKeyword("--build-help", &help);
 }

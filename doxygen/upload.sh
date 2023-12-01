@@ -5,3 +5,4 @@ scripts_dir=$(dirname "$(readlink -f "$0")")
 $scripts_dir/upload-doxygen.sh
 $scripts_dir/upload-wiki.sh
 $scripts_dir/upload-doxygen.sh
+$scripts_dir/upload-latest.sh
