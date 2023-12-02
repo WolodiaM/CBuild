@@ -1,0 +1,2 @@
+fix typo in pkg-config error
+Fix for pkg-config search when CBuild::system disabled

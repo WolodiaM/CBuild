@@ -22,7 +22,7 @@
 /* Task.hpp */
 CBuild::Task::Task(std::string name, std::vector<std::string> required) {
     // Save name and required tasks
-    this->name     = name;
+    this->name = name;
     this->required = required;
 }
 std::string CBuild::Task::self_name() {

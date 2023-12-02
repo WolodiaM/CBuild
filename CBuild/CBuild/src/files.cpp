@@ -29,8 +29,8 @@
 int CBuild::fs::replace(std::string file, std::string token, std::string data) {
     // Path to tmp file
     std::string cache;
-    cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" +
-            CBuild::fs::path_to_file(file) + ".tmp";
+    cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" + CBuild::fs::path_to_file(file) +
+            ".tmp";
     // std::cout << cache << "\n";
     // Open two files
     CBuild::fs::create({cache}, CBuild::fs::FILE);
@@ -61,12 +61,12 @@ int CBuild::fs::replace(std::string file, std::string token, std::string data) {
         return -1;
     return check_num;
 }
-int CBuild::fs::set_var(std::string file, std::string var_type,
-                        std::string var_name, std::string data) {
+int CBuild::fs::set_var(std::string file, std::string var_type, std::string var_name,
+                        std::string data) {
     // Path to tmp file
     std::string cache;
-    cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" +
-            CBuild::fs::path_to_file(file) + ".tmp";
+    cache = CBUILD_CACHE_DIR + "/" + CBUILD_COPY_CACHE_DIR + "/" + CBuild::fs::path_to_file(file) +
+            ".tmp";
     // std::cout << cache << "\n";
     // Open two files
     CBuild::fs::create({cache}, CBuild::fs::FILE);

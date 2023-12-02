@@ -24,7 +24,7 @@
 #include "../../headers/print.hpp"
 namespace CBuild {
 bool verbose = false;
-bool none    = false;
+bool none = false;
 void print_internal(std::string msg, CBuild::color fg) {
     // Create buffer
     std::string buff;
@@ -56,5 +56,9 @@ void CBuild::print_full(std::string msg, color fg) {
     if (CBuild::verbose && !CBuild::none)
         CBuild::print_internal(msg, fg);
 }
-void CBuild::print_verbose() { CBuild::verbose = true; }
-void CBuild::print_none() { CBuild::none = true; }
+void CBuild::print_verbose() {
+    CBuild::verbose = true;
+}
+void CBuild::print_none() {
+    CBuild::none = true;
+}

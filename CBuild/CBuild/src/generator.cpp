@@ -38,8 +38,7 @@
 #include "../../headers/register.hpp"
 #include "../../headers/system.hpp"
 /* makefile.hpp */
-void CBuild::makefile_out::generate(CBuild::RType                       mode,
-                                    lib::map<std::string, std::string> *args) {
+void CBuild::makefile_out::generate(CBuild::RType mode, lib::map<std::string, std::string>* args) {
     CBuild::print("Generating Makefile ...", CBuild::color::MAGENTA);
     // Get command log
     auto log = CBuild::get_log();
@@ -78,8 +77,8 @@ void CBuild::makefile_out::generate(CBuild::RType                       mode,
     }
     // Second part of make task - target or task id or cbuild
     // placeholder
-    if (mode == CBuild::BUILD || mode == CBuild::BUILD_RUN ||
-        mode == CBuild::RUN || mode == CBuild::DEBUG || mode == CBuild::CLEAR) {
+    if (mode == CBuild::BUILD || mode == CBuild::BUILD_RUN || mode == CBuild::RUN ||
+        mode == CBuild::DEBUG || mode == CBuild::CLEAR) {
         name += *(args->get("toolchain_id"));
     } else if (mode == CBuild::TASK) {
         name += *(args->get("task_id"));
@@ -96,7 +95,9 @@ void CBuild::makefile_out::generate(CBuild::RType                       mode,
     makefile << "\n";
     makefile.close();
 }
-bool CBuild::makefile_out::init() { return true; }
+bool CBuild::makefile_out::init() {
+    return true;
+}
 /* ccj.hpp - helper */
 namespace CBuild {
 /**
@@ -187,8 +188,7 @@ std::string preprocess_json_str(std::string_view str) {
 // 	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/system.cpp"
 // }
 /* ccj.hpp */
-void CBuild::ccj_out::generate(CBuild::RType                       mode,
-                               lib::map<std::string, std::string> *args) {
+void CBuild::ccj_out::generate(CBuild::RType mode, lib::map<std::string, std::string>* args) {
     // Fail fast if we not building
     if (mode != CBuild::BUILD) {
         CBuild::print("Not in build mode, ERROR!", CBuild::RED);
@@ -196,34 +196,30 @@ void CBuild::ccj_out::generate(CBuild::RType                       mode,
     }
     // Cannot generate compile_commands.json for meta-toolchain 'all'
     if (*(args->get("toolchain_id")) == std::string("all")) {
-        CBuild::print(
-            "Cannot generate compile commands for meta-toolchain \"all\"",
-            CBuild::RED);
+        CBuild::print("Cannot generate compile commands for meta-toolchain \"all\"", CBuild::RED);
         return;
     }
     // Get commands
     // Vars
     lib::map<std::string, CBuild::cmd> data;
     // Get data from target
-    auto toolchain =
-        CBuild::Registry::GetToolchain(*(args->get("toolchain_id")));
+    auto toolchain = CBuild::Registry::GetToolchain(*(args->get("toolchain_id")));
     std::vector<std::string> dummy_vec = {};
     toolchain->call(&dummy_vec, true, false, true);
     auto files = toolchain->gen_file_list_force();
-    auto cmds  = toolchain->get_cmds();
+    auto cmds = toolchain->get_cmds();
     auto targs = toolchain->get_compile_args();
-    auto dir   = args->get_ptr("curr_path")->data;
+    auto dir = args->get_ptr("curr_path")->data;
     for (auto file : files) {
         data.push_back({file.key,
                         {.base_path = dir,
-                         .cmd     = CBuild::eval_cmd(std::array<std::string, 4>{
-                             file.key, file.data, cmds[0], targs}),
-                         .file    = file.key,
+                         .cmd = CBuild::eval_cmd(
+                             std::array<std::string, 4>{file.key, file.data, cmds[0], targs}),
+                         .file = file.key,
                          .in_file = false}});
     }
     // Store in file
-    CBuild::print("Generating compile_commands.json ...",
-                  CBuild::color::MAGENTA);
+    CBuild::print("Generating compile_commands.json ...", CBuild::color::MAGENTA);
     CBuild::print("This can breaks if compile_commands.json already exists and "
                   "this file was not created by CBuild!",
                   CBuild::color::RED);
@@ -239,13 +235,10 @@ void CBuild::ccj_out::generate(CBuild::RType                       mode,
             } else {
                 ccj << ",\n{\n";
             }
-            ccj << (std::string("\t\"directory\": \"") + dir +
+            ccj << (std::string("\t\"directory\": \"") + dir + std::string("\",\n"));
+            ccj << (std::string("\t\"command\": \"") + CBuild::preprocess_json_str(elem.data.cmd) +
                     std::string("\",\n"));
-            ccj << (std::string("\t\"command\": \"") +
-                    CBuild::preprocess_json_str(elem.data.cmd) +
-                    std::string("\",\n"));
-            ccj << (std::string("\t\"file\": \"") + elem.data.file +
-                    std::string("\"\n"));
+            ccj << (std::string("\t\"file\": \"") + elem.data.file + std::string("\"\n"));
             ccj << "}";
         }
         ccj << "\n]";
@@ -257,32 +250,30 @@ void CBuild::ccj_out::generate(CBuild::RType                       mode,
         try {
             while (true) {
                 std::string str = ccj.get_line(i);
-                size_t      pos = str.find("\"file\":");
+                size_t pos = str.find("\"file\":");
                 if (pos != std::string::npos) {
                     // We find file
-                    size_t      st    = str.find_first_of('"', pos + 7);
-                    size_t      ed    = str.find_last_of('"');
+                    size_t st = str.find_first_of('"', pos + 7);
+                    size_t ed = str.find_last_of('"');
                     std::string fname = str.substr(st + 1, ed - st - 1);
-                    auto        elem  = data.get_ptr(fname);
+                    auto elem = data.get_ptr(fname);
                     if (elem != NULL) {
                         // File is recompiled, so replace "command"
-                        CBuild::print_full(
-                            std::string("Found file \"") + fname +
-                            std::string("\" that is recompiled, replacing "
-                                        "\"command\" entry"));
+                        CBuild::print_full(std::string("Found file \"") + fname +
+                                           std::string("\" that is recompiled, replacing "
+                                                       "\"command\" entry"));
                         ccj.del_line(i - 1);
-                        ccj.set_line(
-                            std::string("\t\"command\": \"") +
-                                CBuild::preprocess_json_str(elem->data.cmd) +
-                                std::string("\","),
-                            i - 1);
+                        ccj.set_line(std::string("\t\"command\": \"") +
+                                         CBuild::preprocess_json_str(elem->data.cmd) +
+                                         std::string("\","),
+                                     i - 1);
                         // Mark file as processed
                         elem->data.in_file = true;
                     }
                 }
                 i++;
             }
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Add coma at the end, no worry about this later
             ccj.del_line(i - 2);
             ccj.set_line("},", i - 2);
@@ -290,26 +281,22 @@ void CBuild::ccj_out::generate(CBuild::RType                       mode,
             for (unsigned int j = 0; j < data.size(); j++) {
                 auto elem = data.at(j);
                 if (elem.data.in_file == false) {
-                    CBuild::print_full(std::string("Found new file: \"") +
-                                       elem.data.file +
+                    CBuild::print_full(std::string("Found new file: \"") + elem.data.file +
                                        std::string("\", inserting new entry"));
                     // If file is not in database - insert entry, we dont need
                     // to sert in_file tag, because this is last part, where
                     // data map is valid
                     ccj.set_line("{", i - 1);
                     i++;
-                    ccj.set_line(std::string("\t\"directory\": \"") + dir +
+                    ccj.set_line(std::string("\t\"directory\": \"") + dir + std::string("\","),
+                                 i - 1);
+                    i++;
+                    ccj.set_line(std::string("\t\"command\": \"") +
+                                     CBuild::preprocess_json_str(elem.data.cmd) +
                                      std::string("\","),
                                  i - 1);
                     i++;
-                    ccj.set_line(
-                        std::string("\t\"command\": \"") +
-                            CBuild::preprocess_json_str(elem.data.cmd) +
-                            std::string("\","),
-                        i - 1);
-                    i++;
-                    ccj.set_line(std::string("\t\"file\": \"") +
-                                     elem.data.file + std::string("\""),
+                    ccj.set_line(std::string("\t\"file\": \"") + elem.data.file + std::string("\""),
                                  i - 1);
                     i++;
                     ccj.set_line("},", i - 1);

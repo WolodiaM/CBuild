@@ -7,7 +7,7 @@ build/**
 cache
 # CBuild dev gitnore
 CBuild build system prerequirments.rtf
-CBuild/CBuild/libCBuild.so
+CBuild/CBuild/libCBuild.so.10
 Makefile
 private_gpg_key.asc
 private.pgp

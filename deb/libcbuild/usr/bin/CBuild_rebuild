@@ -53,7 +53,7 @@ cd ${C_PATH}/../
 SCRIPTS_DIR=`basename ${C_PATH}`
 scripts=`dir ${SCRIPTS_DIR}/*.cpp`
 # Compile
-link="-lCBuild -Wl,-z,origin -Wl,-rpath,\$ORIGIN/CBuild/CBuild ${PLUGIN_INC} ${LINK_ARG}"
+link="-lstdc++ -lCBuild -Wl,-z,origin -Wl,-rpath,\$ORIGIN/CBuild/CBuild ${PLUGIN_INC} ${LINK_ARG}"
 g++ -c ${scripts} ${COMPILE_ARG} -g -fPIC -std=c++20 -Wall -Wextra -Wno-comments ${link}
 objects=`dir *.o`
 g++ ${objects} ${link} -g -o ${NAME}

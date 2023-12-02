@@ -44,7 +44,7 @@ std::vector<std::string> CBuild::fs::dir(std::string path, std::string search) {
     // Regex for search, use ECMAScript syntax
     std::regex reg(search, std::regex::ECMAScript);
     // Found all files in directory and store in array
-    for (const auto &entry : std::filesystem::directory_iterator(path)) {
+    for (const auto& entry : std::filesystem::directory_iterator(path)) {
         files.push_back(entry.path().generic_string());
     }
     // Check all elements with regex and  add it to return array
@@ -62,7 +62,7 @@ std::vector<std::string> CBuild::fs::dir(std::string path) {
     // List of returned files
     std::vector<std::string> ret;
     // Get all files and store it's paths in array
-    for (const auto &entry : std::filesystem::directory_iterator(path)) {
+    for (const auto& entry : std::filesystem::directory_iterator(path)) {
         files.push_back(entry.path().generic_string());
     }
     // Check every file with internal regex and add to return array
@@ -74,8 +74,7 @@ std::vector<std::string> CBuild::fs::dir(std::string path) {
     // Return list of found files
     return ret;
 }
-std::vector<std::string> CBuild::fs::dir_rec(std::string path,
-                                             std::string search) {
+std::vector<std::string> CBuild::fs::dir_rec(std::string path, std::string search) {
     // List of all found files
     std::vector<std::string> files;
     // List of files for return
@@ -83,8 +82,7 @@ std::vector<std::string> CBuild::fs::dir_rec(std::string path,
     // Create regex
     std::regex reg(search);
     // Check all directories recursively and add to array
-    for (const auto &entry :
-         std::filesystem::recursive_directory_iterator(path)) {
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
         files.push_back(entry.path().generic_string());
     }
     // Check all files with given regex and add to return array
@@ -102,8 +100,7 @@ std::vector<std::string> CBuild::fs::dir_rec(std::string path) {
     // List of files for return
     std::vector<std::string> ret;
     // Check all directories recursively and add to array
-    for (const auto &entry :
-         std::filesystem::recursive_directory_iterator(path)) {
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
         files.push_back(entry.path().generic_string());
     }
     // Check all files with internal regex and add to return array
@@ -124,7 +121,7 @@ bool CBuild::fs::rename(std::string start, std::string end) {
     // Try to rename file
     try {
         std::filesystem::rename(from, to);
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         // Something goes wrong
         return false;
     }
@@ -143,7 +140,7 @@ bool CBuild::fs::remove(std::string path, bool force) {
                 // Something goes wrong
                 return false;
             }
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Something goes wrong
             return false;
         }
@@ -154,7 +151,7 @@ bool CBuild::fs::remove(std::string path, bool force) {
         try {
             if (std::filesystem::remove(p) == false)
                 return false;
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Something goes wrong
             return false;
         }
@@ -170,7 +167,7 @@ bool CBuild::fs::copy(std::string start, std::string end) {
     // Try to copy elements
     try {
         std::filesystem::copy(from, to);
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         // Something goes wrong
         return false;
     }
@@ -187,7 +184,7 @@ bool CBuild::fs::move(std::string start, std::string end) {
         std::filesystem::copy(from, to);
         if (CBuild::fs::remove(start, true) == false)
             return false; // Something wrong with removal
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         // Something goes wrong
         return false;
     }
@@ -203,7 +200,7 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
         std::string path = "";
         try {
             path = paths.at(0);
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Invalid argument count
             throw std::runtime_error("Invalid count of elements");
             return false;
@@ -214,7 +211,7 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
             if (file.bad())
                 return false;
             file.close();
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Something goes wrong
             return false;
         }
@@ -226,7 +223,7 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
         std::filesystem::path p;
         try {
             p.assign(paths.at(0));
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Invalid arguments count
             throw std::runtime_error("Invalid count of elements");
             return false;
@@ -234,7 +231,7 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
         // Try to create new directory
         try {
             std::filesystem::create_directory(p);
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Something goes wrong
             return false;
         }
@@ -245,14 +242,14 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
         std::filesystem::path file, link;
         try {
             file.assign(paths.at(0));
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Invalid argument count
             throw std::runtime_error("Invalid count of elements");
             return false;
         }
         try {
             link.assign(paths.at(1));
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Invalid argument count
             throw std::runtime_error("Invalid count of elements");
             return false;
@@ -260,7 +257,7 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
         // Try to create new symlink, can be unsupported
         try {
             std::filesystem::create_symlink(file, link);
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Something goes wrong
             return false;
         }
@@ -272,14 +269,14 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
         std::filesystem::path directory, link;
         try {
             directory.assign(paths.at(0));
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Invalid argument count
             throw std::runtime_error("Invalid count of elements");
             return false;
         }
         try {
             link.assign(paths.at(1));
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Invalid argument count
             throw std::runtime_error("Invalid count of elements");
             return false;
@@ -287,7 +284,7 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
         // try to create symlink, can be unsupported
         try {
             std::filesystem::create_directory_symlink(directory, link);
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Something goes wrong
             return false;
         }
@@ -298,14 +295,14 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
         std::filesystem::path element, link;
         try {
             element.assign(paths.at(0));
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Invalid argument count
             throw std::runtime_error("Invalid count of elements");
             return false;
         }
         try {
             link.assign(paths.at(1));
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Invalid argument count
             throw std::runtime_error("Invalid count of elements");
             return false;
@@ -313,7 +310,7 @@ bool CBuild::fs::create(std::vector<std::string> paths, CBuild::fs::type what) {
         // Try to create hardlink, can be unsupported
         try {
             std::filesystem::create_hard_link(element, link);
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             // Something goes wrong
             return false;
         }
@@ -332,8 +329,7 @@ bool CBuild::fs::exists(std::string path) {
     p.assign(path);
     return std::filesystem::exists(p);
 }
-std::string CBuild::fs::normalize_path(std::string path,
-                                       std::string base_path) {
+std::string CBuild::fs::normalize_path(std::string path, std::string base_path) {
     if (base_path == std::string("")) {
         return std::filesystem::canonical(std ::filesystem::path(path));
     } else {

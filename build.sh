@@ -7,10 +7,10 @@ function build_user()
     files="${scripts}"
     echo User files - ${files}
     link="-lCBuild -Wl,-z,origin -Wl,-rpath,\$ORIGIN/CBuild/CBuild"
-    g++ -c ${files} -fPIC -std=c++20 -Wall -Wextra -Wno-comments ${link}
+    g++-11 -c ${files} -fPIC -std=c++20 -Wall -Wextra -Wno-comments ${link}
     objects=`dir *.o`
     echo User objects - ${objects}
-    g++ ${objects} ${link} -o CBuild.run
+    g++-11 ${objects} ${link} -o CBuild.run
     rm -r ${objects}
 }
 # Build CBuild backend
@@ -19,10 +19,10 @@ function build_build()
     echo Building core dynamic library
     files=`dir CBuild/CBuild/src/*.cpp`
     echo Core files - ${files}
-    g++ -c ${files} -fPIC -std=c++20 -g -Wall -Wextra -Wno-comments -Wno-deprecated-copy -Wl,-soname,libCBuild.so
+    g++-11 -c ${files} -fPIC -std=c++20 -g -Wall -Wextra -Wno-comments -Wno-deprecated-copy -Wl,-soname,libCBuild.so
     objects=`dir *.o`
     echo Core objects - ${objects}
-    g++ ${objects} -shared -g -o libCBuild.so -Wl,-soname,libCBuild.so
+    g++-11 ${objects} -shared -g -o libCBuild.so -Wl,-soname,libCBuild.so
     rm -r ${objects}
     mv libCBuild.so CBuild/CBuild
 }

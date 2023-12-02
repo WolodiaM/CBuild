@@ -39,6 +39,7 @@ int system(std::string cmd);
  *
  * @param cmd => stt::string -> command
  * @param buffsize => unsigned int -> Size of output buffer, malloc and fread
+ * @return std::string -> Program output
  */
 std::string system_piped(std::string cmd, unsigned int buffsize);
 /**
@@ -46,10 +47,20 @@ std::string system_piped(std::string cmd, unsigned int buffsize);
  *
  * @return std::vector<std::string>* -> pointer to command log
  */
-std::vector<std::string> *get_log();
+std::vector<std::string>* get_log();
 /**
- * @brief Disable system call to commands
+ * @brief Disable system commands execution
  */
 void disable_system();
+/**
+ * @brief Reanable system commands execution, used only in pkg-config
+ */
+void enable_system();
+/**
+ * @brief Check if CBuild::system enabled
+ * @return true -> Enabled
+ * @return false -> Disabled
+ */
+bool is_system_enabled();
 } // namespace CBuild
 #endif // __CBUILD_SYSTEM_HPP__

@@ -1,9 +1,10 @@
-Package: libcbuild
-Version: 9.10
-Section: utils
-Priority: optional
-Architecture: amd64
+Section: devel
 Maintainer: WolodiaM <w_melnyk@outlook.com>
+Package: libcbuild
+Version: 10.1
+Architecture: amd64
+Priority: optional
+Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9)
 Description: Build system for c++ that use scripts writen in c++ ;).
  This is a build system that allow creating simple or not build scripts for
  building c++ code.
@@ -11,4 +12,3 @@ Description: Build system for c++ that use scripts writen in c++ ;).
  when need to be called), to any other language.
  It allow to use full c++ api and any libraries in build scripts.
  Git repo of CBuild: https://github.com/WolodiaM-CBuild/CBuild
-Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9)

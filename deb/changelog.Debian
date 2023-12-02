@@ -1,4 +1,21 @@
-cbuild (9.1) stable; urgency=high
+cbuild (10.1) stable; urgency=high
+
+  [WolodiaM]
+  * Fix typo in pkg-config handler error
+  * Fix error when generator is used on toolchain with pkg-config scan
+  * CBuild::system is now reanabled on pkg-config scan
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat, 02 Dec 2023 17:09:10 +0200
+
+cbuild (10.0) stable; urgency=high
+
+  [WolodiaM]
+  * Added package search using pkg-config
+  * Too many small improvements to stay on version 9
+
+ -- WolodiaM <w_melnyk@outlook.com>  Fri, 01 Dec 2023 22:16:05 +0200
+
+cbuild (9.10) stable; urgency=high
 
   [WolodiaM]
   * Recompile targeting older libstdc++ (recompiled on KDE Neon on Ubuntu 22.04)
