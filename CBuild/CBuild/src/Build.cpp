@@ -21,18 +21,14 @@
 // C++ librarries
 #include "../../headers/map.hpp"
 #include "array"
-#include "fstream"
-#include "iostream"
 #include "stdlib.h"
 #include "string"
-#include "thread"
 #include "vector"
 // Project headers
 #include "../../headers/CBuild_defs.hpp"
 #include "../../headers/build/Build.hpp"
 #include "../../headers/filesystem++.hpp"
-#include "../../headers/generator/generator.hpp"
-#include "../../headers/hash.hpp"
+#include "../../headers/hasher/hasher.hpp"
 #include "../../headers/pkgconfig.hpp"
 #include "../../headers/print.hpp"
 #include "../../headers/register.hpp"
@@ -166,6 +162,9 @@ void CBuild::Toolchain::multithreaded_target() {
 void CBuild::Toolchain::add_pkgconfig_entry(std::string id) {
     this->pkg_config_include_entries.push_back(id);
 }
+void CBuild::Toolchain::set_hasher(CBuild::Hash* hasher) {
+    this->hasher = hasher;
+}
 /* Build.hpp - files */
 void CBuild::Toolchain::add_file(std::string path) {
     // If path is non-empty
@@ -210,31 +209,45 @@ std::string CBuild::Toolchain::gen_out_file(std::string file) {
 lib::map<std::string, std::string>
 CBuild::Toolchain::gen_file_list(bool force_ __attribute_maybe_unused__) {
     // File - object
-    lib::map<std::string, std::string> ret;
-    std::vector<std::string> for_recomp, filelist;
+    lib::map<std::string, std::string> ret, for_recomp;
+    std::vector<std::string> objects, filelist;
+    bool not_use_hash = false;
     // Collect all files from directories
     for (auto elem : this->targets) {
         if (elem.folder) {
             auto files = CBuild::fs::dir(elem.path);
             for (auto file : files) {
-                filelist.push_back(CBuild::fs::normalize_path(file));
+                filelist.push_back(CBuild::fs::normalize_relative_path(file));
             }
         } else {
-            filelist.push_back(CBuild::fs::normalize_path(elem.path));
+            filelist.push_back(CBuild::fs::normalize_relative_path(elem.path));
+        }
+    }
+    // Create objects list
+    for (auto elem : filelist) {
+        try {
+            for_recomp.push_back(elem, this->gen_out_file(elem));
+            objects.push_back(this->gen_out_file(elem));
+        } catch (std::exception& e) {
         }
     }
     // If we do dummy, compilation, we do force compilation, assumption based on
     // internal CBuild structure, else get hashes
     if (this->dummy == true) {
-        for_recomp = filelist;
+        // for_recomp = filelist;
+        not_use_hash = true;
     } else if (this->gen_file_list_for_linking) {
-        for_recomp = filelist;
+        // for_recomp = filelist;
+        not_use_hash = true;
     } else {
-        for_recomp = CBuild::get_files(filelist, this->id);
+        // for_recomp = CBuild::get_files(filelist, this->id);
+        for_recomp = this->hasher->get_files_for_recompilation(filelist, objects);
+        not_use_hash = false;
     }
     // Real force, we need to recalculate hashes here
     if (this->force) {
-        for_recomp = filelist;
+        // for_recomp = filelist;
+        not_use_hash = true;
     }
     // Not force
     // if (!force_) {
@@ -342,11 +355,14 @@ CBuild::Toolchain::gen_file_list(bool force_ __attribute_maybe_unused__) {
     // 		}
     // 	}
     // }
-    for (auto elem : for_recomp) {
-        try {
-            ret.push_back(this->cmd_str(elem), this->cmd_str(this->gen_out_file(elem)));
-        } catch (std::exception& e) {
+    if (not_use_hash == true) {
+        for_recomp.clear();
+        for (size_t i = 0; i < filelist.size(); i++) {
+            for_recomp.push_back(filelist.at(i), objects.at(i));
         }
+    }
+    for (auto elem : for_recomp) {
+        ret.push_back(this->cmd_str(elem.key), this->cmd_str(elem.data));
     }
     CBuild::print_full("CBuild::Build::gen_file_list() - dbg: ");
     for (unsigned int i = 0; i < ret.size(); i++) {
@@ -448,8 +464,8 @@ void CBuild::Toolchain::init() {
         CBuild::fs::create({CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_BUILD_OUT_DIR},
                            CBuild::fs::DIR);
     }
-    if (!CBuild::fs::exists(CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_HASH_DIR)) {
-        CBuild::fs::create({CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_HASH_DIR},
+    if (!CBuild::fs::exists(CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_METADATA_FOLDER)) {
+        CBuild::fs::create({CBUILD_BUILD_DIR + "/" + this->id + "/" + CBUILD_METADATA_FOLDER},
                            CBuild::fs::DIR);
     }
 }
@@ -569,6 +585,25 @@ void CBuild::Toolchain::call(std::vector<std::string>* args, bool force, bool de
         this->add_link_arg(info.largs);
         this->add_compile_arg(info.cargs);
     }
+    // Does metadata checks fails with file not found error
+    bool meta_error = false;
+    // Perform some metadata checks
+    if (this->hasher->compare_and_set_output_file(this->gen_out_name()) != 0) {
+        this->force = true;
+        meta_error = true;
+    }
+    if (this->hasher->compare_and_set_cargs(this->compiler_args) != 0) {
+        this->force = true;
+        meta_error = true;
+    }
+    if (this->hasher->compare_and_set_largs(this->link_args) != 0) {
+        this->force = true;
+        meta_error = true;
+    }
+    if (this->hasher->compare_and_set_commands(this->compiler, this->linker, this->packer) != 0) {
+        this->force = true;
+        meta_error = true;
+    }
     // 4 steps
     if (!force)
         CBuild::print("Using precompiled object were possible ", CBuild::color::MAGENTA);
@@ -601,6 +636,11 @@ void CBuild::Toolchain::call(std::vector<std::string>* args, bool force, bool de
                        CBUILD_BUILD_OUT_DIR + " && ln -s " + this->gen_out_name() + " " +
                        this->gen_out_name() + "." + std::to_string(this->version_major));
         this->gen_out_name_without_base_path = false;
+    }
+    // If we had a metadata file not found error we need to update metadata
+    if (meta_error == true) {
+        this->hasher->set_target_meta(this->compiler_args, this->link_args, this->gen_out_name(),
+                                      this->compiler, this->linker, this->packer);
     }
     CBuild::print("Calling tasks marked as POST ", CBuild::GREEN);
     // Call all dependencies (tasks) marked as POSt

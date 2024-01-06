@@ -19,7 +19,6 @@
  */
 // C++ libraries
 #include "fstream"
-#include "iostream"
 #include "string"
 // Project headers
 #include "../../headers/CBuild_defs.hpp"

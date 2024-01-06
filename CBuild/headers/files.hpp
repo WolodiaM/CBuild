@@ -20,9 +20,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "string"
 #ifndef __CBUILD_FILE_HPP__
 #define __CBUILD_FILE_HPP__
+// C++ libraries
+#include "string"
+// Code
 namespace CBuild {
 namespace fs {
 /**
@@ -49,8 +51,7 @@ int replace(std::string file, std::string token, std::string data);
  * @param data => std::string -> New value of variable
  * @return int -> -1 - error, else - number of replaced tokens
  */
-int set_var(std::string file, std::string var_type, std::string var_name,
-            std::string data);
+int set_var(std::string file, std::string var_type, std::string var_name, std::string data);
 /**
  * @brief Convert path to filename by replacing '\' by '.'
  *

@@ -20,25 +20,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-// C++ libraries
-#include "string"
-#include "vector"
-// Code
 #ifndef __CBUILD_PRINT_HPP__
 #define __CBUILD_PRINT_HPP__
+// C++ libraries
+#include "string"
+// Code
 namespace CBuild {
 /**
  * @brief Text color
  */
 typedef enum {
-    BLACK   = 30,
-    RED     = 31,
-    GREEN   = 32,
-    YELLOW  = 33,
-    BLUE    = 34,
+    BLACK = 30,
+    RED = 31,
+    GREEN = 32,
+    YELLOW = 33,
+    BLUE = 34,
     MAGENTA = 35,
-    CYAN    = 36,
-    WHITE   = 37
+    CYAN = 36,
+    WHITE = 37
 } color;
 /**
  * @brief Print colored text to STDOUT

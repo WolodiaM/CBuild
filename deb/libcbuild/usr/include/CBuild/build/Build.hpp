@@ -18,6 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __CBUILD_TOOLCHAIN_HPP__
+#define __CBUILD_TOOLCHAIN_HPP__
 // C++ libraries
 #include "../map.hpp"
 #include "array"
@@ -25,9 +27,9 @@
 #include "vector"
 // Project headers
 #include "../generator/generator.hpp"
+#include "../hasher/hasher.hpp"
+#include "../hasher/manual_hash.hpp"
 // Code
-#ifndef __CBUILD_TOOLCHAIN_HPP__
-#define __CBUILD_TOOLCHAIN_HPP__
 namespace CBuild {
 /**
  * @brief Path datatype
@@ -50,6 +52,8 @@ typedef struct {
  */
 typedef enum { PRE, POST } stage;
 typedef enum { EXECUTABLE, STATIC_LIBRARY, DYNAMIC_LIBRARY } build_type;
+template <class T>
+concept HashImpl = std::is_base_of<CBuild::Hash, T>::value;
 /**
  * @brief Toolchain class
  */
@@ -135,6 +139,10 @@ class Toolchain {
      * @brief Force argument (scratch variable)
      */
     bool force;
+    /**
+     * @brief Hasher used here
+     */
+    Hash* hasher;
 
   protected:
     /* Build stages */
@@ -403,6 +411,12 @@ class Toolchain {
      * @param id => std::string -> Package id in a pkg-config database
      */
     virtual void add_pkgconfig_entry(std::string id);
+    /**
+     * @brief Set used hasher for this target
+     *
+     * @param hasher => Hash* -> Hasher that need to be used
+     */
+    virtual void set_hasher(Hash* hasher);
 };
 } // namespace CBuild
 #endif // __CBUILD_TOOLCHAIN_HPP__

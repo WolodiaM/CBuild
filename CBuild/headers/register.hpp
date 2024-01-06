@@ -18,14 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __CBUILD_REGISTER_HPP__
+#define __CBUILD_REGISTER_HPP__
 // C++ libraries
+#include "string"
+#include "vector"
 // Project headers
 #include "build/Build.hpp"
 #include "generator/generator.hpp"
 #include "task/Task.hpp"
 // Code
-#ifndef __CBUILD_REGISTER_HPP__
-#define __CBUILD_REGISTER_HPP__
 namespace CBuild {
 namespace Registry {
 /**
@@ -37,7 +39,7 @@ void init();
  *
  * @param task => CBuild::Task* -> pointer to staticly allocated task
  */
-void RegisterTask(CBuild::Task *task);
+void RegisterTask(CBuild::Task* task);
 /**
  * @brief Run tasks
  *
@@ -51,7 +53,7 @@ void CallTask(std::string name, std::vector<std::string> args);
  * @param target => CBuild::Toolchain* -> Pointer to staticly allocated class
  * that extends CBuild::Toolchain
  */
-void RegisterTarget(CBuild::Toolchain *target);
+void RegisterTarget(CBuild::Toolchain* target);
 /**
  * @brief Get the registered toolchain
  *
@@ -61,13 +63,13 @@ void RegisterTarget(CBuild::Toolchain *target);
  * @return CBuild::Toolchain* -> pointer to toolchain or null if target with
  * given id does not exists
  */
-CBuild::Toolchain *GetToolchain(std::string name, bool force = false);
+CBuild::Toolchain* GetToolchain(std::string name, bool force = false);
 /**
  * @brief Get list of all targets
  *
  * @return lib::map<std::string, CBuild::Toolchain*>
  */
-lib::map<std::string, CBuild::Toolchain *> GetTargets();
+lib::map<std::string, CBuild::Toolchain*> GetTargets();
 /**
  * @brief Register new keyord for parsing,
  * ! Dangerous, owerwriting existing keywords can lead to undefined behaviours
@@ -75,7 +77,7 @@ lib::map<std::string, CBuild::Toolchain *> GetTargets();
  * @param key => std::string -> new keyword
  * @param func => Cbuild::Task -> task, associated with keyword
  */
-void RegisterKeyword(std::string key, CBuild::Task *func);
+void RegisterKeyword(std::string key, CBuild::Task* func);
 /**
  * @brief Get list of all user registered keywords
  *
@@ -116,21 +118,21 @@ std::string GetRebuildArgs();
  * @param path => std::string -> Base path
  * @param args => std::vector<std::string>* -> PArgs
  */
-void ToolchainAll(bool force, std::string path, std::vector<std::string> *args);
+void ToolchainAll(bool force, std::string path, std::vector<std::string>* args);
 /**
  * @brief Get generator for specified id
  *
  * @param id => std::string -> Generator id
  * @return CBuild::generator_base* -> Pointer to generator instance
  */
-CBuild::generator_base *GetGenerator(std::string id);
+CBuild::generator_base* GetGenerator(std::string id);
 /**
  * @brief Register generator for id
  *
  * @param gen => CBuild::generator_base* -> Generator instance
  * @param id => std::string -> Geneator id
  */
-void RegisterGenerator(CBuild::generator_base *gen, std::string id);
+void RegisterGenerator(CBuild::generator_base* gen, std::string id);
 /**
  * @brief Get list of registered generators
  *

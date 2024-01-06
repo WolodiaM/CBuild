@@ -18,17 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef CBUILD_GXX_TOOLCHAIN
+#define CBUILD_GXX_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
-#include "../filesystem++.hpp"
-#include "../hash.hpp"
-#include "../print.hpp"
-#include "./Build.hpp"
+#include "../hasher/gcc_hash.hpp"
+#include "Build.hpp"
 // Code
-#ifndef _CBUILD_GXX_TOOLCHAIN
-#define _CBUILD_GXX_TOOLCHAIN
 namespace CBuild {
-class GXX : public CBuild::Toolchain {
+template <CBuild::HashImpl hash = CBuild::CBuildHash> class GXX : public CBuild::Toolchain {
   public:
     /**
      * @brief Construct a new GXX object
@@ -47,6 +45,7 @@ class GXX : public CBuild::Toolchain {
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_link_arg("-lstdc++");
+        this->hasher = new hash(this->id);
     }
     /**
      * @brief Construct a new GXX object
@@ -65,6 +64,7 @@ class GXX : public CBuild::Toolchain {
         this->add_compile_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
+        this->hasher = new hash(this->id);
     }
 
   protected:

@@ -20,11 +20,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __MYMAP_HPP__
+#define __MYMAP_HPP__
 // C++ libraries
 #include "stdexcept"
 #include "vector"
-#ifndef __MYMAP_HPP__
-#define __MYMAP_HPP__
+// Code
 namespace lib {
 /**
  * @brief Simple pair of values, have "==" operator implemented
@@ -52,7 +53,7 @@ template <class _K, class _D> class mapData {
      * @param data => _D -> Value
      */
     mapData(_K key, _D data) {
-        this->key  = key;
+        this->key = key;
         this->data = data;
     }
     /**
@@ -83,11 +84,13 @@ template <class _K, class _D> class map {
     /**
      * @brief Construct a new map object
      */
-    map() { this->content.clear(); }
+    map() {
+        this->content.clear();
+    }
     /**
      * @brief Copy constructor
      */
-    map(map const &) = default;
+    map(map const&) = default;
     /**
      * @brief Consruct a new map object and initialize it
      *
@@ -95,7 +98,7 @@ template <class _K, class _D> class map {
      */
     map(std::initializer_list<lib::mapData<_K, _D>> init_list) {
         this->content.reserve(init_list.size()); // Reserve space for efficiency
-        for (const auto &element : init_list) {
+        for (const auto& element : init_list) {
             this->content.push_back(element);
         }
     }
@@ -153,11 +156,11 @@ template <class _K, class _D> class map {
      * @param key => _D -> Key
      * @return const _D* -> Returned element const reference
      */
-    const _D *get(_K key) {
+    const _D* get(_K key) {
         if (this->content.empty())
             return NULL;
         for (unsigned int i = 0; i < this->content.size(); i++) {
-            lib::mapData<_K, _D> *elem = &(this->content.at(i));
+            lib::mapData<_K, _D>* elem = &(this->content.at(i));
             if (elem->key == key) {
                 return &(elem->data);
             }
@@ -169,11 +172,11 @@ template <class _K, class _D> class map {
      * @param key => _K -> key that is needed
      * @return lib::mapData<_K, _D>* -> returned reference
      */
-    lib::mapData<_K, _D> *get_ptr(_K key) {
+    lib::mapData<_K, _D>* get_ptr(_K key) {
         if (this->content.empty())
             return NULL;
         for (unsigned int i = 0; i < this->content.size(); i++) {
-            lib::mapData<_K, _D> *elem = &(this->content.at(i));
+            lib::mapData<_K, _D>* elem = &(this->content.at(i));
             if (elem->key == key) {
                 return elem;
             }
@@ -209,13 +212,17 @@ template <class _K, class _D> class map {
     /**
      * @brief Erase all elements (simmilar to std::vector::clear())
      */
-    void clear() { this->content.clear(); }
+    void clear() {
+        this->content.clear();
+    }
     /**
      * @brief Array operation, get element at index
      * @param i => size_t -> index
      * @return lib::mapData<_K, _D> -> returned element
      */
-    lib::mapData<_K, _D> at(__SIZE_TYPE__ i) { return this->content.at(i); }
+    lib::mapData<_K, _D> at(__SIZE_TYPE__ i) {
+        return this->content.at(i);
+    }
     /**
      * @brief Remove element from map and return copy of this element
      * @param idx Index of element to remove
@@ -256,7 +263,9 @@ template <class _K, class _D> class map {
      * @brief Size of map
      * @return size_t -> Number of elements
      */
-    __SIZE_TYPE__ size() { return this->content.size(); }
+    __SIZE_TYPE__ size() {
+        return this->content.size();
+    }
     /**
      * @brief Typical array operation, simmilar to at but using operator []
      * @param i => size_t -> Index
@@ -381,7 +390,9 @@ template <class _K, class _D> class map {
     /**
      * @brief Simmilar to std::vector::empty
      */
-    bool empty() { return this->content.empty(); }
+    bool empty() {
+        return this->content.empty();
+    }
     void erase(_K key) {
         for (unsigned int i = 0; i < this->content.size(); i++) {
             if (this->content.at(i).key == key) {

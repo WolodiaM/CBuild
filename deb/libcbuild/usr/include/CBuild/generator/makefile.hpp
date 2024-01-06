@@ -19,6 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __CBUILD_MAKEFILE_HPP__
+#define __CBUILD_MAKEFILE_HPP__
 // C++ libraries
 #include "string"
 // Project includes
@@ -26,8 +28,6 @@
 #include "../map.hpp"
 #include "generator.hpp"
 // Code
-#ifndef __CBUILD_MAKEFILE_HPP__
-#define __CBUILD_MAKEFILE_HPP__
 namespace CBuild {
 /**
  * @class makefile_out
@@ -46,8 +46,7 @@ class makefile_out : public CBuild::generator_base {
      * @param mode => CBuild::RType -> CBuild arg
      * @param args => lib::map<std::string, std::string> -> CBuild arg
      */
-    virtual void generate(CBuild::RType                       mode,
-                          lib::map<std::string, std::string> *args);
+    virtual void generate(CBuild::RType mode, lib::map<std::string, std::string>* args);
     /**
      * @brief Some init
      *

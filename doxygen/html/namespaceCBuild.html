@@ -110,6 +110,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1MINGW__GCC.html">MINGW_GCC</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCBuild_1_1source__metadata__file.html">source_metadata_file</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metadata for source files (.cpp/.c/etc) Structure of file:  <a href="structCBuild_1_1source__metadata__file.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCBuild_1_1target__metadata__file.html">target_metadata_file</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metadata for a full toolchain.  <a href="structCBuild_1_1target__metadata__file.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1filebuff.html">filebuff</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class of filebuffer.  <a href="classCBuild_1_1filebuff.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,9 +162,9 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:afe79a48de5e26c18846667a600bb1012"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e">CBuild::ARG_TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#afe79a48de5e26c18846667a600bb1012">ARG_TYPE</a></td></tr>
 <tr class="separator:afe79a48de5e26c18846667a600bb1012"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae393e2aaff8aa3b93db84da7c46e4142"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">handler</a> = <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e">ARG_TYPE</a>(*)(<a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt; *, char **, int, int, <a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">CBuild::RType</a> *)</td></tr>
-<tr class="memdesc:ae393e2aaff8aa3b93db84da7c46e4142"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handler for specific argument.  <a href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">More...</a><br /></td></tr>
-<tr class="separator:ae393e2aaff8aa3b93db84da7c46e4142"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb4688990ff057b1cec32b306d70435c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#acb4688990ff057b1cec32b306d70435c">handler</a> = <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e">ARG_TYPE</a>(*)(<a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt; *, char **, int, int, <a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">CBuild::RType</a> *)</td></tr>
+<tr class="memdesc:acb4688990ff057b1cec32b306d70435c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handler for specific argument.  <a href="namespaceCBuild.html#acb4688990ff057b1cec32b306d70435c">More...</a><br /></td></tr>
+<tr class="separator:acb4688990ff057b1cec32b306d70435c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a034e237cd2105d78ffa3c0088812b3a5"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structCBuild_1_1package__info.html">CBuild::package_info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a034e237cd2105d78ffa3c0088812b3a5">package_info</a></td></tr>
 <tr class="memdesc:a034e237cd2105d78ffa3c0088812b3a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Package info struct for data for pkg-config.  <a href="namespaceCBuild.html#a034e237cd2105d78ffa3c0088812b3a5">More...</a><br /></td></tr>
 <tr class="separator:a034e237cd2105d78ffa3c0088812b3a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,6 +244,29 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a6b96375bc486c91cb483feab505e9353"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a6b96375bc486c91cb483feab505e9353">read_file_metadata</a> (std::string target_id, std::string src_file, <a class="el" href="structCBuild_1_1source__metadata__file.html">CBuild::source_metadata_file</a> *metadata)</td></tr>
+<tr class="memdesc:a6b96375bc486c91cb483feab505e9353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load metadata for source file.  <a href="namespaceCBuild.html#a6b96375bc486c91cb483feab505e9353">More...</a><br /></td></tr>
+<tr class="separator:a6b96375bc486c91cb483feab505e9353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a4716562f8db28b31f305222192b3ce"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a7a4716562f8db28b31f305222192b3ce">read_target_metadata</a> (std::string target_id, <a class="el" href="structCBuild_1_1target__metadata__file.html">CBuild::target_metadata_file</a> *metadata)</td></tr>
+<tr class="memdesc:a7a4716562f8db28b31f305222192b3ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load metadata for a full target.  <a href="namespaceCBuild.html#a7a4716562f8db28b31f305222192b3ce">More...</a><br /></td></tr>
+<tr class="separator:a7a4716562f8db28b31f305222192b3ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad95585f7fdd0f53c33e430524d3e6cae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#ad95585f7fdd0f53c33e430524d3e6cae">read_file_hash</a> (std::string target_id, std::string file, uint64_t *metadata)</td></tr>
+<tr class="memdesc:ad95585f7fdd0f53c33e430524d3e6cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a file hash (internally uses read_file_metadata, so no performance benefits, but easiier to use in hasher)  <a href="namespaceCBuild.html#ad95585f7fdd0f53c33e430524d3e6cae">More...</a><br /></td></tr>
+<tr class="separator:ad95585f7fdd0f53c33e430524d3e6cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65550ede276a5516e37672d7a320944b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a65550ede276a5516e37672d7a320944b">write_file_metadata</a> (std::string target_id, std::string src_file, <a class="el" href="structCBuild_1_1source__metadata__file.html">CBuild::source_metadata_file</a> *metadata)</td></tr>
+<tr class="memdesc:a65550ede276a5516e37672d7a320944b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a metadata for a file to a file.  <a href="namespaceCBuild.html#a65550ede276a5516e37672d7a320944b">More...</a><br /></td></tr>
+<tr class="separator:a65550ede276a5516e37672d7a320944b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abec3c042deea98ad790bf84abd9525cf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#abec3c042deea98ad790bf84abd9525cf">write_target_metadata</a> (std::string target_id, <a class="el" href="structCBuild_1_1target__metadata__file.html">CBuild::target_metadata_file</a> *metadata)</td></tr>
+<tr class="memdesc:abec3c042deea98ad790bf84abd9525cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a metadata for a full target.  <a href="namespaceCBuild.html#abec3c042deea98ad790bf84abd9525cf">More...</a><br /></td></tr>
+<tr class="separator:abec3c042deea98ad790bf84abd9525cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cfd7766550f1b3ce7ff57f93bccc81d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a1cfd7766550f1b3ce7ff57f93bccc81d">write_file_hash</a> (std::string target_id, std::string file, uint64_t *<a class="el" href="namespaceCBuild.html#a0d07ddbe1051ff2577c6a36113276a1e">hash</a>)</td></tr>
+<tr class="separator:a1cfd7766550f1b3ce7ff57f93bccc81d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96db00d1d6c4a12ed70f1372f309b055"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a96db00d1d6c4a12ed70f1372f309b055">get_file_metadata_path</a> (std::string target_id, std::string file)</td></tr>
+<tr class="memdesc:a96db00d1d6c4a12ed70f1372f309b055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the path to a file metadata file.  <a href="namespaceCBuild.html#a96db00d1d6c4a12ed70f1372f309b055">More...</a><br /></td></tr>
+<tr class="separator:a96db00d1d6c4a12ed70f1372f309b055"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a909ba9a44d0cf2997baafaa0a29f2be8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a909ba9a44d0cf2997baafaa0a29f2be8">get_target_metadata_path</a> (std::string target_id)</td></tr>
+<tr class="memdesc:a909ba9a44d0cf2997baafaa0a29f2be8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the path to a target metadata file.  <a href="namespaceCBuild.html#a909ba9a44d0cf2997baafaa0a29f2be8">More...</a><br /></td></tr>
+<tr class="separator:a909ba9a44d0cf2997baafaa0a29f2be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65ab369788ba3c28cb453822f0126206"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">RType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a65ab369788ba3c28cb453822f0126206">parse</a> (<a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt; *args, int argc, char **argv)</td></tr>
 <tr class="memdesc:a65ab369788ba3c28cb453822f0126206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse arguments.  <a href="namespaceCBuild.html#a65ab369788ba3c28cb453822f0126206">More...</a><br /></td></tr>
 <tr class="separator:a65ab369788ba3c28cb453822f0126206"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,7 +293,7 @@ Functions</h2></td></tr>
 <tr class="separator:a95d1af8bdecebd04f82a73faa29e95e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a1938a84be18d5f4e2d5c3b483a5ab0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a6a1938a84be18d5f4e2d5c3b483a5ab0">exit</a> (int code)</td></tr>
 <tr class="separator:a6a1938a84be18d5f4e2d5c3b483a5ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff175bad25ae9656c8a99978a73b188f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#aff175bad25ae9656c8a99978a73b188f">register_parse_handler</a> (std::string <a class="el" href="structCBuild_1_1cmd.html">cmd</a>, <a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">CBuild::handler</a> parser)</td></tr>
+<tr class="memitem:aff175bad25ae9656c8a99978a73b188f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#aff175bad25ae9656c8a99978a73b188f">register_parse_handler</a> (std::string <a class="el" href="structCBuild_1_1cmd.html">cmd</a>, <a class="el" href="namespaceCBuild.html#acb4688990ff057b1cec32b306d70435c">CBuild::handler</a> parser)</td></tr>
 <tr class="memdesc:aff175bad25ae9656c8a99978a73b188f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register new handler for parsing cli args, see handler typedef comment to guide how to write handlers.  <a href="namespaceCBuild.html#aff175bad25ae9656c8a99978a73b188f">More...</a><br /></td></tr>
 <tr class="separator:aff175bad25ae9656c8a99978a73b188f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82ee86f1d8a5a83b5c4dc150dda394ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a82ee86f1d8a5a83b5c4dc150dda394ea">add_env_var</a> (std::string var, std::string value)</td></tr>
@@ -310,8 +339,14 @@ Functions</h2></td></tr>
 <tr class="memdesc:a454c89f17e1bbea2bd4bdb0be34027b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the internall command log.  <a href="namespaceCBuild.html#a454c89f17e1bbea2bd4bdb0be34027b7">More...</a><br /></td></tr>
 <tr class="separator:a454c89f17e1bbea2bd4bdb0be34027b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e0034ee90095d8e2b139af6c7b3719e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a7e0034ee90095d8e2b139af6c7b3719e">disable_system</a> ()</td></tr>
-<tr class="memdesc:a7e0034ee90095d8e2b139af6c7b3719e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable system call to commands.  <a href="namespaceCBuild.html#a7e0034ee90095d8e2b139af6c7b3719e">More...</a><br /></td></tr>
+<tr class="memdesc:a7e0034ee90095d8e2b139af6c7b3719e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable system commands execution.  <a href="namespaceCBuild.html#a7e0034ee90095d8e2b139af6c7b3719e">More...</a><br /></td></tr>
 <tr class="separator:a7e0034ee90095d8e2b139af6c7b3719e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d50d69fbd5d7ffe0b962f21963c2f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a52d50d69fbd5d7ffe0b962f21963c2f0">enable_system</a> ()</td></tr>
+<tr class="memdesc:a52d50d69fbd5d7ffe0b962f21963c2f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reanable system commands execution, used only in pkg-config.  <a href="namespaceCBuild.html#a52d50d69fbd5d7ffe0b962f21963c2f0">More...</a><br /></td></tr>
+<tr class="separator:a52d50d69fbd5d7ffe0b962f21963c2f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18114502814e84f73e17768335fc9cbb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a18114502814e84f73e17768335fc9cbb">is_system_enabled</a> ()</td></tr>
+<tr class="memdesc:a18114502814e84f73e17768335fc9cbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if <a class="el" href="namespaceCBuild.html#aa29a50bd3232789cf9a456be6f82b33a" title="Call stdlib system() and print cmd to shell.">CBuild::system</a> enabled.  <a href="namespaceCBuild.html#a18114502814e84f73e17768335fc9cbb">More...</a><br /></td></tr>
+<tr class="separator:a18114502814e84f73e17768335fc9cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e8150bb3be6dacffa953253931b5204"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e">ARG_TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a2e8150bb3be6dacffa953253931b5204">force_handler</a> (<a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt; *args, char **argv __attribute_maybe_unused__, int argc __attribute_maybe_unused__, int ptr __attribute_maybe_unused__, <a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">CBuild::RType</a> *type __attribute_maybe_unused__)</td></tr>
 <tr class="separator:a2e8150bb3be6dacffa953253931b5204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72c02b2e9ae2b934dc7c8da79b95c0f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e">ARG_TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a72c02b2e9ae2b934dc7c8da79b95c0f1">out_handler</a> (<a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt; *args, char **argv, int argc __attribute_maybe_unused__, int ptr, <a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">CBuild::RType</a> *type __attribute_maybe_unused__)</td></tr>
@@ -362,7 +397,7 @@ Variables</h2></td></tr>
 <tr class="separator:a1bbccbf3bdc6f0a21a668f72fb5d335e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20a88529f35d070a5ab89480a5a79b49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a20a88529f35d070a5ab89480a5a79b49">parg</a> = 0</td></tr>
 <tr class="separator:a20a88529f35d070a5ab89480a5a79b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c5c7210964474318c1768485d163fc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, <a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">handler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a0c5c7210964474318c1768485d163fc3">parsers_list</a></td></tr>
+<tr class="memitem:a0c5c7210964474318c1768485d163fc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, <a class="el" href="namespaceCBuild.html#acb4688990ff057b1cec32b306d70435c">handler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a0c5c7210964474318c1768485d163fc3">parsers_list</a></td></tr>
 <tr class="memdesc:a0c5c7210964474318c1768485d163fc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">All handlers.  <a href="namespaceCBuild.html#a0c5c7210964474318c1768485d163fc3">More...</a><br /></td></tr>
 <tr class="separator:a0c5c7210964474318c1768485d163fc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4c5e7190138df900269d654a33aa6d3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#ac4c5e7190138df900269d654a33aa6d3">verbose</a> = false</td></tr>
@@ -407,22 +442,23 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ae393e2aaff8aa3b93db84da7c46e4142"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae393e2aaff8aa3b93db84da7c46e4142">&#9670;&nbsp;</a></span>handler</h2>
+<a id="acb4688990ff057b1cec32b306d70435c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb4688990ff057b1cec32b306d70435c">&#9670;&nbsp;</a></span>handler</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">CBuild::handler</a> = typedef <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e">ARG_TYPE</a> (*)(<a class="el" href="classlib_1_1map.html">lib::map</a>&lt;std::string, std::string&gt; *, char **, int, int, <a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">CBuild::RType</a> *)</td>
+          <td class="memname">using <a class="el" href="namespaceCBuild.html#acb4688990ff057b1cec32b306d70435c">CBuild::handler</a> = typedef <a class="el" href="namespaceCBuild.html#a8688123f45343a910135f603f0b7d37e">ARG_TYPE</a> (*)(<a class="el" href="classlib_1_1map.html">lib::map</a>&lt;std::string, std::string&gt;*, char**, int, int, <a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2">CBuild::RType</a>*)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Handler for specific argument. </p>
-<p>Receives four arguments: lib::map&lt;std::string, std::string&gt; - arguments map char** - argv int - argc int - current parsing pointer, point to argument that call handler, default - 1 (self) <a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2" title="Run mode.">CBuild::RType</a> - type of run Returns int - consumed elements of argv </p>
+<p>Receives four arguments: lib::map&lt;std::string, std::string&gt; - arguments map char** - argv int - argc int - current parsing pointer, point to argument that call handler, default - 1 (self) <a class="el" href="namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2" title="Run mode.">CBuild::RType</a> - type of run Returns int - consumed elements of argv</p>
+<p>Possible internal args: out:none - disable cli out out:verbose - full cli out gen:&lt;generator id&gt; - pass used generator toolchain_id:&lt;toolchain id&gt; - pass used toolchain task_id:&lt;task id&gt; - pass used task id paX:&lt;arg&gt;, where X - unique number - pass arg to runned program (for -r and -br and possibly -d) aX:&lt;arg&gt;, where X - inique number - pass arg to runned toolchain/task </p>
 
-<p class="definition">Definition at line <a class="el" href="cli__parse__handler_8hpp_source.html#l00116">116</a> of file <a class="el" href="cli__parse__handler_8hpp_source.html">cli_parse_handler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cli__parse__handler_8hpp_source.html#l00125">125</a> of file <a class="el" href="cli__parse__handler_8hpp_source.html">cli_parse_handler.hpp</a>.</p>
 
 </div>
 </div>
@@ -517,7 +553,7 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="filebuff_8hpp_source.html#l00058">58</a> of file <a class="el" href="filebuff_8hpp_source.html">filebuff.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filebuff_8hpp_source.html#l00057">57</a> of file <a class="el" href="filebuff_8hpp_source.html">filebuff.hpp</a>.</p>
 
 </div>
 </div>
@@ -566,7 +602,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a3291e277899194e904c57c9133ff5025a63d19384c7cb5d2592e69cf589505d31"></a>WHITE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="print_8hpp_source.html#l00033">33</a> of file <a class="el" href="print_8hpp_source.html">print.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8hpp_source.html#l00032">32</a> of file <a class="el" href="print_8hpp_source.html">print.hpp</a>.</p>
 
 </div>
 </div>
@@ -604,7 +640,7 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="CBuild_8hpp_source.html#l00033">33</a> of file <a class="el" href="CBuild_8hpp_source.html">CBuild.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CBuild_8hpp_source.html#l00034">34</a> of file <a class="el" href="CBuild_8hpp_source.html">CBuild.hpp</a>.</p>
 
 </div>
 </div>
@@ -666,7 +702,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00081">81</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00087">87</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="system_8cpp_source.html#l00033">env_vars</a>.</p>
 
@@ -718,7 +754,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cli__parser_8cpp_source.html#l00235">235</a> of file <a class="el" href="cli__parser_8cpp_source.html">cli_parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00233">arg</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="cli__parse__handler_8hpp_source.html#l00057">GENERICK_ARG</a>, <a class="el" href="print_8hpp_source.html#l00036">GREEN</a>, <a class="el" href="cli__parser_8cpp_source.html#l00234">parg</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="map_8hpp_source.html#l00126">lib::map&lt; _K, _D &gt;::push_back_check()</a>, and <a class="el" href="print_8hpp_source.html#l00035">RED</a>.</p>
+<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00233">arg</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="cli__parse__handler_8hpp_source.html#l00057">GENERICK_ARG</a>, <a class="el" href="print_8hpp_source.html#l00035">GREEN</a>, <a class="el" href="cli__parser_8cpp_source.html#l00234">parg</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="map_8hpp_source.html#l00129">lib::map&lt; _K, _D &gt;::push_back_check()</a>, and <a class="el" href="print_8hpp_source.html#l00034">RED</a>.</p>
 
 </div>
 </div>
@@ -768,7 +804,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cli__parser_8cpp_source.html#l00122">122</a> of file <a class="el" href="cli__parser_8cpp_source.html">cli_parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="CBuild_8hpp_source.html#l00041">BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00049">BUILD_RUN</a>, <a class="el" href="CBuild_8hpp_source.html#l00057">CLEAR</a>, <a class="el" href="CBuild_8hpp_source.html#l00053">DEBUG</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="map_8hpp_source.html#l00172">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00342">CBuild::Registry::GetToolchainsList()</a>, <a class="el" href="print_8hpp_source.html#l00036">GREEN</a>, <a class="el" href="CBuild_8hpp_source.html#l00065">LOAD_DEPS</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="map_8hpp_source.html#l00126">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00035">RED</a>, <a class="el" href="CBuild_8hpp_source.html#l00045">RUN</a>, and <a class="el" href="cli__parse__handler_8hpp_source.html#l00053">TOOLCHAIN_ARG</a>.</p>
+<p class="reference">References <a class="el" href="CBuild_8hpp_source.html#l00042">BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00050">BUILD_RUN</a>, <a class="el" href="CBuild_8hpp_source.html#l00058">CLEAR</a>, <a class="el" href="CBuild_8hpp_source.html#l00054">DEBUG</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="map_8hpp_source.html#l00175">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00342">CBuild::Registry::GetToolchainsList()</a>, <a class="el" href="print_8hpp_source.html#l00035">GREEN</a>, <a class="el" href="CBuild_8hpp_source.html#l00066">LOAD_DEPS</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="map_8hpp_source.html#l00129">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00034">RED</a>, <a class="el" href="CBuild_8hpp_source.html#l00046">RUN</a>, and <a class="el" href="cli__parse__handler_8hpp_source.html#l00053">TOOLCHAIN_ARG</a>.</p>
 
 </div>
 </div>
@@ -807,7 +843,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00089">89</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00095">95</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="system_8cpp_source.html#l00033">env_vars</a>.</p>
 
@@ -828,13 +864,38 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Disable system call to commands. </p>
+<p>Disable system commands execution. </p>
 
 <p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00077">77</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="system_8cpp_source.html#l00034">enabled</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="generator_8cpp_source.html#l00313">CBuild::ccj_out::init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pkgconfig_8cpp_source.html#l00028">get_pkg_info()</a>, and <a class="el" href="generator_8cpp_source.html#l00313">CBuild::ccj_out::init()</a>.</p>
+
+</div>
+</div>
+<a id="a52d50d69fbd5d7ffe0b962f21963c2f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52d50d69fbd5d7ffe0b962f21963c2f0">&#9670;&nbsp;</a></span>enable_system()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CBuild::enable_system </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reanable system commands execution, used only in pkg-config. </p>
+
+<p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00080">80</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="system_8cpp_source.html#l00034">enabled</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="pkgconfig_8cpp_source.html#l00028">get_pkg_info()</a>.</p>
 
 </div>
 </div>
@@ -945,7 +1006,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cli__parser_8cpp_source.html#l00039">39</a> of file <a class="el" href="cli__parser_8cpp_source.html">cli_parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="map_8hpp_source.html#l00126">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00035">RED</a>, and <a class="el" href="cli__parse__handler_8hpp_source.html#l00045">SIMPLE_ARG</a>.</p>
+<p class="reference">References <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="map_8hpp_source.html#l00129">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00034">RED</a>, and <a class="el" href="cli__parse__handler_8hpp_source.html#l00045">SIMPLE_ARG</a>.</p>
 
 </div>
 </div>
@@ -995,7 +1056,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cli__parser_8cpp_source.html#l00082">82</a> of file <a class="el" href="cli__parser_8cpp_source.html">cli_parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="cli__parse__handler_8hpp_source.html#l00061">GENERATOR_ARG</a>, <a class="el" href="map_8hpp_source.html#l00172">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00335">CBuild::Registry::GetGeneratorsList()</a>, <a class="el" href="print_8hpp_source.html#l00036">GREEN</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="map_8hpp_source.html#l00126">lib::map&lt; _K, _D &gt;::push_back_check()</a>, and <a class="el" href="print_8hpp_source.html#l00035">RED</a>.</p>
+<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="cli__parse__handler_8hpp_source.html#l00061">GENERATOR_ARG</a>, <a class="el" href="map_8hpp_source.html#l00175">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00335">CBuild::Registry::GetGeneratorsList()</a>, <a class="el" href="print_8hpp_source.html#l00035">GREEN</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="map_8hpp_source.html#l00129">lib::map&lt; _K, _D &gt;::push_back_check()</a>, and <a class="el" href="print_8hpp_source.html#l00034">RED</a>.</p>
 
 </div>
 </div>
@@ -1060,9 +1121,49 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="hash_8cpp_source.html#l00143">143</a> of file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="filesystem_09_09_8cpp_source.html#l00340">CBuild::fs::base()</a>, <a class="el" href="namespaceCBuild_1_1consts.html#a57e26a2810de59fed5c3e6a652a9c9a3">CBuild::consts::c_multiline_comment()</a>, <a class="el" href="hash_8cpp_source.html#l00119">CBuild::types::file_content::content</a>, <a class="el" href="namespaceCBuild_1_1consts.html#aac9b86b3cee610833d70b8d752dbda99">CBuild::consts::cxx_line_comment()</a>, <a class="el" href="namespaceCBuild_1_1consts.html#af85e1233794d920c14a2368fa02f69f7">CBuild::consts::doxygen_comment()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="namespaceCBuild_1_1consts.html#aa19d5305adc96357062023357f61f385">CBuild::consts::include_parser()</a>, <a class="el" href="hash_8cpp_source.html#l00127">CBuild::types::file_content::includes</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00332">CBuild::fs::normalize_path()</a>, <a class="el" href="hash_8cpp_source.html#l00123">CBuild::types::file_content::path</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, and <a class="el" href="print_8hpp_source.html#l00035">RED</a>.</p>
+<p class="reference">References <a class="el" href="filesystem_09_09_8cpp_source.html#l00349">CBuild::fs::base()</a>, <a class="el" href="namespaceCBuild_1_1consts.html#a57e26a2810de59fed5c3e6a652a9c9a3">CBuild::consts::c_multiline_comment()</a>, <a class="el" href="hash_8cpp_source.html#l00119">CBuild::types::file_content::content</a>, <a class="el" href="namespaceCBuild_1_1consts.html#aac9b86b3cee610833d70b8d752dbda99">CBuild::consts::cxx_line_comment()</a>, <a class="el" href="namespaceCBuild_1_1consts.html#af85e1233794d920c14a2368fa02f69f7">CBuild::consts::doxygen_comment()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="namespaceCBuild_1_1consts.html#aa19d5305adc96357062023357f61f385">CBuild::consts::include_parser()</a>, <a class="el" href="hash_8cpp_source.html#l00127">CBuild::types::file_content::includes</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00332">CBuild::fs::normalize_path()</a>, <a class="el" href="hash_8cpp_source.html#l00123">CBuild::types::file_content::path</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, and <a class="el" href="print_8hpp_source.html#l00034">RED</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00226">procces_files()</a>.</p>
+
+</div>
+</div>
+<a id="a96db00d1d6c4a12ed70f1372f309b055"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96db00d1d6c4a12ed70f1372f309b055">&#9670;&nbsp;</a></span>get_file_metadata_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string CBuild::get_file_metadata_path </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>file</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the path to a file metadata file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_id</td><td>=&gt; std::string -&gt; Id of target that has this file </td></tr>
+    <tr><td class="paramname">file</td><td>=&gt; std::string -&gt; File name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::string -&gt; <a class="el" href="structCBuild_1_1Path.html" title="Path datatype.">Path</a> to a metadata file </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="metadata__file_8cpp_source.html#l00031">read_file_metadata()</a>.</p>
 
 </div>
 </div>
@@ -1164,7 +1265,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="pkgconfig_8cpp_source.html#l00028">28</a> of file <a class="el" href="pkgconfig_8cpp_source.html">pkgconfig.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pkgconfig_8hpp_source.html#l00042">CBuild::package_info::cargs</a>, <a class="el" href="register_8cpp_source.html#l00155">CBuild::Registry::largs</a>, <a class="el" href="pkgconfig_8hpp_source.html#l00038">CBuild::package_info::largs</a>, <a class="el" href="print_8hpp_source.html#l00039">MAGENTA</a>, <a class="el" href="pkgconfig_8hpp_source.html#l00034">CBuild::package_info::name</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8hpp_source.html#l00035">RED</a>, and <a class="el" href="system_8cpp_source.html#l00058">system_piped()</a>.</p>
+<p class="reference">References <a class="el" href="pkgconfig_8hpp_source.html#l00042">CBuild::package_info::cargs</a>, <a class="el" href="system_8cpp_source.html#l00077">disable_system()</a>, <a class="el" href="system_8cpp_source.html#l00080">enable_system()</a>, <a class="el" href="system_8cpp_source.html#l00083">is_system_enabled()</a>, <a class="el" href="register_8cpp_source.html#l00155">CBuild::Registry::largs</a>, <a class="el" href="pkgconfig_8hpp_source.html#l00038">CBuild::package_info::largs</a>, <a class="el" href="print_8hpp_source.html#l00038">MAGENTA</a>, <a class="el" href="pkgconfig_8hpp_source.html#l00034">CBuild::package_info::name</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8hpp_source.html#l00034">RED</a>, and <a class="el" href="system_8cpp_source.html#l00058">system_piped()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00491">CBuild::Toolchain::call()</a>.</p>
 
@@ -1197,9 +1298,36 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00581">581</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8hpp_source.html#l00039">MAGENTA</a>, and <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>.</p>
+<p class="reference">References <a class="el" href="print_8hpp_source.html#l00038">MAGENTA</a>, and <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="generator_8cpp_source.html#l00041">CBuild::makefile_out::generate()</a>.</p>
+
+</div>
+</div>
+<a id="a909ba9a44d0cf2997baafaa0a29f2be8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a909ba9a44d0cf2997baafaa0a29f2be8">&#9670;&nbsp;</a></span>get_target_metadata_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string CBuild::get_target_metadata_path </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the path to a target metadata file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_id</td><td>=&gt; std::string -&gt; Id of a target </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::string -&gt; <a class="el" href="structCBuild_1_1Path.html" title="Path datatype.">Path</a> to a metadata file </dd></dl>
 
 </div>
 </div>
@@ -1330,6 +1458,34 @@ false -&gt; Eroor, package not found </dd></dl>
 
 </div>
 </div>
+<a id="a18114502814e84f73e17768335fc9cbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18114502814e84f73e17768335fc9cbb">&#9670;&nbsp;</a></span>is_system_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CBuild::is_system_enabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if <a class="el" href="namespaceCBuild.html#aa29a50bd3232789cf9a456be6f82b33a" title="Call stdlib system() and print cmd to shell.">CBuild::system</a> enabled. </p>
+<dl class="section return"><dt>Returns</dt><dd>true -&gt; Enabled </dd>
+<dd>
+false -&gt; Disabled </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00083">83</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="system_8cpp_source.html#l00034">enabled</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="pkgconfig_8cpp_source.html#l00028">get_pkg_info()</a>.</p>
+
+</div>
+</div>
 <a id="a373eaec320905ff2435a161438889188"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a373eaec320905ff2435a161438889188">&#9670;&nbsp;</a></span>load_hash()</h2>
 
@@ -1399,7 +1555,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="CBuild_8cpp_source.html#l00284">284</a> of file <a class="el" href="CBuild_8cpp_source.html">CBuild.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="map_8hpp_source.html#l00218">lib::map&lt; _K, _D &gt;::at()</a>, <a class="el" href="CBuild_8hpp_source.html#l00041">BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00049">BUILD_RUN</a>, <a class="el" href="Build_8cpp_source.html#l00491">CBuild::Toolchain::call()</a>, <a class="el" href="register_8cpp_source.html#l00192">CBuild::Registry::CallTask()</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00027">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00031">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00063">CBUILD_PROJECT_DEPS_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00067">CBUILD_PROJECT_DEPS_HEADERS</a>, <a class="el" href="Build_8cpp_source.html#l00661">CBuild::Toolchain::clear()</a>, <a class="el" href="CBuild_8hpp_source.html#l00057">CLEAR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00194">CBuild::fs::create()</a>, <a class="el" href="Build_8cpp_source.html#l00636">CBuild::Toolchain::debug()</a>, <a class="el" href="CBuild_8hpp_source.html#l00053">DEBUG</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00045">CBuild::fs::DIR</a>, <a class="el" href="CBuild_8hpp_source.html#l00069">ERROR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00327">CBuild::fs::exists()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="map_8hpp_source.html#l00156">lib::map&lt; _K, _D &gt;::get()</a>, <a class="el" href="map_8hpp_source.html#l00172">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00321">CBuild::Registry::GetGenerator()</a>, <a class="el" href="register_8cpp_source.html#l00225">CBuild::Registry::GetToolchain()</a>, <a class="el" href="CBuild_8hpp_source.html#l00065">LOAD_DEPS</a>, <a class="el" href="Build_8cpp_source.html#l00456">CBuild::Toolchain::load_project_deps()</a>, <a class="el" href="print_8cpp_source.html#l00062">print_none()</a>, <a class="el" href="print_8cpp_source.html#l00059">print_verbose()</a>, <a class="el" href="Build_8cpp_source.html#l00615">CBuild::Toolchain::run()</a>, <a class="el" href="CBuild_8hpp_source.html#l00045">RUN</a>, <a class="el" href="map_8hpp_source.html#l00259">lib::map&lt; _K, _D &gt;::size()</a>, <a class="el" href="CBuild_8hpp_source.html#l00037">TASK</a>, and <a class="el" href="register_8cpp_source.html#l00299">CBuild::Registry::ToolchainAll()</a>.</p>
+<p class="reference">References <a class="el" href="map_8hpp_source.html#l00223">lib::map&lt; _K, _D &gt;::at()</a>, <a class="el" href="CBuild_8hpp_source.html#l00042">BUILD</a>, <a class="el" href="CBuild_8hpp_source.html#l00050">BUILD_RUN</a>, <a class="el" href="Build_8cpp_source.html#l00491">CBuild::Toolchain::call()</a>, <a class="el" href="register_8cpp_source.html#l00192">CBuild::Registry::CallTask()</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00027">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00031">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00063">CBUILD_PROJECT_DEPS_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00067">CBUILD_PROJECT_DEPS_HEADERS</a>, <a class="el" href="Build_8cpp_source.html#l00661">CBuild::Toolchain::clear()</a>, <a class="el" href="CBuild_8hpp_source.html#l00058">CLEAR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00194">CBuild::fs::create()</a>, <a class="el" href="Build_8cpp_source.html#l00636">CBuild::Toolchain::debug()</a>, <a class="el" href="CBuild_8hpp_source.html#l00054">DEBUG</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00046">CBuild::fs::DIR</a>, <a class="el" href="CBuild_8hpp_source.html#l00070">ERROR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00327">CBuild::fs::exists()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="map_8hpp_source.html#l00159">lib::map&lt; _K, _D &gt;::get()</a>, <a class="el" href="map_8hpp_source.html#l00175">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00321">CBuild::Registry::GetGenerator()</a>, <a class="el" href="register_8cpp_source.html#l00225">CBuild::Registry::GetToolchain()</a>, <a class="el" href="CBuild_8hpp_source.html#l00066">LOAD_DEPS</a>, <a class="el" href="Build_8cpp_source.html#l00456">CBuild::Toolchain::load_project_deps()</a>, <a class="el" href="print_8cpp_source.html#l00062">print_none()</a>, <a class="el" href="print_8cpp_source.html#l00059">print_verbose()</a>, <a class="el" href="Build_8cpp_source.html#l00615">CBuild::Toolchain::run()</a>, <a class="el" href="CBuild_8hpp_source.html#l00046">RUN</a>, <a class="el" href="map_8hpp_source.html#l00266">lib::map&lt; _K, _D &gt;::size()</a>, <a class="el" href="CBuild_8hpp_source.html#l00038">TASK</a>, and <a class="el" href="register_8cpp_source.html#l00299">CBuild::Registry::ToolchainAll()</a>.</p>
 
 </div>
 </div>
@@ -1449,7 +1605,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="cli__parser_8cpp_source.html#l00052">52</a> of file <a class="el" href="cli__parser_8cpp_source.html">cli_parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="map_8hpp_source.html#l00172">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="print_8cpp_source.html#l00062">print_none()</a>, <a class="el" href="print_8cpp_source.html#l00059">print_verbose()</a>, <a class="el" href="map_8hpp_source.html#l00126">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00035">RED</a>, and <a class="el" href="cli__parse__handler_8hpp_source.html#l00045">SIMPLE_ARG</a>.</p>
+<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="map_8hpp_source.html#l00175">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="print_8cpp_source.html#l00062">print_none()</a>, <a class="el" href="print_8cpp_source.html#l00059">print_verbose()</a>, <a class="el" href="map_8hpp_source.html#l00129">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00034">RED</a>, and <a class="el" href="cli__parse__handler_8hpp_source.html#l00045">SIMPLE_ARG</a>.</p>
 
 </div>
 </div>
@@ -1498,7 +1654,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="cli__parser_8cpp_source.html#l00291">291</a> of file <a class="el" href="cli__parser_8cpp_source.html">cli_parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cli__parse__handler_8hpp_source.html#l00041">BLANK_ARG</a>, <a class="el" href="CBuild_8hpp_source.html#l00069">ERROR</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="register_8cpp_source.html#l00262">CBuild::Registry::GetKeywordsList()</a>, <a class="el" href="register_8cpp_source.html#l00161">CBuild::Registry::init()</a>, <a class="el" href="register_8cpp_source.html#l00150">CBuild::Registry::keywords</a>, <a class="el" href="cli__parser_8cpp_source.html#l00281">parsers_list</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="map_8hpp_source.html#l00126">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00035">RED</a>, <a class="el" href="cli__parse__handler_8hpp_source.html#l00045">SIMPLE_ARG</a>, and <a class="el" href="CBuild_8hpp_source.html#l00037">TASK</a>.</p>
+<p class="reference">References <a class="el" href="cli__parse__handler_8hpp_source.html#l00041">BLANK_ARG</a>, <a class="el" href="CBuild_8hpp_source.html#l00070">ERROR</a>, <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="register_8cpp_source.html#l00262">CBuild::Registry::GetKeywordsList()</a>, <a class="el" href="register_8cpp_source.html#l00161">CBuild::Registry::init()</a>, <a class="el" href="register_8cpp_source.html#l00150">CBuild::Registry::keywords</a>, <a class="el" href="cli__parser_8cpp_source.html#l00281">parsers_list</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="map_8hpp_source.html#l00129">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00034">RED</a>, <a class="el" href="cli__parse__handler_8hpp_source.html#l00045">SIMPLE_ARG</a>, and <a class="el" href="CBuild_8hpp_source.html#l00038">TASK</a>.</p>
 
 </div>
 </div>
@@ -1535,9 +1691,9 @@ false -&gt; Eroor, package not found </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::string&gt; -&gt; Returned list of lines </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="filebuff_8hpp_source.html#l00039">39</a> of file <a class="el" href="filebuff_8hpp_source.html">filebuff.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filebuff_8hpp_source.html#l00038">38</a> of file <a class="el" href="filebuff_8hpp_source.html">filebuff.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="filebuff_8hpp_source.html#l00274">CBuild::line_filebuff::set_str()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="filebuff_8hpp_source.html#l00275">CBuild::line_filebuff::set_str()</a>.</p>
 
 </div>
 </div>
@@ -1611,7 +1767,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="reference">References <a class="el" href="print_8cpp_source.html#l00027">none</a>, and <a class="el" href="print_8cpp_source.html#l00028">print_internal()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cli__parser_8cpp_source.html#l00235">arg_handler()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00122">build_handler()</a>, <a class="el" href="Build_8cpp_source.html#l00491">CBuild::Toolchain::call()</a>, <a class="el" href="register_8cpp_source.html#l00072">CBuild::Version::call()</a>, <a class="el" href="register_8cpp_source.html#l00088">CBuild::TaskList::call()</a>, <a class="el" href="register_8cpp_source.html#l00098">CBuild::ToolchainList::call()</a>, <a class="el" href="register_8cpp_source.html#l00108">CBuild::GeneratorList::call()</a>, <a class="el" href="register_8cpp_source.html#l00118">CBuild::CmdList::call()</a>, <a class="el" href="CBuild__help__task_8hpp_source.html#l00034">CBuild::Help::call()</a>, <a class="el" href="register_8cpp_source.html#l00192">CBuild::Registry::CallTask()</a>, <a class="el" href="Build_8cpp_source.html#l00480">CBuild::Toolchain::crash()</a>, <a class="el" href="Build_8cpp_source.html#l00636">CBuild::Toolchain::debug()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00279">CBuild::MINGW_GXX::debug()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00273">CBuild::MINGW_GCC::debug()</a>, <a class="el" href="generator_8cpp_source.html#l00191">CBuild::ccj_out::generate()</a>, <a class="el" href="generator_8cpp_source.html#l00041">CBuild::makefile_out::generate()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00082">generator_handler()</a>, <a class="el" href="pkgconfig_8cpp_source.html#l00028">get_pkg_info()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00052">out_handler()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00291">parse()</a>, <a class="el" href="Build_8cpp_source.html#l00615">CBuild::Toolchain::run()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00260">CBuild::MINGW_GXX::run()</a>, <a class="el" href="system_8cpp_source.html#l00047">system()</a>, <a class="el" href="system_8cpp_source.html#l00058">system_piped()</a>, and <a class="el" href="cli__parser_8cpp_source.html#l00189">task_handler()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cli__parser_8cpp_source.html#l00235">arg_handler()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00122">build_handler()</a>, <a class="el" href="Build_8cpp_source.html#l00491">CBuild::Toolchain::call()</a>, <a class="el" href="register_8cpp_source.html#l00072">CBuild::Version::call()</a>, <a class="el" href="register_8cpp_source.html#l00088">CBuild::TaskList::call()</a>, <a class="el" href="register_8cpp_source.html#l00098">CBuild::ToolchainList::call()</a>, <a class="el" href="register_8cpp_source.html#l00108">CBuild::GeneratorList::call()</a>, <a class="el" href="register_8cpp_source.html#l00118">CBuild::CmdList::call()</a>, <a class="el" href="CBuild__help__task_8hpp_source.html#l00034">CBuild::Help::call()</a>, <a class="el" href="register_8cpp_source.html#l00192">CBuild::Registry::CallTask()</a>, <a class="el" href="Build_8cpp_source.html#l00480">CBuild::Toolchain::crash()</a>, <a class="el" href="Build_8cpp_source.html#l00636">CBuild::Toolchain::debug()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00276">CBuild::MINGW_GXX::debug()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00270">CBuild::MINGW_GCC::debug()</a>, <a class="el" href="generator_8cpp_source.html#l00191">CBuild::ccj_out::generate()</a>, <a class="el" href="generator_8cpp_source.html#l00041">CBuild::makefile_out::generate()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00082">generator_handler()</a>, <a class="el" href="pkgconfig_8cpp_source.html#l00028">get_pkg_info()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00052">out_handler()</a>, <a class="el" href="cli__parser_8cpp_source.html#l00291">parse()</a>, <a class="el" href="Build_8cpp_source.html#l00615">CBuild::Toolchain::run()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00257">CBuild::MINGW_GXX::run()</a>, <a class="el" href="system_8cpp_source.html#l00047">system()</a>, <a class="el" href="system_8cpp_source.html#l00058">system_piped()</a>, and <a class="el" href="cli__parser_8cpp_source.html#l00189">task_handler()</a>.</p>
 
 </div>
 </div>
@@ -1634,7 +1790,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="hash_8cpp_source.html#l00326">326</a> of file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8cpp_source.html#l00131">CBuild::vars::filelist</a>, <a class="el" href="print_8hpp_source.html#l00039">MAGENTA</a>, and <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8cpp_source.html#l00131">CBuild::vars::filelist</a>, <a class="el" href="print_8hpp_source.html#l00038">MAGENTA</a>, and <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>.</p>
 
 </div>
 </div>
@@ -1800,9 +1956,141 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="hash_8cpp_source.html#l00226">226</a> of file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8cpp_source.html#l00131">CBuild::vars::filelist</a>, <a class="el" href="hash_8cpp_source.html#l00143">get_file_data()</a>, <a class="el" href="print_8hpp_source.html#l00036">GREEN</a>, <a class="el" href="hash_8cpp_source.html#l00211">hash()</a>, <a class="el" href="hash_8cpp_source.html#l00132">CBuild::vars::headers</a>, <a class="el" href="print_8hpp_source.html#l00039">MAGENTA</a>, <a class="el" href="hash_8cpp_source.html#l00133">CBuild::vars::old_hashes</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, and <a class="el" href="print_8hpp_source.html#l00035">RED</a>.</p>
+<p class="reference">References <a class="el" href="hash_8cpp_source.html#l00131">CBuild::vars::filelist</a>, <a class="el" href="hash_8cpp_source.html#l00143">get_file_data()</a>, <a class="el" href="print_8hpp_source.html#l00035">GREEN</a>, <a class="el" href="hash_8cpp_source.html#l00211">hash()</a>, <a class="el" href="hash_8cpp_source.html#l00132">CBuild::vars::headers</a>, <a class="el" href="print_8hpp_source.html#l00038">MAGENTA</a>, <a class="el" href="hash_8cpp_source.html#l00133">CBuild::vars::old_hashes</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, and <a class="el" href="print_8hpp_source.html#l00034">RED</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00352">get_files()</a>.</p>
+
+</div>
+</div>
+<a id="ad95585f7fdd0f53c33e430524d3e6cae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad95585f7fdd0f53c33e430524d3e6cae">&#9670;&nbsp;</a></span>read_file_hash()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CBuild::read_file_hash </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t *&#160;</td>
+          <td class="paramname"><em>metadata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get a file hash (internally uses read_file_metadata, so no performance benefits, but easiier to use in hasher) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_id</td><td>=&gt; std::string -&gt; Id of target that has this file </td></tr>
+    <tr><td class="paramname">file</td><td>=&gt; std::string -&gt; File name </td></tr>
+    <tr><td class="paramname">metadata</td><td>=&gt; uint64_t -&gt; Hash value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int -&gt; <a class="el" href="auxilary-docs.html#file_err_codes">Error code</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6b96375bc486c91cb483feab505e9353"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b96375bc486c91cb483feab505e9353">&#9670;&nbsp;</a></span>read_file_metadata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CBuild::read_file_metadata </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>src_file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structCBuild_1_1source__metadata__file.html">CBuild::source_metadata_file</a> *&#160;</td>
+          <td class="paramname"><em>metadata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Load metadata for source file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_id</td><td>=&gt; std::string -&gt; Id of target that has this file </td></tr>
+    <tr><td class="paramname">src_file</td><td>=&gt; std::string -&gt; File name </td></tr>
+    <tr><td class="paramname">metadata</td><td>=&gt; <a class="el" href="structCBuild_1_1source__metadata__file.html" title="Metadata for source files (.cpp/.c/etc) Structure of file:">CBuild::source_metadata_file</a>* -&gt; Pointer to file metadata struct </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int -&gt; <a class="el" href="auxilary-docs.html#file_err_codes">Error code</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="metadata__file_8cpp_source.html#l00031">31</a> of file <a class="el" href="metadata__file_8cpp_source.html">metadata_file.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="filesystem_09_09_8cpp_source.html#l00327">CBuild::fs::exists()</a>, and <a class="el" href="namespaceCBuild.html#a96db00d1d6c4a12ed70f1372f309b055">get_file_metadata_path()</a>.</p>
+
+</div>
+</div>
+<a id="a7a4716562f8db28b31f305222192b3ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a4716562f8db28b31f305222192b3ce">&#9670;&nbsp;</a></span>read_target_metadata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CBuild::read_target_metadata </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structCBuild_1_1target__metadata__file.html">CBuild::target_metadata_file</a> *&#160;</td>
+          <td class="paramname"><em>metadata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Load metadata for a full target. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_id</td><td>=&gt; std::string -&gt;Id of target </td></tr>
+    <tr><td class="paramname">metadata</td><td>=&gt; <a class="el" href="structCBuild_1_1target__metadata__file.html" title="Metadata for a full toolchain.">CBuild::target_metadata_file</a>* -&gt; Pointer to a target metadata struct </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int -&gt; <a class="el" href="auxilary-docs.html#file_err_codes">Error code</a> </dd></dl>
 
 </div>
 </div>
@@ -1882,7 +2170,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="cli__parser_8cpp_source.html#l00271">271</a> of file <a class="el" href="cli__parser_8cpp_source.html">cli_parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="CBuild_8hpp_source.html#l00061">REBUILD</a>, and <a class="el" href="cli__parse__handler_8hpp_source.html#l00045">SIMPLE_ARG</a>.</p>
+<p class="reference">References <a class="el" href="CBuild_8hpp_source.html#l00062">REBUILD</a>, and <a class="el" href="cli__parse__handler_8hpp_source.html#l00045">SIMPLE_ARG</a>.</p>
 
 </div>
 </div>
@@ -1901,7 +2189,7 @@ false -&gt; Eroor, package not found </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">CBuild::handler</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceCBuild.html#acb4688990ff057b1cec32b306d70435c">CBuild::handler</a>&#160;</td>
           <td class="paramname"><em>parser</em>&#160;</td>
         </tr>
         <tr>
@@ -1916,7 +2204,7 @@ false -&gt; Eroor, package not found </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cmd</td><td>=&gt; std::string -&gt; Command that trigers this parser </td></tr>
-    <tr><td class="paramname">parser</td><td>=&gt; <a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142" title="Handler for specific argument.">CBuild::handler</a> -&gt; Custom parsing function </td></tr>
+    <tr><td class="paramname">parser</td><td>=&gt; <a class="el" href="namespaceCBuild.html#acb4688990ff057b1cec32b306d70435c" title="Handler for specific argument.">CBuild::handler</a> -&gt; Custom parsing function </td></tr>
   </table>
   </dd>
 </dl>
@@ -1953,7 +2241,7 @@ false -&gt; Eroor, package not found </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::string -&gt; Var value </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00084">84</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00090">90</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="system_8cpp_source.html#l00033">env_vars</a>.</p>
 
@@ -2018,9 +2306,9 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00047">47</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8hpp_source.html#l00038">BLUE</a>, <a class="el" href="system_8cpp_source.html#l00034">enabled</a>, <a class="el" href="system_8cpp_source.html#l00035">get_env_vars()</a>, <a class="el" href="system_8cpp_source.html#l00032">log</a>, and <a class="el" href="print_8cpp_source.html#l00049">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8hpp_source.html#l00037">BLUE</a>, <a class="el" href="system_8cpp_source.html#l00034">enabled</a>, <a class="el" href="system_8cpp_source.html#l00035">get_env_vars()</a>, <a class="el" href="system_8cpp_source.html#l00032">log</a>, and <a class="el" href="print_8cpp_source.html#l00049">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00491">CBuild::Toolchain::call()</a>, <a class="el" href="Build_8cpp_source.html#l00661">CBuild::Toolchain::clear()</a>, <a class="el" href="Build_8cpp_source.html#l00484">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8cpp_source.html#l00636">CBuild::Toolchain::debug()</a>, <a class="el" href="Build_8cpp_source.html#l00456">CBuild::Toolchain::load_project_deps()</a>, <a class="el" href="CBuild_8cpp_source.html#l00558">rebuild()</a>, <a class="el" href="Build_8cpp_source.html#l00615">CBuild::Toolchain::run()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00260">CBuild::MINGW_GXX::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00491">CBuild::Toolchain::call()</a>, <a class="el" href="Build_8cpp_source.html#l00661">CBuild::Toolchain::clear()</a>, <a class="el" href="Build_8cpp_source.html#l00484">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8cpp_source.html#l00636">CBuild::Toolchain::debug()</a>, <a class="el" href="Build_8cpp_source.html#l00456">CBuild::Toolchain::load_project_deps()</a>, <a class="el" href="CBuild_8cpp_source.html#l00558">rebuild()</a>, <a class="el" href="Build_8cpp_source.html#l00615">CBuild::Toolchain::run()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00257">CBuild::MINGW_GXX::run()</a>.</p>
 
 </div>
 </div>
@@ -2062,7 +2350,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00058">58</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8hpp_source.html#l00038">BLUE</a>, <a class="el" href="system_8cpp_source.html#l00034">enabled</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00037">CBuild::fs::FILE</a>, <a class="el" href="system_8cpp_source.html#l00035">get_env_vars()</a>, <a class="el" href="system_8cpp_source.html#l00032">log</a>, and <a class="el" href="print_8cpp_source.html#l00049">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8hpp_source.html#l00037">BLUE</a>, <a class="el" href="system_8cpp_source.html#l00034">enabled</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00038">CBuild::fs::FILE</a>, <a class="el" href="system_8cpp_source.html#l00035">get_env_vars()</a>, <a class="el" href="system_8cpp_source.html#l00032">log</a>, and <a class="el" href="print_8cpp_source.html#l00049">print()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="pkgconfig_8cpp_source.html#l00028">get_pkg_info()</a>.</p>
 
@@ -2114,7 +2402,134 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="cli__parser_8cpp_source.html#l00189">189</a> of file <a class="el" href="cli__parser_8cpp_source.html">cli_parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="map_8hpp_source.html#l00172">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00349">CBuild::Registry::GetTasksList()</a>, <a class="el" href="print_8hpp_source.html#l00036">GREEN</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="map_8hpp_source.html#l00126">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00035">RED</a>, <a class="el" href="CBuild_8hpp_source.html#l00037">TASK</a>, <a class="el" href="cli__parse__handler_8hpp_source.html#l00049">TASK_ARG</a>, and <a class="el" href="register_8cpp_source.html#l00142">CBuild::Registry::tasks</a>.</p>
+<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00034">exit()</a>, <a class="el" href="map_8hpp_source.html#l00175">lib::map&lt; _K, _D &gt;::get_ptr()</a>, <a class="el" href="register_8cpp_source.html#l00349">CBuild::Registry::GetTasksList()</a>, <a class="el" href="print_8hpp_source.html#l00035">GREEN</a>, <a class="el" href="print_8cpp_source.html#l00049">print()</a>, <a class="el" href="print_8cpp_source.html#l00054">print_full()</a>, <a class="el" href="map_8hpp_source.html#l00129">lib::map&lt; _K, _D &gt;::push_back_check()</a>, <a class="el" href="print_8hpp_source.html#l00034">RED</a>, <a class="el" href="CBuild_8hpp_source.html#l00038">TASK</a>, <a class="el" href="cli__parse__handler_8hpp_source.html#l00049">TASK_ARG</a>, and <a class="el" href="register_8cpp_source.html#l00142">CBuild::Registry::tasks</a>.</p>
+
+</div>
+</div>
+<a id="a1cfd7766550f1b3ce7ff57f93bccc81d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cfd7766550f1b3ce7ff57f93bccc81d">&#9670;&nbsp;</a></span>write_file_hash()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CBuild::write_file_hash </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t *&#160;</td>
+          <td class="paramname"><em>hash</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>@brief Write a file hash (internally uses write_file_metadata, so no performance benefits, but easiier to use in hasher)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_id</td><td>=&gt; std::string -&gt; Id of target that has this file </td></tr>
+    <tr><td class="paramname">file</td><td>=&gt; std::string -&gt; File name </td></tr>
+    <tr><td class="paramname">hash</td><td>=&gt; uint64_t -&gt; Pointer to a hash value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int -&gt; <a class="el" href="auxilary-docs.html#file_err_codes">Error code</a> </dd></dl>
+
+</div>
+</div>
+<a id="a65550ede276a5516e37672d7a320944b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65550ede276a5516e37672d7a320944b">&#9670;&nbsp;</a></span>write_file_metadata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CBuild::write_file_metadata </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>src_file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structCBuild_1_1source__metadata__file.html">CBuild::source_metadata_file</a> *&#160;</td>
+          <td class="paramname"><em>metadata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Write a metadata for a file to a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_id</td><td>=&gt; std::string -&gt; Id of a target that has this file </td></tr>
+    <tr><td class="paramname">src_file</td><td>=&gt; std::string -&gt; File name </td></tr>
+    <tr><td class="paramname">metadata</td><td>=&gt; <a class="el" href="structCBuild_1_1source__metadata__file.html" title="Metadata for source files (.cpp/.c/etc) Structure of file:">CBuild::source_metadata_file</a>* -&gt; Pointer to a file metadata struct </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int -&gt; <a class="el" href="auxilary-docs.html#file_err_codes">Error code</a> </dd></dl>
+
+</div>
+</div>
+<a id="abec3c042deea98ad790bf84abd9525cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abec3c042deea98ad790bf84abd9525cf">&#9670;&nbsp;</a></span>write_target_metadata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CBuild::write_target_metadata </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structCBuild_1_1target__metadata__file.html">CBuild::target_metadata_file</a> *&#160;</td>
+          <td class="paramname"><em>metadata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Write a metadata for a full target. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_id</td><td>=&gt; std::string -&gt; Id of a target </td></tr>
+    <tr><td class="paramname">metadata</td><td>=&gt; <a class="el" href="structCBuild_1_1target__metadata__file.html" title="Metadata for a full toolchain.">CBuild::target_metadata_file</a>* -&gt; Pointer to a target metadata struct </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int -&gt; <a class="el" href="auxilary-docs.html#file_err_codes">Error code</a> </dd></dl>
 
 </div>
 </div>
@@ -2151,7 +2566,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00034">34</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="system_8cpp_source.html#l00077">disable_system()</a>, <a class="el" href="system_8cpp_source.html#l00047">system()</a>, and <a class="el" href="system_8cpp_source.html#l00058">system_piped()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="system_8cpp_source.html#l00077">disable_system()</a>, <a class="el" href="system_8cpp_source.html#l00080">enable_system()</a>, <a class="el" href="system_8cpp_source.html#l00083">is_system_enabled()</a>, <a class="el" href="system_8cpp_source.html#l00047">system()</a>, and <a class="el" href="system_8cpp_source.html#l00058">system_piped()</a>.</p>
 
 </div>
 </div>
@@ -2169,7 +2584,7 @@ false -&gt; Eroor, package not found </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="system_8cpp_source.html#l00033">33</a> of file <a class="el" href="system_8cpp_source.html">system.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="system_8cpp_source.html#l00081">add_env_var()</a>, <a class="el" href="system_8cpp_source.html#l00089">change_env_var()</a>, <a class="el" href="system_8cpp_source.html#l00035">get_env_vars()</a>, and <a class="el" href="system_8cpp_source.html#l00084">remove_env_var()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="system_8cpp_source.html#l00087">add_env_var()</a>, <a class="el" href="system_8cpp_source.html#l00095">change_env_var()</a>, <a class="el" href="system_8cpp_source.html#l00035">get_env_vars()</a>, and <a class="el" href="system_8cpp_source.html#l00090">remove_env_var()</a>.</p>
 
 </div>
 </div>
@@ -2234,7 +2649,7 @@ false -&gt; Eroor, package not found </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt;std::string, <a class="el" href="namespaceCBuild.html#ae393e2aaff8aa3b93db84da7c46e4142">handler</a>&gt; CBuild::parsers_list</td>
+          <td class="memname"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt;std::string, <a class="el" href="namespaceCBuild.html#acb4688990ff057b1cec32b306d70435c">handler</a>&gt; CBuild::parsers_list</td>
         </tr>
       </table>
 </div><div class="memdoc">

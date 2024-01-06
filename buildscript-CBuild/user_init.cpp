@@ -44,9 +44,9 @@ class copyLib : public CBuild::Task {
 };
 
 // Toolchains and Tasks
-class GXX11 : public CBuild::GXX {
+class GXX11 : public CBuild::GXX<> {
   public:
-    GXX11(std::string id, std::string name) : CBuild::GXX(id, name) {
+    GXX11(std::string id, std::string name) : CBuild::GXX<>(id, name) {
         this->compiler = "g++-11";
         this->linker = "g++-11";
     }
@@ -80,4 +80,9 @@ void init() {
     load_tasks();
     // Version handler
     CBuild::Registry::SetVersionHandler(&ver);
+    // CBuild::package_info pkg;
+    // pkg.name = "gtk+-2.0";
+    // CBuild::get_pkg_info(&pkg);
+    // CBuild::print(pkg.cargs);
+    // CBuild::print(pkg.largs);
 }

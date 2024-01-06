@@ -30,10 +30,6 @@
  */
 #define CBUILD_COPY_CACHE_DIR std::string("tmp")
 /**
- * @brief Hash cache in build/toolchain dir
- */
-#define CBUILD_HASH_DIR std::string("hash")
-/**
  * @brief Build directory of CBuild
  */
 #define CBUILD_BUILD_DIR std::string("build")
@@ -66,24 +62,22 @@
  */
 #define CBUILD_PROJECT_DEPS_HEADERS std::string("headers")
 /**
- * @brief Hash table save file
+ * @brief Metadata folder for targets
  */
-#define CBUILD_HASH_FILE std::string("hash")
+#define CBUILD_METADATA_FOLDER std::string("config")
+/**
+ * @brief Extension for CBuild metadata files
+ */
+#define CBUILD_METADATA_FILE_EXTENSION std::string(".meta");
 /**
  * @brief Different representation of CBuild version
  */
 #define CBUILD_VERSION_MAJOR (int)10
-#define CBUILD_VERSION_MINOR (int)1
-#define CBUILD_VERSION_STR std::string("10.1")
+#define CBUILD_VERSION_MINOR (int)3
+#define CBUILD_VERSION_STR std::string("10.3")
 /**
  * @brief Data about CBuild compilation
  */
 #define CBUILD_COMPILER_VERSION std::string(__VERSION__)
 #define CBUILD_COMPILATION_DATE std::string(__DATE__)
 #define CBUILD_COMPILATION_TIME std::string(__TIME__)
-/**
- * @brief For cli autocompletion
- */
-#define CBUILD_AUTOCOMPLETION_BASH std::string("bash_return")
-#define CBUILD_AUTOCOMPLETION_ZSH std::string("zsh_return")
-#define CBUILD_AUTOCOMPLETION_ZSH_DESCRIPTION std::string("zsh_return_desc")

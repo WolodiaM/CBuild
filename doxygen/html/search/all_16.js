@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yellow_384',['YELLOW',['../namespaceCBuild.html#a3291e277899194e904c57c9133ff5025a2a67edb9753b55a661c1557c45fc2a76',1,'CBuild']]]
+  ['_7etoolchain_403',['~Toolchain',['../classCBuild_1_1Toolchain.html#a20b5937c4218a656cf4b6ccadcce1d0b',1,'CBuild::Toolchain']]]
 ];

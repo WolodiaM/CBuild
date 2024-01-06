@@ -71,19 +71,20 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a href="files_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;string&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifndef __CBUILD_FILE_HPP__</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define __CBUILD_FILE_HPP__</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceCBuild.html">CBuild</a> {</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespaceCBuild_1_1fs.html">   27</a></span>&#160;<span class="keyword">namespace </span>fs {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">int</span> <a class="code" href="namespaceCBuild_1_1fs.html#a66838af175563ee1fbadaa29b10aa706">replace</a>(std::string file, std::string token, std::string data);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">int</span> <a class="code" href="namespaceCBuild_1_1fs.html#a2404dcec344234f77320e48f42314cd2">set_var</a>(std::string file, std::string var_type, std::string var_name,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            std::string data);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;std::string <a class="code" href="namespaceCBuild_1_1fs.html#a3c6451e4dba7aa53cbeaa1749a7c0882">path_to_file</a>(std::string in);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace fs</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;} <span class="comment">// namespace CBuild</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CBUILD_FILE_HPP__</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef __CBUILD_FILE_HPP__</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define __CBUILD_FILE_HPP__</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// C++ libraries</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;string&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// Code</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceCBuild.html">CBuild</a> {</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespaceCBuild_1_1fs.html">   29</a></span>&#160;<span class="keyword">namespace </span>fs {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">int</span> <a class="code" href="namespaceCBuild_1_1fs.html#a66838af175563ee1fbadaa29b10aa706">replace</a>(std::string file, std::string token, std::string data);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keywordtype">int</span> <a class="code" href="namespaceCBuild_1_1fs.html#a2404dcec344234f77320e48f42314cd2">set_var</a>(std::string file, std::string var_type, std::string var_name, std::string data);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;std::string <a class="code" href="namespaceCBuild_1_1fs.html#a3c6451e4dba7aa53cbeaa1749a7c0882">path_to_file</a>(std::string in);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;} <span class="comment">// namespace fs</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;} <span class="comment">// namespace CBuild</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CBUILD_FILE_HPP__</span></div>
 <div class="ttc" id="anamespaceCBuild_1_1fs_html_a2404dcec344234f77320e48f42314cd2"><div class="ttname"><a href="namespaceCBuild_1_1fs.html#a2404dcec344234f77320e48f42314cd2">CBuild::fs::set_var</a></div><div class="ttdeci">int set_var(std::string file, std::string var_type, std::string var_name, std::string data)</div><div class="ttdoc">Set value of variable with type var_type wth name var_name to data This function loocks for variable ...</div><div class="ttdef"><b>Definition:</b> <a href="files_8cpp_source.html#l00064">files.cpp:64</a></div></div>
 <div class="ttc" id="anamespaceCBuild_1_1fs_html_a3c6451e4dba7aa53cbeaa1749a7c0882"><div class="ttname"><a href="namespaceCBuild_1_1fs.html#a3c6451e4dba7aa53cbeaa1749a7c0882">CBuild::fs::path_to_file</a></div><div class="ttdeci">std::string path_to_file(std::string in)</div><div class="ttdoc">Convert path to filename by replacing '\' by '.'.</div><div class="ttdef"><b>Definition:</b> <a href="files_8cpp_source.html#l00119">files.cpp:119</a></div></div>
 <div class="ttc" id="anamespaceCBuild_1_1fs_html_a66838af175563ee1fbadaa29b10aa706"><div class="ttname"><a href="namespaceCBuild_1_1fs.html#a66838af175563ee1fbadaa29b10aa706">CBuild::fs::replace</a></div><div class="ttdeci">int replace(std::string file, std::string token, std::string data)</div><div class="ttdoc">Replace [token] by [data] in [file].</div><div class="ttdef"><b>Definition:</b> <a href="files_8cpp_source.html#l00029">files.cpp:29</a></div></div>

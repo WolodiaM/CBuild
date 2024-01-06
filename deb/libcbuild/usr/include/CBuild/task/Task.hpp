@@ -20,45 +20,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __CBUILD_TASK_HPP__
+#define __CBUILD_TASK_HPP__
 // C++ libraries
 #include "string"
 #include "vector"
-#ifndef __CBUILD_TASK_HPP__
-#define __CBUILD_TASK_HPP__
 namespace CBuild {
 /**
  * @brief Task, can be runned from shell or code
  */
 class Task {
-       private:
-	std::string name;
-	std::vector<std::string> required;
+  private:
+    std::string name;
+    std::vector<std::string> required;
 
-       public:
-	/**
-	 * @brief Construct a new Task object
-	 *
-	 * @param name Task name
-	 * @param required Reguired tasks
-	 */
-	Task(std::string name, std::vector<std::string> required);
-	/**
-	 * @brief Executed on task call
-	 * @param args=> std::vector<std::string> -> used internally
-	 */
-	virtual void call(std::vector<std::string> args) = 0;
-	/**
-	 * @brief Return task name
-	 *
-	 * @return std::string -> Task name
-	 */
-	std::string self_name();
-	/**
-	 * @brief Return required tasks
-	 *
-	 * @return std::vector<std::string> -> Required tasks's id list
-	 */
-	std::vector<std::string> self_required();
+  public:
+    /**
+     * @brief Construct a new Task object
+     *
+     * @param name Task name
+     * @param required Reguired tasks
+     */
+    Task(std::string name, std::vector<std::string> required);
+    /**
+     * @brief Executed on task call
+     * @param args=> std::vector<std::string> -> used internally
+     */
+    virtual void call(std::vector<std::string> args) = 0;
+    /**
+     * @brief Return task name
+     *
+     * @return std::string -> Task name
+     */
+    std::string self_name();
+    /**
+     * @brief Return required tasks
+     *
+     * @return std::vector<std::string> -> Required tasks's id list
+     */
+    std::vector<std::string> self_required();
 };
-}  // namespace CBuild
-#endif	// __CBUILD_TASK_HPP__
+} // namespace CBuild
+#endif // __CBUILD_TASK_HPP__

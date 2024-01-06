@@ -1,8 +1,16 @@
 var searchData=
 [
-  ['name_258',['name',['../structCBuild_1_1Project__dependency.html#a3c1bcae9d30c90a6a8c9cec13511438b',1,'CBuild::Project_dependency::name()'],['../classCBuild_1_1Toolchain.html#a42ef617b7966882e0c97d4158672ec15',1,'CBuild::Toolchain::name()'],['../structCBuild_1_1package__info.html#aa8a02350aacf9ac2124b6e6029eba078',1,'CBuild::package_info::name()'],['../classCBuild_1_1Task.html#a26e2c5d24e42a50c46e0fe7af19bfe63',1,'CBuild::Task::name()'],['../namespaceCBuild_1_1Registry.html#ad570aea7d453a3bde5ea92fb3fa7ff2c',1,'CBuild::Registry::name()']]],
-  ['none_259',['none',['../namespaceCBuild.html#aaa4bc6796da5548c676f3c6bc35f968c',1,'CBuild']]],
-  ['normalize_5fpath_260',['normalize_path',['../namespaceCBuild_1_1fs.html#a1077211cdc9fcebea48f6a20b7da8fe6',1,'CBuild::fs']]],
-  ['null_261',['null',['../classlib_1_1optional.html#a18c4131a61966a16e2fa37891bf3069e',1,'lib::optional']]],
-  ['null_5fhandler_262',['null_handler',['../namespaceCBuild_1_1Registry.html#a95d5b4fdc80bbafc7caa64b53e572bbf',1,'CBuild::Registry']]]
+  ['object_269',['object',['../structCBuild_1_1source__metadata__file.html#a2bedcf5a46477f7b150a2920faa70544',1,'CBuild::source_metadata_file']]],
+  ['old_5fhashes_270',['old_hashes',['../namespaceCBuild_1_1vars.html#a2ad665038ce4a32d5cd744b53c6f594c',1,'CBuild::vars']]],
+  ['operator_2b_271',['operator+',['../classlib_1_1map.html#ae44d5a93fcd1b13a9bc038e74f287fa9',1,'lib::map::operator+(lib::mapData&lt; _K, _D &gt; val)'],['../classlib_1_1map.html#a06fc68bf33820956109ab5c2b30a1eb0',1,'lib::map::operator+(lib::map&lt; _K, _D &gt; val)']]],
+  ['operator_2b_3d_272',['operator+=',['../classlib_1_1map.html#a4de14f19664bbe9200f1d19015f276ba',1,'lib::map::operator+=(lib::mapData&lt; _K, _D &gt; val)'],['../classlib_1_1map.html#aa154ad6d829fd09cd96b878f249def1b',1,'lib::map::operator+=(lib::map&lt; _K, _D &gt; val)']]],
+  ['operator_3d_273',['operator=',['../classlib_1_1map.html#a994ad62c51db4038f92b0f2e0d7ab339',1,'lib::map::operator=(lib::map&lt; _K, _D &gt; val)'],['../classlib_1_1map.html#a1f4f1cec1bd8b236b75144c13f942e49',1,'lib::map::operator=(lib::mapData&lt; _K, _D &gt; val)']]],
+  ['operator_3d_3d_274',['operator==',['../classlib_1_1mapData.html#af94f23d48a59bac2c7a21d05169abc94',1,'lib::mapData::operator==()'],['../classlib_1_1map.html#aa283f5f678d8c4698dab7e5a4d77c8ce',1,'lib::map::operator==(lib::map&lt; _K, _D &gt; val)']]],
+  ['operator_5b_5d_275',['operator[]',['../classlib_1_1map.html#ace02c895bddfb119f89843f48068a263',1,'lib::map']]],
+  ['optional_276',['optional',['../classlib_1_1optional.html',1,'lib::optional&lt; T &gt;'],['../classlib_1_1optional.html#aa8aee2913173ae45739decc39d89b998',1,'lib::optional::optional()'],['../classlib_1_1optional.html#ada1197f68152cafbc5f149f5183717dd',1,'lib::optional::optional(T val)']]],
+  ['optional_2ehpp_277',['optional.hpp',['../optional_8hpp.html',1,'']]],
+  ['optional_3c_20uint64_5ft_20_3e_278',['optional&lt; uint64_t &gt;',['../classlib_1_1optional.html',1,'lib']]],
+  ['out_279',['out',['../structCBuild_1_1target__metadata__file.html#a561f56d692fad7b8e21038f56ff0bf89',1,'CBuild::target_metadata_file']]],
+  ['out_280',['OUT',['../classCBuild_1_1generator__base.html#a51b807ff9b7b05cd1758564412bdc56e',1,'CBuild::generator_base']]],
+  ['out_5fhandler_281',['out_handler',['../namespaceCBuild.html#a72c02b2e9ae2b934dc7c8da79b95c0f1',1,'CBuild']]]
 ];

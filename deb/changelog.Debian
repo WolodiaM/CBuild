@@ -1,3 +1,26 @@
+cbuild (10.3) stable; urgency=high
+
+  [WolodiaM]
+  * New metadata format and hasher API
+  * Hashers are baked into Toolchain instances, as one of template arguments
+  * CBuild::Hash base class for hashers
+  * Abstraction over metadata format, read, write and some helper functions
+  * Only old standard hasher is implemented for now, in class CBuild::CBuildHash
+  * Now all metadata is using paths relative to buildscript executable
+  * Now force recompilations is forced if compiler/linker is changed
+  * Also force recompilation if force if compiler/linker arguments are changer
+  * Metadata format contains all information needed to fully recompilate project
+  * A few bugfixes
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat, 06 Jan 2024 14:39:31 +0200
+
+cbuild (10.2) stable; urgency=high
+
+  [WolodiaM]
+  * Fix - remove traling new-line in pkg-config output
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat, 02 Dec 2023 19:12:02 +0200
+
 cbuild (10.1) stable; urgency=high
 
   [WolodiaM]

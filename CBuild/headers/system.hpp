@@ -20,12 +20,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __CBUILD_SYSTEM_HPP__
+#define __CBUILD_SYSTEM_HPP__
 // C++ libraries
 #include "string"
 #include "vector"
 // Code
-#ifndef __CBUILD_SYSTEM_HPP__
-#define __CBUILD_SYSTEM_HPP__
 namespace CBuild {
 /**
  * @brief Call stdlib system() and print cmd to shell

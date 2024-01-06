@@ -27,7 +27,6 @@
 #include "vector"
 // Project headers
 #include "../../headers/CBuild_defs.hpp"
-#include "../../headers/build/g++.hpp"
 #include "../../headers/generator/ccj.hpp"
 #include "../../headers/generator/generator.hpp"
 #include "../../headers/generator/makefile.hpp"

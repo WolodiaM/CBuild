@@ -1,16 +1,20 @@
 var searchData=
 [
-  ['largs_230',['largs',['../structCBuild_1_1package__info.html#a0f0401c209718b4b4d9ccf7ae9e4e987',1,'CBuild::package_info::largs()'],['../namespaceCBuild_1_1Registry.html#ae3c7a25d9c3252f87f44510df585e057',1,'CBuild::Registry::largs()']]],
-  ['lib_231',['lib',['../namespacelib.html',1,'']]],
-  ['line_5ffilebuff_232',['line_filebuff',['../classCBuild_1_1line__filebuff.html',1,'CBuild::line_filebuff'],['../classCBuild_1_1line__filebuff.html#a0b9de472b10cb23a4c2c5f2c3481a788',1,'CBuild::line_filebuff::line_filebuff()']]],
-  ['link_233',['link',['../classCBuild_1_1Toolchain.html#adf746115d76976ccd9916a37994b09e1',1,'CBuild::Toolchain::link()'],['../classCBuild_1_1GXX.html#add83c06664b74760b9b827090b0931bb',1,'CBuild::GXX::link()'],['../classCBuild_1_1GCC.html#ab493f756876b474e8c0a71acc305a2e6',1,'CBuild::GCC::link()'],['../classCBuild_1_1MINGW__GXX.html#ac22b09f6a0cde227970c8ac46babb6ed',1,'CBuild::MINGW_GXX::link()'],['../classCBuild_1_1MINGW__GCC.html#a9f97df0ac1b7896c5fe203cc559d10ad',1,'CBuild::MINGW_GCC::link()']]],
-  ['link_5fargs_234',['link_args',['../classCBuild_1_1Toolchain.html#a451820ac388b5e31cc6801cbd4a43aa7',1,'CBuild::Toolchain']]],
-  ['link_5fpack_235',['link_pack',['../classCBuild_1_1GCC.html#aa5686ff8fd1690fec702bcfb046f6fef',1,'CBuild::GCC::link_pack()'],['../classCBuild_1_1MINGW__GCC.html#a3270f7a445c01a530edb3b9dafe7275f',1,'CBuild::MINGW_GCC::link_pack()'],['../classCBuild_1_1MINGW__GXX.html#a7f8ccde9c8a2fb278c58a9d4d96c6aa7',1,'CBuild::MINGW_GXX::link_pack()'],['../classCBuild_1_1GXX.html#a405b6d9d67356d90beccf9d422b5d903',1,'CBuild::GXX::link_pack()'],['../classCBuild_1_1Toolchain.html#a121ee5ea85b59529c7aa05ca8ca8255e',1,'CBuild::Toolchain::link_pack()=0']]],
-  ['linker_236',['linker',['../classCBuild_1_1Toolchain.html#ab9da3f227c466e8275516ea49fb8db64',1,'CBuild::Toolchain']]],
-  ['load_5fbuffer_237',['load_buffer',['../classCBuild_1_1filebuff.html#a38f70480329b7e1bde29af9587b4fe19',1,'CBuild::filebuff::load_buffer()'],['../classCBuild_1_1line__filebuff.html#af83ea9973c52e914ff96565a2936c6d2',1,'CBuild::line_filebuff::load_buffer()'],['../classCBuild_1_1str__filebuff.html#ae7b19aaad52a3c8dcc8594bf8a162024',1,'CBuild::str_filebuff::load_buffer()']]],
-  ['load_5fdeps_238',['LOAD_DEPS',['../namespaceCBuild.html#a7c7ed9679b1479745032dd97abbd7ce2aaa9b94136eb4cfacd14b867c1103c409',1,'CBuild']]],
-  ['load_5fhash_239',['load_hash',['../namespaceCBuild.html#a373eaec320905ff2435a161438889188',1,'CBuild']]],
-  ['load_5fproject_5fdeps_240',['load_project_deps',['../classCBuild_1_1Toolchain.html#a0ce3ae723a5a5cd558e51fdbf9cce075',1,'CBuild::Toolchain']]],
-  ['log_241',['log',['../namespaceCBuild.html#ad14c8b8fe9709fdb08a99f212b6a721f',1,'CBuild']]],
-  ['loop_242',['loop',['../namespaceCBuild.html#ac649cc483958d2ee270b9f260c70f8e0',1,'CBuild']]]
+  ['magenta_246',['MAGENTA',['../namespaceCBuild.html#a3291e277899194e904c57c9133ff5025aa448f4afd53810bf4c28043a4e065f34',1,'CBuild']]],
+  ['makefile_2ehpp_247',['makefile.hpp',['../makefile_8hpp.html',1,'']]],
+  ['makefile_5fout_248',['makefile_out',['../classCBuild_1_1makefile__out.html',1,'CBuild::makefile_out'],['../classCBuild_1_1makefile__out.html#a34d2a3589dfc868c0f5b3690d0833840',1,'CBuild::makefile_out::makefile_out()']]],
+  ['makefileo_249',['makefileo',['../namespaceCBuild_1_1Registry.html#ac77fcf96725fc778a205930c4e0e020e',1,'CBuild::Registry']]],
+  ['manual_5fhash_2ehpp_250',['manual_hash.hpp',['../manual__hash_8hpp.html',1,'']]],
+  ['map_251',['map',['../classlib_1_1map.html',1,'lib::map&lt; _K, _D &gt;'],['../classlib_1_1map.html#a74a217582a9fbee212ace38b1cfa4faf',1,'lib::map::map()'],['../classlib_1_1map.html#a72809aeb0fbd5091990096d123af2dd8',1,'lib::map::map(std::initializer_list&lt; lib::mapData&lt; _K, _D &gt;&gt; init_list)'],['../classlib_1_1map.html#a4b791f204028bfe63c5780c5ce035d85',1,'lib::map::map(map const &amp;)=default']]],
+  ['map_2ehpp_252',['map.hpp',['../map_8hpp.html',1,'']]],
+  ['map_3c_20std_3a_3astring_2c_20cbuild_3a_3astage_20_3e_253',['map&lt; std::string, CBuild::stage &gt;',['../classlib_1_1map.html',1,'lib']]],
+  ['mapdata_254',['mapData',['../classlib_1_1mapData.html',1,'lib::mapData&lt; _K, _D &gt;'],['../classlib_1_1mapData.html#ae51bdfead09f0395c6dd74e56daca6f7',1,'lib::mapData::mapData()'],['../classlib_1_1mapData.html#a7b37ba74177713d4e11daed3aaf08a92',1,'lib::mapData::mapData(_K key, _D data)']]],
+  ['match_255',['MATCH',['../namespaceCBuild.html#a42ffacee4ee5bbf4b683a72f1152f551a401bc36a909f04e83dddb98f0a4a8028',1,'CBuild']]],
+  ['metadata_5ffile_2ecpp_256',['metadata_file.cpp',['../metadata__file_8cpp.html',1,'']]],
+  ['mingw_2dg_2b_2b_2ehpp_257',['mingw-g++.hpp',['../mingw-g_09_09_8hpp.html',1,'']]],
+  ['mingw_2dgcc_2ehpp_258',['mingw-gcc.hpp',['../mingw-gcc_8hpp.html',1,'']]],
+  ['mingw_5fgcc_259',['MINGW_GCC',['../classCBuild_1_1MINGW__GCC.html',1,'CBuild::MINGW_GCC'],['../classCBuild_1_1MINGW__GCC.html#a95e6c223687ac0b861115ee459a046c8',1,'CBuild::MINGW_GCC::MINGW_GCC(std::string id)'],['../classCBuild_1_1MINGW__GCC.html#af129971142f47e18ecd68729be1e5277',1,'CBuild::MINGW_GCC::MINGW_GCC(std::string id, std::string name)']]],
+  ['mingw_5fgxx_260',['MINGW_GXX',['../classCBuild_1_1MINGW__GXX.html',1,'CBuild::MINGW_GXX'],['../classCBuild_1_1MINGW__GXX.html#acf027aa91654242f63c036c3ef9b8e1f',1,'CBuild::MINGW_GXX::MINGW_GXX(std::string id, std::string name)'],['../classCBuild_1_1MINGW__GXX.html#ae3ad6224d993e6db79fab57cb46d41d5',1,'CBuild::MINGW_GXX::MINGW_GXX(std::string id)']]],
+  ['move_261',['move',['../namespaceCBuild_1_1fs.html#aa7cd165488ce33026fc5d25e725cbf9d',1,'CBuild::fs']]],
+  ['multithreaded_5ftarget_262',['multithreaded_target',['../classCBuild_1_1Toolchain.html#a8c374b340b70e926e4c4d8bcf192d545',1,'CBuild::Toolchain']]]
 ];

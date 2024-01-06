@@ -18,74 +18,79 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __OPTIONAL_HPP__
+#define __OPTIONAL_HPP__
 // C++ libraries
 #include "stdexcept"
 // Code
-#ifndef __OPTIONAL_HPP__
-#define __OPTIONAL_HPP__
 namespace lib {
 /**
  * @brief Optional data type
  *
  * @tparam T -> Type of internal data
  */
-template <class T>
-class optional {
-       private:
-	/**
-	 * @brief Intrnal variable
-	 */
-	T var;
-	/**
-	 * @brief Does values is saved
-	 */
-	bool null;
+template <class T> class optional {
+  private:
+    /**
+     * @brief Intrnal variable
+     */
+    T var;
+    /**
+     * @brief Does values is saved
+     */
+    bool null;
 
-       public:
-	/**
-	 * @brief Create new optional datatype
-	 */
-	optional() { this->null = true; }
-	/**
-	 * @brief Create new optional datatype
-	 *
-	 * @param val => T -> Value
-	 */
-	optional(T val) {
-		this->var = val;
-		this->null = false;
-	}
-	/**
-	 * @brief Set value
-	 *
-	 * @param val => T -> Value
-	 */
-	void set(T val) {
-		this->var = val;
-		this->null = false;
-	}
-	/**
-	 * @brief Clear value
-	 */
-	void clear() { this->null = true; }
-	/**
-	 * @brief Get value
-	 * @throw std::runtime_error -> If type is null
-	 * @return T -> Value, if any
-	 */
-	T get() {
-		if (this->null == false) {
-			return this->var;
-		} else {
-			throw new std::runtime_error("Datatype is null");
-		}
-	}
-	/**
-	 * @brief If value is not null
-	 *
-	 * @return bool -> true / false
-	 */
-	bool is() { return !this->null; }
+  public:
+    /**
+     * @brief Create new optional datatype
+     */
+    optional() {
+        this->null = true;
+    }
+    /**
+     * @brief Create new optional datatype
+     *
+     * @param val => T -> Value
+     */
+    optional(T val) {
+        this->var = val;
+        this->null = false;
+    }
+    /**
+     * @brief Set value
+     *
+     * @param val => T -> Value
+     */
+    void set(T val) {
+        this->var = val;
+        this->null = false;
+    }
+    /**
+     * @brief Clear value
+     */
+    void clear() {
+        this->null = true;
+    }
+    /**
+     * @brief Get value
+     * @throw std::runtime_error -> If type is null
+     * @return T -> Value, if any
+     */
+    T get() {
+        if (this->null == false) {
+            return this->var;
+        } else {
+            throw new std::runtime_error("Datatype is null");
+        }
+    }
+    /**
+     * @brief If value is not null
+     *
+     * @return bool -> true / false
+     */
+    bool is() {
+        return !this->null;
+    }
 };
-}  // namespace lib
-#endif	// __OPTIONAL_HPP__
+} // namespace lib
+#endif // __OPTIONAL_HPP__

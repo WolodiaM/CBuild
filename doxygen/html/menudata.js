@@ -24,6 +24,7 @@
 */
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
+{text:"Related Pages",url:"pages.html"},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[
@@ -66,7 +67,8 @@ var menudata={children:[
 {text:"p",url:"namespacemembers_func.html#index_p"},
 {text:"r",url:"namespacemembers_func.html#index_r"},
 {text:"s",url:"namespacemembers_func.html#index_s"},
-{text:"t",url:"namespacemembers_func.html#index_t"}]},
+{text:"t",url:"namespacemembers_func.html#index_t"},
+{text:"w",url:"namespacemembers_func.html#index_w"}]},
 {text:"Variables",url:"namespacemembers_vars.html",children:[
 {text:"a",url:"namespacemembers_vars.html#index_a"},
 {text:"c",url:"namespacemembers_vars.html#index_c"},

@@ -237,6 +237,7 @@ class pack_deb : public pack_base {
         CBuild::system("chmod 0755 " + this->work_folder + "/libcbuild/usr/include/CBuild/task/");
         CBuild::system("chmod 0755 " + this->work_folder +
                        "/libcbuild/usr/include/CBuild/generator/");
+        CBuild::system("chmod 0755 " + this->work_folder + "/libcbuild/usr/include/CBuild/hasher");
         CBuild::system("chmod 0755 " + this->work_folder + "/libcbuild/usr/share/lintian");
         CBuild::system("chmod 0755 " + this->work_folder +
                        "/libcbuild/usr/share/lintian/overrides");

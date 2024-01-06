@@ -21,7 +21,6 @@
 // C++ libraries
 #include "filesystem"
 #include "fstream"
-#include "iostream"
 #include "regex"
 #include "stdlib.h"
 #include "string"
@@ -337,6 +336,18 @@ std::string CBuild::fs::normalize_path(std::string path, std::string base_path) 
                                           std ::filesystem::path(path));
     }
 }
+std::string CBuild::fs::normalize_relative_path(std::string path, std::string base_path) {
+    if (base_path == std::string("")) {
+        return std::filesystem::relative(std::filesystem::path(path), CBuild::fs::curr_path());
+    } else {
+        return std::filesystem::relative(std::filesystem::path(base_path) /
+                                             std ::filesystem::path(path),
+                                         CBuild::fs::curr_path());
+    }
+}
 std::string CBuild::fs::base(std::string file) {
     return std::filesystem::path(file).parent_path();
+}
+std::string CBuild::fs::curr_path() {
+    return std::filesystem::current_path();
 }

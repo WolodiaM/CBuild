@@ -19,14 +19,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __CBUILD_CLI_PARSE_HANDLER_HPP__
+#define __CBUILD_CLI_PARSE_HANDLER_HPP__
 // C++ libraries
 #include "string"
 // Project headers
 #include "CBuild.hpp"
 #include "map.hpp"
 // Code
-#ifndef __CBUILD_CLI_PARSE_HANDLER_HPP__
-#define __CBUILD_CLI_PARSE_HANDLER_HPP__
 namespace CBuild {
 void exit(int code);
 /**
@@ -35,70 +35,70 @@ void exit(int code);
  * including self
  */
 typedef enum ARG_TYPE {
-  /**
-   * @brief No argument
-   */
-  BLANK_ARG = 0,
-  /**
-   * @brief Only argument and no subarguments (like -f, -v)
-   */
-  SIMPLE_ARG = 1,
-  /**
-   * @brief Task argument (-t <task_id>)
-   */
-  TASK_ARG = 2,
-  /**
-   * @brief Toolchain argument (-b/-r/-br/-c/-d <toolchain_id>)
-   */
-  TOOLCHAIN_ARG = 2,
-  /**
-   * @brief Generick argument with subargument (-<arg> <subarg>
-   */
-  GENERICK_ARG = 2,
-  /**
-   * @brief Generator arg (-g <generator_id>)
-   */
-  GENERATOR_ARG = 2,
-  /**
-   * @brief Increment by one, consumes only self
-   */
-  INC_ONE = 1,
-  /**
-   * @brief Increment by two, consumes self and 1 subarg
-   */
-  INC_TWO = 2,
-  /**
-   * @brief Increment by two, consumes self and 2 subarg
-   */
-  INC_THREE = 3,
-  /**
-   * @brief Increment by two, consumes self and 3 subarg
-   */
-  INC_FOUR = 4,
-  /**
-   * @brief Increment by two, consumes self and 4 subarg
-   */
-  INC_FIVE = 5,
-  /**
-   * @brief Increment by two, consumes self and 5 subarg
-   */
-  INC_SIX = 6,
-  /**
-   * @brief Increment by two, consumes self and 6 subarg
-   */
-  INC_SEVEN = 7,
-  /**
-   * @brief Increment by two, consumes self and 7 subarg
-   */
-  INC_EIGHT = 8,
-  /**
-   * @brief Increment by two, consumes self and 8 subarg
-   */
-  INC_NINE = 9,
-  /**
-   * @brief Increment by two, consumes self and 9 subarg
-   */
-  INC_TEN = 10
+    /**
+     * @brief No argument
+     */
+    BLANK_ARG = 0,
+    /**
+     * @brief Only argument and no subarguments (like -f, -v)
+     */
+    SIMPLE_ARG = 1,
+    /**
+     * @brief Task argument (-t <task_id>)
+     */
+    TASK_ARG = 2,
+    /**
+     * @brief Toolchain argument (-b/-r/-br/-c/-d <toolchain_id>)
+     */
+    TOOLCHAIN_ARG = 2,
+    /**
+     * @brief Generick argument with subargument (-<arg> <subarg>
+     */
+    GENERICK_ARG = 2,
+    /**
+     * @brief Generator arg (-g <generator_id>)
+     */
+    GENERATOR_ARG = 2,
+    /**
+     * @brief Increment by one, consumes only self
+     */
+    INC_ONE = 1,
+    /**
+     * @brief Increment by two, consumes self and 1 subarg
+     */
+    INC_TWO = 2,
+    /**
+     * @brief Increment by two, consumes self and 2 subarg
+     */
+    INC_THREE = 3,
+    /**
+     * @brief Increment by two, consumes self and 3 subarg
+     */
+    INC_FOUR = 4,
+    /**
+     * @brief Increment by two, consumes self and 4 subarg
+     */
+    INC_FIVE = 5,
+    /**
+     * @brief Increment by two, consumes self and 5 subarg
+     */
+    INC_SIX = 6,
+    /**
+     * @brief Increment by two, consumes self and 6 subarg
+     */
+    INC_SEVEN = 7,
+    /**
+     * @brief Increment by two, consumes self and 7 subarg
+     */
+    INC_EIGHT = 8,
+    /**
+     * @brief Increment by two, consumes self and 8 subarg
+     */
+    INC_NINE = 9,
+    /**
+     * @brief Increment by two, consumes self and 9 subarg
+     */
+    INC_TEN = 10
 } ARG_TYPE;
 /**
  * @brief Handler for specific argument
@@ -112,9 +112,17 @@ typedef enum ARG_TYPE {
  * 						default - 1 (self)
  * 	CBuild::RType				- type of run
  * Returns int - consumed elements of argv
+ *
+ * Possible internal args:
+ *  out:none - disable cli out
+ *  out:verbose - full cli out
+ *  gen:<generator id> - pass used generator
+ *  toolchain_id:<toolchain id> - pass used toolchain
+ *  task_id:<task id> - pass used task id
+ *  paX:<arg>, where X - unique number - pass arg to runned program (for -r and -br and possibly -d)
+ *  aX:<arg>, where X - inique number - pass arg to runned toolchain/task
  */
-using handler = ARG_TYPE (*)(lib::map<std::string, std::string> *, char **, int,
-                             int, CBuild::RType *);
+using handler = ARG_TYPE (*)(lib::map<std::string, std::string>*, char**, int, int, CBuild::RType*);
 /**
  * @brief Register new handler for parsing cli args, see handler typedef comment
  * to guide how to write handlers

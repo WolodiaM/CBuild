@@ -28,8 +28,8 @@ multithreading, last attempt to create multithreaded compilation code produce co
         * gzip
         * dpkg-deb
 # Sizes of files
- * All (except .git/ .vscode/ build/ cache/) - 26M
- * Source code (update.sh + rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 340K
+ * All (except .git/ .vscode/ build/ cache/) - 27M
+ * Source code (update.sh + rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/) - 344K
  * Build script (build.sh + build.run + buildscript-CBuild/ ) - 1000K
  * libCBuild.so (without -g) - 2.0M
  * deb folder - 2.1M

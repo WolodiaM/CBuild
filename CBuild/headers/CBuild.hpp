@@ -20,12 +20,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __CBUILD_CORE_HPP__
+#define __CBUILD_CORE_HPP__
 // C++ libraries
 #include "map.hpp"
 #include "string"
 #include "vector"
-#ifndef __CBUILD_CORE_HPP__
-#define __CBUILD_CORE_HPP__
+// Code
 namespace CBuild {
 /**
  * @brief Run mode
@@ -76,13 +77,13 @@ typedef enum {
  * @param argv => char** -> argv from main
  * @return RType -> type of CBuild task
  */
-RType parse(lib::map<std::string, std::string> *args, int argc, char **argv);
+RType parse(lib::map<std::string, std::string>* args, int argc, char** argv);
 /**
  * @brief loop of CBuild
  * @param mode => CBuild::RType -> from CBuild::parse function
  * @param args => lib::map<std::string, std::string>* -> args from CBuild::parse
  */
-void loop(RType mode, lib::map<std::string, std::string> *args);
+void loop(RType mode, lib::map<std::string, std::string>* args);
 /**
  * @brief Rebuild userspace part of CBuild
  * @param scripts => std::string -> path to scripts dir
@@ -112,7 +113,7 @@ int get_version_minor();
  *
  * @return int* -> array of two parst of CBuild version
  */
-int *get_version_array();
+int* get_version_array();
 /**
  * @brief Generate random string with specified range, on Linux can use
  * /dev/urandom

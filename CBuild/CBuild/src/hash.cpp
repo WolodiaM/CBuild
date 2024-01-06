@@ -19,7 +19,6 @@
  */
 // C++ libraries
 #include "fstream"
-#include "inttypes.h"
 #include "iostream"
 #include "regex"
 #include "sstream"
@@ -27,6 +26,7 @@
 #include "vector"
 // CBuild headers
 #include "../../headers/CBuild_defs.hpp"
+#include "../../headers/build_data.hpp"
 #include "../../headers/filesystem++.hpp"
 #include "../../headers/hash.hpp"
 #include "../../headers/map.hpp"
@@ -91,6 +91,10 @@ struct file {
      */
     bool change;
     /**
+     * @brief Related objet file
+     */
+    std::string object;
+    /**
      * @brief Create new file structure, simply init all values
      *
      * @param path => string -> Absolute file path
@@ -106,6 +110,7 @@ struct file {
         } else {
             this->cpp = false;
         }
+        this->object = "";
     }
 };
 /**
@@ -144,8 +149,9 @@ CBuild::types::file_content get_file_data(std::string path, std::string included
     // Return variable
     std::string p = path;
     // Set path to file
+    included_from = CBuild::fs::base(included_from);
     try {
-        p = CBuild::fs::normalize_path(path, included_from);
+        p = CBuild::fs::normalize_relative_path(path);
     } catch (const std::exception& e) {
         CBuild::print_full(std::string("Error in path creation, path - \"") + path +
                                std::string("\", included_from - \"") + included_from +
@@ -175,12 +181,13 @@ CBuild::types::file_content get_file_data(std::string path, std::string included
         // Get file
         std::string head = match[1];
         bool err = false;
-        // Convert to absolute path and check for system includes
+        // Convert to CBuild.run-relative path
         try {
-            head = CBuild::fs::normalize_path(head, base);
+            head = CBuild::fs::normalize_relative_path(head, base);
         } catch (const std::exception& e) {
-            err = true;
         }
+        // Check for system includes
+        err = !CBuild::fs::exists(head);
         // Push path, if it is project include
         if (!err) {
             f.includes.push_back(head);
@@ -223,15 +230,19 @@ uint64_t hash(std::string str) {
  * @param toolchain_id => std::string -> used toolchain, for working with hash
  * database
  */
-void procces_files(std::vector<std::string> files,
+void procces_files(std::vector<std::string> files, std::vector<std::string> objects,
                    std::string toolchain_id __attribute_maybe_unused__) {
     CBuild::print_full("\t\t\tCBuild hash v3.0", CBuild::color::MAGENTA);
     // For every input file
-    for (auto file : files) {
+    for (size_t i = 0; i < files.size(); i++) {
+        std::string file, object;
+        file = files.at(i);
+        object = objects.at(i);
         // Get file data
         auto data = CBuild::get_file_data(file);
         auto cpp = CBuild::types::file(data.path);
-        // Get file hash
+        cpp.object = object;
+        //  Get file hash
         cpp.hash_new = CBuild::hash(data.content);
         CBuild::print_full("Calculating hash for \"" + cpp.abs_path + "\"", CBuild::color::GREEN);
         CBuild::print_full("Need to calculate hash...", CBuild::color::RED);
@@ -281,16 +292,34 @@ void procces_files(std::vector<std::string> files,
  * @param toolchain_id => std::string -> Id of toolchain
  */
 void store_hash(std::string toolchain_id) {
-    std::ofstream file(CBUILD_BUILD_DIR + "/" + toolchain_id + "/" + CBUILD_HASH_DIR + "/" +
-                       CBUILD_HASH_FILE);
     for (auto cpp : CBuild::vars::filelist) {
-        file << cpp.abs_path << " " << std::hex << cpp.hash_new << "\n";
+        int err = CBuild::write_file_hash(toolchain_id, cpp.abs_path, &cpp.hash_new);
+        if (err == -1) {
+            CBuild::fs::create({CBuild::get_file_metadata_path(toolchain_id, cpp.abs_path)},
+                               CBuild::fs::FILE);
+            CBuild::source_metadata_file m;
+            for (auto inc : cpp.includes) {
+                m.deps.push_back(inc.abs_path);
+            }
+            m.hash = cpp.hash_new;
+            m.source = cpp.abs_path;
+            m.object = cpp.object;
+            CBuild::write_file_metadata(toolchain_id, cpp.abs_path, &m);
+        }
     }
-    for (unsigned int i = 0; i < CBuild::vars::headers.size(); i++) {
-        auto hpp = CBuild::vars::headers.at(i);
-        file << hpp.key << " " << std::hex << hpp.data << "\n";
+    for (auto hpp : CBuild::vars::headers) {
+        int err = CBuild::write_file_hash(toolchain_id, hpp.key, &hpp.data);
+        if (err == -1) {
+            CBuild::fs::create({CBuild::get_file_metadata_path(toolchain_id, hpp.key)},
+                               CBuild::fs::FILE);
+            CBuild::source_metadata_file m;
+            m.hash = hpp.data;
+            m.deps = {};
+            m.source = hpp.key;
+            m.object = "header";
+            CBuild::write_file_metadata(toolchain_id, hpp.key, &m);
+        }
     }
-    file.close();
 }
 /**
  * @brief Load old hashes
@@ -298,28 +327,42 @@ void store_hash(std::string toolchain_id) {
  * @param toolchain_id => std::string -> Id of toolchain
  */
 void load_hash(std::string toolchain_id) {
-    std::string path =
-        CBUILD_BUILD_DIR + "/" + toolchain_id + "/" + CBUILD_HASH_DIR + "/" + CBUILD_HASH_FILE;
-    if (!CBuild::fs::exists(path)) {
-        return;
-    }
-    std::ifstream file(path);
-    std::string line;
-    while (std::getline(file, line)) {
-        std::istringstream iss(line);
-        std::string key;
-        uint64_t value;
-        iss >> key >> std::hex >> value;
-
+    std::string path = CBUILD_BUILD_DIR + "/" + toolchain_id + "/" + CBUILD_METADATA_FOLDER + "/";
+    auto files = CBuild::fs::dir(path, ".*\\.meta");
+    for (auto f : files) {
+        CBuild::source_metadata_file m;
+        CBuild::read_file_metadata_direct(toolchain_id, f, &m);
+        auto file = m.source;
+        auto hash = m.hash;
         try {
-            CBuild::vars::old_hashes.push_back_check(key, value);
-        } catch (const std::exception& e) {
-            // Maybe we have some previvous errors, and somehowe we have two
-            // simmilar hashes, so, save only first, in future we fix this by
-            // fully recreating file
+            CBuild::vars::old_hashes.push_back_check(file, hash);
+        } catch (std::exception& e) {
+            CBuild::print_full(std::string("Error, multiple metadata files found for file ") + file,
+                               CBuild::RED);
         }
     }
-    file.close();
+    // std::string path =
+    //     CBUILD_BUILD_DIR + "/" + toolchain_id + "/" + CBUILD_HASH_DIR + "/" + CBUILD_HASH_FILE;
+    // if (!CBuild::fs::exists(path)) {
+    //     return;
+    // }
+    // std::ifstream file(path);
+    // std::string line;
+    // while (std::getline(file, line)) {
+    //     std::istringstream iss(line);
+    //     std::string key;
+    //     uint64_t value;
+    //     iss >> key >> std::hex >> value;
+
+    //     try {
+    //         CBuild::vars::old_hashes.push_back_check(key, value);
+    //     } catch (const std::exception& e) {
+    //         // Maybe we have some previvous errors, and somehowe we have two
+    //         // simmilar hashes, so, save only first, in future we fix this by
+    //         // fully recreating file
+    //     }
+    // }
+    // file.close();
 }
 } // namespace CBuild
 /* hash.hpp */
@@ -350,13 +393,15 @@ void CBuild::print_files() {
     }
 }
 std::vector<std::string> CBuild::get_files(std::vector<std::string> files,
+                                           std::vector<std::string> objects,
                                            std::string toolchain_id) {
     // Variables
     std::vector<std::string> ret;
     // Gather all file info and relevant hashes
     CBuild::load_hash(toolchain_id);
-    CBuild::procces_files(files, toolchain_id);
+    CBuild::procces_files(files, objects, toolchain_id);
     CBuild::store_hash(toolchain_id);
+    CBuild::print_files();
     // Check differences in hashes
     for (auto file : CBuild::vars::filelist) {
         if ((!file.hash_old.is()) || (file.hash_new != file.hash_old.get())) {

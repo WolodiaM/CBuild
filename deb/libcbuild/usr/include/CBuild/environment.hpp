@@ -19,11 +19,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __CBUILD_ENVIRONMENT_HPP__
+#define __CBUILD_ENVIRONMENT_HPP__
 // C++ libraries
 #include "string"
 // Code
-#ifndef __CBUILD_ENVIRONMENT_HPP__
-#define __CBUILD_ENVIRONMENT_HPP__
 namespace CBuild {
 /**
  * @brief Add environment variable to CBuild::system and CBuild::system_piped

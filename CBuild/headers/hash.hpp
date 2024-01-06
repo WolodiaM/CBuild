@@ -18,24 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __HASH_HPP__
+#define __HASH_HPP__
 // C++ libraries
 #include "string"
 #include "vector"
 // Code
-#ifndef __HASH_HPP__
-#define __HASH_HPP__
 namespace CBuild {
 /**
  * @brief Get changed files
  *
  * @param files => std::vector<std::string> -> List of code files (.cpp/.c)
+ * @param objects => std::vector<std::string> -> List of object files (.o/.obj)
  * @param toolchain_id => std::string -> Id of toolchain, to get hash file
  */
-std::vector<std::string> get_files(std::vector<std::string> files,
-				   std::string toolchain_id);
+std::vector<std::string> get_files(std::vector<std::string> files, std::vector<std::string> objects,
+                                   std::string toolchain_id);
 /**
  * @brief Print temporary file array
  */
 void print_files();
-}  // namespace CBuild
-#endif	// __HASH_HPP__
+} // namespace CBuild
+#endif // __HASH_HPP__

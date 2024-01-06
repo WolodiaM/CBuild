@@ -20,48 +20,49 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __CBUILD_FILESYSTEM_HPP__
+#define __CBUILD_FILESYSTEM_HPP__
 // C++ libraries
 #include "string"
 #include "vector"
-#ifndef __CBUILD_FILESYSTEM_HPP__
-#define __CBUILD_FILESYSTEM_HPP__
+// Code
 namespace CBuild {
 namespace fs {
 /**
  * @brief Type for element creating
  */
 typedef enum {
-  /**
-   * @brief Standard file
-   */
-  FILE,
-  /**
-   * @brief Standard directory
-   */
-  DIRECTORY,
-  /**
-   * @brief Alias for DIRECTORY
-   */
-  DIR,
-  /**
-   * @brief Standard symlink (can be unsupported or supported partially)
-   * (thought std::filesystem::create_symlink)
-   */
-  SYMLINK_FILE,
-  /**
-   * @brief Standard symlink (can be unsupported or supported partially)
-   * (std::filesystem::create_directory_symlink)
-   */
-  SYMLINK_DIRECTORY,
-  /**
-   * @brief Alias for SYMLINK_DIRECTORY
-   */
-  SYMLINK_DIR,
-  /**
-   * @brief Standard hardlink (can be unsupported or supported partially)
-   * (though std::filesystem::create_hard_link)
-   */
-  HARDLINK
+    /**
+     * @brief Standard file
+     */
+    FILE,
+    /**
+     * @brief Standard directory
+     */
+    DIRECTORY,
+    /**
+     * @brief Alias for DIRECTORY
+     */
+    DIR,
+    /**
+     * @brief Standard symlink (can be unsupported or supported partially)
+     * (thought std::filesystem::create_symlink)
+     */
+    SYMLINK_FILE,
+    /**
+     * @brief Standard symlink (can be unsupported or supported partially)
+     * (std::filesystem::create_directory_symlink)
+     */
+    SYMLINK_DIRECTORY,
+    /**
+     * @brief Alias for SYMLINK_DIRECTORY
+     */
+    SYMLINK_DIR,
+    /**
+     * @brief Standard hardlink (can be unsupported or supported partially)
+     * (though std::filesystem::create_hard_link)
+     */
+    HARDLINK
 } type;
 /**
  * @brief Search files using provided regex
@@ -150,11 +151,25 @@ bool exists(std::string path);
  */
 std::string normalize_path(std::string path, std::string base_path = "");
 /**
- * @brief Get base file path (path dir in what file is)
+ * @brief Get absolute path to file using relative path and base path
+ *
+ * @param path => std::string -> Relative path to file
+ * @param base_path => std::string -> Base path of this reative path, "" to none
+ * @return std::string -> Path relative to working dir of CBuild executable
+ */
+std::string normalize_relative_path(std::string path, std::string base_path = "");
+/**
+ * @brief Get base file path (path to dir in what file is)
  *
  * @param file => std::string -> Filepath
  */
 std::string base(std::string file);
+/**
+ * @brief Get current working dir of CBuild.run process
+ *
+ * @return std::string -> Path
+ */
+std::string curr_path();
 } // namespace fs
 } // namespace CBuild
 #endif // __CBUILD_FILESYSTEM_HPP__

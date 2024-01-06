@@ -134,9 +134,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a1077211cdc9fcebea48f6a20b7da8fe6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1fs.html#a1077211cdc9fcebea48f6a20b7da8fe6">normalize_path</a> (std::string path, std::string base_path=&quot;&quot;)</td></tr>
 <tr class="memdesc:a1077211cdc9fcebea48f6a20b7da8fe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get absolute path to file using relative path and base path.  <a href="namespaceCBuild_1_1fs.html#a1077211cdc9fcebea48f6a20b7da8fe6">More...</a><br /></td></tr>
 <tr class="separator:a1077211cdc9fcebea48f6a20b7da8fe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3513f4000b17fa85687b1d8a53f8939c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1fs.html#a3513f4000b17fa85687b1d8a53f8939c">normalize_relative_path</a> (std::string path, std::string base_path=&quot;&quot;)</td></tr>
+<tr class="memdesc:a3513f4000b17fa85687b1d8a53f8939c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get absolute path to file using relative path and base path.  <a href="namespaceCBuild_1_1fs.html#a3513f4000b17fa85687b1d8a53f8939c">More...</a><br /></td></tr>
+<tr class="separator:a3513f4000b17fa85687b1d8a53f8939c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c11acabc60bb22db19562a4013a8af7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1fs.html#a1c11acabc60bb22db19562a4013a8af7">base</a> (std::string file)</td></tr>
 <tr class="memdesc:a1c11acabc60bb22db19562a4013a8af7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get base file path (path dir in what file is)  <a href="namespaceCBuild_1_1fs.html#a1c11acabc60bb22db19562a4013a8af7">More...</a><br /></td></tr>
 <tr class="separator:a1c11acabc60bb22db19562a4013a8af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b879c45da7e1b148d86b109105a172a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1fs.html#a2b879c45da7e1b148d86b109105a172a">curr_path</a> ()</td></tr>
+<tr class="memdesc:a2b879c45da7e1b148d86b109105a172a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current working dir of CBuild.run process.  <a href="namespaceCBuild_1_1fs.html#a2b879c45da7e1b148d86b109105a172a">More...</a><br /></td></tr>
+<tr class="separator:a2b879c45da7e1b148d86b109105a172a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5f953371b71cb3646780beda3688035"><td class="memItemLeft" align="right" valign="top">std::regex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1fs.html#ae5f953371b71cb3646780beda3688035">c_cpp_file</a> (&quot;.*\\.(cpp|cxx|cc|c)&quot;)</td></tr>
 <tr class="separator:ae5f953371b71cb3646780beda3688035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -171,7 +177,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8hpp_source.html#l00033">33</a> of file <a class="el" href="filesystem_09_09_8hpp_source.html">filesystem++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8hpp_source.html#l00034">34</a> of file <a class="el" href="filesystem_09_09_8hpp_source.html">filesystem++.hpp</a>.</p>
 
 </div>
 </div>
@@ -200,9 +206,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00340">340</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00349">349</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00193">CBuild::Toolchain::gen_out_file()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00159">CBuild::MINGW_GXX::gen_out_name()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00156">CBuild::MINGW_GCC::gen_out_name()</a>, <a class="el" href="Build_8cpp_source.html#l00372">CBuild::Toolchain::gen_out_name()</a>, and <a class="el" href="hash_8cpp_source.html#l00143">CBuild::get_file_data()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00193">CBuild::Toolchain::gen_out_file()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00158">CBuild::MINGW_GXX::gen_out_name()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00155">CBuild::MINGW_GCC::gen_out_name()</a>, <a class="el" href="Build_8cpp_source.html#l00372">CBuild::Toolchain::gen_out_name()</a>, and <a class="el" href="hash_8cpp_source.html#l00143">CBuild::get_file_data()</a>.</p>
 
 </div>
 </div>
@@ -306,9 +312,33 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00194">194</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="filesystem_09_09_8hpp_source.html#l00045">DIR</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00041">DIRECTORY</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00037">FILE</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00064">HARDLINK</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00059">SYMLINK_DIR</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00055">SYMLINK_DIRECTORY</a>, and <a class="el" href="filesystem_09_09_8hpp_source.html#l00050">SYMLINK_FILE</a>.</p>
+<p class="reference">References <a class="el" href="filesystem_09_09_8hpp_source.html#l00046">DIR</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00042">DIRECTORY</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00038">FILE</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00065">HARDLINK</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00060">SYMLINK_DIR</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00056">SYMLINK_DIRECTORY</a>, and <a class="el" href="filesystem_09_09_8hpp_source.html#l00051">SYMLINK_FILE</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00053">CBuild::Init::call()</a>, <a class="el" href="generator_8cpp_source.html#l00191">CBuild::ccj_out::generate()</a>, <a class="el" href="generator_8cpp_source.html#l00041">CBuild::makefile_out::generate()</a>, <a class="el" href="Build_8cpp_source.html#l00432">CBuild::Toolchain::init()</a>, <a class="el" href="CBuild_8cpp_source.html#l00284">CBuild::loop()</a>, <a class="el" href="files_8cpp_source.html#l00029">replace()</a>, and <a class="el" href="files_8cpp_source.html#l00064">set_var()</a>.</p>
+
+</div>
+</div>
+<a id="a2b879c45da7e1b148d86b109105a172a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b879c45da7e1b148d86b109105a172a">&#9670;&nbsp;</a></span>curr_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string CBuild::fs::curr_path </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get current working dir of CBuild.run process. </p>
+<dl class="section return"><dt>Returns</dt><dd>std::string -&gt; <a class="el" href="structCBuild_1_1Path.html" title="Path datatype.">Path</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00352">352</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="filesystem_09_09_8cpp_source.html#l00340">normalize_relative_path()</a>.</p>
 
 </div>
 </div>
@@ -483,7 +513,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00327">327</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00053">CBuild::Init::call()</a>, <a class="el" href="generator_8cpp_source.html#l00191">CBuild::ccj_out::generate()</a>, <a class="el" href="generator_8cpp_source.html#l00041">CBuild::makefile_out::generate()</a>, <a class="el" href="Build_8cpp_source.html#l00432">CBuild::Toolchain::init()</a>, <a class="el" href="hash_8cpp_source.html#l00300">CBuild::load_hash()</a>, and <a class="el" href="CBuild_8cpp_source.html#l00284">CBuild::loop()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="register_8cpp_source.html#l00053">CBuild::Init::call()</a>, <a class="el" href="generator_8cpp_source.html#l00191">CBuild::ccj_out::generate()</a>, <a class="el" href="generator_8cpp_source.html#l00041">CBuild::makefile_out::generate()</a>, <a class="el" href="Build_8cpp_source.html#l00432">CBuild::Toolchain::init()</a>, <a class="el" href="hash_8cpp_source.html#l00300">CBuild::load_hash()</a>, <a class="el" href="CBuild_8cpp_source.html#l00284">CBuild::loop()</a>, and <a class="el" href="metadata__file_8cpp_source.html#l00031">CBuild::read_file_metadata()</a>.</p>
 
 </div>
 </div>
@@ -570,6 +600,48 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00332">332</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00211">CBuild::Toolchain::gen_file_list()</a>, and <a class="el" href="hash_8cpp_source.html#l00143">CBuild::get_file_data()</a>.</p>
+
+</div>
+</div>
+<a id="a3513f4000b17fa85687b1d8a53f8939c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3513f4000b17fa85687b1d8a53f8939c">&#9670;&nbsp;</a></span>normalize_relative_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string CBuild::fs::normalize_relative_path </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>base_path</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get absolute path to file using relative path and base path. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>=&gt; std::string -&gt; Relative path to file </td></tr>
+    <tr><td class="paramname">base_path</td><td>=&gt; std::string -&gt; Base path of this reative path, "" to none </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::string -&gt; <a class="el" href="structCBuild_1_1Path.html" title="Path datatype.">Path</a> relative to working dir of <a class="el" href="namespaceCBuild.html" title="Filebuffer for CBuild ecosystem.">CBuild</a> executable </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="filesystem_09_09_8cpp_source.html#l00340">340</a> of file <a class="el" href="filesystem_09_09_8cpp_source.html">filesystem++.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="filesystem_09_09_8cpp_source.html#l00352">curr_path()</a>.</p>
 
 </div>
 </div>
@@ -742,7 +814,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="files_8cpp_source.html#l00029">29</a> of file <a class="el" href="files_8cpp_source.html">files.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00027">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00031">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00194">create()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00037">FILE</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00177">move()</a>, <a class="el" href="files_8cpp_source.html#l00119">path_to_file()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00131">remove()</a>.</p>
+<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00027">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00031">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00194">create()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00038">FILE</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00177">move()</a>, <a class="el" href="files_8cpp_source.html#l00119">path_to_file()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00131">remove()</a>.</p>
 
 </div>
 </div>
@@ -798,7 +870,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="files_8cpp_source.html#l00064">64</a> of file <a class="el" href="files_8cpp_source.html">files.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00027">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00031">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00194">create()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00037">FILE</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00177">move()</a>, <a class="el" href="files_8cpp_source.html#l00119">path_to_file()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00131">remove()</a>.</p>
+<p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00027">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00031">CBUILD_COPY_CACHE_DIR</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00194">create()</a>, <a class="el" href="filesystem_09_09_8hpp_source.html#l00038">FILE</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00177">move()</a>, <a class="el" href="files_8cpp_source.html#l00119">path_to_file()</a>, and <a class="el" href="filesystem_09_09_8cpp_source.html#l00131">remove()</a>.</p>
 
 </div>
 </div>

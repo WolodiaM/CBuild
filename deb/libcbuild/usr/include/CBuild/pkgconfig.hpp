@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __PKGCONFIG_HPP__
+#define __PKGCONFIG_HPP__
 // C++ libs
 #include "string"
 // Code
-#ifndef __PKGCONFIG_HPP__
-#define __PKGCONFIG_HPP__
 namespace CBuild {
 /**
  * @brief Package info struct for data for pkg-config

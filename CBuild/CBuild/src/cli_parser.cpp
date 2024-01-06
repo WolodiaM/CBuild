@@ -32,309 +32,292 @@
 namespace CBuild {
 bool real_exit = true;
 void exit(int code) {
-  if (CBuild::real_exit) {
-    std::exit(code);
-  }
+    if (CBuild::real_exit) {
+        std::exit(code);
+    }
 }
-ARG_TYPE force_handler(lib::map<std::string, std::string> *args,
-                       char **argv __attribute_maybe_unused__,
-                       int argc __attribute_maybe_unused__,
+ARG_TYPE force_handler(lib::map<std::string, std::string>* args,
+                       char** argv __attribute_maybe_unused__, int argc __attribute_maybe_unused__,
                        int ptr __attribute_maybe_unused__,
-                       CBuild::RType *type __attribute_maybe_unused__) {
-  try {
-    args->push_back_check("force", "force");
-  } catch (std::exception &e) {
-    CBuild::print_full("Force recompilation mode is already set!)",
-                       CBuild::RED);
-  }
-  return CBuild::ARG_TYPE::SIMPLE_ARG;
+                       CBuild::RType* type __attribute_maybe_unused__) {
+    try {
+        args->push_back_check("force", "force");
+    } catch (std::exception& e) {
+        CBuild::print_full("Force recompilation mode is already set!)", CBuild::RED);
+    }
+    return CBuild::ARG_TYPE::SIMPLE_ARG;
 }
-ARG_TYPE out_handler(lib::map<std::string, std::string> *args, char **argv,
+ARG_TYPE out_handler(lib::map<std::string, std::string>* args, char** argv,
                      int argc __attribute_maybe_unused__, int ptr,
-                     CBuild::RType *type __attribute_maybe_unused__) {
-  std::string str = "";
-  // Select proper output type based on token
-  if (std::string(argv[ptr]) == std::string("-v")) {
-    str = "verbose";
-    CBuild::print_verbose();
-  } else if (std::string(argv[ptr]) == std::string("--no-cli-out")) {
-    str = "none";
-    CBuild::print_none();
-  } else {
-    CBuild::print(std::string("Illegal output mode! - \"") +
-                      std::string(argv[ptr]) + std::string("\""),
-                  CBuild::RED);
-    CBuild::exit(0xFF);
-  }
-  // Return it to the rest of CBuild
-  try {
-    args->push_back_check("out", str);
-  } catch (std::exception &e) {
-    CBuild::print_full(
-        std::string("Output mode is already set! New output mode - \"") +
-            std::string(argv[ptr + 1]) +
-            std::string("\", old output mode is - \"") +
-            std::string(args->get_ptr("out")->data) + std::string("\"!"),
-        CBuild::RED);
-  }
-  return CBuild::ARG_TYPE::SIMPLE_ARG;
-}
-ARG_TYPE generator_handler(lib::map<std::string, std::string> *args,
-                           char **argv, int argc, int ptr,
-                           CBuild::RType *type __attribute_maybe_unused__) {
-  // User do not provide needed argument (ptr is current argument, so (ptr +
-  // 1) is next argument
-  if (!(argc >= (ptr + 1))) {
-    CBuild::print("Illegal command format!", CBuild::RED);
-    CBuild::print("Usage: -g <generator id>", CBuild::GREEN);
-    CBuild::exit(0xFF);
-  }
-  // Get genrators and check if one of them match our needed
-  std::vector<std::string> gens = CBuild::Registry::GetGeneratorsList();
-  bool err = true;
-  for (std::string gen : gens) {
-    if (gen == std::string(argv[ptr + 1])) {
-      err = false;
+                     CBuild::RType* type __attribute_maybe_unused__) {
+    std::string str = "";
+    // Select proper output type based on token
+    if (std::string(argv[ptr]) == std::string("-v")) {
+        str = "verbose";
+        CBuild::print_verbose();
+    } else if (std::string(argv[ptr]) == std::string("--no-cli-out")) {
+        str = "none";
+        CBuild::print_none();
+    } else {
+        CBuild::print(std::string("Illegal output mode! - \"") + std::string(argv[ptr]) +
+                          std::string("\""),
+                      CBuild::RED);
+        CBuild::exit(0xFF);
     }
-  }
-  // If no match, yes, we are safe to crash here and remaind proper format of
-  // the argument to user
-  if (err == true) {
-    CBuild::print(std::string("Illegal or unregistered generator name! - \"") +
-                      std::string(argv[ptr + 1]) + std::string("\""),
-                  CBuild::RED);
-    CBuild::print("Usage: -g <generator id>", CBuild::GREEN);
-    CBuild::exit(0xFF);
-  }
-  // If all good - save selected generator for later
-  try {
-    args->push_back_check("gen", argv[ptr + 1]);
-  } catch (std::exception &e) {
-    CBuild::print_full(
-        std::string("Generator is already set! New generator - \"") +
-            std::string(argv[ptr + 1]) +
-            std::string("\", old generator is - \"") +
-            std::string(args->get_ptr("gen")->data) + std::string("\"!"),
-        CBuild::RED);
-  }
-  return CBuild::ARG_TYPE::GENERATOR_ARG;
-}
-ARG_TYPE build_handler(lib::map<std::string, std::string> *args, char **argv,
-                       int argc, int ptr, CBuild::RType *type) {
-  // User do not provide needed argument (ptr is current argument, so (ptr +
-  // 1) is next argument
-  if (!(argc >= (ptr + 1))) {
-    CBuild::print("Illegal command format!", CBuild::RED);
-    CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) +
-                      std::string(" <toolchain id>"),
-                  CBuild::GREEN);
-    CBuild::exit(0xFF);
-  }
-  // Now we need to figure why user run this app
-  // Lets save current token to std::string to ease of use
-  std::string token = argv[ptr];
-  // There go boring comparisions
-  if (token == std::string("-b")) {
-    *type = CBuild::BUILD;
-  } else if (token == std::string("-br")) {
-    *type = CBuild::BUILD_RUN;
-  } else if (token == std::string("-r")) {
-    *type = CBuild::RUN;
-  } else if (token == std::string("-d")) {
-    *type = CBuild::DEBUG;
-  } else if (token == std::string("-c")) {
-    *type = CBuild::CLEAR;
-  } else if (token == std::string("-ld")) {
-    *type = CBuild::LOAD_DEPS;
-  }
-  // Get toolchains and check if one of them match our needed
-  std::vector<std::string> tools = CBuild::Registry::GetToolchainsList();
-  bool err = true;
-  for (std::string tool : tools) {
-    if (tool == std::string(argv[ptr + 1])) {
-      err = false;
+    // Return it to the rest of CBuild
+    try {
+        args->push_back_check("out", str);
+    } catch (std::exception& e) {
+        CBuild::print_full(std::string("Output mode is already set! New output mode - \"") +
+                               std::string(argv[ptr + 1]) +
+                               std::string("\", old output mode is - \"") +
+                               std::string(args->get_ptr("out")->data) + std::string("\"!"),
+                           CBuild::RED);
     }
-  }
-  // We have exception for -b all
-  if (*type == CBuild::BUILD &&
-      std::string(argv[ptr + 1]) == std::string("all")) {
-    err = false;
-  }
-  // If no match, yes, we are safe to crash here and remaind proper format of
-  // the argument to user
-  if (err == true) {
-    CBuild::print(std::string("Illegal or unregistered toolchain name! - \"") +
-                      std::string(argv[ptr + 1]) + std::string("\""),
-                  CBuild::RED);
-    CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) +
-                      std::string(" <toolchain id>"),
-                  CBuild::GREEN);
-    CBuild::exit(0xFF);
-  }
-  // If all good - save selected toolchain for later
-  try {
-    args->push_back_check("toolchain_id", argv[ptr + 1]);
-  } catch (std::exception &e) {
-    CBuild::print_full(
-        std::string("Toolchain is already set! New toolchain - \"") +
-            std::string(argv[ptr + 1]) +
-            std::string("\", old toolchain is - \"") +
-            std::string(args->get_ptr("toolchain_id")->data) +
-            std::string("\"!"),
-        CBuild::RED);
-    CBuild::exit(0xFF);
-  }
-  return CBuild::ARG_TYPE::TOOLCHAIN_ARG;
+    return CBuild::ARG_TYPE::SIMPLE_ARG;
 }
-ARG_TYPE task_handler(lib::map<std::string, std::string> *args, char **argv,
-                      int argc, int ptr, CBuild::RType *type) {
-  // User do not provide needed argument (ptr is current argument, so (ptr +
-  // 1) is next argument
-  if (!(argc > (ptr + 1))) {
-    CBuild::print("Illegal command format!", CBuild::RED);
-    CBuild::print(std::string("Usage: -t <task id>"), CBuild::GREEN);
-    CBuild::exit(0xFF);
-  }
-  // Get task from user
-  std::string task = argv[ptr + 1];
-  // Get registered tasks
-  auto tasks = CBuild::Registry::GetTasksList();
-  // Check if task is registered
-  bool err = true;
-  for (std::string t : tasks) {
-    if (task == t) {
-      err = false;
+ARG_TYPE generator_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
+                           CBuild::RType* type __attribute_maybe_unused__) {
+    // User do not provide needed argument (ptr is current argument, so (ptr +
+    // 1) is next argument
+    if (!(argc >= (ptr + 1))) {
+        CBuild::print("Illegal command format!", CBuild::RED);
+        CBuild::print("Usage: -g <generator id>", CBuild::GREEN);
+        CBuild::exit(0xFF);
     }
-  }
-  // If no match, yes, we are safe to crash here and remaind proper format of
-  // the argument to user
-  if (err == true) {
-    CBuild::print(std::string("Illegal or unregistered task name! - \"") +
-                      std::string(argv[ptr + 1]) + std::string("\""),
-                  CBuild::RED);
-    CBuild::print(std::string("Usage: -t <task id>"), CBuild::GREEN);
-    CBuild::exit(0xFF);
-  }
-  // Return correct data
-  try {
-    args->push_back_check("task_id", argv[ptr + 1]);
-  } catch (std::exception &e) {
-    CBuild::print_full(
-        std::string("Task is already set! New task - \"") +
-            std::string(argv[ptr + 1]) + std::string("\", old task is - \"") +
-            std::string(args->get_ptr("task_id")->data) + std::string("\"!"),
-        CBuild::RED);
-    CBuild::exit(0xFF);
-  }
-  *type = CBuild::TASK;
-  return CBuild::ARG_TYPE::TASK_ARG;
+    // Get genrators and check if one of them match our needed
+    std::vector<std::string> gens = CBuild::Registry::GetGeneratorsList();
+    bool err = true;
+    for (std::string gen : gens) {
+        if (gen == std::string(argv[ptr + 1])) {
+            err = false;
+        }
+    }
+    // If no match, yes, we are safe to crash here and remaind proper format of
+    // the argument to user
+    if (err == true) {
+        CBuild::print(std::string("Illegal or unregistered generator name! - \"") +
+                          std::string(argv[ptr + 1]) + std::string("\""),
+                      CBuild::RED);
+        CBuild::print("Usage: -g <generator id>", CBuild::GREEN);
+        CBuild::exit(0xFF);
+    }
+    // If all good - save selected generator for later
+    try {
+        args->push_back_check("gen", argv[ptr + 1]);
+    } catch (std::exception& e) {
+        CBuild::print_full(std::string("Generator is already set! New generator - \"") +
+                               std::string(argv[ptr + 1]) +
+                               std::string("\", old generator is - \"") +
+                               std::string(args->get_ptr("gen")->data) + std::string("\"!"),
+                           CBuild::RED);
+    }
+    return CBuild::ARG_TYPE::GENERATOR_ARG;
+}
+ARG_TYPE build_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
+                       CBuild::RType* type) {
+    // User do not provide needed argument (ptr is current argument, so (ptr +
+    // 1) is next argument
+    if (!(argc >= (ptr + 1))) {
+        CBuild::print("Illegal command format!", CBuild::RED);
+        CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) +
+                          std::string(" <toolchain id>"),
+                      CBuild::GREEN);
+        CBuild::exit(0xFF);
+    }
+    // Now we need to figure why user run this app
+    // Lets save current token to std::string to ease of use
+    std::string token = argv[ptr];
+    // There go boring comparisions
+    if (token == std::string("-b")) {
+        *type = CBuild::BUILD;
+    } else if (token == std::string("-br")) {
+        *type = CBuild::BUILD_RUN;
+    } else if (token == std::string("-r")) {
+        *type = CBuild::RUN;
+    } else if (token == std::string("-d")) {
+        *type = CBuild::DEBUG;
+    } else if (token == std::string("-c")) {
+        *type = CBuild::CLEAR;
+    } else if (token == std::string("-ld")) {
+        *type = CBuild::LOAD_DEPS;
+    }
+    // Get toolchains and check if one of them match our needed
+    std::vector<std::string> tools = CBuild::Registry::GetToolchainsList();
+    bool err = true;
+    for (std::string tool : tools) {
+        if (tool == std::string(argv[ptr + 1])) {
+            err = false;
+        }
+    }
+    // We have exception for -b all
+    if (*type == CBuild::BUILD && std::string(argv[ptr + 1]) == std::string("all")) {
+        err = false;
+    }
+    // If no match, yes, we are safe to crash here and remaind proper format of
+    // the argument to user
+    if (err == true) {
+        CBuild::print(std::string("Illegal or unregistered toolchain name! - \"") +
+                          std::string(argv[ptr + 1]) + std::string("\""),
+                      CBuild::RED);
+        CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) +
+                          std::string(" <toolchain id>"),
+                      CBuild::GREEN);
+        CBuild::exit(0xFF);
+    }
+    // If all good - save selected toolchain for later
+    try {
+        args->push_back_check("toolchain_id", argv[ptr + 1]);
+    } catch (std::exception& e) {
+        CBuild::print_full(
+            std::string("Toolchain is already set! New toolchain - \"") +
+                std::string(argv[ptr + 1]) + std::string("\", old toolchain is - \"") +
+                std::string(args->get_ptr("toolchain_id")->data) + std::string("\"!"),
+            CBuild::RED);
+        CBuild::exit(0xFF);
+    }
+    return CBuild::ARG_TYPE::TOOLCHAIN_ARG;
+}
+ARG_TYPE task_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
+                      CBuild::RType* type) {
+    // User do not provide needed argument (ptr is current argument, so (ptr +
+    // 1) is next argument
+    if (!(argc > (ptr + 1))) {
+        CBuild::print("Illegal command format!", CBuild::RED);
+        CBuild::print(std::string("Usage: -t <task id>"), CBuild::GREEN);
+        CBuild::exit(0xFF);
+    }
+    // Get task from user
+    std::string task = argv[ptr + 1];
+    // Get registered tasks
+    auto tasks = CBuild::Registry::GetTasksList();
+    // Check if task is registered
+    bool err = true;
+    for (std::string t : tasks) {
+        if (task == t) {
+            err = false;
+        }
+    }
+    // If no match, yes, we are safe to crash here and remaind proper format of
+    // the argument to user
+    if (err == true) {
+        CBuild::print(std::string("Illegal or unregistered task name! - \"") +
+                          std::string(argv[ptr + 1]) + std::string("\""),
+                      CBuild::RED);
+        CBuild::print(std::string("Usage: -t <task id>"), CBuild::GREEN);
+        CBuild::exit(0xFF);
+    }
+    // Return correct data
+    try {
+        args->push_back_check("task_id", argv[ptr + 1]);
+    } catch (std::exception& e) {
+        CBuild::print_full(std::string("Task is already set! New task - \"") +
+                               std::string(argv[ptr + 1]) + std::string("\", old task is - \"") +
+                               std::string(args->get_ptr("task_id")->data) + std::string("\"!"),
+                           CBuild::RED);
+        CBuild::exit(0xFF);
+    }
+    *type = CBuild::TASK;
+    return CBuild::ARG_TYPE::TASK_ARG;
 }
 // Some vars for arg and parg
 int arg = 0;
 int parg = 0;
-ARG_TYPE arg_handler(lib::map<std::string, std::string> *args, char **argv,
-                     int argc, int ptr,
-                     CBuild::RType *type __attribute_maybe_unused__) {
-  // User do not provide needed argument (ptr is current argument, so (ptr +
-  // 1) is next argument
-  if (!(argc > (ptr + 1))) {
-    CBuild::print("Illegal command format!", CBuild::RED);
-    CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) +
-                      std::string(" <argument>"),
-                  CBuild::GREEN);
-    CBuild::exit(0xFF);
-  }
-  // Check `pa`
-  if (std::string(argv[ptr]) == std::string("-pa")) {
-    try {
-      args->push_back_check(std::string("pa") + std::to_string(CBuild::parg),
-                            argv[ptr + 1]);
-    } catch (std::exception &e) {
+ARG_TYPE arg_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
+                     CBuild::RType* type __attribute_maybe_unused__) {
+    // User do not provide needed argument (ptr is current argument, so (ptr +
+    // 1) is next argument
+    if (!(argc > (ptr + 1))) {
+        CBuild::print("Illegal command format!", CBuild::RED);
+        CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) + std::string(" <argument>"),
+                      CBuild::GREEN);
+        CBuild::exit(0xFF);
     }
-    CBuild::parg++;
-    // Check `a`
-  } else if (std::string(argv[ptr]) == std::string("-a")) {
-    try {
-      args->push_back_check(std::string("a") + std::to_string(CBuild::arg),
-                            argv[ptr + 1]);
-    } catch (std::exception &e) {
+    // Check `pa`
+    if (std::string(argv[ptr]) == std::string("-pa")) {
+        try {
+            args->push_back_check(std::string("pa") + std::to_string(CBuild::parg), argv[ptr + 1]);
+        } catch (std::exception& e) {
+        }
+        CBuild::parg++;
+        // Check `a`
+    } else if (std::string(argv[ptr]) == std::string("-a")) {
+        try {
+            args->push_back_check(std::string("a") + std::to_string(CBuild::arg), argv[ptr + 1]);
+        } catch (std::exception& e) {
+        }
+        CBuild::arg++;
+        // Else - error
+    } else {
+        CBuild::print(std::string("Uknown argument! - ") + std::string(argv[ptr]), CBuild::RED);
     }
-    CBuild::arg++;
-    // Else - error
-  } else {
-    CBuild::print(std::string("Uknown argument! - ") + std::string(argv[ptr]),
-                  CBuild::RED);
-  }
-  // Repack data to other format ;)
-  return CBuild::ARG_TYPE::GENERICK_ARG;
+    // Repack data to other format ;)
+    return CBuild::ARG_TYPE::GENERICK_ARG;
 }
-ARG_TYPE rebuild_handler(
-    lib::map<std::string, std::string> *args __attribute_maybe_unused__,
-    char **argv __attribute_maybe_unused__, int argc __attribute_maybe_unused__,
-    int ptr __attribute_maybe_unused__, CBuild::RType *type) {
-  *type = CBuild::REBUILD;
-  return CBuild::ARG_TYPE::SIMPLE_ARG;
+ARG_TYPE rebuild_handler(lib::map<std::string, std::string>* args __attribute_maybe_unused__,
+                         char** argv __attribute_maybe_unused__,
+                         int argc __attribute_maybe_unused__, int ptr __attribute_maybe_unused__,
+                         CBuild::RType* type) {
+    *type = CBuild::REBUILD;
+    return CBuild::ARG_TYPE::SIMPLE_ARG;
 }
 /**
  * @brief All handlers
  */
 lib::map<std::string, handler> parsers_list = {
-    {"-f", &force_handler},         {"-v", &out_handler},
-    {"--no-cli-out", &out_handler}, {"-g", &generator_handler},
-    {"-b", &build_handler},         {"-r", &build_handler},
-    {"-br", &build_handler},        {"-d", &build_handler},
-    {"-ld", &build_handler},        {"-c", &build_handler},
-    {"-t", &task_handler},          {"-a", &arg_handler},
-    {"-pa", &arg_handler},          {"--rebuild", &rebuild_handler}};
+    {"-f", &force_handler},     {"-v", &out_handler},           {"--no-cli-out", &out_handler},
+    {"-g", &generator_handler}, {"-b", &build_handler},         {"-r", &build_handler},
+    {"-br", &build_handler},    {"-d", &build_handler},         {"-ld", &build_handler},
+    {"-c", &build_handler},     {"-t", &task_handler},          {"-a", &arg_handler},
+    {"-pa", &arg_handler},      {"--rebuild", &rebuild_handler}};
 } // namespace CBuild
 /* cli_parser.hpp */
-CBuild::RType CBuild::parse(lib::map<std::string, std::string> *args, int argc,
-                            char **argv) {
-  // Init CBuild registry
-  CBuild::Registry::init();
-  // Some internal variables
-  CBuild::RType ret = CBuild::ERROR;
-  int ptr = 1;
-  auto keywords = CBuild::Registry::GetKeywordsList();
-  // For every token
-  while (ptr < argc) {
-    // Get handler
-    auto h = CBuild::parsers_list.get_ptr(argv[ptr]);
-    CBuild::ARG_TYPE inc = CBuild::BLANK_ARG;
-    // If it is available
-    if (h != NULL) {
-      // Call it
-      inc = h->data(args, argv, argc, ptr, &ret);
-    } else {
-      // Else check for custom keywords
-      const std::string *task = keywords.get(argv[ptr]);
-      if (task != NULL) {
-        ret = CBuild::TASK;
-        try {
-          args->push_back_check("task_id", *task);
-        } catch (std::exception &e) {
+CBuild::RType CBuild::parse(lib::map<std::string, std::string>* args, int argc, char** argv) {
+    // Init CBuild registry
+    CBuild::Registry::init();
+    // Some internal variables
+    CBuild::RType ret = CBuild::ERROR;
+    int ptr = 1;
+    auto keywords = CBuild::Registry::GetKeywordsList();
+    // For every token
+    while (ptr < argc) {
+        // Get handler
+        auto h = CBuild::parsers_list.get_ptr(argv[ptr]);
+        CBuild::ARG_TYPE inc = CBuild::BLANK_ARG;
+        // If it is available
+        if (h != NULL) {
+            // Call it
+            inc = h->data(args, argv, argc, ptr, &ret);
+        } else {
+            // Else check for custom keywords
+            const std::string* task = keywords.get(argv[ptr]);
+            if (task != NULL) {
+                ret = CBuild::TASK;
+                try {
+                    args->push_back_check("task_id", *task);
+                } catch (std::exception& e) {
+                }
+                inc = CBuild::ARG_TYPE::SIMPLE_ARG;
+            } else {
+                // Else - error
+                CBuild::print(std::string("Illegal argument! - \"") + std::string(argv[ptr]) +
+                                  std::string("\""),
+                              CBuild::RED);
+                exit(0xFF);
+            }
         }
-        inc = CBuild::ARG_TYPE::SIMPLE_ARG;
-      } else {
-        // Else - error
-        CBuild::print(std::string("Illegal argument! - \"") +
-                          std::string(argv[ptr]) + std::string("\""),
-                      CBuild::RED);
-        exit(0xFF);
-      }
+        // Handler must return number of consumed tokens, so, increment pointer
+        // by this number
+        ptr += inc;
     }
-    // Handler must return number of consumed tokens, so, increment pointer
-    // by this number
-    ptr += inc;
-  }
-  return ret;
+    return ret;
 }
 /* cli_parse_handler.hpp */
 bool CBuild::register_parse_handler(std::string cmd, CBuild::handler parser) {
-  try {
-    CBuild::parsers_list.push_back_check(cmd, parser);
-  } catch (std::exception &e) {
-    return false;
-  }
-  return true;
+    try {
+        CBuild::parsers_list.push_back_check(cmd, parser);
+    } catch (std::exception& e) {
+        return false;
+    }
+    return true;
 }
