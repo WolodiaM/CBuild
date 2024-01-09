@@ -1,0 +1,8 @@
+CBuild/CBuild/src/metadata_file.cpp
+build/cbuild/objs/CBuild.CBuild.src.metadata_file.o
+DEPS
+CBuild/headers/CBuild_defs.hpp
+CBuild/headers/build_data.hpp
+CBuild/headers/filesystem++.hpp
+ENDDEPS
+18031105500228710810

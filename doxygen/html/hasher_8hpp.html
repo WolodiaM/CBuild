@@ -66,6 +66,10 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">hasher.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -77,8 +81,31 @@ $(function() {
 <code>#include &quot;vector&quot;</code><br />
 <code>#include &quot;<a class="el" href="CBuild__defs_8hpp_source.html">../CBuild_defs.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="filesystem_09_09_8hpp_source.html">../filesystem++.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="map_8hpp_source.html">../map.hpp</a>&quot;</code><br />
+<code>#include &quot;stdint.h&quot;</code><br />
 </div>
 <p><a href="hasher_8hpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Hash.html">CBuild::Hash</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceCBuild"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html">CBuild</a></td></tr>
+<tr class="memdesc:namespaceCBuild"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filebuffer for <a class="el" href="namespaceCBuild.html" title="Filebuffer for CBuild ecosystem.">CBuild</a> ecosystem. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ae453c974f5cd3a98a780b5c19771658e"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#ae453c974f5cd3a98a780b5c19771658e">CBuild::hash_djb2</a> (std::string str)</td></tr>
+<tr class="memdesc:ae453c974f5cd3a98a780b5c19771658e"><td class="mdescLeft">&#160;</td><td class="mdescRight">djb2 hashing function for std::string  <a href="namespaceCBuild.html#ae453c974f5cd3a98a780b5c19771658e">More...</a><br /></td></tr>
+<tr class="separator:ae453c974f5cd3a98a780b5c19771658e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1898fce97fcf3487660ef7fe44a64c9f"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a1898fce97fcf3487660ef7fe44a64c9f">CBuild::hash_fnv_1a</a> (std::string str)</td></tr>
+<tr class="memdesc:a1898fce97fcf3487660ef7fe44a64c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">FNV-1a hashing function for std::string.  <a href="namespaceCBuild.html#a1898fce97fcf3487660ef7fe44a64c9f">More...</a><br /></td></tr>
+<tr class="separator:a1898fce97fcf3487660ef7fe44a64c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Hasher base class and some helper functions This file implements some helper funtions, eg. storing and retrieving files from database and also provides base class for hasher. Hasher need to implement dependency scanning and hashing function @license GPL v3.0 or later. </p>
 <dl class="section author"><dt>Author</dt><dd>WolodiaM (<a href="#" onclick="location.href='mai'+'lto:'+'w_m'+'el'+'nyk'+'@o'+'utl'+'oo'+'k.c'+'om'; return false;">w_mel<span style="display: none;">.nosp@m.</span>nyk@<span style="display: none;">.nosp@m.</span>outlo<span style="display: none;">.nosp@m.</span>ok.c<span style="display: none;">.nosp@m.</span>om</a>) </dd></dl>

@@ -28,9 +28,6 @@
 #include "user_init.hpp"
 // CBuild headers
 #include "../CBuild/headers/build/g++.hpp"
-#include "../CBuild/headers/build/gcc.hpp"
-#include "../CBuild/headers/filesystem++.hpp"
-#include "../CBuild/headers/pkgconfig.hpp"
 #include "../CBuild/headers/print.hpp"
 #include "../CBuild/headers/register.hpp"
 #include "../CBuild/headers/task/Task.hpp"
@@ -44,14 +41,14 @@ class copyLib : public CBuild::Task {
 };
 
 // Toolchains and Tasks
-class GXX11 : public CBuild::GXX<> {
+template <CBuild::HashImpl hash = CBuild::CBuildHash> class GXX11 : public CBuild::GXX<hash> {
   public:
-    GXX11(std::string id, std::string name) : CBuild::GXX<>(id, name) {
+    GXX11(std::string id, std::string name) : CBuild::GXX<hash>(id, name) {
         this->compiler = "g++-11";
         this->linker = "g++-11";
     }
 };
-GXX11 libCBuild("cbuild", "CBuild");
+GXX11<> libCBuild("cbuild", "CBuild");
 copyLib cpy("copyLib");
 
 void ver() {
@@ -80,9 +77,4 @@ void init() {
     load_tasks();
     // Version handler
     CBuild::Registry::SetVersionHandler(&ver);
-    // CBuild::package_info pkg;
-    // pkg.name = "gtk+-2.0";
-    // CBuild::get_pkg_info(&pkg);
-    // CBuild::print(pkg.cargs);
-    // CBuild::print(pkg.largs);
 }

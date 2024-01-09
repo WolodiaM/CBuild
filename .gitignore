@@ -3,7 +3,11 @@
 # clangd
 .cache
 # CBuild main gitnore
-build/**
+build/mull/
+build/test/
+build/mullw/
+build/mull_lib/
+build/mullw_lib/
 cache
 # CBuild dev gitnore
 CBuild build system prerequirments.rtf

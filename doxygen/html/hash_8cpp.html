@@ -76,13 +76,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;fstream&quot;</code><br />
-<code>#include &quot;inttypes.h&quot;</code><br />
 <code>#include &quot;iostream&quot;</code><br />
 <code>#include &quot;regex&quot;</code><br />
 <code>#include &quot;sstream&quot;</code><br />
 <code>#include &quot;string&quot;</code><br />
 <code>#include &quot;vector&quot;</code><br />
 <code>#include &quot;<a class="el" href="CBuild__defs_8hpp_source.html">../../headers/CBuild_defs.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="build__data_8hpp_source.html">../../headers/build_data.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="filesystem_09_09_8hpp_source.html">../../headers/filesystem++.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hash_8hpp_source.html">../../headers/hash.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="map_8hpp_source.html">../../headers/map.hpp</a>&quot;</code><br />
@@ -136,9 +136,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a0d07ddbe1051ff2577c6a36113276a1e"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a0d07ddbe1051ff2577c6a36113276a1e">CBuild::hash</a> (std::string str)</td></tr>
 <tr class="memdesc:a0d07ddbe1051ff2577c6a36113276a1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">FNV-1a hashing function for std::string.  <a href="namespaceCBuild.html#a0d07ddbe1051ff2577c6a36113276a1e">More...</a><br /></td></tr>
 <tr class="separator:a0d07ddbe1051ff2577c6a36113276a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af91b36c59df8277df1a929d677af92d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#af91b36c59df8277df1a929d677af92d0">CBuild::procces_files</a> (std::vector&lt; std::string &gt; files, std::string toolchain_id __attribute_maybe_unused__)</td></tr>
-<tr class="memdesc:af91b36c59df8277df1a929d677af92d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Procces file data.  <a href="namespaceCBuild.html#af91b36c59df8277df1a929d677af92d0">More...</a><br /></td></tr>
-<tr class="separator:af91b36c59df8277df1a929d677af92d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a433f585d1e5a7dea17bf151c03dd904d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a433f585d1e5a7dea17bf151c03dd904d">CBuild::procces_files</a> (std::vector&lt; std::string &gt; files, std::vector&lt; std::string &gt; objects, std::string toolchain_id __attribute_maybe_unused__)</td></tr>
+<tr class="memdesc:a433f585d1e5a7dea17bf151c03dd904d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Procces file data.  <a href="namespaceCBuild.html#a433f585d1e5a7dea17bf151c03dd904d">More...</a><br /></td></tr>
+<tr class="separator:a433f585d1e5a7dea17bf151c03dd904d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d4243555b61d071c748b8d26ea7f988"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild.html#a3d4243555b61d071c748b8d26ea7f988">CBuild::store_hash</a> (std::string toolchain_id)</td></tr>
 <tr class="memdesc:a3d4243555b61d071c748b8d26ea7f988"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store new hashes to file.  <a href="namespaceCBuild.html#a3d4243555b61d071c748b8d26ea7f988">More...</a><br /></td></tr>
 <tr class="separator:a3d4243555b61d071c748b8d26ea7f988"><td class="memSeparator" colspan="2">&#160;</td></tr>

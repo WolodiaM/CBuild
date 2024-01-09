@@ -1,0 +1,7 @@
+CBuild/CBuild/src/filesystem++.cpp
+build/cbuild/objs/CBuild.CBuild.src.filesystem++.o
+DEPS
+CBuild/headers/CBuild_defs.hpp
+CBuild/headers/filesystem++.hpp
+ENDDEPS
+5710376633484563962

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wine_756',['wine',['../classCBuild_1_1MINGW__GXX.html#abdc86eac9b021659cc4fa8afef913361',1,'CBuild::MINGW_GXX::wine()'],['../classCBuild_1_1MINGW__GCC.html#a1eff1bafc08af1b16cbe92774564087b',1,'CBuild::MINGW_GCC::wine()']]]
+  ['wine_792',['wine',['../classCBuild_1_1MINGW__GXX.html#a5b246940eff7a4f03a97139ef6a7a87e',1,'CBuild::MINGW_GXX::wine()'],['../classCBuild_1_1MINGW__GCC.html#a2fc837d0eaa44a1d981dd8d3f380dfd4',1,'CBuild::MINGW_GCC::wine()']]]
 ];

@@ -349,7 +349,7 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
             CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
             // Error
             if (target == NULL) {
-                printf("Toolchain %s not found. Exiting...\n", id.c_str());
+                CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
                 exit(0xFF);
             }
             // Load libs
@@ -365,7 +365,7 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
         CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
         // Error
         if (target == NULL) {
-            printf("Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Load libs
@@ -382,7 +382,7 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
         CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
         // Error
         if (target == NULL) {
-            printf("Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Run toolchain in run mode
@@ -395,7 +395,7 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
         CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
         // Error
         if (target == NULL) {
-            printf("Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Load libs
@@ -410,7 +410,7 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
         CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
         // Error
         if (target == NULL) {
-            printf("Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Run toolchain is self-clear mode
@@ -428,7 +428,7 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
         CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
         // Error
         if (target == NULL) {
-            printf("Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Load libs

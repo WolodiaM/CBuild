@@ -22,11 +22,11 @@
 #define CBUILD_GXX_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
-#include "../hasher/gcc_hash.hpp"
+#include "../hasher/cbuild_hash.hpp"
 #include "Build.hpp"
 // Code
 namespace CBuild {
-template <CBuild::HashImpl hash = CBuild::CBuildHash> class GXX : public CBuild::Toolchain {
+template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXX : public CBuild::Toolchain {
   public:
     /**
      * @brief Construct a new GXX object

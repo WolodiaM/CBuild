@@ -503,6 +503,62 @@ void CBuild::Toolchain::compile(std::string str) {
         this->crash();
     }
 }
+void CBuild::Toolchain::stdargs() {
+    if (!this->stdargs_lock) {
+        // Some standart compile and link args
+        this->add_compile_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
+        this->add_link_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
+        this->add_compile_arg("-L" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
+        this->add_link_arg("-L" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
+        // Special link tag for dynamick libraries
+        if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
+            this->compiler_args.push_back("-fPIC");
+            this->link_args.push_back("-shared");
+        }
+        // For packing in deb fomat
+        if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
+            std::string lib = this->gen_out_name();
+            int pos = lib.find_last_of('/');
+            lib = lib.substr(pos + 1);
+            if (this->version_major < 0) {
+                this->add_link_arg(" -Wl,-soname," + lib);
+            } else {
+                this->add_link_arg(" -Wl,-soname," + lib + std::string(".") +
+                                   std::to_string(this->version_major));
+            }
+        }
+        // Add link arsg for dependancy libraries
+        for (std::string id : this->depends) {
+            auto target = CBuild::Registry::GetToolchain(id, true);
+            if (target != NULL) {
+                // get lib name
+                auto out_path = target->gen_out_name();
+                unsigned int end_slash = out_path.find_last_of('/');
+                unsigned int end_dot = out_path.find_last_of('.');
+                std::string out = out_path.substr(end_slash + 4, end_dot - end_slash - 4);
+                // Add lib include
+                this->add_library_include(out);
+                // Add all needed for linking to that library
+                this->add_library_dir(".", CBUILD_BUILD_DIR + "/" + target->get_id() + "/" +
+                                               CBUILD_BUILD_OUT_DIR + "/");
+                this->add_link_arg("-Wl,-rpath,\"\\$ORIGIN/../../" + target->get_id() + "/" +
+                                   CBUILD_BUILD_OUT_DIR + "\"");
+            }
+        }
+        // pkg-config database search
+        for (auto pkg : this->pkg_config_include_entries) {
+            CBuild::package_info info;
+            info.name = pkg;
+            if (!CBuild::get_pkg_info(&info)) {
+                this->crash();
+            }
+            this->add_link_arg(info.largs);
+            this->add_compile_arg(info.cargs);
+        }
+        // Set lock
+        this->stdargs_lock = true;
+    }
+}
 /* Build.hpp - main */
 void CBuild::Toolchain::call(std::vector<std::string>* args, bool force, bool debug, bool dummy) {
     CBuild::print("Starting " + this->id + " toolchain in build mode ", CBuild::color::RED);
@@ -510,36 +566,13 @@ void CBuild::Toolchain::call(std::vector<std::string>* args, bool force, bool de
     this->args = args;
     this->force = force;
     this->dummy = dummy;
-    // Special link tag for dynamick libraries
-    if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
-        this->compiler_args.push_back("-fPIC");
-        this->link_args.push_back("-shared");
-    }
     // Debug mode of compilation
-    if (debug)
+    if (debug) {
         this->compiler_args.push_back("-g");
-    // Some standart compile and link args
-    this->add_compile_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
-    this->add_link_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
-    this->add_compile_arg("-L" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
-    this->add_link_arg("-L" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
+    }
+    this->stdargs();
     // Init dirs
     this->init();
-    // For packing in deb fomat
-    if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
-        std::string lib = this->gen_out_name();
-        int pos = lib.find_last_of('/');
-        lib = lib.substr(pos + 1);
-        if (this->version_major < 0) {
-            this->add_link_arg(" -Wl,-soname," + lib);
-            this->add_compile_arg(" -Wl,-soname," + lib);
-        } else {
-            this->add_link_arg(" -Wl,-soname," + lib + std::string(".") +
-                               std::to_string(this->version_major));
-            this->add_compile_arg(" -Wl,-soname," + lib + std::string(".") +
-                                  std::to_string(this->version_major));
-        }
-    }
     // Init
     CBuild::print("Calling tasks marked as PRE ", CBuild::color::GREEN);
     // Call all dependencies (tasks) marked as PRE
@@ -557,33 +590,6 @@ void CBuild::Toolchain::call(std::vector<std::string>* args, bool force, bool de
         if (target != NULL) {
             target->call(args, force, debug, dummy);
         }
-        target = CBuild::Registry::GetToolchain(id, true);
-        if (target != NULL) {
-            // get lib name
-            auto out_path = target->gen_out_name();
-            unsigned int end_slash = out_path.find_last_of('/');
-            unsigned int end_dot = out_path.find_last_of('.');
-            std::string out = out_path.substr(end_slash + 4, end_dot - end_slash - 4);
-            // Add lib include
-            this->add_library_include(out);
-            // Add all needed for linking to that library
-            this->add_library_dir(".", CBUILD_BUILD_DIR + "/" + target->get_id() + "/" +
-                                           CBUILD_BUILD_OUT_DIR + "/");
-            this->add_compile_arg("-Wl,-rpath,\"\\$ORIGIN/../../" + target->get_id() + "/" +
-                                  CBUILD_BUILD_OUT_DIR + "\"");
-            this->add_link_arg("-Wl,-rpath,\"\\$ORIGIN/../../" + target->get_id() + "/" +
-                               CBUILD_BUILD_OUT_DIR + "\"");
-        }
-    }
-    // pkg-config database search
-    for (auto pkg : this->pkg_config_include_entries) {
-        CBuild::package_info info;
-        info.name = pkg;
-        if (!CBuild::get_pkg_info(&info)) {
-            this->crash();
-        }
-        this->add_link_arg(info.largs);
-        this->add_compile_arg(info.cargs);
     }
     // Does metadata checks fails with file not found error
     bool meta_error = false;
