@@ -27,33 +27,38 @@
 ```
 <project_root>
  |
- | - src                    : Project sources folder
+ | - src                                : Project sources folder
  |    |
- |    | - main.cpp          : Have main() function implemented
+ |    | - main.cpp                      : Have main() function of project implemented
  |
  | - scripts
  |    |
- |    | - main.cpp          : Main file of CBuild user scripts, init CBuild and call user init
- |    | - user_init.cpp     : Implement user init function, have build sript implemented
- |    | - user_init.hpp     : Header to glue together two .cpp files
- | - cache                  : CBuild dir for some temporary data
+ |    | - main.cpp                      : Main file of CBuild user scripts, init CBuild and call user init
+ |    | - user_init.cpp                 : Implement user init function, have build sript implemented
+ |    | - user_init.hpp                 : Header to glue together two .cpp files
+ | - cache                              : CBuild dir for some temporary data
  |    |
- |    | - headers           : Header of included CBuild projects
- |    | - libs              : .so / .a files of included CBuild projects
- |    | - tmp               : Directory for temporary runtime data of CBuild 
+ |    | - headers                       : Header of included CBuild projects
+ |    | - libs                          : .so / .a files of included CBuild projects
+ |    | - tmp                           : Directory for temporary runtime data of CBuild 
  |
  | - build
  |    |
  |    | - <toolchain_name>
- |    |    | - hash         : Hash storage directory
+ |    |    | - config                   : Hash storage directory
  |    |    |    |
- |    |    |    | - hash    : Hash database for specified target
- |    |    | - objs         : Saved .o files of specified target
- |    |    | - out          : Output files of specified target
- |    |
+ |    |    |    | - src.main.meta       : Metadata for src/main.cpp
+ |    |    | - objs                     : Saved .o files of specified target
+ |    |    | - out                      : Output files of specified target
+ |    |    | - <toolchain_name>.meta    : Metadata for a full target
  |
- | - CBuild.run             : Main executable of CBuild
+ | - CBuild.run                         : Main executable of CBuild
 ```
 ## Programmer info
 ### Compiler calling convention:
 All compilations is done in two steps: compilation `<compiler> -c <file> <arguments> -o <object>` and then linking `<linker> <objects> <arguments> -o <output binary>`
+### Hasher general rewuirments
+All hashers are inherited of CBuild::Hash class.  
+Class constructor need to take one argument of type std::string and pass it to a base class.  
+Function 'get_files_for_recompilation' need to construct a `lib::map<std::string, std::string>` of source->object mappings of files that need to be recompiled, files and objects array are for one set of files, `objects.at(1)` is an object for a source file at `files.at(1)`. So, this function need to produce a list of files that need to be recompiled and update stored metadata.  
+All other function need to return an int value acording to their doxygen docs and also update a coresponding metadata value.  
