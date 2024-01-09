@@ -22,13 +22,11 @@
 #define CBUILD_GCC_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
-#include "../filesystem++.hpp"
-#include "../hash.hpp"
-#include "../print.hpp"
+#include "../hasher/cbuild_hash.hpp"
 #include "./Build.hpp"
 // Code
 namespace CBuild {
-template <CBuild::HashImpl hash = CBuild::CBuildHash> class GCC : public CBuild::Toolchain {
+template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GCC : public CBuild::Toolchain {
   public:
     /**
      * @brief Construct a new GCC object

@@ -1,8 +1,8 @@
 /**
- * @file gcc_hash.hpp
+ * @file cbuild_hash.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief Metadata preprocessor based on gcc -MD subcommand
- * @date 2024-01-06
+ * @brief Improved CBuild hasher
+ * @date 2024-01-08
  *
  * @copyright (C) 2024 WolodiaM
  * @license GPL v3.0 or later
@@ -25,24 +25,17 @@
 #include "vector"
 // Project includes
 #include "../build_data.hpp"
-#include "gcc_hash_impl.hpp"
 #include "hasher.hpp"
 // Code
-#ifndef __GCC_HASH_HPP__
-#define __GCC_HASH_HPP__
+#ifndef __CBUILD_HASH_HPP__
+#define __CBUILD_HASH_HPP__
 namespace CBuild {
-class GCCHash : public CBuild::Hash {
-  protected:
+class CBuildHashV2 : public CBuild::Hash {
   public:
-    GCCHash(std::string target_id) : Hash(target_id) {}
+    CBuildHashV2(std::string target_id) : Hash(target_id) {}
     virtual lib::map<std::string, std::string>
     get_files_for_recompilation(std::vector<std::string> file_list,
-                                std::vector<std::string> objects_list) override {
-        if (file_list.size() != objects_list.size()) {
-            return {};
-        }
-        return CBuild::gcc_hash_impl(file_list, objects_list, this->target_id);
-    }
+                                std::vector<std::string> objects_list) override;
     virtual int compare_and_set_cargs(std::vector<std::string> cargs) override {
         CBuild::target_metadata_file meta;
         if (CBuild::read_target_metadata(this->target_id, &meta) != 0) {
@@ -108,4 +101,4 @@ class GCCHash : public CBuild::Hash {
     }
 };
 } // namespace CBuild
-#endif // __GCC_HASH_HPP__
+#endif // __CBUILD_HASH_HPP__

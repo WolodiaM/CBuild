@@ -40,8 +40,8 @@ namespace CBuild {
  */
 inline uint64_t hash_djb2(std::string str) {
     uint64_t hash = 5381;
-    for (auto ch : str) {
-        hash = ((hash << 5) + hash) + ch;
+    for (auto c : str) {
+        hash = ((hash << 5) + hash) + (uint64_t)c;
     }
     return hash;
 }
@@ -54,7 +54,7 @@ inline uint64_t hash_djb2(std::string str) {
 inline uint64_t hash_fnv_1a(std::string str) {
     uint64_t hash = 14695981039346656037ULL;
     for (char c : str) {
-        hash ^= static_cast<uint64_t>(c);
+        hash ^= ((uint64_t)(c));
         hash *= 1099511628211ULL;
     }
     return hash;

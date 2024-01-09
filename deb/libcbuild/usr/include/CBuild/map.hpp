@@ -224,6 +224,15 @@ template <class _K, class _D> class map {
         return this->content.at(i);
     }
     /**
+     * @brief Array operation, get pointer to an element at specified index
+     *
+     * @param i => size_t -> Index
+     * @return lib::mapData<_K, _D>* -> Returned element pointer
+     */
+    lib::mapData<_K, _D>* ptr_at(__SIZE_TYPE__ i) {
+        return &(this->content.at(i));
+    }
+    /**
      * @brief Remove element from map and return copy of this element
      * @param idx Index of element to remove
      */

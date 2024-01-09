@@ -143,6 +143,10 @@ class Toolchain {
      * @brief Hasher used here
      */
     Hash* hasher;
+    /**
+     * @brief Lock that specifies that stdargs() function need to do nothing
+     */
+    bool stdargs_lock = false;
 
   protected:
     /* Build stages */
@@ -218,6 +222,13 @@ class Toolchain {
      * @brief Initialize folder structure
      */
     virtual void init();
+
+  public:
+    /**
+     * @brief Add standard compile and link arguments into compilation
+     * Need to be publick for some hashers to work
+     */
+    virtual void stdargs();
 
   public:
     Toolchain() {}

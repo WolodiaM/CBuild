@@ -1,3 +1,22 @@
+cbuild (10.4) stable; urgency=high
+
+  [WolodiaM]
+  * New hasher: CBuildHashV2
+  * This is an upgrade to old CBuild hasher, old hasher is available as
+  * CBuildHash
+  * Also uses internal parser to get dependencies, but now this hasher
+  * can build full dependency tree (At least I hope so ;) )
+  * Advantages: Fast, non-compiler-dependant, bettter than old one
+  * Disadavantages: Simply uses regexes to get all '#include' directives
+  * New hasher: GCCHash
+  * Uses CC -MM to get dependency tree
+  * Advantages: Much better dependency parsing, because compiler is used
+  * for this
+  * Disadavantages: Very slow, compiler need to support this
+  * Some bugfixes and additions to print.hpp header
+
+ -- WolodiaM <w_melnyk@outlook.com>  Tue, 09 Jan 2024 17:32:19 +0200
+
 cbuild (10.3) stable; urgency=high
 
   [WolodiaM]
@@ -49,7 +68,7 @@ cbuild (9.9) stable; urgency=high
 
   [WolodiaM]
   * Fix critical bug in CBuild/hash.cpp
-  * Now CBuild screates symlinks only for shared library (bugfix, before symlinks were created for all targets)
+  * Now CBuild creates symlinks only for shared library (bugfix, before symlinks were created for all targets)
   * Ability to add custom env variables to CBuild::system and CBuild::system_piped calls
   * "-br", "-r" and "-d" now properly prints target name (or falls back to id)
   * Ability to add new parse handlers to CBuild cli parser
@@ -179,13 +198,13 @@ cbuild (8.3) stable; urgency=high
 cbuild (8.2) stable; urgency=high
 
   [WolodiaM]
-  * Added support for -jx argument in base CBuild::Build class via function 
+  * Added support for -jx argument in base CBuild::Build class via function
     Build::set_thread_count(int threads) (yes, it is mostly base on gcc)
   * Add support for -j via same function when called with -1
   * Add -j to CBuild_rebuild, for better performance
   * Add --no-cli-out, disable all CBuild output, only compiler output is visible,
     cannot be used with -v
-  * Build: help task now be automatically generated via buildsystem, so, 
+  * Build: help task now be automatically generated via buildsystem, so,
     help now be slighly better
 
  -- WolodiaM <w_melnyk@outlook.com>  Thu, 08 Jun 2023 21:21:06 +0200

@@ -54,6 +54,20 @@ void print(std::string msg, color fg = CBuild::WHITE);
  */
 void print_full(std::string msg, color fg = CBuild::WHITE);
 /**
+ * @brief Some poor printf implementation
+ *
+ * @param fg => CBuild:::color -> Text color
+ * @param fmt => const char* -> Format string
+ */
+void printf(color fg, const char* fmt, ...) __attribute__((format(printf, 2, 3)));
+/**
+ * @brief Some poor printf implementation for verbouse-only prints
+ *
+ * @param fg => CBuild:::color -> Text color
+ * @param fmt => const char* -> Format string
+ */
+void printf_full(color fg, const char* fmt, ...) __attribute__((format(printf, 2, 3)));
+/**
  * @brief Enable verbose flag
  */
 void print_verbose();
@@ -61,5 +75,9 @@ void print_verbose();
  * @brief Fully disable all print though CBuild::print
  */
 void print_none();
+/**
+ * @brief Toogle print betwen none and currently selected level
+ */
+void print_toggle();
 } // namespace CBuild
 #endif // __CBUILD_PRINT_HPP__
