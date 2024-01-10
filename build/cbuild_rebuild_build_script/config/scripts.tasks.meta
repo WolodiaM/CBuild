@@ -1,0 +1,14 @@
+scripts/tasks.cpp
+build/cbuild_rebuild_build_script/objs/scripts.tasks.o
+DEPS
+CBuild/headers/filebuff.hpp
+CBuild/headers/files.hpp
+CBuild/headers/filesystem++.hpp
+CBuild/headers/register.hpp
+CBuild/headers/task/Task.hpp
+scripts/pack.hpp
+scripts/test.hpp
+scripts/uploads.hpp
+scripts/user_init.hpp
+ENDDEPS
+8039274788328242810

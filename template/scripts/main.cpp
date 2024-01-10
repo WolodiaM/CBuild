@@ -29,32 +29,22 @@
 #include "CBuild/CBuild.hpp"
 // Userspace headers
 #include "user_init.hpp"
-// Rebuild call
-void rebuild() {
-  auto path = std::string(std::filesystem::current_path().c_str());
-  path += "/scripts";
-  CBuild::rebuild(path);
-}
 // Main function
-int main(int argc, char **argv, char **envp) {
-  // Run user init
-  init();
-  // Hold parsed command line arguments, see CBuild::parse in CBuild.cpp for
-  // more details
-  lib::map<std::string, std::string> args;
-  // Parse arguments, and also get type of run
-  CBuild::RType mode = CBuild::parse(&args, argc, argv);
-  // We have some error
-  if (mode == CBuild::ERROR)
-    exit(0xFF);
-  // If we need to rebuild
-  if (mode == CBuild::REBUILD)
-    rebuild();
-  // Add base path
-  args.push_back("curr_path",
-                 std::string(std::filesystem::current_path().c_str()));
-  // Run main loop of CBuild (execute given toolchain / module and exit)
-  CBuild::loop(mode, &args);
-  // Safe exit without errors
-  return 0;
+int main(int argc, char** argv, char** envp) {
+    // Run user init
+    init();
+    // Hold parsed command line arguments, see CBuild::parse in CBuild.cpp for
+    // more details
+    lib::map<std::string, std::string> args;
+    // Parse arguments, and also get type of run
+    CBuild::RType mode = CBuild::parse(&args, argc, argv);
+    // We have some error
+    if (mode == CBuild::ERROR)
+        exit(0xFF);
+    // Add base path
+    args.push_back("curr_path", std::string(std::filesystem::current_path().c_str()));
+    // Run main loop of CBuild (execute given toolchain / module and exit)
+    CBuild::loop(mode, &args);
+    // Safe exit without errors
+    return 0;
 }

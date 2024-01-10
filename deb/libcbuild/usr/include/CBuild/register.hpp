@@ -107,11 +107,6 @@ void AddCompileArg(std::string arg);
  */
 void SetVersionHandler(void (*handler)());
 /**
- * @brief Get the rebuild args for CBuild executable
- * @return std::string -> formatted arguments
- */
-std::string GetRebuildArgs();
-/**
  * @brief Call and execute all toolchains
  *
  * @param force => bool -> Compilation type
@@ -151,6 +146,12 @@ std::vector<std::string> GetToolchainsList();
  * @return std::vector<std::string> -> List of tasks
  */
 std::vector<std::string> GetTasksList();
+/**
+ * @brief Get target used for rebuild of CBuild script
+ *
+ * @return CBuild::Toolcgain* -> Rebuild target
+ */
+CBuild::Toolchain* GetRebuildTarget();
 } // namespace Registry
 } // namespace CBuild
 #endif // __CBUILD_REGISTER_HPP__

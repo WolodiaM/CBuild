@@ -82,7 +82,8 @@ Inheritance diagram for CBuild::GXX&lt; hash &gt;:</div>
  <div class="center">
   <img src="classCBuild_1_1GXX.png" usemap="#CBuild::GXX_3C_20hash_20_3E_map" alt=""/>
   <map id="CBuild::GXX_3C_20hash_20_3E_map" name="CBuild::GXX_3C_20hash_20_3E_map">
-<area href="classCBuild_1_1Toolchain.html" title="Toolchain class." alt="CBuild::Toolchain" shape="rect" coords="0,0,133,24"/>
+<area href="classCBuild_1_1Toolchain.html" title="Toolchain class." alt="CBuild::Toolchain" shape="rect" coords="0,0,167,24"/>
+<area href="classCBuild_1_1CBuildRebuildScript.html" alt="CBuild::CBuildRebuildScript" shape="rect" coords="0,112,167,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -203,6 +204,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7222e6aa7c3d3c7515412caf2db295c3 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a7222e6aa7c3d3c7515412caf2db295c3">set_hasher</a> (<a class="el" href="classCBuild_1_1Hash.html">Hash</a> *<a class="el" href="classCBuild_1_1Toolchain.html#a19964cad982f2637f26095f52ccbb7c6">hasher</a>)</td></tr>
 <tr class="memdesc:a7222e6aa7c3d3c7515412caf2db295c3 inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set used hasher for this target.  <a href="classCBuild_1_1Toolchain.html#a7222e6aa7c3d3c7515412caf2db295c3">More...</a><br /></td></tr>
 <tr class="separator:a7222e6aa7c3d3c7515412caf2db295c3 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bed476db54b767fc30580ab580fec31 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a5bed476db54b767fc30580ab580fec31">set_name</a> (std::string <a class="el" href="classCBuild_1_1Toolchain.html#a42ef617b7966882e0c97d4158672ec15">name</a>)</td></tr>
+<tr class="memdesc:a5bed476db54b767fc30580ab580fec31 inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change out file name.  <a href="classCBuild_1_1Toolchain.html#a5bed476db54b767fc30580ab580fec31">More...</a><br /></td></tr>
+<tr class="separator:a5bed476db54b767fc30580ab580fec31 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -436,9 +440,9 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 
 <p>Implements <a class="el" href="classCBuild_1_1Toolchain.html#a304690847efa8191ec66b1c966742d39">CBuild::Toolchain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00071">71</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00072">72</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00137">CBuild::Toolchain::args</a>, <a class="el" href="Build_8cpp_source.html#l00500">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8hpp_source.html#l00094">CBuild::Toolchain::compiler</a>, <a class="el" href="Build_8hpp_source.html#l00086">CBuild::Toolchain::compiler_args</a>, <a class="el" href="Build_8hpp_source.html#l00141">CBuild::Toolchain::force</a>, and <a class="el" href="Build_8cpp_source.html#l00210">CBuild::Toolchain::gen_file_list()</a>.</p>
+<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00137">CBuild::Toolchain::args</a>, <a class="el" href="Build_8cpp_source.html#l00503">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8hpp_source.html#l00094">CBuild::Toolchain::compiler</a>, <a class="el" href="Build_8hpp_source.html#l00086">CBuild::Toolchain::compiler_args</a>, <a class="el" href="Build_8hpp_source.html#l00141">CBuild::Toolchain::force</a>, and <a class="el" href="Build_8cpp_source.html#l00213">CBuild::Toolchain::gen_file_list()</a>.</p>
 
 </div>
 </div>
@@ -471,9 +475,9 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 
 <p>Implements <a class="el" href="classCBuild_1_1Toolchain.html#adf746115d76976ccd9916a37994b09e1">CBuild::Toolchain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00095">95</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00096">96</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00137">CBuild::Toolchain::args</a>, <a class="el" href="Build_8cpp_source.html#l00500">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8cpp_source.html#l00210">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="Build_8hpp_source.html#l00126">CBuild::Toolchain::gen_file_list_for_linking</a>, <a class="el" href="Build_8cpp_source.html#l00388">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00090">CBuild::Toolchain::link_args</a>, and <a class="el" href="Build_8hpp_source.html#l00098">CBuild::Toolchain::linker</a>.</p>
+<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00137">CBuild::Toolchain::args</a>, <a class="el" href="Build_8cpp_source.html#l00503">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8cpp_source.html#l00213">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="Build_8hpp_source.html#l00126">CBuild::Toolchain::gen_file_list_for_linking</a>, <a class="el" href="Build_8cpp_source.html#l00391">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00090">CBuild::Toolchain::link_args</a>, and <a class="el" href="Build_8hpp_source.html#l00098">CBuild::Toolchain::linker</a>.</p>
 
 </div>
 </div>
@@ -506,9 +510,9 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 
 <p>Implements <a class="el" href="classCBuild_1_1Toolchain.html#a121ee5ea85b59529c7aa05ca8ca8255e">CBuild::Toolchain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00125">125</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g_09_09_8hpp_source.html#l00126">126</a> of file <a class="el" href="g_09_09_8hpp_source.html">g++.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00137">CBuild::Toolchain::args</a>, <a class="el" href="Build_8cpp_source.html#l00500">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8cpp_source.html#l00210">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="Build_8hpp_source.html#l00126">CBuild::Toolchain::gen_file_list_for_linking</a>, <a class="el" href="Build_8cpp_source.html#l00388">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00090">CBuild::Toolchain::link_args</a>, and <a class="el" href="Build_8hpp_source.html#l00102">CBuild::Toolchain::packer</a>.</p>
+<p class="reference">References <a class="el" href="Build_8hpp_source.html#l00137">CBuild::Toolchain::args</a>, <a class="el" href="Build_8cpp_source.html#l00503">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8cpp_source.html#l00213">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="Build_8hpp_source.html#l00126">CBuild::Toolchain::gen_file_list_for_linking</a>, <a class="el" href="Build_8cpp_source.html#l00391">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00090">CBuild::Toolchain::link_args</a>, and <a class="el" href="Build_8hpp_source.html#l00102">CBuild::Toolchain::packer</a>.</p>
 
 </div>
 </div>

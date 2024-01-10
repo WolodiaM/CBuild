@@ -64,6 +64,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXX : public CBuil
         this->add_compile_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
+        this->add_link_arg("-lstdc++");
         this->hasher = new hash(this->id);
     }
 

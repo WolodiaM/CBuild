@@ -28,6 +28,7 @@
 // Project files
 #include "../../headers/CBuild_defs.hpp"
 #include "../../headers/filesystem++.hpp"
+#include "../../headers/print.hpp"
 /* CBuild::fs namespace */
 namespace CBuild {
 namespace fs {
@@ -43,8 +44,12 @@ std::vector<std::string> CBuild::fs::dir(std::string path, std::string search) {
     // Regex for search, use ECMAScript syntax
     std::regex reg(search, std::regex::ECMAScript);
     // Found all files in directory and store in array
-    for (const auto& entry : std::filesystem::directory_iterator(path)) {
-        files.push_back(entry.path().generic_string());
+    try {
+        for (const auto& entry : std::filesystem::directory_iterator(path)) {
+            files.push_back(entry.path().generic_string());
+        }
+    } catch (std::exception& e) {
+        CBuild::printf_full(CBuild::RED, "Error iterating over dorectory '%s'\n", path.c_str());
     }
     // Check all elements with regex and  add it to return array
     for (auto elem : files) {
@@ -61,8 +66,12 @@ std::vector<std::string> CBuild::fs::dir(std::string path) {
     // List of returned files
     std::vector<std::string> ret;
     // Get all files and store it's paths in array
-    for (const auto& entry : std::filesystem::directory_iterator(path)) {
-        files.push_back(entry.path().generic_string());
+    try {
+        for (const auto& entry : std::filesystem::directory_iterator(path)) {
+            files.push_back(entry.path().generic_string());
+        }
+    } catch (std::exception& e) {
+        CBuild::printf_full(CBuild::RED, "Error iterating over dorectory '%s'\n", path.c_str());
     }
     // Check every file with internal regex and add to return array
     for (auto elem : files) {
@@ -81,8 +90,12 @@ std::vector<std::string> CBuild::fs::dir_rec(std::string path, std::string searc
     // Create regex
     std::regex reg(search);
     // Check all directories recursively and add to array
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
-        files.push_back(entry.path().generic_string());
+    try {
+        for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+            files.push_back(entry.path().generic_string());
+        }
+    } catch (std::exception& e) {
+        CBuild::printf_full(CBuild::RED, "Error iterating over dorectory '%s'\n", path.c_str());
     }
     // Check all files with given regex and add to return array
     for (auto elem : files) {
@@ -99,8 +112,12 @@ std::vector<std::string> CBuild::fs::dir_rec(std::string path) {
     // List of files for return
     std::vector<std::string> ret;
     // Check all directories recursively and add to array
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
-        files.push_back(entry.path().generic_string());
+    try {
+        for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+            files.push_back(entry.path().generic_string());
+        }
+    } catch (std::exception& e) {
+        CBuild::printf_full(CBuild::RED, "Error iterating over dorectory '%s'\n", path.c_str());
     }
     // Check all files with internal regex and add to return array
     for (auto elem : files) {

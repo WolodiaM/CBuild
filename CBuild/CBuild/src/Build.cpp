@@ -165,6 +165,9 @@ void CBuild::Toolchain::add_pkgconfig_entry(std::string id) {
 void CBuild::Toolchain::set_hasher(CBuild::Hash* hasher) {
     this->hasher = hasher;
 }
+void CBuild::Toolchain::set_name(std::string name) {
+    this->name = name;
+}
 /* Build.hpp - files */
 void CBuild::Toolchain::add_file(std::string path) {
     // If path is non-empty

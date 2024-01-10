@@ -428,6 +428,12 @@ class Toolchain {
      * @param hasher => Hash* -> Hasher that need to be used
      */
     virtual void set_hasher(Hash* hasher);
+    /**
+     * @brief Change out file name
+     *
+     * @param name => std::string -> Out name
+     */
+    virtual void set_name(std::string name);
 };
 } // namespace CBuild
 #endif // __CBUILD_TOOLCHAIN_HPP__

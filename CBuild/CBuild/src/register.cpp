@@ -21,12 +21,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // C++ libraries
-#include "../../headers/filesystem++.hpp"
 #include "../../headers/map.hpp"
 #include "string"
 #include "vector"
 // Project headers
 #include "../../headers/CBuild_defs.hpp"
+#include "../../headers/build/g++.hpp"
+#include "../../headers/filesystem++.hpp"
 #include "../../headers/generator/ccj.hpp"
 #include "../../headers/generator/generator.hpp"
 #include "../../headers/generator/makefile.hpp"
@@ -121,6 +122,13 @@ class CmdList : public CBuild::Task {
         }
     }
 };
+class CBuildRebuildScript : public CBuild::GXX<> {
+  public:
+    CBuildRebuildScript() : CBuild::GXX<>("cbuild_rebuild_build_script", "CBuild") {}
+    void post_link() override {
+        CBuild::system(std::string("cp -rf ") + this->gen_out_name() + std::string(" ."));
+    }
+};
 } // namespace CBuild
 /* namesapce Registry */
 namespace CBuild {
@@ -136,6 +144,8 @@ CBuild::CmdList cmdlist;
 // System generators
 CBuild::ccj_out ccjo;
 CBuild::makefile_out makefileo;
+// Rebuild script
+CBuild::CBuildRebuildScript rebuild_script;
 // Registred data
 // Tasks pointers ;)
 lib::map<std::string, CBuild::Task*> tasks;
@@ -147,11 +157,6 @@ lib::map<std::string, CBuild::Toolchain*> targets;
 lib::map<std::string, bool> target_executed;
 // Custom cmd line arguments to tasks mapping
 lib::map<std::string, std::string> keywords;
-// Custom rebuild name
-std::string name = "CBuild.run";
-// Custom rebuild args
-std::vector<std::string> cargs;
-std::vector<std::string> largs;
 // Output generators
 lib::map<std::string, CBuild::generator_base*> generators;
 } // namespace Registry
@@ -175,6 +180,16 @@ void CBuild::Registry::init() {
     // Register system generators
     Registry::RegisterGenerator(&CBuild::Registry::makefileo, "make");
     Registry::RegisterGenerator(&CBuild::Registry::ccjo, "ccj");
+    // Register rebuild target
+    CBuild::Registry::rebuild_script.warn();
+    CBuild::Registry::rebuild_script.add_folder("scripts");
+    CBuild::Registry::rebuild_script.set_type(CBuild::EXECUTABLE);
+    CBuild::Registry::rebuild_script.set_standart("c++20");
+    CBuild::Registry::rebuild_script.add_library_include("CBuild");
+    CBuild::Registry::rebuild_script.add_compile_arg("-ICBuild/headers");
+    CBuild::Registry::rebuild_script.add_link_arg("-Wl,-rpath,\\$ORIGIN/CBuild/CBuild");
+    CBuild::Registry::rebuild_script.add_link_arg("-LCBuild/CBuild");
+    Registry::RegisterTarget(&CBuild::Registry::rebuild_script);
 }
 void CBuild::Registry::RegisterTask(CBuild::Task* task) {
     // Save task ptr connected to it's name
@@ -263,37 +278,17 @@ lib::map<std::string, std::string> CBuild::Registry::GetKeywordsList() {
     return Registry::keywords;
 }
 
-void CBuild::Registry::SetRebuildName(std::string _name) {
+void CBuild::Registry::SetRebuildName(std::string name_) {
     // Save name
-    Registry::name = _name;
+    CBuild::Registry::rebuild_script.set_name(name_);
 }
 void CBuild::Registry::AddLinkArg(std::string arg) {
     // Add argument
-    Registry::largs.push_back(arg);
+    CBuild::Registry::rebuild_script.add_link_arg(arg);
 }
 void CBuild::Registry::AddCompileArg(std::string arg) {
     // Add argument
-    Registry::cargs.push_back(arg);
-}
-std::string CBuild::Registry::GetRebuildArgs() {
-    // Return string
-    std::string ret = " \"";
-    // Get compile args and pack it to workable string
-    for (auto elem : Registry::cargs) {
-        ret += elem;
-        ret += " ";
-    }
-    ret += " \" \" ";
-    // Get link args and pack it to workable string
-    for (auto elem : Registry::largs) {
-        ret += elem;
-        ret += " ";
-    }
-    ret += " \" ";
-    // Get name and pack it to workable string
-    ret += Registry::name;
-    // Return string
-    return ret;
+    CBuild::Registry::rebuild_script.add_compile_arg(arg);
 }
 void CBuild::Registry::ToolchainAll(bool force, std::string path, std::vector<std::string>* args) {
     for (unsigned int i = 0; i < Registry::targets.size(); i++) {
@@ -354,4 +349,7 @@ std::vector<std::string> CBuild::Registry::GetTasksList() {
 }
 void CBuild::Registry::SetVersionHandler(void (*handler)()) {
     CBuild::Registry::handler = handler;
+}
+CBuild::Toolchain* CBuild::Registry::GetRebuildTarget() {
+    return &CBuild::Registry::rebuild_script;
 }

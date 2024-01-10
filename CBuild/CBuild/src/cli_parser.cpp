@@ -259,6 +259,10 @@ ARG_TYPE rebuild_handler(lib::map<std::string, std::string>* args __attribute_ma
                          int argc __attribute_maybe_unused__, int ptr __attribute_maybe_unused__,
                          CBuild::RType* type) {
     *type = CBuild::REBUILD;
+    try {
+        args->push_back_check("toolchain_id", "cbuild_rebuild_build_script");
+    } catch (std::exception& e) {
+    }
     return CBuild::ARG_TYPE::SIMPLE_ARG;
 }
 /**

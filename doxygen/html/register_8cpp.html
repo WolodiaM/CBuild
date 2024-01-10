@@ -78,11 +78,12 @@ $(function() {
 
 <p>Register implementation.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="filesystem_09_09_8hpp_source.html">../../headers/filesystem++.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="map_8hpp_source.html">../../headers/map.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="map_8hpp_source.html">../../headers/map.hpp</a>&quot;</code><br />
 <code>#include &quot;string&quot;</code><br />
 <code>#include &quot;vector&quot;</code><br />
 <code>#include &quot;<a class="el" href="CBuild__defs_8hpp_source.html">../../headers/CBuild_defs.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="g_09_09_8hpp_source.html">../../headers/build/g++.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="filesystem_09_09_8hpp_source.html">../../headers/filesystem++.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ccj_8hpp_source.html">../../headers/generator/ccj.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="generator_8hpp_source.html">../../headers/generator/generator.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="makefile_8hpp_source.html">../../headers/generator/makefile.hpp</a>&quot;</code><br />
@@ -107,6 +108,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1GeneratorList.html">CBuild::GeneratorList</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1CmdList.html">CBuild::CmdList</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1CBuildRebuildScript.html">CBuild::CBuildRebuildScript</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -144,6 +147,8 @@ Variables</h2></td></tr>
 <tr class="separator:a18d80878eb822620071205e0acfa15bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac77fcf96725fc778a205930c4e0e020e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1makefile__out.html">CBuild::makefile_out</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#ac77fcf96725fc778a205930c4e0e020e">CBuild::Registry::makefileo</a></td></tr>
 <tr class="separator:ac77fcf96725fc778a205930c4e0e020e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8c6f58d1e14c5525dc0974e289765a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1CBuildRebuildScript.html">CBuild::CBuildRebuildScript</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#ac8c6f58d1e14c5525dc0974e289765a4">CBuild::Registry::rebuild_script</a></td></tr>
+<tr class="separator:ac8c6f58d1e14c5525dc0974e289765a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86993ffd58ca962fe308a80eaa2aed9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, <a class="el" href="classCBuild_1_1Task.html">CBuild::Task</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a86993ffd58ca962fe308a80eaa2aed9a">CBuild::Registry::tasks</a></td></tr>
 <tr class="separator:a86993ffd58ca962fe308a80eaa2aed9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7610e0427b2f16ddcd1cd7c01dc11229"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a7610e0427b2f16ddcd1cd7c01dc11229">CBuild::Registry::task_executed</a></td></tr>
@@ -154,12 +159,6 @@ Variables</h2></td></tr>
 <tr class="separator:aca54837e829e5a288440c5ec214b1843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9766563e4b786c01ab14376dd32eebe6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a9766563e4b786c01ab14376dd32eebe6">CBuild::Registry::keywords</a></td></tr>
 <tr class="separator:a9766563e4b786c01ab14376dd32eebe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad570aea7d453a3bde5ea92fb3fa7ff2c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#ad570aea7d453a3bde5ea92fb3fa7ff2c">CBuild::Registry::name</a> = &quot;CBuild.run&quot;</td></tr>
-<tr class="separator:ad570aea7d453a3bde5ea92fb3fa7ff2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6eca36fd6b4fd820647efb4a0012827d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a6eca36fd6b4fd820647efb4a0012827d">CBuild::Registry::cargs</a></td></tr>
-<tr class="separator:a6eca36fd6b4fd820647efb4a0012827d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3c7a25d9c3252f87f44510df585e057"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#ae3c7a25d9c3252f87f44510df585e057">CBuild::Registry::largs</a></td></tr>
-<tr class="separator:ae3c7a25d9c3252f87f44510df585e057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dfd73b6d2953ff7531f436b182621f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlib_1_1map.html">lib::map</a>&lt; std::string, <a class="el" href="classCBuild_1_1generator__base.html">CBuild::generator_base</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCBuild_1_1Registry.html#a1dfd73b6d2953ff7531f436b182621f3">CBuild::Registry::generators</a></td></tr>
 <tr class="separator:a1dfd73b6d2953ff7531f436b182621f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

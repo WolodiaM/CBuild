@@ -339,7 +339,8 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
     }
     // Select mode
     switch (mode) {
-    // Build
+        // Build and rebuild of script
+    case CBuild::REBUILD:
     case CBuild::BUILD: {
         if (*(args->get("toolchain_id")) == std::string("all")) {
             CBuild::Registry::ToolchainAll(force, *(args->get("curr_path")), &pargs);
@@ -553,13 +554,10 @@ mode_end:
     // gen_end:
     return;
 }
-void CBuild::rebuild(std::string scripts) {
-    // Base
-    std::string args = scripts + " ";
-    // Pus rebuild args
-    args += CBuild::Registry::GetRebuildArgs();
-    // Execute command
-    CBuild::system(("CBuild_rebuild " + args));
+void CBuild::rebuild(std::string scripts __attribute_maybe_unused__) {
+    CBuild::print(
+        "Dont use this function direclty, simply call toolchain \"cbuild_rebuild_build_script\"",
+        CBuild::RED);
 }
 namespace CBuild {
 int version[] = {CBUILD_VERSION_MAJOR, CBUILD_VERSION_MINOR};

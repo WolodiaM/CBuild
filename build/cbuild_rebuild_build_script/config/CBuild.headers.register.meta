@@ -1,0 +1,8 @@
+CBuild/headers/register.hpp
+header
+DEPS
+CBuild/headers/build/Build.hpp
+CBuild/headers/generator/generator.hpp
+CBuild/headers/task/Task.hpp
+ENDDEPS
+9570197450838219129
