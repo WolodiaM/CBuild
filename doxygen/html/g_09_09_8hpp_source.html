@@ -75,11 +75,11 @@ $(function() {
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define CBUILD_GXX_TOOLCHAIN</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// Project files</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;../CBuild_defs.hpp&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;../hasher/gcc_hash.hpp&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;../hasher/cbuild_hash.hpp&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Build_8hpp.html">Build.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// Code</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceCBuild.html">CBuild</a> {</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classCBuild_1_1GXX.html">   29</a></span>&#160;<span class="keyword">template</span> &lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; <span class="keyword">class </span><a class="code" href="classCBuild_1_1GXX.html">GXX</a> : <span class="keyword">public</span> <a class="code" href="classCBuild_1_1Toolchain.html">CBuild::Toolchain</a> {</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classCBuild_1_1GXX.html">   29</a></span>&#160;<span class="keyword">template</span> &lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; <span class="keyword">class </span><a class="code" href="classCBuild_1_1GXX.html">GXX</a> : <span class="keyword">public</span> <a class="code" href="classCBuild_1_1Toolchain.html">CBuild::Toolchain</a> {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classCBuild_1_1GXX.html#aa87bdb7986901669d4c5348561c5e7b5">   36</a></span>&#160;    <a class="code" href="classCBuild_1_1GXX.html#aa87bdb7986901669d4c5348561c5e7b5">GXX</a>(std::string <span class="keywordtype">id</span>) {</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="comment">// Set id of toolchain and assign executables constants</span></div>

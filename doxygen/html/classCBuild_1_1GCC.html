@@ -101,6 +101,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0ce3ae723a5a5cd558e51fdbf9cce075 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a0ce3ae723a5a5cd558e51fdbf9cce075">load_project_deps</a> (std::string curr_path)</td></tr>
 <tr class="memdesc:a0ce3ae723a5a5cd558e51fdbf9cce075 inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all project dependencies.  <a href="classCBuild_1_1Toolchain.html#a0ce3ae723a5a5cd558e51fdbf9cce075">More...</a><br /></td></tr>
 <tr class="separator:a0ce3ae723a5a5cd558e51fdbf9cce075 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba48b2dd1c2f6c4249376fd0fbfaa3fa inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa">stdargs</a> ()</td></tr>
+<tr class="memdesc:aba48b2dd1c2f6c4249376fd0fbfaa3fa inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add standard compile and link arguments into compilation Need to be publick for some hashers to work.  <a href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa">More...</a><br /></td></tr>
+<tr class="separator:aba48b2dd1c2f6c4249376fd0fbfaa3fa inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a975fd1f1cde45f0e965cd74568c81517 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a975fd1f1cde45f0e965cd74568c81517">Toolchain</a> ()</td></tr>
 <tr class="separator:a975fd1f1cde45f0e965cd74568c81517 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20b5937c4218a656cf4b6ccadcce1d0b inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a20b5937c4218a656cf4b6ccadcce1d0b">~Toolchain</a> ()</td></tr>
@@ -301,13 +304,16 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a19964cad982f2637f26095f52ccbb7c6 inherit pro_attribs_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1Hash.html">Hash</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a19964cad982f2637f26095f52ccbb7c6">hasher</a></td></tr>
 <tr class="memdesc:a19964cad982f2637f26095f52ccbb7c6 inherit pro_attribs_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher used here.  <a href="classCBuild_1_1Toolchain.html#a19964cad982f2637f26095f52ccbb7c6">More...</a><br /></td></tr>
 <tr class="separator:a19964cad982f2637f26095f52ccbb7c6 inherit pro_attribs_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d52ef5607c54616261d246bc694a07a inherit pro_attribs_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a9d52ef5607c54616261d246bc694a07a">stdargs_lock</a> = false</td></tr>
+<tr class="memdesc:a9d52ef5607c54616261d246bc694a07a inherit pro_attribs_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock that specifies that <a class="el" href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa" title="Add standard compile and link arguments into compilation Need to be publick for some hashers to work.">stdargs()</a> function need to do nothing.  <a href="classCBuild_1_1Toolchain.html#a9d52ef5607c54616261d246bc694a07a">More...</a><br /></td></tr>
+<tr class="separator:a9d52ef5607c54616261d246bc694a07a inherit pro_attribs_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt;<br />
+<div class="textblock"><h3>template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt;<br />
 class CBuild::GCC&lt; hash &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00031">31</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00029">29</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7f6e8c4780cbf173b0fdf8777ecdf1c2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7f6e8c4780cbf173b0fdf8777ecdf1c2">&#9670;&nbsp;</a></span>GCC() <span class="overload">[1/2]</span></h2>
@@ -315,7 +321,7 @@ class CBuild::GCC&lt; hash &gt;</h3>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -343,7 +349,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00038">38</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00036">36</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Build_8cpp_source.html#l00037">CBuild::Toolchain::add_compile_arg()</a>, <a class="el" href="Build_8cpp_source.html#l00043">CBuild::Toolchain::add_link_arg()</a>, <a class="el" href="Build_8hpp_source.html#l00094">CBuild::Toolchain::compiler</a>, <a class="el" href="hash_8cpp_source.html#l00218">CBuild::hash()</a>, <a class="el" href="Build_8hpp_source.html#l00145">CBuild::Toolchain::hasher</a>, <a class="el" href="Build_8hpp_source.html#l00070">CBuild::Toolchain::id</a>, <a class="el" href="Build_8hpp_source.html#l00098">CBuild::Toolchain::linker</a>, <a class="el" href="Build_8hpp_source.html#l00065">CBuild::Toolchain::name</a>, and <a class="el" href="Build_8hpp_source.html#l00102">CBuild::Toolchain::packer</a>.</p>
 
@@ -355,7 +361,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -394,7 +400,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00056">56</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00054">54</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Build_8cpp_source.html#l00037">CBuild::Toolchain::add_compile_arg()</a>, <a class="el" href="Build_8cpp_source.html#l00043">CBuild::Toolchain::add_link_arg()</a>, <a class="el" href="Build_8hpp_source.html#l00094">CBuild::Toolchain::compiler</a>, <a class="el" href="hash_8cpp_source.html#l00218">CBuild::hash()</a>, <a class="el" href="Build_8hpp_source.html#l00145">CBuild::Toolchain::hasher</a>, <a class="el" href="Build_8hpp_source.html#l00070">CBuild::Toolchain::id</a>, <a class="el" href="Build_8hpp_source.html#l00098">CBuild::Toolchain::linker</a>, <a class="el" href="Build_8hpp_source.html#l00065">CBuild::Toolchain::name</a>, and <a class="el" href="Build_8hpp_source.html#l00102">CBuild::Toolchain::packer</a>.</p>
 
@@ -407,7 +413,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -430,7 +436,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 
 <p>Implements <a class="el" href="classCBuild_1_1Toolchain.html#a304690847efa8191ec66b1c966742d39">CBuild::Toolchain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00071">71</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00069">69</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Build_8hpp_source.html#l00137">CBuild::Toolchain::args</a>, <a class="el" href="Build_8cpp_source.html#l00500">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8hpp_source.html#l00094">CBuild::Toolchain::compiler</a>, <a class="el" href="Build_8hpp_source.html#l00086">CBuild::Toolchain::compiler_args</a>, <a class="el" href="Build_8hpp_source.html#l00141">CBuild::Toolchain::force</a>, and <a class="el" href="Build_8cpp_source.html#l00210">CBuild::Toolchain::gen_file_list()</a>.</p>
 
@@ -442,7 +448,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -465,7 +471,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 
 <p>Implements <a class="el" href="classCBuild_1_1Toolchain.html#adf746115d76976ccd9916a37994b09e1">CBuild::Toolchain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00092">92</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00090">90</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Build_8hpp_source.html#l00137">CBuild::Toolchain::args</a>, <a class="el" href="Build_8cpp_source.html#l00500">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8cpp_source.html#l00210">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="Build_8hpp_source.html#l00126">CBuild::Toolchain::gen_file_list_for_linking</a>, <a class="el" href="Build_8cpp_source.html#l00388">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00090">CBuild::Toolchain::link_args</a>, and <a class="el" href="Build_8hpp_source.html#l00098">CBuild::Toolchain::linker</a>.</p>
 
@@ -477,7 +483,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -500,7 +506,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 
 <p>Implements <a class="el" href="classCBuild_1_1Toolchain.html#a121ee5ea85b59529c7aa05ca8ca8255e">CBuild::Toolchain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00119">119</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gcc_8hpp_source.html#l00117">117</a> of file <a class="el" href="gcc_8hpp_source.html">gcc.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Build_8hpp_source.html#l00137">CBuild::Toolchain::args</a>, <a class="el" href="Build_8cpp_source.html#l00500">CBuild::Toolchain::compile()</a>, <a class="el" href="Build_8cpp_source.html#l00210">CBuild::Toolchain::gen_file_list()</a>, <a class="el" href="Build_8hpp_source.html#l00126">CBuild::Toolchain::gen_file_list_for_linking</a>, <a class="el" href="Build_8cpp_source.html#l00388">CBuild::Toolchain::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00090">CBuild::Toolchain::link_args</a>, and <a class="el" href="Build_8hpp_source.html#l00102">CBuild::Toolchain::packer</a>.</p>
 

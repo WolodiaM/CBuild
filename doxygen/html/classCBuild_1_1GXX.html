@@ -101,6 +101,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0ce3ae723a5a5cd558e51fdbf9cce075 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a0ce3ae723a5a5cd558e51fdbf9cce075">load_project_deps</a> (std::string curr_path)</td></tr>
 <tr class="memdesc:a0ce3ae723a5a5cd558e51fdbf9cce075 inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all project dependencies.  <a href="classCBuild_1_1Toolchain.html#a0ce3ae723a5a5cd558e51fdbf9cce075">More...</a><br /></td></tr>
 <tr class="separator:a0ce3ae723a5a5cd558e51fdbf9cce075 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba48b2dd1c2f6c4249376fd0fbfaa3fa inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa">stdargs</a> ()</td></tr>
+<tr class="memdesc:aba48b2dd1c2f6c4249376fd0fbfaa3fa inherit pub_methods_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add standard compile and link arguments into compilation Need to be publick for some hashers to work.  <a href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa">More...</a><br /></td></tr>
+<tr class="separator:aba48b2dd1c2f6c4249376fd0fbfaa3fa inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a975fd1f1cde45f0e965cd74568c81517 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a975fd1f1cde45f0e965cd74568c81517">Toolchain</a> ()</td></tr>
 <tr class="separator:a975fd1f1cde45f0e965cd74568c81517 inherit pub_methods_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20b5937c4218a656cf4b6ccadcce1d0b inherit pub_methods_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a20b5937c4218a656cf4b6ccadcce1d0b">~Toolchain</a> ()</td></tr>
@@ -301,9 +304,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a19964cad982f2637f26095f52ccbb7c6 inherit pro_attribs_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1Hash.html">Hash</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a19964cad982f2637f26095f52ccbb7c6">hasher</a></td></tr>
 <tr class="memdesc:a19964cad982f2637f26095f52ccbb7c6 inherit pro_attribs_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher used here.  <a href="classCBuild_1_1Toolchain.html#a19964cad982f2637f26095f52ccbb7c6">More...</a><br /></td></tr>
 <tr class="separator:a19964cad982f2637f26095f52ccbb7c6 inherit pro_attribs_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d52ef5607c54616261d246bc694a07a inherit pro_attribs_classCBuild_1_1Toolchain"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a9d52ef5607c54616261d246bc694a07a">stdargs_lock</a> = false</td></tr>
+<tr class="memdesc:a9d52ef5607c54616261d246bc694a07a inherit pro_attribs_classCBuild_1_1Toolchain"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock that specifies that <a class="el" href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa" title="Add standard compile and link arguments into compilation Need to be publick for some hashers to work.">stdargs()</a> function need to do nothing.  <a href="classCBuild_1_1Toolchain.html#a9d52ef5607c54616261d246bc694a07a">More...</a><br /></td></tr>
+<tr class="separator:a9d52ef5607c54616261d246bc694a07a inherit pro_attribs_classCBuild_1_1Toolchain"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt;<br />
+<div class="textblock"><h3>template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt;<br />
 class CBuild::GXX&lt; hash &gt;</h3>
 
 
@@ -315,7 +321,7 @@ class CBuild::GXX&lt; hash &gt;</h3>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -355,7 +361,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -407,7 +413,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -442,7 +448,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -477,7 +483,7 @@ template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;CBuild::HashImpl hash = CBuild::CBuildHash&gt; </div>
+template&lt;CBuild::HashImpl hash = CBuild::CBuildHashV2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['init_434',['Init',['../classCBuild_1_1Init.html',1,'CBuild']]]
+  ['hash_466',['Hash',['../classCBuild_1_1Hash.html',1,'CBuild']]],
+  ['help_467',['Help',['../classCBuild_1_1Help.html',1,'CBuild']]]
 ];

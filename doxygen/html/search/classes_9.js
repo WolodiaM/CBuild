@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['source_5fmetadata_5ffile_447',['source_metadata_file',['../structCBuild_1_1source__metadata__file.html',1,'CBuild']]],
-  ['str_5ffilebuff_448',['str_filebuff',['../classCBuild_1_1str__filebuff.html',1,'CBuild']]]
+  ['package_5finfo_481',['package_info',['../structCBuild_1_1package__info.html',1,'CBuild']]],
+  ['path_482',['Path',['../structCBuild_1_1Path.html',1,'CBuild']]],
+  ['project_5fdependency_483',['Project_dependency',['../structCBuild_1_1Project__dependency.html',1,'CBuild']]]
 ];

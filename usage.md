@@ -57,7 +57,7 @@
 ## Programmer info
 ### Compiler calling convention:
 All compilations is done in two steps: compilation `<compiler> -c <file> <arguments> -o <object>` and then linking `<linker> <objects> <arguments> -o <output binary>`
-### Hasher general rewuirments
+### Hasher general requirments
 All hashers are inherited of CBuild::Hash class.  
 Class constructor need to take one argument of type std::string and pass it to a base class.  
 Function 'get_files_for_recompilation' need to construct a `lib::map<std::string, std::string>` of source->object mappings of files that need to be recompiled, files and objects array are for one set of files, `objects.at(1)` is an object for a source file at `files.at(1)`. So, this function need to produce a list of files that need to be recompiled and update stored metadata.  

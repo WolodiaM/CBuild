@@ -101,6 +101,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0ce3ae723a5a5cd558e51fdbf9cce075"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a0ce3ae723a5a5cd558e51fdbf9cce075">load_project_deps</a> (std::string curr_path)</td></tr>
 <tr class="memdesc:a0ce3ae723a5a5cd558e51fdbf9cce075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all project dependencies.  <a href="classCBuild_1_1Toolchain.html#a0ce3ae723a5a5cd558e51fdbf9cce075">More...</a><br /></td></tr>
 <tr class="separator:a0ce3ae723a5a5cd558e51fdbf9cce075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba48b2dd1c2f6c4249376fd0fbfaa3fa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa">stdargs</a> ()</td></tr>
+<tr class="memdesc:aba48b2dd1c2f6c4249376fd0fbfaa3fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add standard compile and link arguments into compilation Need to be publick for some hashers to work.  <a href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa">More...</a><br /></td></tr>
+<tr class="separator:aba48b2dd1c2f6c4249376fd0fbfaa3fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a975fd1f1cde45f0e965cd74568c81517"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a975fd1f1cde45f0e965cd74568c81517">Toolchain</a> ()</td></tr>
 <tr class="separator:a975fd1f1cde45f0e965cd74568c81517"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20b5937c4218a656cf4b6ccadcce1d0b"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a20b5937c4218a656cf4b6ccadcce1d0b">~Toolchain</a> ()</td></tr>
@@ -299,6 +302,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a19964cad982f2637f26095f52ccbb7c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCBuild_1_1Hash.html">Hash</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a19964cad982f2637f26095f52ccbb7c6">hasher</a></td></tr>
 <tr class="memdesc:a19964cad982f2637f26095f52ccbb7c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher used here.  <a href="classCBuild_1_1Toolchain.html#a19964cad982f2637f26095f52ccbb7c6">More...</a><br /></td></tr>
 <tr class="separator:a19964cad982f2637f26095f52ccbb7c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d52ef5607c54616261d246bc694a07a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCBuild_1_1Toolchain.html#a9d52ef5607c54616261d246bc694a07a">stdargs_lock</a> = false</td></tr>
+<tr class="memdesc:a9d52ef5607c54616261d246bc694a07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock that specifies that <a class="el" href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa" title="Add standard compile and link arguments into compilation Need to be publick for some hashers to work.">stdargs()</a> function need to do nothing.  <a href="classCBuild_1_1Toolchain.html#a9d52ef5607c54616261d246bc694a07a">More...</a><br /></td></tr>
+<tr class="separator:a9d52ef5607c54616261d246bc694a07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classCBuild_1_1Toolchain.html" title="Toolchain class.">Toolchain</a> class. </p>
@@ -328,7 +334,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00223">223</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00234">234</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 </div>
 </div>
@@ -355,7 +361,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00224">224</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00235">235</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 </div>
 </div>
@@ -396,7 +402,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00224">CBuild::arg</a>, and <a class="el" href="Build_8hpp_source.html#l00086">compiler_args</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00038">CBuild::GCC&lt; hash &gt;::GCC()</a>, and <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00036">CBuild::GCC&lt; hash &gt;::GCC()</a>, and <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>.</p>
 
 </div>
 </div>
@@ -678,7 +684,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00224">CBuild::arg</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00038">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00036">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
 
 </div>
 </div>
@@ -887,9 +893,9 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00507">507</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00563">563</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="register_8cpp_source.html#l00191">CBuild::Registry::CallTask()</a>, <a class="el" href="pkgconfig_8hpp_source.html#l00042">CBuild::package_info::cargs</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00035">CBUILD_BUILD_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00039">CBUILD_BUILD_OUT_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00027">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00059">CBUILD_PROJECT_DEPS_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00063">CBUILD_PROJECT_DEPS_HEADERS</a>, <a class="el" href="Build_8hpp_source.html#l00054">CBuild::DYNAMIC_LIBRARY</a>, <a class="el" href="pkgconfig_8cpp_source.html#l00028">CBuild::get_pkg_info()</a>, <a class="el" href="register_8cpp_source.html#l00224">CBuild::Registry::GetToolchain()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::GREEN</a>, <a class="el" href="register_8cpp_source.html#l00160">CBuild::Registry::init()</a>, <a class="el" href="pkgconfig_8hpp_source.html#l00038">CBuild::package_info::largs</a>, <a class="el" href="print_8hpp_source.html#l00038">CBuild::MAGENTA</a>, <a class="el" href="pkgconfig_8hpp_source.html#l00034">CBuild::package_info::name</a>, <a class="el" href="Build_8hpp_source.html#l00053">CBuild::POST</a>, <a class="el" href="Build_8hpp_source.html#l00053">CBuild::PRE</a>, <a class="el" href="print_8cpp_source.html#l00049">CBuild::print()</a>, <a class="el" href="print_8hpp_source.html#l00034">CBuild::RED</a>, <a class="el" href="Build_8hpp_source.html#l00054">CBuild::STATIC_LIBRARY</a>, and <a class="el" href="system_8cpp_source.html#l00047">CBuild::system()</a>.</p>
+<p class="reference">References <a class="el" href="register_8cpp_source.html#l00191">CBuild::Registry::CallTask()</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00035">CBUILD_BUILD_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00039">CBUILD_BUILD_OUT_DIR</a>, <a class="el" href="Build_8hpp_source.html#l00054">CBuild::DYNAMIC_LIBRARY</a>, <a class="el" href="register_8cpp_source.html#l00224">CBuild::Registry::GetToolchain()</a>, <a class="el" href="print_8hpp_source.html#l00035">CBuild::GREEN</a>, <a class="el" href="register_8cpp_source.html#l00160">CBuild::Registry::init()</a>, <a class="el" href="print_8hpp_source.html#l00038">CBuild::MAGENTA</a>, <a class="el" href="Build_8hpp_source.html#l00053">CBuild::POST</a>, <a class="el" href="Build_8hpp_source.html#l00053">CBuild::PRE</a>, <a class="el" href="print_8cpp_source.html#l00070">CBuild::print()</a>, <a class="el" href="print_8hpp_source.html#l00034">CBuild::RED</a>, <a class="el" href="Build_8hpp_source.html#l00054">CBuild::STATIC_LIBRARY</a>, and <a class="el" href="system_8cpp_source.html#l00047">CBuild::system()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00282">CBuild::loop()</a>.</p>
 
@@ -920,7 +926,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Clear all caches and builded app. </p>
 
-<p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00701">701</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00707">707</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="CBuild__defs_8hpp_source.html#l00035">CBUILD_BUILD_DIR</a>, and <a class="el" href="system_8cpp_source.html#l00047">CBuild::system()</a>.</p>
 
@@ -1003,7 +1009,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="system_8cpp_source.html#l00047">CBuild::system()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00071">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00092">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00119">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00069">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00090">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00117">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>.</p>
 
 </div>
 </div>
@@ -1034,7 +1040,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00496">496</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00034">CBuild::exit()</a>, <a class="el" href="print_8cpp_source.html#l00049">CBuild::print()</a>, and <a class="el" href="print_8hpp_source.html#l00034">CBuild::RED</a>.</p>
+<p class="reference">References <a class="el" href="cli__parser_8cpp_source.html#l00034">CBuild::exit()</a>, <a class="el" href="print_8cpp_source.html#l00070">CBuild::print()</a>, and <a class="el" href="print_8hpp_source.html#l00034">CBuild::RED</a>.</p>
 
 </div>
 </div>
@@ -1083,9 +1089,9 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classCBuild_1_1MINGW__GCC.html#a8867bf9f04d1b8492090ea00c2241cbe">CBuild::MINGW_GCC&lt; hash &gt;</a>, and <a class="el" href="classCBuild_1_1MINGW__GXX.html#a40354aaf1484ae052f5027de5c698b1c">CBuild::MINGW_GXX&lt; hash &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00676">676</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00682">682</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8hpp_source.html#l00035">CBuild::GREEN</a>, <a class="el" href="print_8hpp_source.html#l00038">CBuild::MAGENTA</a>, <a class="el" href="register_8cpp_source.html#l00151">CBuild::Registry::name</a>, <a class="el" href="print_8cpp_source.html#l00049">CBuild::print()</a>, <a class="el" href="print_8hpp_source.html#l00034">CBuild::RED</a>, and <a class="el" href="system_8cpp_source.html#l00047">CBuild::system()</a>.</p>
+<p class="reference">References <a class="el" href="print_8hpp_source.html#l00035">CBuild::GREEN</a>, <a class="el" href="print_8hpp_source.html#l00038">CBuild::MAGENTA</a>, <a class="el" href="register_8cpp_source.html#l00151">CBuild::Registry::name</a>, <a class="el" href="print_8cpp_source.html#l00070">CBuild::print()</a>, <a class="el" href="print_8hpp_source.html#l00034">CBuild::RED</a>, and <a class="el" href="system_8cpp_source.html#l00047">CBuild::system()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00282">CBuild::loop()</a>.</p>
 
@@ -1254,9 +1260,9 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00210">210</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="map_8hpp_source.html#l00223">lib::map&lt; _K, _D &gt;::at()</a>, <a class="el" href="map_8hpp_source.html#l00215">lib::map&lt; _K, _D &gt;::clear()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00038">CBuild::fs::dir()</a>, <a class="el" href="hash_8cpp_source.html#l00136">CBuild::vars::filelist</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00339">CBuild::fs::normalize_relative_path()</a>, <a class="el" href="print_8cpp_source.html#l00054">CBuild::print_full()</a>, <a class="el" href="map_8hpp_source.html#l00111">lib::map&lt; _K, _D &gt;::push_back()</a>, <a class="el" href="map_8hpp_source.html#l00266">lib::map&lt; _K, _D &gt;::size()</a>, and <a class="el" href="register_8cpp_source.html#l00145">CBuild::Registry::targets</a>.</p>
+<p class="reference">References <a class="el" href="map_8hpp_source.html#l00223">lib::map&lt; _K, _D &gt;::at()</a>, <a class="el" href="map_8hpp_source.html#l00215">lib::map&lt; _K, _D &gt;::clear()</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00038">CBuild::fs::dir()</a>, <a class="el" href="hash_8cpp_source.html#l00136">CBuild::vars::filelist</a>, <a class="el" href="filesystem_09_09_8cpp_source.html#l00339">CBuild::fs::normalize_relative_path()</a>, <a class="el" href="print_8cpp_source.html#l00075">CBuild::print_full()</a>, <a class="el" href="map_8hpp_source.html#l00111">lib::map&lt; _K, _D &gt;::push_back()</a>, <a class="el" href="map_8hpp_source.html#l00275">lib::map&lt; _K, _D &gt;::size()</a>, and <a class="el" href="register_8cpp_source.html#l00145">CBuild::Registry::targets</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00071">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00092">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00119">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00069">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00090">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00117">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>.</p>
 
 </div>
 </div>
@@ -1378,7 +1384,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="filesystem_09_09_8cpp_source.html#l00348">CBuild::fs::base()</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00035">CBUILD_BUILD_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00039">CBUILD_BUILD_OUT_DIR</a>, <a class="el" href="Build_8hpp_source.html#l00054">CBuild::DYNAMIC_LIBRARY</a>, <a class="el" href="Build_8hpp_source.html#l00054">CBuild::EXECUTABLE</a>, and <a class="el" href="register_8cpp_source.html#l00151">CBuild::Registry::name</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00092">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="gcc_8hpp_source.html#l00119">CBuild::GCC&lt; hash &gt;::link_pack()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00090">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="gcc_8hpp_source.html#l00117">CBuild::GCC&lt; hash &gt;::link_pack()</a>.</p>
 
 </div>
 </div>
@@ -1466,7 +1472,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00225">225</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00236">236</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Build_8hpp_source.html#l00070">id</a>.</p>
 
@@ -1657,7 +1663,7 @@ Protected Attributes</h2></td></tr>
 
 <p>After build. </p>
 
-<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00156">156</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00160">160</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 </div>
 </div>
@@ -1688,7 +1694,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classCBuild_1_1MINGW__GCC.html#a647f25a7ce68d6318ca1e7f2c527e530">CBuild::MINGW_GCC&lt; hash &gt;</a>, and <a class="el" href="classCBuild_1_1MINGW__GXX.html#a7dc6ee298bfdffe9824c7f7f84a61ba8">CBuild::MINGW_GXX&lt; hash &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00164">164</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00168">168</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 </div>
 </div>
@@ -1717,7 +1723,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Before build. </p>
 
-<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00152">152</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00156">156</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 </div>
 </div>
@@ -1746,7 +1752,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Before linking. </p>
 
-<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00160">160</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00164">164</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 </div>
 </div>
@@ -1784,9 +1790,9 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classCBuild_1_1MINGW__GXX.html#af748b5df4e00637cd4f73a8714d30ece">CBuild::MINGW_GXX&lt; hash &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00655">655</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00661">661</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8hpp_source.html#l00038">CBuild::MAGENTA</a>, <a class="el" href="register_8cpp_source.html#l00151">CBuild::Registry::name</a>, <a class="el" href="print_8cpp_source.html#l00049">CBuild::print()</a>, <a class="el" href="print_8hpp_source.html#l00034">CBuild::RED</a>, and <a class="el" href="system_8cpp_source.html#l00047">CBuild::system()</a>.</p>
+<p class="reference">References <a class="el" href="print_8hpp_source.html#l00038">CBuild::MAGENTA</a>, <a class="el" href="register_8cpp_source.html#l00151">CBuild::Registry::name</a>, <a class="el" href="print_8cpp_source.html#l00070">CBuild::print()</a>, <a class="el" href="print_8hpp_source.html#l00034">CBuild::RED</a>, and <a class="el" href="system_8cpp_source.html#l00047">CBuild::system()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="CBuild_8cpp_source.html#l00282">CBuild::loop()</a>.</p>
 
@@ -1996,6 +2002,37 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="aba48b2dd1c2f6c4249376fd0fbfaa3fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba48b2dd1c2f6c4249376fd0fbfaa3fa">&#9670;&nbsp;</a></span>stdargs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CBuild::Toolchain::stdargs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add standard compile and link arguments into compilation Need to be publick for some hashers to work. </p>
+
+<p class="definition">Definition at line <a class="el" href="Build_8cpp_source.html#l00506">506</a> of file <a class="el" href="Build_8cpp_source.html">Build.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="pkgconfig_8hpp_source.html#l00042">CBuild::package_info::cargs</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00035">CBUILD_BUILD_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00039">CBUILD_BUILD_OUT_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00027">CBUILD_CACHE_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00059">CBUILD_PROJECT_DEPS_DIR</a>, <a class="el" href="CBuild__defs_8hpp_source.html#l00063">CBUILD_PROJECT_DEPS_HEADERS</a>, <a class="el" href="Build_8hpp_source.html#l00054">CBuild::DYNAMIC_LIBRARY</a>, <a class="el" href="pkgconfig_8cpp_source.html#l00028">CBuild::get_pkg_info()</a>, <a class="el" href="register_8cpp_source.html#l00224">CBuild::Registry::GetToolchain()</a>, <a class="el" href="pkgconfig_8hpp_source.html#l00038">CBuild::package_info::largs</a>, and <a class="el" href="pkgconfig_8hpp_source.html#l00034">CBuild::package_info::name</a>.</p>
+
+</div>
+</div>
 <a id="ae60a20f278ece81c719eb99ca29bac58"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae60a20f278ece81c719eb99ca29bac58">&#9670;&nbsp;</a></span>warn()</h2>
 
@@ -2050,7 +2087,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00137">137</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00071">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00092">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00119">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00259">CBuild::MINGW_GXX&lt; hash &gt;::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00069">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00090">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00117">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00259">CBuild::MINGW_GXX&lt; hash &gt;::run()</a>.</p>
 
 </div>
 </div>
@@ -2104,7 +2141,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00094">94</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00071">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00038">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00069">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00036">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
 
 </div>
 </div>
@@ -2132,7 +2169,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00086">86</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00037">add_compile_arg()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00071">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Build_8cpp_source.html#l00037">add_compile_arg()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00069">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>.</p>
 
 </div>
 </div>
@@ -2214,7 +2251,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00141">141</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00071">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00071">CBuild::GXX&lt; hash &gt;::build()</a>, <a class="el" href="gcc_8hpp_source.html#l00069">CBuild::GCC&lt; hash &gt;::build()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00073">CBuild::MINGW_GXX&lt; hash &gt;::build()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00071">CBuild::MINGW_GCC&lt; hash &gt;::build()</a>.</p>
 
 </div>
 </div>
@@ -2242,7 +2279,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00126">126</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00092">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00119">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00090">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00117">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>.</p>
 
 </div>
 </div>
@@ -2296,7 +2333,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00145">145</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00038">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00036">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
 
 </div>
 </div>
@@ -2324,7 +2361,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00070">70</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00038">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00160">CBuild::MINGW_GXX&lt; hash &gt;::gen_out_name()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00157">CBuild::MINGW_GCC&lt; hash &gt;::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00225">get_id()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00036">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00160">CBuild::MINGW_GXX&lt; hash &gt;::gen_out_name()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00157">CBuild::MINGW_GCC&lt; hash &gt;::gen_out_name()</a>, <a class="el" href="Build_8hpp_source.html#l00236">get_id()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
 
 </div>
 </div>
@@ -2352,7 +2389,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00090">90</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00092">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00119">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00090">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00117">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, and <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>.</p>
 
 </div>
 </div>
@@ -2380,7 +2417,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00098">98</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00038">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00092">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00036">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00095">CBuild::GXX&lt; hash &gt;::link()</a>, <a class="el" href="gcc_8hpp_source.html#l00090">CBuild::GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00094">CBuild::MINGW_GXX&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00092">CBuild::MINGW_GCC&lt; hash &gt;::link()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
 
 </div>
 </div>
@@ -2408,7 +2445,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00065">65</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00038">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00160">CBuild::MINGW_GXX&lt; hash &gt;::gen_out_name()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00157">CBuild::MINGW_GCC&lt; hash &gt;::gen_out_name()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00259">CBuild::MINGW_GXX&lt; hash &gt;::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00036">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00160">CBuild::MINGW_GXX&lt; hash &gt;::gen_out_name()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00157">CBuild::MINGW_GCC&lt; hash &gt;::gen_out_name()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00259">CBuild::MINGW_GXX&lt; hash &gt;::run()</a>.</p>
 
 </div>
 </div>
@@ -2436,7 +2473,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00102">102</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00038">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00119">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gcc_8hpp_source.html#l00036">CBuild::GCC&lt; hash &gt;::GCC()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00036">CBuild::GXX&lt; hash &gt;::GXX()</a>, <a class="el" href="g_09_09_8hpp_source.html#l00125">CBuild::GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="gcc_8hpp_source.html#l00117">CBuild::GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-g_09_09_8hpp_source.html#l00121">CBuild::MINGW_GXX&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00119">CBuild::MINGW_GCC&lt; hash &gt;::link_pack()</a>, <a class="el" href="mingw-gcc_8hpp_source.html#l00042">CBuild::MINGW_GCC&lt; hash &gt;::MINGW_GCC()</a>, and <a class="el" href="mingw-g_09_09_8hpp_source.html#l00042">CBuild::MINGW_GXX&lt; hash &gt;::MINGW_GXX()</a>.</p>
 
 </div>
 </div>
@@ -2515,6 +2552,32 @@ Protected Attributes</h2></td></tr>
 <p>Save task id with run stage sprecified for this task. </p>
 
 <p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00074">74</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a9d52ef5607c54616261d246bc694a07a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d52ef5607c54616261d246bc694a07a">&#9670;&nbsp;</a></span>stdargs_lock</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CBuild::Toolchain::stdargs_lock = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Lock that specifies that <a class="el" href="classCBuild_1_1Toolchain.html#aba48b2dd1c2f6c4249376fd0fbfaa3fa" title="Add standard compile and link arguments into compilation Need to be publick for some hashers to work.">stdargs()</a> function need to do nothing. </p>
+
+<p class="definition">Definition at line <a class="el" href="Build_8hpp_source.html#l00149">149</a> of file <a class="el" href="Build_8hpp_source.html">Build.hpp</a>.</p>
 
 </div>
 </div>

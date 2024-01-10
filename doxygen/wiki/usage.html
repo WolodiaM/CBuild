@@ -67,14 +67,14 @@
  | - build
  |    |
  |    | - &lt;toolchain_name&gt;
- |    |    | - hash         : Hash storage directory
+ |    |    | - config                   : Hash storage directory
  |    |    |    |
- |    |    |    | - hash    : Hash database for specified target
- |    |    | - objs         : Saved .o files of specified target
- |    |    | - out          : Output files of specified target
- |    |
+ |    |    |    | - src.main.meta       : Metadata for src/main.cpp
+ |    |    | - objs                     : Saved .o files of specified target
+ |    |    | - out                      : Output files of specified target
+ |    |    | - &lt;toolchain_name&gt;.meta    : Metadata for a full target
  |
- | - CBuild.run             : Main executable of CBuild
+ | - CBuild.run                         : Main executable of CBuild
             </pre>
         </div>
         <div class="sep-line"><hr/></div>
@@ -83,6 +83,12 @@
             <h5>Compiler calling convention</h5>
             <div class="sub-sep-line"><hr/></div>
             <p>All compilations is done in two steps: compilation <b>&lt;compiler&gt; -c &lt;file&gt; &lt;arguments&gt; -o &lt;object&gt;</b> and then linking <b>&lt;linker&gt; &lt;objects&gt; &lt;arguments&gt; -o &lt;output binary&gt;</b></p>
+            <div class="sub-sep-line"><hr/></div>
+            <h5>Hasher general requirments</h5>
+            <div class="sub-sep-line"><hr/></div>
+            <p>Class constructor need to take one argument of type std::string and pass it to a base class.</p>
+            <p>Function 'get_files_for_recompilation' need to construct a `lib::map&lt;std::string, std::string&gt;` of source->object mappings of files that need to be recompiled, files and objects array are for one set of files, `objects.at(1)` is an object for a source file at `files.at(1)`. So, this function need to produce a list of files that need to be recompiled and update stored metadata.</p>
+            <p>All other function need to return an int value acording to their doxygen docs and also update a coresponding metadata value.</p>
     </div>
     <!--Back-->
     <div class="sep-line"><hr/></div>
