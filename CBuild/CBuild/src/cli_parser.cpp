@@ -118,7 +118,7 @@ ARG_TYPE build_handler(lib::map<std::string, std::string>* args, char** argv, in
                        CBuild::RType* type) {
     // User do not provide needed argument (ptr is current argument, so (ptr +
     // 1) is next argument
-    if (!(argc >= (ptr + 1))) {
+    if (argc <= (ptr + 1)) {
         CBuild::print("Illegal command format!", CBuild::RED);
         CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) +
                           std::string(" <toolchain id>"),

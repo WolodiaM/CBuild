@@ -1,3 +1,10 @@
+cbuild (10.6) stable; urgency=high
+
+  [WolodiaM]
+  * Some bugfixes
+
+ -- WolodiaM <w_melnyk@outlook.com>  Thu, 11 Jan 2024 12:15:15 +0200
+
 cbuild (10.5) stable; urgency=high
 
   [WolodiaM]

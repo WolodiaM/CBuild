@@ -298,8 +298,10 @@ void CBuild::Registry::ToolchainAll(bool force, std::string path, std::vector<st
             check->data = true;
             auto ptr = elem.data;
             if (ptr != NULL) {
-                ptr->load_project_deps(path);
-                ptr->call(args, force);
+                if (ptr->get_id() != std::string("cbuild_rebuild_build_script")) {
+                    ptr->load_project_deps(path);
+                    ptr->call(args, force);
+                }
             }
         }
     }
