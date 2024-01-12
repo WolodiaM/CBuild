@@ -1,9 +1,10 @@
 CBuild/CBuild/src/register.cpp
 build/cbuild/objs/CBuild.CBuild.src.register.o
 DEPS
-CBuild/headers/filesystem++.hpp
 CBuild/headers/map.hpp
 CBuild/headers/CBuild_defs.hpp
+CBuild/headers/build/g++.hpp
+CBuild/headers/filesystem++.hpp
 CBuild/headers/generator/ccj.hpp
 CBuild/headers/generator/generator.hpp
 CBuild/headers/generator/makefile.hpp

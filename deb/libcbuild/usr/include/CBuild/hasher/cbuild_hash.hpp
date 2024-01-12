@@ -25,6 +25,7 @@
 #include "vector"
 // Project includes
 #include "../build_data.hpp"
+#include "../print.hpp"
 #include "hasher.hpp"
 // Code
 #ifndef __CBUILD_HASH_HPP__
@@ -44,6 +45,7 @@ class CBuildHashV2 : public CBuild::Hash {
         if (cargs != meta.cargs) {
             meta.cargs = cargs;
             CBuild::write_target_metadata(this->target_id, &meta);
+            CBuild::printf_full(CBuild::RED, "Compilation arguments mismatch.\n");
             return 1;
         }
         return 0;
@@ -56,6 +58,7 @@ class CBuildHashV2 : public CBuild::Hash {
         if (largs != meta.largs) {
             meta.largs = largs;
             CBuild::write_target_metadata(this->target_id, &meta);
+            CBuild::printf_full(CBuild::RED, "Link arguments mismatch.\n");
             return 1;
         }
         return 0;
@@ -71,6 +74,7 @@ class CBuildHashV2 : public CBuild::Hash {
             meta.linker = linker;
             meta.packer = packer;
             CBuild::write_target_metadata(this->target_id, &meta);
+            CBuild::printf_full(CBuild::RED, "Compilation commands mismatch.\n");
             return 1;
         }
         return 0;
@@ -83,6 +87,8 @@ class CBuildHashV2 : public CBuild::Hash {
         if (out != meta.out) {
             meta.out = out;
             CBuild::write_target_metadata(this->target_id, &meta);
+            CBuild::printf_full(CBuild::RED, "Output binary name mismatch: '%s' != '%s'\n",
+                                out.c_str(), meta.out.c_str());
             return 1;
         }
         return 0;

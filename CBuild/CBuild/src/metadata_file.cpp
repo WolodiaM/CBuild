@@ -164,9 +164,6 @@ int CBuild::write_file_hash(std::string target_id, std::string file, uint64_t* h
     return CBuild::write_file_metadata(target_id, file, &m);
 }
 std::string CBuild::get_file_metadata_path(std::string target_id, std::string file) {
-    // Remove file extension
-    unsigned long pos = file.find_last_of(".");
-    file = file.substr(0, pos);
     // Replace '/' with '.'
     while (file.find("/") != std::string::npos) {
         file.replace(file.find("/"), std::string("/").size(), ".");
