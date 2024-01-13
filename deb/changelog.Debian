@@ -1,3 +1,10 @@
+cbuild (10.8) stable; urgency=high
+
+  [WolodiaM]
+  * Bugfix in compile_commands.json generator
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat, 13 Jan 2024 13:23:35 +0200
+
 cbuild (10.7) stable; urgency=high
 
   [WolodiaM]

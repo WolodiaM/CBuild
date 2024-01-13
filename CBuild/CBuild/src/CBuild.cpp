@@ -333,7 +333,7 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
     if (args->get_ptr("gen") != NULL) {
         auto generator = CBuild::Registry::GetGenerator(*(args->get("gen")));
         if (!generator->init()) {
-            generator->generate(mode, args);
+            generator->generate(mode, args, &pargs);
         }
         goto mode_end;
     }
@@ -444,7 +444,7 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
     }
     if (args->get("gen") != NULL) {
         auto generator = CBuild::Registry::GetGenerator(*(args->get("gen")));
-        generator->generate(mode, args);
+        generator->generate(mode, args, &pargs);
     }
 mode_end:
     //   auto gen = args->get_ptr("gen");

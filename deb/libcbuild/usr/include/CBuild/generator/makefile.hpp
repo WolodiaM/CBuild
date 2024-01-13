@@ -44,9 +44,11 @@ class makefile_out : public CBuild::generator_base {
      * @brief Generate some output
      *
      * @param mode => CBuild::RType -> CBuild arg
-     * @param args => lib::map<std::string, std::string> -> CBuild arg
+     * @param args => lib::map<std::string, std::string>* -> CBuild arg
+     * @param args => std::vector<std::string>* -> Preprocessed args
      */
-    virtual void generate(CBuild::RType mode, lib::map<std::string, std::string>* args);
+    virtual void generate(CBuild::RType mode, lib::map<std::string, std::string>* args,
+                          std::vector<std::string>* pargs) override;
     /**
      * @brief Some init
      *

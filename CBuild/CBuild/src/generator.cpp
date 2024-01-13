@@ -37,7 +37,8 @@
 #include "../../headers/register.hpp"
 #include "../../headers/system.hpp"
 /* makefile.hpp */
-void CBuild::makefile_out::generate(CBuild::RType mode, lib::map<std::string, std::string>* args) {
+void CBuild::makefile_out::generate(CBuild::RType mode, lib::map<std::string, std::string>* args,
+                                    std::vector<std::string>* pargs __attribute_maybe_unused__) {
     CBuild::print("Generating Makefile ...", CBuild::color::MAGENTA);
     // Get command log
     auto log = CBuild::get_log();
@@ -187,7 +188,8 @@ std::string preprocess_json_str(std::string_view str) {
 // 	"file": "/home/wolodiam/dev/c++/CBuild/CBuild/CBuild/src/system.cpp"
 // }
 /* ccj.hpp */
-void CBuild::ccj_out::generate(CBuild::RType mode, lib::map<std::string, std::string>* args) {
+void CBuild::ccj_out::generate(CBuild::RType mode, lib::map<std::string, std::string>* args,
+                               std::vector<std::string>* pargs) {
     // Fail fast if we not building
     if (mode != CBuild::BUILD) {
         CBuild::print("Not in build mode, ERROR!", CBuild::RED);
@@ -203,8 +205,7 @@ void CBuild::ccj_out::generate(CBuild::RType mode, lib::map<std::string, std::st
     lib::map<std::string, CBuild::cmd> data;
     // Get data from target
     auto toolchain = CBuild::Registry::GetToolchain(*(args->get("toolchain_id")));
-    std::vector<std::string> dummy_vec = {};
-    toolchain->call(&dummy_vec, true, false, true);
+    toolchain->call(pargs, true, false, true);
     auto files = toolchain->gen_file_list_force();
     auto cmds = toolchain->get_cmds();
     auto targs = toolchain->get_compile_args();
