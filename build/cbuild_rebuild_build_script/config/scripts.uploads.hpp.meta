@@ -1,0 +1,9 @@
+scripts/uploads.hpp
+header
+DEPS
+CBuild/headers/files.hpp
+CBuild/headers/filesystem++.hpp
+CBuild/headers/system.hpp
+CBuild/headers/task/Task.hpp
+ENDDEPS
+16062744919454994547

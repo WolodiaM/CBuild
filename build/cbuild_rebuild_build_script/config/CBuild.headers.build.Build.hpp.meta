@@ -1,0 +1,9 @@
+CBuild/headers/build/Build.hpp
+header
+DEPS
+CBuild/headers/map.hpp
+CBuild/headers/generator/generator.hpp
+CBuild/headers/hasher/hasher.hpp
+CBuild/headers/hasher/manual_hash.hpp
+ENDDEPS
+11718960606395469417
