@@ -44,8 +44,8 @@ class copyLib : public CBuild::Task {
 template <CBuild::HashImpl hash = CBuild::CBuildHash> class GXX11 : public CBuild::GXX<hash> {
   public:
     GXX11(std::string id, std::string name) : CBuild::GXX<hash>(id, name) {
-        this->compiler = "g++-11";
-        this->linker = "g++-11";
+        this->compiler = "g++";
+        this->linker = "g++";
     }
 };
 GXX11<> libCBuild("cbuild", "CBuild");

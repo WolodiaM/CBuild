@@ -1,3 +1,10 @@
+cbuild (10.9) stable; urgency=high
+
+  [WolodiaM]
+  * Update project init script
+
+ -- WolodiaM <w_melnyk@outlook.com>  Thu, 25 Jan 2024 18:17:39 +0200
+
 cbuild (10.8) stable; urgency=high
 
   [WolodiaM]

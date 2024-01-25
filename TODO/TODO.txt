@@ -1,8 +1,4 @@
--  Better dependency parsing, generate full dependency tree:
-    *  Normal fileparser, used before
-    *? CC -MM  -MF parser, https://stackoverflow.com/questions/5584435/how-to-print-dependencies-from-llvm-clang-equivalent-gccof-gcc-md
 -? Add better logging
 -  Add docs for emebeding recomp script and some hacks used in CBuild buildscript
 -! Disable linking if no object files changed
-- Threat rebuild as internal toolchain, apply hashing
--? VSCode integration
+- Remove concepts from code, broken lsp then
