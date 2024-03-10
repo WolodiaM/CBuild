@@ -27,7 +27,7 @@
 // Userspace headers
 #include "user_init.hpp"
 // CBuild headers
-#include "../CBuild/headers/build/g++.hpp"
+#include "../CBuild/headers/build/g++mt.hpp"
 #include "../CBuild/headers/print.hpp"
 #include "../CBuild/headers/register.hpp"
 #include "../CBuild/headers/task/Task.hpp"
@@ -39,16 +39,7 @@ class copyLib : public CBuild::Task {
         CBuild::system("cp -r build/cbuild/out/* CBuild/CBuild/");
     }
 };
-
-// Toolchains and Tasks
-template <CBuild::HashImpl hash = CBuild::CBuildHash> class GXX11 : public CBuild::GXX<hash> {
-  public:
-    GXX11(std::string id, std::string name) : CBuild::GXX<hash>(id, name) {
-        this->compiler = "g++";
-        this->linker = "g++";
-    }
-};
-GXX11<> libCBuild("cbuild", "CBuild");
+CBuild::GXXMT<> libCBuild("cbuild", "CBuild");
 copyLib cpy("copyLib");
 
 void ver() {
@@ -60,6 +51,8 @@ void init() {
     libCBuild.add_folder("CBuild/CBuild/src/");
     libCBuild.warn();
     libCBuild.set_type(CBuild::DYNAMIC_LIBRARY);
+    libCBuild.add_link_arg("-pthread");
+    libCBuild.add_compile_arg("-pthread");
     libCBuild.add_requirment("proccessVersion", CBuild::PRE);
     libCBuild.add_requirment("proccessHelp", CBuild::PRE);
     // libCBuild.add_compile_arg("-g");

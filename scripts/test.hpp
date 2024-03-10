@@ -22,7 +22,7 @@
 #include "../CBuild/headers/task/Task.hpp"
 // Tests
 class test : public CBuild::Task {
-public:
-  test() : CBuild::Task("test", {}) {}
-  void call(std::vector<std::string> args __attribute_maybe_unused__) {}
+  public:
+    test() : CBuild::Task("test", {}) {}
+    void call(std::vector<std::string> args __attribute_maybe_unused__) {}
 };

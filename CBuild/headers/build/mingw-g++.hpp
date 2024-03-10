@@ -1,7 +1,7 @@
 /**
  * @file mingw-g++.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief mingw-g++ toolchain realization
+ * @brief mingw-g++ toolchain implementation
  * @date 2023-02-03
  *
  * @license GPL v3.0 or later

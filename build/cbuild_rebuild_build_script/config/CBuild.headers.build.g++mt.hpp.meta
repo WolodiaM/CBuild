@@ -1,0 +1,9 @@
+CBuild/headers/build/g++mt.hpp
+header
+DEPS
+CBuild/headers/CBuild_defs.hpp
+CBuild/headers/hasher/cbuild_hash.hpp
+CBuild/headers/map.hpp
+CBuild/headers/build/Build.hpp
+ENDDEPS
+17275502491880591696

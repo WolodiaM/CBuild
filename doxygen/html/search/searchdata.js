@@ -9,7 +9,9 @@ var indexSectionsWithContent =
   6: "ahp",
   7: "abcrst",
   8: "bcdefghilmprstwy",
-  9: "_c"
+  9: "_c",
+  10: "a",
+  11: "c"
 };
 
 var indexSectionNames =
@@ -23,7 +25,9 @@ var indexSectionNames =
   6: "typedefs",
   7: "enums",
   8: "enumvalues",
-  9: "defines"
+  9: "defines",
+  10: "pages",
+  11: "concepts"
 };
 
 var indexSectionLabels =
@@ -37,6 +41,8 @@ var indexSectionLabels =
   6: "Typedefs",
   7: "Enumerations",
   8: "Enumerator",
-  9: "Macros"
+  9: "Macros",
+  10: "Pages",
+  11: "Concepts"
 };
 

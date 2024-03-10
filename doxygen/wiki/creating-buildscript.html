@@ -137,10 +137,10 @@ void init() {
     <div class="sep-line"><hr/></div>
     <h6>Basics of CBuild external API</h6>
     <div class="sep-line"><hr/></div>
-    <p>CBuild provide full-feathured API for specifying build attributes. It has only one problem - it is based on gcc, so expect some problems with clang. If you want to see all functions of <b>CBuild::Toolchain</b> class please use IDE with autocompetition support or check <b>CBuild/build/Build.hpp</b> header.</p>
+    <p>CBuild provide full-feathured API for specifying build attributes. It has only one problem - it is based on gcc, so expect some problems with clang (clang support will be implemented in future). If you want to see all functions of <b>CBuild::Toolchain</b> class please use IDE with autocompletition support or check <b>CBuild/build/Build.hpp</b> header.</p>
     <p>Also CBuild provides <b>CBuild::Task</b> class that can be used if you need to do some things, like preprocess files, postprocess some runtime data or make some build related things that is not connected with compilation proccess. This is very simple abstract class (if you need to create task you need to create new class that use <b>CBuild::Task</b> as base class. If you do this you need to create constructor, that takes <b>std::string</b> as task id and <b>std::vector&lt;std::string&gt;</b> as list of required task ids. Also, you need to provide implementation for main task function - <b>void call(std::vector&lt;std::string&gt; args)</b>, that will be called when this task is called. Here you can do anything what you want, <b>CBuild::Task</b> is simple abstractiong to add ability to register function in <b>CBuild::Registry</b> ;). In some point in future CBuild may has some basic tasks included with a core.</p>
     <p>This all basic classes, used in CBuild. There is also <b>CBuild::generator_base</b> that can be registered and used to provide abilites simmilar to integrated in CBuild generators of <b>compile_commands.json</b> and <b>Makefile</b>. But for almost all buildscript this ability is not realy necessary.</p>
-    <p>Also, there is <b>CBuild::Registry</b> namespace, this namespace is used to register all things inside CBuild core. If your only requirments is ability to compile some c/c++ project, you need only functions that match this signature <b>CBuild::Registry::Register...(...* arg)</b>. Look for these functions in <b>CBuild/register.hpp</b> file or use your IDE's autocompetition.</p>
+    <p>Also, there is <b>CBuild::Registry</b> namespace, this namespace is used to register all things inside CBuild core. If your only requirments is ability to compile some c/c++ project, you need only functions that match this signature <b>CBuild::Registry::Register...(...* arg)</b>. Look for these functions in <b>CBuild/register.hpp</b> file or use your IDE's autocompletition.</p>
     <p>If you are writing simple buildscript, you dont need other CBuild functionality, but if you are interested in what things are inside CBuild headers, you can check comments inside <b>hpp</b> files inside <b>CBuild</b> directory, check doxygen documentation on this website or you can directly check files inside CBuild git repository.</p>
     <!--Tips and tricks-->
     <div class="sep-line"><hr/></div>
@@ -149,7 +149,7 @@ void init() {
         <!--Include external library-->
         <h5>Using external dependency in your buildscript</h5>
         <div class="sub-sep-line"><hr/></div>
-        <p>In <b>CBuild::Registry</b> namespace there is two functions - <b>void SetRebuildName(std::string _name)</b> and <b>void AddLinkArg(std::string arg)</b>. This functions is here because user may want to tweak some compilation arguments of CBuild scripts. So, let's say there is some library, like <b>libfoo.so</b>, this library is in <b>&lt;project_root&gt;/libs/</b> folder, headers is in <b>&lt;project_root&gt;/libs/include</b> folder. So, to accomplish this you need two buildscript recompilations, before doing first you need to: get current path using <b>std::filesystem</b> class (this can be done when using relative paths but it can not work, so you would be in better luck when you will be using absolute paths). Then you need to specify <b>-Llibs</b>, <b>-Ilibs/include</b> and <b>-lfoo</b> as linker and compiler arguments using functions, described above. Then you need recompile buildscript. This is first recompilation. Now you can use any functions from that library, and when your buildscript is done, you can recompile it in second time. Huray!!! Now you wrote your first buildscript that uses external dependency!</p>
+        <p>In <b>CBuild::Registry</b> namespace there is a function <b>CBuild::Registry::GetRebuildTarget()</b>. This function returns pointer to <b>CBuild::Toolchain</b> that is used to compile your buildscript. Also, don't forget that you need to explicitely specify <b>-rpath</b> for your custom libraries and for libraries, compiled by this project too.
         <!--Split script to multiple files-->
         <div class="sub-sep-line"><hr/></div>
         <h5>Using multiple files in your buildscript</h5>
@@ -164,7 +164,7 @@ void init() {
         <div class="sub-sep-line"><hr/></div>
         <h5>Use of custom arguments</h5>
         <div class="sub-sep-line"><hr/></div>
-        <p>Let's say we need to pass some argument to <b>build()</b> function of our toolchain. So, to speecify an argument you need to add this command line argument to CBuild executable call: <b>-a &lt;argument&gt;</b>. Then, in your build function you can use this syntax to retrieave all arguments in <b>std::vector&lt;std::string&gt;*</b> - <b>this-&gt;args</b>, to get access to function of this array - <b>this-&gt;args-&gt;...</b>. Then you can parse this check for some argument in your code.</p>
+        <p>Let's say we need to pass some argument to <b>build()</b> function of our toolchain. So, to speecify an argument you need to add this command line argument to CBuild executable call: <b>-a &lt;argument&gt;</b>. Then, in your build function you can use this syntax to retrieave all arguments in <b>std::vector&lt;std::string&gt;*</b> - <b>this-&gt;args</b>, to get access to function of this array - <b>this-&gt;args-&gt;...</b>. Then you can parse this strings for some argument in your code.</p>
         <!--Cross-compilation toolchain-->
         <div class="sub-sep-line"><hr/></div>
         <h5>Cross-compilation toolchain</h5>
@@ -241,7 +241,7 @@ class cross_gcc : CBuild::gcc {
                     this-&gt;compiler = "g++-x86_64";
                     this-&gt;linker = "g++-x86_64";
                     this-&gt;packer = "ar-x86_64 cr"
-                } else if (elem == std::string("target:arm64") {
+                } else if (elem == std::string("target:arm64")) {
                     this-&gt;target = Target::ARM64;
                     this-&gt;compiler = "g++-arm64";
                     this-&gt;linker = "g++-arm64";
@@ -265,7 +265,7 @@ class cross_gcc : CBuild::gcc {
         <div class="sub-sep-line"><hr/></div>
         <h5>If your buildscript binary broken...</h5>
         <div class="sub-sep-line"><hr/></div>
-        <p>If your buildscript is broken you can always rebuild it using this command: <b>CBuild_rebuild scripts/ "&lt;your custom build args for buildscript&gt;" "&lt;your custom link args for buildscript&gt;" &lt;your buildscript name or <i>CBuild.run</i>&gt;</b></p>
+        <p>If your buildscript is broken you can always rebuild it using this command: <b>CBuild_rebuild scripts/ "&lt;your custom build args for buildscript&gt;" "&lt;your custom link args for buildscript&gt;" &lt;your buildscript name or <i>CBuild.run</i>&gt;</b>. But now this is very hard to brake buildscript except when you are liking some liraries and don't specify runtime libry paths.</p>
     </div>
     <!--Test-->
     <!--<div class="text">

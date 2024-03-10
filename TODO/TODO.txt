@@ -1,4 +1,3 @@
 -? Add better logging
 -  Add docs for emebeding recomp script and some hacks used in CBuild buildscript
 -! Disable linking if no object files changed
-- Remove concepts from code, broken lsp then

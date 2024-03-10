@@ -1,3 +1,11 @@
+cbuild (11.0) stable; urgency=high
+
+  [WolodiaM]
+  * Compiled with g++12 on Debian 6.1.76-1 (2024-02-01) x86_64
+  * Added multithreaded implementations of all integrated toolchains
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sun, 10 Mar 2024 20:26:52 +0200
+
 cbuild (10.9) stable; urgency=high
 
   [WolodiaM]

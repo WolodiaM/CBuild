@@ -243,14 +243,14 @@ class pack_deb : public pack_base {
                        "/libcbuild/usr/share/lintian/overrides");
         CBuild::system("chmod 0755 " + this->work_folder + "/libcbuild/usr/share/man");
         CBuild::system("chmod 0755 " + this->work_folder + "/libcbuild/usr/share/man/man1");
-        CBuild::system("chmod -x " + this->work_folder +
+        CBuild::system("chmod 0644 " + this->work_folder +
                        "/libcbuild/usr/share/doc/libcbuild/changelog.gz");
         // Pack package
         CBuild::system("rm " + this->work_folder + "/libcbuild.deb");
         CBuild::system("cd " + this->work_folder +
                        " && dpkg-deb --root-owner-group --build libcbuild");
         // Run lintian
-        CBuild::system("lintian --no-tag-display-limit ./" + this->work_folder + "/libcbuild.deb");
+        CBuild::system("lintian --tag-display-limit 0 ./" + this->work_folder + "/libcbuild.deb");
         // Reminders
         CBuild::print("Dont forget to change sizes in info.md and in "
                       "doxygen/wiki/info.html",

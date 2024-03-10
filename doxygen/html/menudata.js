@@ -105,6 +105,7 @@ var menudata={children:[
 {text:"t",url:"namespacemembers_eval.html#index_t"},
 {text:"w",url:"namespacemembers_eval.html#index_w"},
 {text:"y",url:"namespacemembers_eval.html#index_y"}]}]}]},
+{text:"Concepts",url:"concepts.html"},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},

@@ -1,7 +1,7 @@
 /**
  * @file gcc.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief gcc toolchain realization
+ * @brief gcc toolchain implementation
  * @date 2023-02-03
  *
  * @license GPL v3.0 or later

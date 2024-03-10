@@ -45,7 +45,7 @@ std::string get_env_vars() {
 } // namespace CBuild
 /* system.hpp */
 int CBuild::system(std::string cmd) {
-    CBuild::log.push_back(cmd);
+    // CBuild::log.push_back(cmd);
     int ret = -1;
     if (CBuild::enabled) {
         CBuild::print(CBuild::get_env_vars() + cmd, CBuild::color::BLUE);
