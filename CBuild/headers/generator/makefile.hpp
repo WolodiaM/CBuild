@@ -54,7 +54,7 @@ class makefile_out : public CBuild::generator_base {
      *
      * @return bool -> Work as logger/capture execution thread (true/false)
      */
-    virtual bool init();
+    virtual bool init() override;
 };
 } // namespace CBuild
 #endif // __CBUILD_MAKEFILE_HPP__

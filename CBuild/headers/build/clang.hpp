@@ -1,7 +1,7 @@
 /**
- * @file g++mt.hpp
+ * @file clang.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief g++ toolchain implementation with multithreaded compilation
+ * @brief clang toolchain implementation
  * @date 2023-02-03
  *
  * @license GPL v3.0 or later
@@ -18,101 +18,72 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef CBUILD_GXXMT_TOOLCHAIN
-#define CBUILD_GXXMT_TOOLCHAIN
+#ifndef CBUILD_CLANG_TOOLCHAIN
+#define CBUILD_CLANG_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
 #include "../hasher/cbuild_hash.hpp"
-#include "../map.hpp"
-#include "Build.hpp"
-#include "atomic"
-#include "thread"
-#include <thread>
+#include "./Build.hpp"
 // Code
 namespace CBuild {
-template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXXMT : public CBuild::Toolchain {
+template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANG : public CBuild::Toolchain {
   public:
     /**
-     * @brief Construct a new GXXMT object
+     * @brief Construct a new CLANG object
      *
      * @param id Id
      */
-    GXXMT(std::string id) {
-        // Set id of toolchain and assign executables constants
+    CLANG(std::string id) {
         this->id = id;
         this->name = "";
-        this->linker = "g++";
-        this->compiler = "g++";
+        this->linker = "clang";
+        this->compiler = "clang";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-        this->add_link_arg("-lstdc++");
         this->hasher = new hash(this->id);
     }
     /**
-     * @brief Construct a new GXXMT object
+     * @brief Construct a new CLANG object
      *
      * @param id Id
      * @param name Name
      */
-    GXXMT(std::string id, std::string name) {
-        // Set id and name of toolchain and assign executables constants
+    CLANG(std::string id, std::string name) {
         this->id = id;
         this->name = name;
-        this->linker = "g++";
-        this->compiler = "g++";
+        this->linker = "clang";
+        this->compiler = "clang";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-        this->add_link_arg("-lstdc++");
         this->hasher = new hash(this->id);
     }
 
   protected:
+    // For docs see g++.hpp
     void build() override {
-        // Get all args
         std::string args;
         for (auto elem : this->compiler_args) {
             args += elem;
             args += " ";
         }
-        // Get all files
         auto files = this->gen_file_list(this->force);
-        // Read pointer
-        std::atomic_int64_t read_ptr;
-        read_ptr.store(files.size() - 1);
-        // Get hw thread count
-        unsigned int num_threads = std::thread::hardware_concurrency();
-        // Setup threads
-        std::thread threads[num_threads];
-        for (unsigned int i = 0; i < num_threads; i++) {
-            threads[i] = std::thread([&files, this, &args, &read_ptr](void) -> void {
-                while (true) {
-                    // Fetch read pointer
-                    int64_t i = read_ptr.fetch_sub(1);
-                    if (i < 0) {
-                        return;
-                    }
-                    // Construct command
-                    std::string cmd = this->compiler + " -c ";
-                    cmd += files.at(i).key;
-                    cmd += " ";
-                    cmd += args;
-                    cmd += " -o ";
-                    cmd += files.at(i).data;
-                    // Execute command
-                    std::this_thread::get_id();
-
-                    this->compile(cmd);
-                }
-            });
-        }
-        for (unsigned int i = 0; i < num_threads; i++) {
-            threads[i].join();
+        std::vector<std::string> hash_files;
+        if (files.size() > 0) {
+            for (unsigned int i = 0; i < files.size(); i++) {
+                std::string cmd = this->compiler + " -c ";
+                cmd += files.at(i).key;
+                cmd += " ";
+                cmd += args;
+                cmd += " -o ";
+                cmd += files.at(i).data;
+                // CBuild::print(cmd.c_str(), CBuild::BLUE);
+                this->compile(cmd);
+            }
         }
     }
     void link() override {
-        // Get args
         std::string args;
         for (auto elem : this->link_args) {
             args += elem;
@@ -128,7 +99,6 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXXMT : public CBu
             flist += " ";
         }
         if (files.size() > 0) {
-            // Construct command
             std::string cmd = this->linker + " ";
             cmd += flist;
             cmd += " ";
@@ -136,19 +106,16 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXXMT : public CBu
             cmd += " ";
             cmd += " -o ";
             cmd += this->gen_out_name();
-            // Call command
-            // CBuild::print(cmd.c_str(), CBuild::color::BLUE);
+            // CBuild::print(cmd.c_str(), CBuild::BLUE);
             this->compile(cmd);
         }
     }
     void link_pack() override {
-        // Get args
         std::string args;
         for (auto elem : this->link_args) {
             args += elem;
             args += " ";
         }
-        // Get all files
         this->gen_file_list_for_linking = true;
         auto files = this->gen_file_list(true);
         this->gen_file_list_for_linking = false;
@@ -158,17 +125,15 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXXMT : public CBu
             flist += " ";
         }
         if (files.size() > 0) {
-            // Construct command
             std::string cmd = this->packer + " ";
             cmd += this->gen_out_name();
             cmd += " ";
             cmd += flist;
             cmd += " ";
-            // Call command
-            // CBuild::print(cmd.c_str(), CBuild::color::BLUE);
+            // CBuild::print(cmd.c_str(), CBuild::BLUE);
             this->compile(cmd);
         }
     }
 };
 } // namespace CBuild
-#endif // CBUILD_GXXMT_TOOLCHAIN
+#endif // CBUILD_CLANG_TOOLCHAIN

@@ -40,9 +40,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GCC : public CBuil
         this->compiler = "gcc";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
-        this->add_compile_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-        this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->hasher = new hash(this->id);
     }
     /**
@@ -58,9 +56,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GCC : public CBuil
         this->compiler = "gcc";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
-        this->add_compile_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-        this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->hasher = new hash(this->id);
     }
 
@@ -140,4 +136,4 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GCC : public CBuil
     }
 };
 } // namespace CBuild
-#endif // _CBUILD_GCC_TOOLCHAIN
+#endif // CBUILD_GCC_TOOLCHAIN

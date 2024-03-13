@@ -3,8 +3,6 @@ g++
 g++
 ar cr
 CARGS
--Wl,-z,origin
- -Wl,-rpath,"\$ORIGIN"
 -Wall
 -Wextra
 -Wno-comments
@@ -12,7 +10,6 @@ CARGS
 -lCBuild
 -ICBuild/headers
 -Icache/headers
--Lcache/libs
 ENDCARGS
 LARGS
 -Wl,-z,origin
@@ -21,6 +18,5 @@ LARGS
 -lCBuild
 -Wl,-rpath,\$ORIGIN/CBuild/CBuild
 -LCBuild/CBuild
--Icache/headers
 -Lcache/libs
 ENDLARGS

@@ -3,15 +3,12 @@ g++
 g++
 ar cr
 CARGS
--Wl,-z,origin
- -Wl,-rpath,"\$ORIGIN"
 -std=c++20
 -Wall
 -Wextra
 -Wno-comments
 -pthread
 -Icache/headers
--Lcache/libs
 -fPIC
 ENDCARGS
 LARGS
@@ -19,8 +16,7 @@ LARGS
  -Wl,-rpath,"\$ORIGIN"
 -lstdc++
 -pthread
--Icache/headers
 -Lcache/libs
 -shared
- -Wl,-soname,libCBuild.so.11
+ -Wl,-soname,libCBuild.so.12
 ENDLARGS

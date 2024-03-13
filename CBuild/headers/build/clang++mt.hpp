@@ -1,7 +1,7 @@
 /**
- * @file g++mt.hpp
+ * @file clang++mt.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief g++ toolchain implementation with multithreaded compilation
+ * @brief clang++ toolchain implementation with multithreaded compilation
  * @date 2023-02-03
  *
  * @license GPL v3.0 or later
@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef CBUILD_GXXMT_TOOLCHAIN
-#define CBUILD_GXXMT_TOOLCHAIN
+#ifndef CBUILD_CLANGMT_TOOLCHAIN
+#define CBUILD_CLANGMT_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
 #include "../hasher/cbuild_hash.hpp"
@@ -30,19 +30,19 @@
 #include <thread>
 // Code
 namespace CBuild {
-template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXXMT : public CBuild::Toolchain {
+template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANGMT : public CBuild::Toolchain {
   public:
     /**
-     * @brief Construct a new GXXMT object
+     * @brief Construct a new CLANGMT object
      *
      * @param id Id
      */
-    GXXMT(std::string id) {
+    CLANGMT(std::string id) {
         // Set id of toolchain and assign executables constants
         this->id = id;
         this->name = "";
-        this->linker = "g++";
-        this->compiler = "g++";
+        this->linker = "clang++";
+        this->compiler = "clang++";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
@@ -50,17 +50,17 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXXMT : public CBu
         this->hasher = new hash(this->id);
     }
     /**
-     * @brief Construct a new GXXMT object
+     * @brief Construct a new CLANGMT object
      *
      * @param id Id
      * @param name Name
      */
-    GXXMT(std::string id, std::string name) {
+    CLANGMT(std::string id, std::string name) {
         // Set id and name of toolchain and assign executables constants
         this->id = id;
         this->name = name;
-        this->linker = "g++";
-        this->compiler = "g++";
+        this->linker = "clang++";
+        this->compiler = "clang++";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
@@ -171,4 +171,4 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXXMT : public CBu
     }
 };
 } // namespace CBuild
-#endif // CBUILD_GXXMT_TOOLCHAIN
+#endif // CBUILD_CLANGMT_TOOLCHAIN

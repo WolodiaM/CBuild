@@ -1,7 +1,7 @@
 /**
- * @file gcc.hpp
+ * @file gccmt.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief gcc toolchain realization
+ * @brief gcc toolchain implementation
  * @date 2023-02-03
  *
  * @license GPL v3.0 or later
@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef CBUILD_GCC_TOOLCHAIN
-#define CBUILD_GCC_TOOLCHAIN
+#ifndef CBUILD_GCCMT_TOOLCHAIN
+#define CBUILD_GCCMT_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
 #include "../hasher/cbuild_hash.hpp"
@@ -42,9 +42,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GCCMT : public CBu
         this->compiler = "gcc";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
-        this->add_compile_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-        this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->hasher = new hash(this->id);
     }
     /**
@@ -60,33 +58,52 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GCCMT : public CBu
         this->compiler = "gcc";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
-        this->add_compile_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-        this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->hasher = new hash(this->id);
     }
 
   protected:
     // For docs see g++.hpp
     void build() override {
+        // Get all args
         std::string args;
         for (auto elem : this->compiler_args) {
             args += elem;
             args += " ";
         }
+        // Get all files
         auto files = this->gen_file_list(this->force);
-        std::vector<std::string> hash_files;
-        if (files.size() > 0) {
-            for (unsigned int i = 0; i < files.size(); i++) {
-                std::string cmd = this->compiler + " -c ";
-                cmd += files.at(i).key;
-                cmd += " ";
-                cmd += args;
-                cmd += " -o ";
-                cmd += files.at(i).data;
-                // CBuild::print(cmd.c_str(), CBuild::BLUE);
-                this->compile(cmd);
-            }
+        // Read pointer
+        std::atomic_int64_t read_ptr;
+        read_ptr.store(files.size() - 1);
+        // Get hw thread count
+        unsigned int num_threads = std::thread::hardware_concurrency();
+        // Setup threads
+        std::thread threads[num_threads];
+        for (unsigned int i = 0; i < num_threads; i++) {
+            threads[i] = std::thread([&files, this, &args, &read_ptr](void) -> void {
+                while (true) {
+                    // Fetch read pointer
+                    int64_t i = read_ptr.fetch_sub(1);
+                    if (i < 0) {
+                        return;
+                    }
+                    // Construct command
+                    std::string cmd = this->compiler + " -c ";
+                    cmd += files.at(i).key;
+                    cmd += " ";
+                    cmd += args;
+                    cmd += " -o ";
+                    cmd += files.at(i).data;
+                    // Execute command
+                    std::this_thread::get_id();
+
+                    this->compile(cmd);
+                }
+            });
+        }
+        for (unsigned int i = 0; i < num_threads; i++) {
+            threads[i].join();
         }
     }
     void link() override {
@@ -156,4 +173,4 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GCCMT : public CBu
     }
 };
 } // namespace CBuild
-#endif // _CBUILD_GCC_TOOLCHAIN
+#endif // CBUILD_GCCMT_TOOLCHAIN

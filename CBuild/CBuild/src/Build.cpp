@@ -98,8 +98,6 @@ void CBuild::Toolchain::add_library_dir(std::string inc, std::string lib) {
         itmp += inc;
         ltmp += lib;
         this->add_compile_arg(itmp);
-        this->add_compile_arg(ltmp);
-        this->add_link_arg(itmp);
         this->add_link_arg(ltmp);
     }
 }
@@ -489,8 +487,6 @@ void CBuild::Toolchain::load_project_deps(std::string curr_path __attribute_mayb
         this->add_library_include(elem.name);
         this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN/../../../" + CBUILD_CACHE_DIR + "/" +
                               CBUILD_PROJECT_DEPS_DIR + "\"");
-        this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN/../../../" + CBUILD_CACHE_DIR + "/" +
-                           CBUILD_PROJECT_DEPS_DIR + "\"");
     }
 }
 std::array<std::string, 3> CBuild::Toolchain::get_cmds() {
@@ -510,8 +506,6 @@ void CBuild::Toolchain::stdargs() {
     if (!this->stdargs_lock) {
         // Some standart compile and link args
         this->add_compile_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
-        this->add_link_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
-        this->add_compile_arg("-L" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
         this->add_link_arg("-L" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
         // Special link tag for dynamick libraries
         if (this->build_type == CBuild::DYNAMIC_LIBRARY) {

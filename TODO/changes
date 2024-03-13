@@ -1,2 +1,0 @@
-Compiled with g++12 on Debian 6.1.76-1 (2024-02-01) x86_64
-Added multithreaded versions of gcc and gxx toolchains, add big speedup if multiple files are compiled
