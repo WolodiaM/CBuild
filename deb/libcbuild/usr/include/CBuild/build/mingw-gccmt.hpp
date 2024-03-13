@@ -1,5 +1,5 @@
 /**
- * @file mingw-gcc.hpp
+ * @file mingw-gccmt.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief mingw-gcc toolchain implementation with multitreaded compilation
  * @date 2023-02-03
@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef CBUILD_MINGW_GCC_TOOLCHAIN
-#define CBUILD_MINGW_GCC_TOOLCHAIN
+#ifndef CBUILD_MINGW_GCCMT_TOOLCHAIN
+#define CBUILD_MINGW_GCCMT_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
 #include "../filesystem++.hpp"
@@ -316,4 +316,4 @@ class MINGW_GCCMT : public CBuild::Toolchain {
     }
 };
 } // namespace CBuild
-#endif // _CBUILD_MINGW_GCC_TOOLCHAIN
+#endif // CBUILD_MINGW_GCCMT_TOOLCHAIN

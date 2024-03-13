@@ -15,6 +15,8 @@ mingw debugger
         * g++
         * g++-mingw-w64-x86-64-win32
         * gcc-mingw-w64-x86-64-win32
+        * clang
+        * clang++
  * For build.run executable for building cbuild
     * Required
         * cp
@@ -27,9 +29,9 @@ mingw debugger
         * gzip
         * dpkg-deb
 # Sizes of files
- * All (except .git/ .vscode/ build/ cache/) - 31M
- * Source code (update.sh + rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/ + project_init.sh.template + update.sh) - 476K
- * Build script (build.sh + CBuild.run + scripts/ ) - 376K
+ * All (except .git/ .vscode/ build/ cache/) - 32M
+ * Source code (update.sh + rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/ + project_init.sh.template + update.sh) - 504K
+ * Build script (build.sh + CBuild.run + scripts/ ) - 360K
  * libCBuild.so (without -g) - 2.1M
  * deb folder - 2.3M
  * ppa/ubuntu folder - 15M

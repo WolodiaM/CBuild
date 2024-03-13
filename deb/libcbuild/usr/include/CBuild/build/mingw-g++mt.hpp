@@ -1,5 +1,5 @@
 /**
- * @file mingw-g++.hpp
+ * @file mingw-g++mt.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief mingw-g++ toolchain implementation with multithreaded compilation
  * @date 2023-02-03
@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef CBUILD_MINGW_GXX_TOOLCHAIN
-#define CBUILD_MINGW_GXX_TOOLCHAIN
+#ifndef CBUILD_MINGW_GXXMT_TOOLCHAIN
+#define CBUILD_MINGW_GXXMT_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
 #include "../filesystem++.hpp"
@@ -322,4 +322,4 @@ class MINGW_GXXMT : public CBuild::Toolchain {
     }
 };
 } // namespace CBuild
-#endif // _CBUILD_MINGW_GCC_TOOLCHAIN
+#endif // CBUILD_MINGW_GCC_TOOLCHAIN

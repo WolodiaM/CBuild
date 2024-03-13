@@ -299,4 +299,4 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class MINGW_GXX : public
     }
 };
 } // namespace CBuild
-#endif // _CBUILD_MINGW_GCC_TOOLCHAIN
+#endif // CBUILD_MINGW_GCC_TOOLCHAIN

@@ -1,7 +1,7 @@
 /**
  * @file g++.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief g++ toolchain realization
+ * @brief g++ toolchain implementation
  * @date 2023-02-03
  *
  * @license GPL v3.0 or later
@@ -41,9 +41,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXX : public CBuil
         this->compiler = "g++";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
-        this->add_compile_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-        this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_link_arg("-lstdc++");
         this->hasher = new hash(this->id);
     }
@@ -61,9 +59,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXX : public CBuil
         this->compiler = "g++";
         this->packer = "ar cr";
         this->add_link_arg("-Wl,-z,origin");
-        this->add_compile_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
-        this->add_compile_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_link_arg("-lstdc++");
         this->hasher = new hash(this->id);
     }

@@ -55,7 +55,7 @@ class ccj_out : public CBuild::generator_base {
      *
      * @return bool -> Work as logger/capture execution thread (true/false)
      */
-    virtual bool init();
+    virtual bool init() override;
 };
 } // namespace CBuild
 #endif // __CBUILD_CCJ_HPP__
