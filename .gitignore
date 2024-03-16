@@ -8,10 +8,12 @@ build/test/
 build/mullw/
 build/mull_lib/
 build/mullw_lib/
+build/cbuild_rebuild_build_script/
 cache
 # CBuild dev gitnore
 CBuild build system prerequirments.rtf
-CBuild/CBuild/libCBuild.so.10
+CBuild/CBuild/libCBuild.so
+CBuild/CBuild/libCBuild.so.*
 Makefile
 private_gpg_key.asc
 private.pgp
