@@ -10,6 +10,7 @@ build/mull_lib/
 build/mullw_lib/
 build/cbuild_rebuild_build_script/
 cache
+test
 # CBuild dev gitnore
 CBuild build system prerequirments.rtf
 CBuild/CBuild/libCBuild.so
