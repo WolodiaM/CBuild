@@ -27,6 +27,7 @@
 // Project headers
 #include "../../headers/CBuild_defs.hpp"
 #include "../../headers/build/Build.hpp"
+#include "../../headers/build_data.hpp"
 #include "../../headers/filesystem++.hpp"
 #include "../../headers/hasher/hasher.hpp"
 #include "../../headers/pkgconfig.hpp"
@@ -85,7 +86,6 @@ void CBuild::Toolchain::add_library_include(std::string lib) {
     // Add only if lib name is not emoty
     if (lib != std::string("")) {
         tmp += lib;
-        this->add_compile_arg(tmp);
         this->add_link_arg(tmp);
     }
 }
@@ -472,7 +472,7 @@ void CBuild::Toolchain::init() {
 }
 void CBuild::Toolchain::load_project_deps(std::string curr_path __attribute_maybe_unused__) {
     for (auto elem : this->project_deps) {
-        // Generate and execute command for build dependencies
+        // Generate and execute command for build dependencie
         std::string cmd = "cd " + elem.path + " && ./CBuild.run -b " + elem.id;
         CBuild::system(cmd);
         // Copy files

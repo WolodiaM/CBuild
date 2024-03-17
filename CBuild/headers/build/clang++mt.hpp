@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef CBUILD_CLANGMT_TOOLCHAIN
-#define CBUILD_CLANGMT_TOOLCHAIN
+#ifndef CBUILD_CLANGXXMT_TOOLCHAIN
+#define CBUILD_CLANGXXMT_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
 #include "../hasher/cbuild_hash.hpp"
@@ -30,14 +30,14 @@
 #include <thread>
 // Code
 namespace CBuild {
-template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANGMT : public CBuild::Toolchain {
+template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANGXXMT : public CBuild::Toolchain {
   public:
     /**
-     * @brief Construct a new CLANGMT object
+     * @brief Construct a new CLANGXXMT object
      *
      * @param id Id
      */
-    CLANGMT(std::string id) {
+    CLANGXXMT(std::string id) {
         // Set id of toolchain and assign executables constants
         this->id = id;
         this->name = "";
@@ -50,12 +50,12 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANGMT : public C
         this->hasher = new hash(this->id);
     }
     /**
-     * @brief Construct a new CLANGMT object
+     * @brief Construct a new CLANGXXMT object
      *
      * @param id Id
      * @param name Name
      */
-    CLANGMT(std::string id, std::string name) {
+    CLANGXXMT(std::string id, std::string name) {
         // Set id and name of toolchain and assign executables constants
         this->id = id;
         this->name = name;
@@ -171,4 +171,4 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANGMT : public C
     }
 };
 } // namespace CBuild
-#endif // CBUILD_CLANGMT_TOOLCHAIN
+#endif // CBUILD_CLANGXXMT_TOOLCHAIN

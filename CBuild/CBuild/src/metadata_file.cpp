@@ -74,6 +74,9 @@ int CBuild::read_file_metadata_direct(std::string target_id __attribute_maybe_un
 }
 int CBuild::read_target_metadata(std::string target_id, CBuild::target_metadata_file* metadata) {
     std::string path = CBuild::get_target_metadata_path(target_id);
+    return CBuild::read_target_metadata_direct(path, metadata);
+}
+int CBuild::read_target_metadata_direct(std::string path, CBuild::target_metadata_file* metadata) {
     if (!CBuild::fs::exists(path)) {
         metadata = NULL;
         return -1;

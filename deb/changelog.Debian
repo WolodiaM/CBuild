@@ -1,3 +1,24 @@
+cbuild (12.3) stable; urgency=high
+
+  [WolodiaM]
+  * Code cleanup
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sun, 17 Mar 2024 21:17:29 +0200
+
+cbuild (12.2) stable; urgency=high
+
+  [WolodiaM]
+  * Bugfix
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sun, 17 Mar 2024 17:24:56 +0200
+
+cbuild (12.1) stable; urgency=high
+
+  [WolodiaM]
+  * Few bugfixes
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat, 16 Mar 2024 17:16:34 +0200
+
 cbuild (12.0) stable; urgency=high
 
   [WolodiaM]

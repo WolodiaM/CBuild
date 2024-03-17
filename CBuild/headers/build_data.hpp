@@ -116,7 +116,7 @@ int read_file_metadata(std::string target_id, std::string src_file,
 /**
  * @brief Load metadata for source file
  *
- * @param target_id => std::string -> Id of target that has this file
+ * @param target_id => std::string -> Id of target that has this filelibsfml-dev
  * @param file => std::string -> Metadata file name
  * @param metadata => CBuild::source_metadata_file* -> Pointer to file metadata struct
  * @return int -> @ref file_err_codes "Error code"
@@ -131,6 +131,14 @@ int read_file_metadata_direct(std::string target_id, std::string file,
  * @return int -> @ref file_err_codes "Error code"
  */
 int read_target_metadata(std::string target_id, CBuild::target_metadata_file* metadata);
+/**
+ * @brief Load metadata for a full target using path to metdata file
+ *
+ * @param path => std::string -> File path
+ * @param metadata => CBuild::target_metadata_file* -> Metadata
+ * @return int -> @ref file_err_codes "Error code"
+ */
+int read_target_metadata_direct(std::string path, CBuild::target_metadata_file* metadata);
 /**
  * @brief Get a file hash (internally uses read_file_metadata, so no performance benefits, but
  * easiier to use in hasher)

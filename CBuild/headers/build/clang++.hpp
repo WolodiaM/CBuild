@@ -18,22 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef CBUILD_CLANG_TOOLCHAIN
-#define CBUILD_CLANG_TOOLCHAIN
+#ifndef CBUILD_CLANGXX_TOOLCHAIN
+#define CBUILD_CLANGXX_TOOLCHAIN
 // Project files
 #include "../CBuild_defs.hpp"
 #include "../hasher/cbuild_hash.hpp"
 #include "Build.hpp"
 // Code
 namespace CBuild {
-template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANG : public CBuild::Toolchain {
+template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANGXX : public CBuild::Toolchain {
   public:
     /**
-     * @brief Construct a new CLANG object
+     * @brief Construct a new CLANGXX object
      *
      * @param id Id
      */
-    CLANG(std::string id) {
+    CLANGXX(std::string id) {
         // Set id of toolchain and assign executables constants
         this->id = id;
         this->name = "";
@@ -46,12 +46,12 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANG : public CBu
         this->hasher = new hash(this->id);
     }
     /**
-     * @brief Construct a new CLANG object
+     * @brief Construct a new CLANGXX object
      *
      * @param id Id
      * @param name Name
      */
-    CLANG(std::string id, std::string name) {
+    CLANGXX(std::string id, std::string name) {
         // Set id and name of toolchain and assign executables constants
         this->id = id;
         this->name = name;
@@ -149,4 +149,4 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANG : public CBu
     }
 };
 } // namespace CBuild
-#endif // CBUILD_CLANG_TOOLCHAIN
+#endif // CBUILD_CLANGXX_TOOLCHAIN
