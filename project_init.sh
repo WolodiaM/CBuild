@@ -16,3 +16,8 @@ printf "/**\n * @file main.cpp\n * @author WolodiaM (w_melnyk@outlook.com)\n * @
 CBuild_rebuild scripts/ "" "" CBuild.run
 chmod +x CBuild.run
 ./CBuild.run --init
+# Init git (if needed)
+if [ "$1" = "--with-git" ];
+then
+    git init
+fi

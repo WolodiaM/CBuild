@@ -47,8 +47,10 @@ bool CBuild::get_pkg_info(CBuild::package_info* package) {
     if (disabled) {
         CBuild::disable_system();
     }
-    if (package->cargs.size() > 1) {
+    if (package->cargs.size() > 3) {
         package->cargs = package->cargs.substr(0, package->cargs.size() - 1);
+    } else {
+        package->cargs = "";
     }
     package->largs = package->largs.substr(0, package->largs.size() - 1);
     return true;

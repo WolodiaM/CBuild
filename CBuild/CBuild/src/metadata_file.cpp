@@ -28,6 +28,7 @@
 #include "../../headers/CBuild_defs.hpp"
 #include "../../headers/build_data.hpp"
 #include "../../headers/filesystem++.hpp"
+#include "../../headers/print.hpp"
 /* Internal funcs */
 int read_file_metadata_internal(std::string path, CBuild::source_metadata_file* metadata) {
     if (!CBuild::fs::exists(path)) {
@@ -171,8 +172,9 @@ std::string CBuild::get_file_metadata_path(std::string target_id, std::string fi
     while (file.find("/") != std::string::npos) {
         file.replace(file.find("/"), std::string("/").size(), ".");
     }
-    return CBUILD_BUILD_DIR + "/" + target_id + "/" + CBUILD_METADATA_FOLDER + "/" + file +
-           CBUILD_METADATA_FILE_EXTENSION;
+
+    return std::string(CBUILD_BUILD_DIR + "/" + target_id + "/" + CBUILD_METADATA_FOLDER + "/" +
+                       file + CBUILD_METADATA_FILE_EXTENSION);
 }
 std::string CBuild::get_target_metadata_path(std::string target_id) {
     return CBUILD_BUILD_DIR + "/" + target_id + "/" + target_id + CBUILD_METADATA_FILE_EXTENSION;

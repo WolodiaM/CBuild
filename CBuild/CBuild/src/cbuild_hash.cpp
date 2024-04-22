@@ -53,10 +53,12 @@ std::regex include_detector("#include [\"<]([^\">]+)[\">]", std::regex_constants
                                                                 std::regex_constants::optimize |
                                                                 std::regex_constants::ECMAScript);
 void parse_file(internal_data* data, std::string target_id, std::string file, std::string object) {
+    CBuild::print_full(std::string("Start, file: ") + file);
     extended_metadata m;
     // Get old metadata
     int err = CBuild::read_file_metadata(target_id, file, &(m.old_meta));
     m.old_meta_available = (err == 0);
+    CBuild::print_full(std::string("Metadata read"));
     // Get new metadata: file and object
     m.new_meta.source = file;
     m.new_meta.object = object;
@@ -67,19 +69,23 @@ void parse_file(internal_data* data, std::string target_id, std::string file, st
     // Strip comments from file
     file_content = std::regex_replace(file_content, cpp_comment, "");
     file_content = std::regex_replace(file_content, c_comment, "");
+    CBuild::print_full(std::string("Comments removed"));
     // Get new metadata: hash
     m.new_meta.hash = CBuild::hash_fnv_1a(file_content);
     // Get new metadata: get dependencies and add new headers for parsing
     m.new_meta.deps = {};
     std::smatch match;
     std::string::const_iterator start(file_content.cbegin());
+    CBuild::print_full(std::string("Include search start"));
     while (std::regex_search(start, file_content.cend(), match, include_detector)) {
+        CBuild::print_full(std::string("Include found, include: ") + match[1].str());
         std::string tmp = "";
         try {
             tmp = CBuild::fs::normalize_relative_path(match[1], CBuild::fs::base(file));
         } catch (std::exception& e) {
         }
         if (tmp != std::string("") && CBuild::fs::exists(tmp)) {
+            CBuild::print_full(std::string("Include added, include: ") + tmp);
             m.new_meta.deps.push_back(tmp);
             try {
                 data->headers_to_parse.push_back_check(tmp, false);
@@ -88,6 +94,7 @@ void parse_file(internal_data* data, std::string target_id, std::string file, st
         }
         start = match.suffix().first;
     }
+    CBuild::print_full("Metadata store");
     // Store metadata into a shared data
     if (object == std::string("header")) {
         try {
@@ -102,6 +109,7 @@ void parse_file(internal_data* data, std::string target_id, std::string file, st
     }
     // Rewrite metadata with new data
     CBuild::write_file_metadata(target_id, file, &(m.new_meta));
+    CBuild::print_full(std::string("End"));
 }
 void print_metadata(extended_metadata* m) {
     CBuild::printf_full(CBuild::WHITE, "File: '%s'\nObject: '%s'\nDeps [new]:\n",
@@ -167,10 +175,12 @@ CBuild::CBuildHashV2::get_files_for_recompilation(std::vector<std::string> sourc
         return {};
     }
     internal_data data;
+    CBuild::print_full("Parsing files");
     // Get sources metadata
     for (size_t i = 0; i < sources.size(); i++) {
         parse_file(&data, target_id, sources.at(i), objects.at(i));
     }
+    CBuild::print_full("Parsing headers");
     // Get headers metadata
     for (size_t i = 0; i < data.headers_to_parse.size(); i++) {
         auto elem = data.headers_to_parse.ptr_at(i);

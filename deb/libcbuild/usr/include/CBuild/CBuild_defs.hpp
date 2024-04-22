@@ -68,7 +68,7 @@
 /**
  * @brief Extension for CBuild metadata files
  */
-#define CBUILD_METADATA_FILE_EXTENSION std::string(".meta");
+#define CBUILD_METADATA_FILE_EXTENSION std::string(".meta")
 /**
  * @brief Different representation of CBuild version
  */

@@ -30,8 +30,7 @@
 #include "../CBuild/headers/build/g++mt.hpp"
 #include "../CBuild/headers/print.hpp"
 #include "../CBuild/headers/register.hpp"
-#include "../CBuild/headers/task/Task.hpp"
-// Custom Tasks
+#include "../CBuild/headers/task/Task.hpp"// Custom Tasks
 class copyLib : public CBuild::Task {
   public:
     copyLib(std::string name) : CBuild::Task(name, {}) {}

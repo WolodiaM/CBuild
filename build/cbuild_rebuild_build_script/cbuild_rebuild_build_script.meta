@@ -7,7 +7,6 @@ CARGS
 -Wextra
 -Wno-comments
 -std=c++20
--lCBuild
 -ICBuild/headers
 -Icache/headers
 ENDCARGS
