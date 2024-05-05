@@ -15,7 +15,7 @@ BASE=$PPA_BASE/doxygen
 # Directories
 REMOTE_DIR=/home/project-web/cbuild/htdocs
 CONF_FILE=.htaccess
-PPA_DIR_BASE=packages/ppa
+PPA_DIR_BASE=ppa
 PPA_DIR_SUB=ubuntu
 
 # Commands
@@ -39,7 +39,7 @@ mkdir $PPA_DIR_BASE/$PPA_DIR_SUB
 put $BASE/$CONF_FILE
 # Upload ppa content
 cd $PPA_DIR_BASE/$PPA_DIR_SUB
-put $PPA_BASE/$PPA_DIR_BASE/$PPA_DIR_SUB/*
+put $PPA_BASE/packages/$PPA_DIR_BASE/$PPA_DIR_SUB/*
 "
 # Upload
 sshpass -f "$BASE/passwd" sftp $USER@$SERVER <<EOF

@@ -38,8 +38,7 @@ class upload : public CBuild::Task {
         this->script = sc;
     }
     void call(std::vector<std::string> args) {
-        CBuild::system(this->script + std::string(" ") +
-                       CBuild::fs::normalize_path("."));
+        CBuild::system(this->script + std::string(" ") + CBuild::fs::normalize_path("."));
     }
 };
 #endif // __UPLOADS_HPP__
