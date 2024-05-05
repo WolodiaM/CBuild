@@ -30,8 +30,8 @@ class Help : public CBuild::Task {
     std::string data = "@HELP_MSG@";
 
   public:
-    Help() : CBuild::Task("CBuild_help", {}){};
-    void call(std::vector<std::string> args __attribute_maybe_unused__) {
+    Help() : CBuild::Task("CBuild_help", {}) {};
+    void call(std::vector<std::string> args) {
         CBuild::print(data);
     }
 };

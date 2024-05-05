@@ -25,12 +25,14 @@
 #include "iostream"
 #include "stdio.h"
 // Userspace headers
+#include "clean_build.hpp"
 #include "user_init.hpp"
 // CBuild headers
 #include "../CBuild/headers/build/g++mt.hpp"
 #include "../CBuild/headers/print.hpp"
 #include "../CBuild/headers/register.hpp"
-#include "../CBuild/headers/task/Task.hpp"// Custom Tasks
+#include "../CBuild/headers/task/Task.hpp" // Custom Tasks
+// Code
 class copyLib : public CBuild::Task {
   public:
     copyLib(std::string name) : CBuild::Task(name, {}) {}
@@ -39,6 +41,7 @@ class copyLib : public CBuild::Task {
     }
 };
 CBuild::GXXMT<> libCBuild("cbuild", "CBuild");
+clean_gxx cbuild_clean("cbuild_clean", "CBuild");
 copyLib cpy("copyLib");
 
 void ver() {
@@ -54,16 +57,25 @@ void init() {
     libCBuild.add_compile_arg("-pthread");
     libCBuild.add_requirment("proccessVersion", CBuild::PRE);
     libCBuild.add_requirment("proccessHelp", CBuild::PRE);
+    cbuild_clean.set_standart("c++20");
+    cbuild_clean.add_folder("CBuild/CBuild/src/");
+    cbuild_clean.warn();
+    cbuild_clean.set_type(CBuild::DYNAMIC_LIBRARY);
+    cbuild_clean.add_link_arg("-pthread");
+    cbuild_clean.add_compile_arg("-pthread");
+    cbuild_clean.add_requirment("proccessVersion", CBuild::PRE);
+    cbuild_clean.add_requirment("proccessHelp", CBuild::PRE);
     // libCBuild.add_compile_arg("-g");
     // libCBuild.add_link_arg("-g");
     // Version
-    std::ifstream version("./ppa/ubuntu/version");
+    std::ifstream version("./packages/ppa/ubuntu/version");
     char str[10];
     version.getline(str, 10);
     version.close();
     std::string vstr = std::string(str).substr(0, std::string(str).find('v'));
     libCBuild.set_version_major(std::stoi(vstr.substr(0, vstr.find('.'))));
     CBuild::Registry::RegisterTarget(&libCBuild);
+    CBuild::Registry::RegisterTarget(&cbuild_clean);
     CBuild::Registry::RegisterTask(&cpy);
     CBuild::Registry::RegisterKeyword("-cp", &cpy);
     load_tasks();

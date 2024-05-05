@@ -1,0 +1,9 @@
+override_dh_strip:
+        dh_strip --dbg-package=libcbuild
+
+override_dh_makeshlibs:
+        dh_makeshlibs -V "libCbuild (>= |VERSION|)" --add-udeb=libCBuild-udeb \
+        -- -c4 -Xusr/lib
+
+%:
+	dh $@

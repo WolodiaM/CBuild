@@ -43,15 +43,12 @@ struct internal_data {
     lib::map<std::string, extended_metadata> headers_metadata;
     lib::map<std::string, bool> headers_to_parse;
 };
-std::regex cpp_comment("[^\'\"]\\/\\/.*\n", std::regex_constants::multiline |
-                                                std::regex_constants::optimize |
-                                                std::regex_constants::ECMAScript);
-std::regex c_comment("\\/\\*([\\s\\S]*?)\\*\\/", std::regex_constants::multiline |
-                                                     std::regex_constants::optimize |
-                                                     std::regex_constants::ECMAScript);
-std::regex include_detector("#include [\"<]([^\">]+)[\">]", std::regex_constants::multiline |
-                                                                std::regex_constants::optimize |
-                                                                std::regex_constants::ECMAScript);
+std::regex cpp_comment("[^\'\"]\\/\\/.*\n",
+                       std::regex_constants::optimize | std::regex_constants::ECMAScript);
+std::regex c_comment("\\/\\*([\\s\\S]*?)\\*\\/",
+                     std::regex_constants::optimize | std::regex_constants::ECMAScript);
+std::regex include_detector("#include [\"<]([^\">]+)[\">]",
+                            std::regex_constants::optimize | std::regex_constants::ECMAScript);
 void parse_file(internal_data* data, std::string target_id, std::string file, std::string object) {
     CBuild::print_full(std::string("Start, file: ") + file);
     extended_metadata m;

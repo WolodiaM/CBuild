@@ -79,7 +79,7 @@ class modify_version : public pack_base {
             std::string cmd;
             std::cin >> cmd;
             if (cmd == std::string("s")) {
-                std::ofstream v("ppa/ubuntu/version");
+                std::ofstream v("packages/ppa/ubuntu/version");
                 v << std::to_string(this->vmj) << "." << std::to_string(this->vmn) << "v";
                 return;
             } else if (cmd == std::string("q")) {
@@ -108,20 +108,21 @@ class mkppa : public CBuild::Task {
   public:
     mkppa() : CBuild::Task("mkppa", {}) {}
     void call(std::vector<std::string> args __attribute_maybe_unused__) {
-        std::ifstream v("./ppa/ubuntu/version");
+        std::ifstream v("./packages/ppa/ubuntu/version");
         char str[10];
         v.getline(str, 10);
         v.close();
         auto version = std::string(str).substr(0, std::string(str).find('v'));
         CBuild::system("gpg --import private.pgp");
-        CBuild::fs::copy("deb/libcbuild.deb", "ppa/ubuntu/libcbuild-" + version + ".deb");
-        CBuild::system("cd ppa/ubuntu && dpkg-scanpackages --multiversion . > "
+        CBuild::fs::copy("packages/deb/libcbuild.deb",
+                         "packages/ppa/ubuntu/libcbuild-" + version + ".deb");
+        CBuild::system("cd packages/ppa/ubuntu && dpkg-scanpackages --multiversion . > "
                        "Packages");
-        CBuild::system("cd ppa/ubuntu && gzip -k -f Packages");
-        CBuild::system("cd ppa/ubuntu && apt-ftparchive release . > Release");
-        CBuild::system("cd ppa/ubuntu && gpg --default-key "
+        CBuild::system("cd packages/ppa/ubuntu && gzip -k -f Packages");
+        CBuild::system("cd packages/ppa/ubuntu && apt-ftparchive release . > Release");
+        CBuild::system("cd packages/ppa/ubuntu && gpg --default-key "
                        "\"w_melnyk@outlook.com\" -abs -o - Release > Release.gpg");
-        CBuild::system("cd ppa/ubuntu && gpg --default-key "
+        CBuild::system("cd packages/ppa/ubuntu && gpg --default-key "
                        "\"w_melnyk@outlook.com\" --clearsign -o - Release > "
                        "InRelease");
     }
@@ -132,7 +133,7 @@ class procces_help : public pack_base {
     std::string output = "CBuild/headers/task/CBuild_help_task.hpp";
 
   public:
-    procces_help() : pack_base("proccessHelp", ""){};
+    procces_help() : pack_base("proccessHelp", "") {};
     void call(std::vector<std::string> args __attribute_maybe_unused__) {
         CBuild::line_filebuff md("usage.md");
         std::string replace =
@@ -189,7 +190,7 @@ class procces_help : public pack_base {
 };
 class bhelp : public CBuild::Task {
   public:
-    bhelp() : CBuild::Task("help", {}){};
+    bhelp() : CBuild::Task("help", {}) {};
     void call(std::vector<std::string> args __attribute_maybe_unused__) {
         CBuild::print("CBuild build help");
         CBuild::print("\t`-t pack_deb` - pack a .deb");
@@ -214,10 +215,10 @@ class bhelp : public CBuild::Task {
 };
 class create_temlate_init : public CBuild::Task {
   public:
-    create_temlate_init() : CBuild::Task("create_init_script", {}){};
+    create_temlate_init() : CBuild::Task("create_init_script", {}) {};
     void call(std::vector<std::string> args __attribute_maybe_unused__) {
-        CBuild::fs::remove("project_init.sh");
-        CBuild::fs::copy("project_init.sh.temlate", "project_init.sh");
+        CBuild::fs::remove("sh/project_init.sh");
+        CBuild::fs::copy("sh/project_init.sh.temlate", "sh/project_init.sh");
         std::fstream f("template/scripts/main.cpp");
         f.seekg(0, std::ios::end);
         std::streampos fileSize = f.tellg();
@@ -238,18 +239,18 @@ class create_temlate_init : public CBuild::Task {
             fileContents.replace(found, 1, replacement);
             found = fileContents.find('\"', found + replacement.length());
         }
-        CBuild::fs::replace("project_init.sh", "#MAIN.CPP", fileContents);
+        CBuild::fs::replace("sh/project_init.sh", "#MAIN.CPP", fileContents);
     }
 };
 class create_arch : public CBuild::Task {
   public:
-    create_arch() : CBuild::Task("create-arch", {}){};
+    create_arch() : CBuild::Task("create-arch", {}) {};
     void call(std::vector<std::string> args __attribute_maybe_unused__) {
         CBuild::fs::remove("./doxygen/latest.tar.gz");
         std::string cmd = "tar -czvf ";
         cmd += "./doxygen/latest.tar.gz";
         cmd += " -C ";
-        cmd += "./deb/libcbuild/usr/";
+        cmd += "./packages/deb/libcbuild/usr/";
         cmd += " -P bin include lib share";
         CBuild::system(cmd);
     }

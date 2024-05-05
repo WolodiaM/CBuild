@@ -50,7 +50,7 @@ namespace CBuild {
 class Init : public CBuild::Task {
   public:
     Init() : Task("CBuild_init", {}) {}
-    void call(std::vector<std::string> __attribute_maybe_unused__) {
+    void call(std::vector<std::string>) {
         // Check all directories, and create it if needed
         if (!CBuild::fs::exists(CBUILD_BUILD_DIR))
             CBuild::fs::create({CBUILD_BUILD_DIR}, CBuild::fs::DIRECTORY);
@@ -69,7 +69,7 @@ class Init : public CBuild::Task {
 class Version : public CBuild::Task {
   public:
     Version() : CBuild::Task("CBuild_version", {}) {}
-    void call(std::vector<std::string> __attribute_maybe_unused__) {
+    void call(std::vector<std::string>) {
         CBuild::print(std::string("CBuild version ") + CBUILD_VERSION_STR +
                       std::string(" by WolodiaM"));
         CBuild::print(std::string("Compiled by GCC ") + CBUILD_COMPILER_VERSION);
@@ -85,7 +85,7 @@ class Version : public CBuild::Task {
 class TaskList : public CBuild::Task {
   public:
     TaskList() : CBuild::Task("CBuild_tasklist", {}) {}
-    void call(std::vector<std::string> __attribute_maybe_unused__) {
+    void call(std::vector<std::string>) {
         CBuild::print("Registered tasks:");
         for (auto task : CBuild::Registry::GetTasksList()) {
             CBuild::print(std::string("\t") + task);
@@ -95,7 +95,7 @@ class TaskList : public CBuild::Task {
 class ToolchainList : public CBuild::Task {
   public:
     ToolchainList() : CBuild::Task("CBuild_toolchainlist", {}) {}
-    void call(std::vector<std::string> __attribute_maybe_unused__) {
+    void call(std::vector<std::string>) {
         CBuild::print("Registered targets:");
         for (auto toolchain : CBuild::Registry::GetToolchainsList()) {
             CBuild::print(std::string("\t") + toolchain);
@@ -105,7 +105,7 @@ class ToolchainList : public CBuild::Task {
 class GeneratorList : public CBuild::Task {
   public:
     GeneratorList() : CBuild::Task("CBuild_generatorlist", {}) {}
-    void call(std::vector<std::string> __attribute_maybe_unused__) {
+    void call(std::vector<std::string>) {
         CBuild::print("Registered generators:");
         for (auto gen : CBuild::Registry::GetGeneratorsList()) {
             CBuild::print(std::string("\t") + gen);
@@ -115,7 +115,7 @@ class GeneratorList : public CBuild::Task {
 class CmdList : public CBuild::Task {
   public:
     CmdList() : CBuild::Task("CBuild_cmdlist", {}) {}
-    void call(std::vector<std::string> __attribute_maybe_unused__) {
+    void call(std::vector<std::string>) {
         CBuild::print("Registered user commands:");
         for (auto cmd : CBuild::Registry::GetKeywordsList().keys()) {
             CBuild::print(std::string("\t") + cmd);

@@ -46,11 +46,11 @@ std::regex cxx_line_comment("//.*");
 /**
  * @brief Regex for stripping c multiline comments from file comtent
  */
-std::regex c_multiline_comment("/\\*([\\s\\S]*?)\\*/", std::regex_constants::multiline);
+std::regex c_multiline_comment("/\\*([\\s\\S]*?)\\*/");
 /**
  * @brief Regex for stripping doxygen comments from file comtent
  */
-std::regex doxygen_comment("/\\*\\*([\\s\\S]*?)\\*/", std::regex_constants::multiline);
+std::regex doxygen_comment("/\\*\\*([\\s\\S]*?)\\*/");
 /**
  * @brief Get include directives from file and parse file name in it
  */
@@ -231,7 +231,7 @@ uint64_t hash(std::string str) {
  * database
  */
 void procces_files(std::vector<std::string> files, std::vector<std::string> objects,
-                   std::string toolchain_id __attribute_maybe_unused__) {
+                   std::string toolchain_id) {
     CBuild::print_full("\t\t\tCBuild hash v3.0", CBuild::color::MAGENTA);
     // For every input file
     for (size_t i = 0; i < files.size(); i++) {

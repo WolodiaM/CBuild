@@ -38,7 +38,7 @@
 #include "../../headers/system.hpp"
 /* makefile.hpp */
 void CBuild::makefile_out::generate(CBuild::RType mode, lib::map<std::string, std::string>* args,
-                                    std::vector<std::string>* pargs __attribute_maybe_unused__) {
+                                    std::vector<std::string>* pargs) {
     CBuild::print("Generating Makefile ...", CBuild::color::MAGENTA);
     // Get command log
     auto log = CBuild::get_log();

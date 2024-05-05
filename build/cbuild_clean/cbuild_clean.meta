@@ -1,0 +1,22 @@
+build/cbuild_clean/out/libCBuild.so
+sudo docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:10.5.0 g++
+sudo docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:10.5.0 g++
+ar cr
+CARGS
+-std=c++20
+-Wall
+-Wextra
+-Wno-comments
+-pthread
+-Icache/headers
+-fPIC
+ENDCARGS
+LARGS
+-Wl,-z,origin
+ -Wl,-rpath,"\$ORIGIN"
+-lstdc++
+-pthread
+-Lcache/libs
+-shared
+ -Wl,-soname,libCBuild.so
+ENDLARGS

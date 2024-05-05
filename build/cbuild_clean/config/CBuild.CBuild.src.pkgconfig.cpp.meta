@@ -1,0 +1,8 @@
+CBuild/CBuild/src/pkgconfig.cpp
+build/cbuild_clean/objs/CBuild.CBuild.src.pkgconfig.o
+DEPS
+CBuild/headers/pkgconfig.hpp
+CBuild/headers/print.hpp
+CBuild/headers/system.hpp
+ENDDEPS
+18076784214625304261

@@ -1,0 +1,23 @@
+New class CrossCompiler with this methods:
+    CrossCompiler(std::string id, std:;string name) -> Id is global id of build group and name will be propagated to each toolchain
+    void add_arch_tool(std::string arch, CBuild::Toolchain* toolchain) -> Adds toolchain for new architecture, can be called <group_id>-<arch>
+    void add_arch_tool(std::string arch) -> Simmilar to previous function but registers blank toolchain
+    CBuild::Toolchain* get_arch_tool(std::string arch) -> Get pointer to one of internal toolchains
+    void perform_registry() -> Regigister all internal toolchains in CBuild::Registry
+    CBuild::Toolchain* get_global_config() -> Get pointer to dummy toolchain that works as global configuration for this group
+    void build(/* simmilar to toolchain's build */) -> Calls meta-toolchain build
+    void set_default_tool(std::string arch) -> Set architecture of default toolchain, apply this only when called (eg. when this function was not called no default toolchain will be registerd)
+It manages a few architecture-dependant toolchains and two meta-toolchains - global configuration toolchain and meta-toolchain. Meta toolchain will be registered with <group_id> id and when called asks user to chouse toolchain. Also, when default toolchain is set it simply calls it and prompts user with menu only if `-a select` specified in cli arguments.
+
+
+New NetDependency class template that could be added to any toolchain with this methods:
+    NetDependency(std::string id) -> Create new dependency with specified id
+    void git_fetch(std::string url) -> Fetches git repo from specified url, implemented in template
+    void net_fetch(std::string url) -> Fetches raw file from specified url, implemented in template
+
+    abstract bool need_load() -> Returns true if package need to be redownloaded, need to be implemented
+    abstract bool need_build() -> Returns true if package need to be recompiled, need to be implemented
+    abstract void download(std::string parent_id, /* tooulchain build args */) -> Download package id directory cache/ext_packages/parent_id/package_id (preferebly), need to be implemented
+    abstract void build(/* toolchain build args */) -> Build dependency, need to be implemented
+    abstract std::string build_args(/* toolchain build args */) -> Compile args for parent, need to be implemented
+    abstract std::string link_args(/* toolchain build args */) -> Lunk arguments for parent, need to be implemented

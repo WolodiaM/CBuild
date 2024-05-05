@@ -1,0 +1,15 @@
+CBuild/CBuild/src/register.cpp
+build/cbuild_clean/objs/CBuild.CBuild.src.register.o
+DEPS
+CBuild/headers/map.hpp
+CBuild/headers/CBuild_defs.hpp
+CBuild/headers/build/g++.hpp
+CBuild/headers/filesystem++.hpp
+CBuild/headers/generator/ccj.hpp
+CBuild/headers/generator/generator.hpp
+CBuild/headers/generator/makefile.hpp
+CBuild/headers/print.hpp
+CBuild/headers/register.hpp
+CBuild/headers/task/CBuild_help_task.hpp
+ENDDEPS
+9707441619688308115

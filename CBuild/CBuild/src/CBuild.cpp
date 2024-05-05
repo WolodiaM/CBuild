@@ -553,7 +553,7 @@ mode_end:
     // gen_end:
     return;
 }
-void CBuild::rebuild(std::string scripts __attribute_maybe_unused__) {
+void CBuild::rebuild(std::string scripts) {
     CBuild::print(
         "Dont use this function direclty, simply call toolchain \"cbuild_rebuild_build_script\"",
         CBuild::RED);

@@ -207,8 +207,7 @@ std::string CBuild::Toolchain::gen_out_file(std::string file) {
     base += file;
     return base;
 }
-lib::map<std::string, std::string>
-CBuild::Toolchain::gen_file_list(bool force_ __attribute_maybe_unused__) {
+lib::map<std::string, std::string> CBuild::Toolchain::gen_file_list(bool force_) {
     // File - object
     lib::map<std::string, std::string> ret, for_recomp;
     std::vector<std::string> objects, filelist;
@@ -470,7 +469,7 @@ void CBuild::Toolchain::init() {
                            CBuild::fs::DIR);
     }
 }
-void CBuild::Toolchain::load_project_deps(std::string curr_path __attribute_maybe_unused__) {
+void CBuild::Toolchain::load_project_deps(std::string curr_path) {
     for (auto elem : this->project_deps) {
         // Generate and execute command for build dependencie
         std::string cmd = "cd " + elem.path + " && ./CBuild.run -b " + elem.id;

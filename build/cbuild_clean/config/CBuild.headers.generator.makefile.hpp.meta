@@ -1,0 +1,8 @@
+CBuild/headers/generator/makefile.hpp
+header
+DEPS
+CBuild/headers/CBuild_defs.hpp
+CBuild/headers/map.hpp
+CBuild/headers/generator/generator.hpp
+ENDDEPS
+16533431191533481120

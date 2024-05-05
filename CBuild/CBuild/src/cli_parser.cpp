@@ -36,10 +36,8 @@ void exit(int code) {
         std::exit(code);
     }
 }
-ARG_TYPE force_handler(lib::map<std::string, std::string>* args,
-                       char** argv __attribute_maybe_unused__, int argc __attribute_maybe_unused__,
-                       int ptr __attribute_maybe_unused__,
-                       CBuild::RType* type __attribute_maybe_unused__) {
+ARG_TYPE force_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
+                       CBuild::RType* type) {
     try {
         args->push_back_check("force", "force");
     } catch (std::exception& e) {
@@ -47,9 +45,8 @@ ARG_TYPE force_handler(lib::map<std::string, std::string>* args,
     }
     return CBuild::ARG_TYPE::SIMPLE_ARG;
 }
-ARG_TYPE out_handler(lib::map<std::string, std::string>* args, char** argv,
-                     int argc __attribute_maybe_unused__, int ptr,
-                     CBuild::RType* type __attribute_maybe_unused__) {
+ARG_TYPE out_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
+                     CBuild::RType* type) {
     std::string str = "";
     // Select proper output type based on token
     if (std::string(argv[ptr]) == std::string("-v")) {
@@ -77,7 +74,7 @@ ARG_TYPE out_handler(lib::map<std::string, std::string>* args, char** argv,
     return CBuild::ARG_TYPE::SIMPLE_ARG;
 }
 ARG_TYPE generator_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
-                           CBuild::RType* type __attribute_maybe_unused__) {
+                           CBuild::RType* type) {
     // User do not provide needed argument (ptr is current argument, so (ptr +
     // 1) is next argument
     if (!(argc >= (ptr + 1))) {
@@ -224,7 +221,7 @@ ARG_TYPE task_handler(lib::map<std::string, std::string>* args, char** argv, int
 int arg = 0;
 int parg = 0;
 ARG_TYPE arg_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
-                     CBuild::RType* type __attribute_maybe_unused__) {
+                     CBuild::RType* type) {
     // User do not provide needed argument (ptr is current argument, so (ptr +
     // 1) is next argument
     if (!(argc > (ptr + 1))) {
@@ -254,9 +251,7 @@ ARG_TYPE arg_handler(lib::map<std::string, std::string>* args, char** argv, int 
     // Repack data to other format ;)
     return CBuild::ARG_TYPE::GENERICK_ARG;
 }
-ARG_TYPE rebuild_handler(lib::map<std::string, std::string>* args __attribute_maybe_unused__,
-                         char** argv __attribute_maybe_unused__,
-                         int argc __attribute_maybe_unused__, int ptr __attribute_maybe_unused__,
+ARG_TYPE rebuild_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
                          CBuild::RType* type) {
     *type = CBuild::REBUILD;
     try {

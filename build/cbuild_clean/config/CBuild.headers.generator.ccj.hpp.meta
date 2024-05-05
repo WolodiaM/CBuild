@@ -1,0 +1,8 @@
+CBuild/headers/generator/ccj.hpp
+header
+DEPS
+CBuild/headers/CBuild_defs.hpp
+CBuild/headers/map.hpp
+CBuild/headers/generator/generator.hpp
+ENDDEPS
+2777940113889294758

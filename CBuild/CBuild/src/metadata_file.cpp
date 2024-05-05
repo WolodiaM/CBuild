@@ -68,8 +68,8 @@ int CBuild::read_file_metadata(std::string target_id, std::string src_file,
     std::string path = CBuild::get_file_metadata_path(target_id, src_file);
     return read_file_metadata_internal(path, metadata);
 }
-int CBuild::read_file_metadata_direct(std::string target_id __attribute_maybe_unused__,
-                                      std::string file, CBuild::source_metadata_file* metadata) {
+int CBuild::read_file_metadata_direct(std::string target_id, std::string file,
+                                      CBuild::source_metadata_file* metadata) {
     std::string path = file;
     return read_file_metadata_internal(path, metadata);
 }

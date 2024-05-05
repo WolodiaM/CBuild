@@ -89,7 +89,7 @@ class pack_base : public CBuild::Task {
   protected:
     std::string work_folder;
     std::string version_str() {
-        std::ifstream version("./ppa/ubuntu/version");
+        std::ifstream version("./packages/ppa/ubuntu/version");
         char str[10];
         version.getline(str, 10);
         version.close();
@@ -160,7 +160,7 @@ class pack_deb : public pack_base {
     }
 
   public:
-    pack_deb() : pack_base("pack_deb", "./deb/") {}
+    pack_deb() : pack_base("pack_deb", "./packages/deb/") {}
     void call(std::vector<std::string> args) {
         // Changelog
         if (args.size() < 1 || args.at(0) != std::string("no-changelog")) {
@@ -190,15 +190,16 @@ class pack_deb : public pack_base {
         CBuild::system("chmod 0755 " + this->work_folder + "/libcbuild/DEBIAN");
         // Scripts
         CBuild::fs::remove(this->work_folder + "/libcbuild/usr/bin/CBuild_rebuild");
-        CBuild::fs::copy("rebuild.sh", this->work_folder + "/libcbuild/usr/bin/CBuild_rebuild");
+        CBuild::fs::copy("sh/rebuild.sh", this->work_folder + "/libcbuild/usr/bin/CBuild_rebuild");
         CBuild::fs::remove(this->work_folder + "/libcbuild/usr/bin/CBuild_update");
-        CBuild::fs::copy("update.sh", this->work_folder + "/libcbuild/usr/bin/CBuild_update");
+        CBuild::fs::copy("sh/update.sh", this->work_folder + "/libcbuild/usr/bin/CBuild_update");
         CBuild::fs::remove(this->work_folder + "/libcbuild/usr/bin/CBuild_init");
-        CBuild::fs::copy("project_init.sh", this->work_folder + "/libcbuild/usr/bin/CBuild_init");
+        CBuild::fs::copy("sh/project_init.sh",
+                         this->work_folder + "/libcbuild/usr/bin/CBuild_init");
         // Lib
         CBuild::fs::remove(this->work_folder + "/libcbuild/usr/lib/libCBuild.so");
         CBuild::system("rm -rf " + this->work_folder + "libcbuild/usr/lib/*");
-        CBuild::fs::copy("CBuild/CBuild/libCBuild.so", this->work_folder + "/libcbuild/usr/lib");
+        CBuild::fs::copy("packages/libCBuild.so", this->work_folder + "/libcbuild/usr/lib");
         CBuild::system("cd " + this->work_folder + "/libcbuild/usr/lib/" +
                        std::string(" && ln -s ") + std::string("libCBuild.so ") + "libCBuild.so." +
                        std::to_string(this->version_major()));

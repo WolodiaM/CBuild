@@ -1,0 +1,10 @@
+CBuild/CBuild/src/cli_parser.cpp
+build/cbuild_clean/objs/CBuild.CBuild.src.cli_parser.o
+DEPS
+CBuild/headers/CBuild.hpp
+CBuild/headers/cli_parse_handler.hpp
+CBuild/headers/map.hpp
+CBuild/headers/print.hpp
+CBuild/headers/register.hpp
+ENDDEPS
+2237881568515731204

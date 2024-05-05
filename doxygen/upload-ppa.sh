@@ -15,7 +15,7 @@ BASE=$PPA_BASE/doxygen
 # Directories
 REMOTE_DIR=/home/project-web/cbuild/htdocs
 CONF_FILE=.htaccess
-PPA_DIR_BASE=ppa
+PPA_DIR_BASE=packages/ppa
 PPA_DIR_SUB=ubuntu
 
 # Commands
