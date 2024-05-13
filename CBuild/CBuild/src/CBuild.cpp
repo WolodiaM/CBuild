@@ -352,8 +352,6 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
                 CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
                 exit(0xFF);
             }
-            // Load libs
-            target->load_project_deps(*(args->get("curr_path")));
             // Call tolchain in build mode
             target->call(&pargs, force);
         }
@@ -368,8 +366,6 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
             CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
-        // Load libs
-        target->load_project_deps(*(args->get("curr_path")));
         // Run toolchain in build mode
         target->call(&pargs, force);
         // Run toolchain in run mode
@@ -398,8 +394,6 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
             CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
-        // Load libs
-        target->load_project_deps(*(args->get("curr_path")));
         // Run toolchain in debug mode
         target->debug(&pargs, &ppargs);
     } break;

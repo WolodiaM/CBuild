@@ -1,0 +1,12 @@
+CBuild/CBuild/src/cross_compile.cpp
+build/cbuild/objs/CBuild.CBuild.src.cross_compile.o
+DEPS
+CBuild/headers/map.hpp
+CBuild/headers/build/Build.hpp
+CBuild/headers/build/cross_compile.hpp
+CBuild/headers/build/simple_toolchain.hpp
+CBuild/headers/hasher/cbuild_hash.hpp
+CBuild/headers/print.hpp
+CBuild/headers/register.hpp
+ENDDEPS
+8680252048222509456

@@ -8,14 +8,15 @@ CARGS
 -Wextra
 -Wno-comments
 -pthread
--Icache/headers
 -fPIC
+-Icache/headers
 ENDCARGS
 LARGS
 -Wl,-z,origin
  -Wl,-rpath,"\$ORIGIN"
 -lstdc++
 -pthread
+-fPIC
 -Lcache/libs
 -shared
  -Wl,-soname,libCBuild.so

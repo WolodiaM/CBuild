@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['handler_0',['handler',['../namespaceCBuild_1_1Registry.html#a4192cb5f6e2f54c3edfb13877aa2c9f2',1,'CBuild::Registry::handler()'],['../namespaceCBuild.html#acb4688990ff057b1cec32b306d70435c',1,'CBuild::handler()']]],
+  ['handler_0',['handler',['../namespaceCBuild.html#a54268c36f06128af668374ed62653254',1,'CBuild::handler'],['../namespaceCBuild_1_1Registry.html#a4192cb5f6e2f54c3edfb13877aa2c9f2',1,'CBuild::Registry::handler']]],
   ['hardlink_1',['HARDLINK',['../namespaceCBuild_1_1fs.html#a76437b93b13f5404cbfb231ac74842aca1edf4b605a5dc28ccf9fbfc318829a2d',1,'CBuild::fs']]],
   ['hash_2',['Hash',['../classCBuild_1_1Hash.html',1,'CBuild::Hash'],['../classCBuild_1_1Hash.html#a0429a5eaafaf035a872be224c8c4c0bf',1,'CBuild::Hash::Hash()']]],
-  ['hash_3',['hash',['../structCBuild_1_1source__metadata__file.html#ad5a1e15e6c936fddd855427f2ef73d18',1,'CBuild::source_metadata_file::hash()'],['../namespaceCBuild.html#a0d07ddbe1051ff2577c6a36113276a1e',1,'CBuild::hash()']]],
+  ['hash_3',['hash',['../structCBuild_1_1source__metadata__file.html#ad5a1e15e6c936fddd855427f2ef73d18',1,'CBuild::source_metadata_file::hash'],['../namespaceCBuild.html#a0d07ddbe1051ff2577c6a36113276a1e',1,'CBuild::hash()']]],
   ['hash_2ecpp_4',['hash.cpp',['../hash_8cpp.html',1,'']]],
   ['hash_2ehpp_5',['hash.hpp',['../hash_8hpp.html',1,'']]],
   ['hash_5fdjb2_6',['hash_djb2',['../namespaceCBuild.html#ae453c974f5cd3a98a780b5c19771658e',1,'CBuild']]],
@@ -13,9 +13,10 @@ var searchData=
   ['hasher_10',['hasher',['../classCBuild_1_1Toolchain.html#a19964cad982f2637f26095f52ccbb7c6',1,'CBuild::Toolchain']]],
   ['hasher_2ehpp_11',['hasher.hpp',['../hasher_8hpp.html',1,'']]],
   ['headers_12',['headers',['../namespaceCBuild_1_1vars.html#a5393f2ac070bf41e3a81c951b7681118',1,'CBuild::vars']]],
-  ['headers_5fmetadata_13',['headers_metadata',['../structinternal__data.html#a4c025fbd87ae78a20cab6bb3eb5081fa',1,'internal_data']]],
-  ['headers_5fpath_14',['headers_path',['../structCBuild_1_1Project__dependency.html#ad708d57ec156377b65f648eb11e8a421',1,'CBuild::Project_dependency']]],
-  ['headers_5fto_5fparse_15',['headers_to_parse',['../structinternal__data.html#ad3b12eb1e4466e33a054be1373ec464e',1,'internal_data']]],
-  ['help_16',['Help',['../classCBuild_1_1Help.html',1,'CBuild::Help'],['../classCBuild_1_1Help.html#a183dcc38e321e9ebffff251986a41af5',1,'CBuild::Help::Help()']]],
-  ['help_17',['help',['../namespaceCBuild_1_1Registry.html#a898d68a1fde4c705d15ab0fa2d24f72c',1,'CBuild::Registry']]]
+  ['headers_5fdir_13',['headers_dir',['../classCBuild_1_1CBuildDependency.html#a226c2d3854ff836b9b4720198053aec7',1,'CBuild::CBuildDependency']]],
+  ['headers_5fmetadata_14',['headers_metadata',['../structinternal__data.html#a4c025fbd87ae78a20cab6bb3eb5081fa',1,'internal_data']]],
+  ['headers_5fpath_15',['headers_path',['../structCBuild_1_1Project__dependency.html#ad708d57ec156377b65f648eb11e8a421',1,'CBuild::Project_dependency']]],
+  ['headers_5fto_5fparse_16',['headers_to_parse',['../structinternal__data.html#ad3b12eb1e4466e33a054be1373ec464e',1,'internal_data']]],
+  ['help_17',['Help',['../classCBuild_1_1Help.html',1,'CBuild::Help'],['../classCBuild_1_1Help.html#a183dcc38e321e9ebffff251986a41af5',1,'CBuild::Help::Help()']]],
+  ['help_18',['help',['../namespaceCBuild_1_1Registry.html#a898d68a1fde4c705d15ab0fa2d24f72c',1,'CBuild::Registry']]]
 ];

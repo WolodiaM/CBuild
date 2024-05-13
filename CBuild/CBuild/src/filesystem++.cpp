@@ -182,7 +182,7 @@ bool CBuild::fs::copy(std::string start, std::string end) {
     to.assign(end);
     // Try to copy elements
     try {
-        std::filesystem::copy(from, to);
+        std::filesystem::copy(from, to, std::filesystem::copy_options::recursive);
     } catch (std::exception& e) {
         // Something goes wrong
         return false;

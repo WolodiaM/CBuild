@@ -26,6 +26,7 @@
 #include "string"
 #include "vector"
 // Project headers
+#include "../dependency/dependency.hpp"
 #include "../generator/generator.hpp"
 #include "../hasher/hasher.hpp"
 #include "../hasher/manual_hash.hpp"
@@ -52,20 +53,23 @@ typedef struct {
  */
 typedef enum { PRE, POST } stage;
 typedef enum { EXECUTABLE, STATIC_LIBRARY, DYNAMIC_LIBRARY } build_type;
+/**
+ * @brief Hasher implementation
+ */
 template <class T>
 concept HashImpl = std::is_base_of<CBuild::Hash, T>::value;
+typedef struct ToolState {};
 /**
  * @brief Toolchain class
  */
 class Toolchain {
   protected:
     /**
-     * @brief Name of output, if undefined (""), for output name used id
+     * @brief Name of output, if undefined (""), for id is used for binary name
      */
     std::string name = "";
     /**
      * @brief Must be initialized in derived classes
-     *
      */
     std::string id;
     /**
@@ -128,6 +132,14 @@ class Toolchain {
      * @brief Libs that need to be searched in pkg-config
      */
     std::vector<std::string> pkg_config_include_entries;
+    /**
+     * @brief Hasher used here
+     */
+    Hash* hasher;
+    /**
+     * @brief Dependencies
+     */
+    std::vector<CBuild::Dependency*> dependency_list;
 
   protected:
     // Scratch variables
@@ -140,10 +152,6 @@ class Toolchain {
      */
     bool force;
     /**
-     * @brief Hasher used here
-     */
-    Hash* hasher;
-    /**
      * @brief Lock that specifies that stdargs() function need to do nothing
      */
     bool stdargs_lock = false;
@@ -153,19 +161,19 @@ class Toolchain {
     /**
      * @brief Before build
      */
-    virtual void pre_build(){};
+    virtual void pre_build() {};
     /**
      * @brief After build
      */
-    virtual void post_build(){};
+    virtual void post_build() {};
     /**
      * @brief Before linking
      */
-    virtual void pre_link(){};
+    virtual void pre_link() {};
     /**
      * @brief After linking
      */
-    virtual void post_link(){};
+    virtual void post_link() {};
     /**
      * @brief Build
      */
@@ -377,6 +385,7 @@ class Toolchain {
      * @param id => std::string -> Id of needed toolchain for calling target
      * build
      * @param headers_path => std::string -> path to headers dir
+     * @deprecated Old, better ways exists
      */
     virtual void depends_on_project(std::string path, std::string name, std::string id,
                                     std::string headers_path);
@@ -434,6 +443,23 @@ class Toolchain {
      * @param name => std::string -> Out name
      */
     virtual void set_name(std::string name);
+    /**
+     * @brief Change id of this toolchain, if done after registering it can brake things
+     *
+     * @param id => std::string -> New id
+     */
+    virtual void set_id(std::string id);
+    /**
+     * @brief Add external dependency to this toolchain
+     *
+     * @param dep => CBuild::Dependency* -> Dependency
+     */
+    void add_external_dependency(CBuild::Dependency* dep);
 };
+/**
+ * @brief Toolchain implementation
+ */
+template <class T>
+concept ToolchainImpl = std::is_base_of<CBuild::Toolchain, T>::value;
 } // namespace CBuild
 #endif // __CBUILD_TOOLCHAIN_HPP__

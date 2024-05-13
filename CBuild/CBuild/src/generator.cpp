@@ -205,108 +205,112 @@ void CBuild::ccj_out::generate(CBuild::RType mode, lib::map<std::string, std::st
     lib::map<std::string, CBuild::cmd> data;
     // Get data from target
     auto toolchain = CBuild::Registry::GetToolchain(*(args->get("toolchain_id")));
-    toolchain->call(pargs, true, false, true);
-    auto files = toolchain->gen_file_list_force();
     auto cmds = toolchain->get_cmds();
-    auto targs = toolchain->get_compile_args();
-    auto dir = args->get_ptr("curr_path")->data;
-    for (auto file : files) {
-        data.push_back({file.key,
-                        {.base_path = dir,
-                         .cmd = CBuild::eval_cmd(
-                             std::array<std::string, 4>{file.key, file.data, cmds[0], targs}),
-                         .file = file.key,
-                         .in_file = false}});
-    }
-    // Store in file
-    CBuild::print("Generating compile_commands.json ...", CBuild::color::MAGENTA);
-    CBuild::print("This can breaks if compile_commands.json already exists and "
-                  "this file was not created by CBuild!",
-                  CBuild::color::RED);
-    if (CBuild::fs::exists(this->OUT) == false) {
-        CBuild::print_full("File not found, creating file...");
-        CBuild::fs::create({this->OUT}, CBuild::fs::FILE);
-        std::fstream ccj(this->OUT);
-        ccj << "[\n";
-        for (unsigned int j = 0; j < data.size(); j++) {
-            auto elem = data.at(j);
-            if (j == 0) {
-                ccj << "{";
-            } else {
-                ccj << ",\n{\n";
-            }
-            ccj << (std::string("\t\"directory\": \"") + dir + std::string("\",\n"));
-            ccj << (std::string("\t\"command\": \"") + CBuild::preprocess_json_str(elem.data.cmd) +
-                    std::string("\",\n"));
-            ccj << (std::string("\t\"file\": \"") + elem.data.file + std::string("\"\n"));
-            ccj << "}";
+    if (cmds[0] != std::string("META") && cmds[1] != std::string("META") &&
+        cmds[2] != std::string("META")) {
+        toolchain->call(pargs, true, false, true);
+        auto files = toolchain->gen_file_list_force();
+        auto targs = toolchain->get_compile_args();
+        auto dir = args->get_ptr("curr_path")->data;
+        for (auto file : files) {
+            data.push_back({file.key,
+                            {.base_path = dir,
+                             .cmd = CBuild::eval_cmd(
+                                 std::array<std::string, 4>{file.key, file.data, cmds[0], targs}),
+                             .file = file.key,
+                             .in_file = false}});
         }
-        ccj << "\n]";
-    } else {
-        CBuild::print_full("File found, appending...");
-        CBuild::line_filebuff ccj(this->OUT);
-        ccj.update();
-        int i = 0;
-        try {
-            while (true) {
-                std::string str = ccj.get_line(i);
-                size_t pos = str.find("\"file\":");
-                if (pos != std::string::npos) {
-                    // We find file
-                    size_t st = str.find_first_of('"', pos + 7);
-                    size_t ed = str.find_last_of('"');
-                    std::string fname = str.substr(st + 1, ed - st - 1);
-                    auto elem = data.get_ptr(fname);
-                    if (elem != NULL) {
-                        // File is recompiled, so replace "command"
-                        CBuild::print_full(std::string("Found file \"") + fname +
-                                           std::string("\" that is recompiled, replacing "
-                                                       "\"command\" entry"));
-                        ccj.del_line(i - 1);
-                        ccj.set_line(std::string("\t\"command\": \"") +
-                                         CBuild::preprocess_json_str(elem->data.cmd) +
-                                         std::string("\","),
-                                     i - 1);
-                        // Mark file as processed
-                        elem->data.in_file = true;
-                    }
-                }
-                i++;
-            }
-        } catch (std::exception& e) {
-            // Add coma at the end, no worry about this later
-            ccj.del_line(i - 2);
-            ccj.set_line("},", i - 2);
-            // Check if all files are processed
+        // Store in file
+        CBuild::print("Generating compile_commands.json ...", CBuild::color::MAGENTA);
+        CBuild::print("This can breaks if compile_commands.json already exists and "
+                      "this file was not created by CBuild!",
+                      CBuild::color::RED);
+        if (CBuild::fs::exists(this->OUT) == false) {
+            CBuild::print_full("File not found, creating file...");
+            CBuild::fs::create({this->OUT}, CBuild::fs::FILE);
+            std::fstream ccj(this->OUT);
+            ccj << "[\n";
             for (unsigned int j = 0; j < data.size(); j++) {
                 auto elem = data.at(j);
-                if (elem.data.in_file == false) {
-                    CBuild::print_full(std::string("Found new file: \"") + elem.data.file +
-                                       std::string("\", inserting new entry"));
-                    // If file is not in database - insert entry, we dont need
-                    // to sert in_file tag, because this is last part, where
-                    // data map is valid
-                    ccj.set_line("{", i - 1);
-                    i++;
-                    ccj.set_line(std::string("\t\"directory\": \"") + dir + std::string("\","),
-                                 i - 1);
-                    i++;
-                    ccj.set_line(std::string("\t\"command\": \"") +
-                                     CBuild::preprocess_json_str(elem.data.cmd) +
-                                     std::string("\","),
-                                 i - 1);
-                    i++;
-                    ccj.set_line(std::string("\t\"file\": \"") + elem.data.file + std::string("\""),
-                                 i - 1);
-                    i++;
-                    ccj.set_line("},", i - 1);
+                if (j == 0) {
+                    ccj << "{";
+                } else {
+                    ccj << ",\n{\n";
+                }
+                ccj << (std::string("\t\"directory\": \"") + dir + std::string("\",\n"));
+                ccj << (std::string("\t\"command\": \"") +
+                        CBuild::preprocess_json_str(elem.data.cmd) + std::string("\",\n"));
+                ccj << (std::string("\t\"file\": \"") + elem.data.file + std::string("\"\n"));
+                ccj << "}";
+            }
+            ccj << "\n]";
+        } else {
+            CBuild::print_full("File found, appending...");
+            CBuild::line_filebuff ccj(this->OUT);
+            ccj.update();
+            int i = 0;
+            try {
+                while (true) {
+                    std::string str = ccj.get_line(i);
+                    size_t pos = str.find("\"file\":");
+                    if (pos != std::string::npos) {
+                        // We find file
+                        size_t st = str.find_first_of('"', pos + 7);
+                        size_t ed = str.find_last_of('"');
+                        std::string fname = str.substr(st + 1, ed - st - 1);
+                        auto elem = data.get_ptr(fname);
+                        if (elem != NULL) {
+                            // File is recompiled, so replace "command"
+                            CBuild::print_full(std::string("Found file \"") + fname +
+                                               std::string("\" that is recompiled, replacing "
+                                                           "\"command\" entry"));
+                            ccj.del_line(i - 1);
+                            ccj.set_line(std::string("\t\"command\": \"") +
+                                             CBuild::preprocess_json_str(elem->data.cmd) +
+                                             std::string("\","),
+                                         i - 1);
+                            // Mark file as processed
+                            elem->data.in_file = true;
+                        }
+                    }
                     i++;
                 }
+            } catch (std::exception& e) {
+                // Add coma at the end, no worry about this later
+                ccj.del_line(i - 2);
+                ccj.set_line("},", i - 2);
+                // Check if all files are processed
+                for (unsigned int j = 0; j < data.size(); j++) {
+                    auto elem = data.at(j);
+                    if (elem.data.in_file == false) {
+                        CBuild::print_full(std::string("Found new file: \"") + elem.data.file +
+                                           std::string("\", inserting new entry"));
+                        // If file is not in database - insert entry, we dont need
+                        // to sert in_file tag, because this is last part, where
+                        // data map is valid
+                        ccj.set_line("{", i - 1);
+                        i++;
+                        ccj.set_line(std::string("\t\"directory\": \"") + dir + std::string("\","),
+                                     i - 1);
+                        i++;
+                        ccj.set_line(std::string("\t\"command\": \"") +
+                                         CBuild::preprocess_json_str(elem.data.cmd) +
+                                         std::string("\","),
+                                     i - 1);
+                        i++;
+                        ccj.set_line(std::string("\t\"file\": \"") + elem.data.file +
+                                         std::string("\""),
+                                     i - 1);
+                        i++;
+                        ccj.set_line("},", i - 1);
+                        i++;
+                    }
+                }
+                // Remove comma after last element as per json specs
+                ccj.del_line(i - 2);
+                ccj.set_line("}", i - 2);
+                ccj.update();
             }
-            // Remove comma after last element as per json specs
-            ccj.del_line(i - 2);
-            ccj.set_line("}", i - 2);
-            ccj.update();
         }
     }
 }

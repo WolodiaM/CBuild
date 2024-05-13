@@ -1,8 +1,8 @@
 /**
- * @file projectdep.hpp
+ * @file dependency.hpp
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief CBuild project dependency
- * @date 2024-03-16
+ * @brief Some external dependency. Base class
+ * @date 2024-05-12
  *
  * @copyright (C) 2024 WolodiaM
  * @license GPL v3.0 or later
@@ -22,16 +22,16 @@
 // C++ libraries
 #include "string"
 #include "vector"
-// Project includes
-#include "build/Build.hpp"
-#include "build_data.hpp"
-#include "filesystem++.hpp"
 // Code
-#ifndef __PROJECTDEP_HPP__
-#define __PROJECTDEP_HPP__
+#ifndef __DEPENDENCY_HPP__
+#define __DEPENDENCY_HPP__
 namespace CBuild {
-template <class T>
-concept ToolchainImpl = std::is_base_of<CBuild::Toolchain, T>::value;
-template <ToolchainImpl compiler> class ProjectDependency {};
+class Dependency {
+  public:
+    virtual bool need_prepare() = 0;
+    virtual void prepare() = 0;
+    virtual std::string cargs() = 0;
+    virtual std::string largs() = 0;
+};
 } // namespace CBuild
-#endif // __PROJECTDEP_HPP__
+#endif // __DEPENDENCY_HPP__

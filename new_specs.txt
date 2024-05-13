@@ -1,5 +1,5 @@
 New class CrossCompiler with this methods:
-    CrossCompiler(std::string id, std:;string name) -> Id is global id of build group and name will be propagated to each toolchain
+    CrossCompiler(std::string id, std::string name) -> Id is global id of build group and name will be propagated to each toolchain
     void add_arch_tool(std::string arch, CBuild::Toolchain* toolchain) -> Adds toolchain for new architecture, can be called <group_id>-<arch>
     void add_arch_tool(std::string arch) -> Simmilar to previous function but registers blank toolchain
     CBuild::Toolchain* get_arch_tool(std::string arch) -> Get pointer to one of internal toolchains

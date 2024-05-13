@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['auxilary_2ddocs_0',['auxilary-docs',['../auxilary-docs.html',1,'']]]
+  ['auxilary_20docs_0',['auxilary-docs',['../auxilary-docs.html',1,'']]]
 ];

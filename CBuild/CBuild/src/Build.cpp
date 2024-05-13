@@ -166,6 +166,12 @@ void CBuild::Toolchain::set_hasher(CBuild::Hash* hasher) {
 void CBuild::Toolchain::set_name(std::string name) {
     this->name = name;
 }
+void CBuild::Toolchain::set_id(std::string id) {
+    this->id = id;
+}
+void CBuild::Toolchain::add_external_dependency(CBuild::Dependency* dep) {
+    this->dependency_list.push_back(dep);
+}
 /* Build.hpp - files */
 void CBuild::Toolchain::add_file(std::string path) {
     // If path is non-empty
@@ -503,12 +509,15 @@ void CBuild::Toolchain::compile(std::string str) {
 }
 void CBuild::Toolchain::stdargs() {
     if (!this->stdargs_lock) {
+        // Sometimes binaryes gcc throws error if this option is not set when linking to shared
+        // library
+        this->compiler_args.push_back("-fPIC");
+        this->link_args.push_back("-fPIC");
         // Some standart compile and link args
         this->add_compile_arg("-I" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_HEADERS);
         this->add_link_arg("-L" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR);
         // Special link tag for dynamick libraries
         if (this->build_type == CBuild::DYNAMIC_LIBRARY) {
-            this->compiler_args.push_back("-fPIC");
             this->link_args.push_back("-shared");
         }
         // For packing in deb fomat
@@ -551,13 +560,24 @@ void CBuild::Toolchain::stdargs() {
             this->add_link_arg(info.largs);
             this->add_compile_arg(info.cargs);
         }
-        // Set lock
+        // External dependencies
+        for (auto dep : this->dependency_list) {
+            this->add_link_arg(dep->largs());
+            this->add_compile_arg(dep->cargs());
+        } // Set lock
         this->stdargs_lock = true;
     }
 }
 /* Build.hpp - main */
 void CBuild::Toolchain::call(std::vector<std::string>* args, bool force, bool debug, bool dummy) {
     CBuild::print("Starting " + this->id + " toolchain in build mode ", CBuild::color::RED);
+    // Load all deps
+    CBuild::print("Trying to load required dependencies...", CBuild::GREEN);
+    for (auto dep : this->dependency_list) {
+        if (dep->need_prepare()) {
+            dep->prepare();
+        }
+    }
     // Save scratch variables
     this->args = args;
     this->force = force;
