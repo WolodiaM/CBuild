@@ -1,2 +1,0 @@
-libcbuild: package-name-doesnt-match-sonames
-libcbuild: no-shlibs-control-file
