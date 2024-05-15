@@ -1,3 +1,24 @@
+cbuild (13.3) stable; urgency=high
+
+  [WolodiaM]
+  * Bugfixes
+
+ -- WolodiaM <w_melnyk@outlook.com>  Wed, 15 May 2024 11:22:40 +0200
+
+cbuild (13.2) stable; urgency=high
+
+  [WolodiaM]
+  * Bugfix in CBuild::CBuildDependency
+
+ -- WolodiaM <w_melnyk@outlook.com>  Mon, 13 May 2024 19:19:05 +0200
+
+cbuild (13.1) stable; urgency=high
+
+  [WolodiaM]
+  * Added new function to CBuild::NetDependency
+
+ -- WolodiaM <w_melnyk@outlook.com>  Mon, 13 May 2024 16:46:48 +0200
+
 cbuild (13.0) stable; urgency=high
 
   [WolodiaM]

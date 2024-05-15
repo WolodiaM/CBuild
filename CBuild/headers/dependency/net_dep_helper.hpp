@@ -34,14 +34,25 @@ namespace CBuild {
 class NetDependency : public CBuild::Dependency {
   protected:
     void git_fetch(std::string server, std::string repo) {
-        std::string repo_path;
+        std::string repo_path = repo;
         while (repo_path.find("/") != std::string::npos) {
             repo_path.replace(repo_path.find("/"), std::string("/").size(), "_");
         }
         CBuild::fs::remove(CBUILD_CACHE_DIR + "/" + repo_path, true);
         CBuild::fs::create({CBUILD_CACHE_DIR + "/" + repo_path}, CBuild::fs::DIR);
-        CBuild::system("cd " + CBUILD_CACHE_DIR + "/" + repo_path + " && git clone --recursive " +
-                       server + "/" + repo);
+        CBuild::system("cd " + CBUILD_CACHE_DIR + "/" + repo_path +
+                       " && git clone --depth 1 --recursive " + server + "/" + repo + " .");
+    }
+    void git_fetch_branch(std::string server, std::string repo, std::string branch) {
+        std::string repo_path = repo;
+        while (repo_path.find("/") != std::string::npos) {
+            repo_path.replace(repo_path.find("/"), std::string("/").size(), "_");
+        }
+        CBuild::fs::remove(CBUILD_CACHE_DIR + "/" + repo_path, true);
+        CBuild::fs::create({CBUILD_CACHE_DIR + "/" + repo_path}, CBuild::fs::DIR);
+        CBuild::system("cd " + CBUILD_CACHE_DIR + "/" + repo_path +
+                       " && git clone --depth 1 --recursive --branch " + branch + " " + server +
+                       "/" + repo + " .");
     }
     void file_fetch(std::string url, std::string file, std::string args = "") {
         CBuild::system("curl " + args + " -o " + file + " " + url);

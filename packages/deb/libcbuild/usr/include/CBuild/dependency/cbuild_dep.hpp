@@ -67,7 +67,9 @@ class CBuildDependency : public CBuild::Dependency {
         return ("-L" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR + " -l" +
                 meta.out.substr(meta.out.find_last_of("/") + 4,
                                 (meta.out.length() - (meta.out.find_last_of("/") + 4) -
-                                 (meta.out.length() - meta.out.find_last_of(".")))));
+                                 (meta.out.length() - meta.out.find_last_of(".")))) +
+                " -Wl,rpath,\"\\$ORIGIN/../../" + CBUILD_CACHE_DIR + "/" + CBUILD_PROJECT_DEPS_DIR +
+                "\"");
     }
     void prepare() override {
         CBuild::print("Running prepare() for dependency \"" + this->target_id + "\"", CBuild::RED);
