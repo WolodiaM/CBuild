@@ -233,6 +233,7 @@ class pack_deb : public pack_base {
                        "/libcbuild/usr/include/CBuild/task/CBuild_help_task.hpp");
         CBuild::system("chmod +x " + this->work_folder + "/libcbuild/usr/bin/CBuild_update");
         CBuild::system("chmod +x " + this->work_folder + "/libcbuild/usr/bin/CBuild_init");
+        CBuild::system("chmod +x " + this->work_folder + "/libcbuild/usr/bin/CBuild_rebuild");
         CBuild::system("chmod 0755 " + this->work_folder + "/libcbuild/usr/include/CBuild/build/");
         CBuild::system("chmod 0755 " + this->work_folder + "/libcbuild/usr/include/CBuild/task/");
         CBuild::system("chmod 0755 " + this->work_folder +
