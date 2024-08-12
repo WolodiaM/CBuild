@@ -55,7 +55,7 @@ body .repo{
     padding-top: 2%;
     padding-bottom: 2%;
 }
-body .sourceforge :focus {
+body .repo :focus {
     outline-style: none;
 }
 /* Wiki link */
