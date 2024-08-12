@@ -59,3 +59,5 @@ void init()
 It uses g++ as compiler, and c++20.
 
 # [Other info](info.md)
+
+# [Wiki](https://cbuild-cbuild-6a7edd0dc353adb660cabadb1441d4857ad961548b17b2e89.gitlab.io/)
