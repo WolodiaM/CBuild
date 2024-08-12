@@ -22,7 +22,7 @@ fi
 echo "Selected version: ${LATEST_VERSION}"
 # Get file from repo
 ERR=$(curl -s -w "%{http_code}" -o "${CACHE_DIR}/${CACHE_DEB_FILE}" "https://gitlab.com/cbuild/cbuild/-/raw/master/packages/ppa/ubuntu/li
-bcbuild-${LATEST_VERSION}.deb"")
+bcbuild-${LATEST_VERSION}.deb")
 if [[ "$ERR" -ne "200" ]]; then
     echo "Error: File with version ${LATEST_VERSION} is not there";
     rm -rf $CACHE_DIR;
