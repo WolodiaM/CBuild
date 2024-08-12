@@ -16,12 +16,13 @@ mkdir -p $CACHE_DIR
 if [ -n "$1" ]; then
     LATEST_VERSION="$1"
 else
-    curl -s -o "$CACHE_DIR/$CACHE_VER_FILE" "https://cbuild.sourceforge.io/ppa/ubuntu/version"
+    curl -s -o "$CACHE_DIR/$CACHE_VER_FILE" "https://gitlab.com/cbuild/cbuild/-/raw/master/packages/ppa/ubuntu/version?ref_type=heads"
     LATEST_VERSION=$(cat "$CACHE_DIR/$CACHE_VER_FILE" | sed -E 's/^([0-9]+\.[0-9]+)v$/\1/')
 fi
 echo "Selected version: ${LATEST_VERSION}"
 # Get file from repo
-ERR=$(curl -s -w "%{http_code}" -o "$CACHE_DIR/$CACHE_DEB_FILE" "https://cbuild.sourceforge.io/ppa/ubuntu/libcbuild-${LATEST_VERSION}.deb")
+ERR=$(curl -s -w "%{http_code}" -o "${CACHE_DIR}/${CACHE_DEB_FILE}" "https://gitlab.com/cbuild/cbuild/-/raw/master/packages/ppa/ubuntu/li
+bcbuild-${LATEST_VERSION}.deb"")
 if [[ "$ERR" -ne "200" ]]; then
     echo "Error: File with version ${LATEST_VERSION} is not there";
     rm -rf $CACHE_DIR;
