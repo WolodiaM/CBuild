@@ -2,10 +2,10 @@
 image: debian:bookworm-slim
 # Functions that should be executed before the build script is run
 before_script:
-  - ":"
+  - mkdir public
 pages:
   script:
-    - cp doxygen/* public
+    -  cp doxygen/* public
   artifacts:
     paths:
       # The folder that contains the files to be exposed at the Page URL
