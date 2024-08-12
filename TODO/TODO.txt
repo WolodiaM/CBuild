@@ -1,3 +1,4 @@
 -? Add better logging
--  Add docs for emebeding recomp script and some hacks used in CBuild buildscript
 -! Disable linking if no object files changed
+- Implement new_specs.txt
+- Mgrate to GitLab
