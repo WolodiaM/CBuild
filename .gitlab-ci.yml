@@ -3,7 +3,7 @@ image: debian:bookworm-slim
 # Functions that should be executed before the build script is run
 before_script:
   - apt update
-  - apt install doxygen
+  - apt -y install doxygen
   - mkdir public
 pages:
   script:
