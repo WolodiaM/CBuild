@@ -5,7 +5,7 @@ before_script:
   - mkdir public
 pages:
   script:
-    -  cp doxygen/* public
+    -  cp -r doxygen/* public
   artifacts:
     paths:
       # The folder that contains the files to be exposed at the Page URL
