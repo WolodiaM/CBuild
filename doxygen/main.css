@@ -46,7 +46,7 @@ body .doxygen :focus {
     outline-style: none;
 }
 /* SourceForge link */
-body .sourceforge {
+body .repo{
     /* Image size */
     width: 50%;
     height: auto;
