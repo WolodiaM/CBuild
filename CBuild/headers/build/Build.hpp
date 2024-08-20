@@ -104,6 +104,10 @@ class Toolchain {
      */
     std::string packer;
     /**
+     * @brief Used debuuger, need to support providing executable name as first positional argument
+     */
+    std::string debuuger;
+    /**
      * @brief Type of build
      */
     CBuild::build_type build_type;

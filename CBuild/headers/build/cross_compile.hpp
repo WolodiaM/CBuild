@@ -29,6 +29,12 @@
 #ifndef __CROSS_COMPILE_HPP__
 #define __CROSS_COMPILE_HPP__
 namespace CBuild {
+/**
+ * @class CrossCompiler
+ * @brief Toolchain that wraps multiple other toolchain to support cross compilation
+ * @deprecated Not implement for now
+ *
+ */
 class CrossCompiler {
   protected:
     /**

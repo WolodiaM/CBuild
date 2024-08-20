@@ -701,7 +701,7 @@ void CBuild::Toolchain::debug(std::vector<std::string>* args, std::vector<std::s
                   CBuild::RED);
     // Build in debug mode
     this->call(args, true, true);
-    CBuild::print("Running builded app with gdb ", CBuild::GREEN);
+    CBuild::print("Running built app with debugger ", CBuild::GREEN);
     std::string ppargs = "";
     if (pargs != NULL) {
         for (auto elem : *pargs) {
@@ -710,13 +710,13 @@ void CBuild::Toolchain::debug(std::vector<std::string>* args, std::vector<std::s
         }
     }
     // Construct command
-    std::string cmd;
-    cmd = "gdb ";
+    std::string cmd = this->debuuger;
+    cmd += " ";
     cmd += this->gen_out_name();
     cmd += " ";
     cmd += ppargs;
-    // Call gdb on app
-    CBuild::print("Now you can see gdb shell ", CBuild::MAGENTA);
+    // Call debugger on app
+    CBuild::print("Now you can see debugger shell ", CBuild::MAGENTA);
     CBuild::system(cmd);
     CBuild::print("End of app execution", CBuild::RED);
 }
