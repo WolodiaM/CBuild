@@ -1,0 +1,50 @@
+# Wiki name
+site_name: CBuild wiki
+
+# CBuild repository
+repo_url: https://gitlab.com/cbuild/cbuild
+repo_name: "CBuild"
+edit_uri: edit/master/doxygen/wiki/docs/
+
+# About wiki
+site_description: 'Wiki for CBuild build system for c++'
+site_author: 'WolodiaM'
+copyright: 'GFDL-1.3-or-later'
+
+# More warnings
+validation:
+  omitted_files: warn
+  absolute_links: warn  # Or 'relative_to_docs' - new in MkDocs 1.6
+  unrecognized_links: warn
+  anchors: warn
+
+# Wiki theme
+theme:
+  name: mkdocs
+  locale: en
+  color_mode: auto
+  user_color_mode_toggle: true
+  hljs_languages:
+    - cpp
+    - c
+    - bash
+    - sh
+  shortcuts:
+    help: 191    # ?
+    next: 78     # n
+    previous: 80 # p
+    search: 83   # s
+
+# Build directories
+docs_dir: doxygen/wiki/docs/
+site_dir: doxygen/wiki/site/
+
+# Navigation bar
+nav:
+  - 'Home': 'index.md'
+  - 'Doxygen documentation': '/doxygen/index.html'
+  - 'License':
+    - 'Wiki License': 'https://www.gnu.org/licenses/fdl-1.3.html'
+    - 'Code License': 'https://www.gnu.org/licenses/gpl-3.0.html'
+  - 'Info':
+    - 'Project information': 'info/info.md'
