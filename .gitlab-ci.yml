@@ -1,14 +1,14 @@
 # The Docker image that will be used to build your app
-image: debian:bookworm-slim
+image: alpine:edge
 # Functions that should be executed before the build script is run
 before_script:
-  - apt update
-  - apt -y install doxygen
+  - apk update
+  - apk add doxygen
   - mkdir public
 pages:
   script:
     - doxygen doxygen.conf
-    -  cp -r doxygen/* public
+    - cp -r doxygen/* public
   artifacts:
     paths:
       # The folder that contains the files to be exposed at the Page URL
