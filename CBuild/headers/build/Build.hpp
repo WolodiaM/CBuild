@@ -58,7 +58,6 @@ typedef enum { EXECUTABLE, STATIC_LIBRARY, DYNAMIC_LIBRARY } build_type;
  */
 template <class T>
 concept HashImpl = std::is_base_of<CBuild::Hash, T>::value;
-typedef struct ToolState {};
 /**
  * @brief Toolchain class
  */

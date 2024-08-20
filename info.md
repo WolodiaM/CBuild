@@ -29,12 +29,12 @@ mingw debugger
         * gzip
         * dpkg-deb
 # Sizes of files
- * All (except .git/ .vscode/ build/ cache/) - 39M
- * Source code (update.sh + rebuild.sh + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/ + project_init.sh.template + update.sh) - 564K
+ * All (except .git/ .vscode/ build/ cache/) - 40M
+ * Source code (sh/ + CBuild/headers/ + CBuild/tmp/ + CBuild/CBuild/src/ + project_init.sh.template + update.sh) - 564K
  * Build script (build.sh + CBuild.run + scripts/ ) - 396K
  * libCBuild.so (without -g) - 2.2M
  * packages/deb folder - 2.4M
- * packages/ppa/ubuntu folder - 18M
+ * packages/ppa/ubuntu folder - 19M
  * doxygen folder + doxygen.conf - 12M  
  * template size - 688K   
 All sizes are generated using `du -hcs <folder/file0> <folder/file1> ...`

@@ -28,9 +28,28 @@
 namespace CBuild {
 class Dependency {
   public:
+    /**
+     * @brief Check if this dependency need to be rebuild (call to prepare())
+     *
+     * @return true -> Need
+     * @return false -> Dont need
+     */
     virtual bool need_prepare() = 0;
+    /**
+     * @brief Build dependency
+     */
     virtual void prepare() = 0;
+    /**
+     * @brief Get compiler arguments to link to this dependency
+     *
+     * @return std::string -> List of arguments in one line
+     */
     virtual std::string cargs() = 0;
+    /**
+     * @brief Get linker arguments to link to this dependency
+     *
+     * @return std::string -> List of arguments in one line
+     */
     virtual std::string largs() = 0;
 };
 } // namespace CBuild

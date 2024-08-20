@@ -1,4 +1,4 @@
 -? Add better logging
 -! Disable linking if no object files changed
 - Implement new_specs.txt
-- Mgrate to GitLab
+- Remove ubuntu package and simply build custom repo (still use dpkg because it is avauilable everywhere)

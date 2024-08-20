@@ -574,7 +574,7 @@ void CBuild::Toolchain::call(std::vector<std::string>* args, bool force, bool de
     // Load all deps
     CBuild::print("Trying to load required dependencies...", CBuild::GREEN);
     for (auto dep : this->dependency_list) {
-        if (dep->need_prepare()) {
+        if (dep->need_prepare() || force) {
             dep->prepare();
         }
     }
@@ -724,3 +724,4 @@ void CBuild::Toolchain::clear() {
     // Simple clear though shell ;)
     CBuild::system(std::string("rm -r ") + CBUILD_BUILD_DIR + "/" + this->id);
 }
+/* Build.hpp - Misk */
