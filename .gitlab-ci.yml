@@ -3,7 +3,7 @@ image: alpine:edge
 # Functions that should be executed before the build script is run
 before_script:
   - apk update
-  - apk add doxygen
+  - apk add doxygen pandoc-cli
   - mkdir public
 pages:
   script:
