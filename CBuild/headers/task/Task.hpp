@@ -60,5 +60,10 @@ class Task {
      */
     std::vector<std::string> self_required();
 };
+/**
+ * @brief Task implementation
+ */
+template <class T>
+concept TaskImpl = std::is_base_of<CBuild::Task, T>::value;
 } // namespace CBuild
 #endif // __CBUILD_TASK_HPP__

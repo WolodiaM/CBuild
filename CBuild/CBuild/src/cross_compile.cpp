@@ -128,90 +128,90 @@ class ConfigToolchain : public CBuild::Toolchain {
         this->type_set = true;
         this->build_type = type;
     }
-    void clone_config(CBuild::Toolchain* tool) {
+    void clone_config(CBuild::Toolchain* target) {
         for (auto carg : this->compiler_args) {
-            tool->add_compile_arg(carg);
+            target->add_compile_arg(carg);
         }
         for (auto larg : this->link_args) {
-            tool->add_link_arg(larg);
+            target->add_link_arg(larg);
         }
         for (auto pdep : this->project_deps) {
-            tool->depends_on_project(pdep.path, pdep.name, pdep.id, pdep.headers_path);
+            target->depends_on_project(pdep.path, pdep.name, pdep.id, pdep.headers_path);
         }
         for (auto cdep : this->depends) {
-            tool->depends_on(cdep);
+            target->depends_on(cdep);
         }
         for (auto tdep : this->required) {
-            tool->add_requirment(tdep.key, tdep.data);
+            target->add_requirment(tdep.key, tdep.data);
         }
         for (auto pkgcdep : this->pkg_config_include_entries) {
-            tool->add_pkgconfig_entry(pkgcdep);
+            target->add_pkgconfig_entry(pkgcdep);
         }
         for (auto edep : this->dependency_list) {
-            tool->add_external_dependency(edep);
+            target->add_external_dependency(edep);
         }
         for (auto comp : this->targets) {
             if (comp.folder) {
-                tool->add_folder(comp.path);
+                target->add_folder(comp.path);
             } else {
-                tool->add_file(comp.path);
+                target->add_file(comp.path);
             }
         }
         if (this->hasher != NULL) {
-            tool->set_hasher(this->hasher);
+            target->set_hasher(this->hasher);
         }
         if (this->type_set) {
-            tool->set_type(this->build_type);
+            target->set_type(this->build_type);
         }
         if (this->vmajor_set) {
-            tool->set_version_major(this->version_major);
+            target->set_version_major(this->version_major);
         }
     }
 };
 class MetaToolchain : public CBuild::Toolchain {
   private:
     CBuild::CrossCompiler* parent;
-    std::string default_tool;
-    bool default_tool_set;
+    std::string default_target;
+    bool default_target_set;
 
   public:
     MetaToolchain(CBuild::CrossCompiler* parent) {
         this->parent = parent;
-        this->default_tool = "";
-        this->default_tool_set = false;
+        this->default_target = "";
+        this->default_target_set = false;
     }
     void build() override {}
     void link() override {}
     void link_pack() override {}
     void load_project_deps(std::string curr_path) override {
-        CBuild::print(std::string("Showing toolchain selector:"), CBuild::MAGENTA);
-        auto toollist = this->parent->get_toolchain_list();
+        CBuild::print(std::string("Showing target selector:"), CBuild::MAGENTA);
+        auto tlist = this->parent->get_target_list();
         size_t i = 0;
-        for (; i < toollist.size(); i++) {
-            CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, toollist.at(i).c_str());
+        for (; i < tlist.size(); i++) {
+            CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, tlist.at(i).c_str());
         }
-        CBuild::printf(CBuild::MAGENTA, "Enter desired toolchain id [0-%lu]: ", (i - 1));
+        CBuild::printf(CBuild::MAGENTA, "Enter desired targett id [0-%lu]: ", (i - 1));
         size_t val;
         scanf("%lu", &val);
         if (val >= i) {
-            CBuild::print("Error, toolchain id overflow. Exiting...", CBuild::RED);
+            CBuild::print("Error, target id overflow. Exiting...", CBuild::RED);
         }
-        this->parent->get_arch_tool(toollist.at(val))->load_project_deps(curr_path);
+        this->parent->get_arch_target(tlist.at(val))->load_project_deps(curr_path);
     }
     void run(std::vector<std::string>* args) override {
-        CBuild::print(std::string("Showing toolchain selector:"), CBuild::MAGENTA);
-        auto toollist = this->parent->get_toolchain_list();
+        CBuild::print(std::string("Showing targetsselector:"), CBuild::MAGENTA);
+        auto tlist = this->parent->get_target_list();
         size_t i = 0;
-        for (; i < toollist.size(); i++) {
-            CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, toollist.at(i).c_str());
+        for (; i < tlist.size(); i++) {
+            CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, tlist.at(i).c_str());
         }
-        CBuild::printf(CBuild::MAGENTA, "Enter desired toolchain id [0-%lu]: ", (i - 1));
+        CBuild::printf(CBuild::MAGENTA, "Enter desired target id [0-%lu]: ", (i - 1));
         size_t val;
         scanf("%lu", &val);
         if (val >= i) {
-            CBuild::print("Error, toolchain id overflow. Exiting...", CBuild::RED);
+            CBuild::print("Error, target id overflow. Exiting...", CBuild::RED);
         }
-        this->parent->get_arch_tool(toollist.at(val))->run(args);
+        this->parent->get_arch_target(tlist.at(val))->run(args);
     }
     void call(std::vector<std::string>* args, bool force = false, bool debug = false,
               bool dummy = false) override {
@@ -225,26 +225,26 @@ class MetaToolchain : public CBuild::Toolchain {
             }
         }
         if (dummy == false) {
-            if (this->default_tool_set && !select) {
-                CBuild::print(std::string("Redirecting to default toolchain \"") +
-                                  this->default_tool + std::string("\"."),
+            if (this->default_target_set && !select) {
+                CBuild::print(std::string("Redirecting to default target\"") +
+                                  this->default_target + std::string("\"."),
                               CBuild::MAGENTA);
-                this->parent->get_arch_tool(this->default_tool)
+                this->parent->get_arch_target(this->default_target)
                     ->call(&new_args, force, debug, false);
             } else {
-                CBuild::print(std::string("Showing toolchain selector:"), CBuild::MAGENTA);
-                auto toollist = this->parent->get_toolchain_list();
+                CBuild::print(std::string("Showing target selector:"), CBuild::MAGENTA);
+                auto tlist = this->parent->get_target_list();
                 size_t i = 0;
-                for (; i < toollist.size(); i++) {
-                    CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, toollist.at(i).c_str());
+                for (; i < tlist.size(); i++) {
+                    CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, tlist.at(i).c_str());
                 }
-                CBuild::printf(CBuild::MAGENTA, "Enter desired toolchain id [0-%lu]: ", (i - 1));
+                CBuild::printf(CBuild::MAGENTA, "Enter desired target id [0-%lu]: ", (i - 1));
                 size_t val;
                 scanf("%lu", &val);
                 if (val >= i) {
-                    CBuild::print("Error, toolchain id overflow. Exiting...", CBuild::RED);
+                    CBuild::print("Error, target id overflow. Exiting...", CBuild::RED);
                 }
-                this->parent->get_arch_tool(toollist.at(val))->call(&new_args, force, debug, false);
+                this->parent->get_arch_target(tlist.at(val))->call(&new_args, force, debug, false);
             }
         }
     }
@@ -258,49 +258,49 @@ class MetaToolchain : public CBuild::Toolchain {
                 new_args.push_back(arg);
             }
         }
-        if (this->default_tool_set && !select) {
-            CBuild::print(std::string("Redirecting to default toolchain \"") + this->default_tool +
+        if (this->default_target_set && !select) {
+            CBuild::print(std::string("Redirecting to default target\"") + this->default_target +
                               std::string("\"."),
                           CBuild::MAGENTA);
-            this->parent->get_arch_tool(this->default_tool)->debug(&new_args, pargs);
+            this->parent->get_arch_target(this->default_target)->debug(&new_args, pargs);
         } else {
         select:
-            CBuild::print(std::string("Showing toolchain selector:"), CBuild::MAGENTA);
-            auto toollist = this->parent->get_toolchain_list();
+            CBuild::print(std::string("Showing target selector:"), CBuild::MAGENTA);
+            auto tlist = this->parent->get_target_list();
             size_t i = 0;
-            for (; i < toollist.size(); i++) {
-                CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, toollist.at(i).c_str());
+            for (; i < tlist.size(); i++) {
+                CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, tlist.at(i).c_str());
             }
-            CBuild::printf(CBuild::MAGENTA, "Enter desired toolchain id [0-%lu]: ", (i - 1));
+            CBuild::printf(CBuild::MAGENTA, "Enter desired target id [0-%lu]: ", (i - 1));
             size_t val;
             scanf("%lu", &val);
             if (val >= i) {
-                CBuild::print("Error, toolchain id overflow. Exiting...", CBuild::RED);
+                CBuild::print("Error, target id overflow. Exiting...", CBuild::RED);
             }
-            this->parent->get_arch_tool(toollist.at(val))->debug(&new_args, pargs);
+            this->parent->get_arch_target(tlist.at(val))->debug(&new_args, pargs);
         }
     }
     void clear() override {
-        CBuild::print(std::string("Showing toolchain selector:"), CBuild::MAGENTA);
-        auto toollist = this->parent->get_toolchain_list();
+        CBuild::print(std::string("Showing target selector:"), CBuild::MAGENTA);
+        auto tlist = this->parent->get_target_list();
         size_t i = 0;
-        for (; i < toollist.size(); i++) {
-            CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, toollist.at(i).c_str());
+        for (; i < tlist.size(); i++) {
+            CBuild::printf(CBuild::WHITE, "\t%lu => %s\n", i, tlist.at(i).c_str());
         }
-        CBuild::printf(CBuild::MAGENTA, "Enter desired toolchain id [0-%lu]: ", (i - 1));
+        CBuild::printf(CBuild::MAGENTA, "Enter desired target id [0-%lu]: ", (i - 1));
         size_t val;
         scanf("%lu", &val);
         if (val >= i) {
-            CBuild::print("Error, toolchain id overflow. Exiting...", CBuild::RED);
+            CBuild::print("Error, target id overflow. Exiting...", CBuild::RED);
         }
-        this->parent->get_arch_tool(toollist.at(val))->clear();
+        this->parent->get_arch_target(tlist.at(val))->clear();
     }
     std::array<std::string, 3> get_cmds() override {
         return std::array<std::string, 3>{"META", "META", "META"};
     }
-    void set_default_tool(std::string arch) {
-        this->default_tool = arch;
-        this->default_tool_set = true;
+    void set_default_target(std::string arch) {
+        this->default_target = arch;
+        this->default_target_set = true;
     }
 };
 } // namespace CBuild
@@ -311,17 +311,17 @@ CBuild::CrossCompiler::CrossCompiler(std::string id, std::string name) {
     this->meta_config = new CBuild::ConfigToolchain();
     this->meta_toolchain = new CBuild::MetaToolchain(this);
 }
-std::vector<std::string> CBuild::CrossCompiler::get_toolchain_list() {
+std::vector<std::string> CBuild::CrossCompiler::get_target_list() {
     std::vector<std::string> ret;
-    for (auto arch : this->toolchain_list) {
+    for (auto arch : this->target_list) {
         ret.push_back(arch.int_id);
     }
     return ret;
 }
-CBuild::Toolchain* CBuild::CrossCompiler::get_arch_tool(std::string id) {
-    for (auto arch : this->toolchain_list) {
+CBuild::Toolchain* CBuild::CrossCompiler::get_arch_target(std::string id) {
+    for (auto arch : this->target_list) {
         if (arch.int_id == id) {
-            return arch.tool;
+            return arch.target;
         }
     }
     return NULL;
@@ -329,29 +329,29 @@ CBuild::Toolchain* CBuild::CrossCompiler::get_arch_tool(std::string id) {
 CBuild::Toolchain* CBuild::CrossCompiler::get_global_config() {
     return this->meta_config;
 }
-void CBuild::CrossCompiler::set_default_tool(std::string arch) {
-    ((CBuild::MetaToolchain*)this->meta_toolchain)->set_default_tool(arch);
+void CBuild::CrossCompiler::set_default_target(std::string arch) {
+    ((CBuild::MetaToolchain*)this->meta_toolchain)->set_default_target(arch);
 }
-void CBuild::CrossCompiler::add_arch_tool(std::string id, CBuild::Toolchain* tool) {
-    this->toolchain_list.push_back(
-        (CBuild::CrossCompiler::ToolData){.int_id = id, .tool = tool, .internally_managed = false});
-    tool->set_id(this->meta_id + "-" + id);
-    tool->set_name(this->meta_name);
+void CBuild::CrossCompiler::add_arch_target(std::string id, CBuild::Toolchain* target) {
+    this->target_list.push_back((CBuild::CrossCompiler::ToolData){
+        .int_id = id, .target = target, .internally_managed = false});
+    target->set_id(this->meta_id + "-" + id);
+    target->set_name(this->meta_name);
 }
-void CBuild::CrossCompiler::add_arch_tool(std::string id) {
-    this->toolchain_list.push_back((CBuild::CrossCompiler::ToolData){
+void CBuild::CrossCompiler::add_arch_target(std::string id) {
+    this->target_list.push_back((CBuild::CrossCompiler::ToolData){
         .int_id = id,
-        .tool = new CBuild::SimpleToolchain(this->meta_id + "-" + id, this->meta_name),
+        .target = new CBuild::SimpleToolchain(this->meta_id + "-" + id, this->meta_name),
         .internally_managed = true});
 }
 void CBuild::CrossCompiler::perform_registry() {
-    for (auto t : this->toolchain_list) {
-        CBuild::Registry::RegisterTarget(t.tool);
+    for (auto t : this->target_list) {
+        CBuild::Registry::RegisterTarget(t.target);
     }
     CBuild::Registry::RegisterTarget(this->meta_toolchain);
 }
 void CBuild::CrossCompiler::apply_global_config() {
-    for (auto [id, tool, flag] : this->toolchain_list) {
-        ((CBuild::ConfigToolchain*)this->meta_config)->clone_config(tool);
+    for (auto [id, target, flag] : this->target_list) {
+        ((CBuild::ConfigToolchain*)this->meta_config)->clone_config(target);
     }
 }

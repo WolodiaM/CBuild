@@ -43,13 +43,13 @@ class CrossCompiler {
      */
     struct ToolData {
         std::string int_id;
-        CBuild::Toolchain* tool;
+        CBuild::Toolchain* target;
         bool internally_managed;
     };
     /**
-     * @brief List of internal toolchains
+     * @brief List of internal targets
      */
-    std::vector<CBuild::CrossCompiler::ToolData> toolchain_list;
+    std::vector<CBuild::CrossCompiler::ToolData> target_list;
     /**
      * @brief Global configuration
      */
@@ -76,25 +76,25 @@ class CrossCompiler {
      */
     CrossCompiler(std::string id, std::string name);
     /**
-     * @brief Create new architecture dependant tool
+     * @brief Create new architecture dependant target
      *
      * @param id => std::string -> Id of tool
-     * @param tool => CBuild::Toolchain* -> Preconfigured toolchain
+     * @param target => CBuild::Toolchain* -> Preconfigured target
      */
-    void add_arch_tool(std::string id, CBuild::Toolchain* tool);
+    void add_arch_target(std::string id, CBuild::Toolchain* target);
     /**
-     * @brief Create new architecture dependant tool, toolchain instance will be created
+     * @brief Create new architecture dependant target, target instance will be created
      *
-     * @param id => std::string -> Id of tool
+     * @param id => std::string -> Id of target
      */
-    void add_arch_tool(std::string id);
+    void add_arch_target(std::string id);
     /**
-     * @brief Get toolchain for specific arch
+     * @brief Get target for specific arch
      *
-     * @param id => std::string -> Id of needed toolchain
-     * @return CBuild::Toolchain* -> Toolchain pointer
+     * @param id => std::string -> Id of needed target
+     * @return CBuild::Toolchain* -> Target pointer
      */
-    CBuild::Toolchain* get_arch_tool(std::string id);
+    CBuild::Toolchain* get_arch_target(std::string id);
     /**
      * @brief Register all internal toolchains
      */
@@ -111,24 +111,24 @@ class CrossCompiler {
      */
     void apply_global_config();
     /**
-     * @brief Set default toolchain
+     * @brief Set default target
      *
      * @param arch => std::string -> Id of default toolchain
      */
-    void set_default_tool(std::string arch);
+    void set_default_target(std::string arch);
     /**
-     * @brief Get list of sub-toolchains in this collection (skips config and meta-toolchain)
+     * @brief Get list of sub-target in this collection (skips config and meta-toolchain)
      *
-     * @returns std::vector<std::string> -> List of intel toolchain id's
+     * @returns std::vector<std::string> -> List of internal target id's
      */
-    std::vector<std::string> get_toolchain_list();
+    std::vector<std::string> get_target_list();
     /**
      * @brief Destructor for this class
      */
     ~CrossCompiler() {
-        for (auto tool : this->toolchain_list) {
-            if (tool.internally_managed) {
-                delete tool.tool;
+        for (auto target : this->target_list) {
+            if (target.internally_managed) {
+                delete target.target;
             }
         }
         delete this->meta_config;

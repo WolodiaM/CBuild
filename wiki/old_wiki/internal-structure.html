@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link href="main.css" rel="stylesheet" type="text/css" />
+    <title>CBuild wiki</title>
+</head>
+
+<body>
+    <!--Title-->
+    <div class="title">CBuild wiki: Internal structure of CBuild</div>
+    <div class="title-line">
+        <hr />
+    </div>
+    <!--File structure of CBuild scripts-->
+    <div class="file-tree-head">
+        <h6>CBuild project file structure</h6>
+    </div>
+    <div class="file-tree">
+        <p>This project feathures two build targets and simple script with no additional files.</p>
+        <hr />
+        <pre>
+    project-root/
+    ├── build                       // Build output and build data
+    │   ├── &lt;target&gt;
+    │   │   ├── &lt;target&gt.meta  // Target metadata file
+    │   │   ├── hash
+    │   │   │   └── hash            // File hashes, old, before version 11.0
+    │   │   ├── config              // Metadata for a files of this toolchain
+    │   │   │   └── &lt;target&gt;_src.main.meta
+    │   │   ├── objs                // Caches objects
+    │   │   │   └── &lt;target&gt;_src.main.o
+    │   │   └── out                 // Output binary
+    │   │       └── &lt;Target_name&gt;.so
+    │   └── &lt;other_target&gt;
+    │       ├── &lt;other_target&gt.meta  // Target metadata file
+    │       ├── hash
+    │       │   └── hash            // File hashes, old, before version 11.0
+    │       ├── config              // Metadata for a files of this toolchain
+    │       │   └── &lt;other_target&gt;_src.main.meta
+    │       ├── objs                // Caches objects
+    │       │   └── &lt;other_target&gt;_src.main.o
+    │       └── out                 // Output binary
+    │           └── &lt;Other_target_name&gt;.so
+    ├── cache                       // Temporary data for CBuild runtime
+    │   ├── headers
+    │   ├── libs
+    │   └── tmp
+    ├── CBuild.run
+    ├── compile_commands.json
+    ├── scripts
+    │   ├── main.cpp                // CBuild loader, main.cpp of CBuild
+    │   ├── user_init.cpp           // User scripts
+    │   └── user_init.hpp           // Header to call user funcs from CBuild main.cpp
+    ├── &lt;target&gt;_src                // Source code of one target
+    │   ├── main.cpp
+    │   └── main.hpp
+    └── &lt;other_target&gt;_src          // Source code of other target
+        └── main.cpp
+        </pre>
+        <hr />
+    </div>
+    <div class="sep-line">
+        <hr />
+    </div>
+    </pre>
+    <hr />
+    </div>
+    <div class="sep-line">
+        <hr />
+    </div>
+    <!--CBuild structure info-->
+    <div class="text">
+        <!--Structure overview-->
+        <h6>CBuild basic classes</h6>
+        <div class="sep-line">
+            <hr />
+        </div>
+        <p>CBuild contains a few major parts: a CLI args parser + main loop, a registry + base classes and a few standard libs of CBuild.</p>
+        <p>The CLI args parser and main loop consists of, as described in name, of parser of useer provided console arguments and main CBuild loop that setup all environment and call user script. It supports adding environment variables for a call to every shell command(this is not target-specific or task-specific!). Also it supports adding new parse rules for a custom arguments encoding.</p>
+        <div class="pre-list">
+            <p>The registry includes some big tables and user-faced function to add object to this table (plus it's name) and get it back. Also there is some base classes:</p>
+        </div>
+        <div class="list">
+            <ul>
+                <li>
+                    <p><b>CBuild::Task</b> - simple task abstract class. Contains task id variable as <i>std::string</i> and dependency task list as <i>std::vector&lt;std::string&gt;</i>. Also it feathures function to get task id and dependency list and basic constructor that takes task id and dependency list as parameters.</p>
+                </li>
+                <li>
+                    <p><b>CBuild::Toolchain</b> - toolchain abstract class, based upon <i>gcc</i> syntax. It have many helper function for setting argument, managing internal things and other helper functions. Also it have seven function related to compilation: <i>pre_build()</i>, <i>build()</i>, <i>post_build()</i>, <i>pre_link()</i>, <i>link()</i>, <i>link_pack()</i>(for building .a files), <i>post_link()</i>. Also toolchain can depend on other toolchains, tasks and has many more internal things.</p>
+                </li>
+                <li>
+                    <p><b>CBuild::generator_base</b> - template used to generate <i>Makefile</i> and <i>compile_commands.json</i>. Not really documented. Use if you want to output some other build format or some strange thing ;).</p>
+                </li>
+                <li>
+                    <p><b>CBuild::Hasher</b> - base class to create a hashers and metadata store. They are baked into a toolchain instance.</p>
+                </li>
+            </ul>
+        </div>
+        <div class="pre-list">
+            <p>Standard CBuild library includes:</p>
+        </div>
+        <div class="list">
+            <ul>
+                <li>
+                    <p><b>lib::map</b> - map datatype with very bad memory managment and preservertion of addition order, also it has ability to get element not only by it's id but by it's index.</p>
+                </li>
+                <li>
+                    <p><b>lib::optional</b> - optional datatypy. Represent value that can be not available.</p>
+                </li>
+                <li>
+                    <p><b>CBuild::fs</b> - easier to work with replacement for std::filesystem with some function, like path processing (from <i>"../foo/bar"</i> to <i>"/home/user/foo/bar"</i>) and some other CBuild-specific functions. Also it feathures function to set a variable in file to some value (value is provided as <i>std::string</i>) and to replace some token in file by <i>std::string</i>.</p>
+                </li>
+                <li>
+                    <p><b>CBuild::line_filebuff</b> and <b>CBuild::str_filebuff</b> - two file buffering classes, provide full RAM-buffering of file and ability to acces file using char/line index and using char sequences.</p>
+                </li>
+                <li>
+                    <p><b>CBuild::print...</b> - a few print-related things, like colored print to the terminal.</p>
+                </li>
+                <li>
+                    <p><b>CBuild::system</b> and <b>CBuild::system_piped</b> - CBuild version of standard <i>system()</i> function and <i>system()</i> function that return shell output.</p>
+                </li>
+            </ul>
+        </div>
+        <!--Run overview-->
+        <div class="sep-line">
+            <hr />
+        </div>
+        <h6>What CBuild does when user runs ./CBuild.run &lt;some args&gt;</h6>
+        <div class="sep-line">
+            <hr />
+        </div>
+        <p style="color: red; text-align: center; text-indent: 0%;">Disclaimer: this section assumes that you don't modify main.cpp in scripts folder, that is provided by CBuild.</p>
+        <p>Firstly, code execution enters <i>main()</i> and then it runs <i>user_init()</i> function. It is a base of build-script. Then, when all user scripts is evalueated it creates <i>lib::map&lt;std::string, std::string&gt;</i> for storing user arguments after processing and then CBuild calls <i>CBuild::parse</i> function. This function return <i>CBuild::RType</i>(<b>R</b>un<b>Type</b>) and aslo it takes pointer to <i>lib::map</i> created earlier, in function this map is populated with values. Then CBuild performs some checks - if <i>RType</i> is <i>ERROR</i> then CBuild exits. If user specifyes other run mode, than runtiime stores current path, obtained by <i>std::string(std::filesystem::current_path().c_str())</i> to map with key <i>"curr_path"</i>. Then CBuild core calls <i>CBuild:loop()</i> that preprocess all arguments, check run mode and run selected task, toolchain etc.</p>
+        <!--Build process overview-->
+        <div class="sep-line">
+            <hr />
+        </div>
+        <h6>Build process overview</h6>
+        <div class="sep-line">
+            <hr />
+        </div>
+        <p style="color: red; text-align: center; text-indent: 0%;">Disclaimer: this is based on CBuild:GXX toolchain implementation.</p>
+        <p>From the start, <i>CBuild::Toolchain::call</i> is called. We get <i>args array pointer</i>, and three booleans - are this compilation mode is <i>force</i> recompilation mode, are user is doing <i>debug</i> build or does this is a dummy<i>call</i> to resolve compilation args. Then CBuild core store these booleans and array to intenal variables and performs some checks. From the start <i>CBuild::Toolchain::call</i> checks if this target is dynamick library and if so, add <i>-shared</i> flag for linker. If <i>debug</i> build is specified, <i>-g</i> is added as compilation flag. Then, unconditionally <i>-fPIC</i>, <i>-Icache/headers</i> and <i>-Lcache/libs</i> is added. The we do toolchain init. This steps initializes directory structure for this target compilation. Then, if build type is dynamic library, runtime generates name of output binary, and add it as <i>-Wl,-soname,&lt;binary_name&gt;</i>. Then every dependancy task marked as <i>PRE</i> is called. Then every dependancy toolchain is called, all call arguments is passed from input argument to this call to <i>CBuild::Toolchain::call</i>, then we add so search pass and linker sear pass to find this dependancy library. Then <i>pre_build</i>, <i>build</i>, <i>post_build</i> and <i>pre_link</i> compilation steps are performed. These will be described later. Then, based on Build type we use standard linker to link object to binary, by calling <i>link</i> or use specific linker for packing static libraries by calling <i>link_pack</i>. And then last stepps of compilation - <i>post_link</i> is called! Now all that is left to do is to call all dependancy tasks, that is marked as <i>POST</i> and function can safely exits. Compilation is done!</p>
+        <p><b>build()</b> This is toolchain implementation specific function, for CBuild::GXX it consists of: mergins compilation args list to one <i>std::string</i>, generating a list of files, that need to be recompiled using hasher and the constriction command to recompile each file in loop, for every file.</p>
+        <p><b>link()</b> This is toolchain implementation specific function, for CBuild::GXX it consists of: merging linker args list to one <i>std::string</i>, getting list of object files in <i>build/&lt;toolchain_id&gt;/objs/</i>, merging this list to one <i>std::string</i> and then constring call to linker.</p>
+        <p><b>link_pack()</b> This is toolchain implementation specific function, for CBuild::GXX it consists of: merging linker args list to one <i>std::string</i>, getting list of object files in <i>build/&lt;toolchain_id&gt;/objs/</i>, merging this list to one <i>std::string</i> and then constructing call to linker for static libraries (<i>ar cr</i> call).</p>
+        <p>Also, <b>CBuild:GXX</b> toolchain implementation unconditionally add this compilation and link arguments in it's constructor: <i>-Wl,-z,origin</i> and <i>-Wl,-rpath,"\$ORIGIN".</p>
+    </div>
+    <!--Back-->
+    <div class="sep-line">
+        <hr />
+    </div>
+    <div class="back">
+        <a href="wiki.html">BACK</a>
+    </div>
+    <!--Footer of the page-->
+    <div class="footer">
+        <div class="author">
+            <p>Author - WolodiaM</p>
+            <p><a href="https://gitlab.com/WolodiaM">WolodiaM at GitLab</a></p>
+        </div>
+        <div class="communication">
+            <p><a href="mailto:w_melnyk@outlook.com">w_melnyk@outlook.com</a></p>
+            <p><a href="https://gitlab.com/cbuild/cbuild/-/issues">Issues</a></p>
+            <p><a href="https://gitlab.com/cbuild/cbuild">Git</a></p>
+            <p><a href="../index.html">This wiki</a></p>
+        </div>
+    </div>
+</body>

@@ -534,7 +534,7 @@ void CBuild::Toolchain::stdargs() {
         }
         // Add link arsg for dependancy libraries
         for (std::string id : this->depends) {
-            auto target = CBuild::Registry::GetToolchain(id, true);
+            auto target = CBuild::Registry::GetTarget(id, true);
             if (target != NULL) {
                 // get lib name
                 auto out_path = target->gen_out_name();
@@ -599,10 +599,10 @@ void CBuild::Toolchain::call(std::vector<std::string>* args, bool force, bool de
         }
     }
     CBuild::print("Calling all required toolchains ", CBuild::color::GREEN);
-    // Call all dependencies (toolchains)
+    // Call all dependencies (target)
     for (std::string id : this->depends) {
         // Call target
-        auto target = CBuild::Registry::GetToolchain(id, force);
+        auto target = CBuild::Registry::GetTarget(id, force);
         if (target != NULL) {
             target->call(args, force, debug, dummy);
         }

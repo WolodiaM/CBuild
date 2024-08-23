@@ -341,15 +341,15 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
         // Build and rebuild of script
     case CBuild::REBUILD:
     case CBuild::BUILD: {
-        if (*(args->get("toolchain_id")) == std::string("all")) {
-            CBuild::Registry::ToolchainAll(force, *(args->get("curr_path")), &pargs);
+        if (*(args->get("target_id")) == std::string("all")) {
+            CBuild::Registry::TargetAll(force, *(args->get("curr_path")), &pargs);
         } else {
             // Load toolchain
-            std::string id = *(args->get("toolchain_id"));
-            CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
+            std::string id = *(args->get("target_id"));
+            CBuild::Toolchain* target = CBuild::Registry::GetTarget(id);
             // Error
             if (target == NULL) {
-                CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
+                CBuild::printf(CBuild::RED, "Target %s not found. Exiting...\n", id.c_str());
                 exit(0xFF);
             }
             // Call tolchain in build mode
@@ -359,11 +359,11 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
     // Build and run
     case CBuild::BUILD_RUN: {
         // Load toolchain
-        std::string id = *(args->get("toolchain_id"));
-        CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
+        std::string id = *(args->get("target_id"));
+        CBuild::Toolchain* target = CBuild::Registry::GetTarget(id);
         // Error
         if (target == NULL) {
-            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Target %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Run toolchain in build mode
@@ -374,11 +374,11 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
     // Run
     case CBuild::RUN: {
         // Load toolchain
-        std::string id = *(args->get("toolchain_id"));
-        CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
+        std::string id = *(args->get("target_id"));
+        CBuild::Toolchain* target = CBuild::Registry::GetTarget(id);
         // Error
         if (target == NULL) {
-            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Target %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Run toolchain in run mode
@@ -387,11 +387,11 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
     // Build and run indebug mode
     case CBuild::DEBUG: {
         // Load toolchain
-        std::string id = *(args->get("toolchain_id"));
-        CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
+        std::string id = *(args->get("target_id"));
+        CBuild::Toolchain* target = CBuild::Registry::GetTarget(id);
         // Error
         if (target == NULL) {
-            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Target %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Run toolchain in debug mode
@@ -400,11 +400,11 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
     // Clear (files)
     case CBuild::CLEAR: {
         // Load toolchain
-        std::string id = *(args->get("toolchain_id"));
-        CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
+        std::string id = *(args->get("target_id"));
+        CBuild::Toolchain* target = CBuild::Registry::GetTarget(id);
         // Error
         if (target == NULL) {
-            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Target %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Run toolchain is self-clear mode
@@ -418,11 +418,11 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
     // Load deps
     case CBuild::LOAD_DEPS: {
         // Load toolchain
-        std::string id = *(args->get("toolchain_id"));
-        CBuild::Toolchain* target = CBuild::Registry::GetToolchain(id);
+        std::string id = *(args->get("target_id"));
+        CBuild::Toolchain* target = CBuild::Registry::GetTarget(id);
         // Error
         if (target == NULL) {
-            CBuild::printf(CBuild::RED, "Toolchain %s not found. Exiting...\n", id.c_str());
+            CBuild::printf(CBuild::RED, "Target %s not found. Exiting...\n", id.c_str());
             exit(0xFF);
         }
         // Load libs
@@ -549,7 +549,7 @@ mode_end:
 }
 void CBuild::rebuild(std::string scripts) {
     CBuild::print(
-        "Dont use this function direclty, simply call toolchain \"cbuild_rebuild_build_script\"",
+        "Dont use this function direclty, simply call target \"cbuild_rebuild_build_script\"",
         CBuild::RED);
 }
 namespace CBuild {

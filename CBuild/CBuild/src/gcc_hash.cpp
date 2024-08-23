@@ -98,7 +98,7 @@ lib::map<std::string, std::string> CBuild::gcc_hash_impl(std::vector<std::string
         }
     }
     // Get toolchain data
-    auto toolchain = CBuild::Registry::GetToolchain(target_id, true);
+    auto toolchain = CBuild::Registry::GetTarget(target_id, true);
     if (toolchain != NULL) {
         auto cc = toolchain->get_cmds()[0];
         toolchain->stdargs();

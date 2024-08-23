@@ -34,11 +34,11 @@
  */
 #define CBUILD_BUILD_DIR std::string("build")
 /**
- * @brief Build out in build/toolchain
+ * @brief Build out in build/target
  */
 #define CBUILD_BUILD_OUT_DIR std::string("out")
 /**
- * @brief Object cache in build/toolchain
+ * @brief Object cache in build/target
  */
 #define CBUILD_BUILD_CACHE_DIR std::string("objs")
 /**

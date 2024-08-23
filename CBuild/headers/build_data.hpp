@@ -55,7 +55,7 @@ struct source_metadata_file {
     uint64_t hash;
 };
 /**
- * @brief Metadata for a full toolchain
+ * @brief Metadata for a full target
  * Structure of file:
  * - line 1: Output binary name
  * - line 2: Compiler command used

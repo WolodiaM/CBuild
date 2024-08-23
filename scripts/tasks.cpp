@@ -134,7 +134,7 @@ class procces_help : public pack_base {
   public:
     procces_help() : pack_base("proccessHelp", "") {};
     void call(std::vector<std::string> args __attribute_maybe_unused__) {
-        CBuild::line_filebuff md("usage.md");
+        CBuild::line_filebuff md("wiki/mkdocs/docs/info/usage.md");
         std::string replace =
             "CBuild help - v" + this->version_str() + "\\nCommand line options:\\n";
         bool in_while = true;

@@ -125,5 +125,10 @@ class Hash {
                                  std::string out, std::string compiler, std::string linker,
                                  std::string packer) = 0;
 };
+/**
+ * @brief Hasher implementation
+ */
+template <class T>
+concept HashImpl = std::is_base_of<CBuild::Hash, T>::value;
 } // namespace CBuild
 #endif // __HASHER_HPP__
