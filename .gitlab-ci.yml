@@ -11,10 +11,13 @@ before_script:
 pages:
   script:
     # Build doxygen
-    - doxygen doxyghtmlen.conf
+    - doxygen doxygen.conf
     # Copy doxygen to its directory
-    - cp -r doxygen/html/* public/doxygen
-    - cd doxygen/wiki && mkdocs build
+    - cp -r wiki/doxygen/html/* public/doxygen/
+    # Build mkdocs wiki
+    - mkdocs build
+    # Copy mkdocs wiki to its directory
+    - cp -r wiki/mkdocs/site/* public/
   artifacts:
     paths:
       # The folder that contains the files to be exposed at the Page URL
