@@ -6,6 +6,7 @@ before_script:
   - apk update
   - apk add doxygen mkdocs
   # Create directory for a wiki and for a doxygen
+  - rm -rf public
   - mkdir public
   - mkdir public/doxygen
 pages:
