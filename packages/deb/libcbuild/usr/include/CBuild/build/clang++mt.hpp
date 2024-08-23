@@ -44,6 +44,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANGXXMT : public
         this->linker = "clang++";
         this->compiler = "clang++";
         this->packer = "ar cr";
+        this->debuuger = "lldb";
         this->add_link_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_link_arg("-lstdc++");
@@ -62,6 +63,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class CLANGXXMT : public
         this->linker = "clang++";
         this->compiler = "clang++";
         this->packer = "ar cr";
+        this->debuuger = "lldb";
         this->add_link_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_link_arg("-lstdc++");

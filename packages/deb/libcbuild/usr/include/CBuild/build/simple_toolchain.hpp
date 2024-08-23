@@ -45,6 +45,10 @@ class SimpleToolchain : public CBuild::Toolchain {
     SimpleToolchain(std::string id) {
         this->id = id;
         this->name = "";
+        this->compiler = "";
+        this->linker = "";
+        this->packer = "";
+        this->debuuger = "";
         this->hasher = new hash(this->id);
     }
     /**
@@ -57,6 +61,11 @@ class SimpleToolchain : public CBuild::Toolchain {
         // Set id and name of toolchain and assign executables constants
         this->id = id;
         this->name = name;
+        this->compiler = "";
+        this->linker = "";
+        this->packer = "";
+        this->debuuger = "";
+        this->hasher = new hash(this->id);
     }
     /**
      * @brief Set used compiler
@@ -84,6 +93,15 @@ class SimpleToolchain : public CBuild::Toolchain {
      */
     void set_packer(std::string packer) {
         this->packer = packer;
+    }
+    /**
+     * @brief Set used debugger
+     *
+     * @param debugger => std::string -> Debugger shell command (you could specify cli arguments
+     * here if needed, eg. to select specific architecture)
+     */
+    void set_debugger(std::string debugger) {
+        this->debugger = debugger;
     }
 
   protected:

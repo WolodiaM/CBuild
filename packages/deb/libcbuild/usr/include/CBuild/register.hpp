@@ -55,15 +55,15 @@ void CallTask(std::string name, std::vector<std::string> args);
  */
 void RegisterTarget(CBuild::Toolchain* target);
 /**
- * @brief Get the registered toolchain
+ * @brief Get the registered target
  *
  * @param name => std::string -> target id
  * @param force => bool -> default = false, if true does not look in list of
- * executed toolchains
- * @return CBuild::Toolchain* -> pointer to toolchain or null if target with
+ * executed target
+ * @return CBuild::Toolchain* -> pointer to target or null if target with
  * given id does not exists
  */
-CBuild::Toolchain* GetToolchain(std::string name, bool force = false);
+CBuild::Toolchain* GetTarget(std::string name, bool force = false);
 /**
  * @brief Get list of all targets
  *
@@ -107,13 +107,13 @@ void AddCompileArg(std::string arg);
  */
 void SetVersionHandler(void (*handler)());
 /**
- * @brief Call and execute all toolchains
+ * @brief Call and execute all targets
  *
  * @param force => bool -> Compilation type
  * @param path => std::string -> Base path
  * @param args => std::vector<std::string>* -> PArgs
  */
-void ToolchainAll(bool force, std::string path, std::vector<std::string>* args);
+void TargetAll(bool force, std::string path, std::vector<std::string>* args);
 /**
  * @brief Get generator for specified id
  *
@@ -139,7 +139,7 @@ std::vector<std::string> GetGeneratorsList();
  *
  * @return std::vector<std::string> -> List of toolchains
  */
-std::vector<std::string> GetToolchainsList();
+std::vector<std::string> GetTargetsList();
 /**
  * @brief Get list of registered tasks
  *
