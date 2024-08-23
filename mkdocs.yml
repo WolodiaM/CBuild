@@ -4,7 +4,7 @@ site_name: CBuild wiki
 # CBuild repository
 repo_url: https://gitlab.com/cbuild/cbuild
 repo_name: "CBuild"
-edit_uri: edit/master/doxygen/wiki/docs/
+edit_uri: edit/master/wiki/mkdocs/docs/
 
 # About wiki
 site_description: 'Wiki for CBuild build system for c++'
