@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="main.css" rel="stylesheet" type="text/css" />
+	<title>CBuild wiki</title>
+</head>
+
+<body>
+    <!--Title-->
+    <div class="title">CBuild wiki: Main page</div>
+    <div class="title-line"><hr/></div>
+    <!--Text-->
+    <div class="text">
+        <p>Problems with the apt key ;) Dont know why ;)</p>
+        <p>For now use update.sh/CBuild_update script</p>
+        <h6>Debian/Ubuntu - apt</h6>
+        <p>Install ppa:</p>
+        <pre>curl -s --compressed "https://cbuild.sourceforge.io/ppa/ubuntu/KEY.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/cbuild.gpg &gt; /dev/null
+        sudo curl -s --compressed -o /etc/apt/sources.list.d/cbuild.list "https://cbuild.sourceforge.io/ppa/ubuntu/cbuild.list"
+        sudo apt update</pre>
+        <p>Installing package:</p>
+        <pre>sudo apt install libcbuild</pre>
+    </div>
+    <!--Back-->
+    <div class="sep-line"><hr/></div>
+    <div class="back">
+        <a href="wiki.html">BACK</a>
+    </div>
+    <!--Footer of the page-->
+    <div class="footer">
+        <div class="author">
+            <p>Author - WolodiaM</p>
+            <p><a href="https://gitlab.com/WolodiaM">WolodiaM at GitLab</a></p>
+        </div>
+        <div class="communication">
+            <p><a href="mailto:w_melnyk@outlook.com">w_melnyk@outlook.com</a></p>
+            <p><a href="https://gitlab.com/cbuild/cbuild/-/issues">Issues</a></p>
+            <p><a href="https://gitlab.com/cbuild/cbuild">Git</a></p>
+            <p><a href="../index.html">This wiki</a></p>
+        </div>
+    </div>
+</body>

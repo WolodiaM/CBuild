@@ -52,5 +52,10 @@ class Dependency {
      */
     virtual std::string largs() = 0;
 };
+/**
+ * @brief Dependency implementation
+ */
+template <class T>
+concept DependencyImpl = std::is_base_of<CBuild::Dependency, T>::value;
 } // namespace CBuild
 #endif // __DEPENDENCY_HPP__

@@ -46,6 +46,8 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class MINGW_GXX : public
         this->compiler = "x86_64-w64-mingw32-g++";
         this->packer = "x86_64-w64-mingw32-ar cr";
         this->wine = "wine";
+        this->debuuger =
+            "echo \"Cannot debug file build for foreign architecture!\"; echo \"Provided file: \"";
         this->add_link_arg("-static-libgcc");
         this->add_link_arg("-static-libstdc++");
         this->hasher = new hash(this->id);
@@ -63,6 +65,8 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class MINGW_GXX : public
         this->compiler = "x86_64-w64-mingw32-g++";
         this->packer = "x86_64-w64-mingw32-ar cr";
         this->wine = "wine";
+        this->debuuger =
+            "echo \"Cannot debug file build for foreign architecture!\"; echo \"Provided file: \"";
         this->add_link_arg("-static-libgcc");
         this->add_link_arg("-static-libstdc++");
         this->hasher = new hash(this->id);

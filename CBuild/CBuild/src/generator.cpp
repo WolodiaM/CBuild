@@ -79,7 +79,7 @@ void CBuild::makefile_out::generate(CBuild::RType mode, lib::map<std::string, st
     // placeholder
     if (mode == CBuild::BUILD || mode == CBuild::BUILD_RUN || mode == CBuild::RUN ||
         mode == CBuild::DEBUG || mode == CBuild::CLEAR) {
-        name += *(args->get("toolchain_id"));
+        name += *(args->get("target_id"));
     } else if (mode == CBuild::TASK) {
         name += *(args->get("task_id"));
     } else {
@@ -196,7 +196,7 @@ void CBuild::ccj_out::generate(CBuild::RType mode, lib::map<std::string, std::st
         return;
     }
     // Cannot generate compile_commands.json for meta-toolchain 'all'
-    if (*(args->get("toolchain_id")) == std::string("all")) {
+    if (*(args->get("target_id")) == std::string("all")) {
         CBuild::print("Cannot generate compile commands for meta-toolchain \"all\"", CBuild::RED);
         return;
     }
@@ -204,7 +204,7 @@ void CBuild::ccj_out::generate(CBuild::RType mode, lib::map<std::string, std::st
     // Vars
     lib::map<std::string, CBuild::cmd> data;
     // Get data from target
-    auto toolchain = CBuild::Registry::GetToolchain(*(args->get("toolchain_id")));
+    auto toolchain = CBuild::Registry::GetTarget(*(args->get("target_id")));
     auto cmds = toolchain->get_cmds();
     if (cmds[0] != std::string("META") && cmds[1] != std::string("META") &&
         cmds[2] != std::string("META")) {

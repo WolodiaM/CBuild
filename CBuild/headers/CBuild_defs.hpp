@@ -34,11 +34,11 @@
  */
 #define CBUILD_BUILD_DIR std::string("build")
 /**
- * @brief Build out in build/toolchain
+ * @brief Build out in build/target
  */
 #define CBUILD_BUILD_OUT_DIR std::string("out")
 /**
- * @brief Object cache in build/toolchain
+ * @brief Object cache in build/target
  */
 #define CBUILD_BUILD_CACHE_DIR std::string("objs")
 /**
@@ -73,8 +73,8 @@
  * @brief Different representation of CBuild version
  */
 #define CBUILD_VERSION_MAJOR (int)13
-#define CBUILD_VERSION_MINOR (int)6
-#define CBUILD_VERSION_STR std::string("13.6")
+#define CBUILD_VERSION_MINOR (int)7
+#define CBUILD_VERSION_STR std::string("13.7")
 /**
  * @brief Data about CBuild compilation
  */

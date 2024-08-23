@@ -49,15 +49,10 @@ typedef struct {
     std::string headers_path;
 } Project_dependency;
 /**
- * @brief Type of depencesies for toolchain
+ * @brief Type of depencesies for target
  */
 typedef enum { PRE, POST } stage;
 typedef enum { EXECUTABLE, STATIC_LIBRARY, DYNAMIC_LIBRARY } build_type;
-/**
- * @brief Hasher implementation
- */
-template <class T>
-concept HashImpl = std::is_base_of<CBuild::Hash, T>::value;
 /**
  * @brief Toolchain class
  */
@@ -103,6 +98,10 @@ class Toolchain {
      * @brief ar command for packing static libraries
      */
     std::string packer;
+    /**
+     * @brief Used debuuger, need to support providing executable name as first positional argument
+     */
+    std::string debuuger;
     /**
      * @brief Type of build
      */
@@ -322,7 +321,7 @@ class Toolchain {
     virtual void add_library_dir(std::string include, std::string lib);
     /**
      * @brief Add required task, that task will be executed before
-     * toolchain, it can have dependecies, but toolchain can depend on
+     * target, it can have dependecies, but target can depend on
      * multiple tasks also
      *
      * @param task_ => std:string -> task id
@@ -379,10 +378,9 @@ class Toolchain {
      * @brief Add another CBuild project as dependency
      *
      * @param path => std::string -> Relative (from CBuild.run) path to
-     * needed toolchain
+     * needed target
      * @param name => std::string -> name of build target (for lib linking)
-     * @param id => std::string -> Id of needed toolchain for calling target
-     * build
+     * @param id => std::string -> Id of target that need to be built
      * @param headers_path => std::string -> path to headers dir
      * @deprecated Old, better ways exists
      */
@@ -443,13 +441,13 @@ class Toolchain {
      */
     virtual void set_name(std::string name);
     /**
-     * @brief Change id of this toolchain, if done after registering it can brake things
+     * @brief Change id of this target, if done after registering it can brake things
      *
      * @param id => std::string -> New id
      */
     virtual void set_id(std::string id);
     /**
-     * @brief Add external dependency to this toolchain
+     * @brief Add external dependency to this target
      *
      * @param dep => CBuild::Dependency* -> Dependency
      */

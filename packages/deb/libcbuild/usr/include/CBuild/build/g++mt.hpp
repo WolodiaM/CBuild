@@ -44,6 +44,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXXMT : public CBu
         this->linker = "g++";
         this->compiler = "g++";
         this->packer = "ar cr";
+        this->debuuger = "gdb";
         this->add_link_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_link_arg("-lstdc++");
@@ -62,6 +63,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class GXXMT : public CBu
         this->linker = "g++";
         this->compiler = "g++";
         this->packer = "ar cr";
+        this->debuuger = "gdb";
         this->add_link_arg("-Wl,-z,origin");
         this->add_link_arg(" -Wl,-rpath,\"\\$ORIGIN\"");
         this->add_link_arg("-lstdc++");

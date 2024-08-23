@@ -534,7 +534,7 @@ void CBuild::Toolchain::stdargs() {
         }
         // Add link arsg for dependancy libraries
         for (std::string id : this->depends) {
-            auto target = CBuild::Registry::GetToolchain(id, true);
+            auto target = CBuild::Registry::GetTarget(id, true);
             if (target != NULL) {
                 // get lib name
                 auto out_path = target->gen_out_name();
@@ -599,10 +599,10 @@ void CBuild::Toolchain::call(std::vector<std::string>* args, bool force, bool de
         }
     }
     CBuild::print("Calling all required toolchains ", CBuild::color::GREEN);
-    // Call all dependencies (toolchains)
+    // Call all dependencies (target)
     for (std::string id : this->depends) {
         // Call target
-        auto target = CBuild::Registry::GetToolchain(id, force);
+        auto target = CBuild::Registry::GetTarget(id, force);
         if (target != NULL) {
             target->call(args, force, debug, dummy);
         }
@@ -701,7 +701,7 @@ void CBuild::Toolchain::debug(std::vector<std::string>* args, std::vector<std::s
                   CBuild::RED);
     // Build in debug mode
     this->call(args, true, true);
-    CBuild::print("Running builded app with gdb ", CBuild::GREEN);
+    CBuild::print("Running built app with debugger ", CBuild::GREEN);
     std::string ppargs = "";
     if (pargs != NULL) {
         for (auto elem : *pargs) {
@@ -710,13 +710,13 @@ void CBuild::Toolchain::debug(std::vector<std::string>* args, std::vector<std::s
         }
     }
     // Construct command
-    std::string cmd;
-    cmd = "gdb ";
+    std::string cmd = this->debuuger;
+    cmd += " ";
     cmd += this->gen_out_name();
     cmd += " ";
     cmd += ppargs;
-    // Call gdb on app
-    CBuild::print("Now you can see gdb shell ", CBuild::MAGENTA);
+    // Call debugger on app
+    CBuild::print("Now you can see debugger shell ", CBuild::MAGENTA);
     CBuild::system(cmd);
     CBuild::print("End of app execution", CBuild::RED);
 }

@@ -31,7 +31,6 @@
 // Scripts headers
 #include "pack.hpp"
 #include "test.hpp"
-#include "uploads.hpp"
 #include "user_init.hpp"
 // Task classes
 class procces_version : public pack_base {
@@ -135,7 +134,7 @@ class procces_help : public pack_base {
   public:
     procces_help() : pack_base("proccessHelp", "") {};
     void call(std::vector<std::string> args __attribute_maybe_unused__) {
-        CBuild::line_filebuff md("usage.md");
+        CBuild::line_filebuff md("wiki/mkdocs/docs/info/usage.md");
         std::string replace =
             "CBuild help - v" + this->version_str() + "\\nCommand line options:\\n";
         bool in_while = true;
@@ -242,19 +241,6 @@ class create_temlate_init : public CBuild::Task {
         CBuild::fs::replace("sh/project_init.sh", "#MAIN.CPP", fileContents);
     }
 };
-class create_arch : public CBuild::Task {
-  public:
-    create_arch() : CBuild::Task("create-arch", {}) {};
-    void call(std::vector<std::string> args __attribute_maybe_unused__) {
-        CBuild::fs::remove("./doxygen/latest.tar.gz");
-        std::string cmd = "tar -czvf ";
-        cmd += "./doxygen/latest.tar.gz";
-        cmd += " -C ";
-        cmd += "./packages/deb/libcbuild/usr/";
-        cmd += " -P bin include lib share";
-        CBuild::system(cmd);
-    }
-};
 // Tasks
 pack_deb packd;
 procces_version pv;
@@ -264,11 +250,6 @@ mkppa ppa;
 test t;
 bhelp help;
 create_temlate_init init_template;
-create_arch ca;
-upload upl_dox("upload-doxygen", "doxygen/upload-doxygen.sh");
-upload upl_wiki("upload-wiki", "doxygen/upload-wiki.sh");
-upload upl_ppa("upload-ppa", "doxygen/upload-ppa.sh");
-upload upl_arch("upload-arch", "doxygen/upload-latest.sh");
 // Init
 void load_tasks() {
     CBuild::Registry::RegisterTask(&packd);
@@ -278,11 +259,6 @@ void load_tasks() {
     CBuild::Registry::RegisterTask(&ppa);
     CBuild::Registry::RegisterTask(&help);
     CBuild::Registry::RegisterTask(&t);
-    CBuild::Registry::RegisterTask(&upl_dox);
-    CBuild::Registry::RegisterTask(&upl_wiki);
-    CBuild::Registry::RegisterTask(&upl_ppa);
-    CBuild::Registry::RegisterTask(&upl_arch);
     CBuild::Registry::RegisterTask(&init_template);
-    CBuild::Registry::RegisterTask(&ca);
     CBuild::Registry::RegisterKeyword("--build-help", &help);
 }

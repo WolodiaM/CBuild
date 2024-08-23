@@ -117,8 +117,7 @@ ARG_TYPE build_handler(lib::map<std::string, std::string>* args, char** argv, in
     // 1) is next argument
     if (argc <= (ptr + 1)) {
         CBuild::print("Illegal command format!", CBuild::RED);
-        CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) +
-                          std::string(" <toolchain id>"),
+        CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) + std::string(" <target id>"),
                       CBuild::GREEN);
         CBuild::exit(0xFF);
     }
@@ -139,11 +138,11 @@ ARG_TYPE build_handler(lib::map<std::string, std::string>* args, char** argv, in
     } else if (token == std::string("-ld")) {
         *type = CBuild::LOAD_DEPS;
     }
-    // Get toolchains and check if one of them match our needed
-    std::vector<std::string> tools = CBuild::Registry::GetToolchainsList();
+    // Get targets and check if one of them match our needed
+    std::vector<std::string> targets = CBuild::Registry::GetTargetsList();
     bool err = true;
-    for (std::string tool : tools) {
-        if (tool == std::string(argv[ptr + 1])) {
+    for (std::string target : targets) {
+        if (target == std::string(argv[ptr + 1])) {
             err = false;
         }
     }
@@ -154,26 +153,24 @@ ARG_TYPE build_handler(lib::map<std::string, std::string>* args, char** argv, in
     // If no match, yes, we are safe to crash here and remaind proper format of
     // the argument to user
     if (err == true) {
-        CBuild::print(std::string("Illegal or unregistered toolchain name! - \"") +
+        CBuild::print(std::string("Illegal or unregistered target name! - \"") +
                           std::string(argv[ptr + 1]) + std::string("\""),
                       CBuild::RED);
-        CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) +
-                          std::string(" <toolchain id>"),
+        CBuild::print(std::string("Usage: ") + std::string(argv[ptr]) + std::string(" <target id>"),
                       CBuild::GREEN);
         CBuild::exit(0xFF);
     }
-    // If all good - save selected toolchain for later
+    // If all good - save selected target for later
     try {
-        args->push_back_check("toolchain_id", argv[ptr + 1]);
+        args->push_back_check("target_id", argv[ptr + 1]);
     } catch (std::exception& e) {
-        CBuild::print_full(
-            std::string("Toolchain is already set! New toolchain - \"") +
-                std::string(argv[ptr + 1]) + std::string("\", old toolchain is - \"") +
-                std::string(args->get_ptr("toolchain_id")->data) + std::string("\"!"),
-            CBuild::RED);
+        CBuild::print_full(std::string("Toolchain is already set! New target - \"") +
+                               std::string(argv[ptr + 1]) + std::string("\", old target is - \"") +
+                               std::string(args->get_ptr("target_id")->data) + std::string("\"!"),
+                           CBuild::RED);
         CBuild::exit(0xFF);
     }
-    return CBuild::ARG_TYPE::TOOLCHAIN_ARG;
+    return CBuild::ARG_TYPE::TARGET_ARG;
 }
 ARG_TYPE task_handler(lib::map<std::string, std::string>* args, char** argv, int argc, int ptr,
                       CBuild::RType* type) {
@@ -255,7 +252,7 @@ ARG_TYPE rebuild_handler(lib::map<std::string, std::string>* args, char** argv, 
                          CBuild::RType* type) {
     *type = CBuild::REBUILD;
     try {
-        args->push_back_check("toolchain_id", "cbuild_rebuild_build_script");
+        args->push_back_check("target_id", "cbuild_rebuild_build_script");
     } catch (std::exception& e) {
     }
     return CBuild::ARG_TYPE::SIMPLE_ARG;

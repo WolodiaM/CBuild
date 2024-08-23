@@ -30,10 +30,10 @@ namespace CBuild {
  *
  * @param files => std::vector<std::string> -> List of code files (.cpp/.c)
  * @param objects => std::vector<std::string> -> List of object files (.o/.obj)
- * @param toolchain_id => std::string -> Id of toolchain, to get hash file
+ * @param target_id => std::string -> Id of target_id, to get hash file
  */
 std::vector<std::string> get_files(std::vector<std::string> files, std::vector<std::string> objects,
-                                   std::string toolchain_id);
+                                   std::string target_id);
 /**
  * @brief Print temporary file array
  */

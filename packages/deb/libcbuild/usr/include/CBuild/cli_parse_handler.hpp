@@ -48,9 +48,9 @@ typedef enum ARG_TYPE {
      */
     TASK_ARG = 2,
     /**
-     * @brief Toolchain argument (-b/-r/-br/-c/-d <toolchain_id>)
+     * @brief Target argument (-b/-r/-br/-c/-d <target_id>)
      */
-    TOOLCHAIN_ARG = 2,
+    TARGET_ARG = 2,
     /**
      * @brief Generick argument with subargument (-<arg> <subarg>
      */
@@ -104,23 +104,22 @@ typedef enum ARG_TYPE {
  * @brief Handler for specific argument
  *
  * Receives four arguments:
- * 	lib::map<std::string, std::string>	- arguments map
- * 	char**				- argv
- * 	int					- argc
- * 	int					- current parsing pointer, point
- * 						to argument that call handler,
- * 						default - 1 (self)
- * 	CBuild::RType				- type of run
+ *  - lib::map<std::string, std::string> - arguments map
+ *  - char** - argv
+ *  - int - argc
+ *  - int - current parsing pointer, points to argument that triggered handler
+ * 	- CBuild::RType - type of run
  * Returns int - consumed elements of argv
  *
  * Possible internal args:
- *  out:none - disable cli out
- *  out:verbose - full cli out
- *  gen:<generator id> - pass used generator
- *  toolchain_id:<toolchain id> - pass used toolchain
- *  task_id:<task id> - pass used task id
- *  paX:<arg>, where X - unique number - pass arg to runned program (for -r and -br and possibly -d)
- *  aX:<arg>, where X - inique number - pass arg to runned toolchain/task
+ *  - out:none - disable cli out
+ *  - out:verbose - full cli out
+ *  - gen:<generator id> - pass used generator
+ *  - target_id:<targetid> - pass used target
+ *  - task_id:<task id> - pass used task id
+ *  - paX:<arg>, where X - unique number - pass arg to runned program (for -r and -br and possibly
+ * -d)
+ *  - aX:<arg>, where X - unique number - pass arg to runned target/task
  */
 using handler = ARG_TYPE (*)(lib::map<std::string, std::string>*, char**, int, int, CBuild::RType*);
 /**

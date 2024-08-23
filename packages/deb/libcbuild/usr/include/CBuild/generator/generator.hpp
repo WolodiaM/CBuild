@@ -62,5 +62,10 @@ class generator_base {
      */
     virtual bool init() = 0;
 };
+/**
+ * @brief Generator implementation
+ */
+template <class T>
+concept GeneratorImpl = std::is_base_of<CBuild::generator_base, T>::value;
 } // namespace CBuild
 #endif // __CBUILD_GENERATOR_HPP__

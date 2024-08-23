@@ -2,13 +2,19 @@
 image: alpine:edge
 # Functions that should be executed before the build script is run
 before_script:
+  # Update repo
   - apk update
-  - apk add doxygen
+  - apk add doxygen mkdocs
+  # Create directory for a wiki and for a doxygen
   - mkdir public
+  - mkdir public/doxygen
 pages:
   script:
-    - doxygen doxygen.conf
-    - cp -r doxygen/* public
+    # Build doxygen
+    - doxygen doxyghtmlen.conf
+    # Copy doxygen to its directory
+    - cp -r doxygen/html/* public/doxygen
+    - cd doxygen/wiki && mkdocs build
   artifacts:
     paths:
       # The folder that contains the files to be exposed at the Page URL

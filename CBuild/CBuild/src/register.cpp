@@ -97,7 +97,7 @@ class ToolchainList : public CBuild::Task {
     ToolchainList() : CBuild::Task("CBuild_toolchainlist", {}) {}
     void call(std::vector<std::string>) {
         CBuild::print("Registered targets:");
-        for (auto toolchain : CBuild::Registry::GetToolchainsList()) {
+        for (auto toolchain : CBuild::Registry::GetTargetsList()) {
             CBuild::print(std::string("\t") + toolchain);
         }
     }
@@ -138,7 +138,7 @@ CBuild::Help help;
 CBuild::Init initw;
 CBuild::Version ver;
 CBuild::TaskList tasklist;
-CBuild::ToolchainList toolchainlist;
+CBuild::ToolchainList targetlist;
 CBuild::GeneratorList generatorlist;
 CBuild::CmdList cmdlist;
 // System generators
@@ -153,7 +153,7 @@ lib::map<std::string, CBuild::Task*> tasks;
 lib::map<std::string, bool> task_executed;
 // Toolchains pointers ;)
 lib::map<std::string, CBuild::Toolchain*> targets;
-// Executed toolchains
+// Executed targets
 lib::map<std::string, bool> target_executed;
 // Custom cmd line arguments to tasks mapping
 lib::map<std::string, std::string> keywords;
@@ -172,7 +172,7 @@ void CBuild::Registry::init() {
     // Task list task
     Registry::RegisterKeyword("--task-list", &CBuild::Registry::tasklist);
     // Target list task
-    Registry::RegisterKeyword("--target-list", &CBuild::Registry::toolchainlist);
+    Registry::RegisterKeyword("--target-list", &CBuild::Registry::targetlist);
     // User commands list
     Registry::RegisterKeyword("--commands-list", &CBuild::Registry::cmdlist);
     // Generator list task
@@ -228,15 +228,14 @@ void CBuild::Registry::RegisterTarget(CBuild::Toolchain* target) {
     try {
         Registry::targets.push_back_check(target->get_id(), target);
     } catch (std::exception& e) {
-        CBuild::print_full("Error: trying to register toolchain with the same id: " +
-                               target->get_id(),
+        CBuild::print_full("Error: trying to register target with the same id: " + target->get_id(),
                            CBuild::RED);
         return;
     }
     // Save toolchain excution state connected to it's name
     Registry::target_executed.push_back(target->get_id(), false);
 }
-CBuild::Toolchain* CBuild::Registry::GetToolchain(std::string name, bool force) {
+CBuild::Toolchain* CBuild::Registry::GetTarget(std::string name, bool force) {
     // If we not in force build
     if (!force) {
         // Check if toolchain was executed before
@@ -290,7 +289,7 @@ void CBuild::Registry::AddCompileArg(std::string arg) {
     // Add argument
     CBuild::Registry::rebuild_script.add_compile_arg(arg);
 }
-void CBuild::Registry::ToolchainAll(bool force, std::string path, std::vector<std::string>* args) {
+void CBuild::Registry::TargetAll(bool force, std::string path, std::vector<std::string>* args) {
     for (unsigned int i = 0; i < Registry::targets.size(); i++) {
         auto elem = Registry::targets.at(i);
         auto check = Registry::target_executed.get_ptr(elem.key);
@@ -335,7 +334,7 @@ std::vector<std::string> CBuild::Registry::GetGeneratorsList() {
     }
     return ret;
 }
-std::vector<std::string> CBuild::Registry::GetToolchainsList() {
+std::vector<std::string> CBuild::Registry::GetTargetsList() {
     std::vector<std::string> ret;
     for (auto tg : CBuild::Registry::targets) {
         ret.push_back(tg.key);
