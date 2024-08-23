@@ -1,3 +1,0 @@
-Implemented new_specs.txt
-Few function related to targets have changed name (from *Toolchain* to *Target*)
-Argument id in "args" maope changed from toolchain_id to target_id
