@@ -1,3 +1,10 @@
+cbuild (13.9) stable; urgency=high
+
+  [WolodiaM]
+  * Critical bugfix in mingw toolchain
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat, 24 Aug 2024 17:50:40 +0200
+
 cbuild (13.8) stable; urgency=high
 
   [WolodiaM]

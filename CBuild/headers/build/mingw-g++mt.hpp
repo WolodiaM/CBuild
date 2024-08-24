@@ -172,7 +172,7 @@ class MINGW_GXXMT : public CBuild::Toolchain {
     // Copy dlls to executable location
     void post_link() override {
         for (std::string id : this->depends) {
-            auto target = CBuild::Registry::GetToolchain(id, true);
+            auto target = CBuild::Registry::GetTarget(id, true);
             if (target != NULL) {
                 auto out_path = target->gen_out_name(".exe", ".dll");
                 unsigned int end_slash = out_path.find_last_of('/');

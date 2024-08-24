@@ -146,7 +146,7 @@ template <CBuild::HashImpl hash = CBuild::CBuildHashV2> class MINGW_GCC : public
     }
     void post_link() override {
         for (std::string id : this->depends) {
-            auto target = CBuild::Registry::GetToolchain(id, true);
+            auto target = CBuild::Registry::GetTarget(id, true);
             if (target != NULL) {
                 auto out_path = target->gen_out_name(".exe", ".dll");
                 unsigned int end_slash = out_path.find_last_of('/');
