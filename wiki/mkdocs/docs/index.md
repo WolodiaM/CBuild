@@ -32,3 +32,7 @@ Free Documentation License".
 &nbsp;
 
 ## [Author](https://gitlab.com/WolodiaM)
+
+---
+
+&nbsp;
