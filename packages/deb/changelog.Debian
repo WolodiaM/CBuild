@@ -1,3 +1,10 @@
+cbuild (13.10) stable; urgency=high
+
+  [WolodiaM]
+  * Critical bugfix in CBuild::CrossCompiler
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat, 24 Aug 2024 18:21:10 +0200
+
 cbuild (13.9) stable; urgency=high
 
   [WolodiaM]

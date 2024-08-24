@@ -139,6 +139,7 @@ class CrossCompiler {
         delete this->meta_config;
         delete this->meta_toolchain;
     }
+    friend class MetaToolchain;
 };
 } // namespace CBuild
 #endif // __CROSS_COMPILE_HPP__
