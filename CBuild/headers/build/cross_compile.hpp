@@ -72,6 +72,12 @@ class CrossCompiler {
      * @brief Create new cross-compilation collection
      *
      * @param id => std::string -> Collection id
+     */
+    CrossCompiler(std::string id) : CrossCompiler(id, id) {}
+    /**
+     * @brief Create new cross-compilation collection
+     *
+     * @param id => std::string -> Collection id
      * @param name => std::string -> Collection output name
      */
     CrossCompiler(std::string id, std::string name);

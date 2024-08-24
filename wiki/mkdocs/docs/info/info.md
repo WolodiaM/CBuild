@@ -71,13 +71,21 @@
 
 ## Filesizes
  
- * All (except hiden directories and  directories `build`, `cache`) - *40 __MB__*
- * Source code (directories `sh` and `CBuild` except `CBuild/CBuild/libCBuild.*`) - *564 __KB__*
- * Build script (files `build.sh`, `CBuild.run`, directory `scripts`) - *396 __KB__*
+ * All (except hiden directories and  directories `build`, `cache`) - *28 __MB__*
+ <!--du -hcs build.sh CBuild.run CBuild compile_commands.json doxygen.conf LICENSE mkdocs.yml packages/ readme.md scripts/ sh/ template/ TODO
+/ wiki/-->
+ * Source code (directories `sh` and `CBuild` except `CBuild/CBuild/libCBuild.*`) - *576 __KB__*
+ <!--du -hcs sh CBuild --exclude CBuild/CBuild/libCBuild.*-->
+ * Build script (files `build.sh`, `CBuild.run`, directory `scripts`) - *384 __KB__*
+ <!--du -hcs build.sh CBuild.run scripts/-->
  * Core library (file `CBuild/CBuild/libCBuild.so`) - *2.2 __MB__*
+ <!--du -hcs CBuild/CBuild/libCBuild.so-->
  * Output packages (directory `packages`) - *24 __MB__*
- * Wiki (Directory `wiki` except `wiki/mkdocs/site`, file `doxygen.conf`) - *12 __MB__*  
+ <!--du -hcs packages/-->
+ * Wiki (Directory `wiki`, files `doxygen.conf` and `mkdocs.yml`) - *76 __KB__*  
+ <!--du -hcs wiki-->
  * Cbuild template - *688 __KB__*   
+ <!--du -hcs template-->
 All sizes are generated using `du -hcs <folder/file0> <folder/file1> ...`
 
 ---

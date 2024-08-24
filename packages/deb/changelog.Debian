@@ -1,3 +1,10 @@
+cbuild (13.8) stable; urgency=high
+
+  [WolodiaM]
+  * Added id-only constructor to CBuild::CrossCompiler
+
+ -- WolodiaM <w_melnyk@outlook.com>  Sat, 24 Aug 2024 16:05:47 +0200
+
 cbuild (13.7) stable; urgency=high
 
   [WolodiaM]
