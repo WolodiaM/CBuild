@@ -25,4 +25,10 @@ Free Documentation License".
 
 &nbsp;
 
-## [CBuild repository](https://gitlab.com/WolodiaM)
+## [CBuild repository](https://gitlab.com/cbuild/cbuild)
+
+---
+
+&nbsp;
+
+## [Author](https://gitlab.com/WolodiaM)
