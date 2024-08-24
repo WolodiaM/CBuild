@@ -222,7 +222,7 @@ class cross_compiler : CBuild::Toolchain {
 #endif // __CROSS_COMPILER__
 ```
 
-#### Buildint cross-compiler
+#### Builtin cross-compiler
 
 Simply use [`CBuild::CrossCompiler`](../../doxygen/classCBuild_1_1CrossCompiler.html) class. You register tagets for each OS/architecture. Then on each rebuild it will ask you which internal target need to be run. If you selected default toolchain using [`CBuild::CrossCompiler::set_default_target(std::string arch)`](../../doxygen/classCBuild_1_1CrossCompiler.html#af5b3fe82018a8523414ffa803ef94bfb) then you can pass `-a select` to enter target select screen.
 
