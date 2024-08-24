@@ -32,7 +32,6 @@ namespace CBuild {
 /**
  * @class CrossCompiler
  * @brief Toolchain that wraps multiple other toolchain to support cross compilation
- * @deprecated Not implement for now
  *
  */
 class CrossCompiler {
