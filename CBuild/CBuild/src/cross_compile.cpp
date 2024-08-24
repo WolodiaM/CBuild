@@ -179,6 +179,8 @@ class MetaToolchain : public CBuild::Toolchain {
         this->parent = parent;
         this->default_target = "";
         this->default_target_set = false;
+        this->name = this->parent->meta_name;
+        this->id = this->parent->meta_id;
     }
     void build() override {}
     void link() override {}

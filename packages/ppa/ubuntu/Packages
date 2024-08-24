@@ -383,10 +383,10 @@ Architecture: amd64
 Maintainer: WolodiaM <w_melnyk@outlook.com>
 Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9)
 Filename: ./libcbuild-13.10.deb
-Size: 337492
-MD5sum: ef62661fa3192e8ef7efe67f658f6b13
-SHA1: 66843b79dfc4eb20c72abe49e8b9c0b94f1c2ca1
-SHA256: d176d6e60d017aeba4b7224545881b83cb5ab5318408334d9352f84ed6ccdaf9
+Size: 337348
+MD5sum: 3a101f9160b554d17d989507907a5b3f
+SHA1: 22efb4775491a07f736ea5b2db45f1b0baf3bd31
+SHA256: d868244415a66b68a3294a1c58aa2d0d6e1ca1eadeabeafe078359cb7989b6c3
 Section: devel
 Priority: optional
 Description: Build system for c++ that use scripts writen in c++ ;).
