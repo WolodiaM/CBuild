@@ -201,7 +201,7 @@ class MetaToolchain : public CBuild::Toolchain {
         this->parent->get_arch_target(tlist.at(val))->load_project_deps(curr_path);
     }
     void run(std::vector<std::string>* args) override {
-        CBuild::print(std::string("Showing targetsselector:"), CBuild::MAGENTA);
+        CBuild::print(std::string("Showing target selector:"), CBuild::MAGENTA);
         auto tlist = this->parent->get_target_list();
         size_t i = 0;
         for (; i < tlist.size(); i++) {

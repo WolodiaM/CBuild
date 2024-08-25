@@ -236,3 +236,7 @@ CBuild_rebuild scripts/ "-Ipath/to/CBuild/headers/if/they/are/not/in/your/search
 
 Then restore your buildscript and run simply rebuild it using builtin `--rebuild` flag.
 
+## Local CBuild install
+
+CBuild can be installed localy, on per-project basis. CBuild buildscript is automatically configured to search for its headers at `./CBuild/headers` and for its dynamic library at `./CBuild/CBuild/`.
+

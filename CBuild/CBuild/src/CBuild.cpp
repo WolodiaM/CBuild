@@ -333,8 +333,8 @@ void CBuild::loop(CBuild::RType mode, lib::map<std::string, std::string>* args) 
         auto generator = CBuild::Registry::GetGenerator(*(args->get("gen")));
         if (!generator->init()) {
             generator->generate(mode, args, &pargs);
+            goto mode_end;
         }
-        goto mode_end;
     }
     // Select mode
     switch (mode) {

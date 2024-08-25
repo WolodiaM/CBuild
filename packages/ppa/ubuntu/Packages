@@ -398,6 +398,26 @@ Description: Build system for c++ that use scripts writen in c++ ;).
  Git repo of CBuild: https://github.com/WolodiaM-CBuild/CBuild
 
 Package: libcbuild
+Version: 13.11
+Architecture: amd64
+Maintainer: WolodiaM <w_melnyk@outlook.com>
+Depends: libc6 (>= 2.17), libstdc++6 (>= 4.9)
+Filename: ./libcbuild-13.11.deb
+Size: 337792
+MD5sum: e14463b563ec91821745f143be8d1a4f
+SHA1: c372a05db0431c89d6088250649c34e9902a8080
+SHA256: e5a9e91684c12659c776d2dfd490edb8a600317b83381a7f18ddc88b3becb5a9
+Section: devel
+Priority: optional
+Description: Build system for c++ that use scripts writen in c++ ;).
+ This is a build system that allow creating simple or not build scripts for
+ building c++ code.
+ It is easy retargetable, if you can write a build procces (what command and
+ when need to be called), to any other language.
+ It allow to use full c++ api and any libraries in build scripts.
+ Git repo of CBuild: https://github.com/WolodiaM-CBuild/CBuild
+
+Package: libcbuild
 Version: 13.2
 Architecture: amd64
 Maintainer: WolodiaM <w_melnyk@outlook.com>

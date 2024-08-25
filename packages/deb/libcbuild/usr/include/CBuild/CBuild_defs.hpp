@@ -73,8 +73,8 @@
  * @brief Different representation of CBuild version
  */
 #define CBUILD_VERSION_MAJOR (int)13
-#define CBUILD_VERSION_MINOR (int)10
-#define CBUILD_VERSION_STR std::string("13.10")
+#define CBUILD_VERSION_MINOR (int)11
+#define CBUILD_VERSION_STR std::string("13.11")
 /**
  * @brief Data about CBuild compilation
  */

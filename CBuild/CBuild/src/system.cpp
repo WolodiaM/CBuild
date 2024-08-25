@@ -45,9 +45,9 @@ std::string get_env_vars() {
 } // namespace CBuild
 /* system.hpp */
 int CBuild::system(std::string cmd) {
-    // CBuild::log.push_back(cmd);
     int ret = -1;
     if (CBuild::enabled) {
+        CBuild::log.push_back(cmd);
         CBuild::print(CBuild::get_env_vars() + cmd, CBuild::color::BLUE);
         ret = std::system((CBuild::get_env_vars() + cmd).c_str());
     } else {
@@ -56,8 +56,8 @@ int CBuild::system(std::string cmd) {
     return ret;
 }
 std::string CBuild::system_piped(std::string cmd, unsigned int buffsize) {
-    CBuild::log.push_back(cmd);
     if (CBuild::enabled) {
+        CBuild::log.push_back(cmd);
         CBuild::print(CBuild::get_env_vars() + cmd, CBuild::color::BLUE);
         std::string ret = "";
         char* buffer = (char*)malloc(buffsize);
