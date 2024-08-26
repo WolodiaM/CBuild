@@ -89,7 +89,14 @@ void CBuild::makefile_out::generate(CBuild::RType mode, lib::map<std::string, st
     makefile << "\n";
     makefile << name << ":\n";
     for (auto elem : *log) {
-        makefile << "\t" << elem << "\n";
+        std::string ret;
+        for (char c : elem) {
+            if (c == '$') {
+                ret.push_back('$');
+            }
+            ret.push_back(c);
+        }
+        makefile << "\t" << ret << "\n";
     }
     // End Makefile
     makefile << "\n";

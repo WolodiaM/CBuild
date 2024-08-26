@@ -10,7 +10,4 @@ test
 CBuild/CBuild/libCBuild.so
 CBuild/CBuild/libCBuild.so.*
 Makefile
-private_gpg_key.asc
 private.pgp
-doxygen/passwd
-doxygen/wiki/site

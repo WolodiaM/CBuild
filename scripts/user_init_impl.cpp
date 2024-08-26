@@ -37,7 +37,6 @@ class copyLib : public CBuild::Task {
   public:
     copyLib(std::string name) : CBuild::Task(name, {}) {}
     void call(std::vector<std::string> args __attribute_maybe_unused__) {
-        CBuild::system("cp -r build/cbuild_clean/out/* packages/");
         CBuild::system("cp -r build/cbuild_clean/out/* CBuild/CBuild/");
     }
 };

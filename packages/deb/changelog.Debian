@@ -1,3 +1,10 @@
+cbuild (13.12) stable; urgency=high
+
+  [WolodiaM]
+  * Makefile generator now escapes '$' with '$'
+
+ -- WolodiaM <w_melnyk@outlook.com>  Mon, 26 Aug 2024 18:42:45 +0200
+
 cbuild (13.11) stable; urgency=high
 
   [WolodiaM]
