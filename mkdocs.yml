@@ -7,7 +7,7 @@ repo_name: "CBuild"
 edit_uri: edit/master/wiki/mkdocs/docs/
 
 # About wiki
-site_description: 'Wiki for CBuild build system for c++'
+site_description: 'Name'
 site_author: 'WolodiaM'
 copyright: 'GFDL-1.3-or-later'
 
@@ -50,15 +50,16 @@ markdown_extensions:
 
 # Navigation bar
 nav:
-  - 'Home': 'index.md'
-  - 'Doxygen documentation': 'doxygen/index.html'
-  - 'License':
-    - 'Wiki License': 'https://www.gnu.org/licenses/fdl-1.3.html'
-    - 'Code License': 'https://www.gnu.org/licenses/gpl-3.0.html'
-  - 'Info':
-    - 'Project information': 'info/info.md'
-    - 'Usage': 'info/usage.md'
-  - 'Internals':
-    - 'CBuild internals': 'internals/internal_cbuild_structure.md'
-  - 'Usage':
-    - 'Creating buildscript': 'usage/buildscript.md'
+  # TODO: Write new wiki
+  # - 'Home': 'index.md'
+  # - 'Doxygen documentation': 'doxygen/index.html'
+  # - 'License':
+  #   - 'Wiki License': 'https://www.gnu.org/licenses/fdl-1.3.html'
+  #   - 'Code License': 'https://www.gnu.org/licenses/gpl-3.0.html'
+  # - 'Info':
+  #   - 'Project information': 'info/info.md'
+  #   - 'Usage': 'info/usage.md'
+  # - 'Internals':
+  #   - 'CBuild internals': 'internals/internal_cbuild_structure.md'
+  # - 'Usage':
+  #   - 'Creating buildscript': 'usage/buildscript.md'

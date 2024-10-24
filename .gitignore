@@ -2,12 +2,3 @@
 .vscode
 # clangd
 .cache
-# CBuild main gitnore
-build
-cache
-test
-# CBuild dev gitnore
-CBuild/CBuild/libCBuild.so
-CBuild/CBuild/libCBuild.so.*
-Makefile
-private.pgp

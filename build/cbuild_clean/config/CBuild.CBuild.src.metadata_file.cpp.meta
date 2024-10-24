@@ -1,9 +1,0 @@
-CBuild/CBuild/src/metadata_file.cpp
-build/cbuild_clean/objs/CBuild.CBuild.src.metadata_file.o
-DEPS
-CBuild/headers/CBuild_defs.hpp
-CBuild/headers/build_data.hpp
-CBuild/headers/filesystem++.hpp
-CBuild/headers/print.hpp
-ENDDEPS
-13684588645302230665

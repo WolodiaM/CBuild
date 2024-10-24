@@ -1,7 +1,117 @@
+---
+# Use LLVM as base
 BasedOnStyle: LLVM
 IndentWidth: 4
+TabWidth: 4
 UseTab: Never
-AllowShortFunctionsOnASingleLine: Empty
-ColumnLimit: 100
-DerivePointerAlignment: false
+---
+Language: Cpp
+Standard: c++20
+# Aligment
+AlignArrayOfStructures: Left
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: false
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveBitFields:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: false
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: false
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: false
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCaseColons: false
+AlignEscapedNewlines: Right
+AlignOperands: true
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 2
 PointerAlignment: Left
+ReferenceAlignment: Left
+QualifierAlignment: Left
+# Block formatting
+AllowAllArgumentsOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortCompoundRequirementOnASingleLine: true
+AllowShortEnumsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: Inline
+AllowShortLoopsOnASingleLine: true
+AlwaysBreakBeforeMultilineStrings: true
+BinPackArguments: true
+BinPackParameters: true
+BitFieldColonSpacing: Both
+KeepEmptyLinesAtTheStartOfBlocks: false
+RequiresClausePosition: OwnLine
+RequiresExpressionIndentation: OuterScope
+SeparateDefinitionBlocks: Never
+# Breaks
+BreakAdjacentStringLiterals: true
+BreakAfterAttributes: Leave
+BreakBeforeBinaryOperators: None
+BreakBeforeConceptDeclarations: Always
+BreakBeforeTernaryOperators: true
+BreakStringLiterals: true
+AlwaysBreakTemplateDeclarations: true
+# Indents
+IndentAccessModifiers: false
+IndentCaseBlocks: false
+IndentCaseLabels: false
+IndentExternBlock: NoIndent
+IndentGotoLabels: true
+IndentPPDirectives: AfterHash
+IndentRequiresClause: false
+NamespaceIndentation: None
+# Lines
+InsertNewlineAtEOF: false
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: Never
+# Sorting
+IncludeBlocks: Merge
+SortIncludes: CaseSensitive
+SortUsingDeclarations: Lexicographic
+# Misk
+Cpp11BracedListStyle: false
+FixNamespaceComments: true
+IntegerLiteralSeparator:
+  Binary: 4
+  BinaryMinDigits: 8
+  Decimal: 3
+  DecimalMinDigits: 5
+  Hex: 2
+  HexMinDigits: 4
+LineEnding: LF
+ReflowComments: true
+RemoveParentheses: MultipleParentheses
+SpaceAfterCStyleCast: false
+SpaceBeforeParens: ControlStatementsExceptControlMacros
+SpacesInAngles: Never
+SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: false
+SpacesInContainerLiterals: true
+SpacesInLineCommentPrefix:
+  Minimum: 1
+  Maximum: -1
+SpacesInParens: Never
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+# Macro
+Macros:
+- switch_str(x)=switch(x)
+- case_str(x)=case x
+---

@@ -1,6 +1,0 @@
-scripts/main.cpp
-build/cbuild_rebuild_build_script/objs/scripts.main.o
-DEPS
-scripts/user_init.hpp
-ENDDEPS
-13733280459884631377
