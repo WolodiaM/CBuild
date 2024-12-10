@@ -1,9 +1,9 @@
 ---
 # Use LLVM as base
 BasedOnStyle: LLVM
-IndentWidth: 4
-TabWidth: 4
-UseTab: Never
+IndentWidth: 2
+TabWidth: 2
+UseTab: Always
 ---
 Language: Cpp
 Standard: c++20
@@ -19,20 +19,20 @@ AlignConsecutiveAssignments:
 AlignConsecutiveBitFields:
   Enabled: true
   AcrossEmptyLines: true
-  AcrossComments: false
+  AcrossComments: true
 AlignConsecutiveDeclarations:
   Enabled: true
   AcrossEmptyLines: true
-  AcrossComments: false
+  AcrossComments: true
 AlignConsecutiveMacros:
   Enabled: true
   AcrossEmptyLines: true
-  AcrossComments: false
+  AcrossComments: true
 AlignConsecutiveShortCaseStatements:
   Enabled: true
   AcrossEmptyLines: true
   AcrossComments: true
-  AlignCaseColons: false
+  AlignCaseColons: true
 AlignEscapedNewlines: Right
 AlignOperands: true
 AlignTrailingComments:
@@ -111,7 +111,7 @@ SpacesInParens: Never
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
 # Macro
-Macros:
-- switch_str(x)=switch(x)
-- case_str(x)=case x
+# Macros:
+# - switch_str(x)=switch(x)
+# - case_str(x)=case x
 ---

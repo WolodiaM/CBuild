@@ -1,0 +1,27 @@
+CompileFlags:
+  Add: [ -xc, -std=c99 ]
+  Compiler: gcc
+---
+If:
+  PathMatch: src/.*\.h
+CompileFlags:
+  Add: [ -Wall, -Wextra, -Wpedantic, -Werror ]
+  Compiler: gcc
+Diagnostics:
+  Suppress: -Wunused-function
+---
+If:
+  PathMatch: src/impl.c
+CompileFlags:
+  Add: [ -Wall, -Wextra, -Wpedantic, -Werror ]
+  Compiler: gcc
+Diagnostics:
+  Suppress: -Wunused-function
+---
+If:
+  PathMatch: tests/.*\.c
+CompileFlags:
+  Add: [ -Wall, -Wextra ]
+  Compiler: gcc
+Diagnostics:
+  Suppress: -Wunused-function
