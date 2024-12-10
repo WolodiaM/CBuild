@@ -4,6 +4,7 @@ image: alpine:edge
 before_script:
     # Update repo
     - apk update
+    - apk add bash
     - apk add gcc
     - apk add doxygen mkdocs
     - apk add clang18-extra-tools 
