@@ -1,4 +1,6 @@
-# VSCode
-.vscode
-# clangd
-.cache
+# docs
+wiki/doxygen/
+wiki/mkdocs/site/
+# build artifacts
+build/
+cbuild.h
