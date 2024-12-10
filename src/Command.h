@@ -1,0 +1,121 @@
+/**
+ * @file Command.h
+ * @author WolodiaM (w_melnyk@outlook.com)
+ * @brief Command runner
+ * Allow to manage command buffers ad run them. Alows for sync/async run. With
+ * shared io/piped io/no io.
+ *
+ * @date 2024-12-04
+ * @copyright (C) 2024 WolodiaM
+ * @license MIT
+ *
+ * Copyright (C) 2024 WolodiaM
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+// Code
+#ifndef __CBUILD_COMMAND_H__
+#define __CBUILD_COMMAND_H__
+#include "DynArray.h"
+#include "StringBuffer.h"
+#include "common.h"
+typedef struct {
+	const char** data;
+	size_t			 size;
+	size_t			 capacity;
+} CBuildCmd;
+typedef struct {
+	CBuildFD stdin;
+	CBuildFD stdout;
+	CBuildFD stderr;
+} CBuildCmdFDRedirect;
+/**
+ * @brief Append new arg to cmd
+ *
+ * @param cmd => CBuildCmd* -> Command bufer to work with
+ * @param val => char* -> New token
+ */
+#define cbuild_cmd_append(cmd, val) cbuild_da_append(cmd, val)
+/**
+ * @brief Append new args to cmd
+ *
+ * @param cmd => CBuildCmd* -> Command bufer to work with
+ * @param vals => char** -> New tokens
+ * @param vals_cnt => size_t -> Count of new tokens
+ */
+#define cbuild_cmd_append_arr(cmd, vals, vals_cnt)                             \
+	cbuild_da_append_arr(cmd, vals, vals_cnt)
+/**
+ * @brief Append new args to cmd
+ *
+ * @param cmd => CBuildCmd* -> Command bufer to work with
+ * @param ... => char* -> New tokens
+ */
+#define cbuild_cmd_append_many(cmd, ...)                                       \
+	cbuild_da_append_many(cmd, char*, __VA_ARGS__)
+/**
+ * @brief  Clear command buffer
+ *
+ * @param cmd => CBuildCmd* -> Command bufer to work with
+ */
+#define cbuild_cmd_clear(cmd) cbuild_da_clear(cmd)
+/**
+ * @brief Conver CBuildCmd to CBuildStrBuff
+ *
+ * @param cmd => CBuildCmd -> Command
+ * @param sb => CBuildStrBuff -> String buffer to work with
+ */
+void cbuild_cmd_to_sb(CBuildCmd cmd, CBuildStrBuff* sb);
+/**
+ * @brief Call async command without io rediecting
+ *
+ * @param cmd => CBuildCmd -> Command buffer
+ * @return CBuildProc -> Process associated with called command
+ */
+#define cbuild_cmd_async(cmd)                                                  \
+	cbuild_cmd_async_redirect(cmd, (CBuildCmdFDRedirect){ CBUILD_INVALID_FD,     \
+																												CBUILD_INVALID_FD,     \
+																												CBUILD_INVALID_FD })
+/**
+ * @brief Call async command with io rediecting
+ *
+ * @param cmd => CBuildCmd -> Command buffer
+ * @param df => CBuildCmdFDRedirect -> IO redicrecting table
+ * @return CBuildProc -> Process associated with called command
+ */
+CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd);
+/**
+ * @brief Call sync command without io rediecting
+ *
+ * @param cmd => CBuildCmd -> Command buffer
+ * @return true -> Command succeed
+ * @return false -> Command failed
+ */
+#define cbuild_cmd_sync(cmd)                                                   \
+	cbuild_cmd_sync_redirect(cmd, (CBuildCmdFDRedirect){ CBUILD_INVALID_FD,      \
+																											 CBUILD_INVALID_FD,      \
+																											 CBUILD_INVALID_FD })
+/**
+ * @brief Call sync command with io rediecting
+ *
+ * @param cmd => CBuildCmd -> Command buffer
+ * @param df => CBuildCmdFDRedirect -> IO redicrecting table
+ * @return true -> Command succeed
+ * @return false -> Command failed
+ */
+bool cbuild_cmd_sync_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd);
+#endif // __CBUILD_COMMAND_H__
