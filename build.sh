@@ -109,16 +109,22 @@ test_run() {
 	else
 		echo "Test output will be saved in \"build/test_${1}_out.txt\""
 		call_cmd_ns ./build/test_"$1".run > build/test_"$1"_out.txt
+		ERR=$?
 		printf "${cyan}%s${reset}\n" "----------   Begin of test output   ----------"
 		cat build/test_"$1"_out.txt
 		printf "${cyan}%s${reset}\n" "----------    End of test output    ----------"
 	fi
+	return $ERR
 }
 test_run_all() {
 	for file in tests/*.c; do
 		file="$(basename -- "$file")"
 		file="${file%.*}"
 		test_run "$file"
+		ERR=$?
+		if [ "$ERR" -ne 0 ]; then
+			exit 1
+		fi
 	done
 }
 # clean subcommand
