@@ -3,11 +3,11 @@ image: archlinux:base
 # Functions that should be executed before the build script is run
 before_script:
     # Update repo
-    - pacman -Syyu
-    - pacman -S bash
-    - pacman -S gcc
-    - pacman -S doxygen mkdocs
-    - pacman -S clang
+    - pacman --noconfirm -Syyu
+    - pacman --noconfirm -S bash
+    - pacman --noconfirm -S gcc
+    - pacman --noconfirm -S doxygen mkdocs
+    - pacman --noconfirm -S clang
 stages:
     - test
     - build
