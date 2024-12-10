@@ -1,13 +1,13 @@
 # The Docker image that will be used to build your app
-image: alpine:edge
+image: archlinux:base
 # Functions that should be executed before the build script is run
 before_script:
     # Update repo
-    - apk update
-    - apk add bash
-    - apk add gcc
-    - apk add doxygen mkdocs
-    - apk add clang18-extra-tools 
+    - packman -Syyu
+    - pacman -S bash
+    - pacman -S gcc
+    - pacman -S doxygen mkdocs
+    - pacman -S clang
 stages:
     - test
     - build
