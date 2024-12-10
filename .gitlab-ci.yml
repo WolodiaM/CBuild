@@ -1,4 +1,3 @@
-# TODO: reenable this when wiki will be updated
 # # The Docker image that will be used to build your app
 # image: alpine:edge
 # # Functions that should be executed before the build script is run
@@ -6,6 +5,8 @@
 #   # Update repo
 #   - apk update
 #   - apk add doxygen mkdocs
+#   - apk add sed coreutils
+#   - apk add clang18-extra-tools 
 #   # Create directory for a wiki and for a doxygen
 #   - rm -rf public
 #   - mkdir public

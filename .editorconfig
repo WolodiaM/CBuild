@@ -5,5 +5,9 @@ end_of_line = lf
 charset = utf-8
 indent_style = tab
 
+[.gitlab-ci.yml]
+indent_style = space
+insert_final_newline = false
+
 [Makefile]
 insert_final_newline = true

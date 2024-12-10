@@ -28,22 +28,25 @@ if test -t 1; then
 	fi
 fi
 # pack subcommand
-pack_header() {
+pack_header_strip() {
 	cat "src/$1" | tr "\n" "$" | sed "s/#include \"[^\"]*\"\\\$//g" | sed "s/\\/\\/ Project includes\\\$//g" | tr "$" "\n" >> "cbuild.h" 
 }
-pack_source() {
+pack_nostrip() {
 	cat "src/$1" >> "cbuild.h"
 }
 pack() {
 	call_cmd rm cbuild.h
-	pack_header "DynArray.h"
-	pack_header "StringBuffer.h"
-	pack_header "StringView.h"
-	pack_header "Log.h"
-	pack_header "Proc.h"
-	pack_header "Command.h"
-	pack_header "FS.h"
-	pack_header "Compile.h"
+	call_cmd_ns pack_nostrip "common.h"
+	call_cmd_ns pack_header_strip "DynArray.h"
+	call_cmd_ns pack_header_strip "StringBuffer.h"
+	call_cmd_ns pack_header_strip "StringView.h"
+	call_cmd_ns pack_header_strip "Log.h"
+	call_cmd_ns pack_header_strip "Proc.h"
+	call_cmd_ns pack_header_strip "Command.h"
+	call_cmd_ns pack_header_strip "FS.h"
+	call_cmd_ns pack_header_strip "Compile.h"
+	call_cmd_ns pack_header_strip "impl.c"
+	call_cmd_ns clang-format --style file -i "cbuild.h"
 	return;
 }
 # docs subcommand

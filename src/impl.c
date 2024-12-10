@@ -557,7 +557,7 @@ const char* cbuild_path_ext(const char* path) {
 		memcpy(ret, "\0", 1);
 		return ret;
 	}
-	size_t len = strlen(path) - i;
+	size_t len = strlen(path) - i + 1;
 	char*	 ret = (char*)malloc(len);
 	memcpy(ret, path + i + 1, len);
 	return ret;
@@ -572,7 +572,7 @@ const char* cbuild_path_name(const char* path) {
 			break;
 		}
 	}
-	size_t len = strlen(path) - i;
+	size_t len = strlen(path) - i + 1;
 	char*	 ret = (char*)malloc(len);
 	memcpy(ret, path + i + 1, len);
 	return ret;
@@ -615,13 +615,16 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 	int cond = cbuild_compare_mtime(bname_new, (char*)spath);
 	if (cond < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Error while performing self-rebuild");
+		free(bname_old);
 		abort();
 	}
 	if (cond == 0) {
+		free(bname_old);
 		return;
 	}
 	if (!cbuild_file_rename(bname_new, bname_old)) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot rename old buildscript!");
+		free(bname_old);
 		abort();
 	}
 	CBuildCmd cmd = { 0 };
@@ -633,6 +636,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 	cbuild_cmd_append(&cmd, bname_new);
 	cbuild_cmd_append_arr(&cmd, argv, (size_t)argc);
 	if (!cbuild_cmd_sync(cmd)) {
+		free(bname_old);
 		exit(1);
 	}
 	free(bname_old);
