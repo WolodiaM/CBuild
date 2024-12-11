@@ -10,6 +10,7 @@ before_script:
     - pacman --noconfirm -S clang
     # Create output directory
     - mkdir public
+    - mkdir public/doxygen
 stages:
     - test
     - build
@@ -36,9 +37,9 @@ pages:
         # Copy doxygen to its directory
         - cp -r wiki/doxygen/html/* public/doxygen/
         # Build mkdocs wiki
-        - mkdocs build
+        # - mkdocs build
         # Copy mkdocs wiki to its directory
-        - cp -r wiki/mkdocs/site/* public/
+        # - cp -r wiki/mkdocs/site/* public/
     artifacts:
         paths:
             # The folder that contains the files to be exposed at the Page URL
