@@ -5,24 +5,24 @@ before_script:
     # Update repo
     - pacman --noconfirm -Syyu
     - pacman --noconfirm -S bash
-    - pacman --noconfirm -S gcc
-    - pacman --noconfirm -S doxygen mkdocs
-    - pacman --noconfirm -S clang
-    # Create output directory
-    - mkdir public
-    - mkdir public/doxygen
 stages:
     - test
     - build
 test:
     stage: test
-    script: ./build.sh test
+    script:
+        - pacman --noconfirm -S gcc
+        - pacman --noconfirm -S clang
+        - ./build.sh test
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 build:
     stage: build
-    script: ./build.sh pack
+    script:
+        - pacman --noconfirm -S gcc
+        - pacman --noconfirm -S clang
+        - ./build.sh pack
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -32,6 +32,11 @@ build:
             - cbuild.h
 pages:
     script:
+        # Install tools
+        - pacman --noconfirm -S doxygen mkdocs
+        # Create output directory
+        - mkdir -p public
+        - mkdir -p public/doxygen
         # Build doxygen
         - doxygen doxygen.conf
         # Copy doxygen to its directory
