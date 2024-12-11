@@ -27,7 +27,8 @@ build:
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     artifacts:
         name: "$CI_COMMIT_REF_NAME"
-        path: cbuild.h
+        paths:
+            - cbuild.h
 pages:
     script:
         # Build doxygen
