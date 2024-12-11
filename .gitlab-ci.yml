@@ -8,6 +8,8 @@ before_script:
     - pacman --noconfirm -S gcc
     - pacman --noconfirm -S doxygen mkdocs
     - pacman --noconfirm -S clang
+    # Create output directory
+    - mkdir public
 stages:
     - test
     - build
@@ -17,14 +19,15 @@ test:
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
 build:
     stage: build
     script: ./build.sh pack
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
+    artifacts:
+        name: "$CI_COMMIT_REF_NAME"
+        path: cbuild.h
 pages:
     script:
         # Build doxygen
