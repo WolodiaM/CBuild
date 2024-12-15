@@ -1,6 +1,7 @@
 # docs
 wiki/doxygen/
 wiki/mkdocs/site/
+wiki/mkdocs/docs/doxygen
 # build artifacts
 build/
 cbuild.h
