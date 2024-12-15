@@ -1,7 +1,7 @@
 # CBuild
 
-[Build status](https://gitlab.com/cbuild/cbuild/badges/master/pipeline.svg?key_text=Build)
-[Lates release](https://gitlab.com/cbuild/cbuild/-/badges/release.svg)
+![Build status](https://gitlab.com/cbuild/cbuild/badges/master/pipeline.svg?key_text=Build)
+![Lates release](https://gitlab.com/cbuild/cbuild/-/badges/release.svg)
 
 
 Build system that allows you to write your buildscripts for C or C++ (or actually any other scripts) with C, C++ or any language that can use C headers.
