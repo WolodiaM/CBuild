@@ -1,6 +1,6 @@
 # CBuild
 
-[Build status](https://gitlab.com/cbuild/cbuild/badges/master/pipeline.svg&key_text=Build)
+[Build status](https://gitlab.com/cbuild/cbuild/badges/master/pipeline.svg?key_text=Build)
 [Lates release](https://gitlab.com/cbuild/cbuild/-/badges/release.svg)
 
 
@@ -15,6 +15,8 @@ Build system that allows you to write your buildscripts for C or C++ (or actuall
  - Do no rely on shell scripts for doing anything
  - Provide minimal but simple API
  - Be properly documented
+
+# [Documentation](https://cbuild.gitlab.io/cbuild/)
 
 # How to use
 
