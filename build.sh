@@ -4,6 +4,7 @@ CARGS="-O3 -g -std=c99 -Wall -Wextra"
 # Global variables
 Silent="no" # Need to be set to `yes`
 Verbose="no" # Need to be set to `yes`
+ScriptPath=""
 #Handle Terminal
 if test -t 1; then
 	ncolors=$(tput colors)
@@ -46,7 +47,7 @@ pack() {
 	call_cmd_ns pack_header_strip "FS.h"
 	call_cmd_ns pack_header_strip "Compile.h"
 	call_cmd_ns pack_header_strip "impl.c"
-	call_cmd_ns clang-format --style file -i "cbuild.h"
+	call_cmd clang-format --style file -i "cbuild.h"
 	return;
 }
 # docs subcommand
@@ -65,15 +66,14 @@ docs() {
 	esac
 }
 docs_wiki() {
+	call_cmd ln -fsrT "wiki/doxygen/html" "wiki/mkdocs/docs/doxygen"
 	call_cmd mkdocs build
 }
 docs_doxygen() {
 	call_cmd doxygen doxygen.conf
 }
 docs_serve() {
-	call_cmd ln -s $PWD/wiki/doxygen/html $PWD/wiki/mkdocs/site/doxygen
-	call_cmd python3 -m http.server -d wiki/mkdocs/site/
-	call_cmd rm $PWD/wiki/mkdocs/site/doxygen
+	call_cmd mkdocs serve
 }
 # test subcommand
 test() {
@@ -235,6 +235,7 @@ parse_args() {
 	esac
 }
 # Main
+ScriptPath=$(cd $(dirname "$0") && pwd)
 if [ "$#" -lt 1 ]; then
 	help;
 	return;
