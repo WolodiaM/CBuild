@@ -1,0 +1,45 @@
+# Very basic CBuild example
+
+### Code
+
+Directory structure:  
+```tree
+.
+├── src
+│   └── main.c
+│
+├── cbuild.h
+└── cbuild.c
+```
+main.c - You app source code:  
+```c
+#include "stdio.h"
+int main(int argc, char** argv) {
+    printf("Hello, world!\n");
+    return 0;
+}
+```
+cbuild.h - Build system core.  
+cbuild.c - Your buildscript:
+```c
+#include "cbuild.h"
+int main(int argc, char** argv) {
+    cbuild_selfrebuild(argc, argv);
+    CBuildCmd cmd = {0};
+    cbuild_cmd_append_many(&cmd, CC, "-o", "app.run", "src/main.c");
+    bool ret = cbuild_cmd_sync(cmd);
+    if (!ret) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+```
+
+### How to run
+
+```bash
+cc -o cbuild.run cbuild.c
+./cbuild.run
+./app.run
+```

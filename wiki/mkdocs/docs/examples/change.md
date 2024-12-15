@@ -1,0 +1,74 @@
+# Recompiling only if file changed
+
+### Code
+
+Directory structure:  
+```tree
+.
+├── src
+│   ├── utils.h
+│   ├── utils.c
+│   └── main.c
+│
+├── cbuild.h
+└── cbuild.c
+```
+main.c - You app source code:  
+```c
+#include "stdio.h"
+#include "utils.h"
+int main(int argc, char** argv) {
+    printf("Hello, world!\nSum: %d\n", sum(1, 1));
+    return 0;
+}
+```
+utils.h - Another source code file:  
+```c
+#ifndef UTILS_H
+#define UTILS_H
+int sum(int a, int b);
+#endif // UTILS_H
+```
+utils.c - Another source code file:  
+```c
+#include "utils.h"
+int sum(int a, int b) {
+    return a + b;
+}
+```
+cbuild.h - Build system core.  
+cbuild.c - Your buildscript:
+```c
+#include "cbuild.h"
+int main(int argc, char** argv) {
+    cbuild_selfrebuild(argc, argv);
+    if (cbuild_compare_mtime("main.o", "src/main.c") > 0) {
+        CBuildCmd c1 = {0};
+        cbuild_cmd_append_many(&c1, CC, "-c", "src/main.c");
+        if (!cbuild_cmd_sync(c1)) {
+            return 0;
+        }
+    }
+    if (cbuild_compare_mtime("utils.o", "src/utils.c") > 0) {
+        CBuildCmd c2 = {0};
+        cbuild_cmd_append_many(&c2, CC, "-c", "src/utils.c");
+        if (!cbuild_cmd_sync(c2)) {
+            return 0;
+        }
+    }
+    CBuildCmd l = {0};
+    cbuild_cmd_append_many(&l, LD, "-o", "app.run", "utils.o", "main.o");
+    if (!cbuild_cmd_sync(l)) {
+        return 1;
+    }
+    return 0;
+}
+```
+
+### How to run
+
+```bash
+cc -o cbuild.run cbuild.c
+./cbuild.run
+./app.run
+```

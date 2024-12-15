@@ -5,7 +5,12 @@ end_of_line = lf
 charset = utf-8
 indent_style = tab
 
-[.gitlab-ci.yml]
+[*.yml]
+indent_size = 4
+indent_style = space
+insert_final_newline = false
+
+[*.md]
 indent_size = 4
 indent_style = space
 insert_final_newline = false
