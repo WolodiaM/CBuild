@@ -3,7 +3,7 @@
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Process manager
  * Simple wrapper around supported APIs that allow to start/stop processes, wait
- * for process and redirect steams to it. *
+ * for process and redirect steams to it.
  * @date 2024-12-04
  * @copyright (C) 2024 WolodiaM
  * @license MIT
@@ -29,7 +29,20 @@
 // Code
 #ifndef __CBUILD_PROC_H__
 #define __CBUILD_PROC_H__
-#include "Log.h"
 #include "common.h"
+/**
+ * @brief Wait until process finishes execurition
+ *
+ * @param proc => CBuildProc -> Process ID
+ * @return true -> Process finished without errors
+ * @return false -> Process finished with an error
+ */
 bool cbuild_proc_wait(CBuildProc proc);
+/**
+ * @brief Wait until process finishes execurition
+ *
+ * @param proc => CBuildProc -> Process ID
+ * @return int -> Process exit code
+ */
+int	 cbuild_proc_wait_code(CBuildProc proc);
 #endif // __CBUILD_PROC_H__

@@ -31,21 +31,94 @@
 // Project includes
 #include "common.h"
 // Code
-#if defined(__clang__)
-#	define CC "clang"
-#elif defined(__MINGW32__)
-#	ifdef _WIN32
+#if !defined(CC)
+#	if defined(__clang__)
+#		define CC "clang"
+#	elif defined(__MINGW32__)
+#		ifdef _WIN32
+#			define CC "gcc"
+#		else
+#			define CC "x86_64-w64-mingw32-gcc"
+#		endif // _WIN32
+#	elif defined(__CYGWIN32__) && defined(_WIN32)
+#		define CC "gcc"
+#	elif defined(__GNUC__)
 #		define CC "gcc"
 #	else
-#		define CC ""
-#	endif // _WIN32
-#elif defined(__CYGWIN32__) && defined(_WIN32)
-#	define CC "gcc"
-#elif defined(__GNUC__)
-#	define CC "gcc"
-#else
-#	define CC "cc"
-#endif // CC
+#		define CC "cc"
+#	endif // Compiler select
+#endif	 // CC
+#if !defined(LD)
+#	if defined(__clang__)
+#		define LD "clang"
+#	elif defined(__MINGW32__)
+#		ifdef _WIN32
+#			define LD "gcc"
+#		else
+#			define LD "x86_64-w64-mingw32-gcc"
+#		endif // _WIN32
+#	elif defined(__CYGWIN32__) && defined(_WIN32)
+#		define LD "gcc"
+#	elif defined(__GNUC__)
+#		define LD "gcc"
+#	else
+#		define LD "cc"
+#	endif // Compiler select
+#endif	 // LD
+#if !defined(CXX)
+#	if defined(__clang__)
+#		define CXX "clang++"
+#	elif defined(__MINGW32__)
+#		ifdef _WIN32
+#			define CXX "g++"
+#		else
+#			define CXX "x86_64-w64-mingw32-g++"
+#		endif // _WIN32
+#	elif defined(__CYGWIN32__) && defined(_WIN32)
+#		define CXX "g++"
+#	elif defined(__GNUC__)
+#		define CXX "g++"
+#	else
+#		define CXX "cc -x c++"
+#	endif // Compiler select
+#endif	 // CXX
+#if !defined(AR)
+#	if defined(__clang__)
+#		define AR "llvm-ar"
+#	elif defined(__MINGW32__)
+#		ifdef _WIN32
+#			define AR "ar"
+#		else
+#			define AR "x86_64-w64-mingw32-ar"
+#		endif // _WIN32
+#	elif defined(__CYGWIN32__) && defined(_WIN32)
+#		define AR "ar"
+#	elif defined(__GNUC__)
+#		define AR "ar"
+#	else
+#		define AR "ar"
+#	endif // Compiler select
+#endif	 // AR
+#if !defined(AS)
+#	if defined(__clang__)
+#		define AS "llvm-as"
+#	elif defined(__MINGW32__)
+#		ifdef _WIN32
+#			define AS "as"
+#		else
+#			define AS "x86_64-w64-mingw32-as"
+#		endif // _WIN32
+#	elif defined(__CYGWIN32__) && defined(_WIN32)
+#		define AS "as"
+#	elif defined(__GNUC__)
+#		define AS "as"
+#	else
+#		define AS "as"
+#	endif // Compiler select
+#endif	 // AS
+#if !defined(CPP)
+#	define CPP CC "-E"
+#endif	 // CPP
 // Predefined compiler arguments
 #define CBUILD_CARG_WARN											"-Wall", "-Wextra", "-Wno-comments"
 #define CBUILD_CARGS_WERROR										"-Werror"

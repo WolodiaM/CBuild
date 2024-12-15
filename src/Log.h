@@ -29,7 +29,6 @@
 // Code
 #ifndef __CBUILD_LOG_H__
 #define __CBUILD_LOG_H__
-#include "common.h"
 typedef enum {
 	CBUILD_LOG_NO_LOGS = -1,
 	CBUILD_LOG_ERROR	 = 10,
@@ -43,6 +42,7 @@ typedef enum {
  *
  * @param level => CBuildLogLevel -> Type of log
  * @param fmt => const char* -> Format string
+ * @param ... => varargs -> Values for format string
  */
 void cbuild_log(CBuildLogLevel level, const char* fmt, ...)
 		__attribute__((format(printf, 2, 3)));

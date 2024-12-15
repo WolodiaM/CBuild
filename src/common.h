@@ -35,6 +35,7 @@
 #include "dirent.h"
 #include "errno.h"
 #include "fcntl.h"
+#include "limits.h"
 #include "stdarg.h"
 #include "stdbool.h"
 #include "stdio.h"
@@ -151,4 +152,8 @@ typedef int CBuildFD;
 	assert((argc) > 0);                                                          \
 	(argc)--;                                                                    \
 	(argv)++;
+// Version
+#define CBUILD_VERSION "v1.0"
+#define VERSION_MINOR	 0
+#define VERSION_MAJOR	 1
 #endif // __CBUILD_COMMON_H__

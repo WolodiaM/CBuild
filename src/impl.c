@@ -106,12 +106,12 @@ void cbuild_log(CBuildLogLevel level, const char* fmt, ...) {
 	}
 }
 /* Proc.h impl */
-bool cbuild_proc_wait(CBuildProc proc) {
+int cbuild_proc_wait_code(CBuildProc proc) {
 	if (proc == CBUILD_INVALID_PROC) {
-		return false;
+		return INT_MIN;
 	}
 	while (true) {
-		int status;
+		int status = 0;
 		if (waitpid(proc, &status, 0) < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
 								 "Cannot wait for child process (pid %d), error: \"%s\"", proc,
@@ -120,22 +120,23 @@ bool cbuild_proc_wait(CBuildProc proc) {
 		}
 		if (WIFEXITED(status)) {
 			int code = WEXITSTATUS(status);
-			if (code != 0) {
-				cbuild_log(CBUILD_LOG_ERROR, "Process (pid %d) exited with eeror: %d",
-									 proc, code);
-				return false;
-			} else {
-				return true;
-			}
+			return code;
 		}
 		if (WIFSIGNALED(status)) {
 			cbuild_log(CBUILD_LOG_ERROR,
 								 "Process (pid %d) was terminated by signal \"%s\"", proc,
 								 strerror(WTERMSIG(status)));
-			return false;
+			return INT_MAX;
 		}
 	}
-	return true;
+	return 0;
+}
+bool cbuild_proc_wait(CBuildProc proc) {
+	if (cbuild_proc_wait_code(proc) != 0) {
+		return false;
+	} else {
+		return true;
+	}
 }
 /* StringBuffer.h impl */
 int cbuild_sb_cmp(CBuildStrBuff* sb1, CBuildStrBuff* sb2) {
@@ -622,6 +623,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 		free(bname_old);
 		return;
 	}
+	cbuild_log(CBUILD_LOG_INFO, "Rebuilding CBuild buildscript");
 	if (!cbuild_file_rename(bname_new, bname_old)) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot rename old buildscript!");
 		free(bname_old);
