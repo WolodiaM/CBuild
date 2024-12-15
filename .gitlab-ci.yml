@@ -1,13 +1,15 @@
-# The Docker image that will be used to build your app
+# Use arch to build, we are not dependant on compiler version
 image: archlinux:base
-# Functions that should be executed before the build script is run
+# Install ase packages
 before_script:
     # Update repo
     - pacman --noconfirm -Syyu
     - pacman --noconfirm -S bash
+# Build stages
 stages:
     - test
     - build
+# Run all tests
 test:
     stage: test
     script:
@@ -17,6 +19,7 @@ test:
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+# Create cbuild.h header
 build:
     stage: build
     script:
@@ -30,6 +33,7 @@ build:
         name: "$CI_COMMIT_REF_NAME"
         paths:
             - cbuild.h
+# Build wiki
 pages:
     script:
         # Install tools
@@ -47,9 +51,6 @@ pages:
         - cp -r wiki/mkdocs/site/* public/
     artifacts:
         paths:
-            # The folder that contains the files to be exposed at the Page URL
             - public
     rules:
-        # This ensures that only pushes to the default branch will trigger
-        # a pages deploy
         - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
