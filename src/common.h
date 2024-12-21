@@ -30,7 +30,7 @@
 /*
  * CHANGELOG
  * 15.12.2024: v1.0 -> Initial release
- * 21.12.2024: v1.1 -> Update into Proc.h module
+ * 21.12.2024: v1.1 -> Updates in Proc.h module
  *             - Added cbuild_proc_start function
  */
 // Code

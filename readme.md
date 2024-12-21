@@ -21,7 +21,7 @@ Build system that allows you to write your buildscripts for C or C++ (or actuall
 # How to use
 
  1. Download [cbuild.h](https://gitlab.com/cbuild/cbuild/-/jobs/artifacts/master/browse?job=build).
- 2. Write some logic into for your build into `cbuild.c`.
+ 2. Write some logic for your build into `cbuild.c`.
  3. Run `cc -o cbuild.run cbuild.c`
 
 Actually, you can any filename for any of your files, provided filenames are examples only.
