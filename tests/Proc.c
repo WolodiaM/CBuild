@@ -1,10 +1,10 @@
 /**
- * @file Proc.h
+ * @file Proc.c
  * @author WolodiaM (w_melnyk@outlook.com)
- * @brief Process manager
- * Simple wrapper around supported APIs that allow to start/stop processes, wait
- * for process and redirect steams to it.
- * @date 2024-12-04
+ * @brief Tests for some common and untructured modules
+ *
+ *
+ * @date 2024-12-05
  * @copyright (C) 2024 WolodiaM
  * @license MIT
  *
@@ -26,33 +26,45 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+// Project includes
+#include "../src/Proc.h"
+#include "../src/FS.h"
+#include "../src/common.h"
+#include "framework.h"
 // Code
-#ifndef __CBUILD_PROC_H__
-#define __CBUILD_PROC_H__
-#include "common.h"
-/**
- * @brief Wait until process finishes execurition
- *
- * @param proc => CBuildProc -> Process ID
- * @return true -> Process finished without errors
- * @return false -> Process finished with an error
- */
-bool			 cbuild_proc_wait(CBuildProc proc);
-/**
- * @brief Wait until process finishes execurition
- *
- * @param proc => CBuildProc -> Process ID
- * @return int -> Process exit code
- */
-int				 cbuild_proc_wait_code(CBuildProc proc);
-/**
- * @brief Start another process with generick function
- *
- * @param callback => int (*)(void*) -> Callback for created process, return
- * value will be process exit status and context will be passed from parent
- * process
- * @param context => Will be passed to a callback
- * @return CBuildProc -> Process ID
- */
-CBuildProc cbuild_proc_start(int (*callback)(void* context), void* context);
-#endif // __CBUILD_PROC_H__
+int thread(void* context) {
+	CBuildFD*		pipe = (CBuildFD*)context;
+	const char* text = "Hello, world!";
+	int					ret	 = write(*pipe, text, 14);
+	if (ret != -1) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+TEST_MAIN(
+		{
+			TEST_CASE(
+					{
+						CBuildFD rd = 0;
+						CBuildFD wr = 0;
+						cbuild_fd_open_pipe(&rd, &wr);
+						CBuildProc subproc = cbuild_proc_start(thread, &wr);
+						int				 code		 = cbuild_proc_wait_code(subproc);
+						CHECK_CMP_VALUE(code, 0,
+														"Either subprocess exited abnormally or CBuild is "
+														"broken, expected return code 0 but received %d",
+														code);
+						if (code == 0) {
+							char buff[14];
+							read(rd, buff, 14);
+							CHECK_CMP_STR(buff, "Hello, world!",
+														"Expected string \"Hello, world!\", but got \"%s\"",
+														buff);
+						} else {
+							err_code++;
+						}
+					},
+					"cbuild_proc_ctrl");
+		},
+		"Process control module tests");

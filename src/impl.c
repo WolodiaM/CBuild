@@ -138,6 +138,19 @@ bool cbuild_proc_wait(CBuildProc proc) {
 		return true;
 	}
 }
+CBuildProc cbuild_proc_start(int (*callback)(void* context), void* context) {
+	CBuildProc proc = fork();
+	if (proc < 0) {
+		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
+							 strerror(errno));
+		return CBUILD_INVALID_PROC;
+	}
+	if (proc == 0) {
+		int code = callback(context);
+		exit(code);
+	}
+	return proc;
+}
 /* StringBuffer.h impl */
 int cbuild_sb_cmp(CBuildStrBuff* sb1, CBuildStrBuff* sb2) {
 	if (sb1->size < sb2->size) {

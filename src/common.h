@@ -27,6 +27,12 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+/*
+ * CHANGELOG
+ * 15.12.2024: v1.0 -> Initial release
+ * 21.12.2024: v1.1 -> Update into Proc.h module
+ *             - Added cbuild_proc_start function
+ */
 // Code
 #ifndef __CBUILD_COMMON_H__
 #define __CBUILD_COMMON_H__
@@ -153,7 +159,7 @@ typedef int CBuildFD;
 	(argc)--;                                                                    \
 	(argv)++;
 // Version
-#define CBUILD_VERSION "v1.0"
-#define VERSION_MINOR	 0
+#define CBUILD_VERSION "v1.1"
+#define VERSION_MINOR	 1
 #define VERSION_MAJOR	 1
 #endif // __CBUILD_COMMON_H__
