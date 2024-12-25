@@ -2,6 +2,9 @@
 
 ---
 
+![Pipeline status](https://gitlab.com/cbuild/cbuild/badges/master/pipeline.svg?key_text=Build) ![Latest release](https://gitlab.com/cbuild/cbuild/-/badges/release.svg)
+
+---
 &nbsp;
 
 ## License
@@ -34,9 +37,6 @@ Free Documentation License".
 ## [Author](https://gitlab.com/WolodiaM)
 
 ---
-
-![Pipeline status](https://gitlab.com/cbuild/cbuild/badges/master/pipeline.svg?key_text=Build)
-![Latest release](https://gitlab.com/cbuild/cbuild/-/badges/release.svg)
 
 ## Wiki version: v1.2
 
