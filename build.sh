@@ -2,7 +2,7 @@
 # constants
 CARGS="-O3 -g -std=c99 -Wall -Wextra"
 # Global variables
-Silent="no" # Need to be set to `yes`
+Silent="no"  # Need to be set to `yes`
 Verbose="no" # Need to be set to `yes`
 ScriptPath=""
 #Handle Terminal
@@ -30,10 +30,10 @@ if test -t 1; then
 fi
 # pack subcommand
 pack_header_strip() {
-	cat "src/$1" | tr "\n" "$" | sed "s/#include \"[^\"]*\"\\\$//g" | sed "s/\\/\\/ Project includes\\\$//g" | tr "$" "\n" >> "cbuild.h" 
+	cat "src/$1" | tr "\n" "$" | sed "s/#include \"[^\"]*\"\\\$//g" | sed "s/\\/\\/ Project includes\\\$//g" | tr "$" "\n" >>"cbuild.h"
 }
 pack_nostrip() {
-	cat "src/$1" >> "cbuild.h"
+	cat "src/$1" >>"cbuild.h"
 }
 pack() {
 	call_cmd rm cbuild.h
@@ -48,21 +48,21 @@ pack() {
 	call_cmd_ns pack_header_strip "Compile.h"
 	call_cmd_ns pack_header_strip "impl.c"
 	call_cmd clang-format --style file -i "cbuild.h"
-	return;
+	return
 }
 # docs subcommand
 docs() {
 	if [ "$#" -lt 1 ]; then
-		help;
-		return;
+		help
+		return
 	fi
 	operation="$1"
 	shift
 	case "$operation" in
-		"wiki")			docs_wiki 		"$@"	;;
-		"doxygen")	docs_doxygen	"$@"	;;
-		"serve")		docs_serve		"$@"	;;
-		*)					help					"$@"	;;
+		"wiki") docs_wiki "$@" ;;
+		"doxygen") docs_doxygen "$@" ;;
+		"serve") docs_serve "$@" ;;
+		*) help "$@" ;;
 	esac
 }
 docs_wiki() {
@@ -108,7 +108,7 @@ test_run() {
 		printf "${red}Error, test \"${green}$1${red}\" failed to build!${reset}\n"
 	else
 		echo "Test output will be saved in \"build/test_${1}_out.txt\""
-		call_cmd_ns ./build/test_"$1".run > build/test_"$1"_out.txt
+		call_cmd_ns ./build/test_"$1".run >build/test_"$1"_out.txt
 		ERR=$?
 		printf "${cyan}%s${reset}\n" "----------   Begin of test output   ----------"
 		cat build/test_"$1"_out.txt
@@ -206,7 +206,7 @@ call_cmd() {
 		printf "%s " "$@"
 		printf "${reset}\n"
 	fi
-	if [ "$Silent" == "yes" ]  ; then
+	if [ "$Silent" == "yes" ]; then
 		$@ 2>/dev/null 1>/dev/null
 	else
 		$@
@@ -217,29 +217,28 @@ parse_args() {
 	arg="$1"
 	shift
 	case "$arg" in
-		"pack")				pack						"$@"	;;
-		"docs")				docs						"$@"	;;
-		"test")				test						"$@"	;;
-		"clean")			clean						"$@"	;;
-		"help")				help						"$@"	;;
-		"-h")					help						"$@"	;;
-		"--help")			help						"$@"	;;
-		"version")		version					"$@"	;;
-		"-v")					version					"$@"	;;
-		"--version")	version					"$@"	;;
-		"-s")					handle_silent		"$@"	;;
-		"--silent")		handle_silent		"$@"	;;
-		"-V")					handle_verbose	"$@"	;;
-		"--verbose")	handle_verbose	"$@"	;;
-		*)						help						"$@"	;;
+		"pack") pack "$@" ;;
+		"docs") docs "$@" ;;
+		"test") test "$@" ;;
+		"clean") clean "$@" ;;
+		"help") help "$@" ;;
+		"-h") help "$@" ;;
+		"--help") help "$@" ;;
+		"version") version "$@" ;;
+		"-v") version "$@" ;;
+		"--version") version "$@" ;;
+		"-s") handle_silent "$@" ;;
+		"--silent") handle_silent "$@" ;;
+		"-V") handle_verbose "$@" ;;
+		"--verbose") handle_verbose "$@" ;;
+		*) help "$@" ;;
 	esac
 }
 # Main
 ScriptPath=$(cd $(dirname "$0") && pwd)
 if [ "$#" -lt 1 ]; then
-	help;
-	return;
+	help
+	return
 fi
 call_cmd mkdir -p build
 parse_args "$@"
-

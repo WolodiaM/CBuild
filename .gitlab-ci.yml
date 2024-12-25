@@ -40,15 +40,12 @@ pages:
         - pacman --noconfirm -S doxygen mkdocs
         # Create output directory
         - mkdir -p public
-        - mkdir -p public/doxygen
         # Build doxygen
         - ./build.sh docs doxygen
-        # Copy doxygen to its directory
-        - cp -r wiki/doxygen/html/* public/doxygen/
         # Build mkdocs wiki
-        - mkdocs build
-        # Copy mkdocs wiki to its directory
-        - cp -r wiki/mkdocs/site/* public/
+        - ./build.sh docs wiki
+        # Copy everything to output directory
+        - cp -r wiki/mkdocs/site public/
     artifacts:
         paths:
             - public
