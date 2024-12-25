@@ -45,7 +45,7 @@ pages:
         # Build mkdocs wiki
         - ./build.sh docs wiki
         # Copy everything to output directory
-        - cp -r wiki/mkdocs/site public/
+        - cp -r wiki/mkdocs/site/* public/
     artifacts:
         paths:
             - public
