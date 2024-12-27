@@ -57,7 +57,6 @@ int main(int argc, char** argv) {
             char *path = (char *)malloc(strlen(file) + 6);
             memcpy(path, "src/", 4);
             memcpy(path + 4, file, strlen(file));
-            path[strlen(file) + 4] = 'o';
             path[strlen(file) + 4] = '\0';
             cbuild_cmd_append(&cmd, path);
         }
