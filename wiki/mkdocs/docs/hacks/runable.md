@@ -16,8 +16,8 @@ int main(int argc, char** argv) {
 If you use clang-format to format your code (or use embeded formatter from clangd) you need this file (it will prevent formatter from changeing any comments that dont start from space):  
 .clang-format
 ```yaml
-# Dont reformat commens without spaces in front
-CommentPragmas:  '^[^ ]'
+# Dont reformat commens that starts from '/$'
+CommentCommentPragmas: "^/\\$"
 ```
 
 ### How it works
