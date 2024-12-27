@@ -32,6 +32,8 @@
  * 15.12.2024: v1.0 -> Initial release
  * 21.12.2024: v1.1 -> Updates in Proc.h module
  *             - Added cbuild_proc_start function
+ * 27.12.2024: v1.2 -> Updates in Compile.h module
+ *             - Fixed typo: CBUILD_CARG_WARN changed to CBUILD_CARGS_WARN
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -159,7 +161,7 @@ typedef int CBuildFD;
 	(argc)--;                                                                    \
 	(argv)++;
 // Version
-#define CBUILD_VERSION "v1.1"
-#define VERSION_MINOR	 1
+#define CBUILD_VERSION "v1.2"
+#define VERSION_MINOR	 2
 #define VERSION_MAJOR	 1
 #endif // __CBUILD_COMMON_H__
