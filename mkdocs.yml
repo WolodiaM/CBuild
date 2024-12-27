@@ -30,6 +30,7 @@ theme:
         - shell
         - sh
         - bash
+        - yaml
     shortcuts:
         help: 191    # ?
         next: 78     # n
