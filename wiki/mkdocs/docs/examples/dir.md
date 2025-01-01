@@ -54,11 +54,10 @@ int main(int argc, char** argv) {
         const char *file = sources.data[i];
         const char *ext = cbuild_path_ext(file);
         if (strcmp(ext, "c") == 0) {
-            char *path = (char *)malloc(strlen(file) + 6);
-            memcpy(path, "src/", 4);
-            memcpy(path + 4, file, strlen(file));
-            path[strlen(file) + 4] = '\0';
-            cbuild_cmd_append(&cmd, path);
+              cbuild_sb_append_cstr(&path, "src/");
+              cbuild_sb_append_arr(&path, file, strlen(file));
+              cbuild_sb_append_null(&path);
+              cbuild_cmd_append(&cmd, path.data);
         }
         free((char *)ext);
     }
