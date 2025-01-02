@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
         const char *ext = cbuild_path_ext(file);
         if (strcmp(ext, "c") == 0) {
               cbuild_sb_append_cstr(&path, "src/");
-              cbuild_sb_append_arr(&path, file, strlen(file));
+              cbuild_sb_append_cstr(&path, file);
               cbuild_sb_append_null(&path);
               cbuild_cmd_append(&cmd, path.data);
         }
