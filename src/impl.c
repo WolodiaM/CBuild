@@ -87,8 +87,8 @@ void cbuild_log(CBuildLogLevel level, const char* fmt, ...) {
 		case CBUILD_LOG_NO_LOGS: break;
 		case CBUILD_LOG_ERROR	 : __CBUILD_ERR_PRINT("[ERROR] "); break;
 		case CBUILD_LOG_WARN	 : __CBUILD_ERR_PRINT("[WARN] "); break;
-		case CBUILD_LOG_INFO	 : __CBUILD_PRINT("[INFO] "); break;
-		case CBUILD_LOG_TRACE	 : __CBUILD_PRINT("[TRACE] "); break;
+		case CBUILD_LOG_INFO	 : __CBUILD_ERR_PRINT("[INFO] "); break;
+		case CBUILD_LOG_TRACE	 : __CBUILD_ERR_PRINT("[TRACE] "); break;
 		case CBUILD_LOG_PRINT	 : break;
 		default								 : break;
 		}
