@@ -37,7 +37,7 @@
  *             Updates in Log.h module
  *             - Fixed bug: Logger use can two different output for one message
  *             General updates
- *             - Added feathure: Addec macro CBUILD_IMPL to enable
+ *             - Added feature: Added macro CBUILD_IMPL to enable
  *               implementation of all functions (except macro
  */
 // Code
