@@ -34,7 +34,9 @@
  *             - Added cbuild_proc_start function
  * 27.12.2024: v1.2 -> Updates in Compile.h module
  *             - Fixed typo: CBUILD_CARG_WARN changed to CBUILD_CARGS_WARN
+ *             Updates in Log.h module
  *             - Fixed bug: Logger use can two different output for one message
+ *             General updates
  *             - Added feathure: Addec macro CBUILD_IMPL to enable
  *               implementation of all functions (except macro
  */

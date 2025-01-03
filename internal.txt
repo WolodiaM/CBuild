@@ -2,3 +2,4 @@ Internal data, not really usefull to anyone ;)
 Release jobs:
 v1.0: #8647650547
 v1.1: #8704973029
+v1.2: #8762505133
