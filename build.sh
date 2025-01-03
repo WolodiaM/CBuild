@@ -35,6 +35,12 @@ pack_header_strip() {
 pack_nostrip() {
 	cat "src/$1" >>"cbuild.h"
 }
+pack_ifdef() {
+	echo "#ifdef CBUILD_IMPL" >>cbuild.h
+}
+pack_endif() {
+	echo "#endif // CBUILD_IMPL" >>cbuild.h
+}
 pack() {
 	call_cmd rm cbuild.h
 	call_cmd_ns pack_nostrip "common.h"
@@ -46,7 +52,9 @@ pack() {
 	call_cmd_ns pack_header_strip "Command.h"
 	call_cmd_ns pack_header_strip "FS.h"
 	call_cmd_ns pack_header_strip "Compile.h"
+	call_cmd_ns pack_ifdef
 	call_cmd_ns pack_header_strip "impl.c"
+	call_cmd_ns pack_endif
 	call_cmd clang-format --style file -i "cbuild.h"
 	return
 }

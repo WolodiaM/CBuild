@@ -35,6 +35,8 @@
  * 27.12.2024: v1.2 -> Updates in Compile.h module
  *             - Fixed typo: CBUILD_CARG_WARN changed to CBUILD_CARGS_WARN
  *             - Fixed bug: Logger use can two different output for one message
+ *             - Added feathure: Addec macro CBUILD_IMPL to enable
+ *               implementation of all functions (except macro
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
