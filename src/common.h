@@ -182,7 +182,7 @@ typedef int CBuildFD;
 	(argc)--;                                                                    \
 	(argv)++;
 // Version
-#define CBUILD_VERSION "v1.2"
+#define CBUILD_VERSION "v1.3"
 #define VERSION_MAJOR	 1
-#define VERSION_MINOR	 2
+#define VERSION_MINOR	 3
 #endif // __CBUILD_COMMON_H__
