@@ -42,9 +42,9 @@ TEST_MAIN(
 						CBuildFD pattern_fd = cbuild_fd_open_write("build/Compile.c.f1");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						sleep(2);
 						file_writer.size = 0;
@@ -52,9 +52,9 @@ TEST_MAIN(
 						pattern_fd = cbuild_fd_open_write("build/Compile.c.f2");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						// Do tests
 						int r1 = cbuild_compare_mtime("build/Compile.c.f1",
 																					"build/Compile.c.f2");
@@ -95,9 +95,9 @@ TEST_MAIN(
 						CBuildFD pattern_fd = cbuild_fd_open_write("build/Compile.c.f4");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						sleep(2);
 						file_writer.size = 0;
@@ -105,18 +105,18 @@ TEST_MAIN(
 						pattern_fd = cbuild_fd_open_write("build/Compile.c.f5");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						sleep(2);
 						file_writer.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/Compile.c.f6");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						// Do tests
 						char* fs1[2];
 						fs1[0] = "build/Compile.c.f5";

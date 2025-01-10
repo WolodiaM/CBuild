@@ -7,6 +7,21 @@
 #include "StringBuffer.h"
 #include "StringView.h"
 #include "common.h"
+/* common.h */
+void __cbuild_assert(bool cond, const char* file, unsigned int line,
+										 const char* func, const char* expr, ...) {
+	if (cond == false) {
+		printf("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n", __progname,
+					 file, line, func, expr);
+		va_list args;
+		va_start(args, expr);
+		const char* fmt = va_arg(args, char*);
+		vprintf(fmt, args);
+		va_end(args);
+		fflush(stdout);
+		abort();
+	}
+}
 /* Command.h impl */
 void cbuild_cmd_to_sb(CBuildCmd cmd, CBuildStrBuff* sb) {
 	if (cmd.size < 1) {
@@ -31,8 +46,8 @@ CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 		return CBUILD_INVALID_PROC;
 	}
 	if (proc == 0) {
-		if (fd.stdin != CBUILD_INVALID_FD) {
-			if (dup2(fd.stdin, STDIN_FILENO) < 0) {
+		if (fd.fdstdin != CBUILD_INVALID_FD) {
+			if (dup2(fd.fdstdin, STDIN_FILENO) < 0) {
 				cbuild_log(
 						CBUILD_LOG_ERROR,
 						"Cannot redirect stdint inside of a child process, error: \"%s\"",
@@ -40,8 +55,8 @@ CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 				exit(1);
 			}
 		}
-		if (fd.stdout != CBUILD_INVALID_FD) {
-			if (dup2(fd.stdout, STDOUT_FILENO) < 0) {
+		if (fd.fdstdout != CBUILD_INVALID_FD) {
+			if (dup2(fd.fdstdout, STDOUT_FILENO) < 0) {
 				cbuild_log(
 						CBUILD_LOG_ERROR,
 						"Cannot redirect stdoutt inside of a child process, error: \"%s\"",
@@ -49,8 +64,8 @@ CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 				exit(1);
 			}
 		}
-		if (fd.stderr != CBUILD_INVALID_FD) {
-			if (dup2(fd.stderr, STDERR_FILENO) < 0) {
+		if (fd.fdstderr != CBUILD_INVALID_FD) {
+			if (dup2(fd.fdstderr, STDERR_FILENO) < 0) {
 				cbuild_log(
 						CBUILD_LOG_ERROR,
 						"Cannot redirect stderrt inside of a child process, error: \"%s\"",

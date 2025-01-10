@@ -69,9 +69,9 @@ TEST_MAIN(
 						CBuildFD wr;
 						cbuild_fd_open_pipe(&rd, &wr);
 						bool ret = cbuild_cmd_sync_redirect(
-								cmd, (CBuildCmdFDRedirect){ .stdout = wr,
-																						.stdin	= CBUILD_INVALID_FD,
-																						.stderr = CBUILD_INVALID_FD });
+								cmd, (CBuildCmdFDRedirect){ .fdstdout = wr,
+																						.fdstdin	= CBUILD_INVALID_FD,
+																						.fdstderr = CBUILD_INVALID_FD });
 						CHECK_CMP_VALUE(ret, true, "Function returened error%s", "");
 						char str[64];
 						int	 num = read(rd, str, 64);

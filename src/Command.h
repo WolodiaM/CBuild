@@ -39,9 +39,9 @@ typedef struct {
 	size_t			 capacity;
 } CBuildCmd;
 typedef struct {
-	CBuildFD stdin;
-	CBuildFD stdout;
-	CBuildFD stderr;
+	CBuildFD fdstdin;
+	CBuildFD fdstdout;
+	CBuildFD fdstderr;
 } CBuildCmdFDRedirect;
 /**
  * @brief Append new arg to cmd

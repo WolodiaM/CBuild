@@ -42,12 +42,19 @@
  * 10.01.2025: v1.3 -> Updates in common.h module:
  *             - Added cbuild_shift_expect that allows to have message for error
  *               condition
+ *             - Changed CBuildFD typedef from __pid_t to pid_t
+ *             - Added cbuild_assert
+ *             Updates in Command.h:
+ *             - All elements from CBuildCmdFDRedirect are now prefixed with
+ *               'fd' to make it working with libc that defines stdin, stdout
+ *               and stderr as macro
+ *             General updates
+ *             - Changed all asserts to cbuild_assert
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
 #define __CBUILD_COMMON_H__
 // Includes
-#include "assert.h"
 #include "dirent.h"
 #include "errno.h"
 #include "fcntl.h"
@@ -106,7 +113,7 @@
 #define __CBUILD_STRINGIFY(var)						 #var
 #define __CBUILD_CONCAT(a, b)							 a##b
 // Process and file handles
-typedef __pid_t CBuildProc;
+typedef pid_t CBuildProc;
 #define CBUILD_INVALID_PROC -1
 typedef int CBuildFD;
 #define CBUILD_INVALID_FD	 -1
@@ -145,9 +152,35 @@ typedef int CBuildFD;
 /**
  * @brief get size of array
  *
- * @param => any[] -> Array
+ * @param array => any[] -> Array
  */
 #define cbuild_arr_len(array) (sizeof(array) / sizeof((array)[0]))
+/**
+ * @brief Glibc and Musl libc use this to get provide executable name. It is
+ * also used in Globc's assert
+ */
+extern const char* __progname;
+/**
+ * @brief Assert function that allows to print custom message
+ *
+ * @param expr -> Assert expression
+ * @param ... -> Printf arguments, "" if no message is needed
+ */
+#define cbuild_assert(expr, ...)                                               \
+	__cbuild_assert((expr), __FILE__, __LINE__, __func__, #expr, __VA_ARGS__)
+/**
+ * @brief Internal function that does assert
+ *
+ * @param cond => bool -> Expression result
+ * @param file => const char* -> __FILE__
+ * @param line => const char* -> __LINE__
+ * @param func => const char* -> __func__
+ * @param expr => const char* -> String form of an assert expression
+ * @param ...[0] => const char* -> Format string for and printf
+ * @param ... -> Printf args
+ */
+void __cbuild_assert(bool cond, const char* file, unsigned int line,
+										 const char* func, const char* expr, ...);
 /**
  * @brief Get element from array, errors-out at invalid index
  *
@@ -155,7 +188,9 @@ typedef int CBuildFD;
  * @param index => size_t -> Array index
  */
 #define cbuild_arr_get(array, index)                                           \
-	(assert((size_t)(index) < cbuild_arr_len(array)), (array)[(size_t)(index)])
+	(cbuild_assert((size_t)(index) < cbuild_arr_len(array),                      \
+								 "Index %zu is out of bounds!\n", (size_t)index),              \
+	 (array)[(size_t)(index)])
 /**
  * @brief Shift args in and array with size (like argv and argc pair. Should
  * work similartly to bash `shift`
@@ -165,7 +200,7 @@ typedef int CBuildFD;
  * */
 #define cbuild_shift(argv, argc)                                               \
 	*(argv);                                                                     \
-	assert((argc) > 0, "");                                                      \
+	cbuild_assert((argc) > 0, "More arguments is required!\n");                  \
 	(argc)--;                                                                    \
 	(argv)++;
 /**
@@ -174,11 +209,11 @@ typedef int CBuildFD;
  *
  * @param argv => T[] -> Array
  * @paran argc => Integer -> Array size
- * @param expect => String -> String tha will be added to assert message
+ * @param ... -> Printf arfs
  * */
-#define cbuild_shift_expect(argv, argc, expect)                                \
+#define cbuild_shift_expect(argv, argc, ...)                                   \
 	*(argv);                                                                     \
-	assert((argc) > 0 && expect);                                                \
+	cbuild_assert((argc) > 0, __VA_ARGS__);                                      \
 	(argc)--;                                                                    \
 	(argv)++;
 // Version

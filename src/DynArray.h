@@ -60,8 +60,9 @@
 			(da)->capacity = ((da)->capacity == 0) ? CBUILD_DA_INIT_CAPACITY         \
 																						 : (da)->capacity * 2;             \
 			(da)->data		 = realloc((da)->data, (da)->capacity);                    \
-			assert((da)->data != NULL &&                                             \
-						 "DynArray resize failed due to allocation error. Exiting...");    \
+			cbuild_assert(                                                           \
+					(da)->data != NULL,                                                  \
+					"DynArray resize failed due to allocation error. Exiting...\n");     \
 		}                                                                          \
 		(da)->data[(da)->size] = (val);                                            \
 		(da)->size++;                                                              \

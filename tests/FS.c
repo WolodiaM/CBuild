@@ -42,9 +42,9 @@ TEST_MAIN(
 						CBuildFD pattern_fd = cbuild_fd_open_write("build/FS.c.read_test");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						CBuildStrBuff sb	= { 0 };
@@ -82,9 +82,9 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.copy_test.src");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						CBuildStrBuff f1	= { 0 };
@@ -133,9 +133,9 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.file_check_test.true");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						bool ch1 = cbuild_file_check("build/FS.c.file_check_test.true");
@@ -159,9 +159,9 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.move_test.src");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						bool ret = cbuild_file_move("build/FS.c.move_test.src",
@@ -182,9 +182,9 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.rename_test.src");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						bool ret = cbuild_file_rename("build/FS.c.rename_test.src",
@@ -205,9 +205,9 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.remove_test");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						bool ret = cbuild_file_remove("build/FS.c.remove_test");
@@ -229,18 +229,18 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.dirls_test/a");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						file_writer.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/FS.c.dirls_test/b");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						CBuildPathList dirls = { 0 };
@@ -304,18 +304,18 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.dir_copy_test.src/a");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						file_writer.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/FS.c.dir_copy_test.src/b");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						cbuild_dir_create("build/FS.c.dir_copy_test.src/c/");
 						file_writer.size = 0;
@@ -324,9 +324,9 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.dir_copy_test.src/c/d");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						bool ret = cbuild_dir_copy("build/FS.c.dir_copy_test.src/",
@@ -354,18 +354,18 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.dir_remove_test/a");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						file_writer.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/FS.c.dir_remove_test/b");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						cbuild_dir_create("build/FS.c.dir_remove_test/c/");
 						file_writer.size = 0;
@@ -373,9 +373,9 @@ TEST_MAIN(
 						pattern_fd = cbuild_fd_open_write("build/FS.c.dir_remove_test/c/d");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						bool ret = cbuild_dir_remove("build/FS.c.dir_remove_test/");
@@ -407,9 +407,9 @@ TEST_MAIN(
 								cbuild_fd_open_write("build/FS.c.path_type_check.file");
 						cbuild_cmd_sync_redirect(
 								file_writer,
-								(CBuildCmdFDRedirect){ .stdin	 = CBUILD_INVALID_FD,
-																			 .stdout = pattern_fd,
-																			 .stderr = CBUILD_INVALID_FD });
+								(CBuildCmdFDRedirect){ .fdstdin	 = CBUILD_INVALID_FD,
+																			 .fdstdout = pattern_fd,
+																			 .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						// Do testing
 						CBuildFiletype f1 =
