@@ -190,7 +190,7 @@ CBuildStrView cbuild_sv_from_cstr(const char* str) {
 CBuildStrView cbuild_sv_from_parts(const char* str, size_t len) {
 	return (CBuildStrView){ .str = str, .len = len };
 }
-CBuildStrView cbuild_sv_from_sb(CBuildStrBuff* sb) {
+CBuildStrView cbuild_sv_from_sb(const CBuildStrBuff* sb) {
 	return (CBuildStrView){ .str = sb->data, .len = sb->size };
 }
 CBuildStrView cbuild_sv_trim_left(const CBuildStrView str, char c) {
@@ -672,7 +672,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 	free(bname_old);
 	exit(0);
 }
-int cbuild_compare_mtime(char* output, char* input) {
+int cbuild_compare_mtime(const char* output, const char* input) {
 	struct stat statbuff;
 	if (stat(input, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"",
@@ -694,7 +694,8 @@ int cbuild_compare_mtime(char* output, char* input) {
 		return 0;
 	}
 }
-int cbuild_compare_mtime_many(char* output, char** inputs, size_t num_inputs) {
+int cbuild_compare_mtime_many(const char* output, const char** inputs,
+															size_t num_inputs) {
 	int ret = 0;
 	for (size_t i = 0; i < num_inputs; i++) {
 		int check = cbuild_compare_mtime(output, inputs[i]);

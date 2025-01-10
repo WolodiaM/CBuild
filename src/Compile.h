@@ -154,7 +154,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* const spath);
  * @return int<0 -> Error
  * @return int>0 -> Outpur is older than input
  */
-int	 cbuild_compare_mtime(char* output, char* input);
+int	 cbuild_compare_mtime(const char* output, const char* input);
 /**
  * @brief Compare mtime of one output file and many input files and report if
  * any input is newer than output
@@ -166,5 +166,6 @@ int	 cbuild_compare_mtime(char* output, char* input);
  * @return int<0 -> Error
  * @return int>0 -> Outpur is older than input
  */
-int	 cbuild_compare_mtime_many(char* output, char** inputs, size_t num_inputs);
+int	 cbuild_compare_mtime_many(const char* output, const char** inputs,
+															 size_t num_inputs);
 #endif // __CBUILD_COMPILE_H__

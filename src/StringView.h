@@ -58,7 +58,7 @@ CBuildStrView cbuild_sv_from_parts(const char* str, size_t len);
  * @param sb => CBuildStrBuff* -> String buffer
  * @return CBuildStrView -> String view
  */
-CBuildStrView cbuild_sv_from_sb(CBuildStrBuff* sb);
+CBuildStrView cbuild_sv_from_sb(const CBuildStrBuff* sb);
 /**
  * @brief Trim character searching from the left
  *

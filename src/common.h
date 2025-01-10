@@ -50,6 +50,7 @@
  *               and stderr as macro
  *             General updates
  *             - Changed all asserts to cbuild_assert
+ *             - Added few const annotations to pointers
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
