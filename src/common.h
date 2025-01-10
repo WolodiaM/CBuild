@@ -39,6 +39,9 @@
  *             General updates
  *             - Added feature: Added macro CBUILD_IMPL to enable
  *               implementation of all functions (except macro
+ * 10.01.2025: v1.3 -> Updates in common.h module:
+ *             - Added cbuild_shift_expect that allows to have message for error
+ *               condition
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -162,7 +165,20 @@ typedef int CBuildFD;
  * */
 #define cbuild_shift(argv, argc)                                               \
 	*(argv);                                                                     \
-	assert((argc) > 0);                                                          \
+	assert((argc) > 0, "");                                                      \
+	(argc)--;                                                                    \
+	(argv)++;
+/**
+ * @brief Shift args in and array with size (like argv and argc pair. Should
+ * work similartly to bash `shift`. Takes addiitional message to print on error
+ *
+ * @param argv => T[] -> Array
+ * @paran argc => Integer -> Array size
+ * @param expect => String -> String tha will be added to assert message
+ * */
+#define cbuild_shift_expect(argv, argc, expect)                                \
+	*(argv);                                                                     \
+	assert((argc) > 0 && expect);                                                \
 	(argc)--;                                                                    \
 	(argv)++;
 // Version
