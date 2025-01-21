@@ -44,10 +44,14 @@
  *               condition
  *             - Changed CBuildFD typedef from __pid_t to pid_t
  *             - Added cbuild_assert
+ *             - Added noreturn attribute to an assert function
  *             Updates in Command.h:
  *             - All elements from CBuildCmdFDRedirect are now prefixed with
  *               'fd' to make it working with libc that defines stdin, stdout
  *               and stderr as macro
+ *             Updates in Log.h:
+ *             - Log now uses ANSI colors in 16-color mode
+ *             - Added cbuild_log variant that takes va_list
  *             General updates
  *             - Changed all asserts to cbuild_assert
  *             - Added few const annotations to pointers
@@ -112,7 +116,9 @@
 #define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
 // Macro functionality
 #define __CBUILD_STRINGIFY(var)						 #var
+#define __CBUILD_XSTRINGIFY(var)					 __CBUILD_STRINGIFY(var)
 #define __CBUILD_CONCAT(a, b)							 a##b
+#define __CBUILD_XCONCAT(a, b)						 __CBUILD_CONCAT(a, b)
 // Process and file handles
 typedef pid_t CBuildProc;
 #define CBUILD_INVALID_PROC -1
@@ -168,11 +174,11 @@ extern const char* __progname;
  * @param ... -> Printf arguments, "" if no message is needed
  */
 #define cbuild_assert(expr, ...)                                               \
-	__cbuild_assert((expr), __FILE__, __LINE__, __func__, #expr, __VA_ARGS__)
+	(expr) ? (void)(0)                                                           \
+				 : __cbuild_assert(__FILE__, __LINE__, __func__, #expr, __VA_ARGS__)
 /**
  * @brief Internal function that does assert
  *
- * @param cond => bool -> Expression result
  * @param file => const char* -> __FILE__
  * @param line => const char* -> __LINE__
  * @param func => const char* -> __func__
@@ -180,8 +186,8 @@ extern const char* __progname;
  * @param ...[0] => const char* -> Format string for and printf
  * @param ... -> Printf args
  */
-void __cbuild_assert(bool cond, const char* file, unsigned int line,
-										 const char* func, const char* expr, ...);
+void __cbuild_assert(const char* file, unsigned int line, const char* func,
+										 const char* expr, ...) __attribute__((__noreturn__));
 /**
  * @brief Get element from array, errors-out at invalid index
  *

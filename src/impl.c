@@ -8,19 +8,17 @@
 #include "StringView.h"
 #include "common.h"
 /* common.h */
-void __cbuild_assert(bool cond, const char* file, unsigned int line,
-										 const char* func, const char* expr, ...) {
-	if (cond == false) {
-		printf("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n", __progname,
-					 file, line, func, expr);
-		va_list args;
-		va_start(args, expr);
-		const char* fmt = va_arg(args, char*);
-		vprintf(fmt, args);
-		va_end(args);
-		fflush(stdout);
-		abort();
-	}
+void __cbuild_assert(const char* file, unsigned int line, const char* func,
+										 const char* expr, ...) {
+	printf("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n", __progname,
+				 file, line, func, expr);
+	va_list args;
+	va_start(args, expr);
+	const char* fmt = va_arg(args, char*);
+	vprintf(fmt, args);
+	va_end(args);
+	fflush(stdout);
+	abort();
 }
 /* Command.h impl */
 void cbuild_cmd_to_sb(CBuildCmd cmd, CBuildStrBuff* sb) {
@@ -91,33 +89,33 @@ bool cbuild_cmd_sync_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 }
 /* Log.h impl */
 void cbuild_log(CBuildLogLevel level, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+	cbuild_vlog(level, fmt, args);
+	va_end(args);
+}
+void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
 	if (level == CBUILD_LOG_NO_LOGS) {
 		return;
 	}
-	if (level < CBUILD_LOG_MIN_LEVEL) {
+	if (level > CBUILD_LOG_MIN_LEVEL) {
 		return;
 	}
 	if (level < CBUILD_LOG_PRINT) {
 		switch (level) {
 		case CBUILD_LOG_NO_LOGS: break;
-		case CBUILD_LOG_ERROR	 : __CBUILD_ERR_PRINT("[ERROR] "); break;
-		case CBUILD_LOG_WARN	 : __CBUILD_ERR_PRINT("[WARN] "); break;
+		case CBUILD_LOG_ERROR	 : __CBUILD_ERR_PRINT("\033[31m[ERROR]\033[0m "); break;
+		case CBUILD_LOG_WARN	 : __CBUILD_ERR_PRINT("\033[33m[WARN]\033[0m "); break;
 		case CBUILD_LOG_INFO	 : __CBUILD_ERR_PRINT("[INFO] "); break;
-		case CBUILD_LOG_TRACE	 : __CBUILD_ERR_PRINT("[TRACE] "); break;
+		case CBUILD_LOG_TRACE	 : __CBUILD_ERR_PRINT("\033[90m[TRACE]\033[0m "); break;
 		case CBUILD_LOG_PRINT	 : break;
 		default								 : break;
 		}
-		va_list args;
-		va_start(args, fmt);
 		__CBUILD_ERR_VPRINTF(fmt, args);
 		__CBUILD_ERR_PRINT("\n");
-		va_end(args);
 	} else {
-		va_list args;
-		va_start(args, fmt);
 		__CBUILD_VPRINTF(fmt, args);
 		__CBUILD_PRINT("\n");
-		va_end(args);
 	}
 }
 /* Proc.h impl */
@@ -702,7 +700,7 @@ int cbuild_compare_mtime_many(const char* output, const char** inputs,
 		if (check < 0) {
 			return check;
 		} else {
-			ret = -check + check * 2;
+			ret += check;
 		}
 	}
 	return ret;

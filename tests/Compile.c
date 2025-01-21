@@ -121,27 +121,34 @@ TEST_MAIN(
 						char* fs1[2];
 						fs1[0] = "build/Compile.c.f5";
 						fs1[1] = "build/Compile.c.f6";
-						int r1 = cbuild_compare_mtime_many("build/Compile.c.f4", fs1, 2);
-						CHECK_CMP_VALUE(
-								r1, 1, "Output is older but function returned %d, expected 1",
-								r1)
+						int r1 = cbuild_compare_mtime_many("build/Compile.c.f4",
+																							 (const char**)fs1, 2);
+						CHECK_CMP_VALUE(r1, 2,
+														"Output is older than two files but function "
+														"returned %d, expected 2",
+														r1)
 						char* fs2[2];
 						fs2[0] = "build/Compile.c.f4";
 						fs2[1] = "build/Compile.c.f5";
-						int r2 = cbuild_compare_mtime_many("build/Compile.c.f6", fs2, 2);
+						int r2 = cbuild_compare_mtime_many("build/Compile.c.f6",
+																							 (const char**)fs2, 2);
 						CHECK_CMP_VALUE(
 								r2, 0, "Output is newer but function returned %d, expected 0",
 								r2)
 						char* fs3[2];
 						fs3[0] = "build/Compile.c.f5";
 						fs3[1] = "build/Compile.c.f6";
-						int r3 = cbuild_compare_mtime_many("build/Compile.c.f7", fs3, 2);
-						CHECK_CMP_VALUE(r3, 1,
-														"Output but function returned %d, expected 1", r3)
+						int r3 = cbuild_compare_mtime_many("build/Compile.c.f7",
+																							 (const char**)fs3, 2);
+						CHECK_CMP_VALUE(r3, 2,
+														"Output is newer than 2 inputs but function "
+														"returned %d, expected 2",
+														r3)
 						char* fs4[2];
 						fs4[0] = "build/Compile.c.f5";
 						fs4[1] = "build/Compile.c.f7";
-						int r4 = cbuild_compare_mtime_many("build/Compile.c.f6", fs4, 2);
+						int r4 = cbuild_compare_mtime_many("build/Compile.c.f6",
+																							 (const char**)fs4, 2);
 						CHECK_CMP_VALUE(r4, -1,
 														"One of inputs does not exist, but function "
 														"returned %d, expected -1",
@@ -150,7 +157,8 @@ TEST_MAIN(
 						fs5[0] = "build/Compile.c.f5";
 						fs5[1] = "build/Compile.c.f6";
 						fs5[1] = "build/Compile.c.f8";
-						int r5 = cbuild_compare_mtime_many("build/Compile.c.f7", fs5, 3);
+						int r5 = cbuild_compare_mtime_many("build/Compile.c.f7",
+																							 (const char**)fs5, 3);
 						CHECK_CMP_VALUE(r5, -1,
 														"One of inputs does not exist and output does not "
 														"exist (error because of inputs), but function "

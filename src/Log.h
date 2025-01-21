@@ -26,9 +26,11 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-// Code
 #ifndef __CBUILD_LOG_H__
 #define __CBUILD_LOG_H__
+// Libraries
+#include "stdarg.h"
+// Code
 typedef enum {
 	CBUILD_LOG_NO_LOGS = -1,
 	CBUILD_LOG_ERROR	 = 10,
@@ -46,4 +48,12 @@ typedef enum {
  */
 void cbuild_log(CBuildLogLevel level, const char* fmt, ...)
 		__attribute__((format(printf, 2, 3)));
+/**
+ * @brief Print logs but takes va list
+ *
+ * @param level => CBuildLogLevel -> Type of log
+ * @param fmt => const char* -> Format string
+ * @param args => va_list -> Variadic arguments
+ */
+void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args);
 #endif // __CBUILD_LOG_H__
