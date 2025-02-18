@@ -57,6 +57,9 @@
  *             General updates
  *             - Changed all asserts to cbuild_assert
  *             - Added few const annotations to pointers
+ * 18.02.2025: v1.4 -> Quickfix in common.h:
+ *             - Wrong arguments passed to __CBUILD_ERR_PRINTF in
+ *               CBuild_UNREACHABLE
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -153,8 +156,8 @@ typedef int CBuildFD;
  */
 #define CBuild_UNREACHABLE(message)                                            \
 	do {                                                                         \
-		__CBUILD_ERR_PRINTF(stderr, "%s:%d: UNREACHABLE: %s\n", __FILE__,          \
-												__LINE__, (message));                                  \
+		__CBUILD_ERR_PRINTF("%s:%d: UNREACHABLE: %s\n", __FILE__, __LINE__,        \
+												(message));                                            \
 		abort();                                                                   \
 	} while (0)
 // More user-friendly array operations
@@ -226,7 +229,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 	(argc)--;                                                                    \
 	(argv)++;
 // Version
-#define CBUILD_VERSION "v1.3"
+#define CBUILD_VERSION "v1.4"
 #define VERSION_MAJOR	 1
-#define VERSION_MINOR	 3
+#define VERSION_MINOR	 4
 #endif // __CBUILD_COMMON_H__
