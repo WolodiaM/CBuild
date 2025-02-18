@@ -30,7 +30,7 @@ if test -t 1; then
 fi
 # pack subcommand
 pack_header_strip() {
-	cat "src/$1" | tr "\n" "$" | sed "s/#include \"[^\"]*\"\\\$//g" | sed "s/\\/\\/ Project includes\\\$//g" | tr "$" "\n" >>"cbuild.h"
+	cat "src/$1" | tr "\n" "$" | sed "s/#include \"[^\"]*\"\\\$//g" | sed "s/\\/\\/ Project includes\\\$//g" | tr "$" "\n" >>cbuild.h
 }
 pack_nostrip() {
 	cat "src/$1" >>"cbuild.h"

@@ -76,7 +76,7 @@ CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 		cbuild_cmd_append(&argv, NULL);
 		if (execvp(argv.data[0], (char* const*)argv.data) < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
-								 "Cannot execute command in child process, error\"%s\"",
+								 "Cannot execute command in child process, error: \"%s\"",
 								 strerror(errno));
 			exit(1);
 		}

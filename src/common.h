@@ -38,17 +38,19 @@
  *             - Fixed bug: Logger use can two different output for one message
  *             General updates
  *             - Added feature: Added macro CBUILD_IMPL to enable
- *               implementation of all functions (except macro
+ *               implementation of all functions (except macro)
  * 10.01.2025: v1.3 -> Updates in common.h module:
  *             - Added cbuild_shift_expect that allows to have message for error
  *               condition
  *             - Changed CBuildFD typedef from __pid_t to pid_t
  *             - Added cbuild_assert
  *             - Added noreturn attribute to an assert function
+ *             - Fixed bug in macro because of wrong variable name
  *             Updates in Command.h:
  *             - All elements from CBuildCmdFDRedirect are now prefixed with
  *               'fd' to make it working with libc that defines stdin, stdout
  *               and stderr as macro
+ *             - Fixed typo in error message
  *             Updates in Log.h:
  *             - Log now uses ANSI colors in 16-color mode
  *             - Added cbuild_log variant that takes va_list
@@ -112,7 +114,7 @@
 // Maybe you want to redefine this two macro to work with stderr, but I prefer
 // to have my errors in standard stdout
 #define __CBUILD_ERR_PRINT(str)						 printf((str))
-#define __CBUILD_ERR_PRINTF(fmt, ...)			 printf((str), __VA_ARGS__)
+#define __CBUILD_ERR_PRINTF(fmt, ...)			 printf((fmt), __VA_ARGS__)
 #define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
 // Macro functionality
 #define __CBUILD_STRINGIFY(var)						 #var
