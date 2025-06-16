@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
+# Environment
+set -euo pipefail
 # constants
-CARGS="-O3 -g -std=c99 -Wall -Wextra"
+CARGS="-O3 -g -std=c99 -Wall -Wextra -Wpedantic"
 # Global variables
 Silent="no"  # Need to be set to `yes`
 Verbose="no" # Need to be set to `yes`
 ScriptPath=""
 #Handle Terminal
 if test -t 1; then
-	ncolors=$(tput colors)
+	ncolors=$(tput colors || true)
 	if test -n "$ncolors" && test $ncolors -ge 8; then
 		reset="$(tput sgr0)"
 		black="$(tput setaf 0)"
@@ -36,14 +38,15 @@ pack_nostrip() {
 	cat "src/$1" >>"cbuild.h"
 }
 pack_ifdef() {
-	echo "#ifdef CBUILD_IMPL" >>cbuild.h
+	echo "#ifdef CBUILD_IMPLEMENTATION" >>cbuild.h
 }
 pack_endif() {
-	echo "#endif // CBUILD_IMPL" >>cbuild.h
+	echo "#endif // CBUILD_IMPLEMENTATION" >>cbuild.h
 }
 pack() {
 	call_cmd rm cbuild.h
 	call_cmd_ns pack_nostrip "common.h"
+	call_cmd_ns pack_header_strip	"Term.h"
 	call_cmd_ns pack_header_strip "DynArray.h"
 	call_cmd_ns pack_header_strip "StringBuffer.h"
 	call_cmd_ns pack_header_strip "StringView.h"
@@ -84,12 +87,11 @@ docs_serve() {
 	call_cmd mkdocs serve
 }
 # test subcommand
-test() {
-	test_id="$1"
+test_cmd() {
 	if [ "$#" -lt 1 ]; then
 		test_run_all
 	else
-		test_run "$test_id"
+		test_run "$1"
 	fi
 }
 test_run() {
@@ -222,12 +224,16 @@ call_cmd() {
 }
 # Cli parser
 parse_args() {
-	arg="$1"
+	if [ "$#" -lt 1 ]; then
+		help "$@"
+		return 1
+	fi
+	arg="${1:-}"
 	shift
 	case "$arg" in
 		"pack") pack "$@" ;;
 		"docs") docs "$@" ;;
-		"test") test "$@" ;;
+		"test") test_cmd "$@" ;;
 		"clean") clean "$@" ;;
 		"help") help "$@" ;;
 		"-h") help "$@" ;;
@@ -245,8 +251,8 @@ parse_args() {
 # Main
 ScriptPath=$(cd $(dirname "$0") && pwd)
 if [ "$#" -lt 1 ]; then
-	help
-	return
+	help "$@"
+	exit 1
 fi
 call_cmd mkdir -p build
 parse_args "$@"
