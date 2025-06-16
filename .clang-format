@@ -1,9 +1,11 @@
+# -*- mode: conf -*-
 ---
 # Use LLVM as base
 BasedOnStyle: LLVM
 IndentWidth: 2
 TabWidth: 2
-UseTab: Always
+ColumnLimit: 80
+UseTab: AlignWithSpaces
 ---
 Language: Cpp
 Standard: c++20
@@ -52,6 +54,7 @@ AllowShortFunctionsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: Inline
 AllowShortLoopsOnASingleLine: true
+# AllowShortDesignatorsOnASingleLine: false
 AlwaysBreakBeforeMultilineStrings: true
 BinPackArguments: true
 BinPackParameters: true
@@ -111,7 +114,12 @@ SpacesInParens: Never
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
 # Macro
-# Macros:
-# - switch_str(x)=switch(x)
-# - case_str(x)=case x
+# AttributeMacros: [__capability, __output, __unused] # __attribute__(()) # list
+# ForEachMacros: [RANGES_FOR, FOREACH] # FOREACH(<variable-declaration>, ...) {} # list
+# IfMacros: [IF] # IF == if # list
+# MacroBlockBegin: "^NS_MAP_BEGIN|NS_TABLE_HEAD$" # { # regex
+# MacroBlockEnd: "^NS_MAP_END|NS_TABLE_.*_END$" # } # regex
+# Macros: # list
+#   - A(x)=x
+# StatementMacros: [TEST_FUNC] # Does not need ';' # list
 ---

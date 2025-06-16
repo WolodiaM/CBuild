@@ -33,11 +33,11 @@
 // Code
 typedef enum {
 	CBUILD_LOG_NO_LOGS = -1,
-	CBUILD_LOG_ERROR	 = 10,
-	CBUILD_LOG_WARN		 = 20,
-	CBUILD_LOG_INFO		 = 30,
-	CBUILD_LOG_TRACE	 = 40,
-	CBUILD_LOG_PRINT	 = 100,
+	CBUILD_LOG_ERROR   = 10,
+	CBUILD_LOG_WARN    = 20,
+	CBUILD_LOG_INFO    = 30,
+	CBUILD_LOG_TRACE   = 40,
+	CBUILD_LOG_PRINT   = 100,
 } CBuildLogLevel;
 /**
  * @brief Print logs
@@ -56,4 +56,10 @@ void cbuild_log(CBuildLogLevel level, const char* fmt, ...)
  * @param args => va_list -> Variadic arguments
  */
 void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args);
+/**
+ * @brief Set minimim log level
+ *
+ * @param level => CBuildLogLevel -> Log level
+ */
+void cbuild_set_min_log_level(CBuildLogLevel level);
 #endif // __CBUILD_LOG_H__

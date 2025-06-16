@@ -1,27 +1,24 @@
+# -*- mode: conf -*-
 CompileFlags:
   Add: [ -xc, -std=c99 ]
   Compiler: gcc
+Diagnostics:
+  Suppress: [ -Wunused-function ] 
 ---
 If:
   PathMatch: src/.*\.h
 CompileFlags:
-  Add: [ -Wall, -Wextra, -Wpedantic, -Werror ]
+  Add: [ -Wall, -Wextra, -Wpedantic, -Werror, -Wno-empty-translation-unit ]
   Compiler: gcc
-Diagnostics:
-  Suppress: -Wunused-function
 ---
 If:
   PathMatch: src/impl.c
 CompileFlags:
   Add: [ -Wall, -Wextra, -Wpedantic, -Werror ]
   Compiler: gcc
-Diagnostics:
-  Suppress: -Wunused-function
 ---
 If:
   PathMatch: tests/.*\.c
 CompileFlags:
   Add: [ -Wall, -Wextra ]
   Compiler: gcc
-Diagnostics:
-  Suppress: -Wunused-function

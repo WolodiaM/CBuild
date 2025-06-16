@@ -6,12 +6,13 @@
 #include "Proc.h"
 #include "StringBuffer.h"
 #include "StringView.h"
+#include "Term.h"
 #include "common.h"
 /* common.h */
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
-										 const char* expr, ...) {
+                     const char* expr, ...) {
 	printf("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n", __progname,
-				 file, line, func, expr);
+	       file, line, func, expr);
 	va_list args;
 	va_start(args, expr);
 	const char* fmt = va_arg(args, char*);
@@ -40,7 +41,7 @@ CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 	CBuildProc proc = fork();
 	if (proc < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
-							 strerror(errno));
+		           strerror(errno));
 		return CBUILD_INVALID_PROC;
 	}
 	if (proc == 0) {
@@ -76,8 +77,8 @@ CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 		cbuild_cmd_append(&argv, NULL);
 		if (execvp(argv.data[0], (char* const*)argv.data) < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
-								 "Cannot execute command in child process, error: \"%s\"",
-								 strerror(errno));
+			           "Cannot execute command in child process, error: \"%s\"",
+			           strerror(errno));
 			exit(1);
 		}
 	}
@@ -88,28 +89,42 @@ bool cbuild_cmd_sync_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 	return cbuild_proc_wait(proc);
 }
 /* Log.h impl */
-void cbuild_log(CBuildLogLevel level, const char* fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-	cbuild_vlog(level, fmt, args);
-	va_end(args);
+static int __CBUILD_LOG_MIN_LEVEL = CBUILD_LOG_MIN_LEVEL;
+void       cbuild_log(CBuildLogLevel level, const char* fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  cbuild_vlog(level, fmt, args);
+  va_end(args);
 }
 void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
 	if (level == CBUILD_LOG_NO_LOGS) {
 		return;
 	}
-	if (level > CBUILD_LOG_MIN_LEVEL) {
+	if (level > __CBUILD_LOG_MIN_LEVEL) {
 		return;
 	}
 	if (level < CBUILD_LOG_PRINT) {
+		time_t     t       = time(NULL);
+		struct tm* tm_info = localtime(&t);
+		__CBUILD_ERR_PRINTF("[%02d:%02d:%02d] ", tm_info->tm_hour, tm_info->tm_min,
+		                    tm_info->tm_sec);
 		switch (level) {
 		case CBUILD_LOG_NO_LOGS: break;
-		case CBUILD_LOG_ERROR	 : __CBUILD_ERR_PRINT("\033[31m[ERROR]\033[0m "); break;
-		case CBUILD_LOG_WARN	 : __CBUILD_ERR_PRINT("\033[33m[WARN]\033[0m "); break;
-		case CBUILD_LOG_INFO	 : __CBUILD_ERR_PRINT("[INFO] "); break;
-		case CBUILD_LOG_TRACE	 : __CBUILD_ERR_PRINT("\033[90m[TRACE]\033[0m "); break;
-		case CBUILD_LOG_PRINT	 : break;
-		default								 : break;
+		case CBUILD_LOG_ERROR:
+			__CBUILD_ERR_PRINT(
+					CBUILD_TERM_FG(CBUILD_TERM_RED) "[ERROR]" CBUILD_TERM_RESET " ");
+			break;
+		case CBUILD_LOG_WARN:
+			__CBUILD_ERR_PRINT(
+					CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "[WARN]" CBUILD_TERM_RESET " ");
+			break;
+		case CBUILD_LOG_INFO: __CBUILD_ERR_PRINT("[INFO] "); break;
+		case CBUILD_LOG_TRACE:
+			__CBUILD_ERR_PRINT(
+					CBUILD_TERM_FG(CBUILD_TERM_BRBLACK) "[TRACE]" CBUILD_TERM_RESET " ");
+			break;
+		case CBUILD_LOG_PRINT: break;
+		default              : break;
 		}
 		__CBUILD_ERR_VPRINTF(fmt, args);
 		__CBUILD_ERR_PRINT("\n");
@@ -117,6 +132,9 @@ void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
 		__CBUILD_VPRINTF(fmt, args);
 		__CBUILD_PRINT("\n");
 	}
+}
+void cbuild_set_min_log_level(CBuildLogLevel level) {
+	__CBUILD_LOG_MIN_LEVEL = level;
 }
 /* Proc.h impl */
 int cbuild_proc_wait_code(CBuildProc proc) {
@@ -127,8 +145,8 @@ int cbuild_proc_wait_code(CBuildProc proc) {
 		int status = 0;
 		if (waitpid(proc, &status, 0) < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
-								 "Cannot wait for child process (pid %d), error: \"%s\"", proc,
-								 strerror(errno));
+			           "Cannot wait for child process (pid %d), error: \"%s\"", proc,
+			           strerror(errno));
 			abort();
 		}
 		if (WIFEXITED(status)) {
@@ -137,8 +155,8 @@ int cbuild_proc_wait_code(CBuildProc proc) {
 		}
 		if (WIFSIGNALED(status)) {
 			cbuild_log(CBUILD_LOG_ERROR,
-								 "Process (pid %d) was terminated by signal \"%s\"", proc,
-								 strerror(WTERMSIG(status)));
+			           "Process (pid %d) was terminated by signal \"%s\"", proc,
+			           strerror(WTERMSIG(status)));
 			return INT_MAX;
 		}
 	}
@@ -155,7 +173,7 @@ CBuildProc cbuild_proc_start(int (*callback)(void* context), void* context) {
 	CBuildProc proc = fork();
 	if (proc < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
-							 strerror(errno));
+		           strerror(errno));
 		return CBUILD_INVALID_PROC;
 	}
 	if (proc == 0) {
@@ -239,8 +257,8 @@ int cbuild_sv_cmp(const CBuildStrView str1, const CBuildStrView str2) {
 bool cbuild_fd_close(CBuildFD fd) {
 	if (fd == CBUILD_INVALID_FD) {
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Invalid file descriptor passed to close, error: \"%s\"",
-							 strerror(errno));
+		           "Invalid file descriptor passed to close, error: \"%s\"",
+		           strerror(errno));
 		return false;
 	}
 	return close(fd) < 0;
@@ -249,34 +267,34 @@ CBuildFD cbuild_fd_open_read(const char* path) {
 	CBuildFD fd = open(path, O_RDONLY);
 	if (fd < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Cannot open file \"%s\" for reading, error: \"%s\"", path,
-							 strerror(errno));
+		           "Cannot open file \"%s\" for reading, error: \"%s\"", path,
+		           strerror(errno));
 		return CBUILD_INVALID_FD;
 	}
 	return fd;
 }
 CBuildFD cbuild_fd_open_write(const char* path) {
 	CBuildFD fd = open(path, O_WRONLY | O_CREAT | O_TRUNC,
-										 S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	                   S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Cannot open file \"%s\" for reading, error: \"%s\"", path,
-							 strerror(errno));
+		           "Cannot open file \"%s\" for reading, error: \"%s\"", path,
+		           strerror(errno));
 		return CBUILD_INVALID_FD;
 	}
 	return fd;
 }
 bool cbuild_fd_open_pipe(CBuildFD* read, CBuildFD* write) {
 	CBuildFD fds[2];
-	int			 ret = pipe(fds);
+	int      ret = pipe(fds);
 	if (ret < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot create pipe, error: \"%s\"",
-							 strerror(errno));
-		*read	 = CBUILD_INVALID_FD;
+		           strerror(errno));
+		*read  = CBUILD_INVALID_FD;
 		*write = CBUILD_INVALID_FD;
 		return false;
 	}
-	*read	 = fds[0];
+	*read  = fds[0];
 	*write = fds[1];
 	return true;
 }
@@ -288,12 +306,12 @@ bool cbuild_file_read(const char* path, CBuildStrBuff* data) {
 	struct stat statbuff;
 	if (stat(path, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"", path,
-							 strerror(errno));
+		           strerror(errno));
 		cbuild_fd_close(fd);
 		return false;
 	}
 	size_t size = statbuff.st_size;
-	data->data	= malloc(size);
+	data->data  = malloc(size);
 	if (data->data == NULL) {
 		cbuild_log(
 				CBUILD_LOG_ERROR,
@@ -305,11 +323,11 @@ bool cbuild_file_read(const char* path, CBuildStrBuff* data) {
 	ssize_t len = read(fd, data->data, size);
 	if (len < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot read file, error: \"%s\"",
-							 strerror(errno));
+		           strerror(errno));
 		cbuild_fd_close(fd);
 		return false;
 	}
-	data->size		 = len;
+	data->size     = len;
 	data->capacity = len;
 	cbuild_fd_close(fd);
 	return true;
@@ -319,14 +337,14 @@ bool cbuild_file_write(const char* path, CBuildStrBuff* data) {
 	if (CBUILD_INVALID_FD == fd) {
 		return false;
 	}
-	char*		buf = data->data;
+	char*   buf = data->data;
 	ssize_t cnt = data->size;
 	while (cnt > 0) {
 		ssize_t written = write(fd, buf, cnt);
 		if (written < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
-								 "Wrror while writing to file \"%s\", error: \"%s\"", path,
-								 strerror(errno));
+			           "Wrror while writing to file \"%s\", error: \"%s\"", path,
+			           strerror(errno));
 			cbuild_fd_close(fd);
 			return false;
 		}
@@ -341,21 +359,21 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 	CBuildFD dst_fd = cbuild_fd_open_write(dst);
 	if (src_fd < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Cannot open source file \"%s\", error: \"%s\"", src,
-							 strerror(errno));
+		           "Cannot open source file \"%s\", error: \"%s\"", src,
+		           strerror(errno));
 		return false;
 	}
 	if (dst_fd < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Cannot open destination file \"%s\", error: \"%s\"", dst,
-							 strerror(errno));
+		           "Cannot open destination file \"%s\", error: \"%s\"", dst,
+		           strerror(errno));
 		return false;
 	}
 	struct stat statbuff;
 	if (stat(src, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Cannot stat source file \"%s\", error: \"%s\"", dst,
-							 strerror(errno));
+		           "Cannot stat source file \"%s\", error: \"%s\"", dst,
+		           strerror(errno));
 		return false;
 	}
 	char* tmp_buff = (char*)malloc(CBUILD_TMP_BUFF_SIZE);
@@ -366,8 +384,8 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 		}
 		if (cnt < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
-								 "Error while reading source file \"%s\", error: \"%s\"", src,
-								 strerror(errno));
+			           "Error while reading source file \"%s\", error: \"%s\"", src,
+			           strerror(errno));
 			return false;
 		}
 		char* buf = tmp_buff;
@@ -375,8 +393,8 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 			ssize_t written = write(dst_fd, buf, cnt);
 			if (written < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
-									 "Wrror while writing to file \"%s\", error: \"%s\"", dst,
-									 strerror(errno));
+				           "Wrror while writing to file \"%s\", error: \"%s\"", dst,
+				           strerror(errno));
 				cbuild_fd_close(src_fd);
 				cbuild_fd_close(dst_fd);
 				free(tmp_buff);
@@ -408,7 +426,7 @@ bool cbuild_file_check(const char* path) {
 bool cbuild_file_remove(const char* path) {
 	if (unlink(path) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot remove file \"%s\", error: \"%s\"",
-							 path, strerror(errno));
+		           path, strerror(errno));
 		return false;
 	}
 	return true;
@@ -417,12 +435,12 @@ bool cbuild_dir_copy(const char* src, const char* dst) {
 	bool err = cbuild_dir_create(dst);
 	if (err == false) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot create destination directory \"%s\"",
-							 dst);
+		           dst);
 		return false;
 	}
 	CBuildPathList list = { 0 };
 
-	err									= cbuild_dir_list(src, &list);
+	err                 = cbuild_dir_list(src, &list);
 	if (err == false) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot list source directory \"%s\"", src);
 		if (list.data != NULL) {
@@ -436,18 +454,18 @@ bool cbuild_dir_copy(const char* src, const char* dst) {
 			continue;
 		}
 		size_t lensrc = strlen(src) + 1 + strlen(list.data[i]);
-		char*	 tmpsrc = malloc(lensrc + 1);
+		char*  tmpsrc = malloc(lensrc + 1);
 		sprintf(tmpsrc, "%s/%s", src, list.data[i]);
-		size_t lendst = strlen(src) + 1 + strlen(list.data[i]);
-		char*	 tmpdst = malloc(lendst + 1);
+		size_t lendst = strlen(dst) + 1 + strlen(list.data[i]);
+		char*  tmpdst = malloc(lendst + 1);
 		sprintf(tmpdst, "%s/%s", dst, list.data[i]);
 		CBuildFiletype f = cbuild_path_filetype(tmpsrc);
 		if (f == CBUILD_FTYPE_DIRECTORY) {
 			bool tmp = ret && cbuild_dir_copy(tmpsrc, tmpdst);
-			ret			 = tmp;
+			ret      = tmp;
 		} else {
 			bool tmp = ret && cbuild_file_copy(tmpsrc, tmpdst);
-			ret			 = tmp;
+			ret      = tmp;
 		}
 		free(tmpsrc);
 		free(tmpdst);
@@ -468,11 +486,11 @@ bool cbuild_dir_rename(const char* src, const char* dst) {
 bool cbuild_dir_remove(const char* path) {
 	CBuildPathList list = { 0 };
 
-	bool					 err	= cbuild_dir_list(path, &list);
+	bool           err  = cbuild_dir_list(path, &list);
 	if (err == false) {
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Cannot list source directory \"%s\", error: \"%s\"", path,
-							 strerror(errno));
+		           "Cannot list source directory \"%s\", error: \"%s\"", path,
+		           strerror(errno));
 		if (list.data != NULL) {
 			cbuild_pathlist_clear(&list);
 		}
@@ -484,23 +502,23 @@ bool cbuild_dir_remove(const char* path) {
 			continue;
 		}
 		size_t lenpath = strlen(path) + 1 + strlen(list.data[i]);
-		char*	 tmppath = malloc(lenpath + 1);
+		char*  tmppath = malloc(lenpath + 1);
 		sprintf(tmppath, "%s/%s", path, list.data[i]);
 		CBuildFiletype f = cbuild_path_filetype(tmppath);
 		if (f == CBUILD_FTYPE_DIRECTORY) {
 			bool tmp = ret && cbuild_dir_remove(tmppath);
-			ret			 = tmp;
+			ret      = tmp;
 		} else {
 			bool tmp = ret && cbuild_file_remove(tmppath);
-			ret			 = tmp;
+			ret      = tmp;
 		}
 		free(tmppath);
 	}
 	int stat = rmdir(path);
 	if (stat < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Cannot remove directory directory \"%s\", error: \"%s\"", path,
-							 strerror(errno));
+		           "Cannot remove directory directory \"%s\", error: \"%s\"", path,
+		           strerror(errno));
 		cbuild_pathlist_clear(&list);
 		return false;
 	}
@@ -512,14 +530,14 @@ bool cbuild_dir_list(const char* path, CBuildPathList* elements) {
 	DIR* dir = opendir(path);
 	if (dir == NULL) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot open dir \"%s\", error: \"%s\"", path,
-							 strerror(errno));
+		           strerror(errno));
 		return false;
 	}
 	struct dirent* list = readdir(dir);
-	errno								= 0;
+	errno               = 0;
 	while (list != NULL) {
 		size_t len = strlen(list->d_name);
-		char*	 str = (char*)malloc(len + 1);
+		char*  str = (char*)malloc(len + 1);
 		memcpy(str, list->d_name, len);
 		str[len] = '\0';
 		cbuild_da_append(elements, str);
@@ -527,8 +545,8 @@ bool cbuild_dir_list(const char* path, CBuildPathList* elements) {
 	}
 	if (errno != 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Error while reading directory \"%s\", error: \"%s\"", path,
-							 strerror(errno));
+		           "Error while reading directory \"%s\", error: \"%s\"", path,
+		           strerror(errno));
 		return false;
 	}
 	return true;
@@ -536,7 +554,7 @@ bool cbuild_dir_list(const char* path, CBuildPathList* elements) {
 void cbuild_pathlist_clear(CBuildPathList* list) {
 	for (size_t i = 0; i < list->size; i++) { free((void*)list->data[i]); }
 	free(list->data);
-	list->size		 = 0;
+	list->size     = 0;
 	list->capacity = 0;
 }
 bool cbuild_dir_create(const char* path) {
@@ -547,8 +565,8 @@ bool cbuild_dir_create(const char* path) {
 			return true;
 		}
 		cbuild_log(CBUILD_LOG_ERROR,
-							 "Cannot create directory \"%s\", error: \"%s\"", path,
-							 strerror(errno));
+		           "Cannot create directory \"%s\", error: \"%s\"", path,
+		           strerror(errno));
 	}
 	return true;
 }
@@ -556,7 +574,7 @@ CBuildFiletype cbuild_path_filetype(const char* path) {
 	struct stat statbuff;
 	if (stat(path, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"", path,
-							 strerror(errno));
+		           strerror(errno));
 		return CBUILD_FTYPE_OTHER;
 	}
 	if (S_ISREG(statbuff.st_mode)) {
@@ -571,8 +589,8 @@ CBuildFiletype cbuild_path_filetype(const char* path) {
 	return CBUILD_FTYPE_OTHER;
 }
 const char* cbuild_path_ext(const char* path) {
-	ssize_t i			= strlen(path);
-	bool		found = false;
+	ssize_t i     = strlen(path);
+	bool    found = false;
 	for (; i >= 0; i--) {
 		if (path[i] == '.') {
 			found = true;
@@ -585,7 +603,7 @@ const char* cbuild_path_ext(const char* path) {
 		return ret;
 	}
 	size_t len = strlen(path) - i + 1;
-	char*	 ret = (char*)malloc(len);
+	char*  ret = (char*)malloc(len);
 	memcpy(ret, path + i + 1, len);
 	return ret;
 }
@@ -600,7 +618,7 @@ const char* cbuild_path_name(const char* path) {
 		}
 	}
 	size_t len = strlen(path) - i + 1;
-	char*	 ret = (char*)malloc(len);
+	char*  ret = (char*)malloc(len);
 	memcpy(ret, path + i + 1, len);
 	return ret;
 }
@@ -630,11 +648,11 @@ const char* cbuild_path_base(const char* path) {
 }
 /* Compile.h */
 void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
-	char*	 bname_new		 = cbuild_shift(argv, argc);
+	char*  bname_new     = cbuild_shift(argv, argc);
 	size_t bname_old_len = strlen(bname_new) + 4;
-	char*	 bname_old		 = (char*)malloc(bname_old_len);
+	char*  bname_old     = (char*)malloc(bname_old_len);
 	memcpy(bname_old, bname_new, strlen(bname_new));
-	bname_old[strlen(bname_new)]		 = '.';
+	bname_old[strlen(bname_new)]     = '.';
 	bname_old[strlen(bname_new) + 1] = 'o';
 	bname_old[strlen(bname_new) + 2] = 'l';
 	bname_old[strlen(bname_new) + 3] = 'd';
@@ -674,7 +692,7 @@ int cbuild_compare_mtime(const char* output, const char* input) {
 	struct stat statbuff;
 	if (stat(input, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"",
-							 input, strerror(errno));
+		           input, strerror(errno));
 		return -1;
 	}
 	int in_mtime = statbuff.st_mtime;
@@ -683,7 +701,7 @@ int cbuild_compare_mtime(const char* output, const char* input) {
 			return 1;
 		}
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"",
-							 output, strerror(errno));
+		           output, strerror(errno));
 		return -1;
 	}
 	if (in_mtime > statbuff.st_mtime) {
@@ -693,7 +711,7 @@ int cbuild_compare_mtime(const char* output, const char* input) {
 	}
 }
 int cbuild_compare_mtime_many(const char* output, const char** inputs,
-															size_t num_inputs) {
+                              size_t num_inputs) {
 	int ret = 0;
 	for (size_t i = 0; i < num_inputs; i++) {
 		int check = cbuild_compare_mtime(output, inputs[i]);

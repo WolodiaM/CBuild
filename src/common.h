@@ -60,6 +60,17 @@
  * 18.02.2025: v1.4 -> Quickfix in common.h:
  *             - Wrong arguments passed to __CBUILD_ERR_PRINTF in
  *               CBuild_UNREACHABLE
+ * 18.02.2025: v1.5 -> Updates in impl.h:
+ *             - Fixed buffer overflow bug in cbuild_dir_copy
+ *             Updates in common.h
+ *             - Improved cbuild_shift
+ *             General updates
+ *             - Changed implementation macro to CBUILD_IMPLEMENTATION
+ * 16.06.2025: v1.6 -> Full rewrite:
+ *             New file Term.h - ANSI wrapper
+ *             Updates in Log.h:
+ *             - Rely on Term.h
+ *             - Runtime minimum log level configuration
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -78,6 +89,7 @@
 #include "sys/types.h"
 #include "sys/wait.h"
 #include "unistd.h"
+#include "time.h"
 // Constants that can be redefined
 #ifndef CBUILD_DA_INIT_CAPACITY
 #	define CBUILD_DA_INIT_CAPACITY 256ul
@@ -111,24 +123,24 @@
 			"This OS is unsupported by CBuild. If it supports POSIX API then you can add new compile-time check for your current OS and define API macro and OS macro and add compiler macro check for your OS. If it don't support any of this APIs then you need to create your own API macro and change implementation-specifc parts of CBuild"
 #endif // OS selector
 // Print functions
-#define __CBUILD_PRINT(str)								 printf((str))
-#define __CBUILD_PRINTF(fmt, ...)					 printf((fmt), __VA_ARGS__)
-#define __CBUILD_VPRINTF(fmt, va_args)		 vprintf((fmt), (va_args))
+#define __CBUILD_PRINT(str)                printf((str))
+#define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
+#define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
 // Maybe you want to redefine this two macro to work with stderr, but I prefer
 // to have my errors in standard stdout
-#define __CBUILD_ERR_PRINT(str)						 printf((str))
-#define __CBUILD_ERR_PRINTF(fmt, ...)			 printf((fmt), __VA_ARGS__)
+#define __CBUILD_ERR_PRINT(str)            printf((str))
+#define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
 #define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
 // Macro functionality
-#define __CBUILD_STRINGIFY(var)						 #var
-#define __CBUILD_XSTRINGIFY(var)					 __CBUILD_STRINGIFY(var)
-#define __CBUILD_CONCAT(a, b)							 a##b
-#define __CBUILD_XCONCAT(a, b)						 __CBUILD_CONCAT(a, b)
+#define __CBUILD_STRINGIFY(var)            #var
+#define __CBUILD_XSTRINGIFY(var)           __CBUILD_STRINGIFY(var)
+#define __CBUILD_CONCAT(a, b)              a##b
+#define __CBUILD_XCONCAT(a, b)             __CBUILD_CONCAT(a, b)
 // Process and file handles
 typedef pid_t CBuildProc;
 #define CBUILD_INVALID_PROC -1
 typedef int CBuildFD;
-#define CBUILD_INVALID_FD	 -1
+#define CBUILD_INVALID_FD  -1
 // Command and process functions
 // Some preprocessor trickery
 /**
@@ -157,7 +169,7 @@ typedef int CBuildFD;
 #define CBuild_UNREACHABLE(message)                                            \
 	do {                                                                         \
 		__CBUILD_ERR_PRINTF("%s:%d: UNREACHABLE: %s\n", __FILE__, __LINE__,        \
-												(message));                                            \
+		                    (message));                                            \
 		abort();                                                                   \
 	} while (0)
 // More user-friendly array operations
@@ -192,7 +204,7 @@ extern const char* __progname;
  * @param ... -> Printf args
  */
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
-										 const char* expr, ...) __attribute__((__noreturn__));
+                     const char* expr, ...) __attribute__((__noreturn__));
 /**
  * @brief Get element from array, errors-out at invalid index
  *
@@ -201,7 +213,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
  */
 #define cbuild_arr_get(array, index)                                           \
 	(cbuild_assert((size_t)(index) < cbuild_arr_len(array),                      \
-								 "Index %zu is out of bounds!\n", (size_t)index),              \
+	               "Index %zu is out of bounds!\n", (size_t)index),              \
 	 (array)[(size_t)(index)])
 /**
  * @brief Shift args in and array with size (like argv and argc pair. Should
@@ -211,10 +223,8 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
  * @paran argc => Integer -> Array size
  * */
 #define cbuild_shift(argv, argc)                                               \
-	*(argv);                                                                     \
-	cbuild_assert((argc) > 0, "More arguments is required!\n");                  \
-	(argc)--;                                                                    \
-	(argv)++;
+	(cbuild_assert((argc) > 0, "More arguments is required!\n"), (argc)--,       \
+	 *(argv)++)
 /**
  * @brief Shift args in and array with size (like argv and argc pair. Should
  * work similartly to bash `shift`. Takes addiitional message to print on error
@@ -229,7 +239,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 	(argc)--;                                                                    \
 	(argv)++;
 // Version
-#define CBUILD_VERSION "v1.4"
-#define VERSION_MAJOR	 1
-#define VERSION_MINOR	 4
+#define CBUILD_VERSION "v1.6"
+#define VERSION_MAJOR  1
+#define VERSION_MINOR  6
 #endif // __CBUILD_COMMON_H__
