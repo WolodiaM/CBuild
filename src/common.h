@@ -67,29 +67,36 @@
  *             General updates
  *             - Changed implementation macro to CBUILD_IMPLEMENTATION
  * 16.06.2025: v1.6 -> Full rewrite:
- *             New file Term.h - ANSI wrapper
- *             Updates in Log.h:
+ *             New file Term.h - ANSI wrapper module
+ *             Updates in Log.h module:
  *             - Rely on Term.h
  *             - Runtime minimum log level configuration
+ *             - Logger now has customizable format callback
+ *             Updates in DynArray.h module:
+ *             - Switched from 'macro as function' to 'macro as template'
+ *             Updates in common.h module:
+ *             - Safer handling of __progname, now work on MacOS
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
 #define __CBUILD_COMMON_H__
-// Includes
+// Includes (all external included of CBuild. Other header could only have
+// project-level includes)
 #include "dirent.h"
 #include "errno.h"
 #include "fcntl.h"
 #include "limits.h"
 #include "stdarg.h"
 #include "stdbool.h"
+#include "stdint.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
 #include "sys/stat.h"
 #include "sys/types.h"
 #include "sys/wait.h"
-#include "unistd.h"
 #include "time.h"
+#include "unistd.h"
 // Constants that can be redefined
 #ifndef CBUILD_DA_INIT_CAPACITY
 #	define CBUILD_DA_INIT_CAPACITY 256ul
@@ -104,19 +111,26 @@
 #if defined(__linux__)
 #	define CBUILD_OS_LINUX
 #	define CBUILD_API_POSIX
-#elif defined(__MINGW32__)
-#	define CBUILD_OS_WINDOWS_MINGW
-#	define CBUILD_API_POSIX
-#elif defined(__CYGWIN__)
-#	define CBUILD_OS_WINDOWS_CYGWIN
-#	define CBUILD_API_POSIX
 #elif defined(__APPLE__) || defined(__MACH__)
 #	define CBUILD_OS_MACOS
+#	define CBUILD_API_POSIX
+#elif defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) ||   \
+		defined(__DragonFly__)
+#	define CBUILD_OS_BSD
 #	define CBUILD_API_POSIX
 #elif defined(__unix__)
 #	define CBUILD_OS_UNIX
 #	define CBUILD_API_POSIX
+#elif defined(__CYGWIN__)
+#	define CBUILD_OS_WINDOWS_CYGWIN
+#	define CBUILD_API_POSIX
+#elif defined(__MINGW32__) || defined(__MINGW64__)
+#	define CBUILD_OS_WINDOWS_MINGW
+#	define CBUILD_API_WIN32
+#	error "This library support only POSIX api and MSVC only supports WinAPI"
 #elif defined(_MSC_VER)
+#	define CBUILD_OS_WINDOWS_MSVC
+#	define CBUILD_API_WIN32
 #	error "This library support only POSIX api and MSVC only supports WinAPI"
 #else
 #	error                                                                        \
@@ -157,7 +171,7 @@ typedef int CBuildFD;
  */
 #define CBuild_TODO(message)                                                   \
 	do {                                                                         \
-		("%s:%d: TODO: %s\n", __FILE__, __LINE__, (message));                      \
+		__CBUILD_ERR_PRINTF("%s:%d: TODO: %s\n", __FILE__, __LINE__, (message));   \
 		abort();                                                                   \
 	} while (0)
 /**
@@ -179,11 +193,6 @@ typedef int CBuildFD;
  * @param array => any[] -> Array
  */
 #define cbuild_arr_len(array) (sizeof(array) / sizeof((array)[0]))
-/**
- * @brief Glibc and Musl libc use this to get provide executable name. It is
- * also used in Globc's assert
- */
-extern const char* __progname;
 /**
  * @brief Assert function that allows to print custom message
  *
@@ -209,7 +218,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
  * @brief Get element from array, errors-out at invalid index
  *
  * @param array => any[] -> Array
- * @param index => size_t -> Array index
+ * @param index => size_t -> Array index, should not have side effects
  */
 #define cbuild_arr_get(array, index)                                           \
 	(cbuild_assert((size_t)(index) < cbuild_arr_len(array),                      \
@@ -234,12 +243,9 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
  * @param ... -> Printf arfs
  * */
 #define cbuild_shift_expect(argv, argc, ...)                                   \
-	*(argv);                                                                     \
-	cbuild_assert((argc) > 0, __VA_ARGS__);                                      \
-	(argc)--;                                                                    \
-	(argv)++;
+	(cbuild_assert((argc) > 0, __VA_ARGS__), (argc)--, *(argv)++)
 // Version
-#define CBUILD_VERSION "v1.6"
-#define VERSION_MAJOR  1
-#define VERSION_MINOR  6
+#define CBUILD_VERSION        "v1.6"
+#define CBUILD_VERSION_MAJOR  1
+#define CBUILD_2VERSION_MINOR 6
 #endif // __CBUILD_COMMON_H__

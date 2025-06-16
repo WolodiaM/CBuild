@@ -8,11 +8,28 @@
 #include "StringView.h"
 #include "Term.h"
 #include "common.h"
+/* misc code */
+#if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
+		defined(CBUILD_OS_WINDOWS_CYGWIN)
+// GlibC, musl, BSD
+extern const char* __progname;
+#endif
+const char* __cbuild_progname(void) {
+#if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
+		defined(CBUILD_OS_WINDOWS_CYGWIN)
+	return __progname;
+#elif defined(CBUILD_OS_MACOS)
+	return getprogname();
+#elif defined(CBUILD_OS_UNIX)
+	// TODO: If not available leave this to user to resolve
+	return __progname;
+#endif
+}
 /* common.h */
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
                      const char* expr, ...) {
-	printf("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n", __progname,
-	       file, line, func, expr);
+	printf("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n",
+	       __cbuild_progname(), file, line, func, expr);
 	va_list args;
 	va_start(args, expr);
 	const char* fmt = va_arg(args, char*);
