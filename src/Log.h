@@ -39,6 +39,7 @@ typedef enum {
 	CBUILD_LOG_TRACE   = 40,
 	CBUILD_LOG_PRINT   = 100,
 } CBuildLogLevel;
+typedef void (*CBuildLogFormatter)(CBuildLogLevel level);
 /**
  * @brief Print logs
  *
@@ -61,5 +62,11 @@ void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args);
  *
  * @param level => CBuildLogLevel -> Log level
  */
-void cbuild_set_min_log_level(CBuildLogLevel level);
+void cbuild_log_set_min_level(CBuildLogLevel level);
+/**
+ * @brief Set formatter for loger attributes
+ *
+ * @param fmt => CBuildLogFMT -> Log formatter
+ */
+void cbuild_log_set_fmt(CBuildLogFormatter fmt);
 #endif // __CBUILD_LOG_H__

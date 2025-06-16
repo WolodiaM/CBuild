@@ -89,12 +89,37 @@ bool cbuild_cmd_sync_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 	return cbuild_proc_wait(proc);
 }
 /* Log.h impl */
-static int __CBUILD_LOG_MIN_LEVEL = CBUILD_LOG_MIN_LEVEL;
-void       cbuild_log(CBuildLogLevel level, const char* fmt, ...) {
-  va_list args;
-  va_start(args, fmt);
-  cbuild_vlog(level, fmt, args);
-  va_end(args);
+void __cbuild_log_fmt(CBuildLogLevel level) {
+	time_t     t       = time(NULL);
+	struct tm* tm_info = localtime(&t);
+	__CBUILD_ERR_PRINTF("[%02d:%02d:%02d] ", tm_info->tm_hour, tm_info->tm_min,
+	                    tm_info->tm_sec);
+	switch (level) {
+	case CBUILD_LOG_NO_LOGS: break;
+	case CBUILD_LOG_ERROR:
+		__CBUILD_ERR_PRINT(
+				CBUILD_TERM_FG(CBUILD_TERM_RED) "[ERROR]" CBUILD_TERM_RESET " ");
+		break;
+	case CBUILD_LOG_WARN:
+		__CBUILD_ERR_PRINT(
+				CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "[WARN]" CBUILD_TERM_RESET " ");
+		break;
+	case CBUILD_LOG_INFO: __CBUILD_ERR_PRINT("[INFO] "); break;
+	case CBUILD_LOG_TRACE:
+		__CBUILD_ERR_PRINT(
+				CBUILD_TERM_FG(CBUILD_TERM_BRBLACK) "[TRACE]" CBUILD_TERM_RESET " ");
+		break;
+	case CBUILD_LOG_PRINT: break;
+	default              : break;
+	}
+}
+static CBuildLogLevel     __CBUILD_LOG_MIN_LEVEL = CBUILD_LOG_MIN_LEVEL;
+static CBuildLogFormatter __CBUILD_LOG_FMT       = __cbuild_log_fmt;
+void cbuild_log(CBuildLogLevel level, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+	cbuild_vlog(level, fmt, args);
+	va_end(args);
 }
 void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
 	if (level == CBUILD_LOG_NO_LOGS) {
@@ -104,28 +129,7 @@ void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
 		return;
 	}
 	if (level < CBUILD_LOG_PRINT) {
-		time_t     t       = time(NULL);
-		struct tm* tm_info = localtime(&t);
-		__CBUILD_ERR_PRINTF("[%02d:%02d:%02d] ", tm_info->tm_hour, tm_info->tm_min,
-		                    tm_info->tm_sec);
-		switch (level) {
-		case CBUILD_LOG_NO_LOGS: break;
-		case CBUILD_LOG_ERROR:
-			__CBUILD_ERR_PRINT(
-					CBUILD_TERM_FG(CBUILD_TERM_RED) "[ERROR]" CBUILD_TERM_RESET " ");
-			break;
-		case CBUILD_LOG_WARN:
-			__CBUILD_ERR_PRINT(
-					CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "[WARN]" CBUILD_TERM_RESET " ");
-			break;
-		case CBUILD_LOG_INFO: __CBUILD_ERR_PRINT("[INFO] "); break;
-		case CBUILD_LOG_TRACE:
-			__CBUILD_ERR_PRINT(
-					CBUILD_TERM_FG(CBUILD_TERM_BRBLACK) "[TRACE]" CBUILD_TERM_RESET " ");
-			break;
-		case CBUILD_LOG_PRINT: break;
-		default              : break;
-		}
+		__CBUILD_LOG_FMT(level);
 		__CBUILD_ERR_VPRINTF(fmt, args);
 		__CBUILD_ERR_PRINT("\n");
 	} else {
@@ -133,34 +137,35 @@ void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
 		__CBUILD_PRINT("\n");
 	}
 }
-void cbuild_set_min_log_level(CBuildLogLevel level) {
+void cbuild_log_set_min_level(CBuildLogLevel level) {
 	__CBUILD_LOG_MIN_LEVEL = level;
 }
+void cbuild_log_set_fmt(CBuildLogFormatter fmt) { __CBUILD_LOG_FMT = fmt; }
 /* Proc.h impl */
-int cbuild_proc_wait_code(CBuildProc proc) {
-	if (proc == CBUILD_INVALID_PROC) {
-		return INT_MIN;
-	}
-	while (true) {
-		int status = 0;
-		if (waitpid(proc, &status, 0) < 0) {
-			cbuild_log(CBUILD_LOG_ERROR,
-			           "Cannot wait for child process (pid %d), error: \"%s\"", proc,
-			           strerror(errno));
-			abort();
-		}
-		if (WIFEXITED(status)) {
-			int code = WEXITSTATUS(status);
-			return code;
-		}
-		if (WIFSIGNALED(status)) {
-			cbuild_log(CBUILD_LOG_ERROR,
-			           "Process (pid %d) was terminated by signal \"%s\"", proc,
-			           strerror(WTERMSIG(status)));
-			return INT_MAX;
-		}
-	}
-	return 0;
+int  cbuild_proc_wait_code(CBuildProc proc) {
+  if (proc == CBUILD_INVALID_PROC) {
+    return INT_MIN;
+  }
+  while (true) {
+    int status = 0;
+    if (waitpid(proc, &status, 0) < 0) {
+      cbuild_log(CBUILD_LOG_ERROR,
+			            "Cannot wait for child process (pid %d), error: \"%s\"", proc,
+			            strerror(errno));
+      abort();
+    }
+    if (WIFEXITED(status)) {
+      int code = WEXITSTATUS(status);
+      return code;
+    }
+    if (WIFSIGNALED(status)) {
+      cbuild_log(CBUILD_LOG_ERROR,
+			            "Process (pid %d) was terminated by signal \"%s\"", proc,
+			            strerror(WTERMSIG(status)));
+      return INT_MAX;
+    }
+  }
+  return 0;
 }
 bool cbuild_proc_wait(CBuildProc proc) {
 	if (cbuild_proc_wait_code(proc) != 0) {
