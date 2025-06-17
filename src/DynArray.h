@@ -96,7 +96,7 @@
 	void cbuild_da_##Vname##_append_arr(void* s, V* arr, size_t size) {          \
 		cbuild_da_##Vname##_t* self = s;                                           \
 		if ((self->size + size) > self->capacity) {                                \
-			self->resize(self->data, self->capacity + size);                         \
+			self->resize(self, self->capacity + size);                               \
 		}                                                                          \
 		self->memcpy(self->data + self->size, arr, size * sizeof(V));              \
 		self->size += size;                                                        \
