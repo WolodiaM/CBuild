@@ -76,6 +76,8 @@
  *             - Switched from 'macro as function' to 'macro as template'
  *             Updates in common.h module:
  *             - Safer handling of __progname, now work on MacOS
+ *             - Better platform abstraction
+ *             Updates in DynArray.h module - totally new implementation
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -136,25 +138,33 @@
 #	error                                                                        \
 			"This OS is unsupported by CBuild. If it supports POSIX API then you can add new compile-time check for your current OS and define API macro and OS macro and add compiler macro check for your OS. If it don't support any of this APIs then you need to create your own API macro and change implementation-specifc parts of CBuild"
 #endif // OS selector
+// Different between different APIs
+#if defined(CBUILD_API_POSIX)
 // Print functions
-#define __CBUILD_PRINT(str)                printf((str))
-#define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
-#define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
+#	define __CBUILD_PRINT(str)                printf((str))
+#	define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
+#	define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
 // Maybe you want to redefine this two macro to work with stderr, but I prefer
 // to have my errors in standard stdout
-#define __CBUILD_ERR_PRINT(str)            printf((str))
-#define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
-#define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
-// Macro functionality
-#define __CBUILD_STRINGIFY(var)            #var
-#define __CBUILD_XSTRINGIFY(var)           __CBUILD_STRINGIFY(var)
-#define __CBUILD_CONCAT(a, b)              a##b
-#define __CBUILD_XCONCAT(a, b)             __CBUILD_CONCAT(a, b)
+#	define __CBUILD_ERR_PRINT(str)            printf((str))
+#	define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
+#	define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
+// Memory functions
+#	define __CBUILD_MALLOC                    malloc
+#	define __CBUILD_REALLOC                   realloc
+#	define __CBUILD_MEMCPY                    memcpy
+#	define __CBUILD_FREE                      free
 // Process and file handles
 typedef pid_t CBuildProc;
-#define CBUILD_INVALID_PROC -1
+#	define CBUILD_INVALID_PROC -1
 typedef int CBuildFD;
-#define CBUILD_INVALID_FD  -1
+#	define CBUILD_INVALID_FD -1
+#endif // CBUILD_API_POSIX
+// Macro functionality
+#define __CBUILD_STRINGIFY(var)  #var
+#define __CBUILD_XSTRINGIFY(var) __CBUILD_STRINGIFY(var)
+#define __CBUILD_CONCAT(a, b)    a##b
+#define __CBUILD_XCONCAT(a, b)   __CBUILD_CONCAT(a, b)
 // Command and process functions
 // Some preprocessor trickery
 /**
@@ -162,7 +172,7 @@ typedef int CBuildFD;
  *
  * @param val => any -> Any variable
  */
-#define CBuild_UNUSED(val) (void)(val)
+#define CBuild_UNUSED(val)       (void)(val)
 /**
  * @brief Mark some part of code as TODO, code will error-out if this code is
  * executed
