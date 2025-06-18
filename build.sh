@@ -95,7 +95,7 @@ test_cmd() {
 	fi
 }
 test_run() {
-	call_cmd rm -r "build/$1.*"
+	call_cmd rm -rf "build/$1.*"
 	printf "${green}Building test \"${red}$1${green}\" into executable.${reset}"
 	if [ "$Silent" == "no" ]; then
 		printf "${red} GCC output will be shown.${reset}\n"
@@ -118,7 +118,7 @@ test_run() {
 		printf "${red}Error, test \"${green}$1${red}\" failed to build!${reset}\n"
 	else
 		echo "Test output will be saved in \"build/test_${1}_out.txt\""
-		call_cmd_ns ./build/test_"$1".run >build/test_"$1"_out.txt
+		call_cmd_ns ./build/test_"$1".run >build/test_"$1"_out.txt || true
 		ERR=$?
 		printf "${cyan}%s${reset}\n" "----------   Begin of test output   ----------"
 		cat build/test_"$1"_out.txt

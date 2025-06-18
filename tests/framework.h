@@ -35,20 +35,22 @@
 #include "stdlib.h"
 #include "string.h"
 #include "strings.h"
+// Project includes
+#include "../src/Term.h"
 // Code
-#define CHECK_CMP_VALUE(val, expected, msg, ...)                               \
+#define TEST_ASSERT_EQ(val, expected, msg, ...)                                \
 	if (val != expected) {                                                       \
 		printf(msg "\n", __VA_ARGS__);                                             \
 		err_code++;                                                                \
 	}
 
-#define CHECK_CMP_STR(val, expected, msg, ...)                                 \
+#define TEST_ASSERT_STREQ(val, expected, msg, ...)                             \
 	if (strcmp(val, expected) != 0) {                                            \
 		printf(msg "\n", __VA_ARGS__);                                             \
 		err_code++;                                                                \
 	}
 
-#define CHECK_CMP_MEM(val, expected, size, msg, ...)                           \
+#define TEST_ASSERT_MEMEQ(val, expected, size, msg, ...)                       \
 	if (memcmp((void*)val, (void*)expected, size) != 0) {                        \
 		printf(msg "\n", __VA_ARGS__);                                             \
 		err_code++;                                                                \
@@ -60,9 +62,16 @@
 		printf(info "\n");                                                         \
 		code;                                                                      \
 		if (err_code == 0) {                                                       \
-			printf("Test case succeed\n");                                           \
+			printf(CBUILD_TERM_FG(                                                   \
+					CBUILD_TERM_GREEN) "Test case succeed" CBUILD_TERM_RESET "\n");      \
 		} else {                                                                   \
-			printf("Test case failed. Number of failed checks: %d\n", err_code);     \
+			printf(                                                                  \
+					CBUILD_TERM_FG(                                                      \
+							CBUILD_TERM_RED) "Test case failed." CBUILD_TERM_RESET           \
+															 " Number of failed checks: " CBUILD_TERM_FG(    \
+																	 CBUILD_TERM_YELLOW) " %d" CBUILD_TERM_RESET \
+																											 "\n",                   \
+					err_code);                                                           \
 			global_err_code++;                                                       \
 		}                                                                          \
 		printf("\n");                                                              \
@@ -70,15 +79,25 @@
 
 #define TEST_MAIN(code, info)                                                  \
 	int main(int argc, char** argv) {                                            \
+		(void)argc;                                                                \
+		(void)argv;                                                                \
 		int global_err_code = 0;                                                   \
 		printf(info "\n------------------------------\n");                         \
 		code;                                                                      \
 		if (global_err_code == 0) {                                                \
-			printf("Test succeed\n");                                                \
+			printf(CBUILD_TERM_BG(                                                   \
+					CBUILD_TERM_GREEN) "Test succeed" CBUILD_TERM_RESET "\n");           \
 		} else {                                                                   \
-			printf("Test failed. Number of failed subtests: %d\n", global_err_code); \
+			printf(                                                                  \
+					CBUILD_TERM_BG(                                                      \
+							CBUILD_TERM_RED) "Test failed." CBUILD_TERM_RESET                \
+															 " Number of failed sub-tests: " CBUILD_TERM_BG( \
+																	 CBUILD_TERM_YELLOW) "%d" CBUILD_TERM_RESET  \
+																											 "\n",                   \
+					global_err_code);                                                    \
 		}                                                                          \
 		return global_err_code;                                                    \
 	}
+#define TEST_EXPECT_MSG(type) ", expected '%" #type "' but found '%" #type "'."
 
 #endif // INCLUDE_TESTS_FRAMEWORK_H_

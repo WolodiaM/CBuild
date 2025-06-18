@@ -116,6 +116,7 @@ SpacesInSquareBrackets: false
 # Macro
 # AttributeMacros: [__capability, __output, __unused] # __attribute__(()) # list
 # ForEachMacros: [RANGES_FOR, FOREACH] # FOREACH(<variable-declaration>, ...) {} # list
+ForEachMacros: [cbuild_da_forech]
 # IfMacros: [IF] # IF == if # list
 # MacroBlockBegin: "^NS_MAP_BEGIN|NS_TABLE_HEAD$" # { # regex
 # MacroBlockEnd: "^NS_MAP_END|NS_TABLE_.*_END$" # } # regex

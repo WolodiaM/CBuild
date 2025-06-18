@@ -38,11 +38,11 @@ TEST_MAIN(
 						arr[0] = 1;
 						arr[1] = 2;
 						arr[2] = 3;
-						CHECK_CMP_VALUE(cbuild_arr_len(arr), 3,
+						TEST_ASSERT_EQ(cbuild_arr_len(arr), 3,
 														"Incorect array length calculated, calculated "
 														"\"%lu\", expected: \"%d\"",
 														cbuild_arr_len(arr), 3);
-						CHECK_CMP_VALUE(cbuild_arr_get(arr, 1), 2,
+						TEST_ASSERT_EQ(cbuild_arr_get(arr, 1), 2,
 														"Wrong element at array at position \"1\" - "
 														"\"%d\", expected: \"%d\"",
 														cbuild_arr_get(arr, 1), 2);
@@ -59,17 +59,17 @@ TEST_MAIN(
 						arr[2]			 = 3;
 						int arr_sz	 = 3;
 						int val			 = cbuild_shift(arr_ptr, arr_sz);
-						CHECK_CMP_VALUE(
+						TEST_ASSERT_EQ(
 								val, 1, "Wrong element shifted: \"%d\", expected: \"1\"", val);
-						CHECK_CMP_VALUE(
+						TEST_ASSERT_EQ(
 								arr_sz, 2,
 								"Wrong array length after shift: \"%d\", expected: \"2\"",
 								arr_sz);
-						CHECK_CMP_VALUE(arr_ptr, test_ptr,
+						TEST_ASSERT_EQ(arr_ptr, test_ptr,
 														"Wrong array pointer: \"%p\", expected to have "
 														"\"arr+4\": \"%p+4\"",
-														arr_ptr, arr);
+														(void*)arr_ptr, (void*)arr);
 					},
 					"cbuild_shift");
 		},
-		"Common modules test");
+		"Common modules test")
