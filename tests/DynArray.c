@@ -2,7 +2,7 @@
  * @file DynArray.c
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Tests for dynamic array implementation
- *
+ * This test requires gcc extentions for '({ ... })'
  *
  * @date 2024-12-05
  * @copyright (C) 2024 WolodiaM
@@ -30,128 +30,144 @@
 #include "../src/DynArray.h"
 #include "framework.h"
 // Code
-struct int_array {
-	int*	 data;
-	size_t size;
-	size_t capacity;
-};
+cbuild_da_t(int, int);
+cbuild_da_t_impl(int, int);
+size_t talloc_last_alloc_size = 0;
+void*  talloc_last_alloc_ptr  = NULL;
+void*  talloc(size_t num) {
+  talloc_last_alloc_size = num;
+  void* ptr              = malloc(num);
+  talloc_last_alloc_ptr  = ptr;
+  return ptr;
+}
+void* tfree_last_free_ptr = NULL;
+void  tfree(void* ptr) {
+  tfree_last_free_ptr = ptr;
+  free(ptr);
+}
+void* trealloc(void* ptr, size_t size) {
+	talloc_last_alloc_size = size;
+	tfree_last_free_ptr    = ptr;
+	return realloc(ptr, size);
+}
 TEST_MAIN(
 		{
-			struct int_array arr = { 0 };
+			cbuild_da_int_t da = cbuild_da_int;
 			TEST_CASE(
 					{
-						cbuild_da_append(&arr, 1);
-						cbuild_da_append(&arr, 2);
-						cbuild_da_append(&arr, 3);
-						cbuild_da_append(&arr, 4);
-						CHECK_CMP_VALUE(arr.size, 4,
-														"Incorect element count in array: \"4\" expected "
-														"but found \"%zu\"",
-														arr.size);
-						CHECK_CMP_VALUE(arr.capacity, CBUILD_DA_INIT_CAPACITY,
-														"Wrong array capacity alocated, expected \"%zu\" "
-														"but found \"%zu\"",
-														CBUILD_DA_INIT_CAPACITY, arr.capacity);
-						CHECK_CMP_VALUE(
-								arr.data[0], 1,
-								"Wrong element at index \"0\", \"1\" expected but found \"%d\"",
-								arr.data[0]);
-						CHECK_CMP_VALUE(
-								arr.data[1], 2,
-								"Wrong element at index \"0\", \"2\" expected but found \"%d\"",
-								arr.data[2]);
-						CHECK_CMP_VALUE(
-								arr.data[2], 3,
-								"Wrong element at index \"0\", \"3\" expected but found \"%d\"",
-								arr.data[3]);
-						CHECK_CMP_VALUE(
-								arr.data[3], 4,
-								"Wrong element at index \"0\", \"4\" expected but found \"%d\"",
-								arr.data[3]);
+						cbuild_da_int_t da_alloc = cbuild_da_int;
+						da_alloc.malloc          = talloc;
+						da_alloc.free            = tfree;
+						da_alloc.realloc         = trealloc;
+						cbuild_da_resize(&da_alloc, 256);
+						TEST_ASSERT_EQ(
+								talloc_last_alloc_size, 256ul * sizeof(int),
+								"Wrong allocation value on resize" TEST_EXPECT_MSG(zu),
+								256ul * sizeof(int), talloc_last_alloc_size);
+						TEST_ASSERT_EQ(
+								da_alloc.capacity, 256,
+								"Wrong capacity was set on resize" TEST_EXPECT_MSG(zu),
+								(size_t)256, da_alloc.capacity);
+						cbuild_da_clear(&da_alloc);
+						TEST_ASSERT_EQ(tfree_last_free_ptr, talloc_last_alloc_ptr,
+		                       "Wrong pointer was sent to free" TEST_EXPECT_MSG(p),
+		                       talloc_last_alloc_ptr, tfree_last_free_ptr);
+						TEST_ASSERT_EQ(da_alloc.capacity, 0,
+		                       "Wrong capcity was set on clear" TEST_EXPECT_MSG(zu),
+		                       (size_t)0, da_alloc.capacity);
+						cbuild_da_append(&da_alloc, 1);
+						TEST_ASSERT_EQ(
+								talloc_last_alloc_size, 2ul * sizeof(int),
+								"Wrong alloc requested on append" TEST_EXPECT_MSG(zu),
+								2ul * sizeof(int), talloc_last_alloc_size);
+						cbuild_da_append(&da_alloc, 1);
+						cbuild_da_append(&da_alloc, 1);
+						TEST_ASSERT_EQ(
+								talloc_last_alloc_size, 4ul * sizeof(int),
+								"Wrong alloc requested on append" TEST_EXPECT_MSG(zu),
+								4ul * sizeof(int), talloc_last_alloc_size);
+					},
+					"DynArray allocation");
+			TEST_CASE(
+					{
+						cbuild_da_append(&da, 1);
+						cbuild_da_append(&da, 2);
+						TEST_ASSERT_EQ(
+								da.size, 2,
+								"Wrong element count after insertion" TEST_EXPECT_MSG(zu),
+								(size_t)2, da.size);
+						TEST_ASSERT_EQ(da.data[0], 1,
+		                       "Wrong element at index 0" TEST_EXPECT_MSG(d), 1,
+		                       da.data[0]);
+						TEST_ASSERT_EQ(da.data[1], 2,
+		                       "Wrong element at index 1" TEST_EXPECT_MSG(d), 2,
+		                       da.data[1]);
+						cbuild_da_clear(&da);
 					},
 					"DynArray single-element insertion");
+			TEST_CASE(__extension__({
+									int arr[] = { 1, 2, 3 };
+									cbuild_da_append_arr(&da, arr, 2);
+									TEST_ASSERT_EQ(
+											da.size, 2,
+											"Wrong element count after insertion" TEST_EXPECT_MSG(zu),
+											(size_t)2, da.size);
+									TEST_ASSERT_EQ(da.data[0], 1,
+		                             "Wrong element at index 0" TEST_EXPECT_MSG(d),
+		                             1, da.data[0]);
+									TEST_ASSERT_EQ(da.data[1], 2,
+		                             "Wrong element at index 1" TEST_EXPECT_MSG(d),
+		                             2, da.data[1]);
+									cbuild_da_clear(&da);
+								}),
+	              "DynArray array insertion");
 			TEST_CASE(
 					{
-						cbuild_da_clear(&arr);
-
-						CHECK_CMP_VALUE(arr.size, 0,
-														"Incorect element count in array: \"0\" expected "
-														"but found \"%zu\"",
-														arr.size);
-						CHECK_CMP_VALUE(arr.capacity, 0,
-														"Wrong array capacity alocated, expected \"0\" but "
-														"found \"%zu\"",
-														arr.capacity);
-						CHECK_CMP_VALUE(arr.data, NULL,
-														"Wrong array data pointer, expected \"NULL\" but "
-														"found \"%p\"",
-														arr.data);
+						cbuild_da_append_many(&da, int, 1, 2, 3);
+						TEST_ASSERT_EQ(
+								da.size, 3,
+								"Wrong element count after insertion" TEST_EXPECT_MSG(zu),
+								(size_t)3, da.size);
+						TEST_ASSERT_EQ(da.data[0], 1,
+		                       "Wrong element at index 0" TEST_EXPECT_MSG(d), 1,
+		                       da.data[0]);
+						TEST_ASSERT_EQ(da.data[1], 2,
+		                       "Wrong element at index 1" TEST_EXPECT_MSG(d), 2,
+		                       da.data[1]);
+						TEST_ASSERT_EQ(da.data[2], 3,
+		                       "Wrong element at index 2" TEST_EXPECT_MSG(d), 3,
+		                       da.data[2]);
+						cbuild_da_clear(&da);
 					},
-					"DynArray free");
-			cbuild_da_clear(&arr);
+					"DynArray multi-element insertion");
 			TEST_CASE(
 					{
-						int tmp[4];
-						tmp[0] = 1;
-						tmp[1] = 2;
-						tmp[2] = 3;
-						tmp[3] = 4;
-						cbuild_da_append_arr(&arr, tmp, 4);
-						CHECK_CMP_VALUE(arr.size, 4,
-														"Incorect element count in array: \"4\" expected "
-														"but found \"%zu\"",
-														arr.size);
-						CHECK_CMP_VALUE(arr.capacity, CBUILD_DA_INIT_CAPACITY,
-														"Wrong array capacity alocated, expected \"%zu\" "
-														"but found \"%zu\"",
-														CBUILD_DA_INIT_CAPACITY, arr.capacity);
-						CHECK_CMP_VALUE(
-								arr.data[0], 1,
-								"Wrong element at index \"0\", \"1\" expected but found \"%d\"",
-								arr.data[0]);
-						CHECK_CMP_VALUE(
-								arr.data[1], 2,
-								"Wrong element at index \"0\", \"2\" expected but found \"%d\"",
-								arr.data[2]);
-						CHECK_CMP_VALUE(
-								arr.data[2], 3,
-								"Wrong element at index \"0\", \"3\" expected but found \"%d\"",
-								arr.data[3]);
-						CHECK_CMP_VALUE(
-								arr.data[3], 4,
-								"Wrong element at index \"0\", \"4\" expected but found \"%d\"",
-								arr.data[3]);
+						cbuild_da_append(&da, 1);
+						cbuild_da_append(&da, 2);
+						TEST_ASSERT_EQ(*cbuild_da_get(&da, 0), 1,
+		                       "Wrong element read at index 0" TEST_EXPECT_MSG(d),
+		                       1, *cbuild_da_get(&da, 0));
+						TEST_ASSERT_EQ(*cbuild_da_get(&da, 1), 2,
+		                       "Wrong element read at index 1" TEST_EXPECT_MSG(d),
+		                       2, *cbuild_da_get(&da, 1));
+						cbuild_da_clear(&da);
 					},
-					"DynArray insertion of C array");
-			cbuild_da_clear(&arr);
+					"DynArray reading");
 			TEST_CASE(
 					{
-						cbuild_da_append_many(&arr, int, 1, 2, 3, 4);
-						CHECK_CMP_VALUE(arr.size, 4,
-														"Incorect element count in array: \"4\" expected "
-														"but found \"%zu\"",
-														arr.size);
-						CHECK_CMP_VALUE(arr.capacity, CBUILD_DA_INIT_CAPACITY,
-														"Wrong array capacity alocated, expected \"%zu\" "
-														"but found \"%zu\"",
-														CBUILD_DA_INIT_CAPACITY, arr.capacity);
-						CHECK_CMP_VALUE(
-								arr.data[0], 1,
-								"Wrong element at index \"0\", \"1\" expected but found \"%d\"",
-								arr.data[0]);
-						CHECK_CMP_VALUE(
-								arr.data[1], 2,
-								"Wrong element at index \"0\", \"2\" expected but found \"%d\"",
-								arr.data[2]);
-						CHECK_CMP_VALUE(
-								arr.data[2], 3,
-								"Wrong element at index \"0\", \"3\" expected but found \"%d\"",
-								arr.data[3]);
-						CHECK_CMP_VALUE(
-								arr.data[3], 4,
-								"Wrong element at index \"0\", \"4\" expected but found \"%d\"",
-								arr.data[3]);
+						cbuild_da_append_many(&da, int, 1, 2, 3, 4);
+						cbuild_da_remove(&da, 1);
+						TEST_ASSERT_EQ(da.data[0], 1,
+		                       "Wrong element at index 0" TEST_EXPECT_MSG(d), 1,
+		                       da.data[0]);
+						TEST_ASSERT_EQ(da.data[1], 3,
+		                       "Wrong element at index 1" TEST_EXPECT_MSG(d), 3,
+		                       da.data[1]);
+						TEST_ASSERT_EQ(da.data[2], 4,
+		                       "Wrong element at index 2" TEST_EXPECT_MSG(d), 4,
+		                       da.data[2]);
+						cbuild_da_clear(&da);
 					},
-					"DynArray insertion of multiple values");
+					"DynArray remove");
 		},
 		"DynArray datatype - dynamic resizable array")
