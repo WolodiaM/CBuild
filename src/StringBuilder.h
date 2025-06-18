@@ -1,0 +1,192 @@
+/**
+ * @file StringBuilder.h
+ * @author WolodiaM (w_melnyk@outlook.com)
+ * @brief StringBuilder for C
+ * Simply creates a dynamic array for 'char' datatype. Also defines few function
+ * that are appropriate only in a string context.
+ *
+ * @date 2025-06-09
+ * @copyright (C) 2025 WolodiaM
+ * @license MIT
+ *
+ * Copyright (C) 2025 WolodiaM
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+#ifndef __CBUILD_SB_H__
+#define __CBUILD_SB_H__
+// Project includes:
+#include "DynArray.h"
+#include "StringView.h"
+#include "common.h"
+// Code
+#define CBuildSBFmt     "%.*s"
+#define CbuildSBArg(sb) (int)(sb).size, (sb).data
+cbuild_da_t(char, SBchar);
+cbuild_da_t_ext_impl(SBchar);
+typedef cbuild_da_SBchar_t cbuild_sb_t;
+#define cbuild_sb                  cbuild_da_SBchar
+#define CBuildStringBuilder        cbuild_da_SBchar
+/**
+ *  @brief Append character to a string builder
+ *
+ *  @param sb => cbuild_sb_t* -> String builder
+ *  @param elem => char -> Character
+ */
+#define cbuild_sb_append(sb, elem) cbuild_da_append((sb), (elem))
+/**
+ * @brief Append an array to a sb
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @param arr => char* -> Array pointer
+ * @param size => size_t -> Number of new elements
+ */
+#define cbuild_sb_append_arr(sb, arr, size)                                    \
+	cbuild_da_append_arr((sb), (arr), (size))
+/**
+ * @brief Append list of chars to a string builder
+ *
+ * @param sb => cbuild_sb_t* -> String builder to operate on
+ * @param ... => char ... -> Chars that need to be inserted
+ */
+#define cbuild_sb_append_many(sb, ...)                                         \
+	cbuild_da_append_many((sb), char, __VA_ARGS__)
+/**
+ * @brief Append a C-string to a sb
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @param cstr => char* -> C-string
+ */
+#define cbuild_sb_append_cstr(sb, cstr)                                        \
+	cbuild_da_append_arr((sb), (cstr), strlen(cstr))
+/**
+ * @brief Append NULL-terminator to a string builder
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ */
+#define cbuild_sb_append_null(sb)    cbuild_da_append((sb), '\0')
+/**
+ * @brief Set a character in a sb using index
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @param idx => size_t -> Character index
+ * @param elem => char -> New character
+ */
+#define cbuild_sb_set(sb, idx, elem) cbuild_da_set((sb), (idx), (elem))
+/**
+ * @brief Get a character from a sb using index
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @param idx => size_t -> Character index
+ * @return VAL* -> Element
+ */
+#define cbuild_sb_get(sb, idx)       cbuild_da_get((sb), (idx))
+/**
+ * @brief Remove an element from a sb using index
+ *
+ * @param sb => cbuild_sb_t* -> Dynamic array
+ * @param idx => size_t -> Element index
+ */
+#define cbuild_sb_remove(sb, idx)    cbuild_da_remove((sb), (idx))
+/**
+ * @brief Resize sb (Done automatically most of the times ;) )
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @param size => size_t -> New element count. String will be truncated if it
+ * will be lover than sb->size. If it is zero then default behavior is used.
+ */
+#define cbuild_sb_resize(sb, new_capacity)                                     \
+	cbuild_da_resize((sb), (new_capacity))
+/**
+ * @brief Free sb
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ */
+#define cbuild_sb_clear(sb) cbuild_da_clear(sb)
+/**
+ * @brief Foreach loop
+ *
+ * @param sb => cbuild_sb_t* -> Dynamic array
+ * @param iter => NAME -> Iteration value name
+ */
+#define cbuild_sb_foreach(sb, iter)                                            \
+	for (char* iter = (sb)->data; iter < ((sb)->data + (sb)->size); iter++)
+/**
+ * @brief strcmp for string builder
+ *
+ * @param a => cbuild_sb_t* -> First string buffer
+ * @param b => cbuild_sb_t* -> Second String buffer
+ * @return -2 -> If size of first string builder is smaller
+ * @return -1 -> If first different character in first string builder is smaller
+ * @return 0  -> If two string builders are equal
+ * @return 1  -> If first different character in first string builder is larger
+ * @return 2  -> If size of first string builder is larger
+ */
+int         cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
+/**
+ * @brief Compare two StringBuilder ignoring case of an ASCII letter (Latin only)
+ *
+ * @param a => cbuild_sb_t* -> First StringBuilder
+ * @param b => cbuild_sb_t* -> Second StringBuilder
+ * @return -2 -> If size of first StringBuilder is smaller
+ * @return -1 -> If first different character in first StringBuiler is smaller
+ * @return 0  -> If two StringBuilders are equal
+ * @return 1  -> If first different character in first StringBuilder is larger
+ * @return 2  -> If size of first StringBuilder is larger
+ */
+int         cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b);
+/**
+ * @brief Convert StringBuilder to StringView
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @return cbuild_sv_t -> New string view
+ */
+cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb);
+/**
+ * @brief Convert StringView to a StringBuilder. Does a copy.
+ *
+ * @param sv => cbuild_sv_t -> String view
+ * @return cbuild_sb_t -> New string builder
+ */
+cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
+/**
+ * @brief Append StringView to a StringBuilder
+ *
+ * @param sb => CBUILD_SB* -> String builder
+ * @param sv => cbuild_sv_t -> String view
+ */
+#define cbuild_sb_append_sv(sb, sv)                                            \
+	cbuild_sb_append_arr((sb), (sv).data, (sv).size)
+/**
+ * @brief vsprintf for a StringBuilder
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @param fmt => const char* -> Format string
+ * @param args => va_list -> Variadic arguments
+ * @return int -> Number of bytes printed or -1 on error
+ */
+int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args);
+/**
+ * @brief sprintf for a StringBuilder
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @param fmt => const char* -> Format string
+ * @param ... => ... -> Variadic arguments
+ * @return int -> Number of bytes printed or -1 on error
+ */
+int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...);
+#endif // __CBUILD_SB_H__

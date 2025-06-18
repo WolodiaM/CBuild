@@ -86,6 +86,7 @@
 // project-level includes)
 #include "dirent.h"
 #include "errno.h"
+#include "ctype.h"
 #include "fcntl.h"
 #include "limits.h"
 #include "stdarg.h"
@@ -100,15 +101,28 @@
 #include "time.h"
 #include "unistd.h"
 // Constants that can be redefined
+/**
+ * @brief Init capacity of dynamic array. `unsigned long`
+ */
 #ifndef CBUILD_DA_INIT_CAPACITY
 #	define CBUILD_DA_INIT_CAPACITY 256ul
 #endif // CBUILD_DA_INIT_CAPACITY
+/**
+ * @brief Minimim log level. `CBuildLogLevel`
+ */
 #ifndef CBUILD_LOG_MIN_LEVEL
 #	define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_ERROR
 #endif // CBUILD_LOG_MIN_LEVEL
-#ifndef CBUILD_TMP_BUFF_SIZE
-#	define CBUILD_TMP_BUFF_SIZE (32 * 1024 * 1024)
-#endif // CBUILD_TMP_BUFF_SIZE
+/**
+ * @brief	Size of sprintf buffer that will be used as a fast-path.
+ * `unsigned long`
+ */
+#ifndef CBUILD_SB_QUICK_SPRINTF_SIZE
+#	define CBUILD_SB_QUICK_SPRINTF_SIZE 512ul
+#endif // CBUILD_SB_QUICK_SPRINTF_SIZE
+// #ifndef CBUILD_TMP_BUFF_SIZE
+// #	define CBUILD_TMP_BUFF_SIZE (32 * 1024 * 1024)
+// #endif // CBUILD_TMP_BUFF_SIZE
 // OS-specific defines
 #if defined(__linux__)
 #	define CBUILD_OS_LINUX
@@ -153,7 +167,9 @@
 #	define __CBUILD_MALLOC                    malloc
 #	define __CBUILD_REALLOC                   realloc
 #	define __CBUILD_MEMCPY                    memcpy
-#	define __CBUILD_FREE                      free
+#		define __CBUILD_FREE                   free
+// String functions
+#define __CBUILD_VSNPRINTF vsnprintf
 // Process and file handles
 typedef pid_t CBuildProc;
 #	define CBUILD_INVALID_PROC -1

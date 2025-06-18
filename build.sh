@@ -48,13 +48,13 @@ pack() {
 	call_cmd_ns pack_nostrip "common.h"
 	call_cmd_ns pack_header_strip	"Term.h"
 	call_cmd_ns pack_header_strip "DynArray.h"
-	call_cmd_ns pack_header_strip "StringBuffer.h"
 	call_cmd_ns pack_header_strip "StringView.h"
+	call_cmd_ns pack_header_strip "StringBuilder.h"
 	call_cmd_ns pack_header_strip "Log.h"
-	call_cmd_ns pack_header_strip "Proc.h"
-	call_cmd_ns pack_header_strip "Command.h"
-	call_cmd_ns pack_header_strip "FS.h"
-	call_cmd_ns pack_header_strip "Compile.h"
+	# call_cmd_ns pack_header_strip "Proc.h"
+	# call_cmd_ns pack_header_strip "Command.h"
+	# call_cmd_ns pack_header_strip "FS.h"
+	# call_cmd_ns pack_header_strip "Compile.h"
 	call_cmd_ns pack_ifdef
 	call_cmd_ns pack_header_strip "impl.c"
 	call_cmd_ns pack_endif

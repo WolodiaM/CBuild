@@ -1,11 +1,6 @@
-#include "Command.h"
-#include "Compile.h"
 #include "DynArray.h"
-#include "FS.h"
 #include "Log.h"
-#include "Proc.h"
-#include "StringBuffer.h"
-#include "StringView.h"
+#include "StringBuilder.h"
 #include "Term.h"
 #include "common.h"
 /* misc code */
@@ -38,6 +33,84 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 	fflush(stdout);
 	abort();
 }
+/* StringBuilder.h */
+cbuild_da_t_impl(char, SBchar);
+int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
+	if (a->size < b->size) {
+		return -2;
+	}
+	if (a->size > b->size) {
+		return 2;
+	}
+	int ret = memcmp(a->data, b->data, a->size);
+	if (ret == 0) {
+		return 0;
+	} else if (ret < 0) {
+		return -1;
+	} else if (ret > 0) {
+		return 1;
+	}
+	return 0;
+}
+int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b) {
+	if (a->size < b->size) {
+		return -2;
+	}
+	if (a->size > b->size) {
+		return 2;
+	}
+	for (size_t i = 0; i < a->size; i++) {
+		char ac =
+				'A' <= a->data[i] && a->data[i] <= 'Z' ? a->data[i] + 32 : a->data[i];
+		char bc =
+				'A' <= b->data[i] && b->data[i] <= 'Z' ? b->data[i] + 32 : b->data[i];
+		int diff = ac - bc;
+		if (diff < 0) {
+			return -1;
+		} else if (diff > 0) {
+			return 1;
+		}
+	}
+	return 0;
+}
+cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv) {
+	cbuild_sb_t ret = CBuildStringBuilder;
+	cbuild_sb_append_arr(&ret, sv.data, sv.size);
+	return ret;
+}
+cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb) {
+	return (cbuild_sv_t){ .data = sb->data, .size = sb->size };
+}
+int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args) {
+	va_list args_copy;
+	va_copy(args_copy, args);
+	char buff[CBUILD_SB_QUICK_SPRINTF_SIZE];
+	int  ret = vsnprintf(buff, CBUILD_SB_QUICK_SPRINTF_SIZE, fmt, args);
+	if (ret < 0) {
+		va_end(args_copy);
+		return ret;
+	}
+	if ((size_t)ret >= CBUILD_SB_QUICK_SPRINTF_SIZE) {
+		char* buff1 = __CBUILD_MALLOC(ret + 1);
+		if (buff1 == NULL) {
+			__CBUILD_ERR_PRINT("error: (LIB_CBUILD_SB) Allocation failed\n");
+			exit(1);
+		}
+		__CBUILD_VSNPRINTF(buff1, ret + 1, fmt, args_copy);
+		cbuild_sb_append_cstr(sb, buff1);
+	} else {
+		cbuild_sb_append_cstr(sb, buff);
+	}
+	va_end(args_copy);
+	return ret;
+}
+int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+	int ret = cbuild_sb_vappendf(sb, fmt, args);
+	va_end(args);
+	return ret;
+}
 // /* Command.h impl */
 // void cbuild_cmd_to_sb(CBuildCmd cmd, CBuildStrBuff* sb) {
 // 	if (cmd.size < 1) {
@@ -52,14 +125,13 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 // }
 // CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
 // 	if (cmd.size < 1) {
-// 		cbuild_log(CBUILD_LOG_ERROR, "Empty command is requested to be executed!");
-// 		return CBUILD_INVALID_PROC;
+// 		cbuild_log(CBUILD_LOG_ERROR, "Empty command is requested to be
+// executed!"); 		return CBUILD_INVALID_PROC;
 // 	}
 // 	CBuildProc proc = fork();
 // 	if (proc < 0) {
-// 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
-// 		           strerror(errno));
-// 		return CBUILD_INVALID_PROC;
+// 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error:
+// \"%s\"", 		           strerror(errno)); 		return CBUILD_INVALID_PROC;
 // 	}
 // 	if (proc == 0) {
 // 		if (fd.fdstdin != CBUILD_INVALID_FD) {
@@ -75,18 +147,16 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 // 			if (dup2(fd.fdstdout, STDOUT_FILENO) < 0) {
 // 				cbuild_log(
 // 						CBUILD_LOG_ERROR,
-// 						"Cannot redirect stdoutt inside of a child process, error: \"%s\"",
-// 						strerror(errno));
-// 				exit(1);
+// 						"Cannot redirect stdoutt inside of a child process, error:
+// \"%s\"", 						strerror(errno)); 				exit(1);
 // 			}
 // 		}
 // 		if (fd.fdstderr != CBUILD_INVALID_FD) {
 // 			if (dup2(fd.fdstderr, STDERR_FILENO) < 0) {
 // 				cbuild_log(
 // 						CBUILD_LOG_ERROR,
-// 						"Cannot redirect stderrt inside of a child process, error: \"%s\"",
-// 						strerror(errno));
-// 				exit(1);
+// 						"Cannot redirect stderrt inside of a child process, error:
+// \"%s\"", 						strerror(errno)); 				exit(1);
 // 			}
 // 		}
 // 		CBuildCmd argv = { 0 };
@@ -167,8 +237,8 @@ void cbuild_log_set_fmt(CBuildLogFormatter fmt) { __CBUILD_LOG_FMT = fmt; }
 //     int status = 0;
 //     if (waitpid(proc, &status, 0) < 0) {
 //       cbuild_log(CBUILD_LOG_ERROR,
-// 			            "Cannot wait for child process (pid %d), error: \"%s\"", proc,
-// 			            strerror(errno));
+// 			            "Cannot wait for child process (pid %d), error: \"%s\"",
+// proc, 			            strerror(errno));
 //       abort();
 //     }
 //     if (WIFEXITED(status)) {
@@ -194,9 +264,8 @@ void cbuild_log_set_fmt(CBuildLogFormatter fmt) { __CBUILD_LOG_FMT = fmt; }
 // CBuildProc cbuild_proc_start(int (*callback)(void* context), void* context) {
 // 	CBuildProc proc = fork();
 // 	if (proc < 0) {
-// 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
-// 		           strerror(errno));
-// 		return CBUILD_INVALID_PROC;
+// 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error:
+// \"%s\"", 		           strerror(errno)); 		return CBUILD_INVALID_PROC;
 // 	}
 // 	if (proc == 0) {
 // 		int code = callback(context);
@@ -327,20 +396,18 @@ void cbuild_log_set_fmt(CBuildLogFormatter fmt) { __CBUILD_LOG_FMT = fmt; }
 // 	}
 // 	struct stat statbuff;
 // 	if (stat(path, &statbuff) < 0) {
-// 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"", path,
-// 		           strerror(errno));
-// 		cbuild_fd_close(fd);
-// 		return false;
+// 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"",
+// path, 		           strerror(errno)); 		cbuild_fd_close(fd); 		return
+// false;
 // 	}
 // 	size_t size = statbuff.st_size;
 // 	data->data  = malloc(size);
 // 	if (data->data == NULL) {
 // 		cbuild_log(
 // 				CBUILD_LOG_ERROR,
-// 				"Cannot allocate memory for a file, %zu bytes requested, error: \"%s\"",
-// 				size, strerror(errno));
-// 		cbuild_fd_close(fd);
-// 		return false;
+// 				"Cannot allocate memory for a file, %zu bytes requested, error:
+// \"%s\"", 				size, strerror(errno)); 		cbuild_fd_close(fd); 		return
+// false;
 // 	}
 // 	ssize_t len = read(fd, data->data, size);
 // 	if (len < 0) {
@@ -539,10 +606,9 @@ void cbuild_log_set_fmt(CBuildLogFormatter fmt) { __CBUILD_LOG_FMT = fmt; }
 // 	int stat = rmdir(path);
 // 	if (stat < 0) {
 // 		cbuild_log(CBUILD_LOG_ERROR,
-// 		           "Cannot remove directory directory \"%s\", error: \"%s\"", path,
-// 		           strerror(errno));
-// 		cbuild_pathlist_clear(&list);
-// 		return false;
+// 		           "Cannot remove directory directory \"%s\", error: \"%s\"",
+// path, 		           strerror(errno)); 		cbuild_pathlist_clear(&list);
+// return false;
 // 	}
 // 	cbuild_pathlist_clear(&list);
 // 	return ret;
@@ -551,9 +617,8 @@ void cbuild_log_set_fmt(CBuildLogFormatter fmt) { __CBUILD_LOG_FMT = fmt; }
 // bool cbuild_dir_list(const char* path, CBuildPathList* elements) {
 // 	DIR* dir = opendir(path);
 // 	if (dir == NULL) {
-// 		cbuild_log(CBUILD_LOG_ERROR, "Cannot open dir \"%s\", error: \"%s\"", path,
-// 		           strerror(errno));
-// 		return false;
+// 		cbuild_log(CBUILD_LOG_ERROR, "Cannot open dir \"%s\", error: \"%s\"",
+// path, 		           strerror(errno)); 		return false;
 // 	}
 // 	struct dirent* list = readdir(dir);
 // 	errno               = 0;
@@ -595,9 +660,8 @@ void cbuild_log_set_fmt(CBuildLogFormatter fmt) { __CBUILD_LOG_FMT = fmt; }
 // CBuildFiletype cbuild_path_filetype(const char* path) {
 // 	struct stat statbuff;
 // 	if (stat(path, &statbuff) < 0) {
-// 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"", path,
-// 		           strerror(errno));
-// 		return CBUILD_FTYPE_OTHER;
+// 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"",
+// path, 		           strerror(errno)); 		return CBUILD_FTYPE_OTHER;
 // 	}
 // 	if (S_ISREG(statbuff.st_mode)) {
 // 		return CBUILD_FTYPE_REGULAR;
