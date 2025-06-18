@@ -61,8 +61,8 @@
 		cbuild_da_##Vname##_free_t       free;                                     \
 		cbuild_da_##Vname##_memcpy_t     memcpy;                                   \
 	} cbuild_da_##Vname##_t
-#define ext_cbuild_da_t_impl(Vname)                                            \
-	extern cbuild_da_##Vname##_t cbuild_da_##Vname
+#define cbuild_da_t_ext_impl(Vname)                                            \
+	extern const cbuild_da_##Vname##_t cbuild_da_##Vname
 #define cbuild_da_t_impl(V, Vname)                                             \
 	void cbuild_da_##Vname##_append(void* s, V elem) {                           \
 		cbuild_da_##Vname##_t* self = s;                                           \
