@@ -1,6 +1,9 @@
+#include "Command.h"
 #include "DynArray.h"
 #include "Log.h"
+#include "Proc.h"
 #include "StringBuilder.h"
+#include "StringView.h"
 #include "Term.h"
 #include "common.h"
 /* misc code */
@@ -20,7 +23,7 @@ const char* __cbuild_progname(void) {
 	return __progname;
 #endif
 }
-/* common.h */
+/* common.h impl */
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
                      const char* expr, ...) {
 	printf("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n",
@@ -33,8 +36,8 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 	fflush(stdout);
 	abort();
 }
-/* StringBuilder.h */
-cbuild_da_t_impl(char, SBchar);
+/* StringBuilder.h impl */
+cbuild_da_t_impl(char, CBuildSBchar);
 int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
 	if (a->size < b->size) {
 		return -2;
@@ -96,7 +99,7 @@ int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args) {
 			__CBUILD_ERR_PRINT("error: (LIB_CBUILD_SB) Allocation failed\n");
 			exit(1);
 		}
-		__CBUILD_VSNPRINTF(buff1, ret + 1, fmt, args_copy);
+		vsnprintf(buff1, ret + 1, fmt, args_copy);
 		cbuild_sb_append_cstr(sb, buff1);
 	} else {
 		cbuild_sb_append_cstr(sb, buff);
@@ -111,70 +114,250 @@ int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...) {
 	va_end(args);
 	return ret;
 }
-// /* Command.h impl */
-// void cbuild_cmd_to_sb(CBuildCmd cmd, CBuildStrBuff* sb) {
-// 	if (cmd.size < 1) {
-// 		cbuild_sb_clear(sb);
-// 		return;
-// 	}
-// 	for (size_t i = 0; i < cmd.size; i++) {
-// 		const char* tmp = cmd.data[i];
-// 		cbuild_sb_append_cstr(sb, tmp);
-// 		cbuild_sb_append(sb, ' ');
-// 	}
-// }
-// CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
-// 	if (cmd.size < 1) {
-// 		cbuild_log(CBUILD_LOG_ERROR, "Empty command is requested to be
-// executed!"); 		return CBUILD_INVALID_PROC;
-// 	}
-// 	CBuildProc proc = fork();
-// 	if (proc < 0) {
-// 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error:
-// \"%s\"", 		           strerror(errno)); 		return CBUILD_INVALID_PROC;
-// 	}
-// 	if (proc == 0) {
-// 		if (fd.fdstdin != CBUILD_INVALID_FD) {
-// 			if (dup2(fd.fdstdin, STDIN_FILENO) < 0) {
-// 				cbuild_log(
-// 						CBUILD_LOG_ERROR,
-// 						"Cannot redirect stdint inside of a child process, error: \"%s\"",
-// 						strerror(errno));
-// 				exit(1);
-// 			}
-// 		}
-// 		if (fd.fdstdout != CBUILD_INVALID_FD) {
-// 			if (dup2(fd.fdstdout, STDOUT_FILENO) < 0) {
-// 				cbuild_log(
-// 						CBUILD_LOG_ERROR,
-// 						"Cannot redirect stdoutt inside of a child process, error:
-// \"%s\"", 						strerror(errno)); 				exit(1);
-// 			}
-// 		}
-// 		if (fd.fdstderr != CBUILD_INVALID_FD) {
-// 			if (dup2(fd.fdstderr, STDERR_FILENO) < 0) {
-// 				cbuild_log(
-// 						CBUILD_LOG_ERROR,
-// 						"Cannot redirect stderrt inside of a child process, error:
-// \"%s\"", 						strerror(errno)); 				exit(1);
-// 			}
-// 		}
-// 		CBuildCmd argv = { 0 };
-// 		cbuild_da_append_arr(&argv, cmd.data, cmd.size);
-// 		cbuild_cmd_append(&argv, NULL);
-// 		if (execvp(argv.data[0], (char* const*)argv.data) < 0) {
-// 			cbuild_log(CBUILD_LOG_ERROR,
-// 			           "Cannot execute command in child process, error: \"%s\"",
-// 			           strerror(errno));
-// 			exit(1);
-// 		}
-// 	}
-// 	return proc;
-// }
-// bool cbuild_cmd_sync_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd) {
-// 	CBuildProc proc = cbuild_cmd_async_redirect(cmd, fd);
-// 	return cbuild_proc_wait(proc);
-// }
+/* StringView.h impl */
+cbuild_sv_t cbuild_sv_from_parts(const char* data, size_t size) {
+	return (cbuild_sv_t){ .data = (char*)data, .size = size };
+}
+cbuild_sv_t cbuild_sv_from_cstr(const char* cstr) {
+	return (cbuild_sv_t){ .data = (char*)cstr, .size = strlen(cstr) };
+}
+size_t cbuild_sv_trim_left(cbuild_sv_t* sv) {
+	size_t i = 0;
+	while (i < sv->size && isspace(sv->data[i])) { i++; }
+	sv->data += i;
+	sv->size -= i;
+	return i;
+}
+size_t cbuild_sv_trim_right(cbuild_sv_t* sv) {
+	size_t i = sv->size;
+	while (i > 0 && isspace(sv->data[i - 1])) { i--; }
+	size_t tmp  = sv->size - i;
+	sv->size   -= tmp;
+	return tmp;
+}
+size_t cbuild_sv_trim(cbuild_sv_t* sv) {
+	size_t ret  = cbuild_sv_trim_left(sv);
+	ret        += cbuild_sv_trim_right(sv);
+	return ret;
+}
+cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size) {
+	if (size > sv->size) {
+		size = sv->size;
+	}
+	char* tmp  = sv->data;
+	sv->data  += size;
+	sv->size  -= size;
+	return cbuild_sv_from_parts(tmp, size);
+}
+bool cbuild_sv___chop_by_delim_delim(const cbuild_sv_t* sv, size_t idx,
+                                     void* args) {
+	return *((char*)args) == sv->data[idx];
+}
+cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim) {
+	return cbuild_sv_chop_by_func(sv, cbuild_sv___chop_by_delim_delim, &delim);
+}
+bool cbuild_sv___chop_by_sv_delim1(const cbuild_sv_t* sv, size_t idx,
+                                   void* args) {
+	cbuild_sv_t* svt  = args;
+	size_t       size = idx < svt->size ? idx : svt->size;
+	return cbuild_sv_cmp(cbuild_sv_from_parts(sv->data + idx - (size - 1), size),
+	                     *svt) == 0;
+}
+bool cbuild_sv___chop_by_sv_delim2(const cbuild_sv_t* sv, size_t idx,
+                                   void* args) {
+	cbuild_sv_t* svt  = args;
+	size_t       size = (svt->size - 1) + idx > sv->size ? 0 : svt->size - 1;
+	return cbuild_sv_cmp(cbuild_sv_from_parts(sv->data + idx, size),
+	                     cbuild_sv_from_parts(svt->data, svt->size - 1)) == 0;
+}
+cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
+	if (delim.size == 1) {
+		return cbuild_sv_chop_by_delim(sv, delim.data[0]);
+	}
+	cbuild_sv_t tmp =
+			cbuild_sv_chop_by_func(sv, cbuild_sv___chop_by_sv_delim1, &delim);
+	return cbuild_sv_chop_by_func(&tmp, cbuild_sv___chop_by_sv_delim2, &delim);
+}
+cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
+                                   void* args) {
+	size_t i = 0;
+	while (i <= sv->size && !delim(sv, i, args)) { i++; }
+	if (i >= sv->size) {
+		return cbuild_sv_chop(sv, i);
+	}
+	char* tmp  = sv->data;
+	sv->data  += i + 1;
+	sv->size  -= i + 1;
+	return cbuild_sv_from_parts(tmp, i);
+}
+int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b) {
+	if (a.size < b.size) {
+		return -2;
+	}
+	if (a.size > b.size) {
+		return 2;
+	}
+	int ret = memcmp(a.data, b.data, a.size);
+	if (ret == 0) {
+		return 0;
+	} else if (ret < 0) {
+		return -1;
+	} else if (ret > 0) {
+		return 1;
+	}
+	return 0;
+}
+int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b) {
+	if (a.size < b.size) {
+		return -2;
+	}
+	if (a.size > b.size) {
+		return 2;
+	}
+	for (size_t i = 0; i < a.size; i++) {
+		char ac = 'A' <= a.data[i] && a.data[i] <= 'Z' ? a.data[i] + 32 : a.data[i];
+		char bc = 'A' <= b.data[i] && b.data[i] <= 'Z' ? b.data[i] + 32 : b.data[i];
+		int  diff = ac - bc;
+		if (diff < 0) {
+			return -1;
+		} else if (diff > 0) {
+			return 1;
+		}
+	}
+	return 0;
+}
+bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix) {
+	if (sv.size < prefix.size) {
+		return false;
+	}
+	return cbuild_sv_cmp(cbuild_sv_from_parts(sv.data, prefix.size), prefix) == 0;
+}
+bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix) {
+	if (sv.size < suffix.size) {
+		return false;
+	}
+	return cbuild_sv_cmp(
+						 cbuild_sv_from_parts(sv.data + sv.size - suffix.size, suffix.size),
+						 suffix) == 0;
+}
+/* Command.h impl */
+cbuild_da_t_impl(char*, CBuildCMDchar_ptr);
+void cbuild_cmd_to_sb(cbuild_cmd_t cmd, cbuild_sb_t* sb) {
+	if (cmd.size < 1) {
+		cbuild_sb_clear(sb);
+		return;
+	}
+	for (size_t i = 0; i < cmd.size; i++) {
+		const char* tmp = cmd.data[i];
+		cbuild_sb_append_cstr(sb, tmp);
+		if (i < cmd.size - 1) {
+			cbuild_sb_append(sb, ' ');
+		}
+	}
+}
+#if defined(CBUILD_API_POSIX)
+#	if defined(CBUILD_OS_MACOS)
+#		define environ (*_NSGetEnviron())
+#	else
+extern char** environ;
+#	endif
+cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t        cmd,
+                                        CBuildCmdFDRedirect fd) {
+	if (cmd.size < 1) {
+		cbuild_log(CBUILD_LOG_ERROR, "Empty command is requested to be executed!");
+		return CBUILD_INVALID_PROC;
+	}
+	cbuild_proc_t proc = fork();
+	if (proc < 0) {
+		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
+		           strerror(errno));
+		return CBUILD_INVALID_PROC;
+	}
+	if (proc == 0) {
+		fflush(NULL);
+		if (fd.fdstdin != CBUILD_INVALID_FD) {
+			if (dup2(fd.fdstdin, STDIN_FILENO) < 0) {
+				cbuild_log(
+						CBUILD_LOG_ERROR,
+						"Cannot redirect stdin inside of a child process, error: \"%s\"",
+						strerror(errno));
+				exit(1);
+			}
+		}
+		if (fd.fdstdout != CBUILD_INVALID_FD) {
+			if (dup2(fd.fdstdout, STDOUT_FILENO) < 0) {
+				cbuild_log(
+						CBUILD_LOG_ERROR,
+						"Cannot redirect stdout inside of a child process, error: \"%s\"",
+						strerror(errno));
+				exit(1);
+			}
+		}
+		if (fd.fdstderr != CBUILD_INVALID_FD) {
+			if (dup2(fd.fdstderr, STDERR_FILENO) < 0) {
+				cbuild_log(
+						CBUILD_LOG_ERROR,
+						"Cannot redirect stderr inside of a child process, error: \"%s\"",
+						strerror(errno));
+				exit(1);
+			}
+		}
+		cbuild_cmd_t argv = cbuild_cmd;
+		cbuild_da_append_arr(&argv, (const char**)cmd.data, cmd.size);
+		cbuild_cmd_append(&argv, NULL);
+		cbuild_sb_t path = cbuild_sb;
+		cbuild_cmd_resolve_path(argv.data[0], &path);
+		cbuild_sb_append_null(&path);
+		argv.data[0] = path.data;
+		if (execve(argv.data[0], (char* const*)argv.data, environ) < 0) {
+			cbuild_log(CBUILD_LOG_ERROR,
+			           "Cannot execute command in child process, error: \"%s\"",
+			           strerror(errno));
+			exit(1);
+		}
+		exit(0);
+	}
+	return proc;
+}
+int cbuild_cmd_resolve_path(const char* name, cbuild_sb_t* out) {
+	cbuild_sb_clear(out);
+	if (strchr(name, '/') != NULL) {
+		cbuild_sb_append_cstr(out, name);
+		return 0;
+	}
+	const char* PATH = getenv("PATH");
+	if (PATH == NULL || strlen(PATH) == 0) {
+		// TODO: confstr
+		PATH = "/usr/bin:/bin";
+	}
+	cbuild_sv_t path = cbuild_sv_from_cstr(PATH);
+	cbuild_sb_t tmp  = cbuild_sb;
+	cbuild_sb_resize(&tmp, 256);
+	while (path.size > 0) {
+		cbuild_sv_t dir = cbuild_sv_chop_by_delim(&path, ':');
+		if (dir.size == 0) {
+			cbuild_sb_append(&tmp, '.');
+		} else {
+			cbuild_sb_append_sv(&tmp, dir);
+		}
+		cbuild_sb_append(&tmp, '/');
+		cbuild_sb_append_cstr(&tmp, name);
+		cbuild_sb_append_null(&tmp);
+		if (access(tmp.data, X_OK) == 0) {
+			cbuild_sb_append_arr(out, tmp.data, tmp.size - 1);
+			cbuild_sb_clear(&tmp);
+			return 0;
+		}
+		tmp.size = 0;
+	}
+	cbuild_sb_clear(&tmp);
+	return -1;
+}
+#endif // CBUILD_API_POSIX
+bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, CBuildCmdFDRedirect fd) {
+	cbuild_proc_t proc = cbuild_cmd_async_redirect(cmd, fd);
+	return cbuild_proc_wait(proc);
+}
 /* Log.h impl */
 void __cbuild_log_fmt(CBuildLogLevel level) {
 	time_t     t       = time(NULL);
@@ -228,122 +411,65 @@ void cbuild_log_set_min_level(CBuildLogLevel level) {
 	__CBUILD_LOG_MIN_LEVEL = level;
 }
 void cbuild_log_set_fmt(CBuildLogFormatter fmt) { __CBUILD_LOG_FMT = fmt; }
-// /* Proc.h impl */
-// int  cbuild_proc_wait_code(CBuildProc proc) {
-//   if (proc == CBUILD_INVALID_PROC) {
-//     return INT_MIN;
-//   }
-//   while (true) {
-//     int status = 0;
-//     if (waitpid(proc, &status, 0) < 0) {
-//       cbuild_log(CBUILD_LOG_ERROR,
-// 			            "Cannot wait for child process (pid %d), error: \"%s\"",
-// proc, 			            strerror(errno));
-//       abort();
-//     }
-//     if (WIFEXITED(status)) {
-//       int code = WEXITSTATUS(status);
-//       return code;
-//     }
-//     if (WIFSIGNALED(status)) {
-//       cbuild_log(CBUILD_LOG_ERROR,
-// 			            "Process (pid %d) was terminated by signal \"%s\"", proc,
-// 			            strerror(WTERMSIG(status)));
-//       return INT_MAX;
-//     }
-//   }
-//   return 0;
-// }
-// bool cbuild_proc_wait(CBuildProc proc) {
-// 	if (cbuild_proc_wait_code(proc) != 0) {
-// 		return false;
-// 	} else {
-// 		return true;
-// 	}
-// }
-// CBuildProc cbuild_proc_start(int (*callback)(void* context), void* context) {
-// 	CBuildProc proc = fork();
-// 	if (proc < 0) {
-// 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error:
-// \"%s\"", 		           strerror(errno)); 		return CBUILD_INVALID_PROC;
-// 	}
-// 	if (proc == 0) {
-// 		int code = callback(context);
-// 		exit(code);
-// 	}
-// 	return proc;
-// }
-// /* StringBuffer.h impl */
-// int cbuild_sb_cmp(CBuildStrBuff* sb1, CBuildStrBuff* sb2) {
-// 	if (sb1->size < sb2->size) {
-// 		return -2;
-// 	} else if (sb1->size > sb2->size) {
-// 		return 2;
-// 	} else {
-// 		for (size_t i = 0; i < sb1->size; i++) {
-// 			if (sb1->data[i] < sb2->data[i]) {
-// 				return -1;
-// 			} else if (sb1->data[i] > sb2->data[i]) {
-// 				return 1;
-// 			}
-// 		}
-// 	}
-// 	return 0;
-// }
-// /* StringView.h */
-// CBuildStrView cbuild_sv_from_cstr(const char* str) {
-// 	return (CBuildStrView){ .str = str, .len = strlen(str) };
-// }
-// CBuildStrView cbuild_sv_from_parts(const char* str, size_t len) {
-// 	return (CBuildStrView){ .str = str, .len = len };
-// }
-// CBuildStrView cbuild_sv_from_sb(const CBuildStrBuff* sb) {
-// 	return (CBuildStrView){ .str = sb->data, .len = sb->size };
-// }
-// CBuildStrView cbuild_sv_trim_left(const CBuildStrView str, char c) {
-// 	size_t i = 0;
-// 	for (; i < str.len; i++) {
-// 		if (str.str[i] != c) {
-// 			break;
-// 		}
-// 	}
-// 	return (CBuildStrView){ .str = (str.str + i), .len = str.len - i };
-// }
-// CBuildStrView cbuild_sv_trim_right(const CBuildStrView str, char c) {
-// 	size_t i = str.len;
-// 	for (; i > 0; i--) {
-// 		if (str.str[i - 1] != c) {
-// 			break;
-// 		}
-// 	}
-// 	return (CBuildStrView){ .str = (str.str), .len = i };
-// }
-// CBuildStrView cbuild_sv_cut_delim(const CBuildStrView str, char delim) {
-// 	size_t i = 0;
-// 	for (; i < str.len; i++) {
-// 		if (str.str[i] == delim) {
-// 			break;
-// 		}
-// 	}
-// 	i++;
-// 	return (CBuildStrView){ .str = (str.str + i), .len = str.len - i };
-// }
-// int cbuild_sv_cmp(const CBuildStrView str1, const CBuildStrView str2) {
-// 	if (str1.len < str2.len) {
-// 		return -2;
-// 	} else if (str1.len > str2.len) {
-// 		return 2;
-// 	} else {
-// 		for (size_t i = 0; i < str1.len; i++) {
-// 			if (str1.str[i] < str2.str[i]) {
-// 				return -1;
-// 			} else if (str1.str[i] > str2.str[i]) {
-// 				return 1;
-// 			}
-// 		}
-// 	}
-// 	return 0;
-// }
+/* Proc.h impl */
+#if defined(CBUILD_API_POSIX)
+int cbuild_proc_wait_code(cbuild_proc_t proc) {
+	if (proc == CBUILD_INVALID_PROC) {
+		return INT_MIN;
+	}
+	while (true) {
+		int status = 0;
+		if (waitpid(proc, &status, 0) < 0) {
+			cbuild_log(CBUILD_LOG_ERROR,
+			           "Cannot wait for child process (pid %d), error: \"%s\"", proc,
+			           strerror(errno));
+			abort();
+		}
+		if (WIFEXITED(status)) {
+			int code = WEXITSTATUS(status);
+			return code;
+		}
+		if (WIFSIGNALED(status)) {
+			cbuild_log(CBUILD_LOG_ERROR,
+			           "Process (pid %d) was terminated by signal \"%d\"", proc,
+			           WTERMSIG(status));
+			return INT_MAX;
+		}
+	}
+}
+cbuild_proc_ptr_t cbuild_proc_malloc(size_t n) {
+	void* ptr =
+			mmap(NULL, n, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+	if (ptr == MAP_FAILED) {
+		return (cbuild_proc_ptr_t){ .ptr = NULL, .size = 0 };
+	} else {
+		return (cbuild_proc_ptr_t){ .ptr = ptr, .size = n };
+	}
+}
+void cbuild_proc_free(cbuild_proc_ptr_t ptr) {
+	if (ptr.ptr != NULL) {
+		munmap(ptr.ptr, ptr.size);
+	}
+}
+// Maybe: RtlCloneUserProcess on WinAPI. To not link to ntdll.lib GetProcAddress
+// could be used.
+cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context) {
+	cbuild_proc_t proc = fork();
+	if (proc < 0) {
+		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
+		           strerror(errno));
+		return CBUILD_INVALID_PROC;
+	}
+	if (proc == 0) {
+		int code = callback(context);
+		exit(code);
+	}
+	return proc;
+}
+#endif // CBUILD_API_POSIX
+bool cbuild_proc_wait(cbuild_proc_t proc) {
+	return cbuild_proc_wait_code(proc) == 0;
+}
 // /* FS.h */
 // bool cbuild_fd_close(CBuildFD fd) {
 // 	if (fd == CBUILD_INVALID_FD) {

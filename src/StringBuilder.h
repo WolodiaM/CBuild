@@ -30,17 +30,18 @@
 #ifndef __CBUILD_SB_H__
 #define __CBUILD_SB_H__
 // Project includes:
+#include "common.h"
 #include "DynArray.h"
 #include "StringView.h"
 #include "common.h"
 // Code
 #define CBuildSBFmt     "%.*s"
-#define CbuildSBArg(sb) (int)(sb).size, (sb).data
-cbuild_da_t(char, SBchar);
-cbuild_da_t_ext_impl(SBchar);
-typedef cbuild_da_SBchar_t cbuild_sb_t;
-#define cbuild_sb                  cbuild_da_SBchar
-#define CBuildStringBuilder        cbuild_da_SBchar
+#define CBuildSBArg(sb) (int)(sb).size, (sb).data
+cbuild_da_t(char, CBuildSBchar);
+cbuild_da_t_ext_impl(CBuildSBchar);
+typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
+#define cbuild_sb                  cbuild_da_CBuildSBchar
+#define CBuildStringBuilder        cbuild_da_CBuildSBchar
 /**
  *  @brief Append character to a string builder
  *

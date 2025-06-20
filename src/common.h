@@ -78,15 +78,22 @@
  *             - Safer handling of __progname, now work on MacOS
  *             - Better platform abstraction
  *             Updates in DynArray.h module - totally new implementation
+ *             Updates in StringBuilder.h (old StringBuffer.h) - new
+ *             implementation based on new DynArray.h. Better API.
+ *             Updates in Proc.h:
+ *             - More consistent names
+ *             - Added ability to allocate shared memory
+ *             Updates in Command.h:
+ *             - consistent names
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
 #define __CBUILD_COMMON_H__
 // Includes (all external included of CBuild. Other header could only have
 // project-level includes)
+#include "ctype.h"
 #include "dirent.h"
 #include "errno.h"
-#include "ctype.h"
 #include "fcntl.h"
 #include "limits.h"
 #include "stdarg.h"
@@ -95,6 +102,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+#include "sys/mman.h"
 #include "sys/stat.h"
 #include "sys/types.h"
 #include "sys/wait.h"
@@ -167,13 +175,11 @@
 #	define __CBUILD_MALLOC                    malloc
 #	define __CBUILD_REALLOC                   realloc
 #	define __CBUILD_MEMCPY                    memcpy
-#		define __CBUILD_FREE                   free
-// String functions
-#define __CBUILD_VSNPRINTF vsnprintf
+#	define __CBUILD_FREE                      free
 // Process and file handles
-typedef pid_t CBuildProc;
+typedef pid_t cbuild_proc_t;
 #	define CBUILD_INVALID_PROC -1
-typedef int CBuildFD;
+typedef int cbuild_fd_t;
 #	define CBUILD_INVALID_FD -1
 #endif // CBUILD_API_POSIX
 // Macro functionality

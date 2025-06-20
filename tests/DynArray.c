@@ -75,6 +75,10 @@ TEST_MAIN(
 						TEST_ASSERT_EQ(da_alloc.capacity, 0,
 		                       "Wrong capcity was set on clear" TEST_EXPECT_MSG(zu),
 		                       (size_t)0, da_alloc.capacity);
+						TEST_ASSERT_EQ(
+								da_alloc.data, NULL,
+								"Data pointer non-null after clear" TEST_EXPECT_MSG(p), NULL,
+								da_alloc.data);
 						cbuild_da_append(&da_alloc, 1);
 						TEST_ASSERT_EQ(
 								talloc_last_alloc_size, 2ul * sizeof(int),
@@ -140,6 +144,17 @@ TEST_MAIN(
 						cbuild_da_clear(&da);
 					},
 					"DynArray multi-element insertion");
+			TEST_CASE(
+					{
+						cbuild_da_resize(&da, 10);
+						da.size = 2;
+						cbuild_da_set(&da, 0, 1);
+						TEST_ASSERT_EQ(da.data[0], 1,
+		                       "Wrong element after set" TEST_EXPECT_MSG(d), 1,
+		                       da.data[0]);
+						cbuild_da_clear(&da);
+					},
+					"DynArray element set")
 			TEST_CASE(
 					{
 						cbuild_da_append(&da, 1);

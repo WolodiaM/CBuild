@@ -33,20 +33,21 @@
 /**
  * @brief Wait until process finishes execurition
  *
- * @param proc => CBuildProc -> Process ID
+ * @param proc => cbuild_proc_t -> Process ID
  * @return true -> Process finished without errors
  * @return false -> Process finished with an error
  */
-bool			 cbuild_proc_wait(CBuildProc proc);
+bool          cbuild_proc_wait(cbuild_proc_t proc);
 /**
  * @brief Wait until process finishes execurition
  *
- * @param proc => CBuildProc -> Process ID
- * @return int -> Process exit code
+ * @param proc => cbuild_proc_t -> Process ID
+ * @return int -> Process exit code. INT_MIN on invalid proc and INT_MAX if
+ * process was closed on signal.
  */
-int				 cbuild_proc_wait_code(CBuildProc proc);
+int           cbuild_proc_wait_code(cbuild_proc_t proc);
 /**
- * @brief Start another process with generick function
+ * @brief Start another process with generic function
  *
  * @param callback => int (*)(void*) -> Callback for created process, return
  * value will be process exit status and context will be passed from parent
@@ -54,5 +55,26 @@ int				 cbuild_proc_wait_code(CBuildProc proc);
  * @param context => Will be passed to a callback
  * @return CBuildProc -> Process ID
  */
-CBuildProc cbuild_proc_start(int (*callback)(void* context), void* context);
+cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context);
+/**
+ * @brief "Pointer" for cbuild_proc_malloc and cbuild_proc_free. Struct
+ * because of munmap limitations.
+ */
+typedef struct cbuild_proc_ptr_t {
+	void*  ptr;
+	size_t size;
+} cbuild_proc_ptr_t;
+/**
+ * @brief Allocates memory that can be shared between fork'ed processes
+ *
+ * @param n => size_t -> Number of bytes
+ * @return cbuild_proc_ptr_t -> Pointer to a memory
+ */
+cbuild_proc_ptr_t cbuild_proc_malloc(size_t n);
+/**
+ * @brief free for cbuild_proc_malloc
+ *
+ * @param ptr => cbuild_proc_ptr_t -> Pointer (from cbuild_proc_malloc)
+ */
+void              cbuild_proc_free(cbuild_proc_ptr_t ptr);
 #endif // __CBUILD_PROC_H__

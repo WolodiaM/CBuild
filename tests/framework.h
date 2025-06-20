@@ -43,6 +43,11 @@
 		printf(msg "\n", __VA_ARGS__);                                             \
 		err_code++;                                                                \
 	}
+#define TEST_ASSERT_NEQ(val, expected, msg, ...)                               \
+	if (val == expected) {                                                       \
+		printf(msg "\n", __VA_ARGS__);                                             \
+		err_code++;                                                                \
+	}
 
 #define TEST_ASSERT_STREQ(val, expected, msg, ...)                             \
 	if (strcmp(val, expected) != 0) {                                            \
@@ -88,16 +93,20 @@
 			printf(CBUILD_TERM_BG(                                                   \
 					CBUILD_TERM_GREEN) "Test succeed" CBUILD_TERM_RESET "\n");           \
 		} else {                                                                   \
-			printf(                                                                  \
-					CBUILD_TERM_BG(                                                      \
-							CBUILD_TERM_RED) "Test failed." CBUILD_TERM_RESET                \
-															 " Number of failed sub-tests: " CBUILD_TERM_BG( \
-																	 CBUILD_TERM_YELLOW) "%d" CBUILD_TERM_RESET  \
-																											 "\n",                   \
-					global_err_code);                                                    \
+			printf(                                                                \
+						CBUILD_TERM_BG(                                                    \
+								CBUILD_TERM_RED) "Test failed." CBUILD_TERM_RESET              \
+																 " Number of failed "                          \
+				                         "sub-tests: " CBUILD_TERM_BG(                 \
+																		 CBUILD_TERM_YELLOW) "%"                   \
+				                                                 "d" CBUILD_TERM_RESET \
+																												 "\n",                 \
+						global_err_code); \
 		}                                                                          \
 		return global_err_code;                                                    \
 	}
-#define TEST_EXPECT_MSG(type) ", expected '%" #type "' but found '%" #type "'."
+
+#define TEST_EXPECT_MSG(type)  ", expected '%" #type "' but found '%" #type "'."
+#define TEST_EXPECT_RMSG(type) ", expected '" type "' but found '" type "'."
 
 #endif // INCLUDE_TESTS_FRAMEWORK_H_

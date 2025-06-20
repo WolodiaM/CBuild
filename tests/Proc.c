@@ -28,43 +28,48 @@
  */
 // Project includes
 #include "../src/Proc.h"
-#include "../src/FS.h"
 #include "../src/common.h"
 #include "framework.h"
 // Code
-int thread(void* context) {
-	CBuildFD*		pipe = (CBuildFD*)context;
-	const char* text = "Hello, world!";
-	int					ret	 = write(*pipe, text, 14);
-	if (ret != -1) {
-		return 0;
-	} else {
-		return 1;
-	}
+const char* MSG = "Hello, world!";
+int         thread(void* context) {
+  setvbuf(stdout, NULL, _IONBF, 0);
+  sleep(2);
+  printf("\tHello from child proc [%d]\n", getpid());
+  fflush(stdout);
+  memcpy(context, MSG, strlen(MSG) + 1);
+  return 0;
 }
 TEST_MAIN(
 		{
+			setvbuf(stdout, NULL, _IONBF, 0);
 			TEST_CASE(
 					{
-						CBuildFD rd = 0;
-						CBuildFD wr = 0;
-						cbuild_fd_open_pipe(&rd, &wr);
-						CBuildProc subproc = cbuild_proc_start(thread, &wr);
-						int				 code		 = cbuild_proc_wait_code(subproc);
-						CHECK_CMP_VALUE(code, 0,
-														"Either subprocess exited abnormally or CBuild is "
-														"broken, expected return code 0 but received %d",
-														code);
+						cbuild_proc_ptr_t context = cbuild_proc_malloc(strlen(MSG) + 1);
+						TEST_ASSERT_EQ(
+								context.size, strlen(MSG) + 1,
+								"Wrong amount of elements set in ptr" TEST_EXPECT_MSG(zu),
+								strlen(MSG) + 1, context.size);
+
+						TEST_ASSERT_NEQ(context.ptr, NULL, "%s",
+		                        "NULL returned from mmap!");
+						cbuild_proc_t subproc = cbuild_proc_start(thread, context.ptr);
+						printf("\tHello from main proc [%d]\n", getpid());
+						fflush(stdout);
+						int code = cbuild_proc_wait_code(subproc);
+						TEST_ASSERT_EQ(code, 0,
+		                       "Either subprocess exited abnormally or CBuild is "
+		                       "broken" TEST_EXPECT_MSG(d),
+		                       0, code);
 						if (code == 0) {
-							char buff[14];
-							read(rd, buff, 14);
-							CHECK_CMP_STR(buff, "Hello, world!",
-														"Expected string \"Hello, world!\", but got \"%s\"",
-														buff);
+							TEST_ASSERT_STREQ(context.ptr, MSG,
+			                          "Wring shared memory copy" TEST_EXPECT_MSG(s),
+			                          MSG, (char*)context.ptr);
 						} else {
 							err_code++;
 						}
+						cbuild_proc_free(context);
 					},
 					"cbuild_proc_ctrl");
 		},
-		"Process control module tests");
+		"Process control module tests")
