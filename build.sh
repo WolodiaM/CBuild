@@ -178,6 +178,8 @@ help() {
 	printf "\tclean - Clean all build artifacts\n"
 	printf "\t\tUsage: ./build.sh clean\n"
 
+	printf "\ttags - Generate CTags\n"
+
 	printf "\thelp - Display this message\n"
 	printf "\t\tUsage: ./build.sh help\n"
 
@@ -222,6 +224,10 @@ call_cmd() {
 		$@
 	fi
 }
+# Generate CTags
+tags() {
+	ctags -eR .
+}
 # Cli parser
 parse_args() {
 	if [ "$#" -lt 1 ]; then
@@ -235,6 +241,7 @@ parse_args() {
 		"docs") docs "$@" ;;
 		"test") test_cmd "$@" ;;
 		"clean") clean "$@" ;;
+		"tags") tags "$@" ;;
 		"help") help "$@" ;;
 		"-h") help "$@" ;;
 		"--help") help "$@" ;;

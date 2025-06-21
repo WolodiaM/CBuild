@@ -32,7 +32,7 @@
 // Code
 #define cbuild_da_t(V, Vname)                                                  \
 	typedef void (*cbuild_da_##Vname##_append_t)(void* self, V elem);            \
-	typedef void (*cbuild_da_##Vname##_append_arr_t)(void* self, V* arr,         \
+	typedef void (*cbuild_da_##Vname##_append_arr_t)(void* self, const V* arr,   \
 	                                                 size_t size);               \
 	typedef void (*cbuild_da_##Vname##_set_t)(void* self, size_t idx, V elem);   \
 	typedef V* (*cbuild_da_##Vname##_get_t)(void* self, size_t idx);             \
@@ -93,7 +93,7 @@
 			exit(1);                                                                 \
 		}                                                                          \
 	}                                                                            \
-	void cbuild_da_##Vname##_append_arr(void* s, V* arr, size_t size) {          \
+	void cbuild_da_##Vname##_append_arr(void* s, const V* arr, size_t size) {    \
 		cbuild_da_##Vname##_t* self = s;                                           \
 		if ((self->size + size) > self->capacity) {                                \
 			self->resize(self, self->capacity + size);                               \

@@ -155,7 +155,7 @@
 				bucket->vals = self->realloc(                                                                          \
 						bucket->vals,                                                                                      \
 						bucket->nvals * sizeof(cbuild_map_##Kname##_##Vname##_pair_t));                                    \
-				if (bucket->vals == NULL) {                                                                            \
+				if (bucket->nvals > 0 && bucket->vals == NULL) {                                                       \
 					__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Allocation failed\n");                                   \
 					exit(1);                                                                                             \
 				}                                                                                                      \
@@ -165,7 +165,7 @@
 				bucket->nvals--;                                                                                       \
 				bucket->vals = self->malloc(                                                                           \
 						bucket->nvals * sizeof(cbuild_map_##Kname##_##Vname##_pair_t));                                    \
-				if (bucket->vals == NULL) {                                                                            \
+				if (bucket->nvals > 0 && bucket->vals == NULL) {                                                       \
 					__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Allocation failed\n");                                   \
 					exit(1);                                                                                             \
 				}                                                                                                      \

@@ -162,6 +162,10 @@
 #endif // OS selector
 // Different between different APIs
 #if defined(CBUILD_API_POSIX)
+// Platform includes
+#	if defined(CBUILD_OS_MACOS)
+#		include "crt_externs.h"
+#	endif // CBUILD_OS_MACOS
 // Print functions
 #	define __CBUILD_PRINT(str)                printf((str))
 #	define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)

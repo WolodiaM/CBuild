@@ -31,91 +31,100 @@
 #ifndef __CBUILD_COMMAND_H__
 #define __CBUILD_COMMAND_H__
 #include "DynArray.h"
-#include "StringBuffer.h"
+#include "StringBuilder.h"
 #include "common.h"
+cbuild_da_t(char*, CBuildCMDchar_ptr);
+cbuild_da_t_ext_impl(CBuildCMDchar_ptr);
+typedef cbuild_da_CBuildCMDchar_ptr_t cbuild_cmd_t;
+#define cbuild_cmd cbuild_da_CBuildCMDchar_ptr
+#define CBuildCmd  cbuild_da_CBuildCMDchar_ptr
 typedef struct {
-	const char** data;
-	size_t			 size;
-	size_t			 capacity;
-} CBuildCmd;
-typedef struct {
-	CBuildFD fdstdin;
-	CBuildFD fdstdout;
-	CBuildFD fdstderr;
+	cbuild_fd_t fdstdin;
+	cbuild_fd_t fdstdout;
+	cbuild_fd_t fdstderr;
 } CBuildCmdFDRedirect;
 /**
  * @brief Append new arg to cmd
  *
- * @param cmd => CBuildCmd* -> Command bufer to work with
+ * @param cmd => cbuild_cmd_t* -> Command bufer to work with
  * @param val => char* -> New token
  */
 #define cbuild_cmd_append(cmd, val) cbuild_da_append(cmd, val)
 /**
  * @brief Append new args to cmd
  *
- * @param cmd => CBuildCmd* -> Command bufer to work with
+ * @param cmd => cbuild_cmd_t* -> Command bufer to work with
  * @param vals => char** -> New tokens
  * @param vals_cnt => size_t -> Count of new tokens
  */
 #define cbuild_cmd_append_arr(cmd, vals, vals_cnt)                             \
-	cbuild_da_append_arr(cmd, vals, vals_cnt)
+	cbuild_da_append_arr(cmd, (const char*)vals, vals_cnt)
 /**
  * @brief Append new args to cmd
  *
- * @param cmd => CBuildCmd* -> Command bufer to work with
+ * @param cmd => cbuild_cmd_t* -> Command bufer to work with
  * @param ... => char* -> New tokens
  */
 #define cbuild_cmd_append_many(cmd, ...)                                       \
-	cbuild_da_append_many(cmd, char*, __VA_ARGS__)
+	cbuild_da_append_many(cmd, const char*, __VA_ARGS__)
 /**
  * @brief  Clear command buffer
  *
- * @param cmd => CBuildCmd* -> Command bufer to work with
+ * @param cmd => cbuild_cmd_t* -> Command bufer to work with
  */
 #define cbuild_cmd_clear(cmd) cbuild_da_clear(cmd)
 /**
- * @brief Conver CBuildCmd to CBuildStrBuff
+ * @brief Conver cbuild_cmd_t to cbuild_sb_t
  *
- * @param cmd => CBuildCmd -> Command
+ * @param cmd => cbuild_cmd_t -> Command
  * @param sb => CBuildStrBuff -> String buffer to work with
  */
-void cbuild_cmd_to_sb(CBuildCmd cmd, CBuildStrBuff* sb);
+void        cbuild_cmd_to_sb(cbuild_cmd_t cmd, cbuild_sb_t* sb);
+/**
+ * @brief Reolves binary in PATH
+ *
+ * @param name => const char* -> Executable name
+ * @param out => cbuild_sb_t* -> Output string buffer (will be cleared)
+ * @return int => 0 on success, -1 on error
+ */
+int cbuild_cmd_resolve_path(const char* name, cbuild_sb_t* out);
 /**
  * @brief Call async command without io rediecting
  *
- * @param cmd => CBuildCmd -> Command buffer
+ * @param cmd => cbuild_cmd_t -> Command buffer
  * @return CBuildProc -> Process associated with called command
  */
 #define cbuild_cmd_async(cmd)                                                  \
 	cbuild_cmd_async_redirect(cmd, (CBuildCmdFDRedirect){ CBUILD_INVALID_FD,     \
-																												CBUILD_INVALID_FD,     \
-																												CBUILD_INVALID_FD })
+	                                                      CBUILD_INVALID_FD,     \
+	                                                      CBUILD_INVALID_FD })
 /**
  * @brief Call async command with io rediecting
  *
- * @param cmd => CBuildCmd -> Command buffer
- * @param df => CBuildCmdFDRedirect -> IO redicrecting table
- * @return CBuildProc -> Process associated with called command
+ * @param cmd => cbuild_cmd_t -> Command buffer
+ * @param fd => CBuildCmdFDRedirect -> IO redicrecting table
+ * @return cbuild_proc_t -> Process associated with called command
  */
-CBuildProc cbuild_cmd_async_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd);
+cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t        cmd,
+                                        CBuildCmdFDRedirect fd);
 /**
  * @brief Call sync command without io rediecting
  *
- * @param cmd => CBuildCmd -> Command buffer
+ * @param cmd => cbuild_cmd_t -> Command buffer
  * @return true -> Command succeed
  * @return false -> Command failed
  */
 #define cbuild_cmd_sync(cmd)                                                   \
 	cbuild_cmd_sync_redirect(cmd, (CBuildCmdFDRedirect){ CBUILD_INVALID_FD,      \
-																											 CBUILD_INVALID_FD,      \
-																											 CBUILD_INVALID_FD })
+	                                                     CBUILD_INVALID_FD,      \
+	                                                     CBUILD_INVALID_FD })
 /**
  * @brief Call sync command with io rediecting
  *
- * @param cmd => CBuildCmd -> Command buffer
+ * @param cmd => cbuild_cmd_t -> Command buffer
  * @param df => CBuildCmdFDRedirect -> IO redicrecting table
  * @return true -> Command succeed
  * @return false -> Command failed
  */
-bool cbuild_cmd_sync_redirect(CBuildCmd cmd, CBuildCmdFDRedirect fd);
+bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, CBuildCmdFDRedirect fd);
 #endif // __CBUILD_COMMAND_H__
