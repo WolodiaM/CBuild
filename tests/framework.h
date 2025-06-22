@@ -61,6 +61,18 @@
 		err_code++;                                                                \
 	}
 
+#define TEST_ASSERT(func, msg, ...)                                            \
+	if (!(func)) {                                                                  \
+		printf(msg "\n", __VA_ARGS__);                                             \
+		err_code++;                                                                \
+	}
+
+#define TEST_NASSERT(func, msg, ...)                                           \
+	if (func) {                                                                 \
+		printf(msg "\n", __VA_ARGS__);                                             \
+		err_code++;                                                                \
+	}
+
 #define TEST_CASE(code, info)                                                  \
 	{                                                                            \
 		int err_code = 0;                                                          \

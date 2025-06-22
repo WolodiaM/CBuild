@@ -129,8 +129,7 @@ TEST_MAIN(
 						cbuild_map_set(&map, 0, 1);
 						cbuild_map_set(&map, 0, 2);
 						TEST_ASSERT_NEQ(map.buckets[0].vals, NULL, "%s",
-		                        "Key 0 and 256 must be hashed in bucket 0 but "
-		                        "bucket is empty.");
+		                        "Value was not written at all.");
 						TEST_ASSERT_EQ(
 								map.buckets[0].nvals, 1,
 								"Wrong element count was set in bucket 0" TEST_EXPECT_MSG(zu),
@@ -243,5 +242,22 @@ TEST_MAIN(
 						free(klist);
 					},
 					"Listing map keys");
+			TEST_CASE(
+					{
+						cbuild_map_int_int_t map = cbuild_map_int_int;
+						cbuild_map_resize(&map, 256);
+						cbuild_map_set(&map, 0, 1);
+						cbuild_map_set(&map, 1, 2);
+						cbuild_map_set(&map, 256, 3);
+						cbuild_map_resize(&map, 3);
+						TEST_ASSERT(cbuild_map_contains(&map, 0), "%s",
+		                    "Element lost on resize - 0.");
+						TEST_ASSERT(cbuild_map_contains(&map, 1), "%s",
+		                    "Element lost on resize - 1.");
+						TEST_ASSERT(cbuild_map_contains(&map, 256), "%s",
+		        "Element lost on resize - 256.");
+						cbuild_map_clear(&map);
+					},
+					"Full map resize");
 		},
 		"Map data structure tests")

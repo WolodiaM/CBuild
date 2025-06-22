@@ -27,64 +27,79 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-/*
- * CHANGELOG
- * 15.12.2024: v1.0 -> Initial release
- * 21.12.2024: v1.1 -> Updates in Proc.h module
- *             - Added cbuild_proc_start function
- * 27.12.2024: v1.2 -> Updates in Compile.h module
- *             - Fixed typo: CBUILD_CARG_WARN changed to CBUILD_CARGS_WARN
- *             Updates in Log.h module
- *             - Fixed bug: Logger use can two different output for one message
- *             General updates
- *             - Added feature: Added macro CBUILD_IMPL to enable
- *               implementation of all functions (except macro)
- * 10.01.2025: v1.3 -> Updates in common.h module:
- *             - Added cbuild_shift_expect that allows to have message for error
- *               condition
- *             - Changed CBuildFD typedef from __pid_t to pid_t
- *             - Added cbuild_assert
- *             - Added noreturn attribute to an assert function
- *             - Fixed bug in macro because of wrong variable name
- *             Updates in Command.h:
- *             - All elements from CBuildCmdFDRedirect are now prefixed with
- *               'fd' to make it working with libc that defines stdin, stdout
- *               and stderr as macro
- *             - Fixed typo in error message
- *             Updates in Log.h:
- *             - Log now uses ANSI colors in 16-color mode
- *             - Added cbuild_log variant that takes va_list
- *             General updates
- *             - Changed all asserts to cbuild_assert
- *             - Added few const annotations to pointers
- * 18.02.2025: v1.4 -> Quickfix in common.h:
- *             - Wrong arguments passed to __CBUILD_ERR_PRINTF in
- *               CBuild_UNREACHABLE
- * 18.02.2025: v1.5 -> Updates in impl.h:
- *             - Fixed buffer overflow bug in cbuild_dir_copy
- *             Updates in common.h
- *             - Improved cbuild_shift
- *             General updates
- *             - Changed implementation macro to CBUILD_IMPLEMENTATION
- * 16.06.2025: v1.6 -> Full rewrite:
- *             New file Term.h - ANSI wrapper module
- *             Updates in Log.h module:
- *             - Rely on Term.h
- *             - Runtime minimum log level configuration
- *             - Logger now has customizable format callback
- *             Updates in DynArray.h module:
- *             - Switched from 'macro as function' to 'macro as template'
- *             Updates in common.h module:
- *             - Safer handling of __progname, now work on MacOS
- *             - Better platform abstraction
- *             Updates in DynArray.h module - totally new implementation
- *             Updates in StringBuilder.h (old StringBuffer.h) - new
- *             implementation based on new DynArray.h. Better API.
- *             Updates in Proc.h:
- *             - More consistent names
- *             - Added ability to allocate shared memory
- *             Updates in Command.h:
- *             - consistent names
+/* CHANGELOG
+ * --------------------------------------------
+ * 15.12.2024  v1.0    Initial release
+ *   Initial release [new]
+ * --------------------------------------------
+ * 21.12.2024  v1.1    Few small additions
+ *   Proc.h [feature]
+ *     - Added 'cbuild_proc_start' function
+ * --------------------------------------------
+ * 27.12.2024  v1.2    Bugfix release
+ *   Compile.h [bugfix]
+ *     - Fixed type ('CBUILD_CARG_WARN' -> 'CBUILD_CARGS_WARN')
+ *	 Log.h [bugfix]
+ *     - Logger always use one output stream for its messages now
+ *   General [bugfix]
+ *     - Added 'CBUILD_IMPL' macro to allow multiple includes in same
+ *       translation unit
+ * --------------------------------------------
+ * 10.01.2025  v1.3    New API features and bugfixes
+ *   common.h [bugfix]
+ *     - Fixed bug in macro (wrong variable name used)
+ *     - Switched 'CBuildFD' typedef from '__pid_t' to 'pid_t'
+ *   common.h	[feature]
+ *     - Added 'cbuild_shift_expect' (allows to have error message on top of
+ *       'cbuild_shift')
+ *     - Added 'cbuild_assert'
+ *     - Added 'noreturn' attribute to an assert function.
+ *   Command.h [bugfix]
+ *     - Added 'fd' prefix to 'stdin', 'stdout' and 'stderr' for compatibility
+ *       with libc that defines this names as a macro
+ *     - Fixed typo in error message
+ *	 Log.h [feature]
+ *     - Logger now use 16-color ANSI mode
+ *     - Added 'cbuild_vlog' that takes 'va_list' inserted of variadic arguments
+ *	 General [bugfix]
+ *     - Added few 'const' annotations to pointers
+ *     - Changed all asserts to 'cbuild_assert'
+ * --------------------------------------------
+ * 18.02.2025  v1.4    Small bugfix
+ *   common.h [bugfix]
+ *     - Wrong argument passed to '__CBUILD_ERR_PRINTF' in 'CBuild_UNREACHAGLE'
+ * --------------------------------------------
+ * 18.02.2025  v1.5    Bugfix release
+ *   impl.c [bugfix]
+ *     - Fixed buffer overflow in 'cbuild_dir_copy'
+ *     - Improved 'cbuild_shift'
+ *   General [change]
+ *     - Changed macro 'CBUILD_IMPL' to 'CBUILD_IMPLEMENTATION'
+ * --------------------------------------------
+ * 16.06.2025  v1.6    Full rewrite
+ *   Term.h [new]
+ *     - ANSI wrapper module
+ *   Log.h [feature]
+ *     - Rely on 'Term.h' for colored output
+ *     - Runtime configuration for minimum log level
+ *     - Logger now support customizable formatting callbacks
+ *   DynArray.h [new]
+ *     - Different implementation
+ *	 common.h [feature]
+ *     - Fixes for MacOS related to '__progname'
+ *     - Better OS and API abstraction
+ *	 StringBuilder.h [new]
+ *     - Rely on new 'DynArray.h'
+ *     - Few new operations
+ *   Proc.h [feature]
+ *     - Better naming scheme
+ *     - Added ability to allocate inter-process shared memory
+ *   Command.h [feature]
+ *     - Switched to 'execve' from 'execvp'
+ *     - Added PATH resolver
+ *     - More consistent names
+ *   Map.h [new]
+ *     - Hash-map implementation
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
