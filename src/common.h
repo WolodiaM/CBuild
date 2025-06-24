@@ -88,6 +88,9 @@
  *	 common.h [feature]
  *     - Fixes for MacOS related to '__progname'
  *     - Better OS and API abstraction
+ *     - Unified INIT_CAPACITY macro
+ *     - Better IO abstraction
+ *     - Assert now use proper IO abstractions
  *	 StringBuilder.h [new]
  *     - Rely on new 'DynArray.h'
  *     - Few new operations
@@ -98,6 +101,7 @@
  *     - More consistent names
  *   Map.h [new]
  *     - Hash-map implementation
+ *     - Hash functions for string added
  *   Compile.h [change]
  *     - Added consistent prefixes
  *     - Added output arg	macro
@@ -105,6 +109,18 @@
  *     - Changes becouse of rewrite of other modules
  *   StringView.h [new]
  *     - New implementation, better functionality
+ *   Compile.h [feature]
+ *     - Better naming
+ *     - More macro
+ *   Span.h [new]
+ *     - New module - array+size
+ *   Stack.h [new]
+ *     - New module - basic re-sizable stack implementation
+ *   General [feature]
+ *     - Better error handling
+ *     - More integrated logging
+ *     - Slight formatting change
+ *     - Proper use of asserts in place of older 'exit(0);'
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
