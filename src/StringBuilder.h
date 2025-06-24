@@ -30,7 +30,6 @@
 #ifndef __CBUILD_SB_H__
 #define __CBUILD_SB_H__
 // Project includes:
-#include "common.h"
 #include "DynArray.h"
 #include "StringView.h"
 #include "common.h"
@@ -139,7 +138,8 @@ typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
  */
 int         cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
 /**
- * @brief Compare two StringBuilder ignoring case of an ASCII letter (Latin only)
+ * @brief Compare two StringBuilder ignoring case of an ASCII letter (Latin
+ * only)
  *
  * @param a => cbuild_sb_t* -> First StringBuilder
  * @param b => cbuild_sb_t* -> Second StringBuilder

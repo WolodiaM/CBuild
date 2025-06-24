@@ -62,13 +62,13 @@
 	}
 
 #define TEST_ASSERT(func, msg, ...)                                            \
-	if (!(func)) {                                                                  \
+	if (!(func)) {                                                               \
 		printf(msg "\n", __VA_ARGS__);                                             \
 		err_code++;                                                                \
 	}
 
 #define TEST_NASSERT(func, msg, ...)                                           \
-	if (func) {                                                                 \
+	if (func) {                                                                  \
 		printf(msg "\n", __VA_ARGS__);                                             \
 		err_code++;                                                                \
 	}
@@ -96,6 +96,7 @@
 
 #define TEST_MAIN(code, info)                                                  \
 	int main(int argc, char** argv) {                                            \
+		setvbuf(stdout, NULL, _IONBF, 0);                                          \
 		(void)argc;                                                                \
 		(void)argv;                                                                \
 		int global_err_code = 0;                                                   \

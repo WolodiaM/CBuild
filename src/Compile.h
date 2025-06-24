@@ -31,108 +31,126 @@
 // Project includes
 #include "common.h"
 // Code
-#if !defined(CC)
+// _MSC_VER could be used to detect MSVC
+#if !defined(CBUILD_CC)
 #	if defined(__clang__)
-#		define CC "clang"
+#		define CBUILD_CC "clang"
 #	elif defined(__MINGW32__)
 #		ifdef _WIN32
-#			define CC "gcc"
+#			define CBUILD_CC "gcc"
 #		else
-#			define CC "x86_64-w64-mingw32-gcc"
+#			define CBUILD_CC "x86_64-w64-mingw32-gcc"
 #		endif // _WIN32
-#	elif defined(__CYGWIN32__) && defined(_WIN32)
-#		define CC "gcc"
+#	elif defined(__CYGWIN__) && defined(_WIN32)
+#		define CBUILD_CC "gcc"
 #	elif defined(__GNUC__)
-#		define CC "gcc"
+#		define CBUILD_CC "gcc"
 #	else
-#		define CC "cc"
+#		define CBUILD_CC "cc"
 #	endif // Compiler select
-#endif	 // CC
-#if !defined(LD)
+#endif   // CBUILD_CC
+#if !defined(CBUILD_LD)
 #	if defined(__clang__)
-#		define LD "clang"
+#		define CBUILD_LD "clang"
 #	elif defined(__MINGW32__)
 #		ifdef _WIN32
-#			define LD "gcc"
+#			define CBUILD_LD "gcc"
 #		else
-#			define LD "x86_64-w64-mingw32-gcc"
+#			define CBUILD_LD "x86_64-w64-mingw32-gcc"
 #		endif // _WIN32
-#	elif defined(__CYGWIN32__) && defined(_WIN32)
-#		define LD "gcc"
+#	elif defined(__CYGWIN__) && defined(_WIN32)
+#		define CBUILD_LD "gcc"
 #	elif defined(__GNUC__)
-#		define LD "gcc"
+#		define CBUILD_LD "gcc"
 #	else
-#		define LD "cc"
+#		define CBUILD_LD "cc"
 #	endif // Compiler select
-#endif	 // LD
-#if !defined(CXX)
+#endif   // CBUILD_LD
+#if !defined(CBUILD_CXX)
 #	if defined(__clang__)
-#		define CXX "clang++"
+#		define CBUILD_CXX "clang++"
 #	elif defined(__MINGW32__)
 #		ifdef _WIN32
-#			define CXX "g++"
+#			define CBUILD_CXX "g++"
 #		else
-#			define CXX "x86_64-w64-mingw32-g++"
+#			define CBUILD_CXX "x86_64-w64-mingw32-g++"
 #		endif // _WIN32
-#	elif defined(__CYGWIN32__) && defined(_WIN32)
-#		define CXX "g++"
+#	elif defined(__CYGWIN__) && defined(_WIN32)
+#		define CBUILD_CXX "g++"
 #	elif defined(__GNUC__)
-#		define CXX "g++"
+#		define CBUILD_CXX "g++"
 #	else
-#		define CXX "cc -x c++"
+#		define CBUILD_CXX "cc -x c++"
 #	endif // Compiler select
-#endif	 // CXX
-#if !defined(AR)
+#endif   // CBUILD_CXX
+#if !defined(CBUILD_AR)
 #	if defined(__clang__)
-#		define AR "llvm-ar"
+#		define CBUILD_AR "llvm-ar"
 #	elif defined(__MINGW32__)
 #		ifdef _WIN32
-#			define AR "ar"
+#			define CBUILD_AR "ar"
 #		else
-#			define AR "x86_64-w64-mingw32-ar"
+#			define CBUILD_AR "x86_64-w64-mingw32-ar"
 #		endif // _WIN32
-#	elif defined(__CYGWIN32__) && defined(_WIN32)
-#		define AR "ar"
+#	elif defined(__CYGWIN__) && defined(_WIN32)
+#		define CBUILD_AR "ar"
 #	elif defined(__GNUC__)
-#		define AR "ar"
+#		define CBUILD_AR "ar"
 #	else
-#		define AR "ar"
+#		define CBUILD_AR "ar"
 #	endif // Compiler select
-#endif	 // AR
-#if !defined(AS)
+#endif   // CBUILD_AR
+#if !defined(CBUILD_AS)
 #	if defined(__clang__)
-#		define AS "llvm-as"
+#		define CBUILD_AS "llvm-as"
 #	elif defined(__MINGW32__)
 #		ifdef _WIN32
-#			define AS "as"
+#			define CBUILD_AS "as"
 #		else
-#			define AS "x86_64-w64-mingw32-as"
+#			define CBUILD_AS "x86_64-w64-mingw32-as"
 #		endif // _WIN32
-#	elif defined(__CYGWIN32__) && defined(_WIN32)
-#		define AS "as"
+#	elif defined(__CYGWIN__) && defined(_WIN32)
+#		define CBUILD_AS "as"
 #	elif defined(__GNUC__)
-#		define AS "as"
+#		define CBUILD_AS "as"
 #	else
-#		define AS "as"
+#		define CBUILD_AS "as"
 #	endif // Compiler select
-#endif	 // AS
-#if !defined(CPP)
-#	define CPP CC "-E"
-#endif	 // CPP
+#endif   // CBUILD_AS
+#if !defined(CBUILD_CPP)
+#	define CBUILD_CPP CBUILD_CC "-E"
+#endif   // CPP
+#if !defined(CBUILD_CC_OUT)
+#	if defined(__clang__)
+#		define CBUILD_CC_OUT "-o"
+#	elif defined(__MINGW32__)
+#		ifdef _WIN32
+#			define CBUILD_CC_OUT "-o"
+#		else
+#			define CBUILD_CC_OUT "-o"
+#		endif // _WIN32
+#	elif defined(__CYGWIN__) && defined(_WIN32)
+#		define CBUILD_CC_OUT "-o"
+#	elif defined(__GNUC__)
+#		define CBUILD_CC_OUT "-o"
+#	else
+#		define CBUILD_CC_OUT "-o"
+#	endif // Compiler select
+#endif   // CBUILD_CC_OUT
 // Predefined compiler arguments
-#define CBUILD_CARGS_WARN											"-Wall", "-Wextra", "-Wno-comments"
-#define CBUILD_CARGS_WERROR										"-Werror"
-#define CBUILD_CARGS_STATIC_ANALYZER					"-fanalyzer", "-Wanalyzer-too-complex"
-#define CBUILD_CARGS_PROFILE									"-pg"
-#define CBUILD_CARGS_DEBUG										"-g"
-#define CBUILD_CARGS_MT												"-pthread"
-#define CBUILD_CARGS_DEFINE(defname)					"-D" defname
+#define CBUILD_CARGS_WARN                     "-Wall", "-Wextra", "-Wno-comments"
+#define CBUILD_CARGS_WERROR                   "-Werror"
+#define CBUILD_CARGS_STATIC_ANALYZER          "-fanalyzer", "-Wanalyzer-too-complex"
+#define CBUILD_CARGS_PROFILE                  "-pg"
+#define CBUILD_CARGS_DEBUG                    "-g"
+#define CBUILD_CARGS_MT                       "-pthread"
+#define CBUILD_CARGS_DEFINE(defname)          "-D" defname
 #define CBUILD_CARGS_DEFINE_VAL(defname, val) "-D" defname "=" val
-#define CBUILD_CARGS_UNDEF(defname)						"-U" defname
-#define CBUILD_CARGS_INCLUDE(file)						"--include \"" file "\""
-#define CBUILD_CARGS_LIBINCLUDE(lib)					"-l" lib
-#define CBUILD_CARGS_LIBDIR(src, obj)					"-I" src, "-L" obj
-#define CBUILD_CARGS_STD(std)									"-std=" std
+#define CBUILD_CARGS_UNDEF(defname)           "-U" defname
+#define CBUILD_CARGS_INCLUDE(file)            "--include \"" file "\""
+#define CBUILD_CARGS_LIBINCLUDE(lib)          "-l" lib
+#define CBUILD_CARGS_LIBDIR(src, obj)         "-I" src, "-L" obj
+#define CBUILD_CARGS_STD(std)                 "-std=" std
 // Self-rebuild wrapper macro
 #define cbuild_selfrebuild(argc, argv)                                         \
 	__cbuild_selfrebuild(argc, argv, __FILE__)
@@ -154,7 +172,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* const spath);
  * @return int<0 -> Error
  * @return int>0 -> Outpur is older than input
  */
-int	 cbuild_compare_mtime(const char* output, const char* input);
+int  cbuild_compare_mtime(const char* output, const char* input);
 /**
  * @brief Compare mtime of one output file and many input files and report if
  * any input is newer than output
@@ -164,8 +182,8 @@ int	 cbuild_compare_mtime(const char* output, const char* input);
  * @param num_inputs => size_t -> Number of inout files
  * @return int=0 -> Output is newer than input
  * @return int<0 -> Error
- * @return int>0 -> Outpur is older than input
+ * @return int>0 -> Outpur is older than input, indicates number of newer inputs
  */
-int	 cbuild_compare_mtime_many(const char* output, const char** inputs,
-															 size_t num_inputs);
+int  cbuild_compare_mtime_many(const char* output, const char** inputs,
+                               size_t num_inputs);
 #endif // __CBUILD_COMPILE_H__

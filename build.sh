@@ -44,17 +44,28 @@ pack_endif() {
 	echo "#endif // CBUILD_IMPLEMENTATION" >>cbuild.h
 }
 pack() {
-	call_cmd rm cbuild.h
+	call_cmd rm -rf cbuild.h
+	# Common code
 	call_cmd_ns pack_nostrip "common.h"
+	# ANSI helper
 	call_cmd_ns pack_header_strip	"Term.h"
+	# Logger
+	call_cmd_ns pack_header_strip "Log.h"
+	# Datatypes
 	call_cmd_ns pack_header_strip "DynArray.h"
 	call_cmd_ns pack_header_strip "StringView.h"
 	call_cmd_ns pack_header_strip "StringBuilder.h"
-	call_cmd_ns pack_header_strip "Log.h"
-	# call_cmd_ns pack_header_strip "Proc.h"
-	# call_cmd_ns pack_header_strip "Command.h"
-	# call_cmd_ns pack_header_strip "FS.h"
-	# call_cmd_ns pack_header_strip "Compile.h"
+	call_cmd_ns pack_header_strip "Map.h"
+	call_cmd_ns pack_header_strip "Span.h"
+	call_cmd_ns pack_header_strip "Stack.h"
+	# External processes
+	call_cmd_ns pack_header_strip "Proc.h"
+	call_cmd_ns pack_header_strip "Command.h"
+	# Filesystem
+	call_cmd_ns pack_header_strip "FS.h"
+	# Compilation helper
+	call_cmd_ns pack_header_strip "Compile.h"
+	# Implementation
 	call_cmd_ns pack_ifdef
 	call_cmd_ns pack_header_strip "impl.c"
 	call_cmd_ns pack_endif
@@ -142,6 +153,8 @@ clean() {
 	call_cmd rm -rf wiki/mkdocs/site/
 	call_cmd rm -rf CBuild.h
 	call_cmd rm -rf build
+	call_cmd rm -rf cbuild.h
+	call_cmd rm -rf TAGS
 }
 # help subcommand
 help() {
@@ -188,7 +201,7 @@ help() {
 }
 # Version
 version() {
-	printf "CBuild's bash buildscript version v1.1.\n"
+	printf "CBuild's bash buildscript version v1.2.\n"
 	printf "\n"
 	printf "Licensed under MIT license.\n"
 	printf "\n"

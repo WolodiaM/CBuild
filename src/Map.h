@@ -33,6 +33,7 @@
 #define __CBUILD_MAP_H__
 // Project includes
 #include "common.h"
+#include "Log.h"
 // Code
 #define cbuild_map_t(K, V, Kname, Vname)                                       \
 	typedef struct cbuild_map_##Kname##_##Vname##_pair_t {                       \
@@ -59,7 +60,7 @@
 	typedef void (*cbuild_map_##Kname##_##Vname##_free_t)(void* ptr);            \
 	typedef V* (*cbuild_map_##Kname##_##Vname##_get_t)(void* self, K key);       \
 	typedef bool (*cbuild_map_##Kname##_##Vname##_remove_t)(void* self, K key);  \
-	typedef void (*cbuild_map_##Kname##_##Vname##_set_t)(void* self, K key,      \
+	typedef bool (*cbuild_map_##Kname##_##Vname##_set_t)(void* self, K key,      \
 	                                                     V val);                 \
 	typedef bool (*cbuild_map_##Kname##_##Vname##_contains_t)(void* self,        \
 	                                                          K     key);            \
@@ -90,13 +91,13 @@
 		cbuild_map_##Kname##_##Vname##_profile_t      profile;                     \
 	} cbuild_map_##Kname##_##Vname##_t
 #define cbuild_map_t_ext_impl(Kname, Vname)                                    \
-	extern cbuild_map_##Kname##_##Vname##_t cbuild_map_##Kname##_##Vname
+	extern const cbuild_map_##Kname##_##Vname##_t cbuild_map_##Kname##_##Vname
 #define cbuild_map_t_impl(K, V, Kname, Vname)                                                                  \
 	V* cbuild_map_##Kname##_##Vname##_get(void* s, K key) {                                                      \
 		cbuild_map_##Kname##_##Vname##_t* self = s;                                                                \
 		if (self->nbuckets == 0) {                                                                                 \
-			__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Size of map is 0\n");                                        \
-			return NULL;                                                                                             \
+			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_MAP) Size of map is 0.");                                      \
+			return CBUILD_PTR_ERR;                                                                                   \
 		}                                                                                                          \
 		size_t hash = self->hash(&key) % self->nbuckets;                                                           \
 		cbuild_map_##Kname##_##Vname##_bucket_t* bucket = &(self->buckets[hash]);                                  \
@@ -107,35 +108,34 @@
 		}                                                                                                          \
 		return NULL;                                                                                               \
 	}                                                                                                            \
-	void cbuild_map_##Kname##_##Vname##_set(void* s, K key, V val) {                                             \
+	bool cbuild_map_##Kname##_##Vname##_set(void* s, K key, V val) {                                             \
 		cbuild_map_##Kname##_##Vname##_t* self = s;                                                                \
 		if (self->nbuckets == 0) {                                                                                 \
-			__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Size of map is 0\n");                                        \
-			return;                                                                                                  \
+			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_MAP) Size of map is 0.");                                      \
+			return false;                                                                                            \
 		}                                                                                                          \
 		size_t hash = self->hash(&key) % self->nbuckets;                                                           \
 		cbuild_map_##Kname##_##Vname##_bucket_t* bucket = &(self->buckets[hash]);                                  \
 		for (size_t i = 0; i < bucket->nvals; i++) {                                                               \
 			if (self->keycmp(&key, &(bucket->vals[i].key))) {                                                        \
 				bucket->vals[i].val = val;                                                                             \
-				return;                                                                                                \
+				return true;                                                                                           \
 			}                                                                                                        \
 		}                                                                                                          \
 		bucket->nvals++;                                                                                           \
 		bucket->vals = self->realloc(                                                                              \
 				bucket->vals,                                                                                          \
 				bucket->nvals * sizeof(cbuild_map_##Kname##_##Vname##_pair_t));                                        \
-		if (bucket->vals == NULL) {                                                                                \
-			__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Allocation failed\n");                                       \
-			exit(1);                                                                                                 \
-		}                                                                                                          \
+		cbuild_assert(bucket->vals != NULL,                                                                        \
+		              "(LIB_CBUILD_MAP) Allocation failed.\n");                                                    \
 		bucket->vals[bucket->nvals - 1] =                                                                          \
 				(cbuild_map_##Kname##_##Vname##_pair_t){ .key = key, .val = val };                                     \
+		return true;                                                                                               \
 	}                                                                                                            \
 	bool cbuild_map_##Kname##_##Vname##_remove(void* s, K key) {                                                 \
 		cbuild_map_##Kname##_##Vname##_t* self = s;                                                                \
 		if (self->nbuckets == 0) {                                                                                 \
-			__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Size of map is 0\n");                                        \
+			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_MAP) Size of map is 0.");                                      \
 			return false;                                                                                            \
 		}                                                                                                          \
 		size_t hash = self->hash(&key) % self->nbuckets;                                                           \
@@ -155,9 +155,9 @@
 				bucket->vals = self->realloc(                                                                          \
 						bucket->vals,                                                                                      \
 						bucket->nvals * sizeof(cbuild_map_##Kname##_##Vname##_pair_t));                                    \
-				if (bucket->nvals > 0 && bucket->vals == NULL) {                                                       \
-					__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Allocation failed\n");                                   \
-					exit(1);                                                                                             \
+				if (bucket->nvals > 0) {                                                                               \
+					cbuild_assert(bucket->vals != NULL,                                                                  \
+					              "(LIB_CBUILD_MAP) Allocation failed.\n");                                              \
 				}                                                                                                      \
 				return true;                                                                                           \
 			} else {                                                                                                 \
@@ -165,9 +165,9 @@
 				bucket->nvals--;                                                                                       \
 				bucket->vals = self->malloc(                                                                           \
 						bucket->nvals * sizeof(cbuild_map_##Kname##_##Vname##_pair_t));                                    \
-				if (bucket->nvals > 0 && bucket->vals == NULL) {                                                       \
-					__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Allocation failed\n");                                   \
-					exit(1);                                                                                             \
+				if (bucket->nvals > 0) {                                                                               \
+					cbuild_assert(bucket->vals != NULL,                                                                  \
+					              "(LIB_CBUILD_MAP) Allocation failed.\n");                                              \
 				}                                                                                                      \
 				size_t j = 0;                                                                                          \
 				for (size_t i = 0; i <= bucket->nvals; i++) {                                                          \
@@ -184,17 +184,20 @@
 	}                                                                                                            \
 	bool cbuild_map_##Kname##_##Vname##_contains(void* s, K key) {                                               \
 		cbuild_map_##Kname##_##Vname##_t* self = s;                                                                \
-		return self->get(s, key) != NULL;                                                                          \
+		void*                             gptr = self->get(s, key);                                                \
+		if (gptr != CBUILD_PTR_ERR && gptr != NULL) {                                                              \
+			return true;                                                                                             \
+		} else {                                                                                                   \
+			return false;                                                                                            \
+		}                                                                                                          \
 	}                                                                                                            \
 	K* cbuild_map_##Kname##_##Vname##_keylist(void* s, size_t* num) {                                            \
 		cbuild_map_##Kname##_##Vname##_t* self = s;                                                                \
 		*num                                   = 0;                                                                \
 		size_t cap                             = self->nbuckets;                                                   \
 		K*     list                            = self->malloc(cap * sizeof(K));                                    \
-		if (list == NULL) {                                                                                        \
-			__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Allocation failed\n");                                       \
-			exit(1);                                                                                                 \
-		}                                                                                                          \
+		cbuild_assert(list != NULL,                                                                                \
+		              "(LIB_CBUILD_MAP) Auxiliary allocation failed.\n");                                          \
 		for (size_t i = 0; i < self->nbuckets; i++) {                                                              \
 			cbuild_map_##Kname##_##Vname##_bucket_t* bucket = &(self->buckets[i]);                                   \
 			for (size_t j = 0; j < bucket->nvals; j++) {                                                             \
@@ -202,10 +205,8 @@
 				if (cap == *num) {                                                                                     \
 					cap  = cap * 2;                                                                                      \
 					list = self->realloc(list, cap * sizeof(K));                                                         \
-					if (list == NULL) {                                                                                  \
-						__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Allocation failed\n");                                 \
-						exit(1);                                                                                           \
-					}                                                                                                    \
+					cbuild_assert(list != NULL,                                                                          \
+					              "(LIB_CBUILD_MAP) Auxiliary allocation failed.\n");                                    \
 				}                                                                                                      \
 			}                                                                                                        \
 		}                                                                                                          \
@@ -217,10 +218,8 @@
 			self->nbuckets = nbuckets;                                                                               \
 			self->buckets  = self->malloc(                                                                           \
           nbuckets * sizeof(cbuild_map_##Kname##_##Vname##_bucket_t));                                        \
-			if (self->buckets == NULL) {                                                                             \
-				__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Allocation failed\n");                                     \
-				exit(1);                                                                                               \
-			}                                                                                                        \
+			cbuild_assert(self->buckets != NULL,                                                                     \
+			              "(LIB_CBUILD_MAP) Allocation failed.\n");                                                  \
 			for (size_t i = 0; i < self->nbuckets; i++) {                                                            \
 				self->buckets[i] = (cbuild_map_##Kname##_##Vname##_bucket_t){ 0 };                                     \
 			}                                                                                                        \
@@ -230,10 +229,8 @@
 			self->nbuckets                                        = nbuckets;                                        \
 			self->buckets                                         = self->malloc(                                    \
           nbuckets * sizeof(cbuild_map_##Kname##_##Vname##_bucket_t)); \
-			if (self->buckets == NULL) {                                                                             \
-				__CBUILD_ERR_PRINT("error: (LIB_CBUILD_MAP) Allocation failed\n");                                     \
-				exit(1);                                                                                               \
-			}                                                                                                        \
+			cbuild_assert(self->buckets != NULL,                                                                     \
+			              "(LIB_CBUILD_MAP) Allocation failed.\n");                                                  \
 			for (size_t i = 0; i < self->nbuckets; i++) {                                                            \
 				self->buckets[i] = (cbuild_map_##Kname##_##Vname##_bucket_t){ 0 };                                     \
 			}                                                                                                        \
@@ -243,7 +240,7 @@
 					self->set(s, bucket->vals[j].key, bucket->vals[j].val);                                              \
 				}                                                                                                      \
 			}                                                                                                        \
-			__CBUILD_FREE(old_buckets);                                                                              \
+			self->free(old_buckets);                                                                                 \
 		}                                                                                                          \
 	}                                                                                                            \
 	void cbuild_map_##Kname##_##Vname##_clear(void* s) {                                                         \
@@ -331,7 +328,7 @@
  *
  * @param map => CBUILD_MAP* -> Map pointer
  * @param key => KEY -> Key
- * @return VAL* -> Value or NULL if not found
+ * @return VAL* -> Value or NULL if not found. CBUILD_PTR_ERR if error.
  */
 #define cbuild_map_get(map, key)         (map)->get((map), (key))
 /**
@@ -339,6 +336,7 @@
  *
  * @param map => CBUILD_MAP* -> Map pointer
  * @param key => KEY -> Key
+ * @return bool -> Error or failure on size 0
  */
 #define cbuild_map_remove(map, key)      (map)->remove((map), (key))
 /**
@@ -347,6 +345,8 @@
  * @param map => CBUILD_MAP* -> Map pointer
  * @param key => KEY -> Key
  * @param val => VAL -> New value
+  * @return bool -> Error or failure on size 0
+
  */
 #define cbuild_map_set(map, key, val)    (map)->set((map), (key), (val))
 /**
@@ -398,4 +398,20 @@
  * @return CBUILD_MAP_PAIR -> Pair from a map
  */
 #define cbuild_map_iter_next(iter)       (iter)->next((iter))
+/**
+ * @brief DBJ2 hash implementation for char*
+ *
+ * @param str => char* -> String
+ * @return size_t -> Hash
+ */
+size_t cbuild_map_string_hash(const char* str);
+/**
+ * @brief DBJ2 hash implementation for any datatype that could be cast to
+ * unsigned char*
+ *
+ * @param arr => void* -> Array
+ * @param size => size_t -> Number of elements
+ * @return size_t -> Hash
+ */
+size_t cbuild_map_array_hash(const void* arr, size_t size);
 #endif // __CBUILD_MAP_H__

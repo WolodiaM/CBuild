@@ -78,7 +78,7 @@ TEST_MAIN(
 						TEST_ASSERT_EQ(
 								da_alloc.data, NULL,
 								"Data pointer non-null after clear" TEST_EXPECT_MSG(p), NULL,
-								da_alloc.data);
+								(void*)da_alloc.data);
 						cbuild_da_append(&da_alloc, 1);
 						TEST_ASSERT_EQ(
 								talloc_last_alloc_size, 2ul * sizeof(int),

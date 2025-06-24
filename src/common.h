@@ -95,11 +95,16 @@
  *     - Better naming scheme
  *     - Added ability to allocate inter-process shared memory
  *   Command.h [feature]
- *     - Switched to 'execve' from 'execvp'
- *     - Added PATH resolver
  *     - More consistent names
  *   Map.h [new]
  *     - Hash-map implementation
+ *   Compile.h [change]
+ *     - Added consistent prefixes
+ *     - Added output arg	macro
+ *   FS.h [change]
+ *     - Changes becouse of rewrite of other modules
+ *   StringView.h [new]
+ *     - New implementation, better functionality
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -113,6 +118,7 @@
 #include "limits.h"
 #include "stdarg.h"
 #include "stdbool.h"
+#include "stddef.h"
 #include "stdint.h"
 #include "stdio.h"
 #include "stdlib.h"
@@ -125,11 +131,11 @@
 #include "unistd.h"
 // Constants that can be redefined
 /**
- * @brief Init capacity of dynamic array. `unsigned long`
+ * @brief Init capacity of cbuild datastructures. `unsigned long`
  */
-#ifndef CBUILD_DA_INIT_CAPACITY
-#	define CBUILD_DA_INIT_CAPACITY 256ul
-#endif // CBUILD_DA_INIT_CAPACITY
+#ifndef CBUILD_INIT_CAPACITY
+#	define CBUILD_INIT_CAPACITY 256ul
+#endif // CBUILD_INIT_CAPACITY
 /**
  * @brief Minimim log level. `CBuildLogLevel`
  */
@@ -143,9 +149,12 @@
 #ifndef CBUILD_SB_QUICK_SPRINTF_SIZE
 #	define CBUILD_SB_QUICK_SPRINTF_SIZE 512ul
 #endif // CBUILD_SB_QUICK_SPRINTF_SIZE
-// #ifndef CBUILD_TMP_BUFF_SIZE
-// #	define CBUILD_TMP_BUFF_SIZE (32 * 1024 * 1024)
-// #endif // CBUILD_TMP_BUFF_SIZE
+/**
+ * @brief Temporary buffer size for file copies
+ */
+#ifndef CBUILD_TMP_BUFF_SIZE
+#	define CBUILD_TMP_BUFF_SIZE (32 * 1024 * 1024)
+#endif // CBUILD_TMP_BUFF_SIZE
 // OS-specific defines
 #if defined(__linux__)
 #	define CBUILD_OS_LINUX
@@ -185,11 +194,13 @@
 #	define __CBUILD_PRINT(str)                printf((str))
 #	define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
 #	define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
+#	define __CBUILD_FLUSH()                   fflush(stdout)
 // Maybe you want to redefine this two macro to work with stderr, but I prefer
 // to have my errors in standard stdout
 #	define __CBUILD_ERR_PRINT(str)            printf((str))
 #	define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
 #	define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
+#	define __CBUILD_ERR_FLUSH()               fflush(stdout)
 // Memory functions
 #	define __CBUILD_MALLOC                    malloc
 #	define __CBUILD_REALLOC                   realloc
@@ -200,6 +211,8 @@ typedef pid_t cbuild_proc_t;
 #	define CBUILD_INVALID_PROC -1
 typedef int cbuild_fd_t;
 #	define CBUILD_INVALID_FD -1
+// For pointer errors
+#	define CBUILD_PTR_ERR    (void*)((intptr_t)-1)
 #endif // CBUILD_API_POSIX
 // Macro functionality
 #define __CBUILD_STRINGIFY(var)  #var
@@ -213,14 +226,14 @@ typedef int cbuild_fd_t;
  *
  * @param val => any -> Any variable
  */
-#define CBuild_UNUSED(val)       (void)(val)
+#define CBUILD_UNUSED(val)       (void)(val)
 /**
  * @brief Mark some part of code as TODO, code will error-out if this code is
  * executed
  *
  * @param message => char* -> Additional message
  */
-#define CBuild_TODO(message)                                                   \
+#define CBUILD_TODO(message)                                                   \
 	do {                                                                         \
 		__CBUILD_ERR_PRINTF("%s:%d: TODO: %s\n", __FILE__, __LINE__, (message));   \
 		abort();                                                                   \
@@ -231,7 +244,7 @@ typedef int cbuild_fd_t;
  *
  * @param message => char* -> Additional message
  */
-#define CBuild_UNREACHABLE(message)                                            \
+#define CBUILD_UNREACHABLE(message)                                            \
 	do {                                                                         \
 		__CBUILD_ERR_PRINTF("%s:%d: UNREACHABLE: %s\n", __FILE__, __LINE__,        \
 		                    (message));                                            \

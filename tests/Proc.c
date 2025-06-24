@@ -42,7 +42,6 @@ int         thread(void* context) {
 }
 TEST_MAIN(
 		{
-			setvbuf(stdout, NULL, _IONBF, 0);
 			TEST_CASE(
 					{
 						cbuild_proc_ptr_t context = cbuild_proc_malloc(strlen(MSG) + 1);

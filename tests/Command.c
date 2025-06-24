@@ -31,6 +31,7 @@
 #include "../src/Command.h"
 #include "../src/Compile.h"
 #include "../src/StringBuilder.h"
+#include "../src/common.h"
 #include "framework.h"
 // Code
 TEST_MAIN(
@@ -47,7 +48,7 @@ TEST_MAIN(
 		                          "Get: \"" CBuildSBFmt "\", expected: \"%s\"",
 		                          CBuildSBArg(sb1), cmp1);
 						cbuild_cmd_clear(&c1);
-						cbuild_cmd_append_many(&c1, CC,
+						cbuild_cmd_append_many(&c1, CBUILD_CC,
 		                               CBUILD_CARGS_DEFINE_VAL("VER", "1.0"),
 		                               CBUILD_CARGS_INCLUDE("common.h"),
 		                               "file\\ with\\ spaces.c", "-o", "file.run");
@@ -63,7 +64,7 @@ TEST_MAIN(
 					"Command buffer to string buffer conversion");
 			TEST_CASE(
 					{
-						cbuild_cmd_t cmd     = cbuild_cmd;
+						cbuild_cmd_t cmd = cbuild_cmd;
 						cbuild_cmd_append_many(&cmd, "printf", "ABCD");
 						cbuild_fd_t fds[2]; // { [0] = read, [1] = write }
 						int         pstatus = pipe(fds);
@@ -72,9 +73,9 @@ TEST_MAIN(
 							exit(1);
 						}
 						bool ret = cbuild_cmd_sync_redirect(
-								cmd, (CBuildCmdFDRedirect){ .fdstdout = fds[1],
-		                                        .fdstdin  = CBUILD_INVALID_FD,
-		                                        .fdstderr = CBUILD_INVALID_FD });
+								cmd, (cbuild_cmd_fd_t){ .fdstdout = fds[1],
+		                                    .fdstdin  = CBUILD_INVALID_FD,
+		                                    .fdstderr = CBUILD_INVALID_FD });
 						TEST_ASSERT_EQ(ret, true, "%s", "Function returned error!");
 						// TO be able to capture errors
 						char str[1024];

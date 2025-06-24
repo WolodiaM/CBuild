@@ -31,12 +31,19 @@
 #include "framework.h"
 // Code
 bool tdelim1(const cbuild_sv_t* sv, size_t idx, void* args) {
+	CBUILD_UNUSED(idx);
+	CBUILD_UNUSED(args);
 	if (idx > 4 && sv->data[idx] == '|') {
 		return true;
 	}
 	return false;
 }
-bool tdelim2(const cbuild_sv_t* sv, size_t idx, void* args) { return false; }
+bool tdelim2(const cbuild_sv_t* sv, size_t idx, void* args) {
+	CBUILD_UNUSED(sv);
+	CBUILD_UNUSED(idx);
+	CBUILD_UNUSED(args);
+	return false;
+}
 TEST_MAIN(
 		{
 			TEST_CASE(

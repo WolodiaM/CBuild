@@ -31,18 +31,20 @@
 #ifndef __CBUILD_COMMAND_H__
 #define __CBUILD_COMMAND_H__
 #include "DynArray.h"
+#include "Map.h"
 #include "StringBuilder.h"
 #include "common.h"
+// Command
 cbuild_da_t(char*, CBuildCMDchar_ptr);
 cbuild_da_t_ext_impl(CBuildCMDchar_ptr);
 typedef cbuild_da_CBuildCMDchar_ptr_t cbuild_cmd_t;
 #define cbuild_cmd cbuild_da_CBuildCMDchar_ptr
-#define CBuildCmd  cbuild_da_CBuildCMDchar_ptr
+// IO overrides
 typedef struct {
 	cbuild_fd_t fdstdin;
 	cbuild_fd_t fdstdout;
 	cbuild_fd_t fdstderr;
-} CBuildCmdFDRedirect;
+} cbuild_cmd_fd_t;
 /**
  * @brief Append new arg to cmd
  *
@@ -58,7 +60,7 @@ typedef struct {
  * @param vals_cnt => size_t -> Count of new tokens
  */
 #define cbuild_cmd_append_arr(cmd, vals, vals_cnt)                             \
-	cbuild_da_append_arr(cmd, (const char*)vals, vals_cnt)
+	cbuild_da_append_arr(cmd, (const char**)vals, vals_cnt)
 /**
  * @brief Append new args to cmd
  *
@@ -79,52 +81,45 @@ typedef struct {
  * @param cmd => cbuild_cmd_t -> Command
  * @param sb => CBuildStrBuff -> String buffer to work with
  */
-void        cbuild_cmd_to_sb(cbuild_cmd_t cmd, cbuild_sb_t* sb);
+void cbuild_cmd_to_sb(cbuild_cmd_t cmd, cbuild_sb_t* sb);
 /**
- * @brief Reolves binary in PATH
- *
- * @param name => const char* -> Executable name
- * @param out => cbuild_sb_t* -> Output string buffer (will be cleared)
- * @return int => 0 on success, -1 on error
- */
-int cbuild_cmd_resolve_path(const char* name, cbuild_sb_t* out);
-/**
- * @brief Call async command without io rediecting
+ * @brief Call async command without io redirecting
  *
  * @param cmd => cbuild_cmd_t -> Command buffer
- * @return CBuildProc -> Process associated with called command
+ * @return cbuild_proc_t -> Process associated with called command
  */
 #define cbuild_cmd_async(cmd)                                                  \
-	cbuild_cmd_async_redirect(cmd, (CBuildCmdFDRedirect){ CBUILD_INVALID_FD,     \
-	                                                      CBUILD_INVALID_FD,     \
-	                                                      CBUILD_INVALID_FD })
+	cbuild_cmd_async_redirect(cmd, (cbuild_cmd_fd_t){ CBUILD_INVALID_FD,         \
+	                                                  CBUILD_INVALID_FD,         \
+	                                                  CBUILD_INVALID_FD })
+
 /**
  * @brief Call async command with io rediecting
  *
  * @param cmd => cbuild_cmd_t -> Command buffer
- * @param fd => CBuildCmdFDRedirect -> IO redicrecting table
+ * @param fd => cbuild_cmd_fd_t -> IO redicrecting table
+ * @param env => cbuild_cmd_env_t* -> Environment overrides
  * @return cbuild_proc_t -> Process associated with called command
  */
-cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t        cmd,
-                                        CBuildCmdFDRedirect fd);
+cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
 /**
- * @brief Call sync command without io rediecting
+ * @brief Call sync command without io redirecting
  *
  * @param cmd => cbuild_cmd_t -> Command buffer
  * @return true -> Command succeed
  * @return false -> Command failed
  */
 #define cbuild_cmd_sync(cmd)                                                   \
-	cbuild_cmd_sync_redirect(cmd, (CBuildCmdFDRedirect){ CBUILD_INVALID_FD,      \
-	                                                     CBUILD_INVALID_FD,      \
-	                                                     CBUILD_INVALID_FD })
+	cbuild_cmd_sync_redirect(cmd, (cbuild_cmd_fd_t){ CBUILD_INVALID_FD,          \
+	                                                 CBUILD_INVALID_FD,          \
+	                                                 CBUILD_INVALID_FD })
 /**
  * @brief Call sync command with io rediecting
  *
  * @param cmd => cbuild_cmd_t -> Command buffer
- * @param df => CBuildCmdFDRedirect -> IO redicrecting table
+ * @param df => cbuild_cmd_fd_t -> IO redicrecting table
  * @return true -> Command succeed
  * @return false -> Command failed
  */
-bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, CBuildCmdFDRedirect fd);
+bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
 #endif // __CBUILD_COMMAND_H__

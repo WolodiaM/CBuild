@@ -100,7 +100,7 @@ IntegerLiteralSeparator:
   HexMinDigits: 4
 LineEnding: LF
 ReflowComments: true
-RemoveParentheses: MultipleParentheses
+RemoveParentheses: Leave
 SpaceAfterCStyleCast: false
 SpaceBeforeParens: ControlStatementsExceptControlMacros
 SpacesInAngles: Never
