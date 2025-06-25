@@ -91,6 +91,7 @@
  *     - Unified INIT_CAPACITY macro
  *     - Better IO abstraction
  *     - Assert now use proper IO abstractions
+ *     - Types for WinAPI
  *	 StringBuilder.h [new]
  *     - Rely on new 'DynArray.h'
  *     - Few new operations
@@ -109,6 +110,8 @@
  *     - Changes becouse of rewrite of other modules
  *   StringView.h [new]
  *     - New implementation, better functionality
+ *     - 'find', 'rfind' and 'contains' function
+ *     - 'memrchr' is used on MacOS, *BSD and Glibc (if detected)
  *   Compile.h [feature]
  *     - Better naming
  *     - More macro
@@ -116,6 +119,9 @@
  *     - New module - array+size
  *   Stack.h [new]
  *     - New module - basic re-sizable stack implementation
+ *   DLload.h [new]
+ *     - Small wrapper for runtime loading of dynamic libraries, first code to
+ *       support WinAPI
  *   General [feature]
  *     - Better error handling
  *     - More integrated logging
@@ -206,6 +212,7 @@
 #	if defined(CBUILD_OS_MACOS)
 #		include "crt_externs.h"
 #	endif // CBUILD_OS_MACOS
+#	include "dlfcn.h"
 // Print functions
 #	define __CBUILD_PRINT(str)                printf((str))
 #	define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
@@ -229,7 +236,33 @@ typedef int cbuild_fd_t;
 #	define CBUILD_INVALID_FD -1
 // For pointer errors
 #	define CBUILD_PTR_ERR    (void*)((intptr_t)-1)
-#endif // CBUILD_API_POSIX
+#elif defined(CBUILD_API_WIN32)
+// Platform includes
+#	include <Windows.h>
+// Print functions
+#	define __CBUILD_PRINT(str)                printf((str))
+#	define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
+#	define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
+#	define __CBUILD_FLUSH()                   fflush(stdout)
+// Maybe you want to redefine this two macro to work with stderr, but I prefer
+// to have my errors in standard stdout
+#	define __CBUILD_ERR_PRINT(str)            printf((str))
+#	define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
+#	define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
+#	define __CBUILD_ERR_FLUSH()               fflush(stdout)
+// Memory functions
+#	define __CBUILD_MALLOC                    malloc
+#	define __CBUILD_REALLOC                   realloc
+#	define __CBUILD_MEMCPY                    memcpy
+#	define __CBUILD_FREE                      free
+// Process and file handles
+typedef HANDLE cbuild_proc_t;
+#	define CBUILD_INVALID_PROC                ((HANDLE)(intptr_t)-1)
+typedef HANDLE cbuild_fd_t;
+#	define CBUILD_INVALID_FD                  ((HANDLE)(intptr_t)-1)
+// For pointer errors
+#	define CBUILD_PTR_ERR                     (void*)((intptr_t)-1)
+#endif // CBUILD_API_*
 // Macro functionality
 #define __CBUILD_STRINGIFY(var)  #var
 #define __CBUILD_XSTRINGIFY(var) __CBUILD_STRINGIFY(var)

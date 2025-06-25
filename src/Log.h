@@ -28,8 +28,8 @@
  */
 #ifndef __CBUILD_LOG_H__
 #define __CBUILD_LOG_H__
-// Libraries
-#include "stdarg.h"
+// Project includes
+#include "common.h"
 // Code
 typedef enum {
 	CBUILD_LOG_NO_LOGS = -1,

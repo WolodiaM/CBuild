@@ -30,7 +30,7 @@ const char* __cbuild_progname(void) {
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
                      const char* expr, ...) {
 	__CBUILD_ERR_PRINTF("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n",
-	       __cbuild_progname(), file, line, func, expr);
+	                    __cbuild_progname(), file, line, func, expr);
 	va_list args;
 	va_start(args, expr);
 	const char* fmt = va_arg(args, char*);
@@ -149,34 +149,35 @@ cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size) {
 	sv->size  -= size;
 	return cbuild_sv_from_parts(tmp, size);
 }
-bool cbuild_sv___chop_by_delim_delim(const cbuild_sv_t* sv, size_t idx,
-                                     void* args) {
-	return *((char*)args) == sv->data[idx];
-}
 cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim) {
-	return cbuild_sv_chop_by_func(sv, cbuild_sv___chop_by_delim_delim, &delim);
-}
-bool cbuild_sv___chop_by_sv_delim1(const cbuild_sv_t* sv, size_t idx,
-                                   void* args) {
-	cbuild_sv_t* svt  = args;
-	size_t       size = idx < svt->size ? idx : svt->size;
-	return cbuild_sv_cmp(cbuild_sv_from_parts(sv->data + idx - (size - 1), size),
-	                     *svt) == 0;
-}
-bool cbuild_sv___chop_by_sv_delim2(const cbuild_sv_t* sv, size_t idx,
-                                   void* args) {
-	cbuild_sv_t* svt  = args;
-	size_t       size = (svt->size - 1) + idx > sv->size ? 0 : svt->size - 1;
-	return cbuild_sv_cmp(cbuild_sv_from_parts(sv->data + idx, size),
-	                     cbuild_sv_from_parts(svt->data, svt->size - 1)) == 0;
+	char* chrptr = memchr(sv->data, delim, sv->size);
+	if (chrptr != NULL) {
+		size_t      i    = (size_t)(chrptr - sv->data);
+		cbuild_sv_t ret  = cbuild_sv_from_parts(sv->data, i);
+		sv->data        += i + 1;
+		sv->size        -= i + 1;
+		return ret;
+	}
+	return cbuild_sv_chop(sv, sv->size);
 }
 cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
-	if (delim.size == 1) {
-		return cbuild_sv_chop_by_delim(sv, delim.data[0]);
+	if (delim.size == 0 || delim.size > sv->size) {
+		return cbuild_sv_from_parts(sv->data, 0);
 	}
-	cbuild_sv_t tmp =
-			cbuild_sv_chop_by_func(sv, cbuild_sv___chop_by_sv_delim1, &delim);
-	return cbuild_sv_chop_by_func(&tmp, cbuild_sv___chop_by_sv_delim2, &delim);
+	char*  chrptr = sv->data;
+	size_t i      = 0;
+	do {
+		chrptr = memchr(chrptr + 1, delim.data[0], sv->size);
+		if (chrptr != NULL && sv->size - i >= delim.size &&
+		    memcmp(chrptr, delim.data, delim.size) == 0) {
+			i                = (size_t)(chrptr - sv->data);
+			cbuild_sv_t ret  = cbuild_sv_from_parts(sv->data, i);
+			sv->data        += delim.size + i;
+			sv->size        -= delim.size + i;
+			return ret;
+		}
+	} while (chrptr != NULL);
+	return cbuild_sv_chop(sv, sv->size);
 }
 cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
                                    void* args) {
@@ -239,6 +240,38 @@ bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix) {
 	return cbuild_sv_cmp(
 						 cbuild_sv_from_parts(sv.data + sv.size - suffix.size, suffix.size),
 						 suffix) == 0;
+}
+size_t cbuild_sv_find(cbuild_sv_t sv, char c) {
+	char* chrptr = memchr(sv.data, c, sv.size);
+	if (chrptr == NULL) {
+		return (size_t)-1;
+	}
+	return chrptr - sv.data;
+}
+size_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
+	char* chrptr = sv.data;
+#if defined(CBUILD_API_POSIX) &&                                               \
+		(defined(_GNU_SOURCE) || defined(__musl__) || defined(CBUILD_OS_MACOS) ||  \
+     defined(CBUILD_OS_BSD))
+	chrptr = memrchr(sv.data, c, sv.size);
+#else
+	chrptr += sv.size;
+	do {
+		chrptr--;
+		if (*chrptr == c) {
+			goto loop_end;
+		}
+	} while (chrptr != sv.data);
+	chrptr = NULL;
+loop_end:
+#endif
+	if (chrptr == NULL) {
+		return (size_t)-1;
+	}
+	return chrptr - sv.data;
+}
+bool cbuild_sv_contains(cbuild_sv_t sv, char c) {
+	return cbuild_sv_find(sv, c) != (size_t)-1;
 }
 /* Command.h impl */
 cbuild_da_t_impl(char*, CBuildCMDchar_ptr);
@@ -553,7 +586,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 		return false;
 	}
 	char* tmp_buff = (char*)__CBUILD_MALLOC(CBUILD_TMP_BUFF_SIZE);
-			cbuild_assert(tmp_buff != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
+	cbuild_assert(tmp_buff != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
 	while (true) {
 		ssize_t cnt = read(src_fd, tmp_buff, CBUILD_TMP_BUFF_SIZE);
 		if (cnt == 0) {
@@ -632,11 +665,11 @@ bool cbuild_dir_copy(const char* src, const char* dst) {
 		}
 		size_t lensrc = strlen(src) + 1 + strlen(list.data[i]);
 		char*  tmpsrc = __CBUILD_MALLOC(lensrc + 1);
-				cbuild_assert(tmpsrc != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		cbuild_assert(tmpsrc != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmpsrc, "%s/%s", src, list.data[i]);
 		size_t lendst = strlen(dst) + 1 + strlen(list.data[i]);
 		char*  tmpdst = __CBUILD_MALLOC(lendst + 1);
-				cbuild_assert(tmpdst != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		cbuild_assert(tmpdst != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmpdst, "%s/%s", dst, list.data[i]);
 		cbuild_filetype_t f = cbuild_path_filetype(tmpsrc);
 		if (f == CBUILD_FTYPE_DIRECTORY) {
@@ -681,7 +714,7 @@ bool cbuild_dir_remove(const char* path) {
 		}
 		size_t lenpath = strlen(path) + 1 + strlen(list.data[i]);
 		char*  tmppath = __CBUILD_MALLOC(lenpath + 1);
-				cbuild_assert(tmppath != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		cbuild_assert(tmppath != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmppath, "%s/%s", path, list.data[i]);
 		cbuild_filetype_t f = cbuild_path_filetype(tmppath);
 		if (f == CBUILD_FTYPE_DIRECTORY) {
@@ -718,7 +751,7 @@ bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 	while (list != NULL) {
 		size_t len = strlen(list->d_name);
 		char*  str = (char*)__CBUILD_MALLOC(len + 1);
-				cbuild_assert(str != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		cbuild_assert(str != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		__CBUILD_MEMCPY(str, list->d_name, len);
 		str[len] = '\0';
 		cbuild_da_append(elements, str);
@@ -781,13 +814,13 @@ const char* cbuild_path_ext(const char* path) {
 	}
 	if (!found) {
 		char* ret = __CBUILD_MALLOC(1);
-				cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		__CBUILD_MEMCPY(ret, "\0", 1);
 		return ret;
 	}
 	size_t len = strlen(path) - i + 1;
 	char*  ret = (char*)__CBUILD_MALLOC(len);
-			cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path + i + 1, len);
 	return ret;
 }
@@ -803,7 +836,7 @@ const char* cbuild_path_name(const char* path) {
 	}
 	size_t len = strlen(path) - i + 1;
 	char*  ret = (char*)__CBUILD_MALLOC(len);
-			cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path + i + 1, len);
 	return ret;
 }
@@ -821,13 +854,13 @@ const char* cbuild_path_base(const char* path) {
 	}
 	if (!found) {
 		char* ret = __CBUILD_MALLOC(1);
-				cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		__CBUILD_MEMCPY(ret, "\0", 1);
 		return ret;
 	}
 	size_t len = i + 2;
-	char* ret = (char*)__CBUILD_MALLOC(len);
-			cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+	char*  ret = (char*)__CBUILD_MALLOC(len);
+	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path, len - 1);
 	ret[len - 1] = '\0';
 	return ret;

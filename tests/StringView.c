@@ -457,5 +457,23 @@ TEST_MAIN(
 								CBuildSVArg(sv));
 					},
 					"StringView edge-case chop");
+			TEST_CASE(
+					{
+						cbuild_sv_t sv = cbuild_sv_from_cstr("aaabacabaaa");
+						TEST_ASSERT_EQ(cbuild_sv_find(sv, 'b'), 3,
+		                       "Wrong index in find" TEST_EXPECT_MSG(zu), 3ul,
+		                       cbuild_sv_find(sv, 'b'));
+						TEST_ASSERT_EQ(cbuild_sv_find(sv, 'z'), (size_t)-1,
+		                       "Wrong error index in find" TEST_EXPECT_MSG(zu),
+		                       (size_t)-1, cbuild_sv_find(sv, 'z'));
+						TEST_ASSERT_EQ(cbuild_sv_rfind(sv, 'b'), 7,
+		                       "Wrong index in rfind" TEST_EXPECT_MSG(zu), 7ul,
+		                       cbuild_sv_rfind(sv, 'b'));
+						TEST_ASSERT_EQ(cbuild_sv_contains(sv, 'c'), true,
+		                       "Wrong result from contains" TEST_EXPECT_MSG(s),
+		                       "true",
+		                       cbuild_sv_contains(sv, 'c') ? "true" : "false");
+					},
+					"StringView search");
 		},
 		"StringView library tests")

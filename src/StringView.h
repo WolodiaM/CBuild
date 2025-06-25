@@ -162,4 +162,28 @@ bool        cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
  * @return bool -> True if cbuild_sv contains suffix
  */
 bool        cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix);
+/**
+ * @brief Find characted in a string
+ *
+ * @param sv => cbuild_sv_t -> String view to work with
+ * @param c => char -> Charcter to look for
+ * @return size_t -> Index of a character or -1
+ */
+size_t      cbuild_sv_find(cbuild_sv_t sv, char c);
+/**
+ * @brief Find characted in a string starting from the back
+ *
+ * @param sv => cbuild_sv_t -> String view to work with
+ * @param c => char -> Charcter to look for
+ * @return size_t -> Index of a character or -1
+ */
+size_t      cbuild_sv_rfind(cbuild_sv_t sv, char c);
+/**
+ * @brief Check if string view contains the cracter
+ *
+ * @param sv => cbuild_sv_t -> String view to work with
+ * @param c => char -> Charcter to look for
+ * @return bool -> Contains or not
+ */
+bool        cbuild_sv_contains(cbuild_sv_t sv, char c);
 #endif // __CBUILD_SV_H_
