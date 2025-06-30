@@ -38,7 +38,7 @@ Free Documentation License".
 
 ---
 
-## Wiki version: v1.2
+## Wiki version: v1.3
 
 ---
 

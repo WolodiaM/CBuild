@@ -1,9 +1,9 @@
 # -*- mode: conf -*-
 CompileFlags:
-  Add: [ -xc, -std=c99 ]
+  Add: [ -xc, -std=gnu99 ]
   Compiler: gcc
 Diagnostics:
-  Suppress: [ -Wunused-function ] 
+  Suppress: [ -Wunused-function ]
 ---
 If:
   PathMatch: src/.*\.h

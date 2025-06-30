@@ -43,20 +43,20 @@ cbuild.c - Your buildscript:
 int main(int argc, char** argv) {
     cbuild_selfrebuild(argc, argv);
     if (cbuild_compare_mtime("main.o", "src/main.c") > 0) {
-        CBuildCmd c1 = {0};
+        cbuild_cmd_t c1 = cbuild_cmd;
         cbuild_cmd_append_many(&c1, CC, "-c", "src/main.c");
         if (!cbuild_cmd_sync(c1)) {
             return 0;
         }
     }
     if (cbuild_compare_mtime("utils.o", "src/utils.c") > 0) {
-        CBuildCmd c2 = {0};
+        cbuild_cmd_t c2 = cbuild_cmd;
         cbuild_cmd_append_many(&c2, CC, "-c", "src/utils.c");
         if (!cbuild_cmd_sync(c2)) {
             return 0;
         }
     }
-    CBuildCmd l = {0};
+    cbuild_cmd_t l = cbuild_cmd;
     cbuild_cmd_append_many(&l, LD, "-o", "app.run", "utils.o", "main.o");
     if (!cbuild_cmd_sync(l)) {
         return 1;

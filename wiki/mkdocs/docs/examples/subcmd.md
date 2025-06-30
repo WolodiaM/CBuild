@@ -42,24 +42,24 @@ cbuild.c - Your buildscript:
 #include "cbuild.h"
 #include "string.h"
 bool run() {
-    CBuildCmd cmd = {0};
+    cbuild_cmd_t cmd = cbuild_cmd;
     cbuild_cmd_append_many(&cmd, "./app.run");
     return cbuild_cmd_sync(cmd);
 }
 bool build() {
-    CBuildCmd c1 = {0};
+    cbuild_cmd_t c1 = cbuild_cmd;
     cbuild_cmd_append_many(&c1, CC, "-c", "src/main.c");
-    CBuildProc p1 = cbuild_cmd_async(c1);
-    CBuildCmd c2 = {0};
+    cbuild_proc_t p1 = cbuild_cmd_async(c1);
+    cbuild_cmd_t c2 = cbuild_cmd;
     cbuild_cmd_append_many(&c2, CC, "-c", "src/utils.c");
-    CBuildProc p2 = cbuild_cmd_async(c2);
+    cbuild_proc_t p2 = cbuild_cmd_async(c2);
     if (!cbuild_proc_wait(p1)) {
         return false;
     }
     if (!cbuild_proc_wait(p2)) {
         return false;
     }
-    CBuildCmd l = {0};
+    cbuild_cmd_t l = cbuild_cmd;
     cbuild_cmd_append_many(&l, LD, "-o", "app.run", "utils.o", "main.o");
     if (!cbuild_cmd_sync(l)) {
         return false;

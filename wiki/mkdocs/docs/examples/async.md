@@ -42,19 +42,19 @@ cbuild.c - Your buildscript:
 #include "cbuild.h"
 int main(int argc, char** argv) {
     cbuild_selfrebuild(argc, argv);
-    CBuildCmd c1 = {0};
+    cbuild_cmd_t c1 = cbuild_cmd;
     cbuild_cmd_append_many(&c1, CC, "-c", "src/main.c");
-    CBuildProc p1 = cbuild_cmd_async(c1);
-    CBuildCmd c2 = {0};
+    cbuild_proc_t p1 = cbuild_cmd_async(c1);
+    cbuild_cmd_t c2 = cbuild_cmd;
     cbuild_cmd_append_many(&c2, CC, "-c", "src/utils.c");
-    CBuildProc p2 = cbuild_cmd_async(c2);
+    cbuild_proc_t p2 = cbuild_cmd_async(c2);
     if (!cbuild_proc_wait(p1)) {
         return 1;
     }
     if (!cbuild_proc_wait(p2)) {
         return 1;
     }
-    CBuildCmd l = {0};
+    cbuild_cmd_t l = cbuild_cmd;
     cbuild_cmd_append_many(&l, LD, "-o", "app.run", "utils.o", "main.o");
     if (!cbuild_cmd_sync(l)) {
         return 1;

@@ -44,17 +44,17 @@ cbuild.c - Your buildscript:
 #include "stdlib.h"
 int main(int argc, char** argv) {
     cbuild_selfrebuild(argc, argv);
-    CBuildPathList sources = {0};
+    cbuild_pathlist_t sources = cbuild_pathlist;
     if (!cbuild_dir_list("src/", &sources)) {
         return 1;
     }
-    CBuildCmd cmd = {0};
+    cbuild_cmd_t cmd = cbuild_cmd;
     cbuild_cmd_append_many(&cmd, CC, "-o", "app.run");
     for (size_t i = 0; i < sources.size; i++) {
         const char *file = sources.data[i];
         const char *ext = cbuild_path_ext(file);
         if (strcmp(ext, "c") == 0) {
-            CBuildStrBuff path  = {0};
+            cbuild_sb_t path = cbuild_sb;
             cbuild_sb_append_cstr(&path, "src/");
             cbuild_sb_append_cstr(&path, file);
             cbuild_sb_append_null(&path);

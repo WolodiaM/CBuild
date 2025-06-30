@@ -2,7 +2,7 @@
 # Environment
 set -euo pipefail
 # constants
-CARGS="-O3 -g -std=c99 -Wall -Wextra -Wpedantic"
+CARGS="-O3 -g -std=gnu99 -Wall -Wextra"
 # Global variables
 Silent="no"  # Need to be set to `yes`
 Verbose="no" # Need to be set to `yes`
@@ -65,6 +65,8 @@ pack() {
 	call_cmd_ns pack_header_strip "FS.h"
 	# Compilation helper
 	call_cmd_ns pack_header_strip "Compile.h"
+	# Runtime dynamic library loaded
+	call_cmd_ns pack_header_strip "DLload.h"
 	# Implementation
 	call_cmd_ns pack_ifdef
 	call_cmd_ns pack_header_strip "impl.c"
@@ -151,6 +153,7 @@ test_run_all() {
 # clean subcommand
 clean() {
 	call_cmd rm -rf wiki/mkdocs/site/
+	call_cmd rm -rf wiki/doxygen/html/
 	call_cmd rm -rf CBuild.h
 	call_cmd rm -rf build
 	call_cmd rm -rf cbuild.h
@@ -239,7 +242,7 @@ call_cmd() {
 }
 # Generate CTags
 tags() {
-	ctags -eR .
+	ctags -eR --exclude='wiki/*' --exclude=doxygen.conf .
 }
 # Cli parser
 parse_args() {

@@ -7,7 +7,7 @@ repo_name: "CBuild"
 edit_uri: edit/master/wiki/mkdocs/docs/
 
 # About wiki
-site_description: 'Name'
+site_description: 'CBuild wiki'
 site_author: 'WolodiaM'
 copyright: 'GFDL-1.3-or-later'
 
@@ -56,6 +56,6 @@ nav:
     - 'License':
         - 'Wiki License': 'https://www.gnu.org/licenses/fdl-1.3.html'
         - 'Code License': 'https://www.gnu.org/licenses/gpl-3.0.html'
-    - 'Internals': 'internals/structure.md'
+    - 'Internals': 'internals/index.md'
     - 'Examples': 'examples/index.md'
     - 'Hacks': 'hacks/index.md'

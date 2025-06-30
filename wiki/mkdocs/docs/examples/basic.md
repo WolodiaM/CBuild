@@ -25,7 +25,7 @@ cbuild.c - Your buildscript:
 #include "cbuild.h"
 int main(int argc, char** argv) {
     cbuild_selfrebuild(argc, argv);
-    CBuildCmd cmd = {0};
+    cbuild_cmd_t cmd = cbuild_cmd;
     cbuild_cmd_append_many(&cmd, CC, "-o", "app.run", "src/main.c");
     bool ret = cbuild_cmd_sync(cmd);
     if (!ret) {

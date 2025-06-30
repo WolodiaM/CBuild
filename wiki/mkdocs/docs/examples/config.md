@@ -15,14 +15,14 @@ cbuild.c - Your build system wrapper and configuration script:
 #include "cbuild.h"
 int main(int argc, char** argv) {
     cbuild_selfrebuild(argc, argv);
-    CBuildStrBuff cfg = {0};
+    cbuild_sb_t cfg = cbuild_sb;
     cbuild_sb_append_cstr(&cfg, "#define CONFIG_VAR");
     if (!cbuild_file_check("config.h")) {
         if (!cbuild_file_write("config.h", &cfg)) {
             return 1;
         }
     }
-    CBuildCmd cmd = {0};
+    cbuild_cmd_t cmd = cbuild_cmd;
     cbuild_cmd_append_many(&cmd, CC, "-o", "cbuild2.run", "cbuild2.c");
     if (!cbuild_cmd_sync(cmd)) {
         return 1;

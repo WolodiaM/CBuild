@@ -6,3 +6,4 @@
  * [Compiling file only if changed](change.md)
  * [Providing subcommands](subcmd.md)
  * [Making build config](config.md)
+ * [Extending datatypes](datatypes.md)
