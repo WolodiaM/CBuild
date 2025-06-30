@@ -29,6 +29,15 @@ if test -t 1; then
 		magenta=""
 		cyan=""
 	fi
+else
+	reset=""
+	red=""
+	green=""
+	yellow=""
+	blue=""
+	magenta=""
+	cyan=""
+fi
 fi
 # pack subcommand
 pack_header_strip() {
