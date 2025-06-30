@@ -38,7 +38,6 @@ else
 	magenta=""
 	cyan=""
 fi
-fi
 # pack subcommand
 pack_header_strip() {
 	cat "src/$1" | tr "\n" "$" | sed "s/#include \"[^\"]*\"\\\$//g" | sed "s/\\/\\/ Project includes\\\$//g" | tr "$" "\n" >>cbuild.h
