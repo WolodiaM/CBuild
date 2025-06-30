@@ -122,6 +122,14 @@
  *   DLload.h [new]
  *     - Small wrapper for runtime loading of dynamic libraries, first code to
  *       support WinAPI
+ *   FlagParse.h [new]
+ *     - CLI flag parser library
+ *     - Supports long and short options
+ *     - Support different flag arguments (but not support their types)
+ *     - Pre-parses positional arguments - collects them in separate buffer
+ *     - Has build-in help and version flags and build-in help and version subs
+ *     - Has function to print proper help for all defined flags
+ *     - Allow overrides to help and version stubs using 'weak' linking
  *   General [feature]
  *     - Better error handling
  *     - More integrated logging
@@ -197,10 +205,12 @@
 #elif defined(__MINGW32__) || defined(__MINGW64__)
 #	define CBUILD_OS_WINDOWS_MINGW
 #	define CBUILD_API_WIN32
-#	error "This library support only POSIX api and MSVC only supports WinAPI"
+#	error "This library support only POSIX api and MinGW only supports WinAPI"
 #elif defined(_MSC_VER)
 #	define CBUILD_OS_WINDOWS_MSVC
 #	define CBUILD_API_WIN32
+#	error                                                                        \
+			"MSVC is fully unsupported as a compiler. Please use gcc/clang-compatible compiler!"
 #	error "This library support only POSIX api and MSVC only supports WinAPI"
 #else
 #	error                                                                        \

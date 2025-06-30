@@ -127,7 +127,7 @@ TEST_MAIN(
 	              "DynArray array insertion");
 			TEST_CASE(
 					{
-						cbuild_da_append_many(&da, int, 1, 2, 3);
+						cbuild_da_append_many(&da, 1, 2, 3);
 						TEST_ASSERT_EQ(
 								da.size, 3,
 								"Wrong element count after insertion" TEST_EXPECT_MSG(zu),
@@ -170,7 +170,7 @@ TEST_MAIN(
 					"DynArray reading");
 			TEST_CASE(
 					{
-						cbuild_da_append_many(&da, int, 1, 2, 3, 4);
+						cbuild_da_append_many(&da, 1, 2, 3, 4);
 						cbuild_da_remove(&da, 1);
 						TEST_ASSERT_EQ(da.data[0], 1,
 		                       "Wrong element at index 0" TEST_EXPECT_MSG(d), 1,

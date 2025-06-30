@@ -64,7 +64,7 @@ typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
  * @param ... => char ... -> Chars that need to be inserted
  */
 #define cbuild_sb_append_many(sb, ...)                                         \
-	cbuild_da_append_many((sb), char, __VA_ARGS__)
+	cbuild_da_append_many((sb),  __VA_ARGS__)
 /**
  * @brief Append a C-string to a sb
  *
@@ -72,7 +72,7 @@ typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
  * @param cstr => char* -> C-string
  */
 #define cbuild_sb_append_cstr(sb, cstr)                                        \
-	cbuild_da_append_arr((sb), (cstr), strlen(cstr))
+	cbuild_da_append_arr((sb), (char*)(cstr), strlen(cstr))
 /**
  * @brief Append NULL-terminator to a string builder
  *
@@ -117,14 +117,6 @@ typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
  * @param sb => cbuild_sb_t* -> String builder
  */
 #define cbuild_sb_clear(sb) cbuild_da_clear(sb)
-/**
- * @brief Foreach loop
- *
- * @param sb => cbuild_sb_t* -> Dynamic array
- * @param iter => NAME -> Iteration value name
- */
-#define cbuild_sb_foreach(sb, iter)                                            \
-	for (char* iter = (sb)->data; iter < ((sb)->data + (sb)->size); iter++)
 /**
  * @brief strcmp for string builder
  *
@@ -190,4 +182,11 @@ int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args);
  * @return int -> Number of bytes printed or -1 on error
  */
 int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...);
+/**
+ * @brief Foreach loop
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @param iter => NAME -> Iteration value name
+ */
+#define cbuild_sb_foreach(sb, iter) cbuild_da_foreach(sb, iter)
 #endif // __CBUILD_SB_H__

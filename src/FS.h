@@ -37,6 +37,7 @@ cbuild_da_t_ext_impl(CBuildFSchar_ptr);
 typedef cbuild_da_CBuildFSchar_ptr_t cbuild_pathlist_t;
 #define cbuild_pathlist cbuild_da_CBuildFSchar_ptr
 /**
+ * @enum cbuild_filetype_t
  * @brief Type of filesystem element
  */
 typedef enum {

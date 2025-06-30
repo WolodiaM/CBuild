@@ -45,14 +45,16 @@ typedef struct cbuild_sv_t {
  * @param size => size_t -> Length of a view
  * @return cbuild_sv_t -> New string view
  */
-cbuild_sv_t cbuild_sv_from_parts(const char* data, size_t size);
+#define cbuild_sv_from_parts(_data, _size)                                     \
+	((cbuild_sv_t){ .data = (char*)(_data), .size = (_size) })
 /**
- * @brief Create string view from c string
+ * @brief Create string view from c string (static context)
  *
  * @param cstr => const char* -> C-string
  * @return cbuild_sv_t -> New string view
  */
-cbuild_sv_t cbuild_sv_from_cstr(const char* cstr);
+#define cbuild_sv_from_cstr(cstr)                                              \
+	((cbuild_sv_t){ .data = (char*)(cstr), .size = strlen((cstr)) })
 /**
  * @brief Trim whitespaces from a string view starting from the left
  *

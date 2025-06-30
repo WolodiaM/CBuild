@@ -57,6 +57,7 @@ int           cbuild_proc_wait_code(cbuild_proc_t proc);
  */
 cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context);
 /**
+ * @struct cbuild_proc_ptr
  * @brief "Pointer" for cbuild_proc_malloc and cbuild_proc_free. Struct
  * because of munmap limitations.
  */

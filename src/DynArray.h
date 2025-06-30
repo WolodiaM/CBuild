@@ -33,7 +33,7 @@
 // Code
 #define cbuild_da_t(V, Vname)                                                  \
 	typedef void (*cbuild_da_##Vname##_append_t)(void* self, V elem);            \
-	typedef void (*cbuild_da_##Vname##_append_arr_t)(void* self, const V* arr,   \
+	typedef void (*cbuild_da_##Vname##_append_arr_t)(void* self, V* arr,   \
 	                                                 size_t size);               \
 	typedef bool (*cbuild_da_##Vname##_set_t)(void* self, size_t idx, V elem);   \
 	typedef V* (*cbuild_da_##Vname##_get_t)(void* self, size_t idx);             \
@@ -91,7 +91,7 @@
 		}                                                                          \
 		cbuild_assert(self->data != NULL, "(LIB_CBUILD_DA) Allocation failed.\n"); \
 	}                                                                            \
-	void cbuild_da_##Vname##_append_arr(void* s, const V* arr, size_t size) {    \
+	void cbuild_da_##Vname##_append_arr(void* s, V* arr, size_t size) {    \
 		cbuild_da_##Vname##_t* self = s;                                           \
 		if ((self->size + size) > self->capacity) {                                \
 			self->resize(self, self->capacity + size);                               \
@@ -170,12 +170,11 @@
  * @brief Append multiple elements to a da
  *
  * @param da => CBUILD_DA* -> Dynamic array
- * @param type => TYPE -> Type of array, limitations of C
  * @param ... => VAL -> New elements
  */
-#define cbuild_da_append_many(da, type, ...)                                   \
+#define cbuild_da_append_many(da, ...)                                   \
 	do {                                                                         \
-		type   _tmp_arr[] = { __VA_ARGS__ };                                       \
+		typeof(*((da)->data))   _tmp_arr[] = { __VA_ARGS__ };                                       \
 		size_t _count     = sizeof(_tmp_arr) / sizeof(_tmp_arr[0]);                \
 		cbuild_da_append_arr((da), _tmp_arr, _count);                              \
 	} while (0)
@@ -222,9 +221,8 @@
  * @brief Foreach loop
  *
  * @param da => CBUILD_DA* -> Dynamic array
- * @param type => TYPE -> Type of arrat. Limitations of C
  * @param iter => NAME -> Iteration value name
  */
-#define cbuild_da_foreach(da, type, iter)                                      \
-	for (type* iter = (da)->data; iter < ((da)->data + (da)->size); iter++)
+#define cbuild_da_foreach(da, iter)                                      \
+	for (typeof(*((da)->data))* iter = (da)->data; iter < ((da)->data + (da)->size); iter++)
 #endif // __CBUILD_DYN_ARRAY_H__

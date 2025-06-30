@@ -3,6 +3,7 @@
 #include "Compile.h"
 #include "DynArray.h"
 #include "FS.h"
+#include "FlagParse.h"
 #include "Log.h"
 #include "Proc.h"
 #include "StringBuilder.h"
@@ -115,12 +116,6 @@ int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...) {
 	return ret;
 }
 /* StringView.h impl */
-cbuild_sv_t cbuild_sv_from_parts(const char* data, size_t size) {
-	return (cbuild_sv_t){ .data = (char*)data, .size = size };
-}
-cbuild_sv_t cbuild_sv_from_cstr(const char* cstr) {
-	return (cbuild_sv_t){ .data = (char*)cstr, .size = strlen(cstr) };
-}
 size_t cbuild_sv_trim_left(cbuild_sv_t* sv) {
 	size_t i = 0;
 	while (i < sv->size && isspace(sv->data[i])) { i++; }
@@ -281,7 +276,7 @@ void cbuild_cmd_to_sb(cbuild_cmd_t cmd, cbuild_sb_t* sb) {
 		return;
 	}
 	for (size_t i = 0; i < cmd.size; i++) {
-		const char* tmp = cmd.data[i];
+		char* tmp = cmd.data[i];
 		cbuild_sb_append_cstr(sb, tmp);
 		if (i < cmd.size - 1) {
 			cbuild_sb_append(sb, ' ');
@@ -331,7 +326,7 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 		}
 		// Get args
 		cbuild_cmd_t argv = cbuild_cmd;
-		cbuild_da_append_arr(&argv, (const char**)cmd.data, cmd.size);
+		cbuild_da_append_arr(&argv, cmd.data, cmd.size);
 		cbuild_cmd_append(&argv, NULL);
 		// Call command
 		if (execvp(argv.data[0], (char* const*)argv.data) < 0) {
@@ -957,4 +952,495 @@ size_t cbuild_map_array_hash(const void* arr, size_t size) {
 		hash = ((hash << 5) + hash) + byte_ptr[i]; // hash * 33 + byte_ptr[i]
 	}
 	return hash;
+}
+/* FlagParse.h impl */
+cbuild_da_t_impl(char*, CBuildFlagArgList);
+struct __cbuild_int_flag_spec_t {
+	// Spec
+	/* Bit-mask
+	 * 0-1 -> Type
+	 *    - 0b00 - lopt
+	 *    - 0b01 - lopt+sopt
+	 *    - 0b10 - reserved
+	 *    - 0b11 - reserved
+	 * 2-4 -> Argument type
+	 *    - 0b000 - No arg
+	 *    - 0b001 - Argument
+	 *    - 0b010 - List
+	 *    - 0b011 - Terminator list
+	 *    - Other are reserved
+	 * 5 -> Argument optionality marker
+	 *    - 0b0 - Required
+	 *    - 0b1 - Optional
+	 * 8-15 - Reserved, always 0
+	 * 16-23 - Param 1 (list length)
+	 * 24-31 - Param 2 (tlist terminator)
+	 */
+	uint32_t                      type;
+	char                          sopt;
+	bool                          found; // State
+	char                          _padding[2];
+	void*                         param3;
+	void*                         param4;
+	cbuild_sv_t                   opt;
+	cbuild_sv_t                   description;
+	cbuild_sv_t                   type_hint;
+	cbuild_da_CBuildFlagArgList_t args; // State
+};
+#define __CBUILD_INT_FLAG_SET_TYPE(where, val) (where) |= (((val) & 3u) << 0)
+#define __CBUILD_INT_FLAG_SET_ARGT(where, val) (where) |= (((val) & 7u) << 2)
+#define __CBUILD_INT_FLAG_SET_ARGO(where, val) (where) |= (((val) & 1u) << 5)
+#define __CBUILD_INT_FLAG_SET_PRM1(where, val) (where) |= (((val) & 255u) << 16)
+#define __CBUILD_INT_FLAG_SET_PRM2(where, val) (where) |= (((val) & 255u) << 24)
+#define __CBUILD_INT_FLAG_GET_TYPE(from)       (((from) >> 0) & 0b11u)
+#define __CBUILD_INT_FLAG_GET_ARGT(from)       (((from) >> 2) & 0b111u)
+#define __CBUILD_INT_FLAG_GET_ARGO(from)       (((from) >> 5) & 0b1u)
+#define __CBUILD_INT_FLAG_GET_PRM1(from)       (((from) >> 16) & 0xFFu)
+#define __CBUILD_INT_FLAG_GET_PRM2(from)       (((from) >> 24) & 0xFFu)
+cbuild_da_t(struct __cbuild_int_flag_spec_t, CBuildFlagSpec);
+cbuild_da_t_impl(struct __cbuild_int_flag_spec_t, CBuildFlagSpec);
+struct __cbuild_int_flag_context_t {
+	const char*                   app_name;
+	bool                          pargs_separator;
+	cbuild_da_CBuildFlagSpec_t    flags;
+	cbuild_da_CBuildFlagArgList_t pargs;
+};
+static struct __cbuild_int_flag_context_t __cbuild_int_flag_context = {
+	.app_name        = NULL,
+	.pargs_separator = false,
+	.flags           = cbuild_da_CBuildFlagSpec,
+	.pargs           = cbuild_da_CBuildFlagArgList,
+};
+bool __cbuild_int_flag_first_delim_func(const cbuild_sv_t* sv, size_t idx,
+                                        void* args) {
+	if (sv->data[idx] == '\t' || sv->data[idx] == '\n' || sv->data[idx] == '\r') {
+		*((char*)args) = sv->data[idx];
+		return true;
+	} else {
+		return false;
+	}
+}
+bool __cbuild_int_flag_metadata_delim_func(const cbuild_sv_t* sv, size_t idx,
+                                           void* args) {
+	if (sv->data[idx] == '\t' || sv->data[idx] == ';') {
+		*((char*)args) = sv->data[idx];
+		return true;
+	} else {
+		return false;
+	}
+}
+void __cbuild_int_flag_parse_metadata_entry(
+		struct __cbuild_int_flag_spec_t* new_spec, size_t parse_offset,
+		cbuild_sv_t opt) {
+	static const cbuild_sv_t key_arg     = cbuild_sv_from_cstr("arg");
+	static const cbuild_sv_t key_len     = cbuild_sv_from_cstr("len");
+	static const cbuild_sv_t key_thint   = cbuild_sv_from_cstr("thint");
+	static const cbuild_sv_t key_tldelim = cbuild_sv_from_cstr("tldelim");
+	static const cbuild_sv_t arg_arg     = cbuild_sv_from_cstr("arg");
+	static const cbuild_sv_t arg_list    = cbuild_sv_from_cstr("list");
+	static const cbuild_sv_t arg_tlist   = cbuild_sv_from_cstr("tlist");
+	cbuild_sv_t              key         = cbuild_sv_chop_by_delim(&opt, '=');
+	if (cbuild_sv_cmp(key, key_arg) == 0) {
+		if (cbuild_sv_prefix(opt, arg_arg)) {
+			__CBUILD_INT_FLAG_SET_ARGT(new_spec->type, 0b001);
+		} else if (cbuild_sv_prefix(opt, arg_list)) {
+			__CBUILD_INT_FLAG_SET_ARGT(new_spec->type, 0b010);
+		} else if (cbuild_sv_prefix(opt, arg_tlist)) {
+			__CBUILD_INT_FLAG_SET_ARGT(new_spec->type, 0b011);
+		}
+		if (opt.data[opt.size - 1] == '?') {
+			__CBUILD_INT_FLAG_SET_ARGO(new_spec->type, 0b1);
+		}
+	} else if (cbuild_sv_cmp(key, key_len) == 0) {
+		__CBUILD_INT_FLAG_SET_PRM1(new_spec->type, atoi(opt.data));
+	} else if (cbuild_sv_cmp(key, key_thint) == 0) {
+		new_spec->type_hint = opt;
+	} else if (cbuild_sv_cmp(key, key_tldelim)) {
+		__CBUILD_INT_FLAG_SET_PRM2(new_spec->type, opt.data[0]);
+	} else {
+		cbuild_log(CBUILD_LOG_ERROR,
+		           "Syntax error [%zu]: Invalid metadata entry \"" CBuildSVFmt
+		           "\"!",
+		           parse_offset, CBuildSVArg(key));
+		exit(1);
+	}
+}
+void __cbuild_int_flag_parse_metadata_spec(
+		struct __cbuild_int_flag_spec_t* new_spec, cbuild_sv_t* spec,
+		size_t* parse_offset) {
+	char        delim = '\t';
+	cbuild_sv_t opt   = cbuild_sv_chop_by_func(
+      spec, __cbuild_int_flag_metadata_delim_func, &delim);
+	while (delim != '\t') {
+		if (opt.size > 0) {
+			__cbuild_int_flag_parse_metadata_entry(new_spec, *parse_offset, opt);
+		}
+		// Parse next block
+		opt = cbuild_sv_chop_by_func(spec, __cbuild_int_flag_metadata_delim_func,
+		                             &delim);
+		(*parse_offset) += (opt.size + 1);
+	}
+	__cbuild_int_flag_parse_metadata_entry(new_spec, *parse_offset, opt);
+}
+void __cbuild_int_flag_parse_cmd(cbuild_sv_t spec) {
+	static const cbuild_sv_t cmd_separator = cbuild_sv_from_cstr("separator");
+	if (cbuild_sv_prefix(spec, cmd_separator)) {
+		__cbuild_int_flag_context.pargs_separator = true;
+	}
+}
+void cbuild_flag_new(const char* spec_cstr) {
+	cbuild_sv_t                     spec     = cbuild_sv_from_cstr(spec_cstr);
+	struct __cbuild_int_flag_spec_t new_spec = { 0 };
+	if (spec.data[0] == '-') {
+		spec.data++;
+		spec.size--;
+		__cbuild_int_flag_parse_cmd(spec);
+		return;
+	}
+	// Parse long options / positional arg ID
+	char type_delim = '\0';
+	new_spec.opt    = cbuild_sv_chop_by_func(
+      &spec, __cbuild_int_flag_first_delim_func, &type_delim);
+	size_t parse_offset = new_spec.opt.size;
+	switch (type_delim) {
+	case '\t':
+		if (spec.size < 2) {
+			cbuild_log(
+					CBUILD_LOG_ERROR,
+					"Syntax error [%zu]: Expected short option name, but found nothing!",
+					parse_offset);
+			exit(1);
+		}
+		__CBUILD_INT_FLAG_SET_TYPE(new_spec.type, 0b01);
+		new_spec.sopt = spec.data[0];
+		if (spec.data[1] != '\t') {
+			cbuild_log(CBUILD_LOG_ERROR,
+			           "Syntax error [%zu]: Expected short option name but found "
+			           "more than 1 character!.",
+			           parse_offset + 2);
+			exit(1);
+		}
+		spec.data    += 2;
+		spec.size    -= 2;
+		parse_offset += 3; // Offset is one lover than real parse position
+		__attribute__((fallthrough));
+	case '\n':
+		__CBUILD_INT_FLAG_SET_TYPE(new_spec.type, 0b00);
+		__cbuild_int_flag_parse_metadata_spec(&new_spec, &spec, &parse_offset);
+		break;
+	default:
+		cbuild_log(
+				CBUILD_LOG_ERROR,
+				"Syntax error [%zu]: Invalid type specifier, expected '\\t', '\\n' "
+				", but got '%02x'!",
+				parse_offset, type_delim);
+		exit(1);
+		break;
+	}
+	new_spec.description = spec;
+	new_spec.found       = false;
+	new_spec.args        = cbuild_da_CBuildFlagArgList;
+	cbuild_da_append(&(__cbuild_int_flag_context.flags), new_spec);
+}
+struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
+	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		if ((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
+		     __CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
+		    cbuild_sv_cmp(spec->opt, opt) == 0) {
+			return spec;
+		}
+	}
+	return NULL;
+}
+struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_sopt(char opt) {
+	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		if (__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01 && spec->sopt == opt) {
+			return spec;
+		}
+	}
+	return NULL;
+}
+void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
+                                  int argc, char** argv, int* parse_ptr) {
+	// no args
+	if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b000) {
+		(*parse_ptr)--;
+		return;
+	}
+	// No args but some required
+	if (argc == *parse_ptr) {
+		if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0) {
+			char* type = "";
+			if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
+				type = "one argument";
+			} else if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010) {
+				type = "list of arguments";
+			} else if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b011) {
+				type = "list of arguments";
+			}
+			cbuild_log(CBUILD_LOG_ERROR,
+			           "(CBUILD_FLAG_PARSE) Flag \"" CBuildSVFmt
+			           "\" requires %s but none provided!",
+			           CBuildSVArg(spec->opt), type);
+			exit(1);
+		} else {
+			return;
+		}
+	}
+	// One argument
+	if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
+		char* arg = argv[*parse_ptr];
+		if (arg[0] == '-') {
+			if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0) {
+				cbuild_log(CBUILD_LOG_ERROR,
+				           "(CBUILD_FLAG_PARSE) Flag \"" CBuildSVFmt
+				           "\" requires one argument but none provided!",
+				           CBuildSVArg(spec->opt));
+				exit(1);
+			} else {
+				(*parse_ptr)--;
+				return;
+			}
+		} else {
+			cbuild_da_clear(&spec->args);
+			cbuild_da_append(&spec->args, arg);
+			return;
+		}
+	}
+	// List or TList arguments
+	while (*parse_ptr < argc) {
+		char* arg = argv[*parse_ptr];
+		// Terminate list on argument
+		if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010 && arg[0] == '-') {
+			(*parse_ptr)--;
+			break;
+		}
+		// Terminate tlist on terminator
+		if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b011 && strlen(arg) == 1 &&
+		    (char)__CBUILD_INT_FLAG_GET_PRM2(spec->type) == arg[0]) {
+			break;
+		}
+		// Append argument
+		cbuild_da_append(&spec->args, arg);
+		(*parse_ptr)++;
+	}
+	// Check args count
+	if (__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0 &&
+	    __CBUILD_INT_FLAG_GET_PRM1(spec->type) != spec->args.size) {
+		cbuild_log(CBUILD_LOG_ERROR,
+		           "(CBUILD_FLAG_PARSE) Flag \"" CBuildSVFmt
+		           "\" requires list of %d arguments, but %zu provided!",
+		           CBuildSVArg(spec->opt), __CBUILD_INT_FLAG_GET_PRM1(spec->type),
+		           spec->args.size);
+		exit(1);
+	}
+}
+void cbuild_flag_parse(int argc, char** argv) {
+	static const cbuild_sv_t arg_help    = cbuild_sv_from_cstr("help");
+	static const cbuild_sv_t arg_h       = cbuild_sv_from_cstr("h");
+	static const cbuild_sv_t arg_version = cbuild_sv_from_cstr("version");
+	static const cbuild_sv_t arg_v       = cbuild_sv_from_cstr("v");
+	static const cbuild_sv_t arg_lprefix = cbuild_sv_from_cstr("--");
+	static const cbuild_sv_t arg_sprefix = cbuild_sv_from_cstr("-");
+	__cbuild_int_flag_context.app_name   = argv[0];
+	bool parse_no_flags                  = false;
+	for (int i = 1; i < argc; i++) {
+		cbuild_sv_t arg = cbuild_sv_from_cstr(argv[i]);
+		if (!parse_no_flags && cbuild_sv_prefix(arg, arg_lprefix)) {
+			arg.size -= 2;
+			arg.data += 2;
+			// --
+			if (arg.size == 0) {
+				parse_no_flags = true;
+				if (__cbuild_int_flag_context.pargs_separator) {
+					cbuild_da_append(&__cbuild_int_flag_context.pargs, "--");
+				}
+				continue;
+			}
+			if (cbuild_sv_cmp(arg, arg_help) == 0 || cbuild_sv_cmp(arg, arg_h) == 0) {
+				cbuild_flag_help(__cbuild_int_flag_context.app_name);
+				exit(0);
+			}
+			if (cbuild_sv_cmp(arg, arg_version) == 0 ||
+			    cbuild_sv_cmp(arg, arg_v) == 0) {
+				cbuild_flag_version(__cbuild_int_flag_context.app_name);
+				exit(0);
+			}
+			struct __cbuild_int_flag_spec_t* spec = __cbuild_int_flag_get_lopt(arg);
+			if (spec == NULL) {
+				cbuild_log(CBUILD_LOG_ERROR,
+				           "(CBUILD_FLAG_PARSE) Invalid long flag \"" CBuildSVFmt "\"!",
+				           CBuildSVArg(arg));
+				cbuild_flag_help(__cbuild_int_flag_context.app_name);
+				exit(1);
+			}
+			spec->found = true;
+			i++;
+			__cbuild_int_parse_flag_args(spec, argc, argv, &i);
+		} else if (!parse_no_flags && cbuild_sv_prefix(arg, arg_sprefix)) {
+			arg.size--;
+			arg.data++;
+			size_t sopts_len = strlen(arg.data);
+			for (size_t j = 0; j < sopts_len; j++) {
+				char                             opt  = arg.data[j];
+				struct __cbuild_int_flag_spec_t* spec = __cbuild_int_flag_get_sopt(opt);
+				if (spec == NULL) {
+					cbuild_log(CBUILD_LOG_ERROR,
+					           "(CBUILD_FLAG_PARSE) Invalid short flag \"%c\"!", opt);
+					cbuild_flag_help(__cbuild_int_flag_context.app_name);
+					exit(1);
+				}
+				spec->found = true;
+				i++;
+				if (j == strlen(arg.data) - 1) {
+					__cbuild_int_parse_flag_args(spec, argc, argv, &i);
+				} else {
+					if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) != 0b000 &&
+					    __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b0) {
+						char* type = "";
+						if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
+							type = "one argument";
+						} else if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010) {
+							type = "list of arguments";
+						} else if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b011) {
+							type = "list of arguments";
+						}
+						cbuild_log(CBUILD_LOG_ERROR,
+						           "(CBUILD_FLAG_PARSE) Flag \"%c\" requires %s but none "
+						           "provided!",
+						           spec->sopt, type);
+						exit(1);
+					} else {
+						i--;
+					}
+				}
+			}
+		} else {
+			cbuild_da_append(&__cbuild_int_flag_context.pargs, argv[i]);
+		}
+	}
+}
+char* __cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
+	cbuild_sb_t sb = cbuild_sb;
+	// Short opt
+	if (__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) {
+		cbuild_sb_append_cstr(&sb, "\t-");
+		cbuild_sb_append(&sb, spec->sopt);
+		cbuild_sb_append_cstr(&sb, ", ");
+	} else {
+		cbuild_sb_append_cstr(&sb, "\t");
+	}
+	// Long opt
+	cbuild_sb_append_cstr(&sb, "--");
+	cbuild_sb_append_sv(&sb, spec->opt);
+	// For normal args
+	switch (__CBUILD_INT_FLAG_GET_ARGT(spec->type)) {
+	case 0b000: break;
+	case 0b001:
+		if (spec->type_hint.size > 0) {
+			cbuild_sb_append_cstr(&sb, " <");
+			cbuild_sb_append_sv(&sb, spec->type_hint);
+			if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1) {
+				cbuild_sb_append(&sb, '?');
+			}
+			cbuild_sb_append(&sb, '>');
+		}
+		break;
+	case 0b010:
+		if (spec->type_hint.size > 0 ||
+		    __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1 ||
+		    __CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
+			cbuild_sb_append_cstr(&sb, " <");
+		}
+		if (spec->type_hint.size > 0) {
+			cbuild_sb_append_sv(&sb, spec->type_hint);
+		}
+		if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1) {
+			cbuild_sb_append(&sb, '?');
+		}
+		if (__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
+			cbuild_sb_append(&sb, ':');
+			cbuild_sb_appendf(&sb, "%d", (int)__CBUILD_INT_FLAG_GET_PRM1(spec->type));
+		}
+		if (spec->type_hint.size > 0 ||
+		    __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1 ||
+		    __CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
+			cbuild_sb_append(&sb, '>');
+		}
+		break;
+	case 0b011:
+		cbuild_sb_append_cstr(&sb, " <");
+		if (spec->type_hint.size > 0) {
+			cbuild_sb_append_sv(&sb, spec->type_hint);
+		}
+		if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1) {
+			cbuild_sb_append(&sb, '?');
+		}
+		if (__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
+			cbuild_sb_append(&sb, ':');
+			cbuild_sb_appendf(&sb, "%d", (int)__CBUILD_INT_FLAG_GET_PRM1(spec->type));
+		}
+		cbuild_sb_append(&sb, '|');
+		cbuild_sb_append(&sb, (char)__CBUILD_INT_FLAG_GET_PRM2(spec->type));
+		cbuild_sb_append(&sb, '>');
+		break;
+	default: CBUILD_UNREACHABLE("Flag argument type help printer."); break;
+	}
+	// Null terminator
+	cbuild_sb_append_null(&sb);
+	return sb.data;
+}
+size_t __cbuild_int_flag_get_flgh_len(struct __cbuild_int_flag_spec_t* spec) {
+	char*  str = __cbuild_int_flag_help_fmt(spec);
+	size_t ret = strlen(str);
+	free(str);
+	return ret;
+}
+void cbuild_flag_flg_help() {
+	// Get length of longest option
+	size_t opt_len = 14;
+	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		size_t new_opt_len = __cbuild_int_flag_get_flgh_len(spec);
+		opt_len            = new_opt_len > opt_len ? new_opt_len : opt_len;
+	}
+	// Help for flags
+	__CBUILD_PRINT("Flags:\n");
+	// Help
+	int written = __CBUILD_PRINT("\t-h, --help");
+	__CBUILD_PRINTF("%-*s", (int)((opt_len + 2) - written), "");
+	__CBUILD_PRINT("Shows app help (this message).\n");
+	// Version
+	written = __CBUILD_PRINT("\t-v, --version");
+	__CBUILD_PRINTF("%-*s", (int)((opt_len + 2) - written), "");
+	__CBUILD_PRINT("Shows app version information.\n");
+	// Defined flags
+	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		char* opt     = __cbuild_int_flag_help_fmt(spec);
+		int   written = __CBUILD_PRINTF("%s", opt);
+		free(opt);
+		__CBUILD_PRINTF("%-*s", (int)((opt_len + 2) - written), "");
+		__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
+		__CBUILD_PRINT("\n");
+	}
+}
+cbuild_da_CBuildFlagArgList_t* cbuild_flag_get_pargs(void) {
+	return &__cbuild_int_flag_context.pargs;
+}
+cbuild_flag_arglist_t* cbuild_flag_get_flag(const char* opt) {
+	struct __cbuild_int_flag_spec_t* spec =
+			__cbuild_int_flag_get_lopt(cbuild_sv_from_cstr(opt));
+	if (spec == NULL) {
+		return NULL;
+	}
+	return &spec->args;
+}
+char* cbuild_flag_app_name(void) {
+	return (char*)__cbuild_int_flag_context.app_name;
+}
+__attribute__((weak)) void cbuild_flag_help(const char* name) {
+	__CBUILD_PRINTF("Usage: %s [OPTIONS]\n\n", name);
+	cbuild_flag_flg_help();
+}
+__attribute__((weak)) void cbuild_flag_version(const char* name) {
+	__CBUILD_PRINTF("%s - v1.0\n", name);
 }

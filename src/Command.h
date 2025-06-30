@@ -60,7 +60,7 @@ typedef struct {
  * @param vals_cnt => size_t -> Count of new tokens
  */
 #define cbuild_cmd_append_arr(cmd, vals, vals_cnt)                             \
-	cbuild_da_append_arr(cmd, (const char**)vals, vals_cnt)
+	cbuild_da_append_arr(cmd, vals, vals_cnt)
 /**
  * @brief Append new args to cmd
  *
@@ -68,7 +68,7 @@ typedef struct {
  * @param ... => char* -> New tokens
  */
 #define cbuild_cmd_append_many(cmd, ...)                                       \
-	cbuild_da_append_many(cmd, const char*, __VA_ARGS__)
+	cbuild_da_append_many(cmd, __VA_ARGS__)
 /**
  * @brief  Clear command buffer
  *
