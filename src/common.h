@@ -138,7 +138,10 @@
  * --------------------------------------------
  * 2025-07-01  v1.7    Fix in build script
  *   General [bugfix]
- *     - Add 'FlagParse.h' into a	output library ;)
+ *     - Add 'FlagParse.h' into a output library ;)
+ * --------------------------------------------
+ *   Compile.h [bugfix]
+ *     - New file now explicitly marked as executable
  */
 // Code
 #ifndef __CBUILD_COMMON_H__

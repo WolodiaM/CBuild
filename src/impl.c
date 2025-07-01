@@ -861,6 +861,14 @@ const char* cbuild_path_base(const char* path) {
 	return ret;
 }
 /* Compile.h */
+#ifdef CBUILD_API_POSIX
+void __cbuild_compile_mark_exec(const char* file) {
+	if (chmod(file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH |
+	                    S_IXOTH) != 0) {
+		cbuild_log(CBUILD_LOG_ERROR, "Cannot mark file as executable!");
+	}
+}
+#endif // CBUILD_API_POSIX
 void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 	char*       bname_new = cbuild_shift(argv, argc);
 	cbuild_sb_t bname_old = cbuild_sb;
@@ -890,6 +898,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 	if (!cbuild_cmd_sync(cmd)) {
 		cbuild_file_rename(bname_old.data, bname_new);
 	}
+	__cbuild_compile_mark_exec(bname_new);
 	cmd.size = 0;
 	cbuild_cmd_append(&cmd, bname_new);
 	cbuild_cmd_append_arr(&cmd, argv, (size_t)argc);
