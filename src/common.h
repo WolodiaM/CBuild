@@ -121,7 +121,7 @@
  *     - New module - basic re-sizable stack implementation
  *   DLload.h [new]
  *     - Small wrapper for runtime loading of dynamic libraries, first code to
- *       support WinAPI
+ *       support 'WinAPI'
  *   FlagParse.h [new]
  *     - CLI flag parser library
  *     - Supports long and short options
@@ -135,6 +135,10 @@
  *     - More integrated logging
  *     - Slight formatting change
  *     - Proper use of asserts in place of older 'exit(0);'
+ * --------------------------------------------
+ * 2025-07-01  v1.7    Fix in build script
+ *   General [bugfix]
+ *     - Add 'FlagParse.h' into a	output library ;)
  */
 // Code
 #ifndef __CBUILD_COMMON_H__

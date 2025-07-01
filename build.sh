@@ -75,6 +75,8 @@ pack() {
 	call_cmd_ns pack_header_strip "Compile.h"
 	# Runtime dynamic library loaded
 	call_cmd_ns pack_header_strip "DLload.h"
+	# CLI flag parser
+	call_cmd_ns	pack_header_strip "FlagParse.h"
 	# Implementation
 	call_cmd_ns pack_ifdef
 	call_cmd_ns pack_header_strip "impl.c"
