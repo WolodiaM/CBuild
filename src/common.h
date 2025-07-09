@@ -139,9 +139,20 @@
  * 2025-07-01  v1.7    Fix in build script
  *   General [bugfix]
  *     - Add 'FlagParse.h' into a output library ;)
- * --------------------------------------------
  *   Compile.h [bugfix]
  *     - New file now explicitly marked as executable
+ *     - Allow adding compile argument for self-rebuild
+ *     - Changed API of 'cbuild_cmd_to_sb' to match other 'cbuild_*_to_*'
+ *       functions
+ *   FlagParse.h [bugfix]
+ *     - Fixed short flags for help and version
+ *     - Fixed 'cbuild_flag_get_flag' to actually return NULL if flag was not
+ *       specified.
+ *   FS.h [change]
+ *     - Different implementation for 'cbuild_dir_list'
+ *     - '.' and '..' now excluded
+ *     - Entries now sorted alphabetically
+ *     - Disable file descriptor auto inheritance on exec by default
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -375,7 +386,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 #define cbuild_shift_expect(argv, argc, ...)                                   \
 	(cbuild_assert((argc) > 0, __VA_ARGS__), (argc)--, *(argv)++)
 // Version
-#define CBUILD_VERSION        "v1.6"
+#define CBUILD_VERSION        "v1.7"
 #define CBUILD_VERSION_MAJOR  1
-#define CBUILD_2VERSION_MINOR 6
+#define CBUILD_2VERSION_MINOR 7
 #endif // __CBUILD_COMMON_H__

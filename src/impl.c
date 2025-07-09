@@ -12,11 +12,11 @@
 #include "common.h"
 /* misc code */
 #if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
-		defined(CBUILD_OS_WINDOWS_CYGWIN)
-// GlibC, musl, BSD, Cygwin
-extern const char* __progname;
+	defined(CBUILD_OS_WINDOWS_CYGWIN)
+	// GlibC, musl, BSD, Cygwin
+	extern const char *__progname;
 #endif
-const char* __cbuild_progname(void) {
+const char *__cbuild_progname(void) {
 #if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
 		defined(CBUILD_OS_WINDOWS_CYGWIN)
 	return __progname;
@@ -29,12 +29,12 @@ const char* __cbuild_progname(void) {
 }
 /* common.h impl */
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
-                     const char* expr, ...) {
+  const char *expr, ...) {
 	__CBUILD_ERR_PRINTF("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n",
-	                    __cbuild_progname(), file, line, func, expr);
+	  __cbuild_progname(), file, line, func, expr);
 	va_list args;
 	va_start(args, expr);
-	const char* fmt = va_arg(args, char*);
+	const char *fmt = va_arg(args, char*);
 	__CBUILD_ERR_VPRINTF(fmt, args);
 	va_end(args);
 	__CBUILD_ERR_FLUSH();
@@ -43,62 +43,64 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 /* StringBuilder.h impl */
 cbuild_da_t_impl(char, CBuildSBchar);
 int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
-	if (a->size < b->size) {
+	if(a->size < b->size) {
 		return -2;
 	}
-	if (a->size > b->size) {
+	if(a->size > b->size) {
 		return 2;
 	}
 	int ret = memcmp(a->data, b->data, a->size);
-	if (ret == 0) {
+	if(ret == 0) {
 		return 0;
-	} else if (ret < 0) {
+	} else if(ret < 0) {
 		return -1;
-	} else if (ret > 0) {
+	} else if(ret > 0) {
 		return 1;
 	}
 	return 0;
 }
 int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b) {
-	if (a->size < b->size) {
+	if(a->size < b->size) {
 		return -2;
 	}
-	if (a->size > b->size) {
+	if(a->size > b->size) {
 		return 2;
 	}
-	for (size_t i = 0; i < a->size; i++) {
+	for(size_t i = 0; i < a->size; i++) {
 		char ac =
-				'A' <= a->data[i] && a->data[i] <= 'Z' ? a->data[i] + 32 : a->data[i];
+		  'A' <= a->data[i] && a->data[i] <= 'Z' ? a->data[i] + 32 : a->data[i];
 		char bc =
-				'A' <= b->data[i] && b->data[i] <= 'Z' ? b->data[i] + 32 : b->data[i];
+		  'A' <= b->data[i] && b->data[i] <= 'Z' ? b->data[i] + 32 : b->data[i];
 		int diff = ac - bc;
-		if (diff < 0) {
+		if(diff < 0) {
 			return -1;
-		} else if (diff > 0) {
+		} else if(diff > 0) {
 			return 1;
 		}
 	}
 	return 0;
 }
 cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv) {
-	cbuild_sb_t ret = CBuildStringBuilder;
+	cbuild_sb_t ret = cbuild_sb;
 	cbuild_sb_append_arr(&ret, sv.data, sv.size);
 	return ret;
 }
 cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb) {
-	return (cbuild_sv_t){ .data = sb->data, .size = sb->size };
+	return (cbuild_sv_t) {
+		.data = sb->data, .size = sb->size
+	};
 }
 int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args) {
 	va_list args_copy;
 	va_copy(args_copy, args);
 	char buff[CBUILD_SB_QUICK_SPRINTF_SIZE];
 	int  ret = vsnprintf(buff, CBUILD_SB_QUICK_SPRINTF_SIZE, fmt, args);
-	if (ret < 0) {
+	if(ret < 0) {
 		va_end(args_copy);
 		return ret;
 	}
-	if ((size_t)ret >= CBUILD_SB_QUICK_SPRINTF_SIZE) {
-		char* buff1 = __CBUILD_MALLOC(ret + 1);
+	if((size_t)ret >= CBUILD_SB_QUICK_SPRINTF_SIZE) {
+		char *buff1 = __CBUILD_MALLOC(ret + 1);
 		cbuild_assert(buff1 != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		vsnprintf(buff1, ret + 1, fmt, args_copy);
 		cbuild_sb_append_cstr(sb, buff1);
@@ -118,14 +120,18 @@ int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...) {
 /* StringView.h impl */
 size_t cbuild_sv_trim_left(cbuild_sv_t* sv) {
 	size_t i = 0;
-	while (i < sv->size && isspace(sv->data[i])) { i++; }
+	while(i < sv->size && isspace(sv->data[i])) {
+		i++;
+	}
 	sv->data += i;
 	sv->size -= i;
 	return i;
 }
 size_t cbuild_sv_trim_right(cbuild_sv_t* sv) {
 	size_t i = sv->size;
-	while (i > 0 && isspace(sv->data[i - 1])) { i--; }
+	while(i > 0 && isspace(sv->data[i - 1])) {
+		i--;
+	}
 	size_t tmp  = sv->size - i;
 	sv->size   -= tmp;
 	return tmp;
@@ -136,17 +142,17 @@ size_t cbuild_sv_trim(cbuild_sv_t* sv) {
 	return ret;
 }
 cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size) {
-	if (size > sv->size) {
+	if(size > sv->size) {
 		size = sv->size;
 	}
-	char* tmp  = sv->data;
+	char *tmp  = sv->data;
 	sv->data  += size;
 	sv->size  -= size;
 	return cbuild_sv_from_parts(tmp, size);
 }
 cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim) {
-	char* chrptr = memchr(sv->data, delim, sv->size);
-	if (chrptr != NULL) {
+	char *chrptr = memchr(sv->data, delim, sv->size);
+	if(chrptr != NULL) {
 		size_t      i    = (size_t)(chrptr - sv->data);
 		cbuild_sv_t ret  = cbuild_sv_from_parts(sv->data, i);
 		sv->data        += i + 1;
@@ -156,95 +162,97 @@ cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim) {
 	return cbuild_sv_chop(sv, sv->size);
 }
 cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
-	if (delim.size == 0 || delim.size > sv->size) {
+	if(delim.size == 0 || delim.size > sv->size) {
 		return cbuild_sv_from_parts(sv->data, 0);
 	}
-	char*  chrptr = sv->data;
+	char  *chrptr = sv->data;
 	size_t i      = 0;
 	do {
 		chrptr = memchr(chrptr + 1, delim.data[0], sv->size);
-		if (chrptr != NULL && sv->size - i >= delim.size &&
-		    memcmp(chrptr, delim.data, delim.size) == 0) {
+		if(chrptr != NULL && sv->size - i >= delim.size &&
+		  memcmp(chrptr, delim.data, delim.size) == 0) {
 			i                = (size_t)(chrptr - sv->data);
 			cbuild_sv_t ret  = cbuild_sv_from_parts(sv->data, i);
 			sv->data        += delim.size + i;
 			sv->size        -= delim.size + i;
 			return ret;
 		}
-	} while (chrptr != NULL);
+	} while(chrptr != NULL);
 	return cbuild_sv_chop(sv, sv->size);
 }
 cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
-                                   void* args) {
+  void *args) {
 	size_t i = 0;
-	while (i <= sv->size && !delim(sv, i, args)) { i++; }
-	if (i >= sv->size) {
+	while(i <= sv->size && !delim(sv, i, args)) {
+		i++;
+	}
+	if(i >= sv->size) {
 		return cbuild_sv_chop(sv, i);
 	}
-	char* tmp  = sv->data;
+	char *tmp  = sv->data;
 	sv->data  += i + 1;
 	sv->size  -= i + 1;
 	return cbuild_sv_from_parts(tmp, i);
 }
 int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b) {
-	if (a.size < b.size) {
+	if(a.size < b.size) {
 		return -2;
 	}
-	if (a.size > b.size) {
+	if(a.size > b.size) {
 		return 2;
 	}
 	int ret = memcmp(a.data, b.data, a.size);
-	if (ret == 0) {
+	if(ret == 0) {
 		return 0;
-	} else if (ret < 0) {
+	} else if(ret < 0) {
 		return -1;
-	} else if (ret > 0) {
+	} else if(ret > 0) {
 		return 1;
 	}
 	return 0;
 }
 int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b) {
-	if (a.size < b.size) {
+	if(a.size < b.size) {
 		return -2;
 	}
-	if (a.size > b.size) {
+	if(a.size > b.size) {
 		return 2;
 	}
-	for (size_t i = 0; i < a.size; i++) {
+	for(size_t i = 0; i < a.size; i++) {
 		char ac = 'A' <= a.data[i] && a.data[i] <= 'Z' ? a.data[i] + 32 : a.data[i];
 		char bc = 'A' <= b.data[i] && b.data[i] <= 'Z' ? b.data[i] + 32 : b.data[i];
 		int  diff = ac - bc;
-		if (diff < 0) {
+		if(diff < 0) {
 			return -1;
-		} else if (diff > 0) {
+		} else if(diff > 0) {
 			return 1;
 		}
 	}
 	return 0;
 }
 bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix) {
-	if (sv.size < prefix.size) {
+	if(sv.size < prefix.size) {
 		return false;
 	}
 	return cbuild_sv_cmp(cbuild_sv_from_parts(sv.data, prefix.size), prefix) == 0;
 }
 bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix) {
-	if (sv.size < suffix.size) {
+	if(sv.size < suffix.size) {
 		return false;
 	}
 	return cbuild_sv_cmp(
-						 cbuild_sv_from_parts(sv.data + sv.size - suffix.size, suffix.size),
-						 suffix) == 0;
+	    cbuild_sv_from_parts(sv.data + sv.size - suffix.size, suffix.size),
+	    suffix) == 0;
 }
 size_t cbuild_sv_find(cbuild_sv_t sv, char c) {
-	char* chrptr = memchr(sv.data, c, sv.size);
-	if (chrptr == NULL) {
-		return (size_t)-1;
+	char *chrptr = memchr(sv.data, c, sv.size);
+	if(chrptr == NULL) {
+		return (size_t) -1;
 	}
 	return chrptr - sv.data;
 }
 size_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
-	char* chrptr = sv.data;
+	char *chrptr = sv.data;
 #if defined(CBUILD_API_POSIX) &&                                               \
 		(defined(_GNU_SOURCE) || defined(__musl__) || defined(CBUILD_OS_MACOS) ||  \
      defined(CBUILD_OS_BSD))
@@ -253,74 +261,75 @@ size_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
 	chrptr += sv.size;
 	do {
 		chrptr--;
-		if (*chrptr == c) {
+		if(*chrptr == c) {
 			goto loop_end;
 		}
-	} while (chrptr != sv.data);
+	} while(chrptr != sv.data);
 	chrptr = NULL;
 loop_end:
 #endif
-	if (chrptr == NULL) {
-		return (size_t)-1;
+	if(chrptr == NULL) {
+		return (size_t) -1;
 	}
 	return chrptr - sv.data;
 }
 bool cbuild_sv_contains(cbuild_sv_t sv, char c) {
-	return cbuild_sv_find(sv, c) != (size_t)-1;
+	return cbuild_sv_find(sv, c) != (size_t) -1;
 }
 /* Command.h impl */
 cbuild_da_t_impl(char*, CBuildCMDchar_ptr);
-void cbuild_cmd_to_sb(cbuild_cmd_t cmd, cbuild_sb_t* sb) {
-	if (cmd.size < 1) {
-		cbuild_sb_clear(sb);
-		return;
+cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
+	cbuild_sb_t sb = cbuild_sb;
+	if(cmd.size < 1) {
+		return sb;
 	}
-	for (size_t i = 0; i < cmd.size; i++) {
-		char* tmp = cmd.data[i];
-		cbuild_sb_append_cstr(sb, tmp);
-		if (i < cmd.size - 1) {
-			cbuild_sb_append(sb, ' ');
+	for(size_t i = 0; i < cmd.size; i++) {
+		char *tmp = cmd.data[i];
+		cbuild_sb_append_cstr(&sb, tmp);
+		if(i < cmd.size - 1) {
+			cbuild_sb_append(&sb, ' ');
 		}
 	}
+	return sb;
 }
 #if defined(CBUILD_API_POSIX)
 cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
-	if (cmd.size < 1) {
+	if(cmd.size < 1) {
 		cbuild_log(CBUILD_LOG_ERROR, "Empty command is requested to be executed!");
 		return CBUILD_INVALID_PROC;
 	}
 	cbuild_proc_t proc = fork();
-	if (proc < 0) {
+	if(proc < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
-		           strerror(errno));
+		  strerror(errno));
 		return CBUILD_INVALID_PROC;
 	}
-	if (proc == 0) {
+	if(proc == 0) {
 		fflush(NULL);
-		if (fd.fdstdin != CBUILD_INVALID_FD) {
-			if (dup2(fd.fdstdin, STDIN_FILENO) < 0) {
+		if(fd.fdstdin != CBUILD_INVALID_FD) {
+			if(dup2(fd.fdstdin, STDIN_FILENO) < 0) {
 				cbuild_log(
-						CBUILD_LOG_ERROR,
-						"Cannot redirect stdin inside of a child process, error: \"%s\"",
-						strerror(errno));
+				  CBUILD_LOG_ERROR,
+				  "Cannot redirect stdin inside of a child process, error: \"%s\"",
+				  strerror(errno));
 				exit(1);
 			}
 		}
-		if (fd.fdstdout != CBUILD_INVALID_FD) {
-			if (dup2(fd.fdstdout, STDOUT_FILENO) < 0) {
+		if(fd.fdstdout != CBUILD_INVALID_FD) {
+			if(dup2(fd.fdstdout, STDOUT_FILENO) < 0) {
 				cbuild_log(
-						CBUILD_LOG_ERROR,
-						"Cannot redirect stdout inside of a child process, error: \"%s\"",
-						strerror(errno));
+				  CBUILD_LOG_ERROR,
+				  "Cannot redirect stdout inside of a child process, error: \"%s\"",
+				  strerror(errno));
 				exit(1);
 			}
 		}
-		if (fd.fdstderr != CBUILD_INVALID_FD) {
-			if (dup2(fd.fdstderr, STDERR_FILENO) < 0) {
+		if(fd.fdstderr != CBUILD_INVALID_FD) {
+			if(dup2(fd.fdstderr, STDERR_FILENO) < 0) {
 				cbuild_log(
-						CBUILD_LOG_ERROR,
-						"Cannot redirect stderr inside of a child process, error: \"%s\"",
-						strerror(errno));
+				  CBUILD_LOG_ERROR,
+				  "Cannot redirect stderr inside of a child process, error: \"%s\"",
+				  strerror(errno));
 				exit(1);
 			}
 		}
@@ -329,10 +338,10 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 		cbuild_da_append_arr(&argv, cmd.data, cmd.size);
 		cbuild_cmd_append(&argv, NULL);
 		// Call command
-		if (execvp(argv.data[0], (char* const*)argv.data) < 0) {
+		if(execvp(argv.data[0], (char * const *)argv.data) < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
-			           "Cannot execute command in child process, error: \"%s\"",
-			           strerror(errno));
+			  "Cannot execute command in child process, error: \"%s\"",
+			  strerror(errno));
 			exit(1);
 		}
 		exit(0);
@@ -349,21 +358,21 @@ void __cbuild_log_fmt(CBuildLogLevel level) {
 	time_t     t       = time(NULL);
 	struct tm* tm_info = localtime(&t);
 	__CBUILD_ERR_PRINTF("[%02d:%02d:%02d] ", tm_info->tm_hour, tm_info->tm_min,
-	                    tm_info->tm_sec);
-	switch (level) {
+	  tm_info->tm_sec);
+	switch(level) {
 	case CBUILD_LOG_NO_LOGS: break;
 	case CBUILD_LOG_ERROR:
 		__CBUILD_ERR_PRINT(
-				CBUILD_TERM_FG(CBUILD_TERM_RED) "[ERROR]" CBUILD_TERM_RESET " ");
+		  CBUILD_TERM_FG(CBUILD_TERM_RED) "[ERROR]" CBUILD_TERM_RESET " ");
 		break;
 	case CBUILD_LOG_WARN:
 		__CBUILD_ERR_PRINT(
-				CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "[WARN]" CBUILD_TERM_RESET " ");
+		  CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "[WARN]" CBUILD_TERM_RESET " ");
 		break;
 	case CBUILD_LOG_INFO: __CBUILD_ERR_PRINT("[INFO] "); break;
 	case CBUILD_LOG_TRACE:
 		__CBUILD_ERR_PRINT(
-				CBUILD_TERM_FG(CBUILD_TERM_BRBLACK) "[TRACE]" CBUILD_TERM_RESET " ");
+		  CBUILD_TERM_FG(CBUILD_TERM_BRBLACK) "[TRACE]" CBUILD_TERM_RESET " ");
 		break;
 	case CBUILD_LOG_PRINT: break;
 	default              : break;
@@ -378,13 +387,13 @@ void cbuild_log(CBuildLogLevel level, const char* fmt, ...) {
 	va_end(args);
 }
 void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
-	if (level == CBUILD_LOG_NO_LOGS) {
+	if(level == CBUILD_LOG_NO_LOGS) {
 		return;
 	}
-	if (level > __CBUILD_LOG_MIN_LEVEL) {
+	if(level > __CBUILD_LOG_MIN_LEVEL) {
 		return;
 	}
-	if (level < CBUILD_LOG_PRINT) {
+	if(level < CBUILD_LOG_PRINT) {
 		__CBUILD_LOG_FMT(level);
 		__CBUILD_ERR_VPRINTF(fmt, args);
 		__CBUILD_ERR_PRINT("\n");
@@ -396,44 +405,50 @@ void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
 void cbuild_log_set_min_level(CBuildLogLevel level) {
 	__CBUILD_LOG_MIN_LEVEL = level;
 }
-void cbuild_log_set_fmt(CBuildLogFormatter fmt) { __CBUILD_LOG_FMT = fmt; }
+void cbuild_log_set_fmt(CBuildLogFormatter fmt) {
+	__CBUILD_LOG_FMT = fmt;
+}
 /* Proc.h impl */
 #if defined(CBUILD_API_POSIX)
 int cbuild_proc_wait_code(cbuild_proc_t proc) {
-	if (proc == CBUILD_INVALID_PROC) {
+	if(proc == CBUILD_INVALID_PROC) {
 		return INT_MIN;
 	}
-	while (true) {
+	while(true) {
 		int status = 0;
-		if (waitpid(proc, &status, 0) < 0) {
+		if(waitpid(proc, &status, 0) < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
-			           "Cannot wait for child process (pid %d), error: \"%s\"", proc,
-			           strerror(errno));
+			  "Cannot wait for child process (pid %d), error: \"%s\"", proc,
+			  strerror(errno));
 			abort();
 		}
-		if (WIFEXITED(status)) {
+		if(WIFEXITED(status)) {
 			int code = WEXITSTATUS(status);
 			return code;
 		}
-		if (WIFSIGNALED(status)) {
+		if(WIFSIGNALED(status)) {
 			cbuild_log(CBUILD_LOG_ERROR,
-			           "Process (pid %d) was terminated by signal \"%d\"", proc,
-			           WTERMSIG(status));
+			  "Process (pid %d) was terminated by signal \"%d\"", proc,
+			  WTERMSIG(status));
 			return INT_MAX;
 		}
 	}
 }
 cbuild_proc_ptr_t cbuild_proc_malloc(size_t n) {
-	void* ptr =
-			mmap(NULL, n, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-	if (ptr == MAP_FAILED) {
-		return (cbuild_proc_ptr_t){ .ptr = NULL, .size = 0 };
+	void *ptr =
+	  mmap(NULL, n, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+	if(ptr == MAP_FAILED) {
+		return (cbuild_proc_ptr_t) {
+			.ptr = NULL, .size = 0
+		};
 	} else {
-		return (cbuild_proc_ptr_t){ .ptr = ptr, .size = n };
+		return (cbuild_proc_ptr_t) {
+			.ptr = ptr, .size = n
+		};
 	}
 }
 void cbuild_proc_free(cbuild_proc_ptr_t ptr) {
-	if (ptr.ptr != NULL) {
+	if(ptr.ptr != NULL) {
 		munmap(ptr.ptr, ptr.size);
 	}
 }
@@ -441,12 +456,12 @@ void cbuild_proc_free(cbuild_proc_ptr_t ptr) {
 // could be used.
 cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context) {
 	cbuild_proc_t proc = fork();
-	if (proc < 0) {
+	if(proc < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
-		           strerror(errno));
+		  strerror(errno));
 		return CBUILD_INVALID_PROC;
 	}
-	if (proc == 0) {
+	if(proc == 0) {
 		int code = callback(context);
 		exit(code);
 	}
@@ -459,75 +474,79 @@ bool cbuild_proc_wait(cbuild_proc_t proc) {
 /* FS.h */
 cbuild_da_t_impl(char*, CBuildFSchar_ptr);
 bool cbuild_fd_close(cbuild_fd_t fd) {
-	if (fd == CBUILD_INVALID_FD) {
+	if(fd == CBUILD_INVALID_FD) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Invalid file descriptor passed to close, error: \"%s\"",
-		           strerror(errno));
+		  "Invalid file descriptor passed to close, error: \"%s\"",
+		  strerror(errno));
 		return false;
 	}
 	return close(fd) < 0;
 }
 cbuild_fd_t cbuild_fd_open_read(const char* path) {
 	cbuild_fd_t fd = open(path, O_RDONLY);
-	if (fd < 0) {
+	if(fd < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Cannot open file \"%s\" for reading, error: \"%s\"", path,
-		           strerror(errno));
+		  "Cannot open file \"%s\" for reading, error: \"%s\"", path,
+		  strerror(errno));
 		return CBUILD_INVALID_FD;
 	}
+	fcntl(fd, F_SETFD, FD_CLOEXEC);
 	return fd;
 }
 cbuild_fd_t cbuild_fd_open_write(const char* path) {
 	cbuild_fd_t fd = open(path, O_WRONLY | O_CREAT | O_TRUNC,
-	                      S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	if (fd < 0) {
+	    S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	if(fd < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Cannot open file \"%s\" for reading, error: \"%s\"", path,
-		           strerror(errno));
+		  "Cannot open file \"%s\" for reading, error: \"%s\"", path,
+		  strerror(errno));
 		return CBUILD_INVALID_FD;
 	}
+	fcntl(fd, F_SETFD, FD_CLOEXEC);
 	return fd;
 }
 bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write) {
 	cbuild_fd_t fds[2];
 	int         ret = pipe(fds);
-	if (ret < 0) {
+	if(ret < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot create pipe, error: \"%s\"",
-		           strerror(errno));
+		  strerror(errno));
 		*read  = CBUILD_INVALID_FD;
 		*write = CBUILD_INVALID_FD;
 		return false;
 	}
 	*read  = fds[0];
 	*write = fds[1];
+	fcntl(*read, F_SETFD, FD_CLOEXEC);
+	fcntl(*write, F_SETFD, FD_CLOEXEC);
 	return true;
 }
 bool cbuild_file_read(const char* path, cbuild_sb_t* data) {
 	cbuild_fd_t fd = cbuild_fd_open_read(path);
-	if (CBUILD_INVALID_FD == fd) {
+	if(CBUILD_INVALID_FD == fd) {
 		return false;
 	}
 	struct stat statbuff;
-	if (stat(path, &statbuff) < 0) {
+	if(stat(path, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"", path,
-		           strerror(errno));
+		  strerror(errno));
 		cbuild_fd_close(fd);
 		return false;
 	}
 	size_t size = statbuff.st_size;
 	cbuild_sb_resize(data, size + 1);
-	if (data->data == NULL) {
+	if(data->data == NULL) {
 		cbuild_log(
-				CBUILD_LOG_ERROR,
-				"Cannot allocate memory for a file, %zu bytes requested, error: \"%s\"",
-				size, strerror(errno));
+		  CBUILD_LOG_ERROR,
+		  "Cannot allocate memory for a file, %zu bytes requested, error: \"%s\"",
+		  size, strerror(errno));
 		cbuild_fd_close(fd);
 		return false;
 	}
 	ssize_t len = read(fd, data->data, size);
-	if (len < 0) {
+	if(len < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot read file, error: \"%s\"",
-		           strerror(errno));
+		  strerror(errno));
 		cbuild_fd_close(fd);
 		return false;
 	}
@@ -538,17 +557,17 @@ bool cbuild_file_read(const char* path, cbuild_sb_t* data) {
 }
 bool cbuild_file_write(const char* path, cbuild_sb_t* data) {
 	cbuild_fd_t fd = cbuild_fd_open_write(path);
-	if (CBUILD_INVALID_FD == fd) {
+	if(CBUILD_INVALID_FD == fd) {
 		return false;
 	}
-	char*   buf = data->data;
+	char   *buf = data->data;
 	ssize_t cnt = data->size;
-	while (cnt > 0) {
+	while(cnt > 0) {
 		ssize_t written = write(fd, buf, cnt);
-		if (written < 0) {
+		if(written < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
-			           "Wrror while writing to file \"%s\", error: \"%s\"", path,
-			           strerror(errno));
+			  "Wrror while writing to file \"%s\", error: \"%s\"", path,
+			  strerror(errno));
 			cbuild_fd_close(fd);
 			return false;
 		}
@@ -561,45 +580,45 @@ bool cbuild_file_write(const char* path, cbuild_sb_t* data) {
 bool cbuild_file_copy(const char* src, const char* dst) {
 	cbuild_fd_t src_fd = cbuild_fd_open_read(src);
 	cbuild_fd_t dst_fd = cbuild_fd_open_write(dst);
-	if (src_fd < 0) {
+	if(src_fd < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Cannot open source file \"%s\", error: \"%s\"", src,
-		           strerror(errno));
+		  "Cannot open source file \"%s\", error: \"%s\"", src,
+		  strerror(errno));
 		return false;
 	}
-	if (dst_fd < 0) {
+	if(dst_fd < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Cannot open destination file \"%s\", error: \"%s\"", dst,
-		           strerror(errno));
+		  "Cannot open destination file \"%s\", error: \"%s\"", dst,
+		  strerror(errno));
 		return false;
 	}
 	struct stat statbuff;
-	if (stat(src, &statbuff) < 0) {
+	if(stat(src, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Cannot stat source file \"%s\", error: \"%s\"", dst,
-		           strerror(errno));
+		  "Cannot stat source file \"%s\", error: \"%s\"", dst,
+		  strerror(errno));
 		return false;
 	}
-	char* tmp_buff = (char*)__CBUILD_MALLOC(CBUILD_TMP_BUFF_SIZE);
+	char *tmp_buff = (char*)__CBUILD_MALLOC(CBUILD_TMP_BUFF_SIZE);
 	cbuild_assert(tmp_buff != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
-	while (true) {
+	while(true) {
 		ssize_t cnt = read(src_fd, tmp_buff, CBUILD_TMP_BUFF_SIZE);
-		if (cnt == 0) {
+		if(cnt == 0) {
 			break;
 		}
-		if (cnt < 0) {
+		if(cnt < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
-			           "Error while reading source file \"%s\", error: \"%s\"", src,
-			           strerror(errno));
+			  "Error while reading source file \"%s\", error: \"%s\"", src,
+			  strerror(errno));
 			return false;
 		}
-		char* buf = tmp_buff;
-		while (cnt > 0) {
+		char *buf = tmp_buff;
+		while(cnt > 0) {
 			ssize_t written = write(dst_fd, buf, cnt);
-			if (written < 0) {
+			if(written < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
-				           "Wrror while writing to file \"%s\", error: \"%s\"", dst,
-				           strerror(errno));
+				  "Wrror while writing to file \"%s\", error: \"%s\"", dst,
+				  strerror(errno));
 				cbuild_fd_close(src_fd);
 				cbuild_fd_close(dst_fd);
 				__CBUILD_FREE(tmp_buff);
@@ -616,7 +635,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 }
 bool cbuild_file_move(const char* src, const char* dst) {
 	bool ret = cbuild_file_copy(src, dst);
-	if (ret == false) {
+	if(ret == false) {
 		return false;
 	}
 	return cbuild_file_remove(src);
@@ -629,45 +648,45 @@ bool cbuild_file_check(const char* path) {
 	return !(stat(path, &statbuff) < 0);
 }
 bool cbuild_file_remove(const char* path) {
-	if (unlink(path) < 0) {
+	if(unlink(path) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot remove file \"%s\", error: \"%s\"",
-		           path, strerror(errno));
+		  path, strerror(errno));
 		return false;
 	}
 	return true;
 }
 bool cbuild_dir_copy(const char* src, const char* dst) {
 	bool err = cbuild_dir_create(dst);
-	if (err == false) {
+	if(err == false) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot create destination directory \"%s\"",
-		           dst);
+		  dst);
 		return false;
 	}
 	cbuild_pathlist_t list = cbuild_pathlist;
 
 	err                    = cbuild_dir_list(src, &list);
-	if (err == false) {
+	if(err == false) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot list source directory \"%s\"", src);
-		if (list.data != NULL) {
+		if(list.data != NULL) {
 			cbuild_pathlist_clear(&list);
 		}
 		return false;
 	}
 	bool ret = true;
-	for (size_t i = 0; i < list.size; i++) {
-		if (strcmp(".", list.data[i]) == 0 || strcmp("..", list.data[i]) == 0) {
+	for(size_t i = 0; i < list.size; i++) {
+		if(strcmp(".", list.data[i]) == 0 || strcmp("..", list.data[i]) == 0) {
 			continue;
 		}
 		size_t lensrc = strlen(src) + 1 + strlen(list.data[i]);
-		char*  tmpsrc = __CBUILD_MALLOC(lensrc + 1);
+		char  *tmpsrc = __CBUILD_MALLOC(lensrc + 1);
 		cbuild_assert(tmpsrc != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmpsrc, "%s/%s", src, list.data[i]);
 		size_t lendst = strlen(dst) + 1 + strlen(list.data[i]);
-		char*  tmpdst = __CBUILD_MALLOC(lendst + 1);
+		char  *tmpdst = __CBUILD_MALLOC(lendst + 1);
 		cbuild_assert(tmpdst != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmpdst, "%s/%s", dst, list.data[i]);
 		cbuild_filetype_t f = cbuild_path_filetype(tmpsrc);
-		if (f == CBUILD_FTYPE_DIRECTORY) {
+		if(f == CBUILD_FTYPE_DIRECTORY) {
 			bool tmp = ret && cbuild_dir_copy(tmpsrc, tmpdst);
 			ret      = tmp;
 		} else {
@@ -682,7 +701,7 @@ bool cbuild_dir_copy(const char* src, const char* dst) {
 }
 bool cbuild_dir_move(const char* src, const char* dst) {
 	bool ret = cbuild_dir_copy(src, dst);
-	if (ret == false) {
+	if(ret == false) {
 		return false;
 	}
 	return cbuild_dir_remove(src);
@@ -693,26 +712,26 @@ bool cbuild_dir_rename(const char* src, const char* dst) {
 bool cbuild_dir_remove(const char* path) {
 	cbuild_pathlist_t list = cbuild_pathlist;
 	bool              err  = cbuild_dir_list(path, &list);
-	if (err == false) {
+	if(err == false) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Cannot list source directory \"%s\", error: \"%s\"", path,
-		           strerror(errno));
-		if (list.data != NULL) {
+		  "Cannot list source directory \"%s\", error: \"%s\"", path,
+		  strerror(errno));
+		if(list.data != NULL) {
 			cbuild_pathlist_clear(&list);
 		}
 		return false;
 	}
 	bool ret = true;
-	for (size_t i = 0; i < list.size; i++) {
-		if (strcmp(".", list.data[i]) == 0 || strcmp("..", list.data[i]) == 0) {
+	for(size_t i = 0; i < list.size; i++) {
+		if(strcmp(".", list.data[i]) == 0 || strcmp("..", list.data[i]) == 0) {
 			continue;
 		}
 		size_t lenpath = strlen(path) + 1 + strlen(list.data[i]);
-		char*  tmppath = __CBUILD_MALLOC(lenpath + 1);
+		char  *tmppath = __CBUILD_MALLOC(lenpath + 1);
 		cbuild_assert(tmppath != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmppath, "%s/%s", path, list.data[i]);
 		cbuild_filetype_t f = cbuild_path_filetype(tmppath);
-		if (f == CBUILD_FTYPE_DIRECTORY) {
+		if(f == CBUILD_FTYPE_DIRECTORY) {
 			bool tmp = ret && cbuild_dir_remove(tmppath);
 			ret      = tmp;
 		} else {
@@ -722,139 +741,138 @@ bool cbuild_dir_remove(const char* path) {
 		__CBUILD_FREE(tmppath);
 	}
 	int stat = rmdir(path);
-	if (stat < 0) {
+	if(stat < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Cannot remove directory directory \"%s\", error: \"%s\"", path,
-		           strerror(errno));
+		  "Cannot remove directory directory \"%s\", error: \"%s\"", path,
+		  strerror(errno));
 		cbuild_pathlist_clear(&list);
 		return false;
 	}
 	cbuild_pathlist_clear(&list);
 	return ret;
 }
-bool cbuild_dir_check(const char* path) { return cbuild_file_check(path); }
+bool cbuild_dir_check(const char* path) {
+	return cbuild_file_check(path);
+}
+int __cbuild_int_fs_dir_list_no_dots(const struct dirent *d) {
+	return !(strcmp(d->d_name, ".") == 0 || strcmp(d->d_name, "..") == 0);
+}
 bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 	cbuild_da_clear(elements);
-	DIR* dir = opendir(path);
-	if (dir == NULL) {
-		cbuild_log(CBUILD_LOG_ERROR, "Cannot open dir \"%s\", error: \"%s\"", path,
-		           strerror(errno));
+	struct dirent **namelist;
+	int n = scandir(path, &namelist, __cbuild_int_fs_dir_list_no_dots, alphasort);
+	if(n < 0) {
+		cbuild_log(CBUILD_LOG_ERROR, "Cannot list directory \"%s\", error: \"%s\"",
+		  path, strerror(errno));
 		return false;
 	}
-	struct dirent* list = readdir(dir);
-	errno               = 0;
-	while (list != NULL) {
-		size_t len = strlen(list->d_name);
-		char*  str = (char*)__CBUILD_MALLOC(len + 1);
+	for(int i = 0; i < n; i++) {
+		size_t len = strlen(namelist[i]->d_name);
+		char  *str = (char*)__CBUILD_MALLOC(len + 1);
 		cbuild_assert(str != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-		__CBUILD_MEMCPY(str, list->d_name, len);
+		__CBUILD_MEMCPY(str, namelist[i]->d_name, len);
 		str[len] = '\0';
 		cbuild_da_append(elements, str);
-		list = readdir(dir);
+		free(namelist[i]);
 	}
-	if (errno != 0) {
-		cbuild_log(CBUILD_LOG_ERROR,
-		           "Error while reading directory \"%s\", error: \"%s\"", path,
-		           strerror(errno));
-		closedir(dir);
-		return false;
-	}
-	closedir(dir);
+	free(namelist);
 	return true;
 }
 void cbuild_pathlist_clear(cbuild_pathlist_t* list) {
-	for (size_t i = 0; i < list->size; i++) { free((void*)list->data[i]); }
+	for(size_t i = 0; i < list->size; i++) {
+		free((void*)list->data[i]);
+	}
 	cbuild_da_clear(list);
 }
 bool cbuild_dir_create(const char* path) {
 	int ret = mkdir(path, 0755);
-	if (ret < 0) {
-		if (errno == EEXIST) {
+	if(ret < 0) {
+		if(errno == EEXIST) {
 			cbuild_log(CBUILD_LOG_WARN, "Directory \"%s\" exist", path);
 			return false;
 		}
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Cannot create directory \"%s\", error: \"%s\"", path,
-		           strerror(errno));
+		  "Cannot create directory \"%s\", error: \"%s\"", path,
+		  strerror(errno));
 		return false;
 	}
 	return true;
 }
 cbuild_filetype_t cbuild_path_filetype(const char* path) {
 	struct stat statbuff;
-	if (stat(path, &statbuff) < 0) {
+	if(stat(path, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"", path,
-		           strerror(errno));
+		  strerror(errno));
 		return CBUILD_FTYPE_OTHER;
 	}
-	if (S_ISREG(statbuff.st_mode)) {
+	if(S_ISREG(statbuff.st_mode)) {
 		return CBUILD_FTYPE_REGULAR;
 	}
-	if (S_ISDIR(statbuff.st_mode)) {
+	if(S_ISDIR(statbuff.st_mode)) {
 		return CBUILD_FTYPE_DIRECTORY;
 	}
-	if (S_ISLNK(statbuff.st_mode)) {
+	if(S_ISLNK(statbuff.st_mode)) {
 		return CBUILD_FTYPE_SYMLINK;
 	}
 	return CBUILD_FTYPE_OTHER;
 }
-const char* cbuild_path_ext(const char* path) {
+const char *cbuild_path_ext(const char* path) {
 	ssize_t i     = strlen(path);
 	bool    found = false;
-	for (; i >= 0; i--) {
-		if (path[i] == '.') {
+	for(; i >= 0; i--) {
+		if(path[i] == '.') {
 			found = true;
 			break;
 		}
 	}
-	if (!found) {
-		char* ret = __CBUILD_MALLOC(1);
+	if(!found) {
+		char *ret = __CBUILD_MALLOC(1);
 		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		__CBUILD_MEMCPY(ret, "\0", 1);
 		return ret;
 	}
 	size_t len = strlen(path) - i + 1;
-	char*  ret = (char*)__CBUILD_MALLOC(len);
+	char  *ret = (char*)__CBUILD_MALLOC(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path + i + 1, len);
 	return ret;
 }
-const char* cbuild_path_name(const char* path) {
+const char *cbuild_path_name(const char* path) {
 	ssize_t i = strlen(path);
-	if (path[i - 1] == '/') {
+	if(path[i - 1] == '/') {
 		i -= 2;
 	}
-	for (; i >= 0; i--) {
-		if (path[i] == '/') {
+	for(; i >= 0; i--) {
+		if(path[i] == '/') {
 			break;
 		}
 	}
 	size_t len = strlen(path) - i + 1;
-	char*  ret = (char*)__CBUILD_MALLOC(len);
+	char  *ret = (char*)__CBUILD_MALLOC(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path + i + 1, len);
 	return ret;
 }
-const char* cbuild_path_base(const char* path) {
+const char *cbuild_path_base(const char* path) {
 	ssize_t i = strlen(path);
-	if (path[i - 1] == '/') {
+	if(path[i - 1] == '/') {
 		i -= 2;
 	}
 	bool found = false;
-	for (; i >= 0; i--) {
-		if (path[i] == '/') {
+	for(; i >= 0; i--) {
+		if(path[i] == '/') {
 			found = true;
 			break;
 		}
 	}
-	if (!found) {
-		char* ret = __CBUILD_MALLOC(1);
+	if(!found) {
+		char *ret = __CBUILD_MALLOC(1);
 		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		__CBUILD_MEMCPY(ret, "\0", 1);
 		return ret;
 	}
 	size_t len = i + 2;
-	char*  ret = (char*)__CBUILD_MALLOC(len);
+	char  *ret = (char*)__CBUILD_MALLOC(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path, len - 1);
 	ret[len - 1] = '\0';
@@ -863,46 +881,50 @@ const char* cbuild_path_base(const char* path) {
 /* Compile.h */
 #ifdef CBUILD_API_POSIX
 void __cbuild_compile_mark_exec(const char* file) {
-	if (chmod(file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH |
-	                    S_IXOTH) != 0) {
+	if(chmod(file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH |
+	  S_IXOTH) != 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot mark file as executable!");
 	}
 }
 #endif // CBUILD_API_POSIX
+void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd) = NULL;
 void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
-	char*       bname_new = cbuild_shift(argv, argc);
+	char       *bname_new = cbuild_shift(argv, argc);
 	cbuild_sb_t bname_old = cbuild_sb;
 	cbuild_sb_append_cstr(&bname_old, bname_new);
 	cbuild_sb_append_cstr(&bname_old, ".old");
 	cbuild_sb_append_null(&bname_old);
 
 	int cond = cbuild_compare_mtime(bname_new, (char*)spath);
-	if (cond < 0) {
+	if(cond < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Error while performing self-rebuild");
 		cbuild_sb_clear(&bname_old);
 		exit(1);
 	}
-	if (cond == 0) {
+	if(cond == 0) {
 		cbuild_sb_clear(&bname_old);
 		return;
 	}
 	cbuild_log(CBUILD_LOG_INFO, "Rebuilding CBuild buildscript");
-	if (!cbuild_file_rename(bname_new, bname_old.data)) {
+	if(!cbuild_file_rename(bname_new, bname_old.data)) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot rename old buildscript!");
 		cbuild_sb_clear(&bname_old);
 		exit(1);
 	}
 	cbuild_cmd_t cmd = cbuild_cmd;
-	cbuild_cmd_append_many(&cmd, CBUILD_CC, CBUILD_CC_OUT, (char*)bname_new,
-	                       (char*)spath);
-	if (!cbuild_cmd_sync(cmd)) {
+	cbuild_cmd_append(&cmd, CBUILD_CC);
+	if(cbuild_selfrebuild_hook != NULL) {
+		cbuild_selfrebuild_hook(&cmd);
+	}
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, (char*)bname_new, (char*)spath);
+	if(!cbuild_cmd_sync(cmd)) {
 		cbuild_file_rename(bname_old.data, bname_new);
 	}
 	__cbuild_compile_mark_exec(bname_new);
 	cmd.size = 0;
 	cbuild_cmd_append(&cmd, bname_new);
 	cbuild_cmd_append_arr(&cmd, argv, (size_t)argc);
-	if (!cbuild_cmd_sync(cmd)) {
+	if(!cbuild_cmd_sync(cmd)) {
 		cbuild_sb_clear(&bname_old);
 		exit(1);
 	}
@@ -912,21 +934,21 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 #ifdef CBUILD_API_POSIX
 int cbuild_compare_mtime(const char* output, const char* input) {
 	struct stat statbuff;
-	if (stat(input, &statbuff) < 0) {
+	if(stat(input, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"",
-		           input, strerror(errno));
+		  input, strerror(errno));
 		return -1;
 	}
 	int in_mtime = statbuff.st_mtime;
-	if (stat(output, &statbuff) < 0) {
-		if (errno == ENOENT) {
+	if(stat(output, &statbuff) < 0) {
+		if(errno == ENOENT) {
 			return 1;
 		}
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"",
-		           output, strerror(errno));
+		  output, strerror(errno));
 		return -1;
 	}
-	if (in_mtime > statbuff.st_mtime) {
+	if(in_mtime > statbuff.st_mtime) {
 		return 1;
 	} else {
 		return 0;
@@ -934,11 +956,11 @@ int cbuild_compare_mtime(const char* output, const char* input) {
 }
 #endif // CBUILD_API_POSIX
 int cbuild_compare_mtime_many(const char* output, const char** inputs,
-                              size_t num_inputs) {
+  size_t num_inputs) {
 	int ret = 0;
-	for (size_t i = 0; i < num_inputs; i++) {
+	for(size_t i = 0; i < num_inputs; i++) {
 		int check = cbuild_compare_mtime(output, inputs[i]);
-		if (check < 0) {
+		if(check < 0) {
 			return check;
 		} else {
 			ret += check;
@@ -950,14 +972,14 @@ int cbuild_compare_mtime_many(const char* output, const char** inputs,
 size_t cbuild_map_string_hash(const char* str) {
 	size_t hash = 5381;
 	int    c;
-	while ((c = (unsigned char)*str++))
+	while((c = (unsigned char) * str++))
 		hash = ((hash << 5) + hash) + c; // hash * 33 + c
 	return hash;
 }
 size_t cbuild_map_array_hash(const void* arr, size_t size) {
-	unsigned char* byte_ptr = (unsigned char*)arr;
+	unsigned char *byte_ptr = (unsigned char*)arr;
 	size_t         hash     = 5381;
-	for (size_t i = 0; i < size; i++) {
+	for(size_t i = 0; i < size; i++) {
 		hash = ((hash << 5) + hash) + byte_ptr[i]; // hash * 33 + byte_ptr[i]
 	}
 	return hash;
@@ -989,8 +1011,8 @@ struct __cbuild_int_flag_spec_t {
 	char                          sopt;
 	bool                          found; // State
 	char                          _padding[2];
-	void*                         param3;
-	void*                         param4;
+	void                         *param3;
+	void                         *param4;
 	cbuild_sv_t                   opt;
 	cbuild_sv_t                   description;
 	cbuild_sv_t                   type_hint;
@@ -1009,7 +1031,7 @@ struct __cbuild_int_flag_spec_t {
 cbuild_da_t(struct __cbuild_int_flag_spec_t, CBuildFlagSpec);
 cbuild_da_t_impl(struct __cbuild_int_flag_spec_t, CBuildFlagSpec);
 struct __cbuild_int_flag_context_t {
-	const char*                   app_name;
+	const char                   *app_name;
 	bool                          pargs_separator;
 	cbuild_da_CBuildFlagSpec_t    flags;
 	cbuild_da_CBuildFlagArgList_t pargs;
@@ -1021,8 +1043,8 @@ static struct __cbuild_int_flag_context_t __cbuild_int_flag_context = {
 	.pargs           = cbuild_da_CBuildFlagArgList,
 };
 bool __cbuild_int_flag_first_delim_func(const cbuild_sv_t* sv, size_t idx,
-                                        void* args) {
-	if (sv->data[idx] == '\t' || sv->data[idx] == '\n' || sv->data[idx] == '\r') {
+  void *args) {
+	if(sv->data[idx] == '\t' || sv->data[idx] == '\n' || sv->data[idx] == '\r') {
 		*((char*)args) = sv->data[idx];
 		return true;
 	} else {
@@ -1030,8 +1052,8 @@ bool __cbuild_int_flag_first_delim_func(const cbuild_sv_t* sv, size_t idx,
 	}
 }
 bool __cbuild_int_flag_metadata_delim_func(const cbuild_sv_t* sv, size_t idx,
-                                           void* args) {
-	if (sv->data[idx] == '\t' || sv->data[idx] == ';') {
+  void *args) {
+	if(sv->data[idx] == '\t' || sv->data[idx] == ';') {
 		*((char*)args) = sv->data[idx];
 		return true;
 	} else {
@@ -1039,8 +1061,8 @@ bool __cbuild_int_flag_metadata_delim_func(const cbuild_sv_t* sv, size_t idx,
 	}
 }
 void __cbuild_int_flag_parse_metadata_entry(
-		struct __cbuild_int_flag_spec_t* new_spec, size_t parse_offset,
-		cbuild_sv_t opt) {
+  struct __cbuild_int_flag_spec_t *new_spec, size_t parse_offset,
+  cbuild_sv_t opt) {
 	static const cbuild_sv_t key_arg     = cbuild_sv_from_cstr("arg");
 	static const cbuild_sv_t key_len     = cbuild_sv_from_cstr("len");
 	static const cbuild_sv_t key_thint   = cbuild_sv_from_cstr("thint");
@@ -1049,58 +1071,58 @@ void __cbuild_int_flag_parse_metadata_entry(
 	static const cbuild_sv_t arg_list    = cbuild_sv_from_cstr("list");
 	static const cbuild_sv_t arg_tlist   = cbuild_sv_from_cstr("tlist");
 	cbuild_sv_t              key         = cbuild_sv_chop_by_delim(&opt, '=');
-	if (cbuild_sv_cmp(key, key_arg) == 0) {
-		if (cbuild_sv_prefix(opt, arg_arg)) {
+	if(cbuild_sv_cmp(key, key_arg) == 0) {
+		if(cbuild_sv_prefix(opt, arg_arg)) {
 			__CBUILD_INT_FLAG_SET_ARGT(new_spec->type, 0b001);
-		} else if (cbuild_sv_prefix(opt, arg_list)) {
+		} else if(cbuild_sv_prefix(opt, arg_list)) {
 			__CBUILD_INT_FLAG_SET_ARGT(new_spec->type, 0b010);
-		} else if (cbuild_sv_prefix(opt, arg_tlist)) {
+		} else if(cbuild_sv_prefix(opt, arg_tlist)) {
 			__CBUILD_INT_FLAG_SET_ARGT(new_spec->type, 0b011);
 		}
-		if (opt.data[opt.size - 1] == '?') {
+		if(opt.data[opt.size - 1] == '?') {
 			__CBUILD_INT_FLAG_SET_ARGO(new_spec->type, 0b1);
 		}
-	} else if (cbuild_sv_cmp(key, key_len) == 0) {
+	} else if(cbuild_sv_cmp(key, key_len) == 0) {
 		__CBUILD_INT_FLAG_SET_PRM1(new_spec->type, atoi(opt.data));
-	} else if (cbuild_sv_cmp(key, key_thint) == 0) {
+	} else if(cbuild_sv_cmp(key, key_thint) == 0) {
 		new_spec->type_hint = opt;
-	} else if (cbuild_sv_cmp(key, key_tldelim)) {
+	} else if(cbuild_sv_cmp(key, key_tldelim)) {
 		__CBUILD_INT_FLAG_SET_PRM2(new_spec->type, opt.data[0]);
 	} else {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "Syntax error [%zu]: Invalid metadata entry \"" CBuildSVFmt
-		           "\"!",
-		           parse_offset, CBuildSVArg(key));
+		  "Syntax error [%zu]: Invalid metadata entry \"" CBuildSVFmt
+		  "\"!",
+		  parse_offset, CBuildSVArg(key));
 		exit(1);
 	}
 }
 void __cbuild_int_flag_parse_metadata_spec(
-		struct __cbuild_int_flag_spec_t* new_spec, cbuild_sv_t* spec,
-		size_t* parse_offset) {
+  struct __cbuild_int_flag_spec_t *new_spec, cbuild_sv_t *spec,
+  size_t *parse_offset) {
 	char        delim = '\t';
 	cbuild_sv_t opt   = cbuild_sv_chop_by_func(
-      spec, __cbuild_int_flag_metadata_delim_func, &delim);
-	while (delim != '\t') {
-		if (opt.size > 0) {
+	    spec, __cbuild_int_flag_metadata_delim_func, &delim);
+	while(delim != '\t') {
+		if(opt.size > 0) {
 			__cbuild_int_flag_parse_metadata_entry(new_spec, *parse_offset, opt);
 		}
 		// Parse next block
 		opt = cbuild_sv_chop_by_func(spec, __cbuild_int_flag_metadata_delim_func,
-		                             &delim);
+		    &delim);
 		(*parse_offset) += (opt.size + 1);
 	}
 	__cbuild_int_flag_parse_metadata_entry(new_spec, *parse_offset, opt);
 }
 void __cbuild_int_flag_parse_cmd(cbuild_sv_t spec) {
 	static const cbuild_sv_t cmd_separator = cbuild_sv_from_cstr("separator");
-	if (cbuild_sv_prefix(spec, cmd_separator)) {
+	if(cbuild_sv_prefix(spec, cmd_separator)) {
 		__cbuild_int_flag_context.pargs_separator = true;
 	}
 }
 void cbuild_flag_new(const char* spec_cstr) {
 	cbuild_sv_t                     spec     = cbuild_sv_from_cstr(spec_cstr);
 	struct __cbuild_int_flag_spec_t new_spec = { 0 };
-	if (spec.data[0] == '-') {
+	if(spec.data[0] == '-') {
 		spec.data++;
 		spec.size--;
 		__cbuild_int_flag_parse_cmd(spec);
@@ -1109,24 +1131,24 @@ void cbuild_flag_new(const char* spec_cstr) {
 	// Parse long options / positional arg ID
 	char type_delim = '\0';
 	new_spec.opt    = cbuild_sv_chop_by_func(
-      &spec, __cbuild_int_flag_first_delim_func, &type_delim);
+	    &spec, __cbuild_int_flag_first_delim_func, &type_delim);
 	size_t parse_offset = new_spec.opt.size;
-	switch (type_delim) {
+	switch(type_delim) {
 	case '\t':
-		if (spec.size < 2) {
+		if(spec.size < 2) {
 			cbuild_log(
-					CBUILD_LOG_ERROR,
-					"Syntax error [%zu]: Expected short option name, but found nothing!",
-					parse_offset);
+			  CBUILD_LOG_ERROR,
+			  "Syntax error [%zu]: Expected short option name, but found nothing!",
+			  parse_offset);
 			exit(1);
 		}
 		__CBUILD_INT_FLAG_SET_TYPE(new_spec.type, 0b01);
 		new_spec.sopt = spec.data[0];
-		if (spec.data[1] != '\t') {
+		if(spec.data[1] != '\t') {
 			cbuild_log(CBUILD_LOG_ERROR,
-			           "Syntax error [%zu]: Expected short option name but found "
-			           "more than 1 character!.",
-			           parse_offset + 2);
+			  "Syntax error [%zu]: Expected short option name but found "
+			  "more than 1 character!.",
+			  parse_offset + 2);
 			exit(1);
 		}
 		spec.data    += 2;
@@ -1139,10 +1161,10 @@ void cbuild_flag_new(const char* spec_cstr) {
 		break;
 	default:
 		cbuild_log(
-				CBUILD_LOG_ERROR,
-				"Syntax error [%zu]: Invalid type specifier, expected '\\t', '\\n' "
-				", but got '%02x'!",
-				parse_offset, type_delim);
+		  CBUILD_LOG_ERROR,
+		  "Syntax error [%zu]: Invalid type specifier, expected '\\t', '\\n' "
+		  ", but got '%02x'!",
+		  parse_offset, type_delim);
 		exit(1);
 		break;
 	}
@@ -1151,60 +1173,60 @@ void cbuild_flag_new(const char* spec_cstr) {
 	new_spec.args        = cbuild_da_CBuildFlagArgList;
 	cbuild_da_append(&(__cbuild_int_flag_context.flags), new_spec);
 }
-struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
+struct __cbuild_int_flag_spec_t *__cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
-		if ((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
-		     __CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
-		    cbuild_sv_cmp(spec->opt, opt) == 0) {
+		if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
+		  __CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
+		  cbuild_sv_cmp(spec->opt, opt) == 0) {
 			return spec;
 		}
 	}
 	return NULL;
 }
-struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_sopt(char opt) {
+struct __cbuild_int_flag_spec_t *__cbuild_int_flag_get_sopt(char opt) {
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
-		if (__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01 && spec->sopt == opt) {
+		if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01 && spec->sopt == opt) {
 			return spec;
 		}
 	}
 	return NULL;
 }
 void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
-                                  int argc, char** argv, int* parse_ptr) {
+  int argc, char **argv, int *parse_ptr) {
 	// no args
-	if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b000) {
+	if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b000) {
 		(*parse_ptr)--;
 		return;
 	}
 	// No args but some required
-	if (argc == *parse_ptr) {
-		if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0) {
-			char* type = "";
-			if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
+	if(argc == *parse_ptr) {
+		if(__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0) {
+			char *type = "";
+			if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
 				type = "one argument";
-			} else if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010) {
+			} else if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010) {
 				type = "list of arguments";
-			} else if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b011) {
+			} else if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b011) {
 				type = "list of arguments";
 			}
 			cbuild_log(CBUILD_LOG_ERROR,
-			           "(CBUILD_FLAG_PARSE) Flag \"" CBuildSVFmt
-			           "\" requires %s but none provided!",
-			           CBuildSVArg(spec->opt), type);
+			  "(CBUILD_FLAG_PARSE) Flag \"" CBuildSVFmt
+			  "\" requires %s but none provided!",
+			  CBuildSVArg(spec->opt), type);
 			exit(1);
 		} else {
 			return;
 		}
 	}
 	// One argument
-	if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
-		char* arg = argv[*parse_ptr];
-		if (arg[0] == '-') {
-			if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0) {
+	if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
+		char *arg = argv[*parse_ptr];
+		if(arg[0] == '-') {
+			if(__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
-				           "(CBUILD_FLAG_PARSE) Flag \"" CBuildSVFmt
-				           "\" requires one argument but none provided!",
-				           CBuildSVArg(spec->opt));
+				  "(CBUILD_FLAG_PARSE) Flag \"" CBuildSVFmt
+				  "\" requires one argument but none provided!",
+				  CBuildSVArg(spec->opt));
 				exit(1);
 			} else {
 				(*parse_ptr)--;
@@ -1217,16 +1239,16 @@ void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
 		}
 	}
 	// List or TList arguments
-	while (*parse_ptr < argc) {
-		char* arg = argv[*parse_ptr];
+	while(*parse_ptr < argc) {
+		char *arg = argv[*parse_ptr];
 		// Terminate list on argument
-		if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010 && arg[0] == '-') {
+		if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010 && arg[0] == '-') {
 			(*parse_ptr)--;
 			break;
 		}
 		// Terminate tlist on terminator
-		if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b011 && strlen(arg) == 1 &&
-		    (char)__CBUILD_INT_FLAG_GET_PRM2(spec->type) == arg[0]) {
+		if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b011 && strlen(arg) == 1 &&
+		  (char)__CBUILD_INT_FLAG_GET_PRM2(spec->type) == arg[0]) {
 			break;
 		}
 		// Append argument
@@ -1234,90 +1256,98 @@ void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
 		(*parse_ptr)++;
 	}
 	// Check args count
-	if (__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0 &&
-	    __CBUILD_INT_FLAG_GET_PRM1(spec->type) != spec->args.size) {
+	if(__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0 &&
+	  __CBUILD_INT_FLAG_GET_PRM1(spec->type) != spec->args.size) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		           "(CBUILD_FLAG_PARSE) Flag \"" CBuildSVFmt
-		           "\" requires list of %d arguments, but %zu provided!",
-		           CBuildSVArg(spec->opt), __CBUILD_INT_FLAG_GET_PRM1(spec->type),
-		           spec->args.size);
+		  "(CBUILD_FLAG_PARSE) Flag \"" CBuildSVFmt
+		  "\" requires list of %d arguments, but %zu provided!",
+		  CBuildSVArg(spec->opt), __CBUILD_INT_FLAG_GET_PRM1(spec->type),
+		  spec->args.size);
 		exit(1);
 	}
 }
 void cbuild_flag_parse(int argc, char** argv) {
 	static const cbuild_sv_t arg_help    = cbuild_sv_from_cstr("help");
-	static const cbuild_sv_t arg_h       = cbuild_sv_from_cstr("h");
 	static const cbuild_sv_t arg_version = cbuild_sv_from_cstr("version");
-	static const cbuild_sv_t arg_v       = cbuild_sv_from_cstr("v");
 	static const cbuild_sv_t arg_lprefix = cbuild_sv_from_cstr("--");
 	static const cbuild_sv_t arg_sprefix = cbuild_sv_from_cstr("-");
 	__cbuild_int_flag_context.app_name   = argv[0];
 	bool parse_no_flags                  = false;
-	for (int i = 1; i < argc; i++) {
+	for(int i = 1; i < argc; i++) {
 		cbuild_sv_t arg = cbuild_sv_from_cstr(argv[i]);
-		if (!parse_no_flags && cbuild_sv_prefix(arg, arg_lprefix)) {
+		if(!parse_no_flags && cbuild_sv_prefix(arg, arg_lprefix)) {
 			arg.size -= 2;
 			arg.data += 2;
 			// --
-			if (arg.size == 0) {
+			if(arg.size == 0) {
 				parse_no_flags = true;
-				if (__cbuild_int_flag_context.pargs_separator) {
+				if(__cbuild_int_flag_context.pargs_separator) {
 					cbuild_da_append(&__cbuild_int_flag_context.pargs, "--");
 				}
 				continue;
 			}
-			if (cbuild_sv_cmp(arg, arg_help) == 0 || cbuild_sv_cmp(arg, arg_h) == 0) {
+			if(cbuild_sv_cmp(arg, arg_help) == 0) {
 				cbuild_flag_help(__cbuild_int_flag_context.app_name);
 				exit(0);
 			}
-			if (cbuild_sv_cmp(arg, arg_version) == 0 ||
-			    cbuild_sv_cmp(arg, arg_v) == 0) {
+			if(cbuild_sv_cmp(arg, arg_version) == 0) {
 				cbuild_flag_version(__cbuild_int_flag_context.app_name);
 				exit(0);
 			}
-			struct __cbuild_int_flag_spec_t* spec = __cbuild_int_flag_get_lopt(arg);
-			if (spec == NULL) {
+			struct __cbuild_int_flag_spec_t *spec = __cbuild_int_flag_get_lopt(arg);
+			if(spec == NULL) {
 				cbuild_log(CBUILD_LOG_ERROR,
-				           "(CBUILD_FLAG_PARSE) Invalid long flag \"" CBuildSVFmt "\"!",
-				           CBuildSVArg(arg));
+				  "(CBUILD_FLAG_PARSE) Invalid long flag \"" CBuildSVFmt "\"!",
+				  CBuildSVArg(arg));
 				cbuild_flag_help(__cbuild_int_flag_context.app_name);
 				exit(1);
 			}
 			spec->found = true;
 			i++;
 			__cbuild_int_parse_flag_args(spec, argc, argv, &i);
-		} else if (!parse_no_flags && cbuild_sv_prefix(arg, arg_sprefix)) {
+		} else if(!parse_no_flags && cbuild_sv_prefix(arg, arg_sprefix)) {
 			arg.size--;
 			arg.data++;
 			size_t sopts_len = strlen(arg.data);
-			for (size_t j = 0; j < sopts_len; j++) {
-				char                             opt  = arg.data[j];
-				struct __cbuild_int_flag_spec_t* spec = __cbuild_int_flag_get_sopt(opt);
-				if (spec == NULL) {
+			if(sopts_len == 0) {  // raw '-' option, stdin
+				cbuild_da_append(&__cbuild_int_flag_context.pargs, argv[i]);
+			}
+			for(size_t j = 0; j < sopts_len; j++) {
+				char opt = arg.data[j];
+				if(opt == 'h') {
+					cbuild_flag_help(__cbuild_int_flag_context.app_name);
+					exit(0);
+				}
+				if(opt == 'v') {
+					cbuild_flag_version(__cbuild_int_flag_context.app_name);
+					exit(0);
+				}
+				struct __cbuild_int_flag_spec_t *spec = __cbuild_int_flag_get_sopt(opt);
+				if(spec == NULL) {
 					cbuild_log(CBUILD_LOG_ERROR,
-					           "(CBUILD_FLAG_PARSE) Invalid short flag \"%c\"!", opt);
+					  "(CBUILD_FLAG_PARSE) Invalid short flag \"%c\"!", opt);
 					cbuild_flag_help(__cbuild_int_flag_context.app_name);
 					exit(1);
 				}
 				spec->found = true;
 				i++;
-				if (j == strlen(arg.data) - 1) {
+				if(j == strlen(arg.data) - 1) {
 					__cbuild_int_parse_flag_args(spec, argc, argv, &i);
 				} else {
-					if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) != 0b000 &&
-					    __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b0) {
-						char* type = "";
-						if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
+					if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) != 0b000 &&
+					  __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b0) {
+						char *type = "";
+						if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
 							type = "one argument";
-						} else if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010) {
+						} else if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010) {
 							type = "list of arguments";
-						} else if (__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b011) {
+						} else if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b011) {
 							type = "list of arguments";
 						}
 						cbuild_log(CBUILD_LOG_ERROR,
-						           "(CBUILD_FLAG_PARSE) Flag \"%c\" requires %s but none "
-						           "provided!",
-						           spec->sopt, type);
+						  "(CBUILD_FLAG_PARSE) Flag \"%c\" requires %s but none "
+						  "provided!",
+						  spec->sopt, type);
 						exit(1);
 					} else {
 						i--;
@@ -1329,10 +1359,10 @@ void cbuild_flag_parse(int argc, char** argv) {
 		}
 	}
 }
-char* __cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
+char *__cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
 	cbuild_sb_t sb = cbuild_sb;
 	// Short opt
-	if (__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) {
+	if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) {
 		cbuild_sb_append_cstr(&sb, "\t-");
 		cbuild_sb_append(&sb, spec->sopt);
 		cbuild_sb_append_cstr(&sb, ", ");
@@ -1343,49 +1373,49 @@ char* __cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
 	cbuild_sb_append_cstr(&sb, "--");
 	cbuild_sb_append_sv(&sb, spec->opt);
 	// For normal args
-	switch (__CBUILD_INT_FLAG_GET_ARGT(spec->type)) {
+	switch(__CBUILD_INT_FLAG_GET_ARGT(spec->type)) {
 	case 0b000: break;
 	case 0b001:
-		if (spec->type_hint.size > 0) {
+		if(spec->type_hint.size > 0) {
 			cbuild_sb_append_cstr(&sb, " <");
 			cbuild_sb_append_sv(&sb, spec->type_hint);
-			if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1) {
+			if(__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1) {
 				cbuild_sb_append(&sb, '?');
 			}
 			cbuild_sb_append(&sb, '>');
 		}
 		break;
 	case 0b010:
-		if (spec->type_hint.size > 0 ||
-		    __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1 ||
-		    __CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
+		if(spec->type_hint.size > 0 ||
+		  __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1 ||
+		  __CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
 			cbuild_sb_append_cstr(&sb, " <");
 		}
-		if (spec->type_hint.size > 0) {
+		if(spec->type_hint.size > 0) {
 			cbuild_sb_append_sv(&sb, spec->type_hint);
 		}
-		if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1) {
+		if(__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1) {
 			cbuild_sb_append(&sb, '?');
 		}
-		if (__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
+		if(__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
 			cbuild_sb_append(&sb, ':');
 			cbuild_sb_appendf(&sb, "%d", (int)__CBUILD_INT_FLAG_GET_PRM1(spec->type));
 		}
-		if (spec->type_hint.size > 0 ||
-		    __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1 ||
-		    __CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
+		if(spec->type_hint.size > 0 ||
+		  __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1 ||
+		  __CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
 			cbuild_sb_append(&sb, '>');
 		}
 		break;
 	case 0b011:
 		cbuild_sb_append_cstr(&sb, " <");
-		if (spec->type_hint.size > 0) {
+		if(spec->type_hint.size > 0) {
 			cbuild_sb_append_sv(&sb, spec->type_hint);
 		}
-		if (__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1) {
+		if(__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1) {
 			cbuild_sb_append(&sb, '?');
 		}
-		if (__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
+		if(__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
 			cbuild_sb_append(&sb, ':');
 			cbuild_sb_appendf(&sb, "%d", (int)__CBUILD_INT_FLAG_GET_PRM1(spec->type));
 		}
@@ -1400,7 +1430,7 @@ char* __cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
 	return sb.data;
 }
 size_t __cbuild_int_flag_get_flgh_len(struct __cbuild_int_flag_spec_t* spec) {
-	char*  str = __cbuild_int_flag_help_fmt(spec);
+	char  *str = __cbuild_int_flag_help_fmt(spec);
 	size_t ret = strlen(str);
 	free(str);
 	return ret;
@@ -1424,7 +1454,7 @@ void cbuild_flag_flg_help() {
 	__CBUILD_PRINT("Shows app version information.\n");
 	// Defined flags
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
-		char* opt     = __cbuild_int_flag_help_fmt(spec);
+		char *opt     = __cbuild_int_flag_help_fmt(spec);
 		int   written = __CBUILD_PRINTF("%s", opt);
 		free(opt);
 		__CBUILD_PRINTF("%-*s", (int)((opt_len + 2) - written), "");
@@ -1432,24 +1462,29 @@ void cbuild_flag_flg_help() {
 		__CBUILD_PRINT("\n");
 	}
 }
-cbuild_da_CBuildFlagArgList_t* cbuild_flag_get_pargs(void) {
+cbuild_da_CBuildFlagArgList_t *cbuild_flag_get_pargs(void) {
 	return &__cbuild_int_flag_context.pargs;
 }
-cbuild_flag_arglist_t* cbuild_flag_get_flag(const char* opt) {
-	struct __cbuild_int_flag_spec_t* spec =
-			__cbuild_int_flag_get_lopt(cbuild_sv_from_cstr(opt));
-	if (spec == NULL) {
+cbuild_flag_arglist_t *cbuild_flag_get_flag(const char* opt) {
+	struct __cbuild_int_flag_spec_t *spec =
+	  __cbuild_int_flag_get_lopt(cbuild_sv_from_cstr(opt));
+	if(spec == NULL) {
+		return NULL;
+	}
+	if(spec->found == false) {
 		return NULL;
 	}
 	return &spec->args;
 }
-char* cbuild_flag_app_name(void) {
+char *cbuild_flag_app_name(void) {
 	return (char*)__cbuild_int_flag_context.app_name;
 }
-__attribute__((weak)) void cbuild_flag_help(const char* name) {
+void __cbuild_int_flag_help(const char* name) {
 	__CBUILD_PRINTF("Usage: %s [OPTIONS]\n\n", name);
 	cbuild_flag_flg_help();
 }
-__attribute__((weak)) void cbuild_flag_version(const char* name) {
+void (*cbuild_flag_help)(const char* app_name) = __cbuild_int_flag_help;
+void __cbuild_int_flag_version(const char* name) {
 	__CBUILD_PRINTF("%s - v1.0\n", name);
 }
+void (*cbuild_flag_version)(const char* app_name) = __cbuild_int_flag_version;

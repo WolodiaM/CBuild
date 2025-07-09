@@ -40,7 +40,6 @@ cbuild_da_t(char, CBuildSBchar);
 cbuild_da_t_ext_impl(CBuildSBchar);
 typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
 #define cbuild_sb                  cbuild_da_CBuildSBchar
-#define CBuildStringBuilder        cbuild_da_CBuildSBchar
 /**
  *  @brief Append character to a string builder
  *

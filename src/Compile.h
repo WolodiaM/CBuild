@@ -29,6 +29,7 @@
 #ifndef __CBUILD_COMPILE_H__
 #define __CBUILD_COMPILE_H__
 // Project includes
+#include "Command.h"
 #include "common.h"
 // Code
 // _MSC_VER could be used to detect MSVC
@@ -164,6 +165,11 @@
  */
 void __cbuild_selfrebuild(int argc, char** argv, const char* const spath);
 /**
+ * @brief Allow to add additional arguments for self-rebuild.
+ * Called with compiler command already in place.
+ */
+extern void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd);
+/**
  * @brief Compare mtime of two files and report if input is newer than output
  *
  * @param output => char* -> Output file's filepath
@@ -172,7 +178,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* const spath);
  * @return int<0 -> Error
  * @return int>0 -> Outpur is older than input
  */
-int  cbuild_compare_mtime(const char* output, const char* input);
+int cbuild_compare_mtime(const char* output, const char* input);
 /**
  * @brief Compare mtime of one output file and many input files and report if
  * any input is newer than output
@@ -184,6 +190,6 @@ int  cbuild_compare_mtime(const char* output, const char* input);
  * @return int<0 -> Error
  * @return int>0 -> Outpur is older than input, indicates number of newer inputs
  */
-int  cbuild_compare_mtime_many(const char* output, const char** inputs,
-                               size_t num_inputs);
+int cbuild_compare_mtime_many(const char* output, const char** inputs,
+                              size_t num_inputs);
 #endif // __CBUILD_COMPILE_H__

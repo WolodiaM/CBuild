@@ -41,8 +41,7 @@ TEST_MAIN(
 						cbuild_cmd_t c1 = cbuild_cmd;
 						cbuild_cmd_append_many(&c1, "a", "b", "--flag", "-f",
 		                               "\"val with spaces\"");
-						cbuild_sb_t sb1 = cbuild_sb;
-						cbuild_cmd_to_sb(c1, &sb1);
+						cbuild_sb_t sb1 = cbuild_cmd_to_sb(c1);
 						char* cmp1 = "a b --flag -f \"val with spaces\"";
 						TEST_ASSERT_STREQ(sb1.data, cmp1,
 		                          "Get: \"" CBuildSBFmt "\", expected: \"%s\"",
@@ -53,7 +52,7 @@ TEST_MAIN(
 		                               CBUILD_CARGS_INCLUDE("common.h"),
 		                               "file\\ with\\ spaces.c", "-o", "file.run");
 						cbuild_sb_clear(&sb1);
-						cbuild_cmd_to_sb(c1, &sb1);
+						sb1 = cbuild_cmd_to_sb(c1);
 						char* cmp2 =
 								"gcc -DVER=1.0 --include \"common.h\" file\\ with\\ spaces.c "
 								"-o file.run";

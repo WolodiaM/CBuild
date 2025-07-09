@@ -79,9 +79,9 @@ typedef struct {
  * @brief Conver cbuild_cmd_t to cbuild_sb_t
  *
  * @param cmd => cbuild_cmd_t -> Command
- * @param sb => CBuildStrBuff -> String buffer to work with
+ * @return CBuildStrBuff -> String buffer to work with
  */
-void cbuild_cmd_to_sb(cbuild_cmd_t cmd, cbuild_sb_t* sb);
+cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
 /**
  * @brief Call async command without io redirecting
  *

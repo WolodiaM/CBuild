@@ -169,10 +169,9 @@ bool            cbuild_dir_remove(const char* path);
 bool            cbuild_dir_check(const char* path);
 /**
  * @brief Get list of file in a directory
- * NOTE: Always return '.' and '..' on POSIX
  *
  * @param path => const char* -> Filepath
- * @param elements =. cbuild_pathlist_t* -> Return valud
+ * @param elements => cbuild_pathlist_t* -> Return valud
  */
 bool            cbuild_dir_list(const char* path, cbuild_pathlist_t* elements);
 /**

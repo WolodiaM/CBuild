@@ -248,7 +248,7 @@ TEST_MAIN(
 						cbuild_pathlist_t dirls = cbuild_pathlist;
 						bool ret = cbuild_dir_list("build/FS.c.dirls_test/", &dirls);
 						TEST_ASSERT_EQ(ret, true, "Function returened error%s", "");
-						TEST_ASSERT_EQ(dirls.size, 4, "Expected 4 files but got %zu",
+						TEST_ASSERT_EQ(dirls.size, 2, "Expected 2 files but got %zu",
 		                       dirls.size);
 						bool contains_a = false;
 						for (int i = 0; i < 4; i++) {

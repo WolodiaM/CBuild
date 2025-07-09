@@ -30,8 +30,8 @@
 #ifndef __CBUILD_FLAGPARSE_H__
 #define __CBUILD_FLAGPARSE_H__
 // Project includes
-#include "common.h"
 #include "DynArray.h"
+#include "common.h"
 // Code
 cbuild_da_t(char*, CBuildFlagArgList);
 typedef cbuild_da_CBuildFlagArgList_t cbuild_flag_arglist_t;
@@ -61,10 +61,11 @@ void                   cbuild_flag_flg_help();
  */
 cbuild_flag_arglist_t* cbuild_flag_get_pargs(void);
 /**
- * @brief Get positional arguments list
+ * @brief Get arguments of a specific flag
  *
  * @param opt => char* -> Flag long version
- * @return cbuild_flag_arglist_t* -> List of flag's arguments
+ * @return cbuild_flag_arglist_t* -> List of flag's arguments or NULL if flag
+ * not found
  */
 cbuild_flag_arglist_t* cbuild_flag_get_flag(const char* opt);
 /**
@@ -76,15 +77,11 @@ char*                  cbuild_flag_app_name(void);
 /**
  * @brief Function prototype fo a help print function, stub provided, but should
  * be reimplemented for best user experience.
- *
- * @param name => char* -> App name
  */
-void                   cbuild_flag_help(const char* name);
+extern void (*cbuild_flag_help)(const char* app_name);
 /**
  * @brief Function prototype fo a version print function, stub provided, but
  * should be reimplemented for best user experience.
- *
- * @param name => char* -> App name
  */
-void                   cbuild_flag_version(const char* name);
+extern void (*cbuild_flag_version)(const char* app_name);
 #endif // __CBUILD_FLAGPARSE_H__

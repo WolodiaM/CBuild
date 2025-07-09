@@ -49,10 +49,10 @@ void* trealloc(void* ptr, size_t size) {
 }
 TEST_MAIN(
 		{
-			cbuild_sb_t sb = CBuildStringBuilder;
+			cbuild_sb_t sb = cbuild_sb;
 			TEST_CASE(
 					{
-						cbuild_sb_t sb_alloc = CBuildStringBuilder;
+						cbuild_sb_t sb_alloc = cbuild_sb;
 						sb_alloc.malloc      = talloc;
 						sb_alloc.free        = tfree;
 						sb_alloc.realloc     = trealloc;
@@ -195,22 +195,22 @@ TEST_MAIN(
 			TEST_CASE(
 					{
 						const char* str1 = "abc";
-						cbuild_sb_t sb1  = CBuildStringBuilder;
+						cbuild_sb_t sb1  = cbuild_sb;
 						cbuild_sb_append_cstr(&sb1, str1);
 						const char* str2 = "abc";
-						cbuild_sb_t sb2  = CBuildStringBuilder;
+						cbuild_sb_t sb2  = cbuild_sb;
 						cbuild_sb_append_cstr(&sb2, str2);
 						const char* str3 = "ABC";
-						cbuild_sb_t sb3  = CBuildStringBuilder;
+						cbuild_sb_t sb3  = cbuild_sb;
 						cbuild_sb_append_cstr(&sb3, str3);
 						const char* str4 = "ABC";
-						cbuild_sb_t sb4  = CBuildStringBuilder;
+						cbuild_sb_t sb4  = cbuild_sb;
 						cbuild_sb_append_cstr(&sb4, str4);
 						const char* str5 = "def";
-						cbuild_sb_t sb5  = CBuildStringBuilder;
+						cbuild_sb_t sb5  = cbuild_sb;
 						cbuild_sb_append_cstr(&sb5, str5);
 						const char* str6 = "defg";
-						cbuild_sb_t sb6  = CBuildStringBuilder;
+						cbuild_sb_t sb6  = cbuild_sb;
 						cbuild_sb_append_cstr(&sb6, str6);
 						printf("\tcbuild_sb_cmp\n");
 						TEST_ASSERT_EQ(cbuild_sb_cmp(&sb1, &sb1), 0,
