@@ -37,9 +37,11 @@ build:
 pages:
     script:
         # Install tools
-        - pacman --noconfirm -S doxygen gcc
+        - pacman --noconfirm -S doxygen gcc clang
         # Create output directory
         - mkdir -p public
+        # Build cbuild.h header
+        - ./build.sh pack
         # Build wikimk wiki
         - ./build.sh docs wiki
         # Build doxygen
