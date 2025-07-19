@@ -37,33 +37,6 @@
 #define WIKIMK_DIR_STYLE "wiki/wikimk/style"
 #define WIKIMK_DIR_OUT "wiki/out"
 // Code
-bool build_md_to_html_preproc(cbuild_sb_t* src, cbuild_sb_t* dst) {
-	cbuild_cmd_t cmd = cbuild_cmd;
-	cbuild_sb_t edit = cbuild_sb;
-	// Edit URL
-	cbuild_sb_appendf(&edit, "s|#EDIT-URL#|" WIKIMK_WIKI_EDIT_BASE "/%s|", src->data);
-	cbuild_sb_append_null(&edit);
-	cbuild_cmd_append_many(&cmd, "sed", "-i",  edit.data, dst->data);
-	if(!cbuild_cmd_sync(cmd)) {
-		return false;
-	}
-	edit.size = 0;
-	cmd.args.size = 0;
-	// Edit path
-	cbuild_sb_appendf(&edit,
-	  "s|#EDIT-FILENAME#|/%s|", (src->data + strlen(WIKIMK_DIR_SRC) + 1));
-	cbuild_sb_append_null(&edit);
-	cbuild_cmd_append_many(&cmd, "sed", "-i", edit.data, dst->data);
-	if(!cbuild_cmd_sync(cmd)) {
-		return false;
-	}
-	edit.size = 0;
-	cmd.args.size = 0;
-	// Clean-up
-	cbuild_sb_clear(&edit);
-	cbuild_cmd_clear(&cmd);
-	return true;
-}
 bool build_md_to_html(cbuild_sv_t filename) {
 	// Init
 	cbuild_cmd_t cmd = cbuild_cmd;
@@ -103,13 +76,30 @@ bool build_md_to_html(cbuild_sv_t filename) {
 	if(!cbuild_cmd_sync(cmd)) {
 		return false;
 	}
-	// // Pre-processor
-	// if(!build_md_to_html_preproc(&src, &dst)) {
-	// 	return false;
-	// }
 	// Clean-up
 	cbuild_sb_clear(&src);
 	cbuild_sb_clear(&dst);
+	return true;
+}
+bool gen_index_redirect(cbuild_sb_t* index_cfg) {
+	cbuild_sv_t cfg =	cbuild_sb_to_sv(index_cfg);
+	cbuild_sv_t path = cbuild_sv_chop_by_delim(&cfg, '\n');
+	cbuild_sb_t redirect_meta = cbuild_sb;
+	cbuild_sb_appendf(&redirect_meta, "REDIRECT:"CBuildSVFmt, CBuildSVArg(path));
+	cbuild_sb_append_null(&redirect_meta);
+	cbuild_cmd_t cmd = cbuild_cmd;
+	cbuild_cmd_append_many(&cmd, "pandoc", "-t", "html5",
+	  "-M", redirect_meta.data,
+	  "-M", "name:" WIKIMK_WIKI_NAME,
+	  "-M", "author:" WIKIMK_WIKI_AUTHOR,
+	  "-M", "license:" WIKIMK_WIKI_LICENSE,
+		"-M", "title:", "-f", "markdown", "--quiet",
+	  "--template", WIKIMK_DIR_TEMPLATE "/redirect.html",
+	  "-o", WIKIMK_DIR_OUT "/index.html",
+		"/dev/null");
+	if(!cbuild_cmd_sync(cmd)) {
+		return false;
+	}
 	return true;
 }
 bool gentoc_get_title(const char* path, cbuild_sb_t* out) {
@@ -354,7 +344,6 @@ bool build() {
 		cbuild_sb_appendf(&root_filepath, WIKIMK_DIR_SRC "/%s", *root_file);
 		cbuild_sb_append_null(&root_filepath);
 		cbuild_filetype_t type = cbuild_path_filetype(root_filepath.data);
-		cbuild_sb_clear(&root_filepath);
 		switch(type) {
 		case CBUILD_FTYPE_REGULAR: {
 			cbuild_sv_t filename = cbuild_sv_from_cstr(*root_file);
@@ -364,6 +353,13 @@ bool build() {
 					cbuild_log(CBUILD_LOG_ERROR, "Cannot build %s!", *root_file);
 					return false;
 				}
+			} else if(cbuild_sv_cmp(filename, cbuild_sv_from_cstr("index.cfg")) == 0) {
+				cbuild_sb_t index_cfg = cbuild_sb;
+				cbuild_file_read(root_filepath.data, &index_cfg);
+				if(!gen_index_redirect(&index_cfg)) {
+					return false;
+				}
+				cbuild_sb_clear(&index_cfg);
 			}
 		} break;
 		case CBUILD_FTYPE_DIRECTORY: {
@@ -373,6 +369,7 @@ bool build() {
 		} break;
 		default: CBUILD_UNREACHABLE("File type not supported!"); break;
 		}
+		cbuild_sb_clear(&root_filepath);
 	}
 	cbuild_pathlist_clear(&root_list);
 	// Copy needed files

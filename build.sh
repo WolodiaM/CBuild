@@ -167,6 +167,7 @@ clean() {
 	call_cmd rm -rf wiki/mkdocs/site/
 	call_cmd rm -rf wiki/doxygen/html/
 	call_cmd rm -rf wiki/out
+	call_cmd rm -rf wiki/wikimk/template/nav.html
 	call_cmd rm -rf CBuild.h
 	call_cmd rm -rf build
 	call_cmd rm -rf cbuild.h

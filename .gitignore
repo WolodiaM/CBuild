@@ -1,9 +1,8 @@
-# docs
 wiki/doxygen/
 wiki/mkdocs/site/
 wiki/mkdocs/docs/doxygen
 wiki/out
-# build artifacts
+wiki/wikimk/template/nav.html
 build/
 cbuild.h
 /wikimk
