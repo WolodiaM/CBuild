@@ -153,6 +153,12 @@
  *     - '.' and '..' now excluded
  *     - Entries now sorted alphabetically
  *     - Disable file descriptor auto inheritance on exec by default
+ * --------------------------------------------
+ * 2025-07-09  v1.8 Command updates
+ *   Command.h [feature]
+ *     - Allow to autokill child processes on exit on Linux
+ *   Command.h [change]
+ *     - Changed cbuild_cmd_t format
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -240,6 +246,9 @@
 #	if defined(CBUILD_OS_MACOS)
 #		include "crt_externs.h"
 #	endif // CBUILD_OS_MACOS
+# if defined(CBUILD_OS_LINUX)
+#   include "sys/prctl.h"
+# endif // CBUILD_OS_LINUX
 #	include "dlfcn.h"
 // Print functions
 #	define __CBUILD_PRINT(str)                printf((str))

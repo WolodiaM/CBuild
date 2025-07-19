@@ -176,7 +176,7 @@ extern void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd);
  * @param intput => char* -> Input file's filepath
  * @return int=0 -> Output is newer than input
  * @return int<0 -> Error
- * @return int>0 -> Outpur is older than input
+ * @return int>0 -> Output is older than input
  */
 int cbuild_compare_mtime(const char* output, const char* input);
 /**
@@ -188,7 +188,7 @@ int cbuild_compare_mtime(const char* output, const char* input);
  * @param num_inputs => size_t -> Number of inout files
  * @return int=0 -> Output is newer than input
  * @return int<0 -> Error
- * @return int>0 -> Outpur is older than input, indicates number of newer inputs
+ * @return int>0 -> Output is older than input, indicates number of newer inputs
  */
 int cbuild_compare_mtime_many(const char* output, const char** inputs,
                               size_t num_inputs);

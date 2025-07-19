@@ -37,8 +37,13 @@
 // Command
 cbuild_da_t(char*, CBuildCMDchar_ptr);
 cbuild_da_t_ext_impl(CBuildCMDchar_ptr);
-typedef cbuild_da_CBuildCMDchar_ptr_t cbuild_cmd_t;
-#define cbuild_cmd cbuild_da_CBuildCMDchar_ptr
+typedef struct cbuild_cmd_t {
+	cbuild_da_CBuildCMDchar_ptr_t args;
+	// Linux-only for now at least
+	bool autokill;
+} cbuild_cmd_t;
+#define cbuild_cmd (cbuild_cmd_t){ .args = cbuild_da_CBuildCMDchar_ptr, \
+		.autokill = false }
 // IO overrides
 typedef struct {
 	cbuild_fd_t fdstdin;
@@ -51,7 +56,7 @@ typedef struct {
  * @param cmd => cbuild_cmd_t* -> Command bufer to work with
  * @param val => char* -> New token
  */
-#define cbuild_cmd_append(cmd, val) cbuild_da_append(cmd, val)
+#define cbuild_cmd_append(cmd, val) cbuild_da_append(&(cmd)->args, val)
 /**
  * @brief Append new args to cmd
  *
@@ -60,7 +65,7 @@ typedef struct {
  * @param vals_cnt => size_t -> Count of new tokens
  */
 #define cbuild_cmd_append_arr(cmd, vals, vals_cnt)                             \
-	cbuild_da_append_arr(cmd, vals, vals_cnt)
+	cbuild_da_append_arr(&(cmd)->args, vals, vals_cnt)
 /**
  * @brief Append new args to cmd
  *
@@ -68,13 +73,13 @@ typedef struct {
  * @param ... => char* -> New tokens
  */
 #define cbuild_cmd_append_many(cmd, ...)                                       \
-	cbuild_da_append_many(cmd, __VA_ARGS__)
+	cbuild_da_append_many(&(cmd)->args, __VA_ARGS__)
 /**
  * @brief  Clear command buffer
  *
  * @param cmd => cbuild_cmd_t* -> Command bufer to work with
  */
-#define cbuild_cmd_clear(cmd) cbuild_da_clear(cmd)
+#define cbuild_cmd_clear(cmd) cbuild_da_clear(&(cmd)->args)
 /**
  * @brief Conver cbuild_cmd_t to cbuild_sb_t
  *
@@ -90,8 +95,8 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  */
 #define cbuild_cmd_async(cmd)                                                  \
 	cbuild_cmd_async_redirect(cmd, (cbuild_cmd_fd_t){ CBUILD_INVALID_FD,         \
-	                                                  CBUILD_INVALID_FD,         \
-	                                                  CBUILD_INVALID_FD })
+		CBUILD_INVALID_FD,         \
+		CBUILD_INVALID_FD })
 
 /**
  * @brief Call async command with io rediecting
@@ -111,8 +116,8 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
  */
 #define cbuild_cmd_sync(cmd)                                                   \
 	cbuild_cmd_sync_redirect(cmd, (cbuild_cmd_fd_t){ CBUILD_INVALID_FD,          \
-	                                                 CBUILD_INVALID_FD,          \
-	                                                 CBUILD_INVALID_FD })
+		CBUILD_INVALID_FD,          \
+		CBUILD_INVALID_FD })
 /**
  * @brief Call sync command with io rediecting
  *

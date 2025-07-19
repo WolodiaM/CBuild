@@ -47,7 +47,7 @@ TEST_MAIN(
 		                               .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						sleep(2);
-						file_writer.size = 0;
+						file_writer.args.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/Compile.c.f2");
 						cbuild_cmd_sync_redirect(
@@ -100,7 +100,7 @@ TEST_MAIN(
 		                               .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						sleep(2);
-						file_writer.size = 0;
+						file_writer.args.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/Compile.c.f5");
 						cbuild_cmd_sync_redirect(
@@ -109,7 +109,7 @@ TEST_MAIN(
 		                               .fdstdout = pattern_fd,
 		                               .fdstderr = CBUILD_INVALID_FD });
 						sleep(2);
-						file_writer.size = 0;
+						file_writer.args.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/Compile.c.f6");
 						cbuild_cmd_sync_redirect(

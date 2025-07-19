@@ -235,7 +235,7 @@ TEST_MAIN(
 		                               .fdstdout = pattern_fd,
 		                               .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
-						file_writer.size = 0;
+						file_writer.args.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/FS.c.dirls_test/b");
 						cbuild_cmd_sync_redirect(
@@ -309,7 +309,7 @@ TEST_MAIN(
 		                               .fdstdout = pattern_fd,
 		                               .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
-						file_writer.size = 0;
+						file_writer.args.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/FS.c.dir_copy_test.src/b");
 						cbuild_cmd_sync_redirect(
@@ -319,7 +319,7 @@ TEST_MAIN(
 		                               .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						cbuild_dir_create("build/FS.c.dir_copy_test.src/c/");
-						file_writer.size = 0;
+						file_writer.args.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd =
 								cbuild_fd_open_write("build/FS.c.dir_copy_test.src/c/d");
@@ -359,7 +359,7 @@ TEST_MAIN(
 		                               .fdstdout = pattern_fd,
 		                               .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
-						file_writer.size = 0;
+						file_writer.args.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/FS.c.dir_remove_test/b");
 						cbuild_cmd_sync_redirect(
@@ -369,7 +369,7 @@ TEST_MAIN(
 		                               .fdstderr = CBUILD_INVALID_FD });
 						cbuild_fd_close(pattern_fd);
 						cbuild_dir_create("build/FS.c.dir_remove_test/c/");
-						file_writer.size = 0;
+						file_writer.args.size = 0;
 						cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 						pattern_fd = cbuild_fd_open_write("build/FS.c.dir_remove_test/c/d");
 						cbuild_cmd_sync_redirect(

@@ -66,8 +66,8 @@ int main(int argc, char** argv) {
     if (!cbuild_cmd_sync(cmd)) {
         ret = false;
     }
-    for (size_t i = 3; i < cmd.size; i++) {
-        free((char *)cmd.data[i]);
+    for (size_t i = 3; i < cmd.args.size; i++) {
+        free((char *)cmd.args.data[i]);
     }
     cbuild_pathlist_clear(&sources);
     return ret;

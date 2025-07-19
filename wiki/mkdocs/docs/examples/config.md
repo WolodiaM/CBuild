@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     if (!cbuild_cmd_sync(cmd)) {
         return 1;
     }
-    cmd.size = 0;
+    cmd.args.size = 0;
     cbuild_cmd_append(&cmd, "./cbuild2.run");
     cbuild_cmd_append_arr(&cmd, argv, argc);
     if (!cbuild_cmd_sync(cmd)) {

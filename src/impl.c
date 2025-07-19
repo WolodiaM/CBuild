@@ -280,13 +280,13 @@ bool cbuild_sv_contains(cbuild_sv_t sv, char c) {
 cbuild_da_t_impl(char*, CBuildCMDchar_ptr);
 cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 	cbuild_sb_t sb = cbuild_sb;
-	if(cmd.size < 1) {
+	if(cmd.args.size < 1) {
 		return sb;
 	}
-	for(size_t i = 0; i < cmd.size; i++) {
-		char *tmp = cmd.data[i];
+	for(size_t i = 0; i < cmd.args.size; i++) {
+		char *tmp = cmd.args.data[i];
 		cbuild_sb_append_cstr(&sb, tmp);
-		if(i < cmd.size - 1) {
+		if(i < cmd.args.size - 1) {
 			cbuild_sb_append(&sb, ' ');
 		}
 	}
@@ -294,7 +294,7 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 }
 #if defined(CBUILD_API_POSIX)
 cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
-	if(cmd.size < 1) {
+	if(cmd.args.size < 1) {
 		cbuild_log(CBUILD_LOG_ERROR, "Empty command is requested to be executed!");
 		return CBUILD_INVALID_PROC;
 	}
@@ -333,12 +333,18 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 				exit(1);
 			}
 		}
+		// Autokill
+		if(cmd.autokill) {
+#ifdef CBUILD_OS_LINUX
+			prctl(PR_SET_PDEATHSIG, SIGKILL);
+#endif
+		}
 		// Get args
 		cbuild_cmd_t argv = cbuild_cmd;
-		cbuild_da_append_arr(&argv, cmd.data, cmd.size);
+		cbuild_cmd_append_arr(&argv, cmd.args.data, cmd.args.size);
 		cbuild_cmd_append(&argv, NULL);
 		// Call command
-		if(execvp(argv.data[0], (char * const *)argv.data) < 0) {
+		if(execvp(argv.args.data[0], (char * const *)argv.args.data) < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
 			  "Cannot execute command in child process, error: \"%s\"",
 			  strerror(errno));
@@ -921,7 +927,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 		cbuild_file_rename(bname_old.data, bname_new);
 	}
 	__cbuild_compile_mark_exec(bname_new);
-	cmd.size = 0;
+	cmd.args.size = 0;
 	cbuild_cmd_append(&cmd, bname_new);
 	cbuild_cmd_append_arr(&cmd, argv, (size_t)argc);
 	if(!cbuild_cmd_sync(cmd)) {
