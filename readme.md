@@ -10,7 +10,7 @@ Build system that allows you to write your buildscripts for C or C++ (or actuall
 
  - Single header library and simple build process
  - Fully POSIX.1-2008 compatible
- - Fully C99 compatible
+ - Fully C99+GNU extentions compatible (gnu99)
  - Do not force user to do things in specifc way (eg. do not provide some helper functions that implements fixed build pipeline, better to have ability call any command and have few macro that define default build commands)
  - Do no rely on shell scripts for doing anything
  - Provide minimal but simple API
