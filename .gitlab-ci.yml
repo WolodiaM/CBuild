@@ -37,7 +37,7 @@ build:
 pages:
     script:
         # Install tools
-        - pacman --noconfirm -S doxygen gcc clang
+        - pacman --noconfirm -S doxygen gcc clang pandoc
         # Create output directory
         - mkdir -p public
         # Build cbuild.h header
