@@ -2,6 +2,9 @@
 wiki/doxygen/
 wiki/mkdocs/site/
 wiki/mkdocs/docs/doxygen
+wiki/out
 # build artifacts
 build/
 cbuild.h
+/wikimk
+TAGS

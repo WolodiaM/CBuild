@@ -136,7 +136,7 @@
  *     - Slight formatting change
  *     - Proper use of asserts in place of older 'exit(0);'
  * --------------------------------------------
- * 2025-07-01  v1.7    Fix in build script
+ * 2025-07-01  v1.7    Fix in build script and few code fixes
  *   General [bugfix]
  *     - Add 'FlagParse.h' into a output library ;)
  *   Compile.h [bugfix]

@@ -1,0 +1,410 @@
+/* -------------------------------------------- */
+/* Colors */
+/* -------------------------------------------- */
+:root[data-theme="dark"] {
+	/* Background */
+	--bg-hard    : #1d2021;
+	--bg         : #282828;
+	--bg-soft    : #32302f;
+	--bg1        : #3c3836;
+	--bg2        : #504945;
+	--bg3        : #665c54;
+	--bg4        : #7c6f64;
+	/* Foreground */
+	--fg         : #ebdbb2;
+	--fg1        : #d5c4a1;
+	--fg2        : #bdae93;
+	--fg3        : #a89984;
+	--fg4        : #a89984;
+	/* Bright accents */
+	--red        : #fb4934;
+	--green      : #b8bb26;
+	--yellow     : #fabd2f;
+	--blue       : #83a598;
+	--purple     : #d3869b;
+	--aqua       : #8ec07c;
+	--orange     : #fe8019;
+	/* Faded accents */
+	--red-dim    : #cc241d;
+	--green-dim  : #98971a;
+	--yellow-dim : #d79921;
+	--blue-dim   : #458588;
+	--purple-dim : #b16286;
+	--aqua-dim   : #689d6a;
+	--orange-dim : #d65d0e;
+}
+:root[data-theme="light"] {
+	/* Background */
+	--bg-hard    : #f9f5d7;
+	--bg         : #fbf1c7;
+	--bg-soft    : #f2e5bc;
+	--bg1        : #ebdbb2;
+	--bg2        : #d5c4a1;
+	--bg3        : #bdae93;
+	--bg4        : #a89984;
+	/* Foreground */
+	--fg         : #3c3836;
+	--fg1        : #504945;
+	--fg2        : #665c54;
+	--fg3        : #7c6f64;
+	--fg4        : #7c6f64;
+	/* Bright accents */
+	--red        : #fb4934;
+	--green      : #b8bb26;
+	--yellow     : #fabd2f;
+	--blue       : #83a598;
+	--purple     : #d3869b;
+	--aqua       : #8ec07c;
+	--orange     : #fe8019;
+	/* Faded accents */
+	--red-dim    : #9d0006;
+	--green-dim  : #79740e;
+	--yellow-dim : #b57614;
+	--blue-dim   : #076678;
+	--purple-dim : #8f3f71;
+	--aqua-dim   : #427b58;
+	--orange-dim : #af3a03;
+}
+/* -------------------------------------------- */
+/* Layout-independent settings */
+/* -------------------------------------------- */
+/* Basic styles */
+body {
+	padding-right: 2em;
+	padding-left: 2em;
+	color: var(--fg);
+	background-color: var(--bg);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+							 Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+	font-size: 14pt;
+}
+h1 {
+	color: var(--fg2);
+	font-size: 200%;
+}
+h2 {
+	color: var(--fg2);
+	font-size: 170%;
+}
+h3 {
+	color: var(--fg2);
+	font-size: 150%;
+	text-align: justify !important;
+}
+h1, h2, h3 {
+	margin-top: 1em;
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+em, i {
+	font-style: italic;
+	color: var(--fg1);
+}
+strong {
+	font-weight: bold;
+	color: var(--fg1);
+}
+a {
+	text-decoration-line: underline;
+}
+a:link {
+	color: var(--blue);
+}
+a:visited {
+	color: var(--purple);
+}
+a:hover {
+	color: var(--blue-dim);
+}
+a:active {
+	color: var(--fg1);
+}
+ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+}
+ol > li {
+  display: list-item;
+}
+pre>code, code {
+	font-family: "Courier New", Courier, monospace;
+	background-color: var(--bg-soft);
+}
+p {
+	text-indent: 2em;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+}
+li p {
+	text-indent: 0;
+	margin-bottom: 0;
+	margin-top: 0;
+}
+/* Unordered lists in markdown style */
+li::before {
+	padding-right: 0.5em;
+}
+ul li::before {
+	color: var(--red);
+	content: "*";
+}
+ul ul li::before {
+	color: var(--green);
+	content: "-";
+}
+ul ul ul li::before {
+	color: var(--blue);
+	content: "+";
+}
+ul {
+	list-style-position: outside;
+	padding-left: 1.5em;
+}
+li {
+	display: list-item;
+}
+/* Colors */
+span.bg-hard { color: var(--bg-hard); }
+span.bg { color: var(--bg); }
+span.bg-soft { color: var(--bg-soft); }
+span.bg1 { color: var(--bg1); }
+span.bg2 { color: var(--bg2); }
+span.bg3 { color: var(--bg3); }
+span.bg4 { color: var(--bg4); }
+span.fg { color: var(--fg); }
+span.fg1 { color: var(--fg1); }
+span.fg2 { color: var(--fg2); }
+span.fg3 { color: var(--fg3); }
+span.fg4 { color: var(--fg4); }
+span.red { color: var(--red); }
+span.green { color: var(--green); }
+span.yellow { color: var(--yellow); }
+span.blue { color: var(--blue); }
+span.purple { color: var(--purple); }
+span.aqua { color: var(--aqua); }
+span.orange { color: var(--orange); }
+span.red-dim { color: var(--red-dim); }
+span.green-dim { color: var(--green-dim); }
+span.yellow-dim { color: var(--yellow-dim); }
+span.blue-dim { color: var(--blue-dim); }
+span.purple-dim { color: var(--purple-dim); }
+span.aqua-dim { color: var(--aqua-dim); }
+span.orange-dim { color: var(--orange-dim); }
+/* Elements */
+section.entry, div.entry {
+	border: 2px solid var(--aqua);
+	border-radius: 5px;
+	padding: 1em;
+	overflow: auto;
+}
+div.note {
+	border: 2px dashed var(--red);
+	border-radius: 5px;
+	display: block;
+}
+div.note>p:first-of-type::before {
+	color: var(--red);
+	content: "NOTE: ";
+	display: inline;
+  font-weight: bold;
+	margin-right: 0.5em;
+}
+/* Header */
+header div.header {
+	padding: 1em;
+	border: 2px dotted var(--yellow-dim);
+	border-radius: 5px;
+	background-color: var(--bg1);
+	gap: 1em;
+	margin-bottom: 3em;
+	text-align: center;
+}
+header div.header-title {
+	padding: 1em;
+}
+header div.header-theme-switcher {
+	margin-left: auto;
+}
+header div p.header-name {
+	font-size: 200%;
+	text-indent: 0;
+	margin-bottom: 0;
+	margin-top: 0;
+}
+header div.header-theme-switcher button {
+	color: var(--fg);
+	background-color: var(--bg1);
+	border: 2px solid var(--bg4);
+	border-radius: 5px;
+	font-size: inherit;
+}
+/* Navigation part */
+nav {
+	border: 2px dashed var(--purple);
+	border-radius: 5px;
+	background-color: var(--bg1);
+	padding: 1em;
+}
+nav summary {
+	font-size: 150%;
+	color: var(--green);
+}
+nav ul li::before {
+	color: var(--fg);
+	content: "━";
+}
+nav ul ul li::before {
+	color: var(--fg);
+	content: "┗";
+}
+nav ul ul ul li::before {
+	color: var(--fg);
+	content: "┗";
+}
+/* Footer */
+footer div {
+	border: 2px dotted var(--yellow-dim);
+	border-radius: 5px;
+	background-color: var(--bg1);
+	margin-top: 3em;
+	text-align: center;
+}
+footer div p {
+	padding: 0.5em;
+	text-indent: 0;
+	margin-bottom: 0;
+	margin-top: 0;
+}
+footer div p.footer-name {
+	font-size: 150%;
+}
+/* -------------------------------------------- */
+/* Layouts */
+/* -------------------------------------------- */
+/* Main layout container */
+div.nav-container {
+	display: flex;
+	gap: 1em;
+	align-items: flex-start;
+	flex-wrap: nowrap;
+}
+/* Desktop layout */
+@media screen and (min-width: 901px) {
+	/* Horizontal stacking of blocks */
+	div.nav-nav-box {
+		flex: 1 1 0;
+		min-width: 0;
+		padding: 1em;
+		padding-top: 5em;
+	}
+	div.nav-nav-box nav {
+		overflow: auto;
+	}
+	div.nav-content-box {
+		flex: 4 1 0;
+		min-width: 0;
+		padding: 1em;
+	}
+	/* Narrow header and footer */
+	footer {
+		width: 50%;
+		padding-left: 25%;
+	}
+	header {
+		width: 50%;
+		padding-left: 25%;
+	}
+	/* Horizontal header layout */
+	header div.header {
+		display: flex;
+		align-items: center;
+		position: relative;
+	}
+	header div.header-title {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	header div.header-theme-switcher {
+		margin-left: auto;
+	}
+}
+/* Vertical tablet layout */
+@media screen and (min-width: 768px) and (max-width: 900px) {
+	/* Horizontal stacking of blocks */
+	div.nav-nav-box {
+		flex: 1 1 0;
+		min-width: 0;
+		padding: 1em;
+		padding-top: 5em;
+	}
+	div.nav-nav-box nav {
+		overflow: auto;
+	}
+	div.nav-content-box {
+		flex: 3 1 0;
+		min-width: 0;
+		padding: 1em;
+	}
+	/* Wide header and footer */
+	footer {
+		width: 100%;
+	}
+	header {
+		width: 100%;
+	}
+	/* Vertical header layout */
+	header div.header {
+		flex-direction: column;
+		align-items: center;
+		position: static;
+	}
+	header div.header-title {
+		position: static;
+		transform: none;
+		margin-bottom: 0.5em;
+	}
+	header div.header-theme-switcher {
+		margin-left: 0;
+	}
+}
+/* Mobile layout */
+@media screen and (max-width: 768px) {
+	/* Vertical stacking of blocks */
+	div.nav-container {
+		flex-direction: column;
+	}
+	div.nav-nav-box,
+	div.nav-content-box {
+		flex: none;
+		width: 100%;
+		padding-top: 1em;
+	}
+	div.nav-nav-box {
+		padding-bottom: 0;
+	}
+	div.nav-content-box {
+		padding-top: 0;
+	}
+	/* Wide header and footer */
+	footer {
+		width: 100%;
+	}
+	header {
+		width: 100%;
+	}
+	/* Vertical header layout */
+	header div.header {
+		flex-direction: column;
+		align-items: center;
+		position: static;
+	}
+	header div.header-title {
+		position: static;
+		transform: none;
+		margin-bottom: 0.5em;
+	}
+	header div.header-theme-switcher {
+		margin-left: 0;
+	}
+}

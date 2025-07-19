@@ -37,15 +37,15 @@ build:
 pages:
     script:
         # Install tools
-        - pacman --noconfirm -S doxygen mkdocs
+        - pacman --noconfirm -S doxygen gcc
         # Create output directory
         - mkdir -p public
+        # Build wikimk wiki
+        - ./build.sh docs wiki
         # Build doxygen
         - ./build.sh docs doxygen
-        # Build mkdocs wiki
-        - ./build.sh docs wiki
         # Copy everything to output directory
-        - cp -r wiki/mkdocs/site/* public/
+        - cp -r wiki/out/* public/
     artifacts:
         paths:
             - public

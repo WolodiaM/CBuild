@@ -100,14 +100,16 @@ docs() {
 	esac
 }
 docs_wiki() {
-	call_cmd ln -fsrT "wiki/doxygen/html" "wiki/mkdocs/docs/doxygen"
-	call_cmd mkdocs build
+	call_cmd gcc -o wikimk wikimk.c
+	call_cmd ./wikimk build
 }
 docs_doxygen() {
 	call_cmd doxygen doxygen.conf
+	call_cmd mv "wiki/doxygen/html" "wiki/out/doxygen"
 }
 docs_serve() {
-	call_cmd mkdocs serve
+	call_cmd gcc -o wikimk wikimk.c
+	call_cmd ./wikimk serve
 }
 # test subcommand
 test_cmd() {
@@ -164,10 +166,12 @@ test_run_all() {
 clean() {
 	call_cmd rm -rf wiki/mkdocs/site/
 	call_cmd rm -rf wiki/doxygen/html/
+	call_cmd rm -rf wiki/out
 	call_cmd rm -rf CBuild.h
 	call_cmd rm -rf build
 	call_cmd rm -rf cbuild.h
 	call_cmd rm -rf TAGS
+	mkdir wiki/out
 }
 # help subcommand
 help() {
