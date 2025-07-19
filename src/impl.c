@@ -504,7 +504,7 @@ cbuild_fd_t cbuild_fd_open_write(const char* path) {
 	    S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if(fd < 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
-		  "Cannot open file \"%s\" for reading, error: \"%s\"", path,
+		  "Cannot open file \"%s\" for writing, error: \"%s\"", path,
 		  strerror(errno));
 		return CBUILD_INVALID_FD;
 	}
