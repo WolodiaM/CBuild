@@ -30,159 +30,130 @@
 #include "../src/DynArray.h"
 #include "framework.h"
 // Code
-cbuild_da_t(int, int);
-cbuild_da_t_impl(int, int);
-size_t talloc_last_alloc_size = 0;
-void*  talloc_last_alloc_ptr  = NULL;
-void*  talloc(size_t num) {
-  talloc_last_alloc_size = num;
-  void* ptr              = malloc(num);
-  talloc_last_alloc_ptr  = ptr;
-  return ptr;
-}
-void* tfree_last_free_ptr = NULL;
-void  tfree(void* ptr) {
-  tfree_last_free_ptr = ptr;
-  free(ptr);
-}
-void* trealloc(void* ptr, size_t size) {
-	talloc_last_alloc_size = size;
-	tfree_last_free_ptr    = ptr;
-	return realloc(ptr, size);
-}
-TEST_MAIN(
-		{
-			cbuild_da_int_t da = cbuild_da_int;
-			TEST_CASE(
-					{
-						cbuild_da_int_t da_alloc = cbuild_da_int;
-						da_alloc.malloc          = talloc;
-						da_alloc.free            = tfree;
-						da_alloc.realloc         = trealloc;
-						cbuild_da_resize(&da_alloc, 256);
-						TEST_ASSERT_EQ(
-								talloc_last_alloc_size, 256ul * sizeof(int),
-								"Wrong allocation value on resize" TEST_EXPECT_MSG(zu),
-								256ul * sizeof(int), talloc_last_alloc_size);
-						TEST_ASSERT_EQ(
-								da_alloc.capacity, 256,
-								"Wrong capacity was set on resize" TEST_EXPECT_MSG(zu),
-								(size_t)256, da_alloc.capacity);
-						cbuild_da_clear(&da_alloc);
-						TEST_ASSERT_EQ(tfree_last_free_ptr, talloc_last_alloc_ptr,
-		                       "Wrong pointer was sent to free" TEST_EXPECT_MSG(p),
-		                       talloc_last_alloc_ptr, tfree_last_free_ptr);
-						TEST_ASSERT_EQ(da_alloc.capacity, 0,
-		                       "Wrong capcity was set on clear" TEST_EXPECT_MSG(zu),
-		                       (size_t)0, da_alloc.capacity);
-						TEST_ASSERT_EQ(
-								da_alloc.data, NULL,
-								"Data pointer non-null after clear" TEST_EXPECT_MSG(p), NULL,
-								(void*)da_alloc.data);
-						cbuild_da_append(&da_alloc, 1);
-						TEST_ASSERT_EQ(
-								talloc_last_alloc_size, 2ul * sizeof(int),
-								"Wrong alloc requested on append" TEST_EXPECT_MSG(zu),
-								2ul * sizeof(int), talloc_last_alloc_size);
-						cbuild_da_append(&da_alloc, 1);
-						cbuild_da_append(&da_alloc, 1);
-						TEST_ASSERT_EQ(
-								talloc_last_alloc_size, 4ul * sizeof(int),
-								"Wrong alloc requested on append" TEST_EXPECT_MSG(zu),
-								4ul * sizeof(int), talloc_last_alloc_size);
-					},
-					"DynArray allocation");
-			TEST_CASE(
-					{
-						cbuild_da_append(&da, 1);
-						cbuild_da_append(&da, 2);
-						TEST_ASSERT_EQ(
-								da.size, 2,
-								"Wrong element count after insertion" TEST_EXPECT_MSG(zu),
-								(size_t)2, da.size);
-						TEST_ASSERT_EQ(da.data[0], 1,
-		                       "Wrong element at index 0" TEST_EXPECT_MSG(d), 1,
-		                       da.data[0]);
-						TEST_ASSERT_EQ(da.data[1], 2,
-		                       "Wrong element at index 1" TEST_EXPECT_MSG(d), 2,
-		                       da.data[1]);
-						cbuild_da_clear(&da);
-					},
-					"DynArray single-element insertion");
-			TEST_CASE(__extension__({
-									int arr[] = { 1, 2, 3 };
-									cbuild_da_append_arr(&da, arr, 2);
-									TEST_ASSERT_EQ(
-											da.size, 2,
-											"Wrong element count after insertion" TEST_EXPECT_MSG(zu),
-											(size_t)2, da.size);
-									TEST_ASSERT_EQ(da.data[0], 1,
-		                             "Wrong element at index 0" TEST_EXPECT_MSG(d),
-		                             1, da.data[0]);
-									TEST_ASSERT_EQ(da.data[1], 2,
-		                             "Wrong element at index 1" TEST_EXPECT_MSG(d),
-		                             2, da.data[1]);
-									cbuild_da_clear(&da);
-								}),
-	              "DynArray array insertion");
-			TEST_CASE(
-					{
-						cbuild_da_append_many(&da, 1, 2, 3);
-						TEST_ASSERT_EQ(
-								da.size, 3,
-								"Wrong element count after insertion" TEST_EXPECT_MSG(zu),
-								(size_t)3, da.size);
-						TEST_ASSERT_EQ(da.data[0], 1,
-		                       "Wrong element at index 0" TEST_EXPECT_MSG(d), 1,
-		                       da.data[0]);
-						TEST_ASSERT_EQ(da.data[1], 2,
-		                       "Wrong element at index 1" TEST_EXPECT_MSG(d), 2,
-		                       da.data[1]);
-						TEST_ASSERT_EQ(da.data[2], 3,
-		                       "Wrong element at index 2" TEST_EXPECT_MSG(d), 3,
-		                       da.data[2]);
-						cbuild_da_clear(&da);
-					},
-					"DynArray multi-element insertion");
-			TEST_CASE(
-					{
-						cbuild_da_resize(&da, 10);
-						da.size = 2;
-						cbuild_da_set(&da, 0, 1);
-						TEST_ASSERT_EQ(da.data[0], 1,
-		                       "Wrong element after set" TEST_EXPECT_MSG(d), 1,
-		                       da.data[0]);
-						cbuild_da_clear(&da);
-					},
-					"DynArray element set")
-			TEST_CASE(
-					{
-						cbuild_da_append(&da, 1);
-						cbuild_da_append(&da, 2);
-						TEST_ASSERT_EQ(*cbuild_da_get(&da, 0), 1,
-		                       "Wrong element read at index 0" TEST_EXPECT_MSG(d),
-		                       1, *cbuild_da_get(&da, 0));
-						TEST_ASSERT_EQ(*cbuild_da_get(&da, 1), 2,
-		                       "Wrong element read at index 1" TEST_EXPECT_MSG(d),
-		                       2, *cbuild_da_get(&da, 1));
-						cbuild_da_clear(&da);
-					},
-					"DynArray reading");
-			TEST_CASE(
-					{
-						cbuild_da_append_many(&da, 1, 2, 3, 4);
-						cbuild_da_remove(&da, 1);
-						TEST_ASSERT_EQ(da.data[0], 1,
-		                       "Wrong element at index 0" TEST_EXPECT_MSG(d), 1,
-		                       da.data[0]);
-						TEST_ASSERT_EQ(da.data[1], 3,
-		                       "Wrong element at index 1" TEST_EXPECT_MSG(d), 3,
-		                       da.data[1]);
-						TEST_ASSERT_EQ(da.data[2], 4,
-		                       "Wrong element at index 2" TEST_EXPECT_MSG(d), 4,
-		                       da.data[2]);
-						cbuild_da_clear(&da);
-					},
-					"DynArray remove");
-		},
-		"DynArray datatype - dynamic resizable array")
+typedef struct da_int_t {
+	int *data;
+	size_t size;
+	size_t capacity;
+} da_int_t;
+TEST_MAIN({
+	da_int_t da = {0};
+	TEST_CASE(
+	{
+		da_int_t da_alloc = {0};
+		cbuild_da_resize(&da_alloc, 256);
+		TEST_ASSERT_EQ(
+		  da_alloc.capacity, 256,
+		  "Wrong capacity was set on resize" TEST_EXPECT_MSG(zu),
+		  (size_t)256, da_alloc.capacity);
+		cbuild_da_clear(&da_alloc);
+		TEST_ASSERT_EQ(da_alloc.capacity, 0,
+		  "Wrong capcity was set on clear" TEST_EXPECT_MSG(zu),
+		  (size_t)0, da_alloc.capacity);
+		TEST_ASSERT_EQ(
+		  da_alloc.data, NULL,
+		  "Data pointer non-null after clear" TEST_EXPECT_MSG(p), NULL,
+		  (void*)da_alloc.data);
+		cbuild_da_append(&da_alloc, 1);
+		cbuild_da_append(&da_alloc, 1);
+		cbuild_da_append(&da_alloc, 1);
+		TEST_ASSERT_EQ(
+		  da_alloc.capacity, 4,
+		  "Wrong capacity was set on resize" TEST_EXPECT_MSG(zu),
+		  (size_t)4, da_alloc.capacity);
+		cbuild_da_clear(&da_alloc);
+	},
+	"DynArray allocation");
+	TEST_CASE(
+	{
+		cbuild_da_append(&da, 1);
+		cbuild_da_append(&da, 2);
+		TEST_ASSERT_EQ(
+		da.size, 2,
+		"Wrong element count after insertion" TEST_EXPECT_MSG(zu),
+		(size_t)2, da.size);
+		TEST_ASSERT_EQ(da.data[0], 1,
+		"Wrong element at index 0" TEST_EXPECT_MSG(d), 1,
+		da.data[0]);
+		TEST_ASSERT_EQ(da.data[1], 2,
+		"Wrong element at index 1" TEST_EXPECT_MSG(d), 2,
+		da.data[1]);
+		cbuild_da_clear(&da);
+	},
+	"DynArray single-element insertion");
+	TEST_CASE(({
+		int arr[] = { 1, 2, 3 };
+		cbuild_da_append_arr(&da, arr, 2);
+		TEST_ASSERT_EQ(
+		  da.size, 2,
+		  "Wrong element count after insertion" TEST_EXPECT_MSG(zu),
+		  (size_t)2, da.size);
+		TEST_ASSERT_EQ(da.data[0], 1,
+		  "Wrong element at index 0" TEST_EXPECT_MSG(d),
+		  1, da.data[0]);
+		TEST_ASSERT_EQ(da.data[1], 2,
+		  "Wrong element at index 1" TEST_EXPECT_MSG(d),
+		  2, da.data[1]);
+		cbuild_da_clear(&da);
+	}),
+	"DynArray array insertion");
+	TEST_CASE(
+	{
+		cbuild_da_append_many(&da, 1, 2, 3);
+		TEST_ASSERT_EQ(
+		da.size, 3,
+		"Wrong element count after insertion" TEST_EXPECT_MSG(zu),
+		(size_t)3, da.size);
+		TEST_ASSERT_EQ(da.data[0], 1,
+		"Wrong element at index 0" TEST_EXPECT_MSG(d), 1,
+		da.data[0]);
+		TEST_ASSERT_EQ(da.data[1], 2,
+		"Wrong element at index 1" TEST_EXPECT_MSG(d), 2,
+		da.data[1]);
+		TEST_ASSERT_EQ(da.data[2], 3,
+		"Wrong element at index 2" TEST_EXPECT_MSG(d), 3,
+		da.data[2]);
+		cbuild_da_clear(&da);
+	},
+	"DynArray multi-element insertion");
+	TEST_CASE(
+	{
+		cbuild_da_resize(&da, 10);
+		da.size = 2;
+		cbuild_da_set(&da, 0, 1);
+		TEST_ASSERT_EQ(da.data[0], 1,
+		"Wrong element after set" TEST_EXPECT_MSG(d), 1,
+		da.data[0]);
+		cbuild_da_clear(&da);
+	},
+	"DynArray element set")
+	TEST_CASE(
+	{
+		cbuild_da_append(&da, 1);
+		cbuild_da_append(&da, 2);
+		TEST_ASSERT_EQ(*cbuild_da_get(&da, 0), 1,
+		"Wrong element read at index 0" TEST_EXPECT_MSG(d),
+		1, *cbuild_da_get(&da, 0));
+		TEST_ASSERT_EQ(*cbuild_da_get(&da, 1), 2,
+		"Wrong element read at index 1" TEST_EXPECT_MSG(d),
+		2, *cbuild_da_get(&da, 1));
+		cbuild_da_clear(&da);
+	},
+	"DynArray reading");
+	TEST_CASE(
+	{
+		cbuild_da_append_many(&da, 1, 2, 3, 4);
+		cbuild_da_remove(&da, 1);
+		TEST_ASSERT_EQ(da.data[0], 1,
+		"Wrong element at index 0" TEST_EXPECT_MSG(d), 1,
+		da.data[0]);
+		TEST_ASSERT_EQ(da.data[1], 3,
+		"Wrong element at index 1" TEST_EXPECT_MSG(d), 3,
+		da.data[1]);
+		TEST_ASSERT_EQ(da.data[2], 4,
+		"Wrong element at index 2" TEST_EXPECT_MSG(d), 4,
+		da.data[2]);
+		cbuild_da_clear(&da);
+	},
+	"DynArray remove");
+},
+"DynArray datatype - dynamic resizable array")

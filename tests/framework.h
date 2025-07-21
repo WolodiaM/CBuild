@@ -80,15 +80,14 @@
 		code;                                                                      \
 		if (err_code == 0) {                                                       \
 			printf(CBUILD_TERM_FG(                                                   \
-					CBUILD_TERM_GREEN) "Test case succeed" CBUILD_TERM_RESET "\n");      \
+			  CBUILD_TERM_GREEN) "Test case succeed" CBUILD_TERM_RESET "\n");        \
 		} else {                                                                   \
 			printf(                                                                  \
-					CBUILD_TERM_FG(                                                      \
-							CBUILD_TERM_RED) "Test case failed." CBUILD_TERM_RESET           \
-															 " Number of failed checks: " CBUILD_TERM_FG(    \
-																	 CBUILD_TERM_YELLOW) " %d" CBUILD_TERM_RESET \
-																											 "\n",                   \
-					err_code);                                                           \
+			  CBUILD_TERM_FG(                                                        \
+			    CBUILD_TERM_RED) "Test case failed." CBUILD_TERM_RESET               \
+			  " Number of failed checks: "                                           \
+			  CBUILD_TERM_FG(CBUILD_TERM_YELLOW) " %d" CBUILD_TERM_RESET "\n",       \
+			  err_code);                                                             \
 			global_err_code++;                                                       \
 		}                                                                          \
 		printf("\n");                                                              \
@@ -100,23 +99,20 @@
 		(void)argc;                                                                \
 		(void)argv;                                                                \
 		int global_err_code = 0;                                                   \
-		printf(info "\n------------------------------\n");                         \
+		printf(info "\n------------------------------\n");                          \
 		code;                                                                      \
 		if (global_err_code == 0) {                                                \
 			printf(CBUILD_TERM_BG(                                                   \
-					CBUILD_TERM_GREEN) "Test succeed" CBUILD_TERM_RESET "\n");           \
+			  CBUILD_TERM_GREEN) "Test succeed" CBUILD_TERM_RESET "\n");             \
 		} else {                                                                   \
-			printf(                                                                \
-						CBUILD_TERM_BG(                                                    \
-								CBUILD_TERM_RED) "Test failed." CBUILD_TERM_RESET              \
-																 " Number of failed "                          \
-				                         "sub-tests: " CBUILD_TERM_BG(                 \
-																		 CBUILD_TERM_YELLOW) "%"                   \
-				                                                 "d" CBUILD_TERM_RESET \
-																												 "\n",                 \
-						global_err_code); \
+			printf(                                                                  \
+			  CBUILD_TERM_BG(                                                        \
+			    CBUILD_TERM_RED) "Test failed." CBUILD_TERM_RESET                    \
+			  " Number of failed sub-tests: "                                        \
+			  CBUILD_TERM_BG(CBUILD_TERM_YELLOW) "%d" CBUILD_TERM_RESET "\n",        \
+			  global_err_code);                                                      \
 		}                                                                          \
-		return global_err_code;                                                    \
+		return global_err_code > 0;                                                \
 	}
 
 #define TEST_EXPECT_MSG(type)  ", expected '%" #type "' but found '%" #type "'."

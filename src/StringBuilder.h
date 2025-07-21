@@ -36,10 +36,11 @@
 // Code
 #define CBuildSBFmt     "%.*s"
 #define CBuildSBArg(sb) (int)(sb).size, (sb).data
-cbuild_da_t(char, CBuildSBchar);
-cbuild_da_t_ext_impl(CBuildSBchar);
-typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
-#define cbuild_sb                  cbuild_da_CBuildSBchar
+typedef struct cbuild_sb_t {
+	char *data;
+	size_t size;
+	size_t capacity;
+} cbuild_sb_t;
 /**
  *  @brief Append character to a string builder
  *
@@ -71,13 +72,13 @@ typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
  * @param cstr => char* -> C-string
  */
 #define cbuild_sb_append_cstr(sb, cstr)                                        \
-	cbuild_da_append_arr((sb), (char*)(cstr), strlen(cstr))
+	cbuild_da_append_arr((sb), (cstr), strlen(cstr))
 /**
  * @brief Append NULL-terminator to a string builder
  *
  * @param sb => cbuild_sb_t* -> String builder
  */
-#define cbuild_sb_append_null(sb)    cbuild_da_append((sb), '\0')
+#define cbuild_sb_append_null(sb) cbuild_da_append((sb), '\0')
 /**
  * @brief Set a character in a sb using index
  *
@@ -93,14 +94,14 @@ typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
  * @param idx => size_t -> Character index
  * @return VAL* -> Element
  */
-#define cbuild_sb_get(sb, idx)       cbuild_da_get((sb), (idx))
+#define cbuild_sb_get(sb, idx) cbuild_da_get((sb), (idx))
 /**
  * @brief Remove an element from a sb using index
  *
  * @param sb => cbuild_sb_t* -> Dynamic array
  * @param idx => size_t -> Element index
  */
-#define cbuild_sb_remove(sb, idx)    cbuild_da_remove((sb), (idx))
+#define cbuild_sb_remove(sb, idx) cbuild_da_remove((sb), (idx))
 /**
  * @brief Resize sb (Done automatically most of the times ;) )
  *
@@ -109,7 +110,7 @@ typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
  * will be lover than sb->size. If it is zero then default behavior is used.
  */
 #define cbuild_sb_resize(sb, new_capacity)                                     \
-	cbuild_da_resize((sb), (new_capacity))
+	cbuild_da_resize((sb), new_capacity)
 /**
  * @brief Free sb
  *
@@ -127,7 +128,7 @@ typedef cbuild_da_CBuildSBchar_t cbuild_sb_t;
  * @return 1  -> If first different character in first string builder is larger
  * @return 2  -> If size of first string builder is larger
  */
-int         cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
+int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
 /**
  * @brief Compare two StringBuilder ignoring case of an ASCII letter (Latin
  * only)
@@ -140,7 +141,7 @@ int         cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
  * @return 1  -> If first different character in first StringBuilder is larger
  * @return 2  -> If size of first StringBuilder is larger
  */
-int         cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b);
+int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b);
 /**
  * @brief Convert StringBuilder to StringView
  *
@@ -149,12 +150,26 @@ int         cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b);
  */
 cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb);
 /**
+ * @brief Convert StringBuilder to StringView
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @return cbuild_sv_t -> New string view
+ */
+#define cbuild_sv_from_sb(sb) cbuild_sb_to_sv(sb)
+/**
  * @brief Convert StringView to a StringBuilder. Does a copy.
  *
  * @param sv => cbuild_sv_t -> String view
  * @return cbuild_sb_t -> New string builder
  */
 cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
+/**
+ * @brief Convert StringView to a StringBuilder. Does a copy.
+ *
+ * @param sv => cbuild_sv_t -> String view
+ * @return cbuild_sb_t -> New string builder
+ */
+#define cbuild_sb_from_sv(sv) cbuild_sv_to_sb(sv)
 /**
  * @brief Append StringView to a StringBuilder
  *

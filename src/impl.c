@@ -9,6 +9,7 @@
 #include "StringBuilder.h"
 #include "StringView.h"
 #include "Term.h"
+#include "Map.h"
 #include "common.h"
 /* misc code */
 #if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
@@ -41,7 +42,6 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 	abort();
 }
 /* StringBuilder.h impl */
-cbuild_da_t_impl(char, CBuildSBchar);
 int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
 	if(a->size < b->size) {
 		return -2;
@@ -57,7 +57,7 @@ int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
 	} else if(ret > 0) {
 		return 1;
 	}
-	return 0;
+	CBUILD_UNREACHABLE("cbuild_sb_cmp fallthrough");
 }
 int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b) {
 	if(a->size < b->size) {
@@ -81,7 +81,7 @@ int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b) {
 	return 0;
 }
 cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv) {
-	cbuild_sb_t ret = cbuild_sb;
+	cbuild_sb_t ret = {0};
 	cbuild_sb_append_arr(&ret, sv.data, sv.size);
 	return ret;
 }
@@ -94,16 +94,17 @@ int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args) {
 	va_list args_copy;
 	va_copy(args_copy, args);
 	char buff[CBUILD_SB_QUICK_SPRINTF_SIZE];
-	int  ret = vsnprintf(buff, CBUILD_SB_QUICK_SPRINTF_SIZE, fmt, args);
+	int ret = vsnprintf(buff, CBUILD_SB_QUICK_SPRINTF_SIZE, fmt, args);
 	if(ret < 0) {
 		va_end(args_copy);
 		return ret;
 	}
 	if((size_t)ret >= CBUILD_SB_QUICK_SPRINTF_SIZE) {
-		char *buff1 = __CBUILD_MALLOC(ret + 1);
+		char *buff1 = __CBUILD_MALLOC((size_t)ret + 1);
 		cbuild_assert(buff1 != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-		vsnprintf(buff1, ret + 1, fmt, args_copy);
+		vsnprintf(buff1, (size_t)ret + 1, fmt, args_copy);
 		cbuild_sb_append_cstr(sb, buff1);
+		__CBUILD_FREE(buff1);
 	} else {
 		cbuild_sb_append_cstr(sb, buff);
 	}
@@ -249,7 +250,7 @@ size_t cbuild_sv_find(cbuild_sv_t sv, char c) {
 	if(chrptr == NULL) {
 		return (size_t) -1;
 	}
-	return chrptr - sv.data;
+	return (size_t)(chrptr - sv.data);
 }
 size_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
 	char *chrptr = sv.data;
@@ -271,22 +272,21 @@ loop_end:
 	if(chrptr == NULL) {
 		return (size_t) -1;
 	}
-	return chrptr - sv.data;
+	return (size_t)(chrptr - sv.data);
 }
 bool cbuild_sv_contains(cbuild_sv_t sv, char c) {
 	return cbuild_sv_find(sv, c) != (size_t) -1;
 }
 /* Command.h impl */
-cbuild_da_t_impl(char*, CBuildCMDchar_ptr);
 cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
-	cbuild_sb_t sb = cbuild_sb;
-	if(cmd.args.size < 1) {
+	cbuild_sb_t sb = {0};
+	if(cmd.size < 1) {
 		return sb;
 	}
-	for(size_t i = 0; i < cmd.args.size; i++) {
-		char *tmp = cmd.args.data[i];
+	for(size_t i = 0; i < cmd.size; i++) {
+		const char *tmp = cmd.data[i];
 		cbuild_sb_append_cstr(&sb, tmp);
-		if(i < cmd.args.size - 1) {
+		if(i < cmd.size - 1) {
 			cbuild_sb_append(&sb, ' ');
 		}
 	}
@@ -294,13 +294,17 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 }
 #if defined(CBUILD_API_POSIX)
 cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
-	if(cmd.args.size < 1) {
-		cbuild_log(CBUILD_LOG_ERROR, "Empty command is requested to be executed!");
+	if(cmd.size < 1) {
+		cbuild_log(CBUILD_LOG_ERROR, "Empty command requested to be executed!");
 		return CBUILD_INVALID_PROC;
 	}
+	// Get args
+	cbuild_cmd_t argv = {0};
+	cbuild_cmd_append_arr(&argv, cmd.data, cmd.size);
+	cbuild_cmd_append(&argv, (char*)NULL);
 	cbuild_proc_t proc = fork();
 	if(proc < 0) {
-		cbuild_log(CBUILD_LOG_ERROR, "Can not create child process, error: \"%s\"",
+		cbuild_log(CBUILD_LOG_ERROR, "Could not create child process, error: \"%s\"",
 		  strerror(errno));
 		return CBUILD_INVALID_PROC;
 	}
@@ -310,7 +314,7 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 			if(dup2(fd.fdstdin, STDIN_FILENO) < 0) {
 				cbuild_log(
 				  CBUILD_LOG_ERROR,
-				  "Cannot redirect stdin inside of a child process, error: \"%s\"",
+				  "Could not redirect stdin inside of a child process, error: \"%s\"",
 				  strerror(errno));
 				exit(1);
 			}
@@ -319,7 +323,7 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 			if(dup2(fd.fdstdout, STDOUT_FILENO) < 0) {
 				cbuild_log(
 				  CBUILD_LOG_ERROR,
-				  "Cannot redirect stdout inside of a child process, error: \"%s\"",
+				  "Could not redirect stdout inside of a child process, error: \"%s\"",
 				  strerror(errno));
 				exit(1);
 			}
@@ -328,23 +332,19 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 			if(dup2(fd.fdstderr, STDERR_FILENO) < 0) {
 				cbuild_log(
 				  CBUILD_LOG_ERROR,
-				  "Cannot redirect stderr inside of a child process, error: \"%s\"",
+				  "Could not redirect stderr inside of a child process, error: \"%s\"",
 				  strerror(errno));
 				exit(1);
 			}
 		}
 		// Autokill
-		if(cmd.autokill) {
+		if(cmd.flags & 0b1) {
 #ifdef CBUILD_OS_LINUX
 			prctl(PR_SET_PDEATHSIG, SIGKILL);
 #endif
 		}
-		// Get args
-		cbuild_cmd_t argv = cbuild_cmd;
-		cbuild_cmd_append_arr(&argv, cmd.args.data, cmd.args.size);
-		cbuild_cmd_append(&argv, NULL);
 		// Call command
-		if(execvp(argv.args.data[0], (char * const *)argv.args.data) < 0) {
+		if(execvp(argv.data[0], (char * const *)argv.data) < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
 			  "Cannot execute command in child process, error: \"%s\"",
 			  strerror(errno));
@@ -352,6 +352,7 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 		}
 		exit(0);
 	}
+	cbuild_cmd_clear(&argv);
 	return proc;
 }
 #endif // CBUILD_API_POSIX
@@ -458,8 +459,7 @@ void cbuild_proc_free(cbuild_proc_ptr_t ptr) {
 		munmap(ptr.ptr, ptr.size);
 	}
 }
-// Maybe: RtlCloneUserProcess on WinAPI. To not link to ntdll.lib GetProcAddress
-// could be used.
+// Maybe: RtlCloneUserProcess on WinAPI. To not link to ntdll.lib GetProcAddress could be used.
 cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context) {
 	cbuild_proc_t proc = fork();
 	if(proc < 0) {
@@ -477,8 +477,7 @@ cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context) {
 bool cbuild_proc_wait(cbuild_proc_t proc) {
 	return cbuild_proc_wait_code(proc) == 0;
 }
-/* FS.h */
-cbuild_da_t_impl(char*, CBuildFSchar_ptr);
+/* FS.h impl */
 bool cbuild_fd_close(cbuild_fd_t fd) {
 	if(fd == CBUILD_INVALID_FD) {
 		cbuild_log(CBUILD_LOG_ERROR,
@@ -539,7 +538,7 @@ bool cbuild_file_read(const char* path, cbuild_sb_t* data) {
 		cbuild_fd_close(fd);
 		return false;
 	}
-	size_t size = statbuff.st_size;
+	size_t size = (size_t)statbuff.st_size;
 	cbuild_sb_resize(data, size + 1);
 	if(data->data == NULL) {
 		cbuild_log(
@@ -556,8 +555,8 @@ bool cbuild_file_read(const char* path, cbuild_sb_t* data) {
 		cbuild_fd_close(fd);
 		return false;
 	}
-	data->size     = len;
-	data->capacity = len;
+	data->size     = (size_t)len;
+	data->capacity = (size_t)len;
 	cbuild_fd_close(fd);
 	return true;
 }
@@ -567,9 +566,9 @@ bool cbuild_file_write(const char* path, cbuild_sb_t* data) {
 		return false;
 	}
 	char   *buf = data->data;
-	ssize_t cnt = data->size;
+	ssize_t cnt = (ssize_t)data->size;
 	while(cnt > 0) {
-		ssize_t written = write(fd, buf, cnt);
+		ssize_t written = write(fd, buf, (size_t)cnt);
 		if(written < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
 			  "Wrror while writing to file \"%s\", error: \"%s\"", path,
@@ -620,7 +619,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 		}
 		char *buf = tmp_buff;
 		while(cnt > 0) {
-			ssize_t written = write(dst_fd, buf, cnt);
+			ssize_t written = write(dst_fd, buf, (size_t)cnt);
 			if(written < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
 				  "Wrror while writing to file \"%s\", error: \"%s\"", dst,
@@ -668,8 +667,7 @@ bool cbuild_dir_copy(const char* src, const char* dst) {
 		  dst);
 		return false;
 	}
-	cbuild_pathlist_t list = cbuild_pathlist;
-
+	cbuild_pathlist_t list = {0};
 	err                    = cbuild_dir_list(src, &list);
 	if(err == false) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot list source directory \"%s\"", src);
@@ -716,7 +714,7 @@ bool cbuild_dir_rename(const char* src, const char* dst) {
 	return cbuild_dir_move(src, dst);
 }
 bool cbuild_dir_remove(const char* path) {
-	cbuild_pathlist_t list = cbuild_pathlist;
+	cbuild_pathlist_t list = {0};
 	bool              err  = cbuild_dir_list(path, &list);
 	if(err == false) {
 		cbuild_log(CBUILD_LOG_ERROR,
@@ -823,7 +821,7 @@ cbuild_filetype_t cbuild_path_filetype(const char* path) {
 	return CBUILD_FTYPE_OTHER;
 }
 const char *cbuild_path_ext(const char* path) {
-	ssize_t i     = strlen(path);
+	ssize_t i     = (ssize_t)strlen(path);
 	bool    found = false;
 	for(; i >= 0; i--) {
 		if(path[i] == '.') {
@@ -837,14 +835,14 @@ const char *cbuild_path_ext(const char* path) {
 		__CBUILD_MEMCPY(ret, "\0", 1);
 		return ret;
 	}
-	size_t len = strlen(path) - i + 1;
+	size_t len = strlen(path) - (size_t)i + 1;
 	char  *ret = (char*)__CBUILD_MALLOC(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path + i + 1, len);
 	return ret;
 }
 const char *cbuild_path_name(const char* path) {
-	ssize_t i = strlen(path);
+	ssize_t i = (ssize_t)strlen(path);
 	if(path[i - 1] == '/') {
 		i -= 2;
 	}
@@ -853,14 +851,14 @@ const char *cbuild_path_name(const char* path) {
 			break;
 		}
 	}
-	size_t len = strlen(path) - i + 1;
+	size_t len = strlen(path) - (size_t)i + 1;
 	char  *ret = (char*)__CBUILD_MALLOC(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path + i + 1, len);
 	return ret;
 }
 const char *cbuild_path_base(const char* path) {
-	ssize_t i = strlen(path);
+	ssize_t i = (ssize_t)strlen(path);
 	if(path[i - 1] == '/') {
 		i -= 2;
 	}
@@ -877,14 +875,14 @@ const char *cbuild_path_base(const char* path) {
 		__CBUILD_MEMCPY(ret, "\0", 1);
 		return ret;
 	}
-	size_t len = i + 2;
+	size_t len = (size_t)i + 2;
 	char  *ret = (char*)__CBUILD_MALLOC(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path, len - 1);
 	ret[len - 1] = '\0';
 	return ret;
 }
-/* Compile.h */
+/* Compile.h impl */
 #ifdef CBUILD_API_POSIX
 void __cbuild_compile_mark_exec(const char* file) {
 	if(chmod(file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH |
@@ -896,7 +894,7 @@ void __cbuild_compile_mark_exec(const char* file) {
 void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd) = NULL;
 void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 	char       *bname_new = cbuild_shift(argv, argc);
-	cbuild_sb_t bname_old = cbuild_sb;
+	cbuild_sb_t bname_old = {0};
 	cbuild_sb_append_cstr(&bname_old, bname_new);
 	cbuild_sb_append_cstr(&bname_old, ".old");
 	cbuild_sb_append_null(&bname_old);
@@ -917,7 +915,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 		cbuild_sb_clear(&bname_old);
 		exit(1);
 	}
-	cbuild_cmd_t cmd = cbuild_cmd;
+	cbuild_cmd_t cmd = {0};
 	cbuild_cmd_append(&cmd, CBUILD_CC);
 	if(cbuild_selfrebuild_hook != NULL) {
 		cbuild_selfrebuild_hook(&cmd);
@@ -927,7 +925,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 		cbuild_file_rename(bname_old.data, bname_new);
 	}
 	__cbuild_compile_mark_exec(bname_new);
-	cmd.args.size = 0;
+	cmd.size = 0;
 	cbuild_cmd_append(&cmd, bname_new);
 	cbuild_cmd_append_arr(&cmd, argv, (size_t)argc);
 	if(!cbuild_cmd_sync(cmd)) {
@@ -945,7 +943,7 @@ int cbuild_compare_mtime(const char* output, const char* input) {
 		  input, strerror(errno));
 		return -1;
 	}
-	int in_mtime = statbuff.st_mtime;
+	long int in_mtime = statbuff.st_mtime;
 	if(stat(output, &statbuff) < 0) {
 		if(errno == ENOENT) {
 			return 1;
@@ -979,7 +977,7 @@ size_t cbuild_map_string_hash(const char* str) {
 	size_t hash = 5381;
 	int    c;
 	while((c = (unsigned char) * str++))
-		hash = ((hash << 5) + hash) + c; // hash * 33 + c
+		hash = ((hash << 5) + hash) + (size_t)c; // hash * 33 + c
 	return hash;
 }
 size_t cbuild_map_array_hash(const void* arr, size_t size) {
@@ -991,7 +989,6 @@ size_t cbuild_map_array_hash(const void* arr, size_t size) {
 	return hash;
 }
 /* FlagParse.h impl */
-cbuild_da_t_impl(char*, CBuildFlagArgList);
 struct __cbuild_int_flag_spec_t {
 	// Spec
 	/* Bit-mask
@@ -1013,41 +1010,39 @@ struct __cbuild_int_flag_spec_t {
 	 * 16-23 - Param 1 (list length)
 	 * 24-31 - Param 2 (tlist terminator)
 	 */
-	uint32_t                      type;
-	char                          sopt;
-	bool                          found; // State
-	char                          _padding[2];
-	void                         *param3;
-	void                         *param4;
-	cbuild_sv_t                   opt;
-	cbuild_sv_t                   description;
-	cbuild_sv_t                   type_hint;
-	cbuild_da_CBuildFlagArgList_t args; // State
+	uint32_t          type;
+	char              sopt;
+	bool              found; // State
+	char              _padding[2];
+	void             *param3;
+	void             *param4;
+	cbuild_sv_t       opt;
+	cbuild_sv_t       description;
+	cbuild_sv_t       type_hint;
+	cbuild_arglist_t  args; // State
 };
-#define __CBUILD_INT_FLAG_SET_TYPE(where, val) (where) |= (((val) & 3u) << 0)
-#define __CBUILD_INT_FLAG_SET_ARGT(where, val) (where) |= (((val) & 7u) << 2)
-#define __CBUILD_INT_FLAG_SET_ARGO(where, val) (where) |= (((val) & 1u) << 5)
-#define __CBUILD_INT_FLAG_SET_PRM1(where, val) (where) |= (((val) & 255u) << 16)
-#define __CBUILD_INT_FLAG_SET_PRM2(where, val) (where) |= (((val) & 255u) << 24)
-#define __CBUILD_INT_FLAG_GET_TYPE(from)       (((from) >> 0) & 0b11u)
-#define __CBUILD_INT_FLAG_GET_ARGT(from)       (((from) >> 2) & 0b111u)
-#define __CBUILD_INT_FLAG_GET_ARGO(from)       (((from) >> 5) & 0b1u)
-#define __CBUILD_INT_FLAG_GET_PRM1(from)       (((from) >> 16) & 0xFFu)
-#define __CBUILD_INT_FLAG_GET_PRM2(from)       (((from) >> 24) & 0xFFu)
-cbuild_da_t(struct __cbuild_int_flag_spec_t, CBuildFlagSpec);
-cbuild_da_t_impl(struct __cbuild_int_flag_spec_t, CBuildFlagSpec);
+#define __CBUILD_INT_FLAG_SET_TYPE(where, val) (where) |= (((val) & 3) << 0)
+#define __CBUILD_INT_FLAG_SET_ARGT(where, val) (where) |= (((val) & 7) << 2)
+#define __CBUILD_INT_FLAG_SET_ARGO(where, val) (where) |= (((val) & 1) << 5)
+#define __CBUILD_INT_FLAG_SET_PRM1(where, val) (where) |= (((val) & 255) << 16)
+#define __CBUILD_INT_FLAG_SET_PRM2(where, val) (where) |= (((val) & 255) << 24)
+#define __CBUILD_INT_FLAG_GET_TYPE(from)       (((from) >> 0) & 0b11)
+#define __CBUILD_INT_FLAG_GET_ARGT(from)       (((from) >> 2) & 0b111)
+#define __CBUILD_INT_FLAG_GET_ARGO(from)       (((from) >> 5) & 0b1)
+#define __CBUILD_INT_FLAG_GET_PRM1(from)       (((from) >> 16) & 0xFF)
+#define __CBUILD_INT_FLAG_GET_PRM2(from)       (((from) >> 24) & 0xFF)
+struct __cbuild_int_da_flag_spec_t {
+	struct __cbuild_int_flag_spec_t *data;
+	size_t size;
+	size_t capacity;
+};
 struct __cbuild_int_flag_context_t {
-	const char                   *app_name;
-	bool                          pargs_separator;
-	cbuild_da_CBuildFlagSpec_t    flags;
-	cbuild_da_CBuildFlagArgList_t pargs;
+	const char                         *app_name;
+	bool                                pargs_separator;
+	struct __cbuild_int_da_flag_spec_t  flags;
+	cbuild_arglist_t                    pargs;
 };
-static struct __cbuild_int_flag_context_t __cbuild_int_flag_context = {
-	.app_name        = NULL,
-	.pargs_separator = false,
-	.flags           = cbuild_da_CBuildFlagSpec,
-	.pargs           = cbuild_da_CBuildFlagArgList,
-};
+static struct __cbuild_int_flag_context_t __cbuild_int_flag_context = {0};
 bool __cbuild_int_flag_first_delim_func(const cbuild_sv_t* sv, size_t idx,
   void *args) {
 	if(sv->data[idx] == '\t' || sv->data[idx] == '\n' || sv->data[idx] == '\r') {
@@ -1176,7 +1171,7 @@ void cbuild_flag_new(const char* spec_cstr) {
 	}
 	new_spec.description = spec;
 	new_spec.found       = false;
-	new_spec.args        = cbuild_da_CBuildFlagArgList;
+	new_spec.args        = (cbuild_arglist_t){0};
 	cbuild_da_append(&(__cbuild_int_flag_context.flags), new_spec);
 }
 struct __cbuild_int_flag_spec_t *__cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
@@ -1366,7 +1361,7 @@ void cbuild_flag_parse(int argc, char** argv) {
 	}
 }
 char *__cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
-	cbuild_sb_t sb = cbuild_sb;
+	cbuild_sb_t sb = {0};
 	// Short opt
 	if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) {
 		cbuild_sb_append_cstr(&sb, "\t-");
@@ -1452,26 +1447,26 @@ void cbuild_flag_flg_help() {
 	__CBUILD_PRINT("Flags:\n");
 	// Help
 	int written = __CBUILD_PRINT("\t-h, --help");
-	__CBUILD_PRINTF("%-*s", (int)((opt_len + 2) - written), "");
+	__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
 	__CBUILD_PRINT("Shows app help (this message).\n");
 	// Version
 	written = __CBUILD_PRINT("\t-v, --version");
-	__CBUILD_PRINTF("%-*s", (int)((opt_len + 2) - written), "");
+	__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
 	__CBUILD_PRINT("Shows app version information.\n");
 	// Defined flags
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
 		char *opt     = __cbuild_int_flag_help_fmt(spec);
 		int   written = __CBUILD_PRINTF("%s", opt);
 		free(opt);
-		__CBUILD_PRINTF("%-*s", (int)((opt_len + 2) - written), "");
+		__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
 		__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
 		__CBUILD_PRINT("\n");
 	}
 }
-cbuild_da_CBuildFlagArgList_t *cbuild_flag_get_pargs(void) {
+cbuild_arglist_t *cbuild_flag_get_pargs(void) {
 	return &__cbuild_int_flag_context.pargs;
 }
-cbuild_flag_arglist_t *cbuild_flag_get_flag(const char* opt) {
+cbuild_arglist_t *cbuild_flag_get_flag(const char* opt) {
 	struct __cbuild_int_flag_spec_t *spec =
 	  __cbuild_int_flag_get_lopt(cbuild_sv_from_cstr(opt));
 	if(spec == NULL) {

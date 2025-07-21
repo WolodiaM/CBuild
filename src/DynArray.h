@@ -3,6 +3,17 @@
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Dynamic array implementation
  *
+ * To create new array datatype, you can use this code:
+ * @code{.c}
+ * struct my_array_t {
+ *	my_type_t* data;
+ *	size_t size;
+ *	size_t capacity;
+ * }
+ * @endcode
+ * Struct can contain other fields, if needed.
+ * See the [CBuild Wiki](/3.examples/7.datatypes.html) for more datails.
+ *
  * @date 2025-01-26
  * @copyright (C) 2025 WolodiaM
  * @license MIT
@@ -31,152 +42,47 @@
 #include "Log.h"
 #include "common.h"
 // Code
-#define cbuild_da_t(V, Vname)                                                  \
-	typedef void (*cbuild_da_##Vname##_append_t)(void* self, V elem);            \
-	typedef void (*cbuild_da_##Vname##_append_arr_t)(void* self, V* arr,   \
-	                                                 size_t size);               \
-	typedef bool (*cbuild_da_##Vname##_set_t)(void* self, size_t idx, V elem);   \
-	typedef V* (*cbuild_da_##Vname##_get_t)(void* self, size_t idx);             \
-	typedef bool (*cbuild_da_##Vname##_remove_t)(void* self, size_t idx);        \
-	typedef void (*cbuild_da_##Vname##_resize_t)(void*  self,                    \
-	                                             size_t new_capacity);           \
-	typedef void (*cbuild_da_##Vname##_clear_t)(void* self);                     \
-	typedef void* (*cbuild_da_##Vname##_malloc_t)(size_t bytes);                 \
-	typedef void* (*cbuild_da_##Vname##_realloc_t)(void* ptr, size_t bytes);     \
-	typedef void (*cbuild_da_##Vname##_free_t)(void* ptr);                       \
-	typedef void* (*cbuild_da_##Vname##_memcpy_t)(                               \
-			void* restrict dest, const void* restrict src, size_t bytes);            \
-	typedef struct cbuild_da_##Vname##_t {                                       \
-		V*                               data;                                     \
-		size_t                           size;                                     \
-		size_t                           capacity;                                 \
-		cbuild_da_##Vname##_append_t     append;                                   \
-		cbuild_da_##Vname##_append_arr_t append_arr;                               \
-		cbuild_da_##Vname##_set_t        set;                                      \
-		cbuild_da_##Vname##_get_t        get;                                      \
-		cbuild_da_##Vname##_remove_t     remove;                                   \
-		cbuild_da_##Vname##_resize_t     resize;                                   \
-		cbuild_da_##Vname##_clear_t      clear;                                    \
-		cbuild_da_##Vname##_malloc_t     malloc;                                   \
-		cbuild_da_##Vname##_realloc_t    realloc;                                  \
-		cbuild_da_##Vname##_free_t       free;                                     \
-		cbuild_da_##Vname##_memcpy_t     memcpy;                                   \
-	} cbuild_da_##Vname##_t
-#define cbuild_da_t_ext_impl(Vname)                                            \
-	extern const cbuild_da_##Vname##_t cbuild_da_##Vname
-#define cbuild_da_t_impl(V, Vname)                                             \
-	void cbuild_da_##Vname##_append(void* s, V elem) {                           \
-		cbuild_da_##Vname##_t* self = s;                                           \
-		if ((self->size + 1) > self->capacity) {                                   \
-			self->resize(self, 0);                                                   \
-		}                                                                          \
-		self->data[self->size++] = elem;                                           \
-	}                                                                            \
-	void cbuild_da_##Vname##_resize(void* s, size_t size) {                      \
-		cbuild_da_##Vname##_t* self = s;                                           \
-		if (self->data == NULL) {                                                  \
-			if (size == 0) {                                                         \
-				self->capacity = CBUILD_INIT_CAPACITY;                                 \
-			} else {                                                                 \
-				self->capacity = size;                                                 \
-			}                                                                        \
-			self->data = self->malloc(self->capacity * sizeof(V));                   \
-		} else {                                                                   \
-			if (size == 0) {                                                         \
-				self->capacity *= 2;                                                   \
-			} else {                                                                 \
-				self->capacity = size;                                                 \
-			}                                                                        \
-			self->data = self->realloc(self->data, self->capacity * sizeof(V));      \
-		}                                                                          \
-		cbuild_assert(self->data != NULL, "(LIB_CBUILD_DA) Allocation failed.\n"); \
-	}                                                                            \
-	void cbuild_da_##Vname##_append_arr(void* s, V* arr, size_t size) {    \
-		cbuild_da_##Vname##_t* self = s;                                           \
-		if ((self->size + size) > self->capacity) {                                \
-			self->resize(self, self->capacity + size);                               \
-		}                                                                          \
-		self->memcpy(self->data + self->size, arr, size * sizeof(V));              \
-		self->size += size;                                                        \
-	}                                                                            \
-	bool cbuild_da_##Vname##_set(void* s, size_t idx, V elem) {                  \
-		cbuild_da_##Vname##_t* self = s;                                           \
-		if (idx >= self->size) {                                                   \
-			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in set.");  \
-			return false;                                                            \
-		}                                                                          \
-		self->data[idx] = elem;                                                    \
-		return true;                                                               \
-	}                                                                            \
-	V* cbuild_da_##Vname##_get(void* s, size_t idx) {                            \
-		cbuild_da_##Vname##_t* self = s;                                           \
-		if (idx >= self->size) {                                                   \
-			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index oveflow in set.");   \
-			return NULL;                                                             \
-		}                                                                          \
-		return &self->data[idx];                                                   \
-	}                                                                            \
-	bool cbuild_da_##Vname##_remove(void* s, size_t idx) {                       \
-		cbuild_da_##Vname##_t* self = s;                                           \
-		if (idx >= self->size) {                                                   \
-			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in set.");  \
-			return false;                                                            \
-		}                                                                          \
-		self->memcpy(self->data + idx, (self->data + (idx + 1)),                   \
-		             (self->size - (idx + 1)) * sizeof(V));                        \
-		self->size--;                                                              \
-		return true;                                                               \
-	}                                                                            \
-	void cbuild_da_##Vname##_clear(void* s) {                                    \
-		cbuild_da_##Vname##_t* self = s;                                           \
-		self->free(self->data);                                                    \
-		self->data     = NULL;                                                     \
-		self->size     = 0;                                                        \
-		self->capacity = 0;                                                        \
-	}                                                                            \
-	const cbuild_da_##Vname##_t cbuild_da_##Vname = {                            \
-		.data       = NULL,                                                        \
-		.size       = 0,                                                           \
-		.capacity   = 0,                                                           \
-		.append     = cbuild_da_##Vname##_append,                                  \
-		.append_arr = cbuild_da_##Vname##_append_arr,                              \
-		.set        = cbuild_da_##Vname##_set,                                     \
-		.get        = cbuild_da_##Vname##_get,                                     \
-		.remove     = cbuild_da_##Vname##_remove,                                  \
-		.resize     = cbuild_da_##Vname##_resize,                                  \
-		.clear      = cbuild_da_##Vname##_clear,                                   \
-		.malloc     = __CBUILD_MALLOC,                                             \
-		.realloc    = __CBUILD_REALLOC,                                            \
-		.free       = __CBUILD_FREE,                                               \
-		.memcpy     = __CBUILD_MEMCPY,                                             \
-	}
 /**
  *  @brief Append element to a dynamic array
  *
  *  @param da => CBUILD_DA* -> Dynamic array
  *  @param elem => VAL -> Element
  */
-#define cbuild_da_append(da, elem) (da)->append((da), (elem))
+#define cbuild_da_append(da, elem)                                             \
+	do {                                                                         \
+		if (((da)->size + 1) > (da)->capacity) {                                   \
+			cbuild_da_resize((da), 0);                                               \
+		}                                                                          \
+		(da)->data[(da)->size++] = elem;                                           \
+	} while(0)
 /**
  * @brief Append an array to a da
  *
  * @param da => CBUILD_DA* -> Dynamic array
  * @param arr => VAL* -> Array pointer
- * @param size => size_t -> Number of new elements
+ * @param arr_size => size_t -> Number of new elements
  */
-#define cbuild_da_append_arr(da, arr, size)                                    \
-	(da)->append_arr((da), (arr), (size))
+#define cbuild_da_append_arr(da, arr, arr_size)                                \
+	do {                                                                         \
+		if (((da)->size + (arr_size)) > (da)->capacity) {                          \
+			cbuild_da_resize((da), (da)->capacity + (arr_size));                     \
+		}                                                                          \
+		__CBUILD_MEMCPY((da)->data + (da)->size, (arr),                            \
+		  (arr_size) * sizeof(typeof(*(da)->data)));                               \
+		(da)->size += (arr_size);                                                  \
+	} while(0)
 /**
  * @brief Append multiple elements to a da
  *
  * @param da => CBUILD_DA* -> Dynamic array
  * @param ... => VAL -> New elements
  */
-#define cbuild_da_append_many(da, ...)                                   \
+#define cbuild_da_append_many(da, ...)                                         \
 	do {                                                                         \
-		typeof(*((da)->data))   _tmp_arr[] = { __VA_ARGS__ };                                       \
-		size_t _count     = sizeof(_tmp_arr) / sizeof(_tmp_arr[0]);                \
-		cbuild_da_append_arr((da), _tmp_arr, _count);                              \
+		typeof(*((da)->data))   __cbuild_da_tmp_arr[] = { __VA_ARGS__ };           \
+		size_t __cbuild_da_tmp_count =                                             \
+		sizeof(__cbuild_da_tmp_arr) / sizeof(__cbuild_da_tmp_arr[0]);              \
+		cbuild_da_append_arr((da), __cbuild_da_tmp_arr, __cbuild_da_tmp_count);    \
 	} while (0)
 /**
  * @brief Set da element using its index
@@ -186,7 +92,18 @@
  * @param elem => VAL -> Element
  * @return bool -> Success or failure on overflow
  */
-#define cbuild_da_set(da, idx, elem) (da)->set((da), (idx), (elem))
+#define cbuild_da_set(da, idx, elem)                                           \
+	({                                                                           \
+		bool __cbuild__ret = false;                                                \
+		if ((idx) >= (da)->size) {                                                 \
+			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in set.");  \
+			__cbuild__ret = false;                                                   \
+		} else {                                                                   \
+			(da)->data[(idx)] = elem;                                                \
+			__cbuild__ret = true;                                                    \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
 /**
  * @brief Get an element from a da using index
  *
@@ -194,7 +111,17 @@
  * @param idx => size_t -> Element index
  * @return VAL* -> Element or NULL on overflow
  */
-#define cbuild_da_get(da, idx)       (da)->get((da), (idx))
+#define cbuild_da_get(da, idx)                                                 \
+	({                                                                           \
+		typeof(*(da)->data)* __cbuild__ret = NULL;                                 \
+		if ((idx) >= (da)->size) {                                                 \
+			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in get.");  \
+			__cbuild__ret = NULL;                                                    \
+		} else {                                                                   \
+			__cbuild__ret = &((da)->data[(idx)]);                                    \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
 /**
  * @brief Remove an element from a da using index
  *
@@ -202,27 +129,68 @@
  * @param idx => size_t -> Element index
  * @return bool -> Success or failure on overflow
  */
-#define cbuild_da_remove(da, idx)    (da)->remove((da), (idx))
+#define cbuild_da_remove(da, idx)                                              \
+	({                                                                           \
+		bool __cbuild__ret = false;                                                \
+		if ((idx) >= (da)->size) {                                                 \
+			cbuild_log(CBUILD_LOG_ERROR,                                             \
+			  "(LIB_CBUILD_DA) Index overflow in remove.");                          \
+			__cbuild__ret = false;                                                   \
+		} else {                                                                   \
+			__CBUILD_MEMMOVE((da)->data + (idx), ((da)->data + ((idx) + 1)),         \
+			  ((da)->size - ((idx) + 1)) * sizeof(typeof(*(da)->data)));             \
+			(da)->size--;                                                            \
+			__cbuild__ret = true;                                                    \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
 /**
  * @brief Resize da (done automatically most of the time ;) )
  *
  * @param da => CBUILD_DA* -> Dynamic array
- * @param size => size_t -> New element count. Array will be truncated if it
+ * @param new_size => size_t -> New element count. Array will be truncated if it
  * will be lover than da->size. If it is zero then default behavior is used
  */
-#define cbuild_da_resize(da, size)   (da)->resize((da), (size))
+#define cbuild_da_resize(da, new_size)                                         \
+	do {                                                                         \
+		if ((da)->data == NULL) {                                                  \
+			if ((new_size) == 0) {                                                   \
+				(da)->capacity = CBUILD_INIT_CAPACITY;                                 \
+			} else {                                                                 \
+				(da)->capacity = (new_size);                                           \
+			}                                                                        \
+			(da)->data = __CBUILD_MALLOC(                                            \
+			  (da)->capacity * sizeof(typeof(*(da)->data)));                         \
+		} else {                                                                   \
+			if ((new_size) == 0) {                                                   \
+				(da)->capacity *= 2;                                                   \
+			} else {                                                                 \
+				(da)->capacity = (new_size);                                           \
+			}                                                                        \
+			(da)->data = __CBUILD_REALLOC((da)->data,                                \
+			  (da)->capacity * sizeof(typeof(*(da)->data)));                         \
+		}                                                                          \
+		cbuild_assert((da)->data != NULL, "(LIB_CBUILD_DA) Allocation failed.\n"); \
+	} while(0)
 /**
  * @brief Free da
  *
  * @param da => CBUILD_DA* -> Dynamic array
  */
-#define cbuild_da_clear(da)          (da)->clear((da))
+#define cbuild_da_clear(da)                                                    \
+	do {                                                                         \
+		__CBUILD_FREE((da)->data);                                                 \
+		(da)->data     = NULL;                                                     \
+		(da)->size     = 0;                                                        \
+		(da)->capacity = 0;                                                        \
+	} while(0)
 /**
  * @brief Foreach loop
  *
  * @param da => CBUILD_DA* -> Dynamic array
  * @param iter => NAME -> Iteration value name
  */
-#define cbuild_da_foreach(da, iter)                                      \
-	for (typeof(*((da)->data))* iter = (da)->data; iter < ((da)->data + (da)->size); iter++)
+#define cbuild_da_foreach(da, iter)                                             \
+	for (typeof(*((da)->data))* iter = (da)->data;                                \
+	  iter < ((da)->data + (da)->size); iter++)
 #endif // __CBUILD_DYN_ARRAY_H__

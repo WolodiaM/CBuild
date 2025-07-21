@@ -32,10 +32,11 @@
 #include "StringBuilder.h"
 #include "common.h"
 // Code
-cbuild_da_t(char*, CBuildFSchar_ptr);
-cbuild_da_t_ext_impl(CBuildFSchar_ptr);
-typedef cbuild_da_CBuildFSchar_ptr_t cbuild_pathlist_t;
-#define cbuild_pathlist cbuild_da_CBuildFSchar_ptr
+typedef struct cbuild_pathlist_t {
+	char** data;
+	size_t size;
+	size_t capacity;
+} cbuild_pathlist_t;
 /**
  * @enum cbuild_filetype_t
  * @brief Type of filesystem element
@@ -52,21 +53,21 @@ typedef enum {
  *  @param fd => cbuild_fd_t -> File descriptor that should be close
  *  @return bool -> Success of failur
  */
-bool            cbuild_fd_close(cbuild_fd_t fd);
+bool cbuild_fd_close(cbuild_fd_t fd);
 /**
  * @brief Open file descriptor for reading using file path
  *
  * @param path => const char* -> Path to file
  * @return cbuild_fd_t -> New file descriptor
  */
-cbuild_fd_t     cbuild_fd_open_read(const char* path);
+cbuild_fd_t cbuild_fd_open_read(const char* path);
 /**
  * @brief Open file descriptor for writing using file path
  *
  * @param path => const char* -> Path to file
  * @return cbuild_fd_t -> New file descriptor
  */
-cbuild_fd_t     cbuild_fd_open_write(const char* path);
+cbuild_fd_t cbuild_fd_open_write(const char* path);
 /**
  * @brief Create and open pipe
  *
@@ -74,7 +75,7 @@ cbuild_fd_t     cbuild_fd_open_write(const char* path);
  * @param write => cbuild_fd_t* -> Write file descriptor return
  * @return bool -> Success or failure
  */
-bool            cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write);
+bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write);
 /**
  * @brief Read full file into buffer
  *
@@ -82,7 +83,7 @@ bool            cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write);
  * @param data => cbuild_sb_t* -> String buffer
  * @return bool -> Success or failure
  */
-bool            cbuild_file_read(const char* path, cbuild_sb_t* data);
+bool cbuild_file_read(const char* path, cbuild_sb_t* data);
 /**
  * @brief Write full file (overwrite)
  *
@@ -90,7 +91,7 @@ bool            cbuild_file_read(const char* path, cbuild_sb_t* data);
  * @param data => cbuild_sb_t * -> Buffer to write
  * @return bool -> Success or failure
  */
-bool            cbuild_file_write(const char* path, cbuild_sb_t* data);
+bool cbuild_file_write(const char* path, cbuild_sb_t* data);
 /**
  * @brief Copy file
  *
@@ -98,7 +99,7 @@ bool            cbuild_file_write(const char* path, cbuild_sb_t* data);
  * @param dst => const char* -> Destination filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_file_copy(const char* src, const char* dst);
+bool cbuild_file_copy(const char* src, const char* dst);
 /**
  * @brief Move file
  *
@@ -106,7 +107,7 @@ bool            cbuild_file_copy(const char* src, const char* dst);
  * @param dst => const char* -> Destination filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_file_move(const char* src, const char* dst);
+bool cbuild_file_move(const char* src, const char* dst);
 /**
  * @brief Rename file
  *
@@ -114,21 +115,21 @@ bool            cbuild_file_move(const char* src, const char* dst);
  * @param dst => const char* -> Destination filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_file_rename(const char* src, const char* dst);
+bool cbuild_file_rename(const char* src, const char* dst);
 /**
  * @brief Check if file exist
  *
  * @param path => const char* -> Filepath
  * @return bool -> Result
  */
-bool            cbuild_file_check(const char* path);
+bool cbuild_file_check(const char* path);
 /**
  * @brief Remove file
  *
  * @param path => const char* -> Filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_file_remove(const char* path);
+bool cbuild_file_remove(const char* path);
 /**
  * @brief Copy directory
  *
@@ -136,7 +137,7 @@ bool            cbuild_file_remove(const char* path);
  * @param dst => const char* -> Destination filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_dir_copy(const char* src, const char* dst);
+bool cbuild_dir_copy(const char* src, const char* dst);
 /**
  * @brief Move directory
  *
@@ -144,7 +145,7 @@ bool            cbuild_dir_copy(const char* src, const char* dst);
  * @param dst => const char* -> Destination filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_dir_move(const char* src, const char* dst);
+bool cbuild_dir_move(const char* src, const char* dst);
 /**
  * @brief Rename directory
  *
@@ -152,41 +153,41 @@ bool            cbuild_dir_move(const char* src, const char* dst);
  * @param dst => const char* -> Destination filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_dir_rename(const char* src, const char* dst);
+bool cbuild_dir_rename(const char* src, const char* dst);
 /**
  * @brief Remove directory
  *
  * @param path => const char* -> Filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_dir_remove(const char* path);
+bool cbuild_dir_remove(const char* path);
 /**
  * @brief Check if directory exist
  *
  * @param path => const char* -> Filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_dir_check(const char* path);
+bool cbuild_dir_check(const char* path);
 /**
  * @brief Get list of file in a directory
  *
  * @param path => const char* -> Filepath
  * @param elements => cbuild_pathlist_t* -> Return valud
  */
-bool            cbuild_dir_list(const char* path, cbuild_pathlist_t* elements);
+bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements);
 /**
  * @brief Free path list structure
  *
  * @param list => cbuild_pathlist_t* -> Path list
  */
-void            cbuild_pathlist_clear(cbuild_pathlist_t* list);
+void cbuild_pathlist_clear(cbuild_pathlist_t* list);
 /**
  * @brief Create directory
  *
  * @param path => const char* -> Filepath
  * @return bool -> Success or failure
  */
-bool            cbuild_dir_create(const char* path);
+bool cbuild_dir_create(const char* path);
 /**
  * @brief Get type of filesystem entry
  *
@@ -200,7 +201,7 @@ cbuild_filetype_t cbuild_path_filetype(const char* path);
  * @param path => const char* -> Filepath
  * @return const char* -> String allocated on heap
  */
-const char*     cbuild_path_ext(const char* path);
+const char* cbuild_path_ext(const char* path);
 /**
  * @brief Get file name (after last '/' and before last '.' or if path ends with
  * '/' then after previous '/' to last '/')
@@ -208,12 +209,12 @@ const char*     cbuild_path_ext(const char* path);
  * @param path => const char* -> Filepath
  * @return const char* -> String allocated on heap
  */
-const char*     cbuild_path_name(const char* path);
+const char* cbuild_path_name(const char* path);
 /**
  * @brief Everything that function cbuild_path_name removes
  *
  * @param path => const char* -> Filepath
  * @return const char* -> String allocated on heap
  */
-const char*     cbuild_path_base(const char* path);
+const char* cbuild_path_base(const char* path);
 #endif // __CBUILD_FS_H__

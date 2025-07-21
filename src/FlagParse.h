@@ -33,16 +33,18 @@
 #include "DynArray.h"
 #include "common.h"
 // Code
-cbuild_da_t(char*, CBuildFlagArgList);
-typedef cbuild_da_CBuildFlagArgList_t cbuild_flag_arglist_t;
-cbuild_da_t_ext_impl(CBuildFlagArgList);
+typedef struct cbuild_arglist_t {
+	const char** data;
+	size_t size;
+	size_t capacity;
+} cbuild_arglist_t;
 /**
  * @brief Parse flag spec and register it
  * [See here for a full spec](../internals/flagparse)
  *
  * @param spec => char* -> Flag spec
  */
-void                   cbuild_flag_new(const char* spec);
+void cbuild_flag_new(const char* spec);
 /**
  * @brief Parse flags
  *
@@ -53,13 +55,13 @@ void                   cbuild_flag_parse(int argc, char** argv);
 /**
  * @brief Prints help for all flags to a stdout
  */
-void                   cbuild_flag_flg_help();
+void cbuild_flag_flg_help();
 /**
  * @brief Get positional arguments list
  *
  * @return cbuild_flag_arglist_t* -> List of positional arguments
  */
-cbuild_flag_arglist_t* cbuild_flag_get_pargs(void);
+cbuild_arglist_t* cbuild_flag_get_pargs(void);
 /**
  * @brief Get arguments of a specific flag
  *
@@ -67,13 +69,13 @@ cbuild_flag_arglist_t* cbuild_flag_get_pargs(void);
  * @return cbuild_flag_arglist_t* -> List of flag's arguments or NULL if flag
  * not found
  */
-cbuild_flag_arglist_t* cbuild_flag_get_flag(const char* opt);
+cbuild_arglist_t* cbuild_flag_get_flag(const char* opt);
 /**
  * @brief Get app name as a C-string
  *
  * @return char* -> App name
  */
-char*                  cbuild_flag_app_name(void);
+char* cbuild_flag_app_name(void);
 /**
  * @brief Function prototype fo a help print function, stub provided, but should
  * be reimplemented for best user experience.

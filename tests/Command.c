@@ -34,60 +34,66 @@
 #include "../src/common.h"
 #include "framework.h"
 // Code
-TEST_MAIN(
-		{
-			TEST_CASE(
-					{
-						cbuild_cmd_t c1 = cbuild_cmd;
-						cbuild_cmd_append_many(&c1, "a", "b", "--flag", "-f",
-		                               "\"val with spaces\"");
-						cbuild_sb_t sb1 = cbuild_cmd_to_sb(c1);
-						char* cmp1 = "a b --flag -f \"val with spaces\"";
-						TEST_ASSERT_STREQ(sb1.data, cmp1,
-		                          "Get: \"" CBuildSBFmt "\", expected: \"%s\"",
-		                          CBuildSBArg(sb1), cmp1);
-						cbuild_cmd_clear(&c1);
-						cbuild_cmd_append_many(&c1, CBUILD_CC,
-		                               CBUILD_CARGS_DEFINE_VAL("VER", "1.0"),
-		                               CBUILD_CARGS_INCLUDE("common.h"),
-		                               "file\\ with\\ spaces.c", "-o", "file.run");
-						cbuild_sb_clear(&sb1);
-						sb1 = cbuild_cmd_to_sb(c1);
-						char* cmp2 =
-								"gcc -DVER=1.0 --include \"common.h\" file\\ with\\ spaces.c "
-								"-o file.run";
-						TEST_ASSERT_STREQ(sb1.data, cmp2,
-		                          "Get: \"" CBuildSBFmt "\", expected: \"%s\"",
-		                          CBuildSBArg(sb1), cmp2);
-					},
-					"Command buffer to string buffer conversion");
-			TEST_CASE(
-					{
-						cbuild_cmd_t cmd = cbuild_cmd;
-						cbuild_cmd_append_many(&cmd, "printf", "ABCD");
-						cbuild_fd_t fds[2]; // { [0] = read, [1] = write }
-						int         pstatus = pipe(fds);
-						if (pstatus < 0) {
-							printf("Test runner got error!\n");
-							exit(1);
-						}
-						bool ret = cbuild_cmd_sync_redirect(
-								cmd, (cbuild_cmd_fd_t){ .fdstdout = fds[1],
-		                                    .fdstdin  = CBUILD_INVALID_FD,
-		                                    .fdstderr = CBUILD_INVALID_FD });
-						TEST_ASSERT_EQ(ret, true, "%s", "Function returned error!");
-						// TO be able to capture errors
-						char str[1024];
-						int  num = read(fds[0], str, 1024);
-						TEST_ASSERT_EQ(
-								num, 4,
-								"Wrong number of bytes read from a pipe, 4 expected but got %d",
-								num);
-						TEST_ASSERT_MEMEQ(
-								str, "ABCD", 4,
-								"Wrong string read from a pipe" TEST_EXPECT_MSG(.*s), 4, "ABCD",
-								1024, str);
-					},
-					"Check if command execution with redirect is working");
-		},
-		"Command runner")
+TEST_MAIN({
+	TEST_CASE(
+	{
+		cbuild_cmd_t c1 = {0};
+		cbuild_cmd_append_many(&c1, "a", "b", "--flag", "-f",
+		  "\"val with spaces\"");
+		cbuild_sb_t sb1 = cbuild_cmd_to_sb(c1);
+		cbuild_sb_append_null(&sb1);
+		char *cmp1 = "a b --flag -f \"val with spaces\"";
+		TEST_ASSERT_STREQ(sb1.data, cmp1,
+		  "Get: \"" CBuildSBFmt "\", expected: \"%s\"",
+		  CBuildSBArg(sb1), cmp1);
+		cbuild_cmd_clear(&c1);
+		cbuild_cmd_append_many(&c1, CBUILD_CC,
+		  CBUILD_CARGS_DEFINE_VAL("VER", "1.0"),
+		  CBUILD_CARGS_INCLUDE("common.h"),
+		  "file\\ with\\ spaces.c", "-o", "file.run");
+		cbuild_sb_clear(&sb1);
+		sb1 = cbuild_cmd_to_sb(c1);
+		cbuild_sb_append_null(&sb1);
+		char *cmp2 =
+		  "gcc -DVER=1.0 --include \"common.h\" file\\ with\\ spaces.c "
+		  "-o file.run";
+		TEST_ASSERT_STREQ(sb1.data, cmp2,
+		  "Get: \"" CBuildSBFmt "\", expected: \"%s\"",
+		  CBuildSBArg(sb1), cmp2);
+		cbuild_sb_clear(&sb1);
+		cbuild_cmd_clear(&c1);
+	},
+	"Command buffer to string buffer conversion");
+	TEST_CASE(
+	{
+		cbuild_cmd_t cmd = {0};
+		cbuild_cmd_append_many(&cmd, "printf", "ABCD");
+		cbuild_fd_t fds[2]; // { [0] = read, [1] = write }
+		int         pstatus = pipe(fds);
+		if(pstatus < 0) {
+			printf("Test runner got error!\n");
+			exit(1);
+		}
+		bool ret = cbuild_cmd_sync_redirect(
+		cmd, (cbuild_cmd_fd_t) {
+			.fdstdout = fds[1],
+			.fdstdin  = CBUILD_INVALID_FD,
+			.fdstderr = CBUILD_INVALID_FD
+		});
+		TEST_ASSERT_EQ(ret, true, "%s", "Function returned error!");
+		// TO be able to capture errors
+		char str[1024];
+		long int  num = read(fds[0], str, 1024);
+		TEST_ASSERT_EQ(
+		  num, 4,
+		  "Wrong number of bytes read from a pipe, 4 expected but got %ld",
+		  num);
+		TEST_ASSERT_MEMEQ(
+		  str, "ABCD", 4,
+		  "Wrong string read from a pipe" TEST_EXPECT_MSG(.*s), 4, "ABCD",
+		  1024, str);
+		cbuild_cmd_clear(&cmd);
+	},
+	"Check if command execution with redirect is working");
+},
+"Command runner")
