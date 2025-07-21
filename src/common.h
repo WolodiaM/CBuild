@@ -154,11 +154,18 @@
  *     - Entries now sorted alphabetically
  *     - Disable file descriptor auto inheritance on exec by default
  * --------------------------------------------
- * 2025-07-09  v1.8 Command updates
+ * 2025-07-09  v1.8    Command updates
  *   Command.h [feature]
  *     - Allow to autokill child processes on exit on Linux
  *   Command.h [change]
  *     - Changed cbuild_cmd_t format
+ * --------------------------------------------
+ * 2025-07-21  v1.9    Back to beginning
+ *   General
+ *     - Revert basic data types to be implemented as a raw macro.
+ *       Map is not rewritten because complexity is too high.
+ *   Map.h [bugfix]
+ *     - Fixed memory leak
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -188,117 +195,118 @@
  * @brief Init capacity of cbuild datastructures. `unsigned long`
  */
 #ifndef CBUILD_INIT_CAPACITY
-#	define CBUILD_INIT_CAPACITY 256ul
+	#define CBUILD_INIT_CAPACITY 256ul
 #endif // CBUILD_INIT_CAPACITY
 /**
  * @brief Minimim log level. `CBuildLogLevel`
  */
 #ifndef CBUILD_LOG_MIN_LEVEL
-#	define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_ERROR
+	#define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_ERROR
 #endif // CBUILD_LOG_MIN_LEVEL
 /**
  * @brief	Size of sprintf buffer that will be used as a fast-path.
  * `unsigned long`
  */
 #ifndef CBUILD_SB_QUICK_SPRINTF_SIZE
-#	define CBUILD_SB_QUICK_SPRINTF_SIZE 512ul
+	#define CBUILD_SB_QUICK_SPRINTF_SIZE 512ul
 #endif // CBUILD_SB_QUICK_SPRINTF_SIZE
 /**
  * @brief Temporary buffer size for file copies
  */
 #ifndef CBUILD_TMP_BUFF_SIZE
-#	define CBUILD_TMP_BUFF_SIZE (32 * 1024 * 1024)
+	#define CBUILD_TMP_BUFF_SIZE (32 * 1024 * 1024)
 #endif // CBUILD_TMP_BUFF_SIZE
 // OS-specific defines
 #if defined(__linux__)
-#	define CBUILD_OS_LINUX
-#	define CBUILD_API_POSIX
+	#define CBUILD_OS_LINUX
+	#define CBUILD_API_POSIX
 #elif defined(__APPLE__) || defined(__MACH__)
-#	define CBUILD_OS_MACOS
-#	define CBUILD_API_POSIX
+	#define CBUILD_OS_MACOS
+	#define CBUILD_API_POSIX
 #elif defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) ||   \
-		defined(__DragonFly__)
-#	define CBUILD_OS_BSD
-#	define CBUILD_API_POSIX
+	defined(__DragonFly__)
+	#define CBUILD_OS_BSD
+	#define CBUILD_API_POSIX
 #elif defined(__unix__)
-#	define CBUILD_OS_UNIX
-#	define CBUILD_API_POSIX
+	#define CBUILD_OS_UNIX
+	#define CBUILD_API_POSIX
 #elif defined(__CYGWIN__)
-#	define CBUILD_OS_WINDOWS_CYGWIN
-#	define CBUILD_API_POSIX
+	#define CBUILD_OS_WINDOWS_CYGWIN
+	#define CBUILD_API_POSIX
 #elif defined(__MINGW32__) || defined(__MINGW64__)
-#	define CBUILD_OS_WINDOWS_MINGW
-#	define CBUILD_API_WIN32
-#	error "This library support only POSIX api and MinGW only supports WinAPI"
+	#define CBUILD_OS_WINDOWS_MINGW
+	#define CBUILD_API_WIN32
+	#error "This library support only POSIX api and MinGW only supports WinAPI"
 #elif defined(_MSC_VER)
-#	define CBUILD_OS_WINDOWS_MSVC
-#	define CBUILD_API_WIN32
-#	error                                                                        \
-			"MSVC is fully unsupported as a compiler. Please use gcc/clang-compatible compiler!"
-#	error "This library support only POSIX api and MSVC only supports WinAPI"
+	#define CBUILD_OS_WINDOWS_MSVC
+	#define CBUILD_API_WIN32
+	#error                                                                        \
+	"MSVC is fully unsupported as a compiler. Please use gcc/clang-compatible compiler!"
+	#error "This library support only POSIX api and MSVC only supports WinAPI"
 #else
-#	error                                                                        \
-			"This OS is unsupported by CBuild. If it supports POSIX API then you can add new compile-time check for your current OS and define API macro and OS macro and add compiler macro check for your OS. If it don't support any of this APIs then you need to create your own API macro and change implementation-specifc parts of CBuild"
+	#error                                                                        \
+	"This OS is unsupported by CBuild. If it supports POSIX API then you can add new compile-time check for your current OS and define API macro and OS macro and add compiler macro check for your OS. If it don't support any of this APIs then you need to create your own API macro and change implementation-specifc parts of CBuild"
 #endif // OS selector
 // Different between different APIs
 #if defined(CBUILD_API_POSIX)
-// Platform includes
-#	if defined(CBUILD_OS_MACOS)
-#		include "crt_externs.h"
-#	endif // CBUILD_OS_MACOS
-# if defined(CBUILD_OS_LINUX)
-#   include "sys/prctl.h"
-# endif // CBUILD_OS_LINUX
-#	include "dlfcn.h"
-// Print functions
-#	define __CBUILD_PRINT(str)                printf((str))
-#	define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
-#	define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
-#	define __CBUILD_FLUSH()                   fflush(stdout)
-// Maybe you want to redefine this two macro to work with stderr, but I prefer
-// to have my errors in standard stdout
-#	define __CBUILD_ERR_PRINT(str)            printf((str))
-#	define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
-#	define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
-#	define __CBUILD_ERR_FLUSH()               fflush(stdout)
-// Memory functions
-#	define __CBUILD_MALLOC                    malloc
-#	define __CBUILD_REALLOC                   realloc
-#	define __CBUILD_MEMCPY                    memcpy
-#	define __CBUILD_FREE                      free
-// Process and file handles
-typedef pid_t cbuild_proc_t;
-#	define CBUILD_INVALID_PROC -1
-typedef int cbuild_fd_t;
-#	define CBUILD_INVALID_FD -1
-// For pointer errors
-#	define CBUILD_PTR_ERR    (void*)((intptr_t)-1)
+	// Platform includes
+	#if defined(CBUILD_OS_MACOS)
+		#include "crt_externs.h"
+	#endif // CBUILD_OS_MACOS
+	#if defined(CBUILD_OS_LINUX)
+		#include "sys/prctl.h"
+	#endif // CBUILD_OS_LINUX
+	#include "dlfcn.h"
+	// Print functions
+	#define __CBUILD_PRINT(str)                printf((str))
+	#define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
+	#define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
+	#define __CBUILD_FLUSH()                   fflush(stdout)
+	// Maybe you want to redefine this two macro to work with stderr, but I prefer
+	// to have my errors in standard stdout
+	#define __CBUILD_ERR_PRINT(str)            printf((str))
+	#define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
+	#define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
+	#define __CBUILD_ERR_FLUSH()               fflush(stdout)
+	// Memory functions
+	#define __CBUILD_MALLOC                    malloc
+	#define __CBUILD_REALLOC                   realloc
+	#define __CBUILD_MEMCPY                    memcpy
+	#define __CBUILD_MEMMOVE                   memmove
+	#define __CBUILD_FREE                      free
+	// Process and file handles
+	typedef pid_t cbuild_proc_t;
+	#define CBUILD_INVALID_PROC -1
+	typedef int cbuild_fd_t;
+	#define CBUILD_INVALID_FD -1
+	// For pointer errors
+	#define CBUILD_PTR_ERR    (void*)((intptr_t)-1)
 #elif defined(CBUILD_API_WIN32)
-// Platform includes
-#	include <Windows.h>
-// Print functions
-#	define __CBUILD_PRINT(str)                printf((str))
-#	define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
-#	define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
-#	define __CBUILD_FLUSH()                   fflush(stdout)
-// Maybe you want to redefine this two macro to work with stderr, but I prefer
-// to have my errors in standard stdout
-#	define __CBUILD_ERR_PRINT(str)            printf((str))
-#	define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
-#	define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
-#	define __CBUILD_ERR_FLUSH()               fflush(stdout)
-// Memory functions
-#	define __CBUILD_MALLOC                    malloc
-#	define __CBUILD_REALLOC                   realloc
-#	define __CBUILD_MEMCPY                    memcpy
-#	define __CBUILD_FREE                      free
-// Process and file handles
-typedef HANDLE cbuild_proc_t;
-#	define CBUILD_INVALID_PROC                ((HANDLE)(intptr_t)-1)
-typedef HANDLE cbuild_fd_t;
-#	define CBUILD_INVALID_FD                  ((HANDLE)(intptr_t)-1)
-// For pointer errors
-#	define CBUILD_PTR_ERR                     (void*)((intptr_t)-1)
+	// Platform includes
+	#include <Windows.h>
+	// Print functions
+	#define __CBUILD_PRINT(str)                printf((str))
+	#define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
+	#define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
+	#define __CBUILD_FLUSH()                   fflush(stdout)
+	// Maybe you want to redefine this two macro to work with stderr, but I prefer
+	// to have my errors in standard stdout
+	#define __CBUILD_ERR_PRINT(str)            printf((str))
+	#define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
+	#define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
+	#define __CBUILD_ERR_FLUSH()               fflush(stdout)
+	// Memory functions
+	#define __CBUILD_MALLOC                    malloc
+	#define __CBUILD_REALLOC                   realloc
+	#define __CBUILD_MEMCPY                    memcpy
+	#define __CBUILD_FREE                      free
+	// Process and file handles
+	typedef HANDLE cbuild_proc_t;
+	#define CBUILD_INVALID_PROC                ((HANDLE)(intptr_t)-1)
+	typedef HANDLE cbuild_fd_t;
+	#define CBUILD_INVALID_FD                  ((HANDLE)(intptr_t)-1)
+	// For pointer errors
+	#define CBUILD_PTR_ERR                     (void*)((intptr_t)-1)
 #endif // CBUILD_API_*
 // Macro functionality
 #define __CBUILD_STRINGIFY(var)  #var
@@ -333,7 +341,7 @@ typedef HANDLE cbuild_fd_t;
 #define CBUILD_UNREACHABLE(message)                                            \
 	do {                                                                         \
 		__CBUILD_ERR_PRINTF("%s:%d: UNREACHABLE: %s\n", __FILE__, __LINE__,        \
-		                    (message));                                            \
+		  (message));                                            \
 		abort();                                                                   \
 	} while (0)
 // More user-friendly array operations
@@ -351,7 +359,7 @@ typedef HANDLE cbuild_fd_t;
  */
 #define cbuild_assert(expr, ...)                                               \
 	(expr) ? (void)(0)                                                           \
-				 : __cbuild_assert(__FILE__, __LINE__, __func__, #expr, __VA_ARGS__)
+	: __cbuild_assert(__FILE__, __LINE__, __func__, #expr, __VA_ARGS__)
 /**
  * @brief Internal function that does assert
  *
@@ -363,7 +371,7 @@ typedef HANDLE cbuild_fd_t;
  * @param ... -> Printf args
  */
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
-                     const char* expr, ...) __attribute__((__noreturn__));
+  const char *expr, ...) __attribute__((__noreturn__));
 /**
  * @brief Get element from array, errors-out at invalid index
  *
@@ -372,8 +380,8 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
  */
 #define cbuild_arr_get(array, index)                                           \
 	(cbuild_assert((size_t)(index) < cbuild_arr_len(array),                      \
-	               "Index %zu is out of bounds!\n", (size_t)index),              \
-	 (array)[(size_t)(index)])
+	  "Index %zu is out of bounds!\n", (size_t)index),              \
+	  (array)[(size_t)(index)])
 /**
  * @brief Shift args in and array with size (like argv and argc pair. Should
  * work similartly to bash `shift`
@@ -383,7 +391,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
  * */
 #define cbuild_shift(argv, argc)                                               \
 	(cbuild_assert((argc) > 0, "More arguments is required!\n"), (argc)--,       \
-	 *(argv)++)
+	  *(argv)++)
 /**
  * @brief Shift args in and array with size (like argv and argc pair. Should
  * work similartly to bash `shift`. Takes addiitional message to print on error
@@ -395,7 +403,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 #define cbuild_shift_expect(argv, argc, ...)                                   \
 	(cbuild_assert((argc) > 0, __VA_ARGS__), (argc)--, *(argv)++)
 // Version
-#define CBUILD_VERSION        "v1.7"
+#define CBUILD_VERSION        "v1.9"
 #define CBUILD_VERSION_MAJOR  1
-#define CBUILD_2VERSION_MINOR 7
+#define CBUILD_2VERSION_MINOR 9
 #endif // __CBUILD_COMMON_H__
