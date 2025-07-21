@@ -13,7 +13,7 @@ stages:
 test:
     stage: test
     script:
-        - pacman --noconfirm -S gcc clang valgrind glibc-debug
+        - pacman --noconfirm -S gcc clang valgrind
         - ./build.sh test
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
@@ -23,7 +23,7 @@ build:
     stage: build
     script:
         - pacman --noconfirm -S gcc clang astyle
-        - ./build.sh pack
+        - MEMCHECK_EXT=" " ./build.sh pack
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

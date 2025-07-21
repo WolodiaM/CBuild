@@ -3,7 +3,8 @@
 set -euo pipefail
 # constants
 CARGS="-O3 -g -std=gnu99 -Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Werror -D_FORTIFY_SOURCE=2"
-MEMCHECK="valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2"
+MEMCHECK_DEFAULT="valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2"
+MEMCHECK="${MEMCHECK_EXT:-$MEMCHECK_DEFAULT}"
 # Global variables
 Silent="no"  # Need to be set to `yes`
 Verbose="no" # Need to be set to `yes`
