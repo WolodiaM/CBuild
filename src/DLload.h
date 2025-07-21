@@ -5,7 +5,7 @@
  * @date 2025-06-25
  *
  * @copyright (C) 2025 WolodiaM
- * @license GPL-3.0-or-later
+ * @license MIT
  *
  * Copyright (C) 2025 WolodiaM
  * Permission is hereby granted, free of charge, to any person obtaining
