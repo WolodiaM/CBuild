@@ -13,7 +13,7 @@ stages:
 test:
     stage: test
     script:
-        - pacman --noconfirm -S gcc clang valgrind
+        - pacman --noconfirm -S gcc clang valgrind glibc-debug
         - ./build.sh test
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
