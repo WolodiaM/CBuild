@@ -2,7 +2,8 @@
 # Environment
 set -euo pipefail
 # constants
-CARGS="-O3 -g -std=gnu99 -Wall -Wextra"
+CARGS="-O3 -g -std=gnu99 -Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Werror -D_FORTIFY_SOURCE=2"
+MEMCHECK="valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2"
 # Global variables
 Silent="no"  # Need to be set to `yes`
 Verbose="no" # Need to be set to `yes`
@@ -27,6 +28,7 @@ if test -t 1; then
 		yellow=""
 		blue=""
 		magenta=""
+		gray=""
 		cyan=""
 	fi
 else
@@ -36,6 +38,7 @@ else
 	yellow=""
 	blue=""
 	magenta=""
+	gray=""
 	cyan=""
 fi
 # pack subcommand
@@ -81,7 +84,18 @@ pack() {
 	call_cmd_ns pack_ifdef
 	call_cmd_ns pack_header_strip "impl.c"
 	call_cmd_ns pack_endif
-	call_cmd clang-format --style file -i "cbuild.h"
+	# Format
+	astyle \
+		--indent=tab=2 \
+		--indent-after-parens \
+		--keep-one-line-statements \
+		--style=attach \
+		--pad-oper \
+		--unpad-paren \
+		--indent-preproc-define \
+		--indent-preproc-block \
+		--align-pointer=name \
+		cbuild.h
 	return
 }
 # docs subcommand
@@ -143,8 +157,15 @@ test_run() {
 		printf "${red}Error, test \"${green}$1${red}\" failed to build!${reset}\n"
 	else
 		echo "Test output will be saved in \"build/test_${1}_out.txt\""
-		call_cmd_ns ./build/test_"$1".run >build/test_"$1"_out.txt || true
-		ERR=$?
+		memcheck="$MEMCHECK"
+		if [[ -f "tests/$1.nomem" ]]; then
+			memcheck=""
+		fi
+		if call_cmd_ns $memcheck ./build/test_"$1".run >build/test_"$1"_out.txt; then
+			ERR=$?
+		else
+			ERR=$?
+		fi
 		printf "${cyan}%s${reset}\n" "----------   Begin of test output   ----------"
 		cat build/test_"$1"_out.txt
 		printf "${cyan}%s${reset}\n" "----------    End of test output    ----------"
@@ -241,7 +262,11 @@ call_cmd_ns() {
 		printf "%s " "$@"
 		printf "${reset}\n"
 	fi
-	$@
+	if [ "$Silent" == "yes" ]; then
+		$@ 2>/dev/null
+	else
+		$@
+	fi
 }
 call_cmd() {
 	if [ "$Verbose" == "yes" ]; then
