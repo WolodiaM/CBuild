@@ -1,19 +1,21 @@
-# Use arch to build, we are not dependant on compiler version
-image: archlinux:base
-# Install ase packages
-before_script:
-    # Update repo
-    - pacman --noconfirm -Syyu
-    - pacman --noconfirm -S bash
+# Use arch to build, we are not dependent on compiler version
+image: debian:bookworm
+
 # Build stages
 stages:
     - test
     - build
+# CI is non-interactive
+variables:
+  DEBIAN_FRONTEND: noninteractive
+# Install base packages
+before_script:
+  - apt-get update -qq
+  - apt-get install -yqq build-essential clang valgrind astyle doxygen pandoc
 # Run all tests
 test:
     stage: test
     script:
-        - pacman --noconfirm -S gcc clang valgrind
         - ./build.sh test
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
@@ -22,8 +24,7 @@ test:
 build:
     stage: build
     script:
-        - pacman --noconfirm -S gcc clang astyle
-        - MEMCHECK_EXT=" " ./build.sh pack
+        - ./build.sh pack
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -34,17 +35,10 @@ build:
 # Build wiki
 pages:
     script:
-        # Install tools
-        - pacman --noconfirm -S doxygen gcc clang pandoc
-        # Create output directory
         - mkdir -p public
-        # Build cbuild.h header
         - ./build.sh pack
-        # Build wikimk wiki
         - ./build.sh docs wiki
-        # Build doxygen
         - ./build.sh docs doxygen
-        # Copy everything to output directory
         - cp -r wiki/out/* public/
     artifacts:
         paths:
