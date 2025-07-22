@@ -39,7 +39,7 @@
 // Code
 bool build_md_to_html(cbuild_sv_t filename) {
 	// Init
-	cbuild_cmd_t cmd = cbuild_cmd;
+	cbuild_cmd_t cmd = {0};
 	cbuild_cmd_append(&cmd, "pandoc");
 	// Args
 	cbuild_cmd_append_many(&cmd, "--template", WIKIMK_DIR_TEMPLATE "/template.html");
@@ -48,22 +48,22 @@ bool build_md_to_html(cbuild_sv_t filename) {
 	  "-M", "author:" WIKIMK_WIKI_AUTHOR,
 	  "-M", "license:" WIKIMK_WIKI_LICENSE);
 	// Files
-	cbuild_sb_t src = cbuild_sb;
+	cbuild_sb_t src = {0};
 	cbuild_sb_appendf(&src,
 	  WIKIMK_DIR_SRC "/" CBuildSVFmt ".md", CBuildSVArg(filename));
 	cbuild_sb_append_null(&src);
 	cbuild_cmd_append(&cmd, src.data);
-	cbuild_sb_t dst = cbuild_sb;
+	cbuild_sb_t dst = {0};
 	cbuild_sb_appendf(&dst,
 	  WIKIMK_DIR_OUT "/" CBuildSVFmt ".html", CBuildSVArg(filename));
 	cbuild_sb_append_null(&dst);
 	// Edit block
-	cbuild_sb_t edit_url = cbuild_sb;
+	cbuild_sb_t edit_url = {0};
 	cbuild_sb_appendf(&edit_url,
 	  "EDIT-URL:"  WIKIMK_WIKI_EDIT_BASE "/" CBuildSVFmt ".md", CBuildSVArg(filename));
 	cbuild_sb_append_null(&edit_url);
 	cbuild_cmd_append_many(&cmd, "-M", edit_url.data);
-	cbuild_sb_t edit_filename = cbuild_sb;
+	cbuild_sb_t edit_filename = {0};
 	cbuild_sb_appendf(&edit_filename,
 	  "EDIT-FILENAME:/" CBuildSVFmt ".md", CBuildSVArg(filename));
 	cbuild_sb_append_null(&edit_filename);
@@ -84,10 +84,10 @@ bool build_md_to_html(cbuild_sv_t filename) {
 bool gen_index_redirect(cbuild_sb_t* index_cfg) {
 	cbuild_sv_t cfg =	cbuild_sb_to_sv(index_cfg);
 	cbuild_sv_t path = cbuild_sv_chop_by_delim(&cfg, '\n');
-	cbuild_sb_t redirect_meta = cbuild_sb;
+	cbuild_sb_t redirect_meta = {0};
 	cbuild_sb_appendf(&redirect_meta, "REDIRECT:"CBuildSVFmt, CBuildSVArg(path));
 	cbuild_sb_append_null(&redirect_meta);
-	cbuild_cmd_t cmd = cbuild_cmd;
+	cbuild_cmd_t cmd = {0};
 	cbuild_cmd_append_many(&cmd, "pandoc", "-t", "html5",
 	  "-M", redirect_meta.data,
 	  "-M", "name:" WIKIMK_WIKI_NAME,
@@ -106,7 +106,7 @@ bool gentoc_get_title(const char* path, cbuild_sb_t* out) {
 	char buff[1025] = {0};
 	cbuild_fd_t rd, wr;
 	cbuild_fd_open_pipe(&rd, &wr);
-	cbuild_cmd_t cmd = cbuild_cmd;
+	cbuild_cmd_t cmd = {0};
 	cbuild_cmd_append_many(&cmd,
 	  "pandoc",
 	  "--template", WIKIMK_DIR_TEMPLATE "/metadata-extract.txt",
@@ -131,8 +131,8 @@ bool gentoc_get_title(const char* path, cbuild_sb_t* out) {
 }
 bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 	// Get listing
-	cbuild_pathlist_t list = cbuild_pathlist;
-	cbuild_sb_t dir_path = cbuild_sb;
+	cbuild_pathlist_t list = {0};
+	cbuild_sb_t dir_path = {0};
 	cbuild_sb_appendf(&dir_path, WIKIMK_DIR_SRC "/%s", name);
 	cbuild_sb_append_null(&dir_path);
 	if(!cbuild_dir_list(dir_path.data, &list)) {
@@ -143,11 +143,11 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 	// Build
 	cbuild_da_foreach(&list, file) {
 		// Generate full filename
-		cbuild_sb_t filename = cbuild_sb;
+		cbuild_sb_t filename = {0};
 		cbuild_sb_appendf(&filename, "%s/%s", name, *file);
 		cbuild_sb_append_null(&filename);
 		// Generate full path
-		cbuild_sb_t filepath = cbuild_sb;
+		cbuild_sb_t filepath = {0};
 		cbuild_sb_appendf(&filepath, WIKIMK_DIR_SRC "/%s", filename.data);
 		cbuild_sb_append_null(&filepath);
 		// Check type
@@ -163,7 +163,7 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 				gentoc_get_title(filepath.data, out);
 				cbuild_sb_appendf(out, "</a></li>\n");
 			} else if(cbuild_sv_suffix(filename_sv, cbuild_sv_from_cstr(".url"))) {
-				cbuild_sb_t buffer = cbuild_sb;
+				cbuild_sb_t buffer = {0};
 				cbuild_file_read(filepath.data, &buffer);
 				cbuild_sv_t buffer_sv = cbuild_sb_to_sv(&buffer);
 				cbuild_sv_t	name = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
@@ -180,11 +180,11 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 			}
 		} break;
 		case CBUILD_FTYPE_DIRECTORY: {
-			cbuild_sb_t dirname_path = cbuild_sb;
+			cbuild_sb_t dirname_path = {0};
 			cbuild_sb_appendf(&dirname_path, "%s/.dirname", filename.data);
 			cbuild_sb_append_null(&dirname_path);
 			if(cbuild_file_check(dirname_path.data)) {
-				cbuild_sb_t dirname = cbuild_sb;
+				cbuild_sb_t dirname = {0};
 				cbuild_file_read(dirname_path.data, &dirname);
 				cbuild_sv_t	dirname_sv_full = cbuild_sb_to_sv(&dirname);
 				cbuild_sv_t dirname_sv = cbuild_sv_chop_by_delim(&dirname_sv_full, '\n');
@@ -212,8 +212,8 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 bool build_subdir_recursively(const char* name) {
 	cbuild_log(CBUILD_LOG_TRACE, "Building directory %s.", name);
 	// Get listing
-	cbuild_pathlist_t list = cbuild_pathlist;
-	cbuild_sb_t dir_path = cbuild_sb;
+	cbuild_pathlist_t list = {0};
+	cbuild_sb_t dir_path = {0};
 	cbuild_sb_appendf(&dir_path, WIKIMK_DIR_SRC "/%s", name);
 	cbuild_sb_append_null(&dir_path);
 	if(!cbuild_dir_list(dir_path.data, &list)) {
@@ -222,7 +222,7 @@ bool build_subdir_recursively(const char* name) {
 	}
 	cbuild_sb_clear(&dir_path);
 	// Create output directory
-	cbuild_sb_t out_dir = cbuild_sb;
+	cbuild_sb_t out_dir = {0};
 	cbuild_sb_appendf(&out_dir, WIKIMK_DIR_OUT "/%s", name);
 	cbuild_sb_append_null(&out_dir);
 	if(!cbuild_dir_check(out_dir.data)) {
@@ -234,11 +234,11 @@ bool build_subdir_recursively(const char* name) {
 	// Build
 	cbuild_da_foreach(&list, file) {
 		// Generate full filename
-		cbuild_sb_t filename = cbuild_sb;
+		cbuild_sb_t filename = {0};
 		cbuild_sb_appendf(&filename, "%s/%s", name, *file);
 		cbuild_sb_append_null(&filename);
 		// Generate full path
-		cbuild_sb_t filepath = cbuild_sb;
+		cbuild_sb_t filepath = {0};
 		cbuild_sb_appendf(&filepath, WIKIMK_DIR_SRC "/%s", filename.data);
 		cbuild_sb_append_null(&filepath);
 		// Check type
@@ -269,17 +269,17 @@ bool build_subdir_recursively(const char* name) {
 }
 bool build() {
 	// Get root listing
-	cbuild_pathlist_t root_list = cbuild_pathlist;
+	cbuild_pathlist_t root_list = {0};
 	if(!cbuild_dir_list(WIKIMK_DIR_SRC, &root_list)) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot list directory " WIKIMK_DIR_SRC "!");
 		return false;
 	}
 	// Generate nav list
 	cbuild_log(CBUILD_LOG_TRACE, "Generating navigation tree.");
-	cbuild_sb_t nav_html = cbuild_sb;
+	cbuild_sb_t nav_html = {0};
 	cbuild_sb_appendf(&nav_html, "<ul>\n");
 	cbuild_da_foreach(&root_list, root_file) {
-		cbuild_sb_t root_filepath = cbuild_sb;
+		cbuild_sb_t root_filepath = {0};
 		cbuild_sb_appendf(&root_filepath, WIKIMK_DIR_SRC "/%s", *root_file);
 		cbuild_sb_append_null(&root_filepath);
 		cbuild_filetype_t type = cbuild_path_filetype(root_filepath.data);
@@ -294,7 +294,7 @@ bool build() {
 				gentoc_get_title(root_filepath.data, &nav_html);
 				cbuild_sb_appendf(&nav_html, "</a></li>\n");
 			} else if(cbuild_sv_suffix(filename, cbuild_sv_from_cstr(".url"))) {
-				cbuild_sb_t buffer = cbuild_sb;
+				cbuild_sb_t buffer = {0};
 				cbuild_file_read(root_filepath.data, &buffer);
 				cbuild_sv_t buffer_sv = cbuild_sb_to_sv(&buffer);
 				cbuild_sv_t	name = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
@@ -309,11 +309,11 @@ bool build() {
 			}
 		} break;
 		case CBUILD_FTYPE_DIRECTORY: {
-			cbuild_sb_t dirname_path = cbuild_sb;
+			cbuild_sb_t dirname_path = {0};
 			cbuild_sb_appendf(&dirname_path, "%s/.dirname", root_filepath.data);
 			cbuild_sb_append_null(&dirname_path);
 			if(cbuild_file_check(dirname_path.data)) {
-				cbuild_sb_t dirname = cbuild_sb;
+				cbuild_sb_t dirname = {0};
 				cbuild_file_read(dirname_path.data, &dirname);
 				cbuild_sv_t	dirname_sv_full = cbuild_sb_to_sv(&dirname);
 				cbuild_sv_t dirname_sv = cbuild_sv_chop_by_delim(&dirname_sv_full, '\n');
@@ -340,7 +340,7 @@ bool build() {
 	cbuild_sb_clear(&nav_html);
 	// Build
 	cbuild_da_foreach(&root_list, root_file) {
-		cbuild_sb_t root_filepath = cbuild_sb;
+		cbuild_sb_t root_filepath = {0};
 		cbuild_sb_appendf(&root_filepath, WIKIMK_DIR_SRC "/%s", *root_file);
 		cbuild_sb_append_null(&root_filepath);
 		cbuild_filetype_t type = cbuild_path_filetype(root_filepath.data);
@@ -354,7 +354,7 @@ bool build() {
 					return false;
 				}
 			} else if(cbuild_sv_cmp(filename, cbuild_sv_from_cstr("index.cfg")) == 0) {
-				cbuild_sb_t index_cfg = cbuild_sb;
+				cbuild_sb_t index_cfg = {0};
 				cbuild_file_read(root_filepath.data, &index_cfg);
 				if(!gen_index_redirect(&index_cfg)) {
 					return false;
@@ -410,7 +410,7 @@ int main(int argc, char** argv) {
 		}
 	} else if(strcmp(subcmd, "serve") == 0) {
 		cbuild_log(CBUILD_LOG_INFO, "Serving site using python SimpleHTTPServer.");
-		cbuild_cmd_t cmd = cbuild_cmd;
+		cbuild_cmd_t cmd = {0};
 		cbuild_cmd_append_many(&cmd, "python", "-m", "http.server", "8000", "-d", WIKIMK_DIR_OUT);
 		if(!cbuild_cmd_sync(cmd)) {
 			return 1;
