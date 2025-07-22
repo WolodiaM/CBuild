@@ -87,6 +87,7 @@ pack() {
 	call_cmd_ns pack_endif
 	# Format
 	astyle \
+		--suffix=none \
 		--indent=tab=2 \
 		--indent-after-parens \
 		--keep-one-line-statements \
