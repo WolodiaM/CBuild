@@ -166,6 +166,8 @@
  *       Map is not rewritten because complexity is too high.
  *   Map.h [bugfix]
  *     - Fixed memory leak
+ *   Span.h [remove]
+ *     - Removed because it is useless
  */
 // Code
 #ifndef __CBUILD_COMMON_H__

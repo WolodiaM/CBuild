@@ -68,7 +68,6 @@ pack() {
 	call_cmd_ns pack_header_strip "StringView.h"
 	call_cmd_ns pack_header_strip "StringBuilder.h"
 	call_cmd_ns pack_header_strip "Map.h"
-	call_cmd_ns pack_header_strip "Span.h"
 	call_cmd_ns pack_header_strip "Stack.h"
 	# External processes
 	call_cmd_ns pack_header_strip "Proc.h"
