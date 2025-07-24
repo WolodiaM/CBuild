@@ -95,7 +95,7 @@ pack() {
 		--unpad-paren \
 		--indent-preproc-define \
 		--indent-preproc-block \
-		--align-pointer=name \
+		--align-pointer=type \
 		cbuild.h
 	return
 }

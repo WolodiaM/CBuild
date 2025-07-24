@@ -15,9 +15,9 @@
 #if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
 	defined(CBUILD_OS_WINDOWS_CYGWIN)
 	// GlibC, musl, BSD, Cygwin
-	extern const char *__progname;
+	extern const char* __progname;
 #endif
-const char *__cbuild_progname(void) {
+const char* __cbuild_progname(void) {
 #if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
 		defined(CBUILD_OS_WINDOWS_CYGWIN)
 	return __progname;
@@ -30,12 +30,12 @@ const char *__cbuild_progname(void) {
 }
 /* common.h impl */
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
-  const char *expr, ...) {
+  const char* expr, ...) {
 	__CBUILD_ERR_PRINTF("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n",
 	  __cbuild_progname(), file, line, func, expr);
 	va_list args;
 	va_start(args, expr);
-	const char *fmt = va_arg(args, char*);
+	const char* fmt = va_arg(args, char*);
 	__CBUILD_ERR_VPRINTF(fmt, args);
 	va_end(args);
 	__CBUILD_ERR_FLUSH();
@@ -100,7 +100,7 @@ int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args) {
 		return ret;
 	}
 	if((size_t)ret >= CBUILD_SB_QUICK_SPRINTF_SIZE) {
-		char *buff1 = __CBUILD_MALLOC((size_t)ret + 1);
+		char* buff1 = __CBUILD_MALLOC((size_t)ret + 1);
 		cbuild_assert(buff1 != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		vsnprintf(buff1, (size_t)ret + 1, fmt, args_copy);
 		cbuild_sb_append_cstr(sb, buff1);
@@ -146,13 +146,13 @@ cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size) {
 	if(size > sv->size) {
 		size = sv->size;
 	}
-	char *tmp  = sv->data;
+	char* tmp  = sv->data;
 	sv->data  += size;
 	sv->size  -= size;
 	return cbuild_sv_from_parts(tmp, size);
 }
 cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim) {
-	char *chrptr = memchr(sv->data, delim, sv->size);
+	char* chrptr = memchr(sv->data, delim, sv->size);
 	if(chrptr != NULL) {
 		size_t      i    = (size_t)(chrptr - sv->data);
 		cbuild_sv_t ret  = cbuild_sv_from_parts(sv->data, i);
@@ -166,7 +166,7 @@ cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
 	if(delim.size == 0 || delim.size > sv->size) {
 		return cbuild_sv_from_parts(sv->data, 0);
 	}
-	char  *chrptr = sv->data;
+	char*  chrptr = sv->data;
 	size_t i      = 0;
 	do {
 		chrptr = memchr(chrptr + 1, delim.data[0], sv->size);
@@ -182,7 +182,7 @@ cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
 	return cbuild_sv_chop(sv, sv->size);
 }
 cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
-  void *args) {
+  void* args) {
 	size_t i = 0;
 	while(i <= sv->size && !delim(sv, i, args)) {
 		i++;
@@ -190,7 +190,7 @@ cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
 	if(i >= sv->size) {
 		return cbuild_sv_chop(sv, i);
 	}
-	char *tmp  = sv->data;
+	char* tmp  = sv->data;
 	sv->data  += i + 1;
 	sv->size  -= i + 1;
 	return cbuild_sv_from_parts(tmp, i);
@@ -246,14 +246,14 @@ bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix) {
 	    suffix) == 0;
 }
 size_t cbuild_sv_find(cbuild_sv_t sv, char c) {
-	char *chrptr = memchr(sv.data, c, sv.size);
+	char* chrptr = memchr(sv.data, c, sv.size);
 	if(chrptr == NULL) {
 		return (size_t) -1;
 	}
 	return (size_t)(chrptr - sv.data);
 }
 size_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
-	char *chrptr = sv.data;
+	char* chrptr = sv.data;
 #if defined(CBUILD_API_POSIX) &&                                               \
 		(defined(_GNU_SOURCE) || defined(__musl__) || defined(CBUILD_OS_MACOS) ||  \
      defined(CBUILD_OS_BSD))
@@ -284,7 +284,7 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 		return sb;
 	}
 	for(size_t i = 0; i < cmd.size; i++) {
-		const char *tmp = cmd.data[i];
+		const char* tmp = cmd.data[i];
 		cbuild_sb_append_cstr(&sb, tmp);
 		if(i < cmd.size - 1) {
 			cbuild_sb_append(&sb, ' ');
@@ -344,7 +344,7 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 #endif
 		}
 		// Call command
-		if(execvp(argv.data[0], (char * const *)argv.data) < 0) {
+		if(execvp(argv.data[0], (char* const*)argv.data) < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
 			  "Cannot execute command in child process, error: \"%s\"",
 			  strerror(errno));
@@ -442,7 +442,7 @@ int cbuild_proc_wait_code(cbuild_proc_t proc) {
 	}
 }
 cbuild_proc_ptr_t cbuild_proc_malloc(size_t n) {
-	void *ptr =
+	void* ptr =
 	  mmap(NULL, n, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 	if(ptr == MAP_FAILED) {
 		return (cbuild_proc_ptr_t) {
@@ -565,7 +565,7 @@ bool cbuild_file_write(const char* path, cbuild_sb_t* data) {
 	if(CBUILD_INVALID_FD == fd) {
 		return false;
 	}
-	char   *buf = data->data;
+	char*   buf = data->data;
 	ssize_t cnt = (ssize_t)data->size;
 	while(cnt > 0) {
 		ssize_t written = write(fd, buf, (size_t)cnt);
@@ -604,7 +604,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 		  strerror(errno));
 		return false;
 	}
-	char *tmp_buff = (char*)__CBUILD_MALLOC(CBUILD_TMP_BUFF_SIZE);
+	char* tmp_buff = (char*)__CBUILD_MALLOC(CBUILD_TMP_BUFF_SIZE);
 	cbuild_assert(tmp_buff != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
 	while(true) {
 		ssize_t cnt = read(src_fd, tmp_buff, CBUILD_TMP_BUFF_SIZE);
@@ -617,7 +617,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 			  strerror(errno));
 			return false;
 		}
-		char *buf = tmp_buff;
+		char* buf = tmp_buff;
 		while(cnt > 0) {
 			ssize_t written = write(dst_fd, buf, (size_t)cnt);
 			if(written < 0) {
@@ -682,11 +682,11 @@ bool cbuild_dir_copy(const char* src, const char* dst) {
 			continue;
 		}
 		size_t lensrc = strlen(src) + 1 + strlen(list.data[i]);
-		char  *tmpsrc = __CBUILD_MALLOC(lensrc + 1);
+		char*  tmpsrc = __CBUILD_MALLOC(lensrc + 1);
 		cbuild_assert(tmpsrc != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmpsrc, "%s/%s", src, list.data[i]);
 		size_t lendst = strlen(dst) + 1 + strlen(list.data[i]);
-		char  *tmpdst = __CBUILD_MALLOC(lendst + 1);
+		char*  tmpdst = __CBUILD_MALLOC(lendst + 1);
 		cbuild_assert(tmpdst != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmpdst, "%s/%s", dst, list.data[i]);
 		cbuild_filetype_t f = cbuild_path_filetype(tmpsrc);
@@ -731,7 +731,7 @@ bool cbuild_dir_remove(const char* path) {
 			continue;
 		}
 		size_t lenpath = strlen(path) + 1 + strlen(list.data[i]);
-		char  *tmppath = __CBUILD_MALLOC(lenpath + 1);
+		char*  tmppath = __CBUILD_MALLOC(lenpath + 1);
 		cbuild_assert(tmppath != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmppath, "%s/%s", path, list.data[i]);
 		cbuild_filetype_t f = cbuild_path_filetype(tmppath);
@@ -763,7 +763,7 @@ int __cbuild_int_fs_dir_list_no_dots(const struct dirent *d) {
 }
 bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 	cbuild_da_clear(elements);
-	struct dirent **namelist;
+	struct dirent** namelist;
 	int n = scandir(path, &namelist, __cbuild_int_fs_dir_list_no_dots, alphasort);
 	if(n < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot list directory \"%s\", error: \"%s\"",
@@ -772,7 +772,7 @@ bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 	}
 	for(int i = 0; i < n; i++) {
 		size_t len = strlen(namelist[i]->d_name);
-		char  *str = (char*)__CBUILD_MALLOC(len + 1);
+		char*  str = (char*)__CBUILD_MALLOC(len + 1);
 		cbuild_assert(str != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		__CBUILD_MEMCPY(str, namelist[i]->d_name, len);
 		str[len] = '\0';
@@ -820,7 +820,7 @@ cbuild_filetype_t cbuild_path_filetype(const char* path) {
 	}
 	return CBUILD_FTYPE_OTHER;
 }
-const char *cbuild_path_ext(const char* path) {
+const char* cbuild_path_ext(const char* path) {
 	ssize_t i     = (ssize_t)strlen(path);
 	bool    found = false;
 	for(; i >= 0; i--) {
@@ -830,18 +830,18 @@ const char *cbuild_path_ext(const char* path) {
 		}
 	}
 	if(!found) {
-		char *ret = __CBUILD_MALLOC(1);
+		char* ret = __CBUILD_MALLOC(1);
 		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		__CBUILD_MEMCPY(ret, "\0", 1);
 		return ret;
 	}
 	size_t len = strlen(path) - (size_t)i + 1;
-	char  *ret = (char*)__CBUILD_MALLOC(len);
+	char*  ret = (char*)__CBUILD_MALLOC(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path + i + 1, len);
 	return ret;
 }
-const char *cbuild_path_name(const char* path) {
+const char* cbuild_path_name(const char* path) {
 	ssize_t i = (ssize_t)strlen(path);
 	if(path[i - 1] == '/') {
 		i -= 2;
@@ -852,12 +852,12 @@ const char *cbuild_path_name(const char* path) {
 		}
 	}
 	size_t len = strlen(path) - (size_t)i + 1;
-	char  *ret = (char*)__CBUILD_MALLOC(len);
+	char*  ret = (char*)__CBUILD_MALLOC(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path + i + 1, len);
 	return ret;
 }
-const char *cbuild_path_base(const char* path) {
+const char* cbuild_path_base(const char* path) {
 	ssize_t i = (ssize_t)strlen(path);
 	if(path[i - 1] == '/') {
 		i -= 2;
@@ -870,13 +870,13 @@ const char *cbuild_path_base(const char* path) {
 		}
 	}
 	if(!found) {
-		char *ret = __CBUILD_MALLOC(1);
+		char* ret = __CBUILD_MALLOC(1);
 		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		__CBUILD_MEMCPY(ret, "\0", 1);
 		return ret;
 	}
 	size_t len = (size_t)i + 2;
-	char  *ret = (char*)__CBUILD_MALLOC(len);
+	char*  ret = (char*)__CBUILD_MALLOC(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 	__CBUILD_MEMCPY(ret, path, len - 1);
 	ret[len - 1] = '\0';
@@ -893,7 +893,7 @@ void __cbuild_compile_mark_exec(const char* file) {
 #endif // CBUILD_API_POSIX
 void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd) = NULL;
 void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
-	char       *bname_new = cbuild_shift(argv, argc);
+	char*       bname_new = cbuild_shift(argv, argc);
 	cbuild_sb_t bname_old = {0};
 	cbuild_sb_append_cstr(&bname_old, bname_new);
 	cbuild_sb_append_cstr(&bname_old, ".old");
@@ -1014,8 +1014,8 @@ struct __cbuild_int_flag_spec_t {
 	char              sopt;
 	bool              found; // State
 	char              _padding[2];
-	void             *param3;
-	void             *param4;
+	void*             param3;
+	void*             param4;
 	cbuild_sv_t       opt;
 	cbuild_sv_t       description;
 	cbuild_sv_t       type_hint;
@@ -1032,19 +1032,19 @@ struct __cbuild_int_flag_spec_t {
 #define __CBUILD_INT_FLAG_GET_PRM1(from)       (((from) >> 16) & 0xFF)
 #define __CBUILD_INT_FLAG_GET_PRM2(from)       (((from) >> 24) & 0xFF)
 struct __cbuild_int_da_flag_spec_t {
-	struct __cbuild_int_flag_spec_t *data;
+	struct __cbuild_int_flag_spec_t* data;
 	size_t size;
 	size_t capacity;
 };
 struct __cbuild_int_flag_context_t {
-	const char                         *app_name;
+	const char*                         app_name;
 	bool                                pargs_separator;
 	struct __cbuild_int_da_flag_spec_t  flags;
 	cbuild_arglist_t                    pargs;
 };
 static struct __cbuild_int_flag_context_t __cbuild_int_flag_context = {0};
 bool __cbuild_int_flag_first_delim_func(const cbuild_sv_t* sv, size_t idx,
-  void *args) {
+  void* args) {
 	if(sv->data[idx] == '\t' || sv->data[idx] == '\n' || sv->data[idx] == '\r') {
 		*((char*)args) = sv->data[idx];
 		return true;
@@ -1053,7 +1053,7 @@ bool __cbuild_int_flag_first_delim_func(const cbuild_sv_t* sv, size_t idx,
 	}
 }
 bool __cbuild_int_flag_metadata_delim_func(const cbuild_sv_t* sv, size_t idx,
-  void *args) {
+  void* args) {
 	if(sv->data[idx] == '\t' || sv->data[idx] == ';') {
 		*((char*)args) = sv->data[idx];
 		return true;
@@ -1062,7 +1062,7 @@ bool __cbuild_int_flag_metadata_delim_func(const cbuild_sv_t* sv, size_t idx,
 	}
 }
 void __cbuild_int_flag_parse_metadata_entry(
-  struct __cbuild_int_flag_spec_t *new_spec, size_t parse_offset,
+  struct __cbuild_int_flag_spec_t* new_spec, size_t parse_offset,
   cbuild_sv_t opt) {
 	static const cbuild_sv_t key_arg     = cbuild_sv_from_cstr("arg");
 	static const cbuild_sv_t key_len     = cbuild_sv_from_cstr("len");
@@ -1084,11 +1084,11 @@ void __cbuild_int_flag_parse_metadata_entry(
 			__CBUILD_INT_FLAG_SET_ARGO(new_spec->type, 0b1);
 		}
 	} else if(cbuild_sv_cmp(key, key_len) == 0) {
-		__CBUILD_INT_FLAG_SET_PRM1(new_spec->type, atoi(opt.data));
+		__CBUILD_INT_FLAG_SET_PRM1(new_spec->type, (unsigned int)atoi(opt.data));
 	} else if(cbuild_sv_cmp(key, key_thint) == 0) {
 		new_spec->type_hint = opt;
 	} else if(cbuild_sv_cmp(key, key_tldelim)) {
-		__CBUILD_INT_FLAG_SET_PRM2(new_spec->type, opt.data[0]);
+		__CBUILD_INT_FLAG_SET_PRM2(new_spec->type, (unsigned int)opt.data[0]);
 	} else {
 		cbuild_log(CBUILD_LOG_ERROR,
 		  "Syntax error [%zu]: Invalid metadata entry \"" CBuildSVFmt
@@ -1098,8 +1098,8 @@ void __cbuild_int_flag_parse_metadata_entry(
 	}
 }
 void __cbuild_int_flag_parse_metadata_spec(
-  struct __cbuild_int_flag_spec_t *new_spec, cbuild_sv_t *spec,
-  size_t *parse_offset) {
+  struct __cbuild_int_flag_spec_t* new_spec, cbuild_sv_t* spec,
+  size_t* parse_offset) {
 	char        delim = '\t';
 	cbuild_sv_t opt   = cbuild_sv_chop_by_func(
 	    spec, __cbuild_int_flag_metadata_delim_func, &delim);
@@ -1171,10 +1171,12 @@ void cbuild_flag_new(const char* spec_cstr) {
 	}
 	new_spec.description = spec;
 	new_spec.found       = false;
-	new_spec.args        = (cbuild_arglist_t){0};
+	new_spec.args        = (cbuild_arglist_t) {
+		0
+	};
 	cbuild_da_append(&(__cbuild_int_flag_context.flags), new_spec);
 }
-struct __cbuild_int_flag_spec_t *__cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
+struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
 		if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
 		  __CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
@@ -1184,7 +1186,7 @@ struct __cbuild_int_flag_spec_t *__cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
 	}
 	return NULL;
 }
-struct __cbuild_int_flag_spec_t *__cbuild_int_flag_get_sopt(char opt) {
+struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_sopt(char opt) {
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
 		if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01 && spec->sopt == opt) {
 			return spec;
@@ -1193,7 +1195,7 @@ struct __cbuild_int_flag_spec_t *__cbuild_int_flag_get_sopt(char opt) {
 	return NULL;
 }
 void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
-  int argc, char **argv, int *parse_ptr) {
+  int argc, char** argv, int* parse_ptr) {
 	// no args
 	if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b000) {
 		(*parse_ptr)--;
@@ -1202,7 +1204,7 @@ void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
 	// No args but some required
 	if(argc == *parse_ptr) {
 		if(__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0) {
-			char *type = "";
+			char* type = "";
 			if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
 				type = "one argument";
 			} else if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010) {
@@ -1221,7 +1223,7 @@ void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
 	}
 	// One argument
 	if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
-		char *arg = argv[*parse_ptr];
+		char* arg = argv[*parse_ptr];
 		if(arg[0] == '-') {
 			if(__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
@@ -1241,7 +1243,7 @@ void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
 	}
 	// List or TList arguments
 	while(*parse_ptr < argc) {
-		char *arg = argv[*parse_ptr];
+		char* arg = argv[*parse_ptr];
 		// Terminate list on argument
 		if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010 && arg[0] == '-') {
 			(*parse_ptr)--;
@@ -1295,7 +1297,7 @@ void cbuild_flag_parse(int argc, char** argv) {
 				cbuild_flag_version(__cbuild_int_flag_context.app_name);
 				exit(0);
 			}
-			struct __cbuild_int_flag_spec_t *spec = __cbuild_int_flag_get_lopt(arg);
+			struct __cbuild_int_flag_spec_t* spec = __cbuild_int_flag_get_lopt(arg);
 			if(spec == NULL) {
 				cbuild_log(CBUILD_LOG_ERROR,
 				  "(CBUILD_FLAG_PARSE) Invalid long flag \"" CBuildSVFmt "\"!",
@@ -1323,7 +1325,7 @@ void cbuild_flag_parse(int argc, char** argv) {
 					cbuild_flag_version(__cbuild_int_flag_context.app_name);
 					exit(0);
 				}
-				struct __cbuild_int_flag_spec_t *spec = __cbuild_int_flag_get_sopt(opt);
+				struct __cbuild_int_flag_spec_t* spec = __cbuild_int_flag_get_sopt(opt);
 				if(spec == NULL) {
 					cbuild_log(CBUILD_LOG_ERROR,
 					  "(CBUILD_FLAG_PARSE) Invalid short flag \"%c\"!", opt);
@@ -1337,7 +1339,7 @@ void cbuild_flag_parse(int argc, char** argv) {
 				} else {
 					if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) != 0b000 &&
 					  __CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b0) {
-						char *type = "";
+						char* type = "";
 						if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b001) {
 							type = "one argument";
 						} else if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b010) {
@@ -1360,7 +1362,7 @@ void cbuild_flag_parse(int argc, char** argv) {
 		}
 	}
 }
-char *__cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
+char* __cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
 	cbuild_sb_t sb = {0};
 	// Short opt
 	if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) {
@@ -1431,9 +1433,9 @@ char *__cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
 	return sb.data;
 }
 size_t __cbuild_int_flag_get_flgh_len(struct __cbuild_int_flag_spec_t* spec) {
-	char  *str = __cbuild_int_flag_help_fmt(spec);
+	char*  str = __cbuild_int_flag_help_fmt(spec);
 	size_t ret = strlen(str);
-	free(str);
+	__CBUILD_FREE(str);
 	return ret;
 }
 void cbuild_flag_flg_help() {
@@ -1455,19 +1457,19 @@ void cbuild_flag_flg_help() {
 	__CBUILD_PRINT("Shows app version information.\n");
 	// Defined flags
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
-		char *opt     = __cbuild_int_flag_help_fmt(spec);
+		char* opt     = __cbuild_int_flag_help_fmt(spec);
 		int   written = __CBUILD_PRINTF("%s", opt);
-		free(opt);
+		__CBUILD_FREE(opt);
 		__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
 		__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
 		__CBUILD_PRINT("\n");
 	}
 }
-cbuild_arglist_t *cbuild_flag_get_pargs(void) {
+cbuild_arglist_t* cbuild_flag_get_pargs(void) {
 	return &__cbuild_int_flag_context.pargs;
 }
-cbuild_arglist_t *cbuild_flag_get_flag(const char* opt) {
-	struct __cbuild_int_flag_spec_t *spec =
+cbuild_arglist_t* cbuild_flag_get_flag(const char* opt) {
+	struct __cbuild_int_flag_spec_t* spec =
 	  __cbuild_int_flag_get_lopt(cbuild_sv_from_cstr(opt));
 	if(spec == NULL) {
 		return NULL;
@@ -1477,7 +1479,7 @@ cbuild_arglist_t *cbuild_flag_get_flag(const char* opt) {
 	}
 	return &spec->args;
 }
-char *cbuild_flag_app_name(void) {
+char* cbuild_flag_app_name(void) {
 	return (char*)__cbuild_int_flag_context.app_name;
 }
 void __cbuild_int_flag_help(const char* name) {
