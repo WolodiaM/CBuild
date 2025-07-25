@@ -29,61 +29,70 @@
 #include "../src/Map.h"
 #include "framework.h"
 // Code
-cbuild_map_t(int, int, int, int);
-bool   cbuild_map_int_int_keycmp(int* k1, int* k2) {
-	return *k1 == *k2;
+size_t test_int_hash(const void* map, const void* key) {
+	CBUILD_UNUSED(map);
+	int k = *((int*)key);
+	return (size_t)k;
 }
-size_t cbuild_map_int_int_hash(int* k) {
-	return (size_t) * k;
+size_t test_cstr_hash(const void* map, const void* key) {
+	CBUILD_UNUSED(map);
+	char* k = *((char**)key);
+	return (size_t)(*k);
 }
-cbuild_map_t_impl(int, int, int, int);
-size_t talloc_last_alloc_size = 0;
-void  *talloc_last_alloc_ptr  = NULL;
-void  *talloc(size_t num) {
-	talloc_last_alloc_size = num;
-	void *ptr              = malloc(num);
-	talloc_last_alloc_ptr  = ptr;
-	return ptr;
+void test_cstr_free(const void* map, void* elem) {
+	CBUILD_UNUSED(map);
+	free(*((char**)elem));
 }
-void *tfree_last_free_ptr = NULL;
-void  tfree(void* ptr) {
-	tfree_last_free_ptr = ptr;
-	free(ptr);
-}
-TEST_MAIN( {
+// This tests uses two variants of a map - first is 'int->int' second is
+// 'cstr->intptr_t'.
+// In first case I use int* as an element. So key is elem[0] and value is
+// elem[1];. To test I cast bucket values to an 'int*'. So key will be
+// vals[element_id*2+0] and element is vals[element_id*2+1].
+// In second case a void* is received from a map. Then it is casted either
+// to char** and then [0] is read or to intptr_t* and then [1] is read.
+// intptr_t has same size as the char* so it can be read very easily.
+// The access patter is the same as in previous map, but now different type
+// casts need to be used for different elements.
+TEST_MAIN({
+	_Static_assert(sizeof(char*) == sizeof(intptr_t),
+	  "Cannot test cstr->int map on this platform");
 	TEST_CASE(
 	{
-		cbuild_map_int_int_t map = cbuild_map_int_int;
-		map.malloc               = talloc;
-		map.free                 = tfree;
-		cbuild_map_resize(&map, 256);
-		TEST_ASSERT_EQ(
-		  talloc_last_alloc_size,
-		  256ul * sizeof(cbuild_map_int_int_bucket_t),
-		  "Wrong allocation value on resize" TEST_EXPECT_MSG(zu),
-		  256ul * sizeof(cbuild_map_int_int_bucket_t),
-		  talloc_last_alloc_size);
+		cbuild_map_t map = {0};
+		map.elem_size = 2 * sizeof(int);
+		map.key_size = sizeof(int);
+		cbuild_map_init(&map, 256);
 		TEST_ASSERT_EQ(
 		  map.nbuckets, 256,
 		  "Wrong bucket count was set on resize" TEST_EXPECT_MSG(zu),
 		  (size_t)256, map.nbuckets);
+		TEST_ASSERT_NEQ(map.buckets, NULL, "%s",
+		  "Buckets array was not allocated on init");
 		cbuild_map_clear(&map);
-		TEST_ASSERT_EQ(tfree_last_free_ptr, talloc_last_alloc_ptr,
-		  "Wrong pointer was sent to free" TEST_EXPECT_MSG(p),
-		  talloc_last_alloc_ptr, tfree_last_free_ptr);
 		TEST_ASSERT_EQ(
 		  map.nbuckets, 0,
 		  "Wrong bucket count was set on clear" TEST_EXPECT_MSG(zu),
 		  (size_t)0, map.nbuckets);
+		TEST_ASSERT_EQ(map.buckets, NULL, "%s",
+		  "Buckkets array was not free on clear");
 	},
 	"Map allocation sequence");
 	TEST_CASE(
 	{
-		cbuild_map_int_int_t map = cbuild_map_int_int;
+		cbuild_map_t map = {0};
+		map.elem_size = 2 * sizeof(int);
+		map.key_size = sizeof(int);
+		map.hash_func = test_int_hash;
+		int key;
+		int* elem;
 		printf("\tWrites without hash collisions\n");
-		cbuild_map_resize(&map, 256);
-		cbuild_map_set(&map, 0, 1);
-		cbuild_map_set(&map, 1, 2);
+		cbuild_map_init(&map, 256);
+		key = 0;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 0; elem[1] = 1;
+		key = 1;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 2; elem[1] = 2;
 		TEST_ASSERT_NEQ(
 		  map.buckets[0].vals, NULL, "%s",
 		  "Key 0 must be hashed in bucket 0 but bucket is empty.");
@@ -92,9 +101,9 @@ TEST_MAIN( {
 		  "Wrong element count was set in bucket 0" TEST_EXPECT_MSG(zu),
 		  (size_t)1, map.buckets[0].nvals);
 		TEST_ASSERT_EQ(
-		  map.buckets[0].vals[0].val, 1,
+		  ((int*)map.buckets[0].vals)[1], 1,
 		  "Wrong element was written into bucket 0" TEST_EXPECT_MSG(d), 1,
-		  map.buckets[0].vals[0].val);
+		  ((int*)map.buckets[0].vals)[1]);
 		TEST_ASSERT_NEQ(
 		  map.buckets[1].vals, NULL, "%s",
 		  "Key 1 must be hashed in bucket 1 but bucket is empty.");
@@ -103,14 +112,18 @@ TEST_MAIN( {
 		  "Wrong element count was set in bucket 1" TEST_EXPECT_MSG(zu),
 		  (size_t)1, map.buckets[1].nvals);
 		TEST_ASSERT_EQ(
-		  map.buckets[1].vals[0].val, 2,
+		  ((int*)map.buckets[1].vals)[1], 2,
 		  "Wrong element was written into bucket 1" TEST_EXPECT_MSG(d), 2,
-		  map.buckets[1].vals[0].val);
+		  ((int*)map.buckets[1].vals)[1]);
 		cbuild_map_clear(&map);
 		printf("\tWrites with hash collisions\n");
-		cbuild_map_resize(&map, 256);
-		cbuild_map_set(&map, 0, 1);
-		cbuild_map_set(&map, 256, 2);
+		cbuild_map_init(&map, 256);
+		key = 0;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 0; elem[1] = 1;
+		key = 256;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 256; elem[1] = 2;
 		TEST_ASSERT_NEQ(map.buckets[0].vals, NULL, "%s",
 		  "Key 0 and 256 must be hashed in bucket 0 but "
 		  "bucket is empty.");
@@ -118,149 +131,321 @@ TEST_MAIN( {
 		  map.buckets[0].nvals, 2,
 		  "Wrong element count was set in bucket 0" TEST_EXPECT_MSG(zu),
 		  (size_t)2, map.buckets[0].nvals);
-		TEST_ASSERT_EQ(map.buckets[0].vals[0].val, 1,
+		TEST_ASSERT_EQ(((int*)map.buckets[0].vals)[1], 1,
 		  "Wrong element was written into bucket 0 value "
 		  "0" TEST_EXPECT_MSG(d),
-		  1, map.buckets[0].vals[0].val);
-		TEST_ASSERT_EQ(map.buckets[0].vals[1].val, 2,
+		  1, ((int*)map.buckets[0].vals)[1]);
+		TEST_ASSERT_EQ(((int*)map.buckets[0].vals)[3], 2,
 		  "Wrong element was written into bucket 0 value "
 		  "1" TEST_EXPECT_MSG(d),
-		  2, map.buckets[0].vals[1].val);
+		  2, ((int*)map.buckets[0].vals)[3]);
 		cbuild_map_clear(&map);
 		printf("\tWrites with overwrite\n");
-		cbuild_map_resize(&map, 256);
-		cbuild_map_set(&map, 0, 1);
-		cbuild_map_set(&map, 0, 2);
+		cbuild_map_init(&map, 256);
+		key = 0;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 0; elem[1] = 1;
+		key = 0;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 0; elem[1] = 2;
 		TEST_ASSERT_NEQ(map.buckets[0].vals, NULL, "%s",
 		  "Value was not written at all.");
 		TEST_ASSERT_EQ(
 		  map.buckets[0].nvals, 1,
 		  "Wrong element count was set in bucket 0" TEST_EXPECT_MSG(zu),
 		  (size_t)1, map.buckets[0].nvals);
-		TEST_ASSERT_EQ(map.buckets[0].vals[0].val, 2,
+		TEST_ASSERT_EQ(((int*)map.buckets[0].vals)[1], 2,
 		  "Wrong element was written into bucket 0 value "
 		  "0" TEST_EXPECT_MSG(d),
-		  2, map.buckets[0].vals[0].val);
+		  2, ((int*)map.buckets[0].vals)[1]);
 		cbuild_map_clear(&map);
 	},
-	"Map writing");
+	"Writing to an int->int map");
 	TEST_CASE(
 	{
-		cbuild_map_int_int_t map = cbuild_map_int_int;
+		cbuild_map_t map = {0};
+		map.elem_size = sizeof(char*) + sizeof(intptr_t);
+		map.key_size = 0;
+		map.hash_func = test_cstr_hash;
+		char* key;
+		void* elem;
+		printf("\tWrites without hash collisions\n");
+		cbuild_map_init(&map, 256);
+		key = "abc";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		key = "def";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		TEST_ASSERT_NEQ(
+		  map.buckets['a'].vals, NULL,
+		  "Key \"abc\" must be hashed in bucket %d but bucket is empty.", 'a');
+		TEST_ASSERT_EQ(
+		  map.buckets['a'].nvals, 1,
+		  "Wrong element count was set in bucket %d" TEST_EXPECT_MSG(zu),
+		  'a', (size_t)1, map.buckets['a'].nvals);
+		TEST_ASSERT_EQ(
+		  ((intptr_t*)map.buckets['a'].vals)[1], 1,
+		  "Wrong element was written into bucket %d" TEST_EXPECT_MSG(ld),
+		  'a', 1l, ((intptr_t*)map.buckets['a'].vals)[1]);
+		TEST_ASSERT_NEQ(
+		  map.buckets['d'].vals, NULL,
+		  "Key \"def\" must be hashed in bucket %d but bucket is empty.", 'd');
+		TEST_ASSERT_EQ(
+		  map.buckets['d'].nvals, 1,
+		  "Wrong element count was set in bucket %d" TEST_EXPECT_MSG(zu),
+		  'd', (size_t)1, map.buckets['d'].nvals);
+		TEST_ASSERT_EQ(
+		  ((intptr_t*)map.buckets['d'].vals)[1], 2,
+		  "Wrong element was written into bucket %d" TEST_EXPECT_MSG(ld),
+		  'd', 2l, ((intptr_t*)map.buckets['d'].vals)[1]);
+		free(((char**)map.buckets['a'].vals)[0]);
+		free(((char**)map.buckets['d'].vals)[0]);
+		cbuild_map_clear(&map);
+		printf("\tWrites with hash collisions\n");
+		cbuild_map_init(&map, 256);
+		key = "abc";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		key = "aef";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		TEST_ASSERT_NEQ(map.buckets['a'].vals, NULL,
+		  "Key 0 and 256 must be hashed in bucket %d but bucket is empty.", 'a');
+		TEST_ASSERT_EQ(
+		  map.buckets['a'].nvals, 2,
+		  "Wrong element count was set in bucket %d" TEST_EXPECT_MSG(zu),
+		  'a', (size_t)2, map.buckets['a'].nvals);
+		TEST_ASSERT_EQ(((intptr_t*)map.buckets['a'].vals)[1], 1,
+		  "Wrong element was written into bucket %d value 0" TEST_EXPECT_MSG(ld),
+		  'a', 1l, ((intptr_t*)map.buckets['a'].vals)[1]);
+		TEST_ASSERT_EQ(((intptr_t*)map.buckets['a'].vals)[3], 2,
+		  "Wrong element was written into bucket %d value 1" TEST_EXPECT_MSG(ld),
+		  'a', 2l, ((intptr_t*)map.buckets['a'].vals)[3]);
+		free(((char**)map.buckets['a'].vals)[0]);
+		free(((char**)map.buckets['a'].vals)[2]);
+		cbuild_map_clear(&map);
+		printf("\tWrites with overwrite\n");
+		cbuild_map_init(&map, 256);
+		key = "abc";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		key = "abc";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		free(((char**)elem)[0]);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		TEST_ASSERT_NEQ(map.buckets['a'].vals, NULL, "%s",
+		  "Value was not written at all.");
+		TEST_ASSERT_EQ(
+		  map.buckets['a'].nvals, 1,
+		  "Wrong element count was set in bucket %d" TEST_EXPECT_MSG(zu),
+		  'a', (size_t)1, map.buckets[0].nvals);
+		TEST_ASSERT_EQ(((intptr_t*)map.buckets['a'].vals)[1], 2,
+		  "Wrong element was written into bucket %d value 0" TEST_EXPECT_MSG(ld),
+		  'a', 2l, ((intptr_t*)map.buckets[0].vals)[1]);
+		free(((char**)map.buckets['a'].vals)[0]);
+		cbuild_map_clear(&map);
+	},
+	"Writing to an cstr->int map");
+	TEST_CASE(
+	{
+		cbuild_map_t map = {0};
+		map.elem_size = 2 * sizeof(int);
+		map.key_size = sizeof(int);
+		int key;
+		int* elem;
 		printf("\tReads without hash collisions\n");
-		cbuild_map_resize(&map, 256);
-		cbuild_map_set(&map, 0, 1);
-		cbuild_map_set(&map, 1, 2);
-		TEST_ASSERT_EQ(*cbuild_map_get(&map, 0), 1,
+		cbuild_map_init(&map, 256);
+		key = 0;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 0; elem[1] = 1;
+		key = 1;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 1; elem[1] = 2;
+		key = 0;
+		TEST_ASSERT_EQ(((int*)cbuild_map_get(&map, &key))[1], 1,
 		  "Wrong element read" TEST_EXPECT_MSG(d), 1,
-		  *cbuild_map_get(&map, 0));
-		TEST_ASSERT_EQ(*cbuild_map_get(&map, 1), 2,
+		  ((int*)cbuild_map_get(&map, &key))[1]);
+		key = 1;
+		TEST_ASSERT_EQ(((int*)cbuild_map_get(&map, &key))[1], 2,
 		  "Wrong element read" TEST_EXPECT_MSG(d), 2,
-		  *cbuild_map_get(&map, 1));
-		TEST_ASSERT(cbuild_map_contains(&map, 0), "%s",
-		  "Map contains is broken.");
-		TEST_NASSERT(cbuild_map_contains(&map, 3), "%s",
-		  "Map contains is broken.");
+		  ((int*)cbuild_map_get(&map, &key))[1]);
 		cbuild_map_clear(&map);
 		printf("\tReads with hash collisions\n");
-		cbuild_map_resize(&map, 1);
-		cbuild_map_set(&map, 0, 1);
-		cbuild_map_set(&map, 1, 2);
-		TEST_ASSERT_EQ(*cbuild_map_get(&map, 0), 1,
+		map.hash_func = test_int_hash;
+		cbuild_map_init(&map, 1);
+		key = 0;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 0; elem[1] = 1;
+		key = 1;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 1; elem[1] = 2;
+		key = 0;
+		TEST_ASSERT_EQ(((int*)cbuild_map_get(&map, &key))[1], 1,
 		  "Wrong element read" TEST_EXPECT_MSG(d), 1,
-		  *cbuild_map_get(&map, 0));
-		TEST_ASSERT_EQ(*cbuild_map_get(&map, 1), 2,
+		  ((int*)cbuild_map_get(&map, &key))[1]);
+		key = 1;
+		TEST_ASSERT_EQ(((int*)cbuild_map_get(&map, &key))[1], 2,
 		  "Wrong element read" TEST_EXPECT_MSG(d), 2,
-		  *cbuild_map_get(&map, 1));
-		TEST_ASSERT(cbuild_map_contains(&map, 0), "%s",
-		  "Map contains is broken.");
-		TEST_NASSERT(cbuild_map_contains(&map, 3), "%s",
-		  "Map contains is broken.");
+		  ((int*)cbuild_map_get(&map, &key))[1]);
 		cbuild_map_clear(&map);
 	},
-	"Map reading");
+	"Reading from an int->int map");
 	TEST_CASE(
 	{
-		cbuild_map_int_int_t map = cbuild_map_int_int;
-		cbuild_map_resize(&map, 256);
-		cbuild_map_set(&map, 0, 1);
-		cbuild_map_set(&map, 1, 2);
-		cbuild_map_remove(&map, 1);
-		cbuild_map_remove(&map, 2);
-		TEST_ASSERT_EQ(*cbuild_map_get(&map, 0), 1,
+		cbuild_map_t map = {0};
+		map.elem_size = sizeof(char*) + sizeof(intptr_t);
+		map.key_size = 0;
+		char* key;
+		void* elem;
+		printf("\tReads without hash collisions\n");
+		cbuild_map_init(&map, 256);
+		key = "abc";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		key = "def";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		key = "abc";
+		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get(&map, &key))[1], 1,
+		  "Wrong element read" TEST_EXPECT_MSG(ld), 1l,
+		  ((intptr_t*)cbuild_map_get(&map, &key))[1]);
+		key = "def";
+		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get(&map, &key))[1], 2,
+		  "Wrong element read" TEST_EXPECT_MSG(ld), 2l,
+		  ((intptr_t*)cbuild_map_get(&map, &key))[1]);
+		cbuild_map_clear_ex(&map, test_cstr_free);
+		printf("\tReads with hash collisions\n");
+		map.hash_func = test_cstr_hash;
+		cbuild_map_init(&map, 1);
+		key = "abc";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		key = "aef";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		key = "abc";
+		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get(&map, &key))[1], 1,
+		  "Wrong element read" TEST_EXPECT_MSG(ld), 1l,
+		  ((intptr_t*)cbuild_map_get(&map, &key))[1]);
+		key = "aef";
+		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get(&map, &key))[1], 2,
+		  "Wrong element read" TEST_EXPECT_MSG(ld), 2l,
+		  ((intptr_t*)cbuild_map_get(&map, &key))[1]);
+		cbuild_map_clear_ex(&map, test_cstr_free);
+	},
+	"Reading from an cstr->int map");
+	TEST_CASE(
+	{
+		cbuild_map_t map = {0};
+		map.elem_size = 2 * sizeof(int);
+		map.key_size = sizeof(int);
+		int key;
+		int* elem;
+		cbuild_map_init(&map, 256);
+		key = 0;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 0; elem[1] = 1;
+		key = 1;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 1; elem[1] = 2;
+		key = 1;
+		cbuild_map_remove(&map, &key);
+		key = 2;
+		cbuild_map_remove(&map, &key);
+		key = 0;
+		TEST_ASSERT_EQ(((int*)cbuild_map_get(&map, &key))[1], 1,
 		  "Wrong element read" TEST_EXPECT_MSG(d), 1,
-		  *cbuild_map_get(&map, 0));
-		TEST_ASSERT_EQ(cbuild_map_get(&map, 1), NULL,
+		  ((int*)cbuild_map_get(&map, &key))[1]);
+		key =	1;
+		TEST_ASSERT_EQ(cbuild_map_get(&map, &key), NULL,
 		  "Wrong element read" TEST_EXPECT_MSG(p), NULL,
-		  (void*)cbuild_map_get(&map, 1));
+		  (void*)cbuild_map_get(&map, &key));
 		cbuild_map_clear(&map);
 	},
-	"Removing from a map");
+	"Removing from an int->int map");
 	TEST_CASE(
 	{
-		cbuild_map_int_int_t map = cbuild_map_int_int;
-		cbuild_map_resize(&map, 256);
-		cbuild_map_set(&map, 0, 1);
-		cbuild_map_set(&map, 3, 4);
-		cbuild_map_int_int_iter_t  iter   = cbuild_map_get_iterator(&map);
-		bool                       found0 = false;
-		bool                       found1 = false;
-		cbuild_map_int_int_pair_t *pair   = cbuild_map_iter_next(&iter);
-		while(pair != NULL) {
-			if(pair->key == 0 && pair->val == 1) {
-				found0 = true;
-			} else if(pair->key == 3 && pair->val == 4) {
-				found1 = true;
-			}
-			pair = cbuild_map_iter_next(&iter);
+		cbuild_map_t map = {0};
+		map.elem_size = sizeof(char*) + sizeof(intptr_t);
+		map.key_size = 0;
+		char* key;
+		void* elem;
+		cbuild_map_init(&map, 256);
+		key = "abc";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup("abc"); ((intptr_t*)elem)[1] = 1;
+		key = "def";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		key = "aaa";
+		cbuild_map_remove(&map, &key);
+		key = "def";
+		cbuild_map_remove_ex(&map, &key, test_cstr_free);
+		key = "abc";
+		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get(&map, &key))[1], 1,
+		  "Wrong element read" TEST_EXPECT_MSG(ld), 1l,
+		  ((intptr_t*)cbuild_map_get(&map, &key))[1]);
+		key =	"def";
+		TEST_ASSERT_EQ(cbuild_map_get(&map, &key), NULL,
+		  "Wrong element read" TEST_EXPECT_MSG(p), NULL,
+		  (void*)cbuild_map_get(&map, &key));
+		cbuild_map_clear_ex(&map, test_cstr_free);
+	},
+	"Removing from an cstr->int map");
+	TEST_CASE(
+	{
+		cbuild_map_t map = {0};
+		map.elem_size = 2 * sizeof(int);
+		map.key_size = sizeof(int);
+		int key;
+		int* elem;
+		cbuild_map_init(&map, 256);
+		key = 0;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 0; elem[1] = 1;
+		key = 3;
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		elem[0] = 3; elem[1] = 4;
+		bool found0 = false;
+		bool found3 = false;
+		int* iter = NULL;
+		cbuild_map_iter_reset(&map);
+		while((iter = cbuild_map_iter_next(&map))) {
+			if(iter[0] == 0) found0 = true;
+			if(iter[0] == 3) found3 = true;
 		}
 		TEST_ASSERT(found0, "%s", "Element with key 0 was not iterated.");
-		TEST_ASSERT(found1, "%s", "Element with key 1 was not iterated.");
+		TEST_ASSERT(found3, "%s", "Element with key 3 was not iterated.");
 		cbuild_map_clear(&map);
 	},
-	"Iterating over a map");
+	"Iterating over an int->int map");
 	TEST_CASE(
 	{
-		cbuild_map_int_int_t map = cbuild_map_int_int;
-		cbuild_map_resize(&map, 256);
-		cbuild_map_set(&map, 0, 1);
-		cbuild_map_set(&map, 1, 2);
-		size_t num   = 0;
-		int   *klist = cbuild_map_keylist(&map, &num);
-		TEST_ASSERT_EQ(num, 2, "Wrong number of keys" TEST_EXPECT_MSG(zu),
-		  (size_t)2, num);
-		TEST_ASSERT_NEQ(klist, NULL, "%s", "Array was not allocated.");
-		TEST_ASSERT_EQ(klist[0], 0,
-		  "Wrong key at index 0" TEST_EXPECT_MSG(d), 0,
-		  klist[0]);
-		TEST_ASSERT_EQ(klist[1], 1,
-		  "Wrong key at index 1" TEST_EXPECT_MSG(d), 1,
-		  klist[1]);
-		free(klist);
-		cbuild_map_clear(&map);
-		klist = cbuild_map_keylist(&map, &num);
-		TEST_ASSERT_EQ(num, 0, "Wrong number of keys" TEST_EXPECT_MSG(zu),
-		  (size_t)0, num);
-		TEST_ASSERT_NEQ(klist, NULL, "%s", "Array was not malloced.");
-		free(klist);
+		cbuild_map_t map = {0};
+		map.elem_size = sizeof(char*) + sizeof(intptr_t);
+		map.key_size = 0;
+		char* key;
+		void* elem;
+		cbuild_map_init(&map, 256);
+		key = "abc";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		key = "def";
+		elem = cbuild_map_get_or_alloc(&map, &key);
+		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 4;
+		bool found_abc = false;
+		bool found_def = false;
+		int* iter = NULL;
+		cbuild_map_iter_reset(&map);
+		while((iter = cbuild_map_iter_next(&map))) {
+			if(strcmp(((char**)iter)[0], "abc") == 0) found_abc = true;
+			if(strcmp(((char**)iter)[0], "def") == 0) found_def = true;
+		}
+		TEST_ASSERT(found_abc, "%s", "Element with key \"abc\" was not iterated.");
+		TEST_ASSERT(found_def, "%s", "Element with key \"def\" was not iterated.");
+		cbuild_map_clear_ex(&map, test_cstr_free);
 	},
-	"Listing map keys");
-	TEST_CASE(
-	{
-		cbuild_map_int_int_t map = cbuild_map_int_int;
-		cbuild_map_resize(&map, 256);
-		cbuild_map_set(&map, 0, 1);
-		cbuild_map_set(&map, 1, 2);
-		cbuild_map_set(&map, 256, 3);
-		cbuild_map_resize(&map, 3);
-		TEST_ASSERT(cbuild_map_contains(&map, 0), "%s",
-		  "Element lost on resize - 0.");
-		TEST_ASSERT(cbuild_map_contains(&map, 1), "%s",
-		  "Element lost on resize - 1.");
-		TEST_ASSERT(cbuild_map_contains(&map, 256), "%s",
-		  "Element lost on resize - 256.");
-		cbuild_map_clear(&map);
-	},
-	"Full map resize");
+	"Iterating over an cstr->int map");
 },
 "Map data structure tests")

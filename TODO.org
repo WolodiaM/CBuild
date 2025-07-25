@@ -2,7 +2,7 @@
 
 * Features todo list
 
-*** TODO Map.h rewrite
+*** DONE Map.h rewrite
 
 I want to have a *plain*, *macro-based* map implementation.
 I don't want to have a declaration macro, or it can define a list of structs at most.
@@ -13,7 +13,7 @@ Macro should be relatively small.
 
 * Thinking place
 
-** TODO new hash-map implementation
+** DONE new hash-map implementation
 
 Element struct can be provided by a user, bucket should be auto-generated, map should have an ability to add custom fields.
 #+NAME: hashmap_struct
@@ -34,7 +34,7 @@ Element struct can be provided by a user, bucket should be auto-generated, map s
   	size_t key_size = sizeof(typeof(map_elem_t));
   	size_t elem_size = sizeof(typeof(map_elem_t));
   };
-  struct my_map_t { // User provided, actually not required, raw map_t cn be used.
+  struct my_map_t { // User provided, actually not required, raw map_t can be used.
   	map_t map;
   	// Userdata
   }

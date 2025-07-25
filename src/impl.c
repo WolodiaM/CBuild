@@ -973,20 +973,156 @@ int cbuild_compare_mtime_many(const char* output, const char** inputs,
 	return ret;
 }
 /* Map.h impl */
-size_t cbuild_map_string_hash(const char* str) {
-	size_t hash = 5381;
-	int    c;
-	while((c = (unsigned char) * str++))
-		hash = ((hash << 5) + hash) + (size_t)c; // hash * 33 + c
-	return hash;
-}
-size_t cbuild_map_array_hash(const void* arr, size_t size) {
-	unsigned char *byte_ptr = (unsigned char*)arr;
+size_t __cbuild_int_map_hash_func(const void* data, size_t len) {
+	const unsigned char* ucPtr = (const unsigned char*)data;
 	size_t         hash     = 5381;
-	for(size_t i = 0; i < size; i++) {
-		hash = ((hash << 5) + hash) + byte_ptr[i]; // hash * 33 + byte_ptr[i]
+	for(size_t i = 0; i < len; i++) {
+		hash = ((hash << 5) + hash) + ucPtr[i]; // hash * 33 + data[i]
 	}
 	return hash;
+}
+size_t __cbuild_int_map_get_hash(cbuild_map_t* map, const void* key) {
+	size_t hash = 0;
+	if(map->hash_func == NULL) {
+		if(map->key_size > 0) {
+			hash = CBUILD_MAP_DEFAULT_HASH_FUNC(key, map->key_size)
+			  % map->nbuckets;
+		} else {
+			hash = CBUILD_MAP_DEFAULT_HASH_FUNC(*((void**)key), strlen(*((char**)key)))
+			  % map->nbuckets;
+		}
+	} else {
+		hash = map->hash_func(map, key) % map->nbuckets;
+	}
+	return hash;
+}
+void* __cbuild_int_map_check_bucket(cbuild_map_t* map,
+  const cbuild_map_bucket_t* bucket,  const void* key) {
+	if(map->keycmp_func == NULL) {
+		if(map->key_size > 0) {
+			for(size_t i = 0; i < bucket->nvals; i++) {
+				if(memcmp(key, ((char*)bucket->vals + (i * map->elem_size)),
+				  map->key_size) == 0) {
+					return ((char*)bucket->vals + (i * map->elem_size));
+				}
+			}
+		} else {
+			for(size_t i = 0; i < bucket->nvals; i++) {
+				if(strcmp(*((char**)key),
+				  *(char**)(void*)(((char*)bucket->vals + (i * map->elem_size)))) == 0) {
+					return ((char*)bucket->vals + (i * map->elem_size));
+				}
+			}
+		}
+	} else {
+		for(size_t i = 0; i < bucket->nvals; i++) {
+			if(map->keycmp_func(map, key,
+			  ((char*)bucket->vals + (i * map->elem_size)))) {
+				return ((char*)bucket->vals + (i * map->elem_size));
+			}
+		}
+	}
+	return NULL;
+}
+void cbuild_map_init(cbuild_map_t* map, size_t nbuckets) {
+	map->nbuckets = nbuckets;
+	map->buckets = __CBUILD_MALLOC(map->nbuckets * sizeof(cbuild_map_bucket_t));
+	cbuild_assert(map->buckets != NULL, "(LIB_CBUILD_MAP) Allocation failed.\n");
+	__CBUILD_MEMSET(map->buckets, 0, nbuckets * sizeof(cbuild_map_bucket_t));
+}
+void* cbuild_map_get(cbuild_map_t* map, const void* key) {
+	if(map->nbuckets == 0) {
+		cbuild_log(CBUILD_LOG_ERROR,
+		  "Trying to call 'cbuild_map_get' on an empty map!");
+		return CBUILD_PTR_ERR;
+	}
+	size_t hash = __cbuild_int_map_get_hash(map, key);
+	cbuild_map_bucket_t* bucket = &map->buckets[hash];
+	return __cbuild_int_map_check_bucket(map, bucket, key);
+}
+void* cbuild_map_get_or_alloc(cbuild_map_t* map, const void* key) {
+	if(map->nbuckets == 0) {
+		cbuild_log(CBUILD_LOG_ERROR,
+		  "Trying to call 'cbuild_map_get_or_alloc' with an empty map!");
+		return NULL;
+	}
+	size_t hash = __cbuild_int_map_get_hash(map, key);
+	cbuild_map_bucket_t* bucket = &map->buckets[hash];
+	void* ret = __cbuild_int_map_check_bucket(map, bucket, key);
+	if(ret != NULL) return ret;
+	bucket->nvals++;
+	bucket->vals = __CBUILD_REALLOC((char*)bucket->vals,
+	  bucket->nvals * map->elem_size);
+	cbuild_assert(bucket->vals != NULL, "(LIB_CBUILD_MAP) Allocation failed.\n");
+	__CBUILD_MEMSET((char*)bucket->vals + (bucket->nvals - 1) * map->elem_size, 0,
+	  map->elem_size);
+	return (char*)bucket->vals + ((bucket->nvals - 1) * map->elem_size);
+}
+bool cbuild_map_remove_ex(cbuild_map_t* map, const void* key,
+  cbuild_map_elem_clear_t elem_clear_func) {
+	if(map->nbuckets == 0) {
+		cbuild_log(CBUILD_LOG_ERROR,
+		  "Trying to call 'cbuild_map_remove' with an empty map!");
+		return NULL;
+	}
+	size_t hash = __cbuild_int_map_get_hash(map, key);
+	cbuild_map_bucket_t* bucket = &map->buckets[hash];
+	void* elem = __cbuild_int_map_check_bucket(map, bucket, key);
+	if(elem == NULL) return false;
+	if(elem_clear_func) elem_clear_func(map, elem);
+	if(bucket->nvals == 1) {
+		__CBUILD_FREE(bucket->vals);
+		bucket->vals = NULL;
+		bucket->nvals = 0;
+	} else {
+		char* last = ((char*)bucket->vals) +
+		  ((bucket->nvals - 1) * map->elem_size);
+		__CBUILD_MEMCPY(elem, last, map->elem_size);
+		bucket->nvals--;
+	}
+	return true;
+}
+void cbuild_map_clear_ex(cbuild_map_t* map,
+  cbuild_map_elem_clear_t elem_clear_func) {
+	if(elem_clear_func == NULL) {
+		for(size_t i = 0; i < map->nbuckets; i++) {
+			cbuild_map_bucket_t* bucket = &map->buckets[i];
+			__CBUILD_FREE(bucket->vals);
+			bucket->vals = NULL;
+			bucket->nvals = 0;
+		}
+		__CBUILD_FREE(map->buckets);
+		map->buckets = NULL;
+		map->nbuckets = 0;
+	} else {
+		for(size_t i = 0; i < map->nbuckets; i++) {
+			cbuild_map_bucket_t* bucket = &map->buckets[i];
+			for(size_t j = 0; j < bucket->nvals; j++) {
+				elem_clear_func(map, bucket->vals + (j * map->elem_size));
+			}
+			__CBUILD_FREE(bucket->vals);
+			bucket->vals = NULL;
+			bucket->nvals = 0;
+		}
+		__CBUILD_FREE(map->buckets);
+		map->buckets = NULL;
+		map->nbuckets = 0;
+	}
+}
+void cbuild_map_iter_reset(cbuild_map_t* map) {
+	map->iter_buckets = 0;
+	map->iter_vals = 0;
+}
+void* cbuild_map_iter_next(cbuild_map_t* map) {
+	while(map->iter_buckets < map->nbuckets) {
+		cbuild_map_bucket_t* bucket = &map->buckets[map->iter_buckets];
+		while(map->iter_vals < bucket->nvals) {
+			return bucket->vals + (map->iter_vals++ * map->elem_size);
+		}
+		map->iter_buckets++;
+		map->iter_vals = 0;
+	}
+	return NULL;
 }
 /* FlagParse.h impl */
 struct __cbuild_int_flag_spec_t {

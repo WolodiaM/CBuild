@@ -168,6 +168,13 @@
  *     - Fixed memory leak
  *   Span.h [remove]
  *     - Removed because it is useless
+ * --------------------------------------------
+ * 2025-07-24  v1.10
+ *   Map.h [change]
+ *     - Rewrite with a new API. Same basic design, but now use void* and
+ *       elem_size to be type-agnostic. Should be much faster (less function
+ *       pointers) and have API more tailored to read-modify-write patter.
+ *       Map now access only a key (and only does 'read' access).
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -218,6 +225,14 @@
 #ifndef CBUILD_TMP_BUFF_SIZE
 	#define CBUILD_TMP_BUFF_SIZE (32 * 1024 * 1024)
 #endif // CBUILD_TMP_BUFF_SIZE
+/**
+* @brief Default hash function for a hash map.
+* Function signature is this: size_t func(const void* key, size_t len)
+ */
+#ifndef CBUILD_MAP_DEFAULT_HASH_FUNC
+	#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_int_map_hash_func
+#endif
+
 // OS-specific defines
 #if defined(__linux__)
 	#define CBUILD_OS_LINUX
@@ -275,6 +290,7 @@
 	#define __CBUILD_REALLOC                   realloc
 	#define __CBUILD_MEMCPY                    memcpy
 	#define __CBUILD_MEMMOVE                   memmove
+	#define __CBUILD_MEMSET                    memset
 	#define __CBUILD_FREE                      free
 	// Process and file handles
 	typedef pid_t cbuild_proc_t;
