@@ -530,6 +530,12 @@ bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write) {
 	fcntl(*write, F_SETFD, FD_CLOEXEC);
 	return true;
 }
+ssize_t cbuild_fd_read(cbuild_fd_t fd, void* buf, size_t nbytes) {
+	return read(fd, buf, nbytes);
+}
+ssize_t cbuild_fd_write(cbuild_fd_t fd, const void* buf, size_t nbytes) {
+	return write(fd, buf, nbytes);
+}
 bool cbuild_file_read(const char* path, cbuild_sb_t* data) {
 	cbuild_fd_t fd = cbuild_fd_open_read(path);
 	if(CBUILD_INVALID_FD == fd) {

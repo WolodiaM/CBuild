@@ -48,10 +48,10 @@ typedef enum {
 	CBUILD_FTYPE_OTHER     = 3,
 } cbuild_filetype_t;
 /**
- *  @brief Close file dscripto
+ *  @brief Close file dscriptor
  *
  *  @param fd => cbuild_fd_t -> File descriptor that should be close
- *  @return bool -> Success of failur
+ *  @return bool -> true on success, false otherwise
  */
 bool cbuild_fd_close(cbuild_fd_t fd);
 /**
@@ -73,15 +73,33 @@ cbuild_fd_t cbuild_fd_open_write(const char* path);
  *
  * @param read => cbuild_fd_t* -> Read file descriptor return
  * @param write => cbuild_fd_t* -> Write file descriptor return
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write);
+/**
+ * @bytes Read data from specifc file descriptor. POSIX 'read' syscall
+ *
+ * @param fd => cbuild_fd_t -> File descriptor
+ * @param buf => void* -> Data buffer
+ * @param nbytes => size_t -> Len of buffer in bytes
+ * @return ssize_t -> Number of bytes read or -1 on error
+ */
+ssize_t cbuild_fd_read(cbuild_fd_t fd, void* buf, size_t nbytes);
+/**
+ * @brief Write data to specifc file descritptor. POSIX 'write' syscall
+ *
+ * @param fd => cbuild_fd_t -> File descriptor
+ * @param buf => void* -> Data buffer
+ * @param nbytes => size_t -> Len of buffer in bytes
+ * @return ssize_t -> Number of bytes written or -1 on error
+ */
+ssize_t cbuild_fd_write(cbuild_fd_t fd, const void* buf, size_t nbytes);
 /**
  * @brief Read full file into buffer
  *
  * @param path => const char* -> File path
  * @param data => cbuild_sb_t* -> String buffer
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_file_read(const char* path, cbuild_sb_t* data);
 /**
@@ -89,7 +107,7 @@ bool cbuild_file_read(const char* path, cbuild_sb_t* data);
  *
  * @param path => const char* -> Filepath
  * @param data => cbuild_sb_t * -> Buffer to write
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_file_write(const char* path, cbuild_sb_t* data);
 /**
@@ -97,7 +115,7 @@ bool cbuild_file_write(const char* path, cbuild_sb_t* data);
  *
  * @param src => const char* -> Source filepath
  * @param dst => const char* -> Destination filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_file_copy(const char* src, const char* dst);
 /**
@@ -105,7 +123,7 @@ bool cbuild_file_copy(const char* src, const char* dst);
  *
  * @param src => const char* -> Source filepath
  * @param dst => const char* -> Destination filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_file_move(const char* src, const char* dst);
 /**
@@ -113,7 +131,7 @@ bool cbuild_file_move(const char* src, const char* dst);
  *
  * @param src => const char* -> Source filepath
  * @param dst => const char* -> Destination filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_file_rename(const char* src, const char* dst);
 /**
@@ -127,7 +145,7 @@ bool cbuild_file_check(const char* path);
  * @brief Remove file
  *
  * @param path => const char* -> Filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_file_remove(const char* path);
 /**
@@ -135,7 +153,7 @@ bool cbuild_file_remove(const char* path);
  *
  * @param src => const char* -> Source filepath
  * @param dst => const char* -> Destination filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_dir_copy(const char* src, const char* dst);
 /**
@@ -143,7 +161,7 @@ bool cbuild_dir_copy(const char* src, const char* dst);
  *
  * @param src => const char* -> Source filepath
  * @param dst => const char* -> Destination filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_dir_move(const char* src, const char* dst);
 /**
@@ -151,21 +169,21 @@ bool cbuild_dir_move(const char* src, const char* dst);
  *
  * @param src => const char* -> Source filepath
  * @param dst => const char* -> Destination filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_dir_rename(const char* src, const char* dst);
 /**
  * @brief Remove directory
  *
  * @param path => const char* -> Filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_dir_remove(const char* path);
 /**
  * @brief Check if directory exist
  *
  * @param path => const char* -> Filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_dir_check(const char* path);
 /**
@@ -185,7 +203,7 @@ void cbuild_pathlist_clear(cbuild_pathlist_t* list);
  * @brief Create directory
  *
  * @param path => const char* -> Filepath
- * @return bool -> Success or failure
+ * @return bool -> true on success, false otherwise
  */
 bool cbuild_dir_create(const char* path);
 /**

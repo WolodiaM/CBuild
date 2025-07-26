@@ -181,6 +181,9 @@
  *     - Added 'cbuild_stack_top' to get top element in a read mode
  *   Proc.h [feature]
  *     - Added ;cbuild_proc_is_running' to check process without blocking
+ *   FS.h [feature]
+ *     - Added 'cbuild_fd_read' and 'cbuild_fd_write' to abstract POSOX 'read'
+ *       and 'write'
  *   DynArray.h [bugfix]
  *     - If 'cbuild_da_resize' shrinks array and size becomes invalid it is
  *       decrement
@@ -207,6 +210,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
