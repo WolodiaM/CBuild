@@ -1,3 +1,5 @@
+#+STARTUP: content
+
 * Bugfix todo list
 
 * Features todo list
@@ -10,6 +12,7 @@ I want to minimize usage of function pointers.
 Macro should be relatively small.
 
 *** TODO wikimk should not be a part of this repository
+*** TODO temporary allocator/functions (malloc/sprintf/?). Reset resets all allocations
 
 * Thinking place
 

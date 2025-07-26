@@ -2,10 +2,7 @@
  * @file Map.h
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Map data structure
- * Implemented using hashmap. Uses template-like macro system. You specify
- * datatypes for key and value and "names" for this datatypes and then datypes
- * are used in code generation and names are used to generate unique names for
- * all fucntions and structs.
+ * Implemented using hashmap.
  *
  * @date 2025-01-02
  * @copyright (C) 2025 WolodiaM
