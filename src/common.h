@@ -175,11 +175,13 @@
  *       elem_size to be type-agnostic. Should be much faster (less function
  *       pointers) and have API more tailored to read-modify-write patter.
  *       Map now access only a key (and only does 'read' access).
+ *   StringView.h [feature]
+ *     - Added compile-time constructor for string literals
  *   DynArray.h [bugfix]
  *     - If 'cbuild_da_resize' shrinks array and size becomes invalid it is
  *       decrement
- *   StringView.h [feature]
- *     - Added compile-time constructor for string literals
+ *   StringView.h [bugfix]
+ *     - Function that can return '-1' now returns 'ssize_t' not 'size_t'
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
