@@ -149,7 +149,7 @@
  *
  * @param da => CBUILD_DA* -> Dynamic array
  * @param new_size => size_t -> New element count. Array will be truncated if it
- * will be lover than da->size. If it is zero then default behavior is used
+ * will be lover than da->size. If zero then default growth behavior is used
  */
 #define cbuild_da_resize(da, new_size)                                         \
 	do {                                                                         \
@@ -171,6 +171,7 @@
 			  (da)->capacity * sizeof(typeof(*(da)->data)));                         \
 		}                                                                          \
 		cbuild_assert((da)->data != NULL, "(LIB_CBUILD_DA) Allocation failed.\n"); \
+		((da)->size > (da)->capacity) ? ((da)->size = (da)->capacity) : 0;         \
 	} while(0)
 /**
  * @brief Free da
