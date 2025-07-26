@@ -175,30 +175,35 @@
  *       elem_size to be type-agnostic. Should be much faster (less function
  *       pointers) and have API more tailored to read-modify-write patter.
  *       Map now access only a key (and only does 'read' access).
+ *   DynArray.h [bugfix]
+ *     - If 'cbuild_da_resize' shrinks array and size becomes invalid it is
+ *       decrement
+ *   StringView.h [feature]
+ *     - Added compile-time constructor for string literals
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
 #define __CBUILD_COMMON_H__
 // Includes (all external included of CBuild. Other header could only have
 // project-level includes)
-#include "ctype.h"
-#include "dirent.h"
-#include "errno.h"
-#include "fcntl.h"
-#include "limits.h"
-#include "stdarg.h"
-#include "stdbool.h"
-#include "stddef.h"
-#include "stdint.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "string.h"
-#include "sys/mman.h"
-#include "sys/stat.h"
-#include "sys/types.h"
-#include "sys/wait.h"
-#include "time.h"
-#include "unistd.h"
+#include <ctype.h>
+#include <dirent.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <time.h>
+#include <unistd.h>
 // Constants that can be redefined
 /**
  * @brief Init capacity of cbuild datastructures. `unsigned long`
@@ -253,13 +258,11 @@
 #elif defined(__MINGW32__) || defined(__MINGW64__)
 	#define CBUILD_OS_WINDOWS_MINGW
 	#define CBUILD_API_WIN32
-	#error "This library support only POSIX api and MinGW only supports WinAPI"
+	#error "This library support only POSIX api for now and MinGW only supports WinAPI"
 #elif defined(_MSC_VER)
 	#define CBUILD_OS_WINDOWS_MSVC
 	#define CBUILD_API_WIN32
-	#error                                                                        \
-	"MSVC is fully unsupported as a compiler. Please use gcc/clang-compatible compiler!"
-	#error "This library support only POSIX api and MSVC only supports WinAPI"
+	#error "MSVC is fully unsupported as a compiler. Please use gcc/clang-compatible compiler!"
 #else
 	#error                                                                        \
 	"This OS is unsupported by CBuild. If it supports POSIX API then you can add new compile-time check for your current OS and define API macro and OS macro and add compiler macro check for your OS. If it don't support any of this APIs then you need to create your own API macro and change implementation-specifc parts of CBuild"
@@ -401,7 +404,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 	  "Index %zu is out of bounds!\n", (size_t)index),              \
 	  (array)[(size_t)(index)])
 /**
- * @brief Shift args in and array with size (like argv and argc pair. Should
+ * @brief Shift args from an array with size (like argv and argc pair). Should
  * work similartly to bash `shift`
  *
  * @param argv => T[] -> Array
@@ -423,5 +426,5 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 // Version
 #define CBUILD_VERSION        "v1.10"
 #define CBUILD_VERSION_MAJOR  1
-#define CBUILD_2VERSION_MINOR 10
+#define CBUILD_VERSION_MINOR 10
 #endif // __CBUILD_COMMON_H__

@@ -48,7 +48,7 @@ typedef struct cbuild_sv_t {
 #define cbuild_sv_from_parts(_data, _size)                                     \
 	((cbuild_sv_t){ .data = (char*)(_data), .size = (_size) })
 /**
- * @brief Create string view from c string (static context)
+ * @brief Create string view from c string
  *
  * @param cstr => const char* -> C-string
  * @return cbuild_sv_t -> New string view
@@ -56,26 +56,34 @@ typedef struct cbuild_sv_t {
 #define cbuild_sv_from_cstr(cstr)                                              \
 	((cbuild_sv_t){ .data = (char*)(cstr), .size = strlen((cstr)) })
 /**
+ * @brief Create string view from c string (compile-time literal)
+ *
+ * @param lit => const char* -> C-string (compile-time literal)
+ * @return cbuild_sv_t -> New string view
+ */
+#define cbuild_sv_from_lit(lit)                                                \
+	((cbuild_sv_t){ .data = (char*)(cstr), .size = sizeof(lit) - 1 })
+/**
  * @brief Trim whitespaces from a string view starting from the left
  *
  * @param sv => cbuild_sv_t* -> String view to work with
  * @return size_t -> Number of characters removed
  */
-size_t      cbuild_sv_trim_left(cbuild_sv_t* sv);
+size_t cbuild_sv_trim_left(cbuild_sv_t* sv);
 /**
  * @brief Trim whitespaces from a string view starting from the right
  *
  * @param sv => cbuild_sv_t* -> String view to work with
  * @return size_t -> Number of characters removed
  */
-size_t      cbuild_sv_trim_right(cbuild_sv_t* sv);
+size_t cbuild_sv_trim_right(cbuild_sv_t* sv);
 /**
  * @brief Trim whitespaces from a string view starting from both sides
  *
  * @param sv => cbuild_sv_t* -> String view to work with
  * @return size_t -> Number of characters removed
  */
-size_t      cbuild_sv_trim(cbuild_sv_t* sv);
+size_t cbuild_sv_trim(cbuild_sv_t* sv);
 /**
  * @brief Chop characters from one string view into another
  * Note: Original string view will be truncated
@@ -134,28 +142,28 @@ cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
  * @return 1  -> If first different character in first string view is larger
  * @return 2  -> If size of first string view is larger
  */
-int         cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
+int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
 /**
  * @brief compare two string view ignoring case of a latin letters for string
  * view
  *
  * @param a => cbuild_sv_t -> First StringView
- * @param b => cbuild_sv_t -> Second StringViewr
+ * @param b => cbuild_sv_t -> Second StringView
  * @return -2 -> If size of first string view is smaller
  * @return -1 -> If first different character in first string view is smaller
  * @return 0  -> If two string views are equal
  * @return 1  -> If first different character in first string view is larger
  * @return 2  -> If size of first string view is larger
  */
-int         cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
+int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
 /**
- * @brief Check if string string view has specific prefix
+ * @brief Check if string view has specific prefix
  *
  * @param sv => cbuild_sv_t -> String view to work with
  * @param prefix => cbuild_sv_t -> Prefix
  * @return bool -> True if sv contains prefix
  */
-bool        cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
+bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
 /**
  * @brief Check if string string view has specific suffix
  *
@@ -163,29 +171,29 @@ bool        cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
  * @param suffix => cbuild_sv_t -> Prefix
  * @return bool -> True if cbuild_sv contains suffix
  */
-bool        cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix);
+bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix);
 /**
  * @brief Find characted in a string
  *
  * @param sv => cbuild_sv_t -> String view to work with
- * @param c => char -> Charcter to look for
- * @return size_t -> Index of a character or -1
+ * @param c => char -> Character to look for
+ * @return ssize_t -> Index of a character or -1
  */
-size_t      cbuild_sv_find(cbuild_sv_t sv, char c);
+ssize_t cbuild_sv_find(cbuild_sv_t sv, char c);
 /**
  * @brief Find characted in a string starting from the back
  *
  * @param sv => cbuild_sv_t -> String view to work with
- * @param c => char -> Charcter to look for
- * @return size_t -> Index of a character or -1
+ * @param c => char -> Character to look for
+ * @return ssize_t -> Index of a character or -1
  */
-size_t      cbuild_sv_rfind(cbuild_sv_t sv, char c);
+ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c);
 /**
  * @brief Check if string view contains the cracter
  *
  * @param sv => cbuild_sv_t -> String view to work with
- * @param c => char -> Charcter to look for
+ * @param c => char -> Character to look for
  * @return bool -> Contains or not
  */
-bool        cbuild_sv_contains(cbuild_sv_t sv, char c);
+bool cbuild_sv_contains(cbuild_sv_t sv, char c);
 #endif // __CBUILD_SV_H_
