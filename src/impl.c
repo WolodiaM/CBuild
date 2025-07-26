@@ -1584,7 +1584,7 @@ size_t __cbuild_int_flag_get_flgh_len(struct __cbuild_int_flag_spec_t* spec) {
 	__CBUILD_FREE(str);
 	return ret;
 }
-void cbuild_flag_flg_help() {
+void cbuild_flag_print_help() {
 	// Get length of longest option
 	size_t opt_len = 14;
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
@@ -1630,7 +1630,7 @@ char* cbuild_flag_app_name(void) {
 }
 void __cbuild_int_flag_help(const char* name) {
 	__CBUILD_PRINTF("Usage: %s [OPTIONS]\n\n", name);
-	cbuild_flag_flg_help();
+	cbuild_flag_print_help();
 }
 void (*cbuild_flag_help)(const char* app_name) = __cbuild_int_flag_help;
 void __cbuild_int_flag_version(const char* name) {

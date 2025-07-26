@@ -25,6 +25,7 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+// On windows 'SetConsoleCP(CP_UTF8)' or 'chcp 65001' is expected
 #ifndef __CBUILD_DLLOAD_H__
 #	if defined(CBUILD_API_POSIX)
 #		define cbuild_dlib_handle                         void*

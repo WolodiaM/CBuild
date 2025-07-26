@@ -176,8 +176,10 @@
  *       pointers) and have API more tailored to read-modify-write patter.
  *       Map now access only a key (and only does 'read' access).
  *   Compile.h [change]
- *     - Now '-Wall', '-Wextra', '-Wno-comment', '-Wconversion' and
+ *     - Now '-Wall', '-Wextra', '-Wno-comments', '-Wconversion' and
  *       '-Wcast-align' is default set of compile args on selfrebuild
+ *   FlagParse.h [change]
+ *     - 'cbuild_flag_flg_help' renamed to 'cbuild_flag_print_help'
  *   StringView.h [feature]
  *     - Added compile-time constructor for string literals
  *   Stack.h [feature]

@@ -141,7 +141,11 @@
 // Predefined compiler arguments
 #define CBUILD_CARGS_WARN                     "-Wall", "-Wextra", "-Wno-comments", "-Wconversion", "-Wcast-align"
 #define CBUILD_CARGS_WERROR                   "-Werror"
-#define CBUILD_CARGS_STATIC_ANALYZER          "-fanalyzer", "-Wanalyzer-too-complex"
+#if defined(__clang__)
+# define CBUILD_CARGS_STATIC_ANALYZER         "--analyze", "-Xanalyzer", "-analyzer-output=text"
+#else
+# define CBUILD_CARGS_STATIC_ANALYZER         "-fanalyzer", "-Wanalyzer-too-complex"
+#endif // Compiler select (clang/gcc)
 #define CBUILD_CARGS_PROFILE                  "-pg"
 #define CBUILD_CARGS_DEBUG                    "-g"
 #define CBUILD_CARGS_MT                       "-pthread"
@@ -173,7 +177,7 @@ extern void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd);
  * @brief Compare mtime of two files and report if input is newer than output
  *
  * @param output => char* -> Output file's filepath
- * @param intput => char* -> Input file's filepath
+ * @param input => char* -> Input file's filepath
  * @return int=0 -> Output is newer than input
  * @return int<0 -> Error
  * @return int>0 -> Output is older than input
@@ -184,7 +188,7 @@ int cbuild_compare_mtime(const char* output, const char* input);
  * any input is newer than output
  *
  * @param output => char* -> Output file's filepath
- * @param intputs => char** -> Input file's filepaths
+ * @param inputs => char** -> Input file's filepaths
  * @param num_inputs => size_t -> Number of inout files
  * @return int=0 -> Output is newer than input
  * @return int<0 -> Error

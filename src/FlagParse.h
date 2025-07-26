@@ -33,6 +33,7 @@
 #include "DynArray.h"
 #include "common.h"
 // Code
+// data is a pointer borrowed into a argv
 typedef struct cbuild_arglist_t {
 	const char** data;
 	size_t size;
@@ -40,7 +41,7 @@ typedef struct cbuild_arglist_t {
 } cbuild_arglist_t;
 /**
  * @brief Parse flag spec and register it
- * [See here for a full spec](../internals/flagparse)
+ * [See here for a full spec](../4.internals/2.flagparse.html)
  *
  * @param spec => char* -> Flag spec
  */
@@ -51,11 +52,11 @@ void cbuild_flag_new(const char* spec);
  * @param argc => int -> Argument count
  * @param argv => char** -> Arguments, argv[0] is a binary name
  */
-void                   cbuild_flag_parse(int argc, char** argv);
+void cbuild_flag_parse(int argc, char** argv);
 /**
  * @brief Prints help for all flags to a stdout
  */
-void cbuild_flag_flg_help();
+void cbuild_flag_print_help();
 /**
  * @brief Get positional arguments list
  *
