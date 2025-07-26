@@ -139,7 +139,7 @@
 #	endif // Compiler select
 #endif   // CBUILD_CC_OUT
 // Predefined compiler arguments
-#define CBUILD_CARGS_WARN                     "-Wall", "-Wextra", "-Wno-comments"
+#define CBUILD_CARGS_WARN                     "-Wall", "-Wextra", "-Wno-comments", "-Wconversion", "-Wcast-align"
 #define CBUILD_CARGS_WERROR                   "-Werror"
 #define CBUILD_CARGS_STATIC_ANALYZER          "-fanalyzer", "-Wanalyzer-too-complex"
 #define CBUILD_CARGS_PROFILE                  "-pg"

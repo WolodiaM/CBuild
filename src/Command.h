@@ -109,7 +109,6 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  *
  * @param cmd => cbuild_cmd_t -> Command buffer
  * @param fd => cbuild_cmd_fd_t -> IO redicrecting table
- * @param env => cbuild_cmd_env_t* -> Environment overrides
  * @return cbuild_proc_t -> Process associated with called command
  */
 cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);

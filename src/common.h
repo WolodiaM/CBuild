@@ -175,6 +175,9 @@
  *       elem_size to be type-agnostic. Should be much faster (less function
  *       pointers) and have API more tailored to read-modify-write patter.
  *       Map now access only a key (and only does 'read' access).
+ *   Compile.h [change]
+ *     - Now '-Wall', '-Wextra', '-Wno-comment', '-Wconversion' and
+ *       '-Wcast-align' is default set of compile args on selfrebuild
  *   StringView.h [feature]
  *     - Added compile-time constructor for string literals
  *   Stack.h [feature]

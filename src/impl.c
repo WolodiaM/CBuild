@@ -926,7 +926,7 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 		exit(1);
 	}
 	cbuild_cmd_t cmd = {0};
-	cbuild_cmd_append(&cmd, CBUILD_CC);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC, CBUILD_CARGS_WARN);
 	if(cbuild_selfrebuild_hook != NULL) {
 		cbuild_selfrebuild_hook(&cmd);
 	}
