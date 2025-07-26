@@ -115,16 +115,16 @@ docs() {
 	esac
 }
 docs_wiki() {
-	call_cmd gcc -o wikimk wikimk.c
-	call_cmd ./wikimk build
+	call_cmd gcc -o wikimk.run wikimk.c
+	call_cmd ./wikimk.run build
 }
 docs_doxygen() {
 	call_cmd doxygen doxygen.conf
 	call_cmd mv "wiki/doxygen/html" "wiki/out/doxygen"
 }
 docs_serve() {
-	call_cmd gcc -o wikimk wikimk.c
-	call_cmd ./wikimk serve
+	call_cmd gcc -o wikimk.run wikimk.c
+	call_cmd ./wikimk.run serve
 }
 # test subcommand
 test_cmd() {
