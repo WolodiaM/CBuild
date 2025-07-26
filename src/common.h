@@ -179,6 +179,8 @@
  *     - Added compile-time constructor for string literals
  *   Stack.h [feature]
  *     - Added 'cbuild_stack_top' to get top element in a read mode
+ *   Proc.h [feature]
+ *     - Added ;cbuild_proc_is_running' to check process without blocking
  *   DynArray.h [bugfix]
  *     - If 'cbuild_da_resize' shrinks array and size becomes invalid it is
  *       decrement

@@ -31,21 +31,28 @@
 #define __CBUILD_PROC_H__
 #include "common.h"
 /**
- * @brief Wait until process finishes execurition
+ * @brief Wait until process finishes execution
  *
  * @param proc => cbuild_proc_t -> Process ID
  * @return true -> Process finished without errors
  * @return false -> Process finished with an error
  */
-bool          cbuild_proc_wait(cbuild_proc_t proc);
+bool cbuild_proc_wait(cbuild_proc_t proc);
 /**
- * @brief Wait until process finishes execurition
+ * @brief Wait until process finishes execution
  *
  * @param proc => cbuild_proc_t -> Process ID
  * @return int -> Process exit code. INT_MIN on invalid proc and INT_MAX if
  * process was closed on signal.
  */
-int           cbuild_proc_wait_code(cbuild_proc_t proc);
+int cbuild_proc_wait_code(cbuild_proc_t proc);
+/**
+ * @brief Check if process is running
+ *
+ * @param proc => cbuild_proc_t -> Process
+ * @return bool => true if running, false otherwise
+ */
+bool cbuild_proc_is_running(cbuild_proc_t proc);
 /**
  * @brief Start another process with generic function
  *
@@ -77,5 +84,5 @@ cbuild_proc_ptr_t cbuild_proc_malloc(size_t n);
  *
  * @param ptr => cbuild_proc_ptr_t -> Pointer (from cbuild_proc_malloc)
  */
-void              cbuild_proc_free(cbuild_proc_ptr_t ptr);
+void cbuild_proc_free(cbuild_proc_ptr_t ptr);
 #endif // __CBUILD_PROC_H__
