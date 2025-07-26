@@ -83,7 +83,7 @@ void* cbuild_map_get(cbuild_map_t* map, const void* key);
  */
 void* cbuild_map_get_or_alloc(cbuild_map_t* map, const void* key);
 /**
- * @brief Remove element from a map
+ * @brief Remove element from a map. Userdata should be memcpy-safe.
  *
  * @param map => cbuild_map_t* -> Map object
  * @param key => void* -> Requested key
@@ -94,7 +94,7 @@ void* cbuild_map_get_or_alloc(cbuild_map_t* map, const void* key);
 bool cbuild_map_remove_ex(cbuild_map_t* map, const void* key,
   cbuild_map_elem_clear_t elem_clear_func);
 /**
- * @brief Remove element from a map
+ * @brief Remove element from a map. Userdata should be memcpy-safe.
  *
  * @param map => cbuild_map_t* -> Map object
  * @param key => void* -> Requested key

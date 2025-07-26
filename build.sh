@@ -3,8 +3,8 @@
 set -euo pipefail
 # constants
 CARGS="-O3 -g -std=gnu99 -Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Werror -D_FORTIFY_SOURCE=2"
-MEMCHECK_DEFAULT="valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2"
-MEMCHECK="${MEMCHECK_EXT:-$MEMCHECK_DEFAULT}"
+: "${MEMCHECK:=valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2}"
+: "${TEST_CC:=gcc}"
 # Global variables
 Silent="no"  # Need to be set to `yes`
 Verbose="no" # Need to be set to `yes`
@@ -138,7 +138,7 @@ test_run() {
 	call_cmd rm -rf "build/$1.*"
 	printf "${green}Building test \"${red}$1${green}\" into executable.${reset}"
 	if [ "$Silent" == "no" ]; then
-		printf "${red} GCC output will be shown.${reset}\n"
+		printf "${red} $TEST_CC output will be shown.${reset}\n"
 	else
 		printf "\n"
 	fi
@@ -149,7 +149,7 @@ test_run() {
 	if [ -f "tests/$1.args" ]; then
 		NEWCARGS="$CARGS $(cat "tests/$1.args")"
 	fi
-	call_cmd gcc $NEWCARGS tests/"$1".c src/impl.c -o build/test_"$1".run
+	call_cmd $TEST_CC $NEWCARGS tests/"$1".c src/impl.c -o build/test_"$1".run
 	ERR=$?
 	if [ "$Silent" == "no" ]; then
 		printf "${cyan}%s${reset}\n" "----------  End of compiler output  ----------"
@@ -177,7 +177,8 @@ test_run_all() {
 	for file in tests/*.c; do
 		file="$(basename -- "$file")"
 		file="${file%.*}"
-		test_run "$file"
+		TEST_CC=gcc test_run "$file"
+		TEST_CC=clang test_run "$file"
 		ERR=$?
 		if [ "$ERR" -ne 0 ]; then
 			exit 1

@@ -245,14 +245,14 @@ bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix) {
 	    cbuild_sv_from_parts(sv.data + sv.size - suffix.size, suffix.size),
 	    suffix) == 0;
 }
-size_t cbuild_sv_find(cbuild_sv_t sv, char c) {
+ssize_t cbuild_sv_find(cbuild_sv_t sv, char c) {
 	char* chrptr = memchr(sv.data, c, sv.size);
 	if(chrptr == NULL) {
-		return (size_t) -1;
+		return -1;
 	}
-	return (size_t)(chrptr - sv.data);
+	return chrptr - sv.data;
 }
-size_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
+ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
 	char* chrptr = sv.data;
 #if defined(CBUILD_API_POSIX) &&                                               \
 		(defined(_GNU_SOURCE) || defined(__musl__) || defined(CBUILD_OS_MACOS) ||  \
@@ -270,12 +270,12 @@ size_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
 loop_end:
 #endif
 	if(chrptr == NULL) {
-		return (size_t) -1;
+		return -1;
 	}
-	return (size_t)(chrptr - sv.data);
+	return chrptr - sv.data;
 }
 bool cbuild_sv_contains(cbuild_sv_t sv, char c) {
-	return cbuild_sv_find(sv, c) != (size_t) -1;
+	return cbuild_sv_find(sv, c) != -1;
 }
 /* Command.h impl */
 cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {

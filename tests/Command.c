@@ -55,7 +55,7 @@ TEST_MAIN({
 		sb1 = cbuild_cmd_to_sb(c1);
 		cbuild_sb_append_null(&sb1);
 		char *cmp2 =
-		  "gcc -DVER=1.0 --include \"common.h\" file\\ with\\ spaces.c "
+		  CBUILD_CC " -DVER=1.0 --include \"common.h\" file\\ with\\ spaces.c "
 		  "-o file.run";
 		TEST_ASSERT_STREQ(sb1.data, cmp2,
 		  "Get: \"" CBuildSBFmt "\", expected: \"%s\"",

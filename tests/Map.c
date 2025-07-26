@@ -436,7 +436,7 @@ TEST_MAIN({
 		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 4;
 		bool found_abc = false;
 		bool found_def = false;
-		int* iter = NULL;
+		void* iter = NULL;
 		cbuild_map_iter_reset(&map);
 		while((iter = cbuild_map_iter_next(&map))) {
 			if(strcmp(((char**)iter)[0], "abc") == 0) found_abc = true;
