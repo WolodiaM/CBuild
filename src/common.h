@@ -177,6 +177,8 @@
  *       Map now access only a key (and only does 'read' access).
  *   StringView.h [feature]
  *     - Added compile-time constructor for string literals
+ *   Stack.h [feature]
+ *     - Added 'cbuild_stack_top' to get top element in a read mode
  *   DynArray.h [bugfix]
  *     - If 'cbuild_da_resize' shrinks array and size becomes invalid it is
  *       decrement

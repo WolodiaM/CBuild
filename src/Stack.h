@@ -50,7 +50,7 @@
  */
 #define cbuild_stack_push(stack, elem)                                         \
 	do {                                                                         \
-		if (((stack)->ptr + 1) > (stack)->capacity) {                              \
+		if ((stack)->ptr >= (stack)->capacity) {                                   \
 			cbuild_stack_resize((stack), 0);                                         \
 		}                                                                          \
 		(stack)->data[(stack)->ptr++] = elem;                                      \
@@ -65,6 +65,17 @@
 	({                                                                           \
 		cbuild_assert((stack)->ptr != 0, "(LIB_CBUILD_STACK) Stack underfloor.\n");\
 		(stack)->data[--(stack)->ptr];                                             \
+	})
+/**
+ * @brief Get top element of the stack (same as for pop, but read-only)
+ *
+ * @param stack => CBUILD_STACK* -> Stack
+ * @return VAL -> Element
+ */
+#define cbuild_stack_top(stack)                                                \
+	({                                                                           \
+		cbuild_assert((stack)->ptr != 0, "(LIB_CBUILD_STACK) Stack underfloor.\n");\
+		(stack)->data[(stack)->ptr - 1];                                            \
 	})
 /**
  * @brief Resize stack (done automatically most of the time ;) )
