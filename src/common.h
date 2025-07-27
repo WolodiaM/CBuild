@@ -189,6 +189,14 @@
  *   FS.h [feature]
  *     - Added 'cbuild_fd_read' and 'cbuild_fd_write' to abstract POSOX 'read'
  *       and 'write'
+ *   FlagParse.h [feature]
+ *     - Added 'alias' command to DSL - allow to define long option aliases to
+ *       another option, used in help message and while parsing, but cannot be
+ *       targeted in 'cbuild_flag_get_flag'
+ *     - Added flag groups. Added metadata key 'group' that allow to append flag
+ *       to a specific group. Added command 'group' that allow to add extended
+ *       description to a group. Groups will only be used during help generation
+ *       and flags from same group will be grouped under same heading.
  *   DynArray.h [bugfix]
  *     - If 'cbuild_da_resize' shrinks array and size becomes invalid it is
  *       decrement

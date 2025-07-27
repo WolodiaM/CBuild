@@ -12,8 +12,9 @@ I want to minimize usage of function pointers.
 Macro should be relatively small.
 
 *** TODO wikimk should not be a part of this repository
+*** TODO wikimk - allow to collapse folders in a site tree
 *** TODO temporary allocator/functions (malloc/sprintf/?). Reset resets all allocations
-*** TODO few additions to FlagParse.h
+*** DONE few additions to FlagParse.h
 
 Aliases through commands (something like "-alias:name:lopt-which-is-aliased", only long aliases supported)
 Groups through new metadata entry (something like "group=<name>"), purely for pretty print

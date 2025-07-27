@@ -62,7 +62,7 @@ typedef struct cbuild_sv_t {
  * @return cbuild_sv_t -> New string view
  */
 #define cbuild_sv_from_lit(lit)                                                \
-	((cbuild_sv_t){ .data = (char*)(cstr), .size = sizeof(lit) - 1 })
+	((cbuild_sv_t){ .data = (char*)(lit), .size = sizeof(lit) - 1 })
 /**
  * @brief Trim whitespaces from a string view starting from the left
  *

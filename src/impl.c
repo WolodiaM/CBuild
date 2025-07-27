@@ -442,7 +442,7 @@ int cbuild_proc_wait_code(cbuild_proc_t proc) {
 	}
 }
 bool cbuild_proc_is_running(cbuild_proc_t proc) {
-	if (proc <= 0) return false;
+	if(proc <= 0) return false;
 	return kill(proc, 0) <= 0;
 }
 cbuild_proc_ptr_t cbuild_proc_malloc(size_t n) {
@@ -1160,11 +1160,12 @@ struct __cbuild_int_flag_spec_t {
 	char              sopt;
 	bool              found; // State
 	char              _padding[2];
-	void*             param3;
-	void*             param4;
+	size_t            aliases_len;
+	cbuild_sv_t*      aliases;
 	cbuild_sv_t       opt;
 	cbuild_sv_t       description;
 	cbuild_sv_t       type_hint;
+	cbuild_sv_t       group_name; // If size is 0 then ungrouped
 	cbuild_arglist_t  args; // State
 };
 #define __CBUILD_INT_FLAG_SET_TYPE(where, val) (where) |= (((val) & 3) << 0)
@@ -1183,12 +1184,58 @@ struct __cbuild_int_da_flag_spec_t {
 	size_t capacity;
 };
 struct __cbuild_int_flag_context_t {
+	/* Bit-mask
+	 * 0 -> Separator
+	 *    - 0b0 - Don;t push
+	 *    - 0b1 - Push
+	 * 0-31 -> Reserved, always 0
+	 */
+	size_t                              metadata;
 	const char*                         app_name;
-	bool                                pargs_separator;
-	struct __cbuild_int_da_flag_spec_t  flags;
+	cbuild_sv_t*                        group_desc;
+	size_t                              group_desc_len;
 	cbuild_arglist_t                    pargs;
+	struct __cbuild_int_da_flag_spec_t  flags;
 };
+#define __CBUILD_INT_FLGCTX_SET_SEPARATOR(val)                                 \
+	(__cbuild_int_flag_context.metadata) |= (((val) & 1) << 0)
+#define __CBUILD_INT_FLGCTX_GET_SEPARATOR()                                    \
+	(((__cbuild_int_flag_context.metadata) >> 0) & 0b1)
 static struct __cbuild_int_flag_context_t __cbuild_int_flag_context = {0};
+struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
+	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
+		  __CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
+		  cbuild_sv_cmp(spec->opt, opt) == 0) {
+			return spec;
+		}
+	}
+	return NULL;
+}
+struct __cbuild_int_flag_spec_t*
+__cbuild_int_flag_get_lopt_aliased(cbuild_sv_t opt) {
+	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
+		  __CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
+		  cbuild_sv_cmp(spec->opt, opt) == 0) {
+			return spec;
+		}
+		for(size_t i = 0; i < spec->aliases_len; i++) {
+			if(cbuild_sv_cmp(spec->aliases[i], opt) == 0) {
+				return spec;
+			}
+		}
+	}
+	return NULL;
+}
+struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_sopt(char opt) {
+	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01 && spec->sopt == opt) {
+			return spec;
+		}
+	}
+	return NULL;
+}
 bool __cbuild_int_flag_first_delim_func(const cbuild_sv_t* sv, size_t idx,
   void* args) {
 	if(sv->data[idx] == '\t' || sv->data[idx] == '\n' || sv->data[idx] == '\r') {
@@ -1210,14 +1257,15 @@ bool __cbuild_int_flag_metadata_delim_func(const cbuild_sv_t* sv, size_t idx,
 void __cbuild_int_flag_parse_metadata_entry(
   struct __cbuild_int_flag_spec_t* new_spec, size_t parse_offset,
   cbuild_sv_t opt) {
-	static const cbuild_sv_t key_arg     = cbuild_sv_from_cstr("arg");
-	static const cbuild_sv_t key_len     = cbuild_sv_from_cstr("len");
-	static const cbuild_sv_t key_thint   = cbuild_sv_from_cstr("thint");
-	static const cbuild_sv_t key_tldelim = cbuild_sv_from_cstr("tldelim");
-	static const cbuild_sv_t arg_arg     = cbuild_sv_from_cstr("arg");
-	static const cbuild_sv_t arg_list    = cbuild_sv_from_cstr("list");
-	static const cbuild_sv_t arg_tlist   = cbuild_sv_from_cstr("tlist");
-	cbuild_sv_t              key         = cbuild_sv_chop_by_delim(&opt, '=');
+	static const cbuild_sv_t key_arg    = cbuild_sv_from_lit("arg");
+	static const cbuild_sv_t key_len    = cbuild_sv_from_lit("len");
+	static const cbuild_sv_t key_thint  = cbuild_sv_from_lit("thint");
+	static const cbuild_sv_t key_tdelim = cbuild_sv_from_lit("tdelim");
+	static const cbuild_sv_t key_group  = cbuild_sv_from_lit("group");
+	static const cbuild_sv_t arg_arg    = cbuild_sv_from_lit("arg");
+	static const cbuild_sv_t arg_list   = cbuild_sv_from_lit("list");
+	static const cbuild_sv_t arg_tlist  = cbuild_sv_from_lit("tlist");
+	cbuild_sv_t              key        = cbuild_sv_chop_by_delim(&opt, '=');
 	if(cbuild_sv_cmp(key, key_arg) == 0) {
 		if(cbuild_sv_prefix(opt, arg_arg)) {
 			__CBUILD_INT_FLAG_SET_ARGT(new_spec->type, 0b001);
@@ -1233,8 +1281,10 @@ void __cbuild_int_flag_parse_metadata_entry(
 		__CBUILD_INT_FLAG_SET_PRM1(new_spec->type, (unsigned int)atoi(opt.data));
 	} else if(cbuild_sv_cmp(key, key_thint) == 0) {
 		new_spec->type_hint = opt;
-	} else if(cbuild_sv_cmp(key, key_tldelim)) {
+	} else if(cbuild_sv_cmp(key, key_tdelim) == 0) {
 		__CBUILD_INT_FLAG_SET_PRM2(new_spec->type, (unsigned int)opt.data[0]);
+	} else if(cbuild_sv_cmp(key, key_group) == 0) {
+		new_spec->group_name = opt;
 	} else {
 		cbuild_log(CBUILD_LOG_ERROR,
 		  "Syntax error [%zu]: Invalid metadata entry \"" CBuildSVFmt
@@ -1258,12 +1308,51 @@ void __cbuild_int_flag_parse_metadata_spec(
 		    &delim);
 		(*parse_offset) += (opt.size + 1);
 	}
-	__cbuild_int_flag_parse_metadata_entry(new_spec, *parse_offset, opt);
+	if(opt.size > 0) {
+		__cbuild_int_flag_parse_metadata_entry(new_spec, *parse_offset, opt);
+	}
 }
 void __cbuild_int_flag_parse_cmd(cbuild_sv_t spec) {
-	static const cbuild_sv_t cmd_separator = cbuild_sv_from_cstr("separator");
+	static const cbuild_sv_t cmd_separator = cbuild_sv_from_lit("separator");
+	static const cbuild_sv_t cmd_alias     = cbuild_sv_from_lit("alias");
+	static const cbuild_sv_t cmd_group     = cbuild_sv_from_lit("group");
 	if(cbuild_sv_prefix(spec, cmd_separator)) {
-		__cbuild_int_flag_context.pargs_separator = true;
+		__CBUILD_INT_FLGCTX_SET_SEPARATOR(1);
+	} else if(cbuild_sv_prefix(spec, cmd_alias)) {
+		cbuild_sv_chop_by_delim(&spec, ':');
+		cbuild_sv_t flag = cbuild_sv_chop_by_delim(&spec, ':');
+		struct __cbuild_int_flag_spec_t* flg = __cbuild_int_flag_get_lopt(flag);
+		if(flg == NULL) {
+			cbuild_log(CBUILD_LOG_ERROR,
+			  "Syntax error: \"alias\" command require valid flag name "
+			  "(long option should be used here!");
+			exit(1);
+		}
+		cbuild_sv_t alias;
+		do {
+			alias = cbuild_sv_chop_by_delim(&spec, ',');
+			if(alias.size == 0) {
+				cbuild_log(CBUILD_LOG_ERROR,
+				  "Syntax error: empty alias can not be defined!");
+				exit(1);
+			}
+			flg->aliases_len++;
+			flg->aliases = __CBUILD_REALLOC(flg->aliases,
+			    sizeof(cbuild_sv_t) * flg->aliases_len);
+			flg->aliases[flg->aliases_len - 1] = alias;
+		} while(spec.size > 0);
+	} else if(cbuild_sv_prefix(spec, cmd_group)) {
+		cbuild_sv_chop_by_delim(&spec, ':');
+		cbuild_sv_t group = cbuild_sv_chop_by_delim(&spec, ':');
+		CBUILD_UNUSED(group);
+		__cbuild_int_flag_context.group_desc_len += 2;
+		__cbuild_int_flag_context.group_desc = __CBUILD_REALLOC(
+		    __cbuild_int_flag_context.group_desc,
+		    sizeof(cbuild_sv_t) * 2 * __cbuild_int_flag_context.group_desc_len);
+		__cbuild_int_flag_context.group_desc[
+		  __cbuild_int_flag_context.group_desc_len - 2] = group;
+		__cbuild_int_flag_context.group_desc[
+		  __cbuild_int_flag_context.group_desc_len - 1] = spec;
 	}
 }
 void cbuild_flag_new(const char* spec_cstr) {
@@ -1300,7 +1389,7 @@ void cbuild_flag_new(const char* spec_cstr) {
 		}
 		spec.data    += 2;
 		spec.size    -= 2;
-		parse_offset += 3; // Offset is one lover than real parse position
+		parse_offset += 3; // Offset is one lower than real parse position
 		__attribute__((fallthrough));
 	case '\n':
 		__CBUILD_INT_FLAG_SET_TYPE(new_spec.type, 0b00);
@@ -1321,24 +1410,6 @@ void cbuild_flag_new(const char* spec_cstr) {
 		0
 	};
 	cbuild_da_append(&(__cbuild_int_flag_context.flags), new_spec);
-}
-struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
-	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
-		if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
-		  __CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
-		  cbuild_sv_cmp(spec->opt, opt) == 0) {
-			return spec;
-		}
-	}
-	return NULL;
-}
-struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_sopt(char opt) {
-	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
-		if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01 && spec->sopt == opt) {
-			return spec;
-		}
-	}
-	return NULL;
 }
 void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
   int argc, char** argv, int* parse_ptr) {
@@ -1430,7 +1501,7 @@ void cbuild_flag_parse(int argc, char** argv) {
 			// --
 			if(arg.size == 0) {
 				parse_no_flags = true;
-				if(__cbuild_int_flag_context.pargs_separator) {
+				if(__CBUILD_INT_FLGCTX_GET_SEPARATOR() == 1) {
 					cbuild_da_append(&__cbuild_int_flag_context.pargs, "--");
 				}
 				continue;
@@ -1443,7 +1514,8 @@ void cbuild_flag_parse(int argc, char** argv) {
 				cbuild_flag_version(__cbuild_int_flag_context.app_name);
 				exit(0);
 			}
-			struct __cbuild_int_flag_spec_t* spec = __cbuild_int_flag_get_lopt(arg);
+			struct __cbuild_int_flag_spec_t* spec =
+			  __cbuild_int_flag_get_lopt_aliased(arg);
 			if(spec == NULL) {
 				cbuild_log(CBUILD_LOG_ERROR,
 				  "(CBUILD_FLAG_PARSE) Invalid long flag \"" CBuildSVFmt "\"!",
@@ -1586,7 +1658,7 @@ size_t __cbuild_int_flag_get_flgh_len(struct __cbuild_int_flag_spec_t* spec) {
 }
 void cbuild_flag_print_help() {
 	// Get length of longest option
-	size_t opt_len = 14;
+	size_t opt_len = strlen("\t-v, --version"); // minimal length
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
 		size_t new_opt_len = __cbuild_int_flag_get_flgh_len(spec);
 		opt_len            = new_opt_len > opt_len ? new_opt_len : opt_len;
@@ -1601,14 +1673,79 @@ void cbuild_flag_print_help() {
 	written = __CBUILD_PRINT("\t-v, --version");
 	__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
 	__CBUILD_PRINT("Shows app version information.\n");
-	// Defined flags
+	// Extract groups and print ungrouped args
+	cbuild_sv_t* groups = NULL;
+	size_t groups_len = 0;
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
-		char* opt     = __cbuild_int_flag_help_fmt(spec);
-		int   written = __CBUILD_PRINTF("%s", opt);
-		__CBUILD_FREE(opt);
-		__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
-		__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
-		__CBUILD_PRINT("\n");
+		if(spec->group_name.size == 0) {
+			char* opt     = __cbuild_int_flag_help_fmt(spec);
+			int   written = __CBUILD_PRINTF("%s", opt);
+			__CBUILD_FREE(opt);
+			__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
+			__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
+			__CBUILD_PRINT("\n");
+		} else {
+			bool found = false;
+			for(size_t i = 0; i < groups_len; i++) {
+				if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
+					found = true;
+					break;
+				}
+			}
+			if(!found) {
+				groups_len++;
+				groups = __CBUILD_REALLOC(groups, sizeof(cbuild_sv_t) * groups_len);
+				groups[groups_len - 1] = spec->group_name;
+			}
+		}
+	}
+	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		if(spec->group_name.size == 0) {
+			if(spec->aliases_len == 0) continue;
+			__CBUILD_PRINT("\t");
+			for(size_t i = 0; i < spec->aliases_len; i++) {
+				__CBUILD_PRINTF("--"CBuildSVFmt, CBuildSVArg(spec->aliases[i]));
+				if(i + 1 < spec->aliases_len) {
+					__CBUILD_PRINT(", ");
+				}
+			}
+			__CBUILD_PRINTF(" -> --"CBuildSVFmt"\n", CBuildSVArg(spec->opt));
+		}
+	}
+	// Print grouped args
+	for(size_t i = 0; i < groups_len; i++) {
+		__CBUILD_PRINTF(CBuildSVFmt":\n", CBuildSVArg(groups[i]));
+		for(size_t j = 0; j < __cbuild_int_flag_context.group_desc_len; j += 2) {
+			if(cbuild_sv_cmp(__cbuild_int_flag_context.group_desc[j],
+			  groups[i]) == 0) {
+				__CBUILD_PRINTF(CBuildSVFmt"\n",
+				  CBuildSVArg(__cbuild_int_flag_context.group_desc[j + 1]));
+				break;
+			}
+		}
+		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+			if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
+				char* opt     = __cbuild_int_flag_help_fmt(spec);
+				int   written = __CBUILD_PRINTF("%s", opt);
+				__CBUILD_FREE(opt);
+				__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
+				__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
+				__CBUILD_PRINT("\n");
+			}
+		}
+		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+			if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
+				if(spec->aliases_len == 0) continue;
+				__CBUILD_PRINT("\t");
+				for(size_t i = 0; i < spec->aliases_len; i++) {
+					__CBUILD_PRINTF("--"CBuildSVFmt, CBuildSVArg(spec->aliases[i]));
+					if(i + 1 < spec->aliases_len) {
+						__CBUILD_PRINT(", ");
+					}
+				}
+				__CBUILD_PRINTF(" -> --"CBuildSVFmt"\n", CBuildSVArg(spec->opt));
+			}
+		}
 	}
 }
 cbuild_arglist_t* cbuild_flag_get_pargs(void) {

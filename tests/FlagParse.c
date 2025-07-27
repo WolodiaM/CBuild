@@ -33,16 +33,26 @@
 int main(int argc, char** argv) {
 	cbuild_flag_new("-separator");
 
-	cbuild_flag_new("arg_req\ta\targ=arg;thint=int\tOption with both long and short options.");
-	cbuild_flag_new("list_req\tl\targ=list;thint=file\tOption with both long and short options.");
-	cbuild_flag_new("tlist_req\tt\targ=tlist;tdelim=^;thint=boolean;len=3\tOption with both long and short options.");
+	cbuild_flag_new("arg_req\ta\targ=arg;thint=int;group=Requires arguments\tOption with both long and short options.");
+	cbuild_flag_new("list_req\tl\targ=list;thint=file;group=Requires arguments\tOption with both long and short options.");
+	cbuild_flag_new("tlist_req\tt\targ=tlist;tdelim=^;thint=boolean;len=3;group=Requires arguments\tOption with both long and short options.");
 
-	cbuild_flag_new("arg_opt\tA\targ=arg?;thint=float\tOption with both long and short options.");
-	cbuild_flag_new("list_opt\tL\targ=list?;thint=float\tOption with both long and short options.");
-	cbuild_flag_new("tlist_opt\tT\targ=tlist?;thint=file;tdelim=^;len=4\tOption with both long and short options.");
+	cbuild_flag_new("arg_opt\tA\targ=arg?;thint=float;group=Argument is optional\tOption with both long and short options.");
+	cbuild_flag_new("list_opt\tL\targ=list?;thint=float;group=Argument is optional\tOption with both long and short options.");
+	cbuild_flag_new("tlist_opt\tT\targ=tlist?;thint=file;tdelim=^;len=4;group=Argument is optional\tOption with both long and short options.");
 
 	cbuild_flag_new("long\n\tOption with long option only.");
 
+	cbuild_flag_new("-alias:arg_req:arg1,arg2");
+
+	cbuild_flag_new("-group:Requires arguments:All flags from this group requires at least one argument.");
+	cbuild_flag_new("-group:Argument is optional:Flags from this group can live even without any arguments!");
+
 	cbuild_flag_parse(argc, argv);
+
+	if(cbuild_flag_get_flag("arg_req")) {
+		printf("Flag or alias found!\n");
+	}
+
 	return 0;
 }
