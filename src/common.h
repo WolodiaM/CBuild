@@ -197,6 +197,8 @@
  *       to a specific group. Added command 'group' that allow to add extended
  *       description to a group. Groups will only be used during help generation
  *       and flags from same group will be grouped under same heading.
+ *   Arena.h [new]
+ *     - Temporary allocated. Experimental module.
  *   DynArray.h [bugfix]
  *     - If 'cbuild_da_resize' shrinks array and size becomes invalid it is
  *       decrement
@@ -254,13 +256,18 @@
 	#define CBUILD_TMP_BUFF_SIZE (32 * 1024 * 1024)
 #endif // CBUILD_TMP_BUFF_SIZE
 /**
-* @brief Default hash function for a hash map.
-* Function signature is this: size_t func(const void* key, size_t len)
+ * @brief Default hash function for a hash map.
+ * Function signature is this: size_t func(const void* key, size_t len)
  */
 #ifndef CBUILD_MAP_DEFAULT_HASH_FUNC
 	#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_int_map_hash_func
-#endif
-
+#endif // CBUILD_MAP_DEFAULT_HASH_FUNC
+/**
+ * @brief Size of CBuild temporary allocator arena
+ */
+#ifndef CBUILD_TEMP_ARENA_SIZE
+	#define CBUILD_TEMP_ARENA_SIZE (8 * 1024 * 1024)
+#endif // CBUILD_TEMP_ARENA_SIZE
 // OS-specific defines
 #if defined(__linux__)
 	#define CBUILD_OS_LINUX

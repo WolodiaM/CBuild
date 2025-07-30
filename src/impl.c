@@ -11,6 +11,7 @@
 #include "Term.h"
 #include "Map.h"
 #include "common.h"
+#include "Arena.h"
 /* misc code */
 #if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
 	defined(CBUILD_OS_WINDOWS_CYGWIN)
@@ -414,6 +415,51 @@ void cbuild_log_set_min_level(CBuildLogLevel level) {
 }
 void cbuild_log_set_fmt(CBuildLogFormatter fmt) {
 	__CBUILD_LOG_FMT = fmt;
+}
+/* Arena.h impl */
+size_t __cbuild_int_temp_size = 0;
+char __cbuild_int_temp[CBUILD_TEMP_ARENA_SIZE] = {0};
+void* cbuild_temp_alloc(size_t size) {
+	if(size > CBUILD_TEMP_ARENA_SIZE - __cbuild_int_temp_size) return NULL;
+	void* ptr = (void*)(__cbuild_int_temp + __cbuild_int_temp_size);
+	__cbuild_int_temp_size += size;
+	return ptr;
+}
+char* cbuild_temp_sprintf(char* fmt, ...) {
+	va_list va;
+	va_start(va, fmt);
+	char* ret = cbuild_temp_vsprintf(fmt, va);
+	va_end(va);
+	return ret;
+}
+char* cbuild_temp_vsprintf(char* fmt, va_list ap) {
+	va_list va;
+	va_copy(va, ap);
+	int n = vsnprintf(NULL, 0, fmt, va);
+	va_end(va);
+	if(n >= 0) {
+		char* ret =	cbuild_temp_alloc(n + 1);
+		vsnprintf(ret, n + 1, fmt, ap);
+		return ret;
+	} else {
+		return NULL;
+	}
+}
+char* cbuild_temp_strdup(char* str) {
+	size_t len = strlen(str) + 1;
+	char* dup = (char*)cbuild_temp_alloc(len);
+	if(dup == NULL) return NULL;
+	memcpy(dup, str, len);
+	return dup;
+}
+void* cbuild_temp_memdup(void* mem, size_t size) {
+	char* dup = (char*)cbuild_temp_alloc(size);
+	if(dup == NULL) return NULL;
+	memcpy(dup, mem, size);
+	return dup;
+}
+void cbuild_temp_reset() {
+	__cbuild_int_temp_size = 0;
 }
 /* Proc.h impl */
 #if defined(CBUILD_API_POSIX)

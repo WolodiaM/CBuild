@@ -63,6 +63,8 @@ pack() {
 	call_cmd_ns pack_header_strip	"Term.h"
 	# Logger
 	call_cmd_ns pack_header_strip "Log.h"
+	# Temp allocator
+	call_cmd_ns pack_header_strip "Arena.h"
 	# Datatypes
 	call_cmd_ns pack_header_strip "DynArray.h"
 	call_cmd_ns pack_header_strip "StringView.h"
