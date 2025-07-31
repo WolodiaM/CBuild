@@ -13,11 +13,15 @@ Macro should be relatively small.
 
 *** TODO wikimk should not be a part of this repository
 *** TODO wikimk - allow to collapse folders in a site tree
-*** TODO temporary allocator/functions (malloc/sprintf/?). Reset resets all allocations
+*** DONE temporary allocator/functions (malloc/sprintf/?). Reset resets all allocations
 *** DONE few additions to FlagParse.h
 
 Aliases through commands (something like "-alias:name:lopt-which-is-aliased", only long aliases supported)
 Groups through new metadata entry (something like "group=<name>"), purely for pretty print
+
+*** TODO make da, sb, stack work like new map (void* + elem_size)
+
+API can provide get (checked and unchecked), set (checked and unchecked), append, append arr, append many
 
 * Thinking place
 

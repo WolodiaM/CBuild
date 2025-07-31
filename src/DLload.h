@@ -27,17 +27,17 @@
  */
 // On windows 'SetConsoleCP(CP_UTF8)' or 'chcp 65001' is expected
 #ifndef __CBUILD_DLLOAD_H__
-#	if defined(CBUILD_API_POSIX)
-#		define cbuild_dlib_handle                         void*
-#		define cbuild_dlib_load(filename)                 dlopen(filename, RTLD_LAZY)
-#		define cbuild_dlib_load_force(filename)           dlopen(filename, RTLD_NOW)
-#		define cbuild_dlib_get_function(handle, funcName) dlsym(handle, funcName)
-#		define cbuild_dlib_close(handle)                  dlclose(handle)
-#	elif defined(CBUILD_API_WIN32)
-#		define cbuild_dlib_handle                         HMODULE
-#		define cbuild_dlib_load(filename)                 LoadLibrary(filename)
-#		define cbuild_dlib_load_force(filename)           LoadLibrary(filename)
-#		define cbuild_dlib_get_function(handle, funcName) GetProcAddress(handle, funcName)
-#		define cbuild_dlib_close(handle)                  FreeLibrary(handle)
-#	endif // CBUILD_API_*
+	#if defined(CBUILD_API_POSIX)
+		#define cbuild_dlib_handle                         void*
+		#define cbuild_dlib_load(filename)                 dlopen(filename, RTLD_LAZY)
+		#define cbuild_dlib_load_force(filename)           dlopen(filename, RTLD_NOW)
+		#define cbuild_dlib_get_function(handle, funcName) dlsym(handle, funcName)
+		#define cbuild_dlib_close(handle)                  dlclose(handle)
+	#elif defined(CBUILD_API_WIN32)
+		#define cbuild_dlib_handle                         HMODULE
+		#define cbuild_dlib_load(filename)                 LoadLibrary(filename)
+		#define cbuild_dlib_load_force(filename)           LoadLibrary(filename)
+		#define cbuild_dlib_get_function(handle, funcName) GetProcAddress(handle, funcName)
+		#define cbuild_dlib_close(handle)                  FreeLibrary(handle)
+	#endif // CBUILD_API_*
 #endif   // __CBUILD_DLLOAD_H__

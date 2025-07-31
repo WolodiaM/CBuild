@@ -119,7 +119,7 @@ cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
  * @return bool -> True if this character should be marked as a delimiter
  */
 typedef bool (*cbuild_sv_delim_func)(const cbuild_sv_t* sv, size_t idx,
-                                     void* args);
+  void* args);
 /**
  * @brief Chop characters from one string view into another
  * Note: Original string view will be truncated. Index which function marked as
@@ -130,7 +130,7 @@ typedef bool (*cbuild_sv_delim_func)(const cbuild_sv_t* sv, size_t idx,
  * @return cbuild_sv_t -> New string view
  */
 cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
-                                   void* args);
+  void* args);
 /**
  * @brief strcmp for string view
  *

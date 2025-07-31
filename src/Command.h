@@ -36,7 +36,7 @@
 #include "common.h"
 // Command
 typedef struct cbuild_cmd_t {
-	const char **data;
+	const char** data;
 	size_t size;
 	size_t capacity;
 	// bit0 - autokill if parent dies (Linux only)

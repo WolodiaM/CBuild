@@ -422,7 +422,7 @@
  * @param ... -> Printf args
  */
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
-  const char *expr, ...) __attribute__((__noreturn__));
+  const char* expr, ...) __attribute__((__noreturn__));
 /**
  * @brief Get element from array, errors-out at invalid index
  *

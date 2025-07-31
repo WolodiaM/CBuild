@@ -37,7 +37,7 @@
 #define CBuildSBFmt     "%.*s"
 #define CBuildSBArg(sb) (int)(sb).size, (sb).data
 typedef struct cbuild_sb_t {
-	char *data;
+	char* data;
 	size_t size;
 	size_t capacity;
 } cbuild_sb_t;

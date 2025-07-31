@@ -42,7 +42,7 @@ typedef bool (*cbuild_map_keycmp_t)(const void* map, const void* k1,
 typedef void (*cbuild_map_elem_clear_t)(const void* map, void* elem);
 /**
  * @brief Main map datatype
- * User shoudl set elem_size or key_size. Elem size is a size off a full elem
+ * User shoudl set elem_size or key_size. Elem size is a size of a full elem
  * struct - key + value. Key size is a size of a key only. If 0 key is assumed
  * to be a 'char*' pointer to a c-string.
  * Hash and key compare function can be overwrittn. Default support any inline

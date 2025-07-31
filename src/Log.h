@@ -48,7 +48,7 @@ typedef void (*CBuildLogFormatter)(CBuildLogLevel level);
  * @param ... => varargs -> Values for format string
  */
 void cbuild_log(CBuildLogLevel level, const char* fmt, ...)
-		__attribute__((format(printf, 2, 3)));
+__attribute__((format(printf, 2, 3)));
 /**
  * @brief Print logs but takes va list
  *
