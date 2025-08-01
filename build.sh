@@ -2,8 +2,11 @@
 # Environment
 set -euo pipefail
 # constants
-CARGS="-O3 -g -std=gnu99 -Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Werror -D_FORTIFY_SOURCE=2"
-: "${MEMCHECK:=valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2}"
+CARGS="-O3 -g -gdwarf-4 -std=gnu99 \
+	-Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Werror \
+	-D_FORTIFY_SOURCE=2"
+: "${MEMCHECK:=valgrind --leak-check=full --show-leak-kinds=all \
+	--track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2}"
 : "${TEST_CC:=gcc}"
 # Global variables
 Silent="no"  # Need to be set to `yes`
