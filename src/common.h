@@ -364,7 +364,10 @@
 #define __CBUILD_XSTRINGIFY(var) __CBUILD_STRINGIFY(var)
 #define __CBUILD_CONCAT(a, b)    a##b
 #define __CBUILD_XCONCAT(a, b)   __CBUILD_CONCAT(a, b)
-// Command and process functions
+// Global allocator
+extern void* (*cbuild_malloc)(size_t size);
+extern void* (*cbuild_realloc)(void* ptr, size_t size);
+extern void  (*cbuild_free)(void* ptr);
 // Some preprocessor trickery
 /**
  * @brief Mark variable as usused
@@ -392,7 +395,7 @@
 #define CBUILD_UNREACHABLE(message)                                            \
 	do {                                                                         \
 		__CBUILD_ERR_PRINTF("%s:%d: UNREACHABLE: %s\n", __FILE__, __LINE__,        \
-		  (message));                                            \
+		  (message));                                                              \
 		abort();                                                                   \
 	} while (0)
 // More user-friendly array operations

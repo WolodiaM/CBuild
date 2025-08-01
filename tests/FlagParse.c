@@ -50,9 +50,5 @@ int main(int argc, char** argv) {
 
 	cbuild_flag_parse(argc, argv);
 
-	if(cbuild_flag_get_flag("arg_req")) {
-		printf("Flag or alias found!\n");
-	}
-
 	return 0;
 }

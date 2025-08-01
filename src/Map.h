@@ -73,7 +73,37 @@ void cbuild_map_init(cbuild_map_t* map, size_t nbuckets);
  * @param key => void* -> Requested key
  * @return void* -> Element of NULL if not found
  */
-void* cbuild_map_get(cbuild_map_t* map, const void* key);
+void* cbuild_map_get_raw(cbuild_map_t* map, const void* key);
+/**
+ * @brief Get element from a map
+ *
+ * @param map => cbuild_map_t* -> Map object
+ * @param key => T -> Requested key
+ * @return void* -> Element of NULL if not found
+ */
+#define cbuild_map_get(map, key)                                               \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(__cbuild_tmp_key) == (map)->key_size ||               \
+		  ((map)->key_size == 0 && sizeof(__cbuild_tmp_key) == sizeof(char*)),     \
+		  "(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_get_raw((map), &__cbuild_tmp_key);                              \
+	})
+/**
+ * @brief Get element from a map
+ *
+ * @param map => cbuild_map_t* -> Map object
+ * @param key => T* -> Requested key
+ * @return void* -> Element of NULL if not found
+ */
+#define cbuild_map_get_ptr(map, key)                                           \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(*__cbuild_tmp_key) == (map)->key_size ||              \
+		  ((map)->key_size == 0 && sizeof(*__cbuild_tmp_key) == sizeof(char*)),    \
+		  "(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_get_raw((map), __cbuild_tmp_key);                               \
+	})
 /**
  * @brief Get element from a map or allocate new
  *
@@ -81,7 +111,37 @@ void* cbuild_map_get(cbuild_map_t* map, const void* key);
  * @param key => void* -> Requested key
  * @return void* -> Element
  */
-void* cbuild_map_get_or_alloc(cbuild_map_t* map, const void* key);
+void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
+/**
+ * @brief Get element from a map or allocate new
+ *
+ * @param map => cbuild_map_t* -> Map object
+ * @param key => T -> Requested key
+ * @return void* -> Element
+ */
+#define cbuild_map_get_or_alloc(map, key)                                      \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(__cbuild_tmp_key) == (map)->key_size ||               \
+		  ((map)->key_size == 0 && sizeof(__cbuild_tmp_key) == sizeof(char*)),     \
+		  "(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_get_or_alloc_raw((map), &__cbuild_tmp_key);                     \
+	})
+/**
+ * @brief Get element from a map or allocate new
+ *
+ * @param map => cbuild_map_t* -> Map object
+ * @param key => T* -> Requested key
+ * @return void* -> Element
+ */
+#define cbuild_map_get_or_alloc_ptr(map, key)                                  \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(*__cbuild_tmp_key) == (map)->key_size ||              \
+		  ((map)->key_size == 0 && sizeof(*__cbuild_tmp_key) == sizeof(char*)),    \
+		  "(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_get_or_alloc_raw((map), __cbuild_tmp_key);                      \
+	})
 /**
  * @brief Remove element from a map. Userdata should be memcpy-safe.
  *
@@ -91,8 +151,42 @@ void* cbuild_map_get_or_alloc(cbuild_map_t* map, const void* key);
  * element. Can be NULL.
  * @return bool -> False if key not found
  */
-bool cbuild_map_remove_ex(cbuild_map_t* map, const void* key,
+bool cbuild_map_remove_ex_raw(cbuild_map_t* map, const void* key,
   cbuild_map_elem_clear_t elem_clear_func);
+/**
+ * @brief Remove element from a map. Userdata should be memcpy-safe.
+ *
+ * @param map => cbuild_map_t* -> Map object
+ * @param key => T -> Requested key
+ * @param elem_clear_func => cbuild_map_elem_clear_t -> Function that will clear
+ * element. Can be NULL.
+ * @return bool -> False if key not found
+ */
+#define cbuild_map_remove_ex(map, key, elem_clear_func)                        \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(__cbuild_tmp_key) == (map)->key_size ||               \
+		  ((map)->key_size == 0 && sizeof(__cbuild_tmp_key) == sizeof(char*)),     \
+		  "(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_remove_ex_raw((map), &__cbuild_tmp_key, elem_clear_func);       \
+	})
+/**
+ * @brief Remove element from a map. Userdata should be memcpy-safe.
+ *
+ * @param map => cbuild_map_t* -> Map object
+ * @param key => T* -> Requested key
+ * @param elem_clear_func => cbuild_map_elem_clear_t -> Function that will clear
+ * element. Can be NULL.
+ * @return bool -> False if key not found
+ */
+#define cbuild_map_remove_ex_ptr(map, key, elem_clear_func)                    \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(*__cbuild_tmp_key) == (map)->key_size ||              \
+		  ((map)->key_size == 0 && sizeof(*__cbuild_tmp_key) == sizeof(char*)),    \
+		  "(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_remove_ex_raw((map), __cbuild_tmp_key, elem_clear_func);        \
+	})
 /**
  * @brief Remove element from a map. Userdata should be memcpy-safe.
  *
@@ -100,7 +194,23 @@ bool cbuild_map_remove_ex(cbuild_map_t* map, const void* key,
  * @param key => void* -> Requested key
  * @return bool -> False if key not found
  */
+#define cbuild_map_remove_raw(map, key) cbuild_map_remove_ex_raw(map, key, NULL)
+/**
+ * @brief Remove element from a map. Userdata should be memcpy-safe.
+ *
+ * @param map => cbuild_map_t* -> Map object
+ * @param key => T -> Requested key
+ * @return bool -> False if key not found
+ */
 #define cbuild_map_remove(map, key) cbuild_map_remove_ex(map, key, NULL)
+/**
+ * @brief Remove element from a map. Userdata should be memcpy-safe.
+ *
+ * @param map => cbuild_map_t* -> Map object
+ * @param key => T* -> Requested key
+ * @return bool -> False if key not found
+ */
+#define cbuild_map_remove_ptr(map, key) cbuild_map_remove_ex_ptr(map, key, NULL)
 /**
  * @brief Fully clear and deallocate map
  *
@@ -133,4 +243,23 @@ void cbuild_map_iter_reset(cbuild_map_t* map);
  * @return void* -> Element pointer or NULL if end reached
  */
 void* cbuild_map_iter_next(cbuild_map_t* map);
+/**
+ * @brief For-each loop over a map
+ *
+ * @param map => cbuild_map_t* -> Map
+ * @param iter => NAME -> Name of the iteration variable (void*)
+ */
+#define cbuild_map_foreach_raw(map, iter)                                      \
+	cbuild_map_iter_reset(map);                                                  \
+	for (void* iter = NULL; ((iter) = cbuild_map_iter_next(map));)
+/**
+ * @brief For-each loop over a map
+ *
+ * @param map => cbuild_map_t* -> Map
+ * @param T => TYPE -> Type map userdata
+ * @param iter => NAME -> Name of the iteration variable (T*)
+ */
+#define cbuild_map_foreach(map, T, iter)                                       \
+	cbuild_map_iter_reset(map);                                                  \
+	for (T* iter = NULL;((iter) = (T*)cbuild_map_iter_next(map));)
 #endif // __CBUILD_MAP_H__

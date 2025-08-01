@@ -29,6 +29,9 @@ const char* __cbuild_progname(void) {
 	return __progname;
 #endif
 }
+void*	(*cbuild_malloc)(size_t size) = malloc;
+void* (*cbuild_realloc)(void* ptr, size_t size) = realloc;
+void (*cbuild_free)(void* ptr) = free;
 /* common.h impl */
 void __cbuild_assert(const char* file, unsigned int line, const char* func,
   const char* expr, ...) {
@@ -438,8 +441,8 @@ char* cbuild_temp_vsprintf(char* fmt, va_list ap) {
 	int n = vsnprintf(NULL, 0, fmt, va);
 	va_end(va);
 	if(n >= 0) {
-		char* ret =	cbuild_temp_alloc(n + 1);
-		vsnprintf(ret, n + 1, fmt, ap);
+		char* ret =	cbuild_temp_alloc((size_t)n + 1);
+		vsnprintf(ret, (size_t)n + 1, fmt, ap);
 		return ret;
 	} else {
 		return NULL;
@@ -1086,7 +1089,7 @@ void cbuild_map_init(cbuild_map_t* map, size_t nbuckets) {
 	cbuild_assert(map->buckets != NULL, "(LIB_CBUILD_MAP) Allocation failed.\n");
 	__CBUILD_MEMSET(map->buckets, 0, nbuckets * sizeof(cbuild_map_bucket_t));
 }
-void* cbuild_map_get(cbuild_map_t* map, const void* key) {
+void* cbuild_map_get_raw(cbuild_map_t* map, const void* key) {
 	if(map->nbuckets == 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
 		  "Trying to call 'cbuild_map_get' on an empty map!");
@@ -1096,7 +1099,7 @@ void* cbuild_map_get(cbuild_map_t* map, const void* key) {
 	cbuild_map_bucket_t* bucket = &map->buckets[hash];
 	return __cbuild_int_map_check_bucket(map, bucket, key);
 }
-void* cbuild_map_get_or_alloc(cbuild_map_t* map, const void* key) {
+void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key) {
 	if(map->nbuckets == 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
 		  "Trying to call 'cbuild_map_get_or_alloc' with an empty map!");
@@ -1114,7 +1117,7 @@ void* cbuild_map_get_or_alloc(cbuild_map_t* map, const void* key) {
 	  map->elem_size);
 	return (char*)bucket->vals + ((bucket->nvals - 1) * map->elem_size);
 }
-bool cbuild_map_remove_ex(cbuild_map_t* map, const void* key,
+bool cbuild_map_remove_ex_raw(cbuild_map_t* map, const void* key,
   cbuild_map_elem_clear_t elem_clear_func) {
 	if(map->nbuckets == 0) {
 		cbuild_log(CBUILD_LOG_ERROR,
