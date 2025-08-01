@@ -169,7 +169,7 @@
  *   Span.h [remove]
  *     - Removed because it is useless
  * --------------------------------------------
- * 2025-07-24  v1.10
+ * 2025-07-24  v1.10    API cleanup
  *   Map.h [change]
  *     - Rewrite with a new API. Same basic design, but now use void* and
  *       elem_size to be type-agnostic. Should be much faster (less function
