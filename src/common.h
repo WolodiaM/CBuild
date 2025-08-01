@@ -318,13 +318,6 @@
 	#define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
 	#define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
 	#define __CBUILD_ERR_FLUSH()               fflush(stdout)
-	// Memory functions
-	#define __CBUILD_MALLOC                    malloc
-	#define __CBUILD_REALLOC                   realloc
-	#define __CBUILD_MEMCPY                    memcpy
-	#define __CBUILD_MEMMOVE                   memmove
-	#define __CBUILD_MEMSET                    memset
-	#define __CBUILD_FREE                      free
 	// Process and file handles
 	typedef pid_t cbuild_proc_t;
 	#define CBUILD_INVALID_PROC -1
@@ -346,11 +339,6 @@
 	#define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
 	#define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
 	#define __CBUILD_ERR_FLUSH()               fflush(stdout)
-	// Memory functions
-	#define __CBUILD_MALLOC                    malloc
-	#define __CBUILD_REALLOC                   realloc
-	#define __CBUILD_MEMCPY                    memcpy
-	#define __CBUILD_FREE                      free
 	// Process and file handles
 	typedef HANDLE cbuild_proc_t;
 	#define CBUILD_INVALID_PROC                ((HANDLE)(intptr_t)-1)

@@ -104,11 +104,11 @@ int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args) {
 		return ret;
 	}
 	if((size_t)ret >= CBUILD_SB_QUICK_SPRINTF_SIZE) {
-		char* buff1 = __CBUILD_MALLOC((size_t)ret + 1);
+		char* buff1 = cbuild_malloc((size_t)ret + 1);
 		cbuild_assert(buff1 != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		vsnprintf(buff1, (size_t)ret + 1, fmt, args_copy);
 		cbuild_sb_append_cstr(sb, buff1);
-		__CBUILD_FREE(buff1);
+		cbuild_free(buff1);
 	} else {
 		cbuild_sb_append_cstr(sb, buff);
 	}
@@ -663,7 +663,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 		  strerror(errno));
 		return false;
 	}
-	char* tmp_buff = (char*)__CBUILD_MALLOC(CBUILD_TMP_BUFF_SIZE);
+	char* tmp_buff = (char*)cbuild_malloc(CBUILD_TMP_BUFF_SIZE);
 	cbuild_assert(tmp_buff != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
 	while(true) {
 		ssize_t cnt = read(src_fd, tmp_buff, CBUILD_TMP_BUFF_SIZE);
@@ -685,7 +685,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 				  strerror(errno));
 				cbuild_fd_close(src_fd);
 				cbuild_fd_close(dst_fd);
-				__CBUILD_FREE(tmp_buff);
+				cbuild_free(tmp_buff);
 				return false;
 			}
 			cnt -= written;
@@ -694,7 +694,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 	}
 	cbuild_fd_close(src_fd);
 	cbuild_fd_close(dst_fd);
-	__CBUILD_FREE(tmp_buff);
+	cbuild_free(tmp_buff);
 	return true;
 }
 bool cbuild_file_move(const char* src, const char* dst) {
@@ -741,11 +741,11 @@ bool cbuild_dir_copy(const char* src, const char* dst) {
 			continue;
 		}
 		size_t lensrc = strlen(src) + 1 + strlen(list.data[i]);
-		char*  tmpsrc = __CBUILD_MALLOC(lensrc + 1);
+		char*  tmpsrc = cbuild_malloc(lensrc + 1);
 		cbuild_assert(tmpsrc != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmpsrc, "%s/%s", src, list.data[i]);
 		size_t lendst = strlen(dst) + 1 + strlen(list.data[i]);
-		char*  tmpdst = __CBUILD_MALLOC(lendst + 1);
+		char*  tmpdst = cbuild_malloc(lendst + 1);
 		cbuild_assert(tmpdst != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmpdst, "%s/%s", dst, list.data[i]);
 		cbuild_filetype_t f = cbuild_path_filetype(tmpsrc);
@@ -756,8 +756,8 @@ bool cbuild_dir_copy(const char* src, const char* dst) {
 			bool tmp = ret && cbuild_file_copy(tmpsrc, tmpdst);
 			ret      = tmp;
 		}
-		__CBUILD_FREE(tmpsrc);
-		__CBUILD_FREE(tmpdst);
+		cbuild_free(tmpsrc);
+		cbuild_free(tmpdst);
 	}
 	cbuild_pathlist_clear(&list);
 	return ret;
@@ -790,7 +790,7 @@ bool cbuild_dir_remove(const char* path) {
 			continue;
 		}
 		size_t lenpath = strlen(path) + 1 + strlen(list.data[i]);
-		char*  tmppath = __CBUILD_MALLOC(lenpath + 1);
+		char*  tmppath = cbuild_malloc(lenpath + 1);
 		cbuild_assert(tmppath != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		sprintf(tmppath, "%s/%s", path, list.data[i]);
 		cbuild_filetype_t f = cbuild_path_filetype(tmppath);
@@ -801,7 +801,7 @@ bool cbuild_dir_remove(const char* path) {
 			bool tmp = ret && cbuild_file_remove(tmppath);
 			ret      = tmp;
 		}
-		__CBUILD_FREE(tmppath);
+		cbuild_free(tmppath);
 	}
 	int stat = rmdir(path);
 	if(stat < 0) {
@@ -831,9 +831,9 @@ bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 	}
 	for(int i = 0; i < n; i++) {
 		size_t len = strlen(namelist[i]->d_name);
-		char*  str = (char*)__CBUILD_MALLOC(len + 1);
+		char*  str = (char*)cbuild_malloc(len + 1);
 		cbuild_assert(str != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-		__CBUILD_MEMCPY(str, namelist[i]->d_name, len);
+		memcpy(str, namelist[i]->d_name, len);
 		str[len] = '\0';
 		cbuild_da_append(elements, str);
 		free(namelist[i]);
@@ -889,15 +889,15 @@ const char* cbuild_path_ext(const char* path) {
 		}
 	}
 	if(!found) {
-		char* ret = __CBUILD_MALLOC(1);
+		char* ret = cbuild_malloc(1);
 		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-		__CBUILD_MEMCPY(ret, "\0", 1);
+		memcpy(ret, "\0", 1);
 		return ret;
 	}
 	size_t len = strlen(path) - (size_t)i + 1;
-	char*  ret = (char*)__CBUILD_MALLOC(len);
+	char*  ret = (char*)cbuild_malloc(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-	__CBUILD_MEMCPY(ret, path + i + 1, len);
+	memcpy(ret, path + i + 1, len);
 	return ret;
 }
 const char* cbuild_path_name(const char* path) {
@@ -911,9 +911,9 @@ const char* cbuild_path_name(const char* path) {
 		}
 	}
 	size_t len = strlen(path) - (size_t)i + 1;
-	char*  ret = (char*)__CBUILD_MALLOC(len);
+	char*  ret = (char*)cbuild_malloc(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-	__CBUILD_MEMCPY(ret, path + i + 1, len);
+	memcpy(ret, path + i + 1, len);
 	return ret;
 }
 const char* cbuild_path_base(const char* path) {
@@ -929,15 +929,15 @@ const char* cbuild_path_base(const char* path) {
 		}
 	}
 	if(!found) {
-		char* ret = __CBUILD_MALLOC(1);
+		char* ret = cbuild_malloc(1);
 		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-		__CBUILD_MEMCPY(ret, "\0", 1);
+		memcpy(ret, "\0", 1);
 		return ret;
 	}
 	size_t len = (size_t)i + 2;
-	char*  ret = (char*)__CBUILD_MALLOC(len);
+	char*  ret = (char*)cbuild_malloc(len);
 	cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-	__CBUILD_MEMCPY(ret, path, len - 1);
+	memcpy(ret, path, len - 1);
 	ret[len - 1] = '\0';
 	return ret;
 }
@@ -1085,9 +1085,9 @@ void* __cbuild_int_map_check_bucket(cbuild_map_t* map,
 }
 void cbuild_map_init(cbuild_map_t* map, size_t nbuckets) {
 	map->nbuckets = nbuckets;
-	map->buckets = __CBUILD_MALLOC(map->nbuckets * sizeof(cbuild_map_bucket_t));
+	map->buckets = cbuild_malloc(map->nbuckets * sizeof(cbuild_map_bucket_t));
 	cbuild_assert(map->buckets != NULL, "(LIB_CBUILD_MAP) Allocation failed.\n");
-	__CBUILD_MEMSET(map->buckets, 0, nbuckets * sizeof(cbuild_map_bucket_t));
+	memset(map->buckets, 0, nbuckets * sizeof(cbuild_map_bucket_t));
 }
 void* cbuild_map_get_raw(cbuild_map_t* map, const void* key) {
 	if(map->nbuckets == 0) {
@@ -1110,10 +1110,10 @@ void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key) {
 	void* ret = __cbuild_int_map_check_bucket(map, bucket, key);
 	if(ret != NULL) return ret;
 	bucket->nvals++;
-	bucket->vals = __CBUILD_REALLOC((char*)bucket->vals,
+	bucket->vals = cbuild_realloc((char*)bucket->vals,
 	  bucket->nvals * map->elem_size);
 	cbuild_assert(bucket->vals != NULL, "(LIB_CBUILD_MAP) Allocation failed.\n");
-	__CBUILD_MEMSET((char*)bucket->vals + (bucket->nvals - 1) * map->elem_size, 0,
+	memset((char*)bucket->vals + (bucket->nvals - 1) * map->elem_size, 0,
 	  map->elem_size);
 	return (char*)bucket->vals + ((bucket->nvals - 1) * map->elem_size);
 }
@@ -1130,13 +1130,13 @@ bool cbuild_map_remove_ex_raw(cbuild_map_t* map, const void* key,
 	if(elem == NULL) return false;
 	if(elem_clear_func) elem_clear_func(map, elem);
 	if(bucket->nvals == 1) {
-		__CBUILD_FREE(bucket->vals);
+		cbuild_free(bucket->vals);
 		bucket->vals = NULL;
 		bucket->nvals = 0;
 	} else {
 		char* last = ((char*)bucket->vals) +
 		  ((bucket->nvals - 1) * map->elem_size);
-		__CBUILD_MEMCPY(elem, last, map->elem_size);
+		memcpy(elem, last, map->elem_size);
 		bucket->nvals--;
 	}
 	return true;
@@ -1146,11 +1146,11 @@ void cbuild_map_clear_ex(cbuild_map_t* map,
 	if(elem_clear_func == NULL) {
 		for(size_t i = 0; i < map->nbuckets; i++) {
 			cbuild_map_bucket_t* bucket = &map->buckets[i];
-			__CBUILD_FREE(bucket->vals);
+			cbuild_free(bucket->vals);
 			bucket->vals = NULL;
 			bucket->nvals = 0;
 		}
-		__CBUILD_FREE(map->buckets);
+		cbuild_free(map->buckets);
 		map->buckets = NULL;
 		map->nbuckets = 0;
 	} else {
@@ -1159,11 +1159,11 @@ void cbuild_map_clear_ex(cbuild_map_t* map,
 			for(size_t j = 0; j < bucket->nvals; j++) {
 				elem_clear_func(map, bucket->vals + (j * map->elem_size));
 			}
-			__CBUILD_FREE(bucket->vals);
+			cbuild_free(bucket->vals);
 			bucket->vals = NULL;
 			bucket->nvals = 0;
 		}
-		__CBUILD_FREE(map->buckets);
+		cbuild_free(map->buckets);
 		map->buckets = NULL;
 		map->nbuckets = 0;
 	}
@@ -1386,7 +1386,7 @@ void __cbuild_int_flag_parse_cmd(cbuild_sv_t spec) {
 				exit(1);
 			}
 			flg->aliases_len++;
-			flg->aliases = __CBUILD_REALLOC(flg->aliases,
+			flg->aliases = cbuild_realloc(flg->aliases,
 			    sizeof(cbuild_sv_t) * flg->aliases_len);
 			flg->aliases[flg->aliases_len - 1] = alias;
 		} while(spec.size > 0);
@@ -1395,7 +1395,7 @@ void __cbuild_int_flag_parse_cmd(cbuild_sv_t spec) {
 		cbuild_sv_t group = cbuild_sv_chop_by_delim(&spec, ':');
 		CBUILD_UNUSED(group);
 		__cbuild_int_flag_context.group_desc_len += 2;
-		__cbuild_int_flag_context.group_desc = __CBUILD_REALLOC(
+		__cbuild_int_flag_context.group_desc = cbuild_realloc(
 		    __cbuild_int_flag_context.group_desc,
 		    sizeof(cbuild_sv_t) * 2 * __cbuild_int_flag_context.group_desc_len);
 		__cbuild_int_flag_context.group_desc[
@@ -1702,7 +1702,7 @@ char* __cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
 size_t __cbuild_int_flag_get_flgh_len(struct __cbuild_int_flag_spec_t* spec) {
 	char*  str = __cbuild_int_flag_help_fmt(spec);
 	size_t ret = strlen(str);
-	__CBUILD_FREE(str);
+	cbuild_free(str);
 	return ret;
 }
 void cbuild_flag_print_help() {
@@ -1729,7 +1729,7 @@ void cbuild_flag_print_help() {
 		if(spec->group_name.size == 0) {
 			char* opt     = __cbuild_int_flag_help_fmt(spec);
 			int   written = __CBUILD_PRINTF("%s", opt);
-			__CBUILD_FREE(opt);
+			cbuild_free(opt);
 			__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
 			__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
 			__CBUILD_PRINT("\n");
@@ -1743,7 +1743,7 @@ void cbuild_flag_print_help() {
 			}
 			if(!found) {
 				groups_len++;
-				groups = __CBUILD_REALLOC(groups, sizeof(cbuild_sv_t) * groups_len);
+				groups = cbuild_realloc(groups, sizeof(cbuild_sv_t) * groups_len);
 				groups[groups_len - 1] = spec->group_name;
 			}
 		}
@@ -1776,7 +1776,7 @@ void cbuild_flag_print_help() {
 			if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
 				char* opt     = __cbuild_int_flag_help_fmt(spec);
 				int   written = __CBUILD_PRINTF("%s", opt);
-				__CBUILD_FREE(opt);
+				cbuild_free(opt);
 				__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
 				__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
 				__CBUILD_PRINT("\n");

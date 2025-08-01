@@ -67,7 +67,7 @@
 		if (((da)->size + (arr_size)) > (da)->capacity) {                          \
 			cbuild_da_resize((da), (da)->capacity + (arr_size));                     \
 		}                                                                          \
-		__CBUILD_MEMCPY((da)->data + (da)->size, (arr),                            \
+		memcpy((da)->data + (da)->size, (arr),                                     \
 		  (arr_size) * sizeof(typeof(*(da)->data)));                               \
 		(da)->size += (arr_size);                                                  \
 	} while(0)
@@ -137,7 +137,7 @@
 			  "(LIB_CBUILD_DA) Index overflow in remove.");                          \
 			__cbuild__ret = false;                                                   \
 		} else {                                                                   \
-			__CBUILD_MEMMOVE((da)->data + (idx), ((da)->data + ((idx) + 1)),         \
+			memmove((da)->data + (idx), ((da)->data + ((idx) + 1)),                  \
 			  ((da)->size - ((idx) + 1)) * sizeof(typeof(*(da)->data)));             \
 			(da)->size--;                                                            \
 			__cbuild__ret = true;                                                    \
@@ -159,7 +159,7 @@
 			} else {                                                                 \
 				(da)->capacity = (new_size);                                           \
 			}                                                                        \
-			(da)->data = __CBUILD_MALLOC(                                            \
+			(da)->data = cbuild_malloc(                                              \
 			  (da)->capacity * sizeof(typeof(*(da)->data)));                         \
 		} else {                                                                   \
 			if ((new_size) == 0) {                                                   \
@@ -167,7 +167,7 @@
 			} else {                                                                 \
 				(da)->capacity = (new_size);                                           \
 			}                                                                        \
-			(da)->data = __CBUILD_REALLOC((da)->data,                                \
+			(da)->data = cbuild_realloc((da)->data,                                  \
 			  (da)->capacity * sizeof(typeof(*(da)->data)));                         \
 		}                                                                          \
 		cbuild_assert((da)->data != NULL, "(LIB_CBUILD_DA) Allocation failed.\n"); \
@@ -180,7 +180,7 @@
  */
 #define cbuild_da_clear(da)                                                    \
 	do {                                                                         \
-		__CBUILD_FREE((da)->data);                                                 \
+		cbuild_free((da)->data);                                                   \
 		(da)->data     = NULL;                                                     \
 		(da)->size     = 0;                                                        \
 		(da)->capacity = 0;                                                        \

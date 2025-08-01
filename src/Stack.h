@@ -75,7 +75,7 @@
 #define cbuild_stack_top(stack)                                                \
 	({                                                                           \
 		cbuild_assert((stack)->ptr != 0, "(LIB_CBUILD_STACK) Stack underfloor.\n");\
-		(stack)->data[(stack)->ptr - 1];                                            \
+		(stack)->data[(stack)->ptr - 1];                                           \
 	})
 /**
  * @brief Resize stack (done automatically most of the time ;) )
@@ -92,7 +92,7 @@
 			} else {                                                                 \
 				(stack)->capacity = size;                                              \
 			}                                                                        \
-			(stack)->data = __CBUILD_MALLOC(                                         \
+			(stack)->data = cbuild_malloc(                                           \
 			  (stack)->capacity * sizeof(typeof(*(stack)->data)));                   \
 		} else {                                                                   \
 			if (size == 0) {                                                         \
@@ -100,7 +100,7 @@
 			} else {                                                                 \
 				(stack)->capacity = size;                                              \
 			}                                                                        \
-			(stack)->data = __CBUILD_REALLOC((stack)->data,                          \
+			(stack)->data = cbuild_realloc((stack)->data,                            \
 			  (stack)->capacity * sizeof(typeof(*(stack)->data)));                   \
 		}                                                                          \
 		cbuild_assert((stack)->data != NULL,                                       \
@@ -113,7 +113,7 @@
  */
 #define cbuild_stack_clear(stack)                                              \
 	do {                                                                         \
-		__CBUILD_FREE((stack)->data);                                              \
+		cbuild_free((stack)->data);                                                \
 		(stack)->data     = NULL;                                                  \
 		(stack)->ptr      = 0;                                                     \
 		(stack)->capacity = 0;                                                     \

@@ -19,9 +19,6 @@ Macro should be relatively small.
 Aliases through commands (something like "-alias:name:lopt-which-is-aliased", only long aliases supported)
 Groups through new metadata entry (something like "group=<name>"), purely for pretty print
 
-*** TODO make da, sb, stack work like new map (void* + elem_size)
-
-API can provide get (checked and unchecked), set (checked and unchecked), append, append arr, append many
 
 * Thinking place
 
