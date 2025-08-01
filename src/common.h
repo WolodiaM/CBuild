@@ -199,6 +199,8 @@
  *       and flags from same group will be grouped under same heading.
  *   Arena.h [new]
  *     - Temporary allocated. Experimental module.
+ *   General [new]
+ *     - New allocator hook system
  *   DynArray.h [bugfix]
  *     - If 'cbuild_da_resize' shrinks array and size becomes invalid it is
  *       decrement
