@@ -185,9 +185,9 @@
  *   Stack.h [feature]
  *     - Added 'cbuild_stack_top' to get top element in a read mode
  *   Proc.h [feature]
- *     - Added ;cbuild_proc_is_running' to check process without blocking
+ *     - Added 'cbuild_proc_is_running' to check process without blocking
  *   FS.h [feature]
- *     - Added 'cbuild_fd_read' and 'cbuild_fd_write' to abstract POSOX 'read'
+ *     - Added 'cbuild_fd_read' and 'cbuild_fd_write' to abstract POSIX 'read'
  *       and 'write'
  *   FlagParse.h [feature]
  *     - Added 'alias' command to DSL - allow to define long option aliases to

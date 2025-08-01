@@ -20,7 +20,7 @@ Build system that allows you to write your buildscripts for C or C++ (or actuall
 
 # How to use
 
- 1. Download [cbuild.h](https://gitlab.com/cbuild/cbuild/-/jobs/artifacts/master/browse?job=build).
+ 1. Download [cbuild.h](https://gitlab.com/cbuild/cbuild/-/releases/permalink/latest).
  2. Write some logic for your build into `cbuild.c`.
  3. Run `cc -o cbuild.run cbuild.c`
 
