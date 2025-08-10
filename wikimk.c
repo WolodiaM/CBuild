@@ -379,7 +379,7 @@ bool build() {
 		WIKIMK_DIR_STYLE,
 		WIKIMK_DIR_OUT "/style"
 	};
-	for(int i = 0; i < cbuild_arr_len(dirs); i += 2) {
+	for(size_t i = 0; i < cbuild_arr_len(dirs); i += 2) {
 		if(cbuild_dir_check(dirs[i + 1])) {
 			cbuild_dir_remove(dirs[i + 1]);
 		}
