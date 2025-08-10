@@ -38,35 +38,41 @@ typedef enum {
 	CBUILD_LOG_INFO    = 30,
 	CBUILD_LOG_TRACE   = 40,
 	CBUILD_LOG_PRINT   = 100,
-} CBuildLogLevel;
-typedef void (*CBuildLogFormatter)(CBuildLogLevel level);
+} cbuild_log_level_t;
+typedef void (*cbuild_log_fmt_t)(cbuild_log_level_t level);
 /**
  * @brief Print logs
  *
- * @param level => CBuildLogLevel -> Type of log
+ * @param level => cbuild_log_level_t -> Type of log
  * @param fmt => const char* -> Format string
  * @param ... => varargs -> Values for format string
  */
-void cbuild_log(CBuildLogLevel level, const char* fmt, ...)
+void cbuild_log(cbuild_log_level_t level, const char* fmt, ...)
 __attribute__((format(printf, 2, 3)));
 /**
  * @brief Print logs but takes va list
  *
- * @param level => CBuildLogLevel -> Type of log
+ * @param level => cbuild_log_level_t -> Type of log
  * @param fmt => const char* -> Format string
  * @param args => va_list -> Variadic arguments
  */
-void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args);
+void cbuild_vlog(cbuild_log_level_t level, const char* fmt, va_list args);
 /**
- * @brief Set minimim log level
+ * @brief Set minimum log level
  *
- * @param level => CBuildLogLevel -> Log level
+ * @param level => cbuild_log_level_t -> Log level
  */
-void cbuild_log_set_min_level(CBuildLogLevel level);
+void cbuild_log_set_min_level(cbuild_log_level_t level);
+/**
+ * @brief Get minimum log level
+ *
+ * @return cbuild_log_level_t -> Current log level
+ */
+cbuild_log_level_t cbuild_log_get_min_level(void);
 /**
  * @brief Set formatter for loger attributes
  *
- * @param fmt => CBuildLogFMT -> Log formatter
+ * @param fmt => cbuild_log_fmt_t  -> Log formatter
  */
-void cbuild_log_set_fmt(CBuildLogFormatter fmt);
+void cbuild_log_set_fmt(cbuild_log_fmt_t fmt);
 #endif // __CBUILD_LOG_H__

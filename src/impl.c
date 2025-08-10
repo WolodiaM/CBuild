@@ -365,7 +365,7 @@ bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 	return cbuild_proc_wait(proc);
 }
 /* Log.h impl */
-void __cbuild_log_fmt(CBuildLogLevel level) {
+void __cbuild_log_fmt(cbuild_log_level_t level) {
 	time_t     t       = time(NULL);
 	struct tm* tm_info = localtime(&t);
 	__CBUILD_ERR_PRINTF("[%02d:%02d:%02d] ", tm_info->tm_hour, tm_info->tm_min,
@@ -389,15 +389,15 @@ void __cbuild_log_fmt(CBuildLogLevel level) {
 	default              : break;
 	}
 }
-static CBuildLogLevel     __CBUILD_LOG_MIN_LEVEL = CBUILD_LOG_MIN_LEVEL;
-static CBuildLogFormatter __CBUILD_LOG_FMT       = __cbuild_log_fmt;
-void cbuild_log(CBuildLogLevel level, const char* fmt, ...) {
+static cbuild_log_level_t __CBUILD_LOG_MIN_LEVEL = CBUILD_LOG_MIN_LEVEL;
+static cbuild_log_fmt_t   __CBUILD_LOG_FMT       = __cbuild_log_fmt;
+void cbuild_log(cbuild_log_level_t level, const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
 	cbuild_vlog(level, fmt, args);
 	va_end(args);
 }
-void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
+void cbuild_vlog(cbuild_log_level_t level, const char* fmt, va_list args) {
 	if(level == CBUILD_LOG_NO_LOGS) {
 		return;
 	}
@@ -413,10 +413,13 @@ void cbuild_vlog(CBuildLogLevel level, const char* fmt, va_list args) {
 		__CBUILD_PRINT("\n");
 	}
 }
-void cbuild_log_set_min_level(CBuildLogLevel level) {
+void cbuild_log_set_min_level(cbuild_log_level_t level) {
 	__CBUILD_LOG_MIN_LEVEL = level;
 }
-void cbuild_log_set_fmt(CBuildLogFormatter fmt) {
+cbuild_log_level_t cbuild_log_get_min_level(void) {
+	return __CBUILD_LOG_MIN_LEVEL;
+}
+void cbuild_log_set_fmt(cbuild_log_fmt_t fmt) {
 	__CBUILD_LOG_FMT = fmt;
 }
 /* Arena.h impl */
@@ -461,7 +464,7 @@ void* cbuild_temp_memdup(void* mem, size_t size) {
 	memcpy(dup, mem, size);
 	return dup;
 }
-void cbuild_temp_reset() {
+void cbuild_temp_reset(void) {
 	__cbuild_int_temp_size = 0;
 }
 /* Proc.h impl */
@@ -698,11 +701,14 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 	return true;
 }
 bool cbuild_file_move(const char* src, const char* dst) {
-	bool ret = cbuild_file_copy(src, dst);
-	if(ret == false) {
-		return false;
+	if(rename(src, dst) == 0) {
+		return true;
 	}
-	return cbuild_file_remove(src);
+	if(errno == EXDEV) {
+		if(!cbuild_file_copy(src, dst)) return false;
+		return cbuild_file_remove(src);
+	}
+	return false;
 }
 bool cbuild_file_rename(const char* src, const char* dst) {
 	return cbuild_file_move(src, dst);
@@ -975,13 +981,14 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 		exit(1);
 	}
 	cbuild_cmd_t cmd = {0};
-	cbuild_cmd_append_many(&cmd, CBUILD_CC, CBUILD_CARGS_WARN);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC, CBUILD_SELFREBUILD_ARGS);
 	if(cbuild_selfrebuild_hook != NULL) {
 		cbuild_selfrebuild_hook(&cmd);
 	}
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, (char*)bname_new, (char*)spath);
 	if(!cbuild_cmd_sync(cmd)) {
 		cbuild_file_rename(bname_old.data, bname_new);
+		return; // If compilation failed the let old version run
 	}
 	__cbuild_compile_mark_exec(bname_new);
 	cmd.size = 0;
@@ -1588,7 +1595,7 @@ void cbuild_flag_parse(int argc, char** argv) {
 					cbuild_flag_help(__cbuild_int_flag_context.app_name);
 					exit(0);
 				}
-				if(opt == 'v') {
+				if(opt == 'V') {
 					cbuild_flag_version(__cbuild_int_flag_context.app_name);
 					exit(0);
 				}
@@ -1705,7 +1712,7 @@ size_t __cbuild_int_flag_get_flgh_len(struct __cbuild_int_flag_spec_t* spec) {
 	cbuild_free(str);
 	return ret;
 }
-void cbuild_flag_print_help() {
+void cbuild_flag_print_help(void) {
 	// Get length of longest option
 	size_t opt_len = strlen("\t-v, --version"); // minimal length
 	cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {

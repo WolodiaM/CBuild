@@ -56,7 +56,7 @@ void cbuild_flag_parse(int argc, char** argv);
 /**
  * @brief Prints help for all flags to a stdout
  */
-void cbuild_flag_print_help();
+void cbuild_flag_print_help(void);
 /**
  * @brief Get positional arguments list
  *

@@ -206,6 +206,19 @@
  *       decrement
  *   StringView.h [bugfix]
  *     - Function that can return '-1' now returns 'ssize_t' not 'size_t'
+ * --------------------------------------------
+ * 2025-08-05  v1.11
+ *   FS.h [feature]
+ *     - 'cbuild_fs_move' and 'cbuild_fs_remove' now try 'rename' before copying
+ *   Log.h [change]
+ *     - Renamed types
+ *   Compile.h [bugfix]
+ *     - Now default warn flags include VLA warnings
+ *     - Now if compilation failed in selfrebuild, old version will be run
+ *   FlagParse.h [change]
+ *     - Short flag for version option is more more conventional 'V'
+ *   General [bugfix]
+ *     - Now functions that takes no arguments properly have 'void' as arguments
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -270,6 +283,12 @@
 #ifndef CBUILD_TEMP_ARENA_SIZE
 	#define CBUILD_TEMP_ARENA_SIZE (8 * 1024 * 1024)
 #endif // CBUILD_TEMP_ARENA_SIZE
+/**
+* @brief Default self-rebuild arguments
+*/
+#ifndef CBUILD_SELFREBUILD_ARGS
+	#define CBUILD_SELFREBUILD_ARGS CBUILD_CARGS_WARN
+#endif // CBUILD_SEFLREBUILD_ARGS
 // OS-specific defines
 #if defined(__linux__)
 	#define CBUILD_OS_LINUX
@@ -357,7 +376,7 @@
 // Global allocator
 extern void* (*cbuild_malloc)(size_t size);
 extern void* (*cbuild_realloc)(void* ptr, size_t size);
-extern void  (*cbuild_free)(void* ptr);
+extern void (*cbuild_free)(void* ptr);
 // Some preprocessor trickery
 /**
  * @brief Mark variable as usused
@@ -447,7 +466,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 #define cbuild_shift_expect(argv, argc, ...)                                   \
 	(cbuild_assert((argc) > 0, __VA_ARGS__), (argc)--, *(argv)++)
 // Version
-#define CBUILD_VERSION        "v1.10"
+#define CBUILD_VERSION        "v1.11"
 #define CBUILD_VERSION_MAJOR  1
-#define CBUILD_VERSION_MINOR 10
+#define CBUILD_VERSION_MINOR 11
 #endif // __CBUILD_COMMON_H__

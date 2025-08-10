@@ -39,5 +39,5 @@ char* cbuild_temp_sprintf(char* fmt, ...);
 char* cbuild_temp_vsprintf(char* fmt, va_list ap);
 char* cbuild_temp_strdup(char* str);
 void* cbuild_temp_memdup(void* mem, size_t size);
-void cbuild_temp_reset();
+void cbuild_temp_reset(void);
 #endif // __CBUILD_ARENA_H__

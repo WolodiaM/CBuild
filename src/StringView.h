@@ -111,7 +111,7 @@ cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim);
  */
 cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
 /**
- * @brief Delimiter func for sv_chop_by_delim
+ * @brief Delimiter func for sv_chop_by_func
  *
  * @param sv => const cbuild_sv_t* -> String view currently being chopped
  * @param idx => size_t -> Current scan index
@@ -134,8 +134,8 @@ cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
 /**
  * @brief strcmp for string view
  *
- * @param a => cbuild_sv_t -> First StringView
- * @param b => cbuild_sv_t -> Second StringView
+ * @param a => cbuild_sv_t -> First string view
+ * @param b => cbuild_sv_t -> Second string view
  * @return -2 -> If size of first string view is smaller
  * @return -1 -> If first different character in first string view is smaller
  * @return 0  -> If two string views are equal
@@ -147,8 +147,8 @@ int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
  * @brief compare two string view ignoring case of a latin letters for string
  * view
  *
- * @param a => cbuild_sv_t -> First StringView
- * @param b => cbuild_sv_t -> Second StringView
+ * @param a => cbuild_sv_t -> First string view
+ * @param b => cbuild_sv_t -> Second string view
  * @return -2 -> If size of first string view is smaller
  * @return -1 -> If first different character in first string view is smaller
  * @return 0  -> If two string views are equal
