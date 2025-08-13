@@ -207,7 +207,7 @@
  *   StringView.h [bugfix]
  *     - Function that can return '-1' now returns 'ssize_t' not 'size_t'
  * --------------------------------------------
- * 2025-08-05  v1.11
+ * 2025-08-05  v1.11		Cleanup and utf8
  *   FS.h [feature]
  *     - 'cbuild_fs_move' and 'cbuild_fs_remove' now try 'rename' before copying
  *   Log.h [change]
