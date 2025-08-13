@@ -347,8 +347,8 @@ uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv) {
 		sv->size -= 2;
 		unsigned char byte1 = *(s - 2),
 		              byte2 = *(s - 1);
-		uint32_t codepoint = ((byte1 & 0x1F) << 6) |
-		  (byte2 & 0x3F);
+		uint32_t codepoint = ((byte1 & 0x1Fu) << 6) |
+		  (byte2 & 0x3Fu);
 		return codepoint;
 	}
 	if((*s & 0xF0) == 0xE0 && sv->size >= 3) {
@@ -357,9 +357,9 @@ uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv) {
 		unsigned char byte1 = *(s - 3),
 		              byte2 = *(s - 2),
 		              byte3 = *(s - 1);
-		uint32_t codepoint = ((byte1 & 0x0F) << 12) |
-		  ((byte2 & 0x3F) << 6) |
-		  (byte3 & 0x3F);
+		uint32_t codepoint = ((byte1 & 0x0Fu) << 12) |
+		  ((byte2 & 0x3Fu) << 6) |
+		  (byte3 & 0x3Fu);
 		return codepoint;
 	}
 	if((*s & 0xF8) == 0xF0 && sv->size >= 4) {
@@ -369,10 +369,10 @@ uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv) {
 		              byte2 = *(s - 3),
 		              byte3 = *(s - 2),
 		              byte4 = *(s - 1);
-		uint32_t codepoint = ((byte1 & 0x07) << 18) |
-		  ((byte2 & 0x3F) << 12) |
-		  ((byte3 & 0x3F) << 6) |
-		  (byte4 & 0x3F);
+		uint32_t codepoint = ((byte1 & 0x07u) << 18) |
+		  ((byte2 & 0x3Fu) << 12) |
+		  ((byte3 & 0x3Fu) << 6) |
+		  (byte4 & 0x3Fu);
 		return codepoint;
 	}
 	sv->data++; s++;
