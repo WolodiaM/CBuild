@@ -44,7 +44,13 @@ bool tdelim2(const cbuild_sv_t* sv, size_t idx, void* args) {
 	CBUILD_UNUSED(args);
 	return false;
 }
-TEST_MAIN( {
+bool tdelim3(const cbuild_sv_t* sv, void* arg) {
+	cbuild_sv_t temp = *sv;
+	uint32_t cp = cbuild_sv_chop_utf8(&temp);
+	*(uint32_t*)arg = cp;
+	return cp == 1092;
+}
+TEST_MAIN({
 	TEST_CASE(
 	{
 		const char* str = "Hello, world!";
@@ -474,5 +480,136 @@ TEST_MAIN( {
 		  cbuild_sv_contains(sv, 'c') ? "true" : "false");
 	},
 	"StringView search");
+	TEST_CASE({
+		cbuild_sv_t sv1 = cbuild_sv_from_cstr("Привіт, world!");
+		TEST_ASSERT(cbuild_sv_utf8valid(sv1, NULL),
+		  "String view \""CBuildSVFmt"\" should be valid!", CBuildSVArg(sv1));
+		unsigned char invalid_utf8_truncated[5] = {0};
+		invalid_utf8_truncated[0] = 0x73;
+		invalid_utf8_truncated[1] = 0xED;
+		invalid_utf8_truncated[2] = 0x83;
+		invalid_utf8_truncated[3] = 0xA0;
+		invalid_utf8_truncated[4] = 0xED;
+		cbuild_sv_t sv2 = cbuild_sv_from_parts(invalid_utf8_truncated,
+		    sizeof(invalid_utf8_truncated));
+		TEST_ASSERT(!cbuild_sv_utf8valid(sv2, NULL), "%s",
+		  "String view with truncated codepoint should be invalid!");
+		unsigned char invalid_utf8_prefix[3] = {0};
+		invalid_utf8_prefix[0] = 0x73;
+		invalid_utf8_prefix[1] = 0xC1;
+		invalid_utf8_prefix[2] = 0x85;
+		cbuild_sv_t sv3 = cbuild_sv_from_parts(invalid_utf8_prefix,
+		    sizeof(invalid_utf8_prefix));
+		TEST_ASSERT(!cbuild_sv_utf8valid(sv3, NULL), "%s",
+		  "String view with invalid prefix character should be invalid!");
+		unsigned char invalid_utf8_char[7] = {0};
+		invalid_utf8_char[0] = 0xED;
+		invalid_utf8_char[1] = 0x90;
+		invalid_utf8_char[2] = 0x80;
+		invalid_utf8_char[3] = 0xF2;
+		invalid_utf8_char[4] = 0x97;
+		invalid_utf8_char[5] = 0xCF;
+		invalid_utf8_char[6] = 0xAC;
+		cbuild_sv_t sv4 = cbuild_sv_from_parts(invalid_utf8_char,
+		    sizeof(invalid_utf8_char));
+		TEST_ASSERT(!cbuild_sv_utf8valid(sv4, NULL), "%s",
+		  "String view with invalid character in codepoint should be invalid!");
+	}, "UTF8 validation");
+	TEST_CASE({
+		cbuild_sv_t sv1 = cbuild_sv_from_cstr("A");
+		int cp1len = cbuild_sv_utf8cp_len(sv1);
+		TEST_ASSERT_EQ(cp1len, 1,
+		  "Wrong length of ASCII char" TEST_EXPECT_MSG(d), 1, cp1len);
+		cbuild_sv_t sv2 = cbuild_sv_from_cstr("ф");
+		int cp2len = cbuild_sv_utf8cp_len(sv2);
+		TEST_ASSERT_EQ(cp2len, 2,
+		  "Wrong length of Cyrillic character" TEST_EXPECT_MSG(d), 2, cp2len);
+		cbuild_sv_t sv3 = cbuild_sv_from_cstr("€");
+		int cp3len = cbuild_sv_utf8cp_len(sv3);
+		TEST_ASSERT_EQ(cp3len, 3,
+		  "Wrong length of Euro currency symbol character"
+		  TEST_EXPECT_MSG(d), 3, cp3len);
+		cbuild_sv_t sv4 = cbuild_sv_from_cstr("😀");
+		int cp4len = cbuild_sv_utf8cp_len(sv4);
+		TEST_ASSERT_EQ(cp4len, 4,
+		  "Wrong length of Emoji character" TEST_EXPECT_MSG(d), 4, cp4len);
+	}, "UTF8 codepoint size");
+	TEST_CASE({
+		cbuild_sv_t sv = cbuild_sv_from_cstr("Привіт, world!€😀..."); // 19 chars
+		size_t len = cbuild_sv_utf8len(sv);
+		TEST_ASSERT_EQ(len, 19,
+		  "Wrong length computed for utf8 string" TEST_EXPECT_MSG(zu), 19ul, len);
+	}, "Length of a utf8 string view");
+	TEST_CASE({
+		cbuild_sv_t sv = cbuild_sv_from_cstr("aф€😀");
+		uint32_t cp = cbuild_sv_chop_utf8(&sv);
+		TEST_ASSERT_EQ(cp, 'a',
+		  "Wrong character chopped from utf8 string"
+		  TEST_EXPECT_RMSG("0x%08X"), 'a', cp);
+		cp = cbuild_sv_chop_utf8(&sv);
+		TEST_ASSERT_EQ(cp, 1092,
+		  "Wrong character chopped from utf8 string"
+		  TEST_EXPECT_RMSG("0x%08X"), 1092, cp);
+		cp = cbuild_sv_chop_utf8(&sv);
+		TEST_ASSERT_EQ(cp, 8364,
+		  "Wrong character chopped from utf8 string"
+		  TEST_EXPECT_RMSG("0x%08X"), 8364, cp);
+		cp = cbuild_sv_chop_utf8(&sv);
+		TEST_ASSERT_EQ(cp, 128512,
+		  "Wrong character chopped from utf8 string"
+		  TEST_EXPECT_RMSG("0x%08X"), 128512, cp);
+	}, "Chopping utf 8 chars");
+	TEST_CASE({
+		printf("\tcbuild_sv_chop_by_utf8\n");
+		cbuild_sv_t sv1 = cbuild_sv_from_cstr("aaaфbbb");
+		cbuild_sv_t chopped1 = cbuild_sv_chop_by_utf8(&sv1, 1092);
+		TEST_ASSERT_EQ(chopped1.size, 3,
+		  "Wrong string view size after a chop"
+		  TEST_EXPECT_MSG(zu), 3lu, chopped1.size);
+		TEST_ASSERT_EQ(sv1.size, 3,
+		  "Wrong string view size after a chop" TEST_EXPECT_MSG(zu), 3lu, sv1.size);
+		TEST_ASSERT_MEMEQ(chopped1.data, "aaa", 3,
+		  "Wrong string view chopped"
+		  TEST_EXPECT_RMSG(CBuildSVFmt),
+		  CBuildSVArg(cbuild_sv_from_cstr("aaa")),
+		  CBuildSVArg(chopped1));
+		TEST_ASSERT_MEMEQ(sv1.data, "bbb", 3,
+		  "Wrong string view left after a chop"
+		  TEST_EXPECT_RMSG(CBuildSVFmt),
+		  CBuildSVArg(cbuild_sv_from_cstr("bbb")),
+		  CBuildSVArg(sv1));
+		printf("\tcbuild_sv_chop_by_func_utf8\n");
+		cbuild_sv_t sv2 = cbuild_sv_from_cstr("aaaфbbb");
+		uint32_t cp = 0;
+		cbuild_sv_t chopped2 = cbuild_sv_chop_by_func_utf8(&sv2, tdelim3, &cp);
+		TEST_ASSERT_EQ(cp, 1092,
+		  "Wrong character used as delimiter" TEST_EXPECT_RMSG("0x%08X"), 1092, cp);
+		TEST_ASSERT_EQ(chopped2.size, 3,
+		  "Wrong string view size after a chop"
+		  TEST_EXPECT_MSG(zu), 3ul, chopped2.size);
+		TEST_ASSERT_EQ(sv2.size, 3,
+		  "Wrong string view size after a chop" TEST_EXPECT_MSG(zu), 3ul, sv2.size);
+		TEST_ASSERT_MEMEQ(chopped2.data, "aaa", 3,
+		  "Wrong string view chopped"
+		  TEST_EXPECT_RMSG(CBuildSVFmt),
+		  CBuildSVArg(cbuild_sv_from_cstr("aaa")),
+		  CBuildSVArg(chopped2));
+		TEST_ASSERT_MEMEQ(sv2.data, "bbb", 3,
+		  "Wrong string view left after a chop"
+		  TEST_EXPECT_RMSG(CBuildSVFmt),
+		  CBuildSVArg(cbuild_sv_from_cstr("bbb")),
+		  CBuildSVArg(sv2));
+	}, "Chopping by utf8 character");
+	TEST_CASE({
+		cbuild_sv_t sv1 = cbuild_sv_from_cstr("aф€😀");
+		cbuild_sv_t sv2 = cbuild_sv_from_cstr("aф€");
+		cbuild_sv_t sv3 = cbuild_sv_from_cstr("aaa");
+		TEST_ASSERT_EQ(cbuild_sv_utf8cmp(sv1, sv1), 0,
+		  "%s", "Comparison of utf8 strings is broken, same strings are not reported as such!");
+		TEST_ASSERT_EQ(cbuild_sv_utf8cmp(sv1, sv2), 2,
+		  "%s", "Comparison of utf8 strings is broken, different in size strings are not reported as such!");
+		TEST_ASSERT_EQ(cbuild_sv_utf8cmp(sv2, sv3), 1,
+		  "%s", "Comparison of utf8 strings is broken, different in content strings are not reported as such!");
+	}, "Comparisons of utf8 strings.");
 },
 "StringView library tests")

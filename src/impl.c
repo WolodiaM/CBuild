@@ -122,6 +122,38 @@ int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...) {
 	va_end(args);
 	return ret;
 }
+void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t codepoint) {
+	unsigned char buffer[4] = {0};
+	size_t len = 0;
+	if(codepoint <= 0x7F) {
+		buffer[0] = (unsigned char)codepoint;
+		len = 1;
+	} else if(codepoint <= 0x7FF) {
+		buffer[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
+		buffer[1] = 0x80 | (codepoint & 0x3F);
+		len = 2;
+	} else if(codepoint <= 0xFFFF) {
+		buffer[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
+		buffer[1] = 0x80 | ((codepoint >> 6) & 0x3F);
+		buffer[2] = 0x80 | (codepoint & 0x3F);
+		len = 3;
+	} else if(codepoint <= 0x10FFFF) {
+		buffer[0] = 0xF0 | ((codepoint >> 18) & 0x07);
+		buffer[1] = 0x80 | ((codepoint >> 12) & 0x3F);
+		buffer[2] = 0x80 | ((codepoint >> 6) & 0x3F);
+		buffer[3] = 0x80 | (codepoint & 0x3F);
+		len = 4;
+	} else {
+		CBUILD_UNREACHABLE("(LIB_CBUILD_SB) Invalid Unicode codepoint!\n");
+	}
+	cbuild_sb_append_arr(sb, buffer, len);
+}
+int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
+	return cbuild_sv_utf8cmp(cbuild_sv_from_sb(a), cbuild_sv_from_sb(b));
+}
+size_t cbuild_sb_utf8len(cbuild_sb_t* sb) {
+	return cbuild_sv_utf8len(cbuild_sv_from_sb(sb));
+}
 /* StringView.h impl */
 size_t cbuild_sv_trim_left(cbuild_sv_t* sv) {
 	size_t i = 0;
@@ -280,6 +312,322 @@ loop_end:
 }
 bool cbuild_sv_contains(cbuild_sv_t sv, char c) {
 	return cbuild_sv_find(sv, c) != -1;
+}
+int cbuild_sv_utf8cp_len(cbuild_sv_t sv) {
+	if(sv.size == 0) return 0;
+	if((*(unsigned char*)sv.data) < 0x80) return 1;
+	if((*sv.data & 0xE0) == 0xC0 && sv.size >= 2) return 2;
+	if((*sv.data & 0xF0) == 0xE0 && sv.size >= 3) return 3;
+	if((*sv.data & 0xF8) == 0xF0 && sv.size >= 4) return 4;
+	return 1;
+}
+char* cbuild_sv_strchr(cbuild_sv_t sv, char c) {
+	return memchr(sv.data, c, sv.size);
+}
+char* cbuild_sv_utf8chr(cbuild_sv_t sv, uint32_t c) {
+	while(sv.size > 0) {
+		char* curr = sv.data;
+		uint32_t codepoint = cbuild_sv_chop_utf8(&sv);
+		if(codepoint == c) return curr;
+	}
+	return NULL;
+}
+uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv) {
+	if(sv->size == 0) return UINT32_MAX;
+	unsigned char* s = (unsigned char*)sv->data;
+	if(*s < 0x80) {
+		sv->data++; s++;
+		sv->size--;
+		unsigned char byte1 = *(s - 1);
+		uint32_t codepoint = byte1;
+		return codepoint;
+	}
+	if((*s & 0xE0) == 0xC0 && sv->size >= 2) {
+		sv->data += 2; s += 2;
+		sv->size -= 2;
+		unsigned char byte1 = *(s - 2),
+		              byte2 = *(s - 1);
+		uint32_t codepoint = ((byte1 & 0x1F) << 6) |
+		  (byte2 & 0x3F);
+		return codepoint;
+	}
+	if((*s & 0xF0) == 0xE0 && sv->size >= 3) {
+		sv->data += 3; s += 3;
+		sv->size -= 3;
+		unsigned char byte1 = *(s - 3),
+		              byte2 = *(s - 2),
+		              byte3 = *(s - 1);
+		uint32_t codepoint = ((byte1 & 0x0F) << 12) |
+		  ((byte2 & 0x3F) << 6) |
+		  (byte3 & 0x3F);
+		return codepoint;
+	}
+	if((*s & 0xF8) == 0xF0 && sv->size >= 4) {
+		sv->data += 4; s += 4;
+		sv->size -= 4;
+		unsigned char byte1 = *(s - 4),
+		              byte2 = *(s - 3),
+		              byte3 = *(s - 2),
+		              byte4 = *(s - 1);
+		uint32_t codepoint = ((byte1 & 0x07) << 18) |
+		  ((byte2 & 0x3F) << 12) |
+		  ((byte3 & 0x3F) << 6) |
+		  (byte4 & 0x3F);
+		return codepoint;
+	}
+	sv->data++; s++;
+	sv->size--;
+	return *(s - 1);
+}
+cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim) {
+	char* chrptr = cbuild_sv_utf8chr(*sv, delim);
+	if(chrptr != NULL) {
+		size_t i = (size_t)(chrptr - sv->data);
+		cbuild_sv_t ret = cbuild_sv_from_parts(sv->data, i);
+		sv->data += i;
+		sv->size -= i;
+		int codepoint_size = cbuild_sv_utf8cp_len(*sv);
+		sv->data += (size_t)codepoint_size;
+		sv->size -= (size_t)codepoint_size;
+		return ret;
+	}
+	return cbuild_sv_chop(sv, sv->size);
+}
+cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
+  cbuild_sv_utf8delim_func delim, void* args) {
+	cbuild_sv_t ret = cbuild_sv_from_parts(sv->data, 0);
+	while(sv->size > 0) {
+		size_t cplen = (size_t)cbuild_sv_utf8cp_len(*sv);
+		if(delim(sv, args)) {
+			sv->data += cplen;
+			sv->size -= cplen;
+			break;
+		} else {
+			sv->data += cplen;
+			sv->size -= cplen;
+			ret.size += cplen;
+		}
+	}
+	return ret;
+}
+int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b) {
+	size_t a_size = cbuild_sv_utf8len(a);
+	size_t b_size = cbuild_sv_utf8len(b);
+	if(a_size < b_size) {
+		return -2;
+	}
+	if(a_size > b_size) {
+		return 2;
+	}
+	while(a.size > 0) {
+		int64_t ac = cbuild_sv_chop_utf8(&a);
+		cbuild_assert(ac >= 0, "(LIB_CBUILD_SV) Invalid utf8!\n");
+		int64_t bc = cbuild_sv_chop_utf8(&b);
+		cbuild_assert(bc >= 0, "(LIB_CBUILD_SV) Invalid utf8!\n");
+		int64_t diff = (int64_t)ac - (int64_t)bc;
+		if(diff < 0) {
+			return -1;
+		} else if(diff > 0) {
+			return 1;
+		}
+	}
+	return 0;
+}
+size_t cbuild_sv_utf8len(cbuild_sv_t sv) {
+	size_t ret = 0;
+	while(sv.size > 0) {
+		cbuild_sv_chop_utf8(&sv);
+		ret++;
+	}
+	return ret;
+}
+bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx) {
+	size_t ret = 0;
+	while(sv.size > 0) {
+		signed char cs = *sv.data;
+		ret++;
+		if(cs > 0) { // ASCII, 'signed char' abuse
+			sv.size--;
+			sv.data++;
+			continue;
+		}
+		unsigned char c = (unsigned char)cs;
+		if(0xC2 <= c && c <= 0xDF) { // 2 byte
+			sv.size--;
+			sv.data++;
+			if(sv.size == 0) goto invalid;
+			unsigned char c1 = *(unsigned char*)sv.data;
+			if(0x80 <= c1 && c1 <= 0xBF) {
+				sv.size--;
+				sv.data++;
+			} else {
+				goto invalid;
+			}
+		} else if(c == 0xE0) { // 3 byte
+			sv.size--;
+			sv.data++;
+			if(sv.size == 0) goto invalid;
+			unsigned char c1 = *(unsigned char*)sv.data;
+			if(0xA0 <= c1 && c1 <= 0xBF) {
+				sv.size--;
+				sv.data++;
+				if(sv.size == 0) goto invalid;
+				unsigned char c2 = *(unsigned char*)sv.data;
+				if(0x80 <= c2 && c2 <= 0xBF) {
+					sv.size--;
+					sv.data++;
+				} else {
+					goto invalid;
+				}
+			} else {
+				goto invalid;
+			}
+		} else if(0xE1 <= c && c <= 0xEC) {
+			sv.size--;
+			sv.data++;
+			if(sv.size == 0) goto invalid;
+			unsigned char c1 = *(unsigned char*)sv.data;
+			if(0x80 <= c1 && c1 <= 0xBF) {
+				sv.size--;
+				sv.data++;
+				if(sv.size == 0) goto invalid;
+				unsigned char c2 = *(unsigned char*)sv.data;
+				if(0x80 <= c2 && c2 <= 0xBF) {
+					sv.size--;
+					sv.data++;
+				} else {
+					goto invalid;
+				}
+			} else {
+				goto invalid;
+			}
+		} else if(c == 0xED) {
+			sv.size--;
+			sv.data++;
+			if(sv.size == 0) goto invalid;
+			unsigned char c1 = *(unsigned char*)sv.data;
+			if(0x80 <= c1 && c1 <= 0x9F) {
+				sv.size--;
+				sv.data++;
+				if(sv.size == 0) goto invalid;
+				unsigned char c2 = *(unsigned char*)sv.data;
+				if(0x80 <= c2 && c2 <= 0xBF) {
+					sv.size--;
+					sv.data++;
+				} else {
+					goto invalid;
+				}
+			} else {
+				goto invalid;
+			}
+		} else if(0xEE <= c && c <= 0xEF) {
+			sv.size--;
+			sv.data++;
+			if(sv.size == 0) goto invalid;
+			unsigned char c1 = *(unsigned char*)sv.data;
+			if(0x80 <= c1 && c1 <= 0xBF) {
+				sv.size--;
+				sv.data++;
+				if(sv.size == 0) goto invalid;
+				unsigned char c2 = *(unsigned char*)sv.data;
+				if(0x80 <= c2 && c2 <= 0xBF) {
+					sv.size--;
+					sv.data++;
+				} else {
+					goto invalid;
+				}
+			} else {
+				goto invalid;
+			}
+		} else if(c == 0xF0) { // 4 byte
+			sv.size--;
+			sv.data++;
+			if(sv.size == 0) goto invalid;
+			unsigned char c1 = *(unsigned char*)sv.data;
+			if(0x90 <= c1 && c1 <= 0xBF) {
+				sv.size--;
+				sv.data++;
+				if(sv.size == 0) goto invalid;
+				unsigned char c2 = *(unsigned char*)sv.data;
+				if(0x80 <= c2 && c2 <= 0xBF) {
+					sv.size--;
+					sv.data++;
+					if(sv.size == 0) goto invalid;
+					unsigned char c3 = *(unsigned char*)sv.data;
+					if(0x80 <= c3 && c3 <= 0xBF) {
+						sv.size--;
+						sv.data++;
+					} else {
+						goto invalid;
+					}
+				} else {
+					goto invalid;
+				}
+			} else {
+				goto invalid;
+			}
+		} else if(0xF1 <= c && c <= 0xF3) {
+			sv.size--;
+			sv.data++;
+			if(sv.size == 0) goto invalid;
+			unsigned char c1 = *(unsigned char*)sv.data;
+			if(0x80 <= c1 && c1 <= 0xBF) {
+				sv.size--;
+				sv.data++;
+				if(sv.size == 0) goto invalid;
+				unsigned char c2 = *(unsigned char*)sv.data;
+				if(0x80 <= c2 && c2 <= 0xBF) {
+					sv.size--;
+					sv.data++;
+					if(sv.size == 0) goto invalid;
+					unsigned char c3 = *(unsigned char*)sv.data;
+					if(0x80 <= c3 && c3 <= 0xBF) {
+						sv.size--;
+						sv.data++;
+					} else {
+						goto invalid;
+					}
+				} else {
+					goto invalid;
+				}
+			} else {
+				goto invalid;
+			}
+		} else if(c == 0xF4) {
+			sv.size--;
+			sv.data++;
+			if(sv.size == 0) goto invalid;
+			unsigned char c1 = *(unsigned char*)sv.data;
+			if(0x80 <= c1 && c1 <= 0x8F) {
+				sv.size--;
+				sv.data++;
+				if(sv.size == 0) goto invalid;
+				unsigned char c2 = *(unsigned char*)sv.data;
+				if(0x80 <= c2 && c2 <= 0xBF) {
+					sv.size--;
+					sv.data++;
+					if(sv.size == 0) goto invalid;
+					unsigned char c3 = *(unsigned char*)sv.data;
+					if(0x80 <= c3 && c3 <= 0xBF) {
+						sv.size--;
+						sv.data++;
+					} else {
+						goto invalid;
+					}
+				} else {
+					goto invalid;
+				}
+			} else {
+				goto invalid;
+			}
+		} else {
+			goto invalid;
+		}
+	}
+	return true;
+invalid:
+	if(idx != NULL) *idx = ret;
+	return false;
 }
 /* Command.h impl */
 cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {

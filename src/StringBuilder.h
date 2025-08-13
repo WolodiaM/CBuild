@@ -130,48 +130,48 @@ typedef struct cbuild_sb_t {
  */
 int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
 /**
- * @brief Compare two StringBuilder ignoring case of an ASCII letter (Latin
+ * @brief Compare two string builders ignoring case of an ASCII letter (Latin
  * only)
  *
- * @param a => cbuild_sb_t* -> First StringBuilder
- * @param b => cbuild_sb_t* -> Second StringBuilder
- * @return -2 -> If size of first StringBuilder is smaller
+ * @param a => cbuild_sb_t* -> First string builder
+ * @param b => cbuild_sb_t* -> Second string builder
+ * @return -2 -> If size of first string builder is smaller
  * @return -1 -> If first different character in first StringBuiler is smaller
- * @return 0  -> If two StringBuilders are equal
- * @return 1  -> If first different character in first StringBuilder is larger
- * @return 2  -> If size of first StringBuilder is larger
+ * @return 0  -> If two string builders are equal
+ * @return 1  -> If first different character in first string builder is larger
+ * @return 2  -> If size of first string builder is larger
  */
 int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b);
 /**
- * @brief Convert StringBuilder to StringView
+ * @brief Convert string builder to string view
  *
  * @param sb => cbuild_sb_t* -> String builder
  * @return cbuild_sv_t -> New string view
  */
 cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb);
 /**
- * @brief Convert StringBuilder to StringView
+ * @brief Convert string builder to string view
  *
  * @param sb => cbuild_sb_t* -> String builder
  * @return cbuild_sv_t -> New string view
  */
 #define cbuild_sv_from_sb(sb) cbuild_sb_to_sv(sb)
 /**
- * @brief Convert StringView to a StringBuilder. Does a copy.
+ * @brief Convert string view to a string builder. Does a copy.
  *
  * @param sv => cbuild_sv_t -> String view
  * @return cbuild_sb_t -> New string builder
  */
 cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
 /**
- * @brief Convert StringView to a StringBuilder. Does a copy.
+ * @brief Convert string view to a string builder. Does a copy.
  *
  * @param sv => cbuild_sv_t -> String view
  * @return cbuild_sb_t -> New string builder
  */
 #define cbuild_sb_from_sv(sv) cbuild_sv_to_sb(sv)
 /**
- * @brief Append StringView to a StringBuilder
+ * @brief Append string view to a string builder
  *
  * @param sb => CBUILD_SB* -> String builder
  * @param sv => cbuild_sv_t -> String view
@@ -179,7 +179,7 @@ cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
 #define cbuild_sb_append_sv(sb, sv)                                            \
 	cbuild_sb_append_arr((sb), (sv).data, (sv).size)
 /**
- * @brief vsprintf for a StringBuilder
+ * @brief vsprintf for a string builder
  *
  * @param sb => cbuild_sb_t* -> String builder
  * @param fmt => const char* -> Format string
@@ -188,7 +188,7 @@ cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
  */
 int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args);
 /**
- * @brief sprintf for a StringBuilder
+ * @brief sprintf for a string builder
  *
  * @param sb => cbuild_sb_t* -> String builder
  * @param fmt => const char* -> Format string
@@ -203,4 +203,30 @@ int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...);
  * @param iter => NAME -> Iteration value name
  */
 #define cbuild_sb_foreach(sb, iter) cbuild_da_foreach(sb, iter)
+/**
+ * @brief Append unicode codepoint to string builder. Encoding will be utf8
+ *
+ * @param sb => cbuild_sb_t* -> String builder
+ * @param cp => uint32_t -> Codepoint
+ */
+void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
+/**
+ * @brief strcmp for string builder encoded as utf8.
+ * Will use cbuild_sb_utf8cmp under the hood
+ * @param a => cbuild_sb_t* -> First string buffer
+ * @param b => cbuild_sb_t* -> Second String buffer
+ * @return -2 -> If size of first string builder is smaller
+ * @return -1 -> If first different character in first string builder is smaller
+ * @return 0  -> If two string builders are equal
+ * @return 1  -> If first different character in first string builder is larger
+ * @return 2  -> If size of first string builder is larger
+ */
+int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b);
+/**
+ * @brief Get lengths of a string builder with utf8 content
+ *
+ * @param sv => cbuild_sb_t -> String builder to work with
+ * @return size_t -> Number of encoded utf8 codepoints
+ */
+size_t cbuild_sb_utf8len(cbuild_sb_t* sb);
 #endif // __CBUILD_SB_H__

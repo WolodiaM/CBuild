@@ -217,6 +217,10 @@
  *     - Now if compilation failed in selfrebuild, old version will be run
  *   FlagParse.h [change]
  *     - Short flag for version option is more more conventional 'V'
+ *   StringView.h [feature]
+ *     - Optional utf8 supports
+ *   StringBuilder.h [feature]
+ *     - Optional utf8 support
  *   General [bugfix]
  *     - Now functions that takes no arguments properly have 'void' as arguments
  */

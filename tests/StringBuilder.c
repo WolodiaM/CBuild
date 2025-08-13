@@ -160,22 +160,22 @@ TEST_MAIN({
 	"StringBuilder remove");
 	TEST_CASE(
 	{
-		const char *str1 = "abc";
+		const char* str1 = "abc";
 		cbuild_sb_t sb1  = {0};
 		cbuild_sb_append_cstr(&sb1, str1);
-		const char *str2 = "abc";
+		const char* str2 = "abc";
 		cbuild_sb_t sb2  = {0};
 		cbuild_sb_append_cstr(&sb2, str2);
-		const char *str3 = "ABC";
+		const char* str3 = "ABC";
 		cbuild_sb_t sb3  = {0};
 		cbuild_sb_append_cstr(&sb3, str3);
-		const char *str4 = "ABC";
+		const char* str4 = "ABC";
 		cbuild_sb_t sb4  = {0};
 		cbuild_sb_append_cstr(&sb4, str4);
-		const char *str5 = "def";
+		const char* str5 = "def";
 		cbuild_sb_t sb5  = {0};
 		cbuild_sb_append_cstr(&sb5, str5);
-		const char *str6 = "defg";
+		const char* str6 = "defg";
 		cbuild_sb_t sb6  = {0};
 		cbuild_sb_append_cstr(&sb6, str6);
 		printf("\tcbuild_sb_cmp\n");
@@ -248,7 +248,7 @@ TEST_MAIN({
 	"StringBuilder comparisons");
 	TEST_CASE(
 	{
-		const char *str = "abc";
+		const char* str = "abc";
 		cbuild_sv_t sv  = cbuild_sv_from_cstr(str);
 		sv.size++;
 		cbuild_sb_append_sv(&sb, sv);
@@ -306,5 +306,35 @@ TEST_MAIN({
 		cbuild_sb_clear(&sb);
 	},
 	"StringBuilder format insertion");
+	TEST_CASE({
+		cbuild_sb_t sb = {0};
+		const char* test = "aф€😀";
+		cbuild_sb_append_utf8(&sb, 'a');
+		cbuild_sb_append_utf8(&sb, 1092);
+		cbuild_sb_append_utf8(&sb, 8364);
+		cbuild_sb_append_utf8(&sb, 128512);
+		cbuild_sb_append_null(&sb);
+		TEST_ASSERT_EQ(sb.size, 11,
+		  "Wrong size after appends" TEST_EXPECT_MSG(zu), 11ul, sb.size);
+		TEST_ASSERT_MEMEQ(sb.data, test, 10,
+		  "Error while appending utf8 characters to a string builder"
+		  TEST_EXPECT_MSG(s), test, sb.data);
+		cbuild_sb_t copy = {0};
+		cbuild_sb_append_cstr(&copy, test);
+		cbuild_sb_append_null(&copy);
+		cbuild_sb_t different = {0};
+		cbuild_sb_append_cstr(&different, "abc");
+		cbuild_sb_append_null(&different);
+		TEST_ASSERT(cbuild_sb_utf8cmp(&sb, &copy) == 0,
+		  "%s", "Same utf8 string reported as different!");
+		TEST_ASSERT(cbuild_sb_utf8cmp(&sb, &different) != 0,
+		  "%s", "Different utf8 string reported as same!");
+		size_t len = cbuild_sb_utf8len(&sb);
+		TEST_ASSERT_EQ(len, 5,
+		  "Wrong codepoint count calculated" TEST_EXPECT_MSG(zu), 5ul, len);
+		cbuild_sb_clear(&sb);
+		cbuild_sb_clear(&copy);
+		cbuild_sb_clear(&different);
+	}, "UTF8 operations");
 },
 "StringBuilder datatype - dynamic re-sizable length-based string")
