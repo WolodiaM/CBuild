@@ -470,7 +470,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 #define cbuild_shift_expect(argv, argc, ...)                                   \
 	(cbuild_assert((argc) > 0, __VA_ARGS__), (argc)--, *(argv)++)
 // Version
-#define CBUILD_VERSION        "v1.11"
-#define CBUILD_VERSION_MAJOR  1
+#define CBUILD_VERSION "v1.11"
+#define CBUILD_VERSION_MAJOR 1
 #define CBUILD_VERSION_MINOR 11
 #endif // __CBUILD_COMMON_H__
