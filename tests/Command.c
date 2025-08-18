@@ -74,12 +74,7 @@ TEST_MAIN({
 			printf("Test runner got error!\n");
 			exit(1);
 		}
-		bool ret = cbuild_cmd_sync_redirect(
-		cmd, (cbuild_cmd_fd_t) {
-			.fdstdout = fds[1],
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		bool ret = cbuild_cmd_run(&cmd, .no_reset = true, .fdstdout = fds[1]);
 		TEST_ASSERT_EQ(ret, true, "%s", "Function returned error!");
 		// TO be able to capture errors
 		char str[1024];

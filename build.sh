@@ -8,7 +8,7 @@ CARGS="-O3 -g -gdwarf-4 -std=gnu99 \
 	-D_FORTIFY_SOURCE=2"
 : "${MEMCHECK:=valgrind --leak-check=full --show-leak-kinds=all \
 	--track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2}"
-: "${ST_CC:=gcc}"
+: "${TEST_CC:=gcc}"
 # Global variables
 Silent="no"  # Need to be set to `yes`
 Verbose="no" # Need to be set to `yes`
@@ -137,11 +137,7 @@ test_cmd() {
 	if [ "$#" -lt 1 ]; then
 		test_run_all
 	else
-		if [[ "$1" == "CI" ]]; then
-			test_run_CI
-		else
-			test_run "$1"
-		fi
+		test_run "$1"
 	fi
 }
 test_run() {
@@ -182,43 +178,6 @@ test_run() {
 		printf "${cyan}%s${reset}\n" "----------    End of test output    ----------"
 	fi
 	return $ERR
-}
-test_run_CI() {
-	compilers=(gcc clang musl-gcc musl-clang)
-	local failed="false"
-	for file in tests/*.c; do
-		local file="$(basename -- "$file")"
-		file="${file%.*}"
-		printf "${green}Building test \"${red}$file${green}\" into executable.${reset}"
-		local pids=()
-		local -A results=()
-		for cc in "${compilers[@]}"; do
-			( TEST_CC="$cc" test_run "$file" &>/dev/null ) &
-			pids+=($!)
-		done
-		for i in "${!compilers[@]}"; do
-			local cc="${compilers[i]}"
-			local pid="${pids[i]}"
-			if wait "$pid"; then
-				results["$cc"]=$?
-			else
-				results["$cc"]=$?
-			fi
-		done
-		for cc in "${compilers[@]}"; do
-			if [ "${results[$cc]}" -eq 0 ]; then
-				printf "${blue}${cc} ${green}succeed${reset}\n"
-			else
-				printf "${blue}${cc} ${red}failed${reset}\n"
-				failed="true"
-			fi
-		done
-	done
-	if [[ "$failed" == "true" ]]; then
-		return 1
-	else
-		return 0
-	fi
 }
 test_run_all() {
 	for file in tests/*.c; do
