@@ -11,7 +11,7 @@ variables:
 # Install base packages
 before_script:
   - apt-get update -qq
-  - apt-get install -yqq build-essential clang valgrind astyle doxygen pandoc
+  - apt-get install -yqq build-essential clang valgrind astyle doxygen pandoc musl
 # Run all tests
 test:
     stage: test

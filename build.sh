@@ -3,7 +3,8 @@
 set -euo pipefail
 # constants
 CARGS="-O3 -g -gdwarf-4 -std=gnu99 \
-	-Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Werror \
+	-Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Wno-override-init \
+	-Werror \
 	-D_FORTIFY_SOURCE=2"
 : "${MEMCHECK:=valgrind --leak-check=full --show-leak-kinds=all \
 	--track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2}"
@@ -143,7 +144,7 @@ test_run() {
 	call_cmd rm -rf "build/$1.*"
 	printf "${green}Building test \"${red}$1${green}\" into executable.${reset}"
 	if [ "$Silent" == "no" ]; then
-		printf "${red} $TEST_CC output will be shown.${reset}\n"
+		printf "${blue} $TEST_CC ${red}output will be shown.${reset}\n"
 	else
 		printf "\n"
 	fi
@@ -184,11 +185,14 @@ test_run_all() {
 		file="${file%.*}"
 		TEST_CC=gcc test_run "$file"
 		TEST_CC=clang test_run "$file"
+		TEST_CC=musl-gcc test_run "$file"
+		TEST_CC=musl-clang test_run "$file"
 		ERR=$?
 		if [ "$ERR" -ne 0 ]; then
 			exit 1
 		fi
 	done
+	exit 0
 }
 # clean subcommand
 clean() {
