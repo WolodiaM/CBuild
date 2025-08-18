@@ -645,14 +645,14 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 	return sb;
 }
 #if defined(CBUILD_API_POSIX)
-bool cbuild__cmd_run_opt(cbuild_cmd_t cmd, cbuild_cmd_opt_t opts) {
-	if(cmd.size < 1) {
+bool cbuild__cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
+	if(cmd->size < 1) {
 		cbuild_log(CBUILD_LOG_ERROR, "Empty command requested to be executed!");
 		return CBUILD_INVALID_PROC;
 	}
 	// Get args
 	cbuild_cmd_t argv = {0};
-	cbuild_cmd_append_arr(&argv, cmd.data, cmd.size);
+	cbuild_cmd_append_arr(&argv, cmd->data, cmd->size);
 	cbuild_cmd_append(&argv, (char*)NULL);
 	cbuild_proc_t proc = fork();
 	if(proc < 0) {
@@ -708,7 +708,7 @@ bool cbuild__cmd_run_opt(cbuild_cmd_t cmd, cbuild_cmd_opt_t opts) {
 	}
 	cbuild_cmd_clear(&argv);
 	if(!opts.no_reset) {
-		cmd.size = 0;
+		cmd->size = 0;
 		cbuild_fd_close(opts.fdstdin);
 		cbuild_fd_close(opts.fdstdout);
 		cbuild_fd_close(opts.fdstderr);
