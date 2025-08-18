@@ -645,7 +645,7 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 	return sb;
 }
 #if defined(CBUILD_API_POSIX)
-bool cbuild__cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
+bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
 	if(cmd->size < 1) {
 		cbuild_log(CBUILD_LOG_ERROR, "Empty command requested to be executed!");
 		return CBUILD_INVALID_PROC;
