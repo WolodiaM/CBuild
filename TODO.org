@@ -2,6 +2,10 @@
 
 * Bugfix todo list
 
+*** TODO force sspecifc POSIX
+
+Maybe POSIX_C_SOURCE=200112L
+
 * Features todo list
 
 *** DONE Map.h rewrite
@@ -19,6 +23,9 @@ Macro should be relatively small.
 Aliases through commands (something like "-alias:name:lopt-which-is-aliased", only long aliases supported)
 Groups through new metadata entry (something like "group=<name>"), purely for pretty print
 
+*** TODO Command.h - allow to limit number of async threads in 'cbuild_cmd_run'
+
+Need to pass a 'cbuild_proclist_t'. Need to pass int. Now it simply checks for number of procs, if there are too much - wait for them to finnish
 
 * Thinking place
 
