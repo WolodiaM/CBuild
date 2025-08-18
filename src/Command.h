@@ -181,7 +181,7 @@ typedef struct cbuild_cmd_opt_t {
 } cbuild_cmd_opt_t;
 bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts);
 #define cbuild_cmd_run(cmd, ...)                                               \
-	cbuild_cmd_run_opt(cmd, (cbuild_cmd_opt_t){.fdstdin = CBUILD_INVALID_FD,    \
+	cbuild_cmd_run_opt(cmd, (cbuild_cmd_opt_t){.fdstdin = CBUILD_INVALID_FD,     \
 		.fdstdout = CBUILD_INVALID_FD,                                             \
 		.fdstderr = CBUILD_INVALID_FD,                                             \
 		.flags = 0,                                                                \
