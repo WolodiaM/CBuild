@@ -30,6 +30,11 @@
 #ifndef __CBUILD_PROC_H__
 #define __CBUILD_PROC_H__
 #include "common.h"
+typedef struct cbuild_proclist_t {
+	cbuild_proc_t* data;
+	size_t size;
+	size_t capacity;
+} cbuild_proclist_t;
 /**
  * @brief Wait until process finishes execution
  *
@@ -38,6 +43,14 @@
  * @return false -> Process finished with an error
  */
 bool cbuild_proc_wait(cbuild_proc_t proc);
+/**
+ * @brief Wait until all process finish execution
+ *
+ * @param procs => cbuild_proclist_t -> Process IDs
+ * @return true -> All proceses finished without errors
+ * @return false -> At least one process finished with an error
+ */
+bool cbuild_procs_wait(cbuild_proclist_t procs);
 /**
  * @brief Wait until process finishes execution
  *

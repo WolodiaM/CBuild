@@ -221,8 +221,13 @@
  *     - Optional utf8 supports
  *   StringBuilder.h [feature]
  *     - Optional utf8 support
+ *   Command.h [change]
+ *     - Added new API, 'cbuild_cmd_run'.
+ *   Proc.h [feature]
+ *     - Added ability to wait for multiple processes.
  *   General [bugfix]
  *     - Now functions that takes no arguments properly have 'void' as arguments
+ *     - Now test on 'musl' libc too.
  */
 // Code
 #ifndef __CBUILD_COMMON_H__
@@ -295,8 +300,16 @@
 #endif // CBUILD_SEFLREBUILD_ARGS
 // OS-specific defines
 #if defined(__linux__)
+	#include <features.h>
 	#define CBUILD_OS_LINUX
 	#define CBUILD_API_POSIX
+	#if defined(__GLIBC__)
+		#define CBUILD_OS_LINUX_GLIBC
+	#elif defined(__UCLIBC__)
+		#define CBUILD_OS_LINUX_UCLIBC
+	#else // Assume musl
+		#define CBUILD_OS_LINUX_MUSL
+	#endif // Libc selector
 #elif defined(__APPLE__) || defined(__MACH__)
 	#define CBUILD_OS_MACOS
 	#define CBUILD_API_POSIX
@@ -317,7 +330,7 @@
 #elif defined(_MSC_VER)
 	#define CBUILD_OS_WINDOWS_MSVC
 	#define CBUILD_API_WIN32
-	#error "MSVC is fully unsupported as a compiler. Please use gcc/clang-compatible compiler!"
+	#error "MSVC is fully unsupported as a compiler. Please use gcc/clang-compatible compiler! Compiler should support 'gnu99' standard!"
 #else
 	#error                                                                        \
 	"This OS is unsupported by CBuild. If it supports POSIX API then you can add new compile-time check for your current OS and define API macro and OS macro and add compiler macro check for your OS. If it don't support any of this APIs then you need to create your own API macro and change implementation-specifc parts of CBuild"

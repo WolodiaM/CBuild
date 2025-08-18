@@ -645,7 +645,7 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 	return sb;
 }
 #if defined(CBUILD_API_POSIX)
-cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
+bool cbuild__cmd_run_opt(cbuild_cmd_t cmd, cbuild_cmd_opt_t opts) {
 	if(cmd.size < 1) {
 		cbuild_log(CBUILD_LOG_ERROR, "Empty command requested to be executed!");
 		return CBUILD_INVALID_PROC;
@@ -658,12 +658,12 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 	if(proc < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Could not create child process, error: \"%s\"",
 		  strerror(errno));
-		return CBUILD_INVALID_PROC;
+		return false;
 	}
 	if(proc == 0) {
 		fflush(NULL);
-		if(fd.fdstdin != CBUILD_INVALID_FD) {
-			if(dup2(fd.fdstdin, STDIN_FILENO) < 0) {
+		if(opts.fdstdin != CBUILD_INVALID_FD) {
+			if(dup2(opts.fdstdin, STDIN_FILENO) < 0) {
 				cbuild_log(
 				  CBUILD_LOG_ERROR,
 				  "Could not redirect stdin inside of a child process, error: \"%s\"",
@@ -671,8 +671,8 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 				exit(1);
 			}
 		}
-		if(fd.fdstdout != CBUILD_INVALID_FD) {
-			if(dup2(fd.fdstdout, STDOUT_FILENO) < 0) {
+		if(opts.fdstdout != CBUILD_INVALID_FD) {
+			if(dup2(opts.fdstdout, STDOUT_FILENO) < 0) {
 				cbuild_log(
 				  CBUILD_LOG_ERROR,
 				  "Could not redirect stdout inside of a child process, error: \"%s\"",
@@ -680,8 +680,8 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 				exit(1);
 			}
 		}
-		if(fd.fdstderr != CBUILD_INVALID_FD) {
-			if(dup2(fd.fdstderr, STDERR_FILENO) < 0) {
+		if(opts.fdstderr != CBUILD_INVALID_FD) {
+			if(dup2(opts.fdstderr, STDERR_FILENO) < 0) {
 				cbuild_log(
 				  CBUILD_LOG_ERROR,
 				  "Could not redirect stderr inside of a child process, error: \"%s\"",
@@ -690,10 +690,12 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 			}
 		}
 		// Autokill
-		if(cmd.flags & 0b1) {
+		if(opts.autokill) {
 #ifdef CBUILD_OS_LINUX
 			prctl(PR_SET_PDEATHSIG, SIGKILL);
-#endif
+#else
+			cbuild_log(CBUILD_LOG_WARN, "Autokill is supported only on Linux!");
+#endif // CBUILD_OS_* select
 		}
 		// Call command
 		if(execvp(argv.data[0], (char* const*)argv.data) < 0) {
@@ -705,13 +707,24 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 		exit(0);
 	}
 	cbuild_cmd_clear(&argv);
-	return proc;
+	if(!opts.no_reset) {
+		cmd.size = 0;
+		cbuild_fd_close(opts.fdstdin);
+		cbuild_fd_close(opts.fdstdout);
+		cbuild_fd_close(opts.fdstderr);
+	}
+	if(!opts.async) {
+		return cbuild_proc_wait(proc);
+	} else {
+		if(opts.pass_proc) {
+			*opts.proc = proc;
+		} else if(opts.append_proc) {
+			cbuild_da_append(opts.procs, proc);
+		}
+	}
+	return true;
 }
 #endif // CBUILD_API_POSIX
-bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
-	cbuild_proc_t proc = cbuild_cmd_async_redirect(cmd, fd);
-	return cbuild_proc_wait(proc);
-}
 /* Log.h impl */
 void __cbuild_log_fmt(cbuild_log_level_t level) {
 	time_t     t       = time(NULL);
@@ -880,6 +893,13 @@ cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context) {
 #endif // CBUILD_API_POSIX
 bool cbuild_proc_wait(cbuild_proc_t proc) {
 	return cbuild_proc_wait_code(proc) == 0;
+}
+bool cbuild_procs_wait(cbuild_proclist_t procs) {
+	bool ret = true;
+	cbuild_da_foreach(&procs, proc) {
+		if(!cbuild_proc_wait(*proc)) ret = false;
+	}
+	return ret;
 }
 /* FS.h impl */
 bool cbuild_fd_close(cbuild_fd_t fd) {

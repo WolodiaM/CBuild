@@ -34,14 +34,12 @@
 #include "Map.h"
 #include "StringBuilder.h"
 #include "common.h"
+#include "Proc.h"
 // Command
 typedef struct cbuild_cmd_t {
 	const char** data;
 	size_t size;
 	size_t capacity;
-	// bit0 - autokill if parent dies (Linux only)
-	// other  - reserved
-	size_t flags;
 } cbuild_cmd_t;
 // IO overrides
 typedef struct {
@@ -100,10 +98,16 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  * @return cbuild_proc_t -> Process associated with called command
  */
 #define cbuild_cmd_async(cmd)                                                  \
-	cbuild_cmd_async_redirect(cmd, (cbuild_cmd_fd_t){ CBUILD_INVALID_FD,         \
-		CBUILD_INVALID_FD,                                                         \
-		CBUILD_INVALID_FD })
-
+	({                                                                           \
+		cbuild_proc_t __cbuild__tmp_proc;                                          \
+		if(!cbuild_cmd_run((cmd), .async = true,                                   \
+		  .pass_proc = true,                                                       \
+		  .no_reset = true,                                                        \
+		  .proc = &__cbuild__tmp_proc)) {                                          \
+			__cbuild_tmp_proc = CBUILD_INVALID_PROC;                                 \
+		}                                                                          \
+		__cbuild__tmp_proc;                                                        \
+	})
 /**
  * @brief Call async command with io rediecting
  *
@@ -111,7 +115,21 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  * @param fd => cbuild_cmd_fd_t -> IO redicrecting table
  * @return cbuild_proc_t -> Process associated with called command
  */
-cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
+#define cbuild_cmd_async_redirect(cmd, ...)                                    \
+	({                                                                           \
+		cbuild_proc_t __cbuild__tmp_proc;                                          \
+		cbuild_cmd_fd_t fd = __VA_ARGS__;                                          \
+		if(!cbuild_cmd_run((cmd), .async = true,                                   \
+		  .pass_proc = true,                                                       \
+		  .no_reset = true,                                                        \
+		  .fdstdin = fd.fdstdin,                                                   \
+		  .fdstdout = fd.fdstdout,                                                 \
+		  .fdstderr = fd.fdstderr,                                                 \
+		  .proc = &__cbuild__tmp_proc)) {                                          \
+			__cbuild_tmp_proc = CBUILD_INVALID_PROC;                                 \
+		}                                                                          \
+		__cbuild__tmp_proc;                                                        \
+	})
 /**
  * @brief Call sync command without io redirecting
  *
@@ -120,9 +138,7 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
  * @return false -> Command failed
  */
 #define cbuild_cmd_sync(cmd)                                                   \
-	cbuild_cmd_sync_redirect(cmd, (cbuild_cmd_fd_t){ CBUILD_INVALID_FD,          \
-		CBUILD_INVALID_FD,                                                         \
-		CBUILD_INVALID_FD })
+	cbuild_cmd_run((cmd), .no_reset = true)
 /**
  * @brief Call sync command with io rediecting
  *
@@ -131,5 +147,45 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
  * @return true -> Command succeed
  * @return false -> Command failed
  */
-bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
+#define cbuild_cmd_sync_redirect(cmd, ...)                                     \
+	({                                                                           \
+		cbuild_cmd_fd_t fd = __VA_ARGS__;                                          \
+		cbuild_cmd_run((cmd),                                                      \
+		  .no_reset = true,                                                        \
+		  .fdstdin = fd.fdstdin,                                                   \
+		  .fdstdout = fd.fdstdout,                                                 \
+		  .fdstderr = fd.fdstderr);                                                \
+	})
+typedef struct cbuild_cmd_opt_t {
+	// Redirect
+	cbuild_fd_t fdstdin;
+	cbuild_fd_t fdstdout;
+	cbuild_fd_t fdstderr;
+	// Flags
+	union {
+		uint32_t flags;
+		struct {
+			uint32_t async       : 1;
+			uint32_t no_reset    : 1;
+			uint32_t autokill    : 1;
+			uint32_t pass_proc   : 1;
+			uint32_t append_proc : 1;
+			uint32_t             : 27;
+		};
+	};
+	// Misc options
+	union {
+		cbuild_proclist_t* procs;
+		cbuild_proc_t* proc;
+	};
+} cbuild_cmd_opt_t;
+bool cbuild__cmd_run_opt(cbuild_cmd_t cmd, cbuild_cmd_opt_t opts);
+#define cbuild_cmd_run(cmd, ...)                                               \
+	cbuild__cmd_run_opt(cmd, (cbuild_cmd_opt_t){.fdstdin = CBUILD_INVALID_FD,    \
+		.fdstdout = CBUILD_INVALID_FD,                                             \
+		.fdstderr = CBUILD_INVALID_FD,                                             \
+		.flags = 0,                                                                \
+		.proc = NULL __VA_OPT__(,)                                                 \
+		__VA_ARGS__                                                                \
+	})
 #endif // __CBUILD_COMMAND_H__
