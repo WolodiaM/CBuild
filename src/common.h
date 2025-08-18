@@ -230,23 +230,27 @@
  *     - Now test on 'musl' libc too.
  */
 // Code
+// NOTE: CBuild should be a first header to be included in translation unit, or
+// you need to define '_GNU_SOURCE' yourself
 #ifndef __CBUILD_COMMON_H__
 #define __CBUILD_COMMON_H__
 // OS-specific defines
 #if defined(__linux__)
-	#include <features.h>
 	// Use GNU extentions if possible
-	#define _GNU_SOURCE
+	#ifndef _GNU_SOURCE
+		#define _GNU_SOURCE
+	#endif // _GNU_SOURCE
+	#include <features.h>
 	// Needed by CBuild
 	#define CBUILD_OS_LINUX
 	#define CBUILD_API_POSIX
 	// Zoo of linux libc's
 	#if defined(__GLIBC__)
-	#define CBUILD_OS_LINEUX_GLIBC
+		#define CBUILD_OS_LINUX_GLIBC
 	#elif defined(__UCLIBC__)
 		#define CBUILD_OS_LINUX_UCLIBC
 	#else // Assume musl
-	#define CBUILD_OS_LINUX_MUSL
+		#define CBUILD_OS_LINUX_MUSL
 	#endif // Libc selector
 #elif defined(__APPLE__) || defined(__MACH__)
 	#define CBUILD_OS_MACOS

@@ -1,4 +1,4 @@
-#define CBUILD_COMPILE_HELPER
+#include "common.h"
 #include "Command.h"
 #include "Compile.h"
 #include "DynArray.h"
@@ -10,24 +10,25 @@
 #include "StringView.h"
 #include "Term.h"
 #include "Map.h"
-#include "common.h"
 #include "Arena.h"
 /* misc code */
-#if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
-	defined(CBUILD_OS_WINDOWS_CYGWIN)
-	// GlibC, musl, BSD, Cygwin
-	extern const char* __progname;
+#if (defined(CBUILD_OS_LINUX) &&                                               \
+	!(defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL))) ||       \
+	defined(CBUILD_OS_UNIX)
+// glibc has its own way and generic Unix is user's problem
+extern const char* __progname;
 #endif
 const char* __cbuild_progname(void) {
-#if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_LINUX) ||                      \
-		defined(CBUILD_OS_WINDOWS_CYGWIN)
-	return __progname;
-#elif defined(CBUILD_OS_MACOS)
+#if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS)
 	return getprogname();
-#elif defined(CBUILD_OS_UNIX)
-	// TODO: If not available leave this to user to resolve
+#elif defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) ||       \
+	defined(CBUILD_OS_LINUX_UCLIBC) || defined(CBUILD_OS_WINDOWS_CYGWIN)
+	return program_invocation_short_name;
+#elif defined(CBUILD_OS_LINUX) || defined(CBUILD_OS_UNIX)
 	return __progname;
-#endif
+#else
+	return __progname
+#endif // CBUILD_OS_* select
 }
 void*	(*cbuild_malloc)(size_t size) = malloc;
 void* (*cbuild_realloc)(void* ptr, size_t size) = realloc;
@@ -290,9 +291,8 @@ ssize_t cbuild_sv_find(cbuild_sv_t sv, char c) {
 }
 ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
 	char* chrptr = sv.data;
-#if defined(CBUILD_API_POSIX) &&                                               \
-		(defined(_GNU_SOURCE) || defined(__musl__) || defined(CBUILD_OS_MACOS) ||  \
-     defined(CBUILD_OS_BSD))
+#if defined(CBUILD_API_POSIX) && (defined(CBUILD_OS_LINUX) ||                  \
+	defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS))
 	chrptr = memrchr(sv.data, c, sv.size);
 #else
 	chrptr += sv.size;

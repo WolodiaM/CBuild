@@ -27,7 +27,6 @@
  */
 // Project includes
 #include <unistd.h>
-#define CBUILD_COMPILE_HELPER
 #include "../src/Command.h"
 #include "../src/Compile.h"
 #include "../src/StringBuilder.h"
