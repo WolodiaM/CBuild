@@ -39,25 +39,13 @@ TEST_MAIN({
 		cbuild_cmd_t file_writer = {0};
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd = cbuild_fd_open_write("build/Compile.c.f1");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		sleep(2);
 		file_writer.size = 0;
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		pattern_fd = cbuild_fd_open_write("build/Compile.c.f2");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		// Do tests
 		int r1 = cbuild_compare_mtime("build/Compile.c.f1",
 		    "build/Compile.c.f2");
@@ -97,38 +85,20 @@ TEST_MAIN({
 		cbuild_cmd_t file_writer = {0};
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd = cbuild_fd_open_write("build/Compile.c.f4");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		sleep(2);
 		file_writer.size = 0;
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		pattern_fd = cbuild_fd_open_write("build/Compile.c.f5");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		sleep(2);
 		file_writer.size = 0;
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		pattern_fd = cbuild_fd_open_write("build/Compile.c.f6");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		// Do tests
-		char *fs1[2];
+		char* fs1[2];
 		fs1[0] = "build/Compile.c.f5";
 		fs1[1] = "build/Compile.c.f6";
 		int r1 = cbuild_compare_mtime_many("build/Compile.c.f4",
@@ -137,7 +107,7 @@ TEST_MAIN({
 		  "Output is older than two files but function "
 		  "returned %d, expected 2",
 		  r1)
-		char *fs2[2];
+		char* fs2[2];
 		fs2[0] = "build/Compile.c.f4";
 		fs2[1] = "build/Compile.c.f5";
 		int r2 = cbuild_compare_mtime_many("build/Compile.c.f6",
@@ -145,7 +115,7 @@ TEST_MAIN({
 		TEST_ASSERT_EQ(
 		  r2, 0, "Output is newer but function returned %d, expected 0",
 		  r2)
-		char *fs3[2];
+		char* fs3[2];
 		fs3[0] = "build/Compile.c.f5";
 		fs3[1] = "build/Compile.c.f6";
 		int r3 = cbuild_compare_mtime_many("build/Compile.c.f7",
@@ -154,7 +124,7 @@ TEST_MAIN({
 		  "Output is newer than 2 inputs but function "
 		  "returned %d, expected 2",
 		  r3)
-		char *fs4[2];
+		char* fs4[2];
 		fs4[0] = "build/Compile.c.f5";
 		fs4[1] = "build/Compile.c.f7";
 		int r4 = cbuild_compare_mtime_many("build/Compile.c.f6",
@@ -163,7 +133,7 @@ TEST_MAIN({
 		  "One of inputs does not exist, but function "
 		  "returned %d, expected -1",
 		  r4)
-		char *fs5[3];
+		char* fs5[3];
 		fs5[0] = "build/Compile.c.f5";
 		fs5[1] = "build/Compile.c.f6";
 		fs5[2] = "build/Compile.c.f8";

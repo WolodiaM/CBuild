@@ -464,20 +464,31 @@ TEST_MAIN({
 	"StringView edge-case chop");
 	TEST_CASE(
 	{
-		cbuild_sv_t sv = cbuild_sv_from_cstr("aaabacabaaa");
-		TEST_ASSERT_EQ(cbuild_sv_find(sv, 'b'), 3,
+		cbuild_sv_t sv1 = cbuild_sv_from_cstr("aaabacabaaa");
+		TEST_ASSERT_EQ(cbuild_sv_find(sv1, 'b'), 3,
 		  "Wrong index in find" TEST_EXPECT_MSG(zu), 3ul,
-		  cbuild_sv_find(sv, 'b'));
-		TEST_ASSERT_EQ(cbuild_sv_find(sv, 'z'), -1,
-		  "Wrong error index in find" TEST_EXPECT_MSG(zu),
-		  (size_t) -1, cbuild_sv_find(sv, 'z'));
-		TEST_ASSERT_EQ(cbuild_sv_rfind(sv, 'b'), 7,
+		  cbuild_sv_find(sv1, 'b'));
+		TEST_ASSERT_EQ(cbuild_sv_find(sv1, 'z'), -1,
+		  "Wrong error index in find" TEST_EXPECT_MSG(zd),
+		  (ssize_t) -1, cbuild_sv_find(sv1, 'z'));
+		TEST_ASSERT_EQ(cbuild_sv_rfind(sv1, 'b'), 7,
 		  "Wrong index in rfind" TEST_EXPECT_MSG(zu), 7ul,
-		  cbuild_sv_rfind(sv, 'b'));
-		TEST_ASSERT_EQ(cbuild_sv_contains(sv, 'c'), true,
+		  cbuild_sv_rfind(sv1, 'b'));
+		TEST_ASSERT_EQ(cbuild_sv_contains(sv1, 'c'), true,
 		  "Wrong result from contains" TEST_EXPECT_MSG(s),
 		  "true",
-		  cbuild_sv_contains(sv, 'c') ? "true" : "false");
+		  cbuild_sv_contains(sv1, 'c') ? "true" : "false");
+		cbuild_sv_t sv2 = cbuild_sv_from_cstr("aaabacdcdcabaaa");
+		TEST_ASSERT_EQ(cbuild_sv_find_sv(sv2, cbuild_sv_from_cstr("dcd")), 6,
+		  "Wrong index in find" TEST_EXPECT_MSG(zu), 6ul,
+		  cbuild_sv_find_sv(sv2, cbuild_sv_from_cstr("dcd")));
+		TEST_ASSERT_EQ(cbuild_sv_find_sv(sv2, cbuild_sv_from_cstr("zcz")), -1,
+		  "Wrong error index in find" TEST_EXPECT_MSG(zd),
+		  (ssize_t) -1, cbuild_sv_find_sv(sv2, cbuild_sv_from_cstr("zcz")));
+		TEST_ASSERT_EQ(cbuild_sv_contains_sv(sv2, cbuild_sv_from_cstr("dcd")), true,
+		  "Wrong result from contains" TEST_EXPECT_MSG(s),
+		  "true",
+		  cbuild_sv_contains_sv(sv2, cbuild_sv_from_cstr("dcd")) ? "true" : "false");
 	},
 	"StringView search");
 	TEST_CASE({

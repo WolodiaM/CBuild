@@ -33,42 +33,41 @@
 // Code
 const char* MSG = "Hello, world!";
 int         thread(void* context) {
-  setvbuf(stdout, NULL, _IONBF, 0);
-  sleep(2);
-  printf("\tHello from child proc [%d]\n", getpid());
-  fflush(stdout);
-  memcpy(context, MSG, strlen(MSG) + 1);
-  return 0;
+	setvbuf(stdout, NULL, _IONBF, 0);
+	sleep(2);
+	printf("\tHello from child proc [%d]\n", getpid());
+	fflush(stdout);
+	memcpy(context, MSG, strlen(MSG) + 1);
+	return 0;
 }
-TEST_MAIN(
-		{
-			TEST_CASE(
-					{
-						cbuild_proc_ptr_t context = cbuild_proc_malloc(strlen(MSG) + 1);
-						TEST_ASSERT_EQ(
-								context.size, strlen(MSG) + 1,
-								"Wrong amount of elements set in ptr" TEST_EXPECT_MSG(zu),
-								strlen(MSG) + 1, context.size);
+TEST_MAIN( {
+	TEST_CASE(
+	{
+		cbuild_proc_ptr_t context = cbuild_proc_malloc(strlen(MSG) + 1);
+		TEST_ASSERT_EQ(
+		  context.size, strlen(MSG) + 1,
+		  "Wrong amount of elements set in ptr" TEST_EXPECT_MSG(zu),
+		  strlen(MSG) + 1, context.size);
 
-						TEST_ASSERT_NEQ(context.ptr, NULL, "%s",
-		                        "NULL returned from mmap!");
-						cbuild_proc_t subproc = cbuild_proc_start(thread, context.ptr);
-						printf("\tHello from main proc [%d]\n", getpid());
-						fflush(stdout);
-						int code = cbuild_proc_wait_code(subproc);
-						TEST_ASSERT_EQ(code, 0,
-		                       "Either subprocess exited abnormally or CBuild is "
-		                       "broken" TEST_EXPECT_MSG(d),
-		                       0, code);
-						if (code == 0) {
-							TEST_ASSERT_STREQ(context.ptr, MSG,
-			                          "Wring shared memory copy" TEST_EXPECT_MSG(s),
-			                          MSG, (char*)context.ptr);
-						} else {
-							err_code++;
-						}
-						cbuild_proc_free(context);
-					},
-					"cbuild_proc_ctrl");
-		},
-		"Process control module tests")
+		TEST_ASSERT_NEQ(context.ptr, NULL, "%s",
+		  "NULL returned from mmap!");
+		cbuild_proc_t subproc = cbuild_proc_start(thread, context.ptr);
+		printf("\tHello from main proc [%d]\n", getpid());
+		fflush(stdout);
+		int code = cbuild_proc_wait_code(subproc);
+		TEST_ASSERT_EQ(code, 0,
+		  "Either subprocess exited abnormally or CBuild is "
+		  "broken" TEST_EXPECT_MSG(d),
+		  0, code);
+		if(code == 0) {
+			TEST_ASSERT_STREQ(context.ptr, MSG,
+			  "Wring shared memory copy" TEST_EXPECT_MSG(s),
+			  MSG, (char*)context.ptr);
+		} else {
+			err_code++;
+		}
+		cbuild_proc_free(context);
+	},
+	"cbuild_proc_ctrl");
+},
+"Process control module tests")

@@ -11,6 +11,7 @@
 #include "Term.h"
 #include "Map.h"
 #include "Arena.h"
+#include "Stack.h"
 /* misc code */
 #if (defined(CBUILD_OS_LINUX) &&                                               \
 	!(defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL))) ||       \
@@ -310,8 +311,37 @@ loop_end:
 	}
 	return chrptr - sv.data;
 }
+ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle) {
+#if defined(CBUILD_API_POSIX) && (defined(CBUILD_OS_LINUX_GLIBC) ||            \
+	defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_BSD) ||                   \
+	defined(CBUILD_OS_MACOS))
+	char* chrptr = memmem(sv.data, sv.size, needle.data, needle.size);
+	if(chrptr == NULL) {
+		return -1;
+	}
+	return chrptr - sv.data;
+#else
+	if(sv.size < needle.size) return -1;
+	const char* p = sv.data;
+	size_t rem = sv.size;
+	while((p = memchr(p, *needle.data, rem)) != NULL) {
+		size_t offset = (size_t)(p - sv.data);
+		rem = sv.size - offset;
+		if(rem < needle.size) return -1;
+		if(cbuild_sv_cmp(needle, cbuild_sv_from_parts(p, needle.size)) == 0) {
+			return (ssize_t)offset;
+		}
+		p++;
+		rem--;
+	}
+	return -1;
+#endif
+}
 bool cbuild_sv_contains(cbuild_sv_t sv, char c) {
 	return cbuild_sv_find(sv, c) != -1;
+}
+bool cbuild_sv_contains_sv(cbuild_sv_t sv, cbuild_sv_t needle) {
+	return cbuild_sv_find_sv(sv, needle) != -1;
 }
 int cbuild_sv_utf8cp_len(cbuild_sv_t sv) {
 	if(sv.size == 0) return 0;
@@ -637,18 +667,56 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 	}
 	for(size_t i = 0; i < cmd.size; i++) {
 		const char* tmp = cmd.data[i];
-		cbuild_sb_append_cstr(&sb, tmp);
+		if(!strchr(tmp, ' ')) {
+			cbuild_sb_append_cstr(&sb, tmp);
+		} else {
+			cbuild_sb_appendf(&sb, "\'%s\'", tmp);
+		}
 		if(i < cmd.size - 1) {
 			cbuild_sb_append(&sb, ' ');
 		}
 	}
 	return sb;
 }
+cbuild_proc_t cbuild_cmd_async(cbuild_cmd_t cmd) {
+	cbuild_proc_t ret;
+	if(!cbuild_cmd_run(&cmd, .pass_proc = true, .no_reset = true,
+	  .no_print_cmd = true, .proc = &ret)) {
+		return CBUILD_INVALID_PROC;
+	}
+	return ret;
+}
+cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
+	cbuild_proc_t ret;
+	if(!cbuild_cmd_run(&cmd, .pass_proc = true, .no_reset = true,
+	  .fdstdin = fd.fdstdin == CBUILD_INVALID_FD ? NULL : &fd.fdstdin,
+	  .fdstdout = fd.fdstdout == CBUILD_INVALID_FD ? NULL : &fd.fdstdout,
+	  .fdstderr = fd.fdstderr == CBUILD_INVALID_FD ? NULL : &fd.fdstderr,
+	  .no_print_cmd = true, .proc = &ret)) {
+		return CBUILD_INVALID_PROC;
+	}
+	return ret;
+}
+bool cbuild_cmd_sync(cbuild_cmd_t cmd) {
+	return cbuild_cmd_run(&cmd, .no_reset = true, .no_print_cmd = true);
+}
+bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
+	return cbuild_cmd_run(&cmd, .no_reset = true, .no_print_cmd = true,
+	    .fdstdin = fd.fdstdin == CBUILD_INVALID_FD ? NULL : &fd.fdstdin,
+	    .fdstdout = fd.fdstdout == CBUILD_INVALID_FD ? NULL : &fd.fdstdout,
+	    .fdstderr = fd.fdstderr == CBUILD_INVALID_FD ? NULL : &fd.fdstderr,);
+}
 #if defined(CBUILD_API_POSIX)
 bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
 	if(cmd->size < 1) {
 		cbuild_log(CBUILD_LOG_ERROR, "Empty command requested to be executed!");
 		return CBUILD_INVALID_PROC;
+	}
+	if(!opts.no_print_cmd) {
+		cbuild_sb_t cmd_sb = cbuild_cmd_to_sb(*cmd);
+		cbuild_log(CBUILD_LOG_TRACE,
+		  "Running command '"CBuildSBFmt"'", CBuildSBArg(cmd_sb));
+		cbuild_sb_clear(&cmd_sb);
 	}
 	// Get args
 	cbuild_cmd_t argv = {0};
@@ -658,34 +726,38 @@ bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
 	if(proc < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Could not create child process, error: \"%s\"",
 		  strerror(errno));
+		cbuild_cmd_clear(&argv);
 		return false;
 	}
 	if(proc == 0) {
 		fflush(NULL);
-		if(opts.fdstdin != CBUILD_INVALID_FD) {
-			if(dup2(opts.fdstdin, STDIN_FILENO) < 0) {
+		if(opts.fdstdin) {
+			if(dup2(*opts.fdstdin, STDIN_FILENO) < 0) {
 				cbuild_log(
 				  CBUILD_LOG_ERROR,
 				  "Could not redirect stdin inside of a child process, error: \"%s\"",
 				  strerror(errno));
+				cbuild_cmd_clear(&argv);
 				exit(1);
 			}
 		}
-		if(opts.fdstdout != CBUILD_INVALID_FD) {
-			if(dup2(opts.fdstdout, STDOUT_FILENO) < 0) {
+		if(opts.fdstdout) {
+			if(dup2(*opts.fdstdout, STDOUT_FILENO) < 0) {
 				cbuild_log(
 				  CBUILD_LOG_ERROR,
 				  "Could not redirect stdout inside of a child process, error: \"%s\"",
 				  strerror(errno));
+				cbuild_sb_clear(&argv);
 				exit(1);
 			}
 		}
-		if(opts.fdstderr != CBUILD_INVALID_FD) {
-			if(dup2(opts.fdstderr, STDERR_FILENO) < 0) {
+		if(opts.fdstderr) {
+			if(dup2(*opts.fdstderr, STDERR_FILENO) < 0) {
 				cbuild_log(
 				  CBUILD_LOG_ERROR,
 				  "Could not redirect stderr inside of a child process, error: \"%s\"",
 				  strerror(errno));
+				cbuild_cmd_clear(&argv);
 				exit(1);
 			}
 		}
@@ -709,18 +781,16 @@ bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
 	cbuild_cmd_clear(&argv);
 	if(!opts.no_reset) {
 		cmd->size = 0;
-		cbuild_fd_close(opts.fdstdin);
-		cbuild_fd_close(opts.fdstdout);
-		cbuild_fd_close(opts.fdstderr);
+		if(opts.fdstdin) cbuild_fd_close(*opts.fdstdin);
+		if(opts.fdstdout) cbuild_fd_close(*opts.fdstdout);
+		if(opts.fdstderr) cbuild_fd_close(*opts.fdstderr);
 	}
-	if(!opts.async) {
-		return cbuild_proc_wait(proc);
+	if(opts.pass_proc) {
+		*opts.proc = proc;
+	} else if(opts.append_proc) {
+		cbuild_da_append(opts.procs, proc);
 	} else {
-		if(opts.pass_proc) {
-			*opts.proc = proc;
-		} else if(opts.append_proc) {
-			cbuild_da_append(opts.procs, proc);
-		}
+		return cbuild_proc_wait(proc);
 	}
 	return true;
 }
@@ -1035,7 +1105,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 		return false;
 	}
 	char* tmp_buff = (char*)cbuild_malloc(CBUILD_TMP_BUFF_SIZE);
-	cbuild_assert(tmp_buff != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
+	cbuild_assert(tmp_buff != NULL, "(LIB_CBUILD_FS) Allocation failed.y\n");
 	while(true) {
 		ssize_t cnt = read(src_fd, tmp_buff, CBUILD_TMP_BUFF_SIZE);
 		if(cnt == 0) {
@@ -1089,6 +1159,41 @@ bool cbuild_file_remove(const char* path) {
 	if(unlink(path) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot remove file \"%s\", error: \"%s\"",
 		  path, strerror(errno));
+		return false;
+	}
+	return true;
+}
+bool cbuild_symlink(const char* src, const char* dst) {
+	char* base = cbuild_path_base(dst);
+	if(*base) {
+		if(!cbuild_dir_check(base)) {
+			if(!cbuild_dir_create(base)) {
+				cbuild_log(CBUILD_LOG_ERROR,
+				  "Destination base path \"%s\" is invalid!", base);
+				cbuild_free(base);
+				return false;
+			}
+		}
+	}
+	cbuild_free(base);
+	int ret = symlink(src, dst);
+	if(ret < 0) {
+		if(errno == EEXIST) {
+			cbuild_filetype_t type = cbuild_path_filetype(dst);
+			switch(type) {
+			case CBUILD_FTYPE_DIRECTORY: cbuild_dir_remove(dst); break;
+			case CBUILD_FTYPE_REGULAR:
+			case CBUILD_FTYPE_SYMLINK:
+			case CBUILD_FTYPE_OTHER:
+				cbuild_file_remove(dst);
+				break;
+			default: CBUILD_UNREACHABLE("Invalid filetype in create_symlink.");
+			}
+			if(symlink(src, dst) == 0) return true;
+		}
+		cbuild_log(CBUILD_LOG_ERROR,
+		  "Cannot create symbolic link \"%s\", error: \"%s\"",
+		  dst, strerror(errno));
 		return false;
 	}
 	return true;
@@ -1221,23 +1326,53 @@ void cbuild_pathlist_clear(cbuild_pathlist_t* list) {
 	}
 	cbuild_da_clear(list);
 }
-bool cbuild_dir_create(const char* path) {
-	int ret = mkdir(path, 0755);
+bool __cbuild_dir_create_int(const char* path_, bool inplace) {
+	int ret = mkdir(path_, 0755);
 	if(ret < 0) {
 		if(errno == EEXIST) {
-			cbuild_log(CBUILD_LOG_WARN, "Directory \"%s\" exist", path);
+			cbuild_log(CBUILD_LOG_WARN, "Directory \"%s\" exist", path_);
 			return false;
+		} else if(errno == ENOENT) {
+			char* path = (char*)path_;
+			if(!inplace) path = cbuild_path_normalize(path_);
+			cbuild_log_level_t old_log_level = cbuild_log_get_min_level();
+			if(!inplace) cbuild_log_set_min_level(CBUILD_LOG_ERROR);
+			char* slash = strrchr(path, '/');
+			if(slash) *slash = '\0';
+			if(!__cbuild_dir_create_int(path, true)) {
+				if(!inplace) {
+					cbuild_free(path);
+					cbuild_log_set_min_level(old_log_level);
+				}
+				return false;
+			}
+			if(slash) *slash = '/';
+			ret = mkdir(path, 0755);
+			if(ret == 0) {
+				if(!inplace) {
+					cbuild_free(path);
+					cbuild_log_set_min_level(old_log_level);
+				}
+				return true;
+			}
+			if(!inplace) {
+				cbuild_free(path);
+				cbuild_log_set_min_level(old_log_level);
+			}
 		}
 		cbuild_log(CBUILD_LOG_ERROR,
-		  "Cannot create directory \"%s\", error: \"%s\"", path,
+		  "Cannot create directory \"%s\", error: \"%s\"", path_,
 		  strerror(errno));
 		return false;
 	}
 	return true;
 }
+bool cbuild_dir_create(const char* path) {
+	return __cbuild_dir_create_int(path, false);
+}
 cbuild_filetype_t cbuild_path_filetype(const char* path) {
 	struct stat statbuff;
-	if(stat(path, &statbuff) < 0) {
+	if(lstat(path, &statbuff) < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot stat file \"%s\", error: \"%s\"", path,
 		  strerror(errno));
 		return CBUILD_FTYPE_OTHER;
@@ -1253,7 +1388,7 @@ cbuild_filetype_t cbuild_path_filetype(const char* path) {
 	}
 	return CBUILD_FTYPE_OTHER;
 }
-const char* cbuild_path_ext(const char* path) {
+char* cbuild_path_ext(const char* path) {
 	ssize_t i     = (ssize_t)strlen(path);
 	bool    found = false;
 	for(; i >= 0; i--) {
@@ -1274,7 +1409,7 @@ const char* cbuild_path_ext(const char* path) {
 	memcpy(ret, path + i + 1, len);
 	return ret;
 }
-const char* cbuild_path_name(const char* path) {
+char* cbuild_path_name(const char* path) {
 	ssize_t i = (ssize_t)strlen(path);
 	if(path[i - 1] == '/') {
 		i -= 2;
@@ -1290,7 +1425,7 @@ const char* cbuild_path_name(const char* path) {
 	memcpy(ret, path + i + 1, len);
 	return ret;
 }
-const char* cbuild_path_base(const char* path) {
+char* cbuild_path_base(const char* path) {
 	ssize_t i = (ssize_t)strlen(path);
 	if(path[i - 1] == '/') {
 		i -= 2;
@@ -1315,6 +1450,42 @@ const char* cbuild_path_base(const char* path) {
 	ret[len - 1] = '\0';
 	return ret;
 }
+typedef struct __cbuild_int_stack_cstr_t {
+	cbuild_sv_t* data;
+	size_t ptr;
+	size_t capacity;
+} __cbuild_int_stack_cstr_t;
+char* cbuild_path_normalize(const char* path_) {
+	cbuild_sb_t ret = {0};
+	__cbuild_int_stack_cstr_t dirs = {0};
+	cbuild_sv_t path = cbuild_sv_from_cstr(path_);
+	if(*path_ == '/') cbuild_sb_append(&ret, '/');
+	do {
+		cbuild_sv_t dir = cbuild_sv_chop_by_delim(&path, '/');
+		if(dir.size == 0) continue;
+		if(cbuild_sv_cmp(dir, cbuild_sv_from_lit(".")) == 0) {
+			// Do nothing
+		} else if(cbuild_sv_cmp(dir, cbuild_sv_from_lit("..")) == 0) {
+			if(dirs.ptr == 0) { // Underflow
+				cbuild_sb_append_cstr(&ret, "../");
+				// Underflow on absolute path is undefined anyway
+				// and on relative path we can guarantee that this will be fine
+				// (we have nothing in directory stack anyway)
+			} else {
+				cbuild_stack_pop(&dirs);
+			}
+		} else {
+			cbuild_stack_push(&dirs, dir);
+		}
+	} while(path.size > 0);
+	for(size_t i = 0; i <	dirs.ptr; i++) {
+		cbuild_sb_appendf(&ret, CBuildSVFmt"/", CBuildSVArg(dirs.data[i]));
+	}
+	if(ret.size == 0) cbuild_sb_append(&ret, '.');
+	if(ret.size > 1 && ret.data[ret.size - 1] == '/') ret.size--;
+	cbuild_sb_append_null(&ret);
+	return ret.data;
+}
 /* Compile.h impl */
 #ifdef CBUILD_API_POSIX
 void __cbuild_compile_mark_exec(const char* file) {
@@ -1325,14 +1496,26 @@ void __cbuild_compile_mark_exec(const char* file) {
 }
 #endif // CBUILD_API_POSIX
 void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd) = NULL;
-void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
+void __cbuild_selfrebuild(int argc, char** argv, size_t num_files, ...) {
+	va_list va;
+	cbuild_cmd_t files = {0};;
+	va_start(va, num_files);
+	for(size_t i = 0; i < num_files; i++) {
+		char* arg = va_arg(va, char*);
+		cbuild_da_append(&files, arg);
+	}
+	va_end(va);
+	__cbuild_selfrebuild_ex(argc, argv, files);
+	cbuild_cmd_clear(&files);
+}
+void __cbuild_selfrebuild_ex(int argc, char** argv, cbuild_cmd_t files) {
+	const char* spath =	files.data[0];
 	char*       bname_new = cbuild_shift(argv, argc);
 	cbuild_sb_t bname_old = {0};
 	cbuild_sb_append_cstr(&bname_old, bname_new);
 	cbuild_sb_append_cstr(&bname_old, ".old");
 	cbuild_sb_append_null(&bname_old);
-
-	int cond = cbuild_compare_mtime(bname_new, (char*)spath);
+	int cond = cbuild_compare_mtime_many(bname_new, files.data, files.size);
 	if(cond < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Error while performing self-rebuild");
 		cbuild_sb_clear(&bname_old);
@@ -1354,15 +1537,14 @@ void __cbuild_selfrebuild(int argc, char** argv, const char* spath) {
 		cbuild_selfrebuild_hook(&cmd);
 	}
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, (char*)bname_new, (char*)spath);
-	if(!cbuild_cmd_sync(cmd)) {
+	if(!cbuild_cmd_run(&cmd)) {
 		cbuild_file_rename(bname_old.data, bname_new);
 		return; // If compilation failed the let old version run
 	}
 	__cbuild_compile_mark_exec(bname_new);
-	cmd.size = 0;
 	cbuild_cmd_append(&cmd, bname_new);
 	cbuild_cmd_append_arr(&cmd, argv, (size_t)argc);
-	if(!cbuild_cmd_sync(cmd)) {
+	if(cbuild_cmd_run(&cmd)) {
 		cbuild_sb_clear(&bname_old);
 		exit(1);
 	}
@@ -1725,7 +1907,7 @@ void __cbuild_int_flag_parse_metadata_spec(
 	    spec, __cbuild_int_flag_metadata_delim_func, &delim);
 	while(delim != '\t') {
 		if(opt.size > 0) {
-			__cbuild_int_flag_parse_metadata_entry(new_spec, *parse_offset, opt);
+			__cbuild_int_flag_parse_metadata_entry(new_spec, * parse_offset, opt);
 		}
 		// Parse next block
 		opt = cbuild_sv_chop_by_func(spec, __cbuild_int_flag_metadata_delim_func,
@@ -1733,7 +1915,7 @@ void __cbuild_int_flag_parse_metadata_spec(
 		(*parse_offset) += (opt.size + 1);
 	}
 	if(opt.size > 0) {
-		__cbuild_int_flag_parse_metadata_entry(new_spec, *parse_offset, opt);
+		__cbuild_int_flag_parse_metadata_entry(new_spec, * parse_offset, opt);
 	}
 }
 void __cbuild_int_flag_parse_cmd(cbuild_sv_t spec) {

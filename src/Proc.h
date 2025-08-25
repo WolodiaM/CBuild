@@ -42,7 +42,7 @@ typedef struct cbuild_proclist_t {
  * @return true -> Process finished without errors
  * @return false -> Process finished with an error
  */
-bool cbuild_proc_wait(cbuild_proc_t proc);
+CBDEF bool cbuild_proc_wait(cbuild_proc_t proc);
 /**
  * @brief Wait until all process finish execution
  *
@@ -50,7 +50,7 @@ bool cbuild_proc_wait(cbuild_proc_t proc);
  * @return true -> All proceses finished without errors
  * @return false -> At least one process finished with an error
  */
-bool cbuild_procs_wait(cbuild_proclist_t procs);
+CBDEF bool cbuild_procs_wait(cbuild_proclist_t procs);
 /**
  * @brief Wait until process finishes execution
  *
@@ -58,14 +58,14 @@ bool cbuild_procs_wait(cbuild_proclist_t procs);
  * @return int -> Process exit code. INT_MIN on invalid proc and INT_MAX if
  * process was closed on signal.
  */
-int cbuild_proc_wait_code(cbuild_proc_t proc);
+CBDEF int cbuild_proc_wait_code(cbuild_proc_t proc);
 /**
  * @brief Check if process is running
  *
  * @param proc => cbuild_proc_t -> Process
  * @return bool => true if running, false otherwise
  */
-bool cbuild_proc_is_running(cbuild_proc_t proc);
+CBDEF bool cbuild_proc_is_running(cbuild_proc_t proc);
 /**
  * @brief Start another process with generic function
  *
@@ -75,7 +75,8 @@ bool cbuild_proc_is_running(cbuild_proc_t proc);
  * @param context => Will be passed to a callback
  * @return CBuildProc -> Process ID
  */
-cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context);
+CBDEF cbuild_proc_t cbuild_proc_start(int (*callback)(void* context),
+  void* context);
 /**
  * @struct cbuild_proc_ptr
  * @brief "Pointer" for cbuild_proc_malloc and cbuild_proc_free. Struct
@@ -91,11 +92,11 @@ typedef struct cbuild_proc_ptr_t {
  * @param n => size_t -> Number of bytes
  * @return cbuild_proc_ptr_t -> Pointer to a memory
  */
-cbuild_proc_ptr_t cbuild_proc_malloc(size_t n);
+CBDEF cbuild_proc_ptr_t cbuild_proc_malloc(size_t n);
 /**
  * @brief free for cbuild_proc_malloc
  *
  * @param ptr => cbuild_proc_ptr_t -> Pointer (from cbuild_proc_malloc)
  */
-void cbuild_proc_free(cbuild_proc_ptr_t ptr);
+CBDEF void cbuild_proc_free(cbuild_proc_ptr_t ptr);
 #endif // __CBUILD_PROC_H__

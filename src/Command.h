@@ -83,7 +83,7 @@ typedef struct {
  * @param cmd => cbuild_cmd_t -> Command
  * @return CBuildStrBuff -> String buffer to work with
  */
-cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
+CBDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
 /**
  * @brief Conver cbuild_cmd_t to cbuild_sb_t
  *
@@ -97,17 +97,8 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  * @param cmd => cbuild_cmd_t -> Command buffer
  * @return cbuild_proc_t -> Process associated with called command
  */
-#define cbuild_cmd_async(cmd)                                                  \
-	({                                                                           \
-		cbuild_proc_t __cbuild__tmp_proc;                                          \
-		if(!cbuild_cmd_run(&(cmd), .async = true,                                  \
-		  .pass_proc = true,                                                       \
-		  .no_reset = true,                                                        \
-		  .proc = &__cbuild__tmp_proc)) {                                          \
-			__cbuild_tmp_proc = CBUILD_INVALID_PROC;                                 \
-		}                                                                          \
-		__cbuild__tmp_proc;                                                        \
-	})
+CBDEF CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!")
+cbuild_proc_t cbuild_cmd_async(cbuild_cmd_t cmd);
 /**
  * @brief Call async command with io rediecting
  *
@@ -115,21 +106,8 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  * @param fd => cbuild_cmd_fd_t -> IO redicrecting table
  * @return cbuild_proc_t -> Process associated with called command
  */
-#define cbuild_cmd_async_redirect(cmd, ...)                                    \
-	({                                                                           \
-		cbuild_proc_t __cbuild__tmp_proc;                                          \
-		cbuild_cmd_fd_t fd = __VA_ARGS__;                                          \
-		if(!cbuild_cmd_run(&(cmd), .async = true,                                  \
-		  .pass_proc = true,                                                       \
-		  .no_reset = true,                                                        \
-		  .fdstdin = fd.fdstdin,                                                   \
-		  .fdstdout = fd.fdstdout,                                                 \
-		  .fdstderr = fd.fdstderr,                                                 \
-		  .proc = &__cbuild__tmp_proc)) {                                          \
-			__cbuild_tmp_proc = CBUILD_INVALID_PROC;                                 \
-		}                                                                          \
-		__cbuild__tmp_proc;                                                        \
-	})
+CBDEF CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!")
+cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
 /**
  * @brief Call sync command without io redirecting
  *
@@ -137,8 +115,8 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  * @return true -> Command succeed
  * @return false -> Command failed
  */
-#define cbuild_cmd_sync(cmd)                                                   \
-	cbuild_cmd_run(&(cmd), .no_reset = true)
+CBDEF CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!")
+bool cbuild_cmd_sync(cbuild_cmd_t cmd);
 /**
  * @brief Call sync command with io rediecting
  *
@@ -147,30 +125,23 @@ cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  * @return true -> Command succeed
  * @return false -> Command failed
  */
-#define cbuild_cmd_sync_redirect(cmd, ...)                                     \
-	({                                                                           \
-		cbuild_cmd_fd_t fd = __VA_ARGS__;                                          \
-		cbuild_cmd_run(&(cmd),                                                     \
-		  .no_reset = true,                                                        \
-		  .fdstdin = fd.fdstdin,                                                   \
-		  .fdstdout = fd.fdstdout,                                                 \
-		  .fdstderr = fd.fdstderr);                                                \
-	})
+CBDEF CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!")
+bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
 typedef struct cbuild_cmd_opt_t {
 	// Redirect
-	cbuild_fd_t fdstdin;
-	cbuild_fd_t fdstdout;
-	cbuild_fd_t fdstderr;
+	cbuild_fd_t* fdstdin;
+	cbuild_fd_t* fdstdout;
+	cbuild_fd_t* fdstderr;
 	// Flags
 	union {
 		uint32_t flags;
 		struct {
-			uint32_t async       : 1;
-			uint32_t no_reset    : 1;
-			uint32_t autokill    : 1;
-			uint32_t pass_proc   : 1;
-			uint32_t append_proc : 1;
-			uint32_t             : 27;
+			uint32_t no_reset     : 1;
+			uint32_t autokill     : 1;
+			uint32_t pass_proc    : 1; // Implicit async
+			uint32_t append_proc  : 1; // Implicit async
+			uint32_t no_print_cmd : 1;
+			uint32_t              : 27;
 		};
 	};
 	// Misc options
@@ -179,13 +150,20 @@ typedef struct cbuild_cmd_opt_t {
 		cbuild_proc_t* proc;
 	};
 } cbuild_cmd_opt_t;
-bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts);
+/**
+ * @brief Run commannd
+ *
+ * @brief cmd => cbuild_cmd_t* -> Command to execute
+ * @brief opts => cbuild_cmd_opt_t -> Command options
+ */
+CBDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts);
+/**
+ * @brief Run commannd
+ *
+ * @brief cmd => cbuild_cmd_t* -> Command to execute
+ * @brief ... => cbuild_cmd_opt_t... -> Command options,
+ * will be inserted in struct intiliazier.
+ */
 #define cbuild_cmd_run(cmd, ...)                                               \
-	cbuild_cmd_run_opt(cmd, (cbuild_cmd_opt_t){.fdstdin = CBUILD_INVALID_FD,     \
-		.fdstdout = CBUILD_INVALID_FD,                                             \
-		.fdstderr = CBUILD_INVALID_FD,                                             \
-		.flags = 0,                                                                \
-		.proc = NULL __VA_OPT__(,)                                                 \
-		__VA_ARGS__                                                                \
-	})
+	cbuild_cmd_run_opt(cmd, (cbuild_cmd_opt_t){ __VA_ARGS__ })
 #endif // __CBUILD_COMMAND_H__

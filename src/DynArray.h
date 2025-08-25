@@ -145,6 +145,26 @@
 		__cbuild__ret;                                                             \
 	})
 /**
+ * @brief Remove an element from a da using index
+ * O(1) but order is changed
+ * @param da => CBUILD_DA* -> Dynamic array
+ * @param idx => size_t -> Element index
+ * @return bool -> Success or failure on overflow
+ */
+#define cbuild_da_remove_unordered(da, idx)                                    \
+	({                                                                           \
+		bool __cbuild__ret = false;                                                \
+		if ((idx) >= (da)->size) {                                                 \
+			cbuild_log(CBUILD_LOG_ERROR,                                             \
+			  "(LIB_CBUILD_DA) Index overflow in remove.");                          \
+			__cbuild__ret = false;                                                   \
+		} else {                                                                   \
+			(da)->data[(idx)] = (da)->data[--(da)->size];                            \
+			__cbuild__ret = true;                                                    \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
+/**
  * @brief Resize da (done automatically most of the time ;) )
  *
  * @param da => CBUILD_DA* -> Dynamic array
@@ -191,7 +211,7 @@
  * @param da => CBUILD_DA* -> Dynamic array
  * @param iter => NAME -> Iteration value name
  */
-#define cbuild_da_foreach(da, iter)                                             \
-	for (typeof(*((da)->data))* iter = (da)->data;                                \
+#define cbuild_da_foreach(da, iter)                                            \
+	for (typeof(*((da)->data))* iter = (da)->data;                               \
 	  iter < ((da)->data + (da)->size); iter++)
 #endif // __CBUILD_DYN_ARRAY_H__

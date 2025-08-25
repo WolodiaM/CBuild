@@ -180,17 +180,17 @@ test_run() {
 	return $ERR
 }
 test_run_all() {
+	local compilers=(gcc clang musl-gcc musl-clang)
 	for file in tests/*.c; do
 		file="$(basename -- "$file")"
 		file="${file%.*}"
-		TEST_CC=gcc test_run "$file"
-		TEST_CC=clang test_run "$file"
-		TEST_CC=musl-gcc test_run "$file"
-		TEST_CC=musl-clang test_run "$file"
-		ERR=$?
-		if [ "$ERR" -ne 0 ]; then
-			exit 1
-		fi
+		for compiler in ${compilers[@]}; do
+			TEST_CC=$compiler test_run "$file"
+			ERR=$?
+			if [ "$ERR" -ne 0 ]; then
+				exit 1
+			fi
+		done
 	done
 	exit 0
 }

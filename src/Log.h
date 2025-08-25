@@ -47,7 +47,7 @@ typedef void (*cbuild_log_fmt_t)(cbuild_log_level_t level);
  * @param fmt => const char* -> Format string
  * @param ... => varargs -> Values for format string
  */
-void cbuild_log(cbuild_log_level_t level, const char* fmt, ...)
+CBDEF void cbuild_log(cbuild_log_level_t level, const char* fmt, ...)
 __attribute__((format(printf, 2, 3)));
 /**
  * @brief Print logs but takes va list
@@ -56,23 +56,23 @@ __attribute__((format(printf, 2, 3)));
  * @param fmt => const char* -> Format string
  * @param args => va_list -> Variadic arguments
  */
-void cbuild_vlog(cbuild_log_level_t level, const char* fmt, va_list args);
+CBDEF void cbuild_vlog(cbuild_log_level_t level, const char* fmt, va_list args);
 /**
  * @brief Set minimum log level
  *
  * @param level => cbuild_log_level_t -> Log level
  */
-void cbuild_log_set_min_level(cbuild_log_level_t level);
+CBDEF void cbuild_log_set_min_level(cbuild_log_level_t level);
 /**
  * @brief Get minimum log level
  *
  * @return cbuild_log_level_t -> Current log level
  */
-cbuild_log_level_t cbuild_log_get_min_level(void);
+CBDEF cbuild_log_level_t cbuild_log_get_min_level(void);
 /**
  * @brief Set formatter for loger attributes
  *
  * @param fmt => cbuild_log_fmt_t  -> Log formatter
  */
-void cbuild_log_set_fmt(cbuild_log_fmt_t fmt);
+CBDEF void cbuild_log_set_fmt(cbuild_log_fmt_t fmt);
 #endif // __CBUILD_LOG_H__

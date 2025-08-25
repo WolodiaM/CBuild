@@ -34,10 +34,47 @@
 #include "common.h"
 #include "Log.h"
 // Code
-void* cbuild_temp_alloc(size_t size);
-char* cbuild_temp_sprintf(char* fmt, ...);
-char* cbuild_temp_vsprintf(char* fmt, va_list ap);
-char* cbuild_temp_strdup(char* str);
-void* cbuild_temp_memdup(void* mem, size_t size);
-void cbuild_temp_reset(void);
+/**
+ * @brief Create new temp allocation
+ *
+ * @param size => size_t -> Number of bytes requested
+ * @return void* -> Allocated pointer
+ */
+CBDEF void* cbuild_temp_alloc(size_t size);
+/**
+ * @brief sprintf using temp allocation
+ *
+ * @param fmt => char* -> Format string
+ * @param ... => variadics -> rguments
+ * @return char* -> New string
+ */
+CBDEF char* cbuild_temp_sprintf(char* fmt, ...)
+__attribute__((format(printf, 1, 2)));
+/**
+ * @brief vsprintf using temp allocation
+ *
+ * @param fmt => char* -> Format string
+ * @param ap. => va_list -> rguments
+ * @return char* -> New string
+ */
+CBDEF char* cbuild_temp_vsprintf(char* fmt, va_list ap);
+/**
+ * @brief strdup using temp allocation
+ *
+ * @param str => char* -> Original string
+ * @return char* -> New dupped string
+ */
+CBDEF char* cbuild_temp_strdup(char* str);
+/**
+ * @brief Dupes memory using temporary allocation
+ *
+ * @param mem => void* -> Original pointer
+ * @param size => size_t -> Number of bytes to dup
+ * @return char* -> New dupped memory block
+ */
+CBDEF void* cbuild_temp_memdup(void* mem, size_t size);
+/**
+ * @brief Deallocate all temporary allocations
+ */
+CBDEF void cbuild_temp_reset(void);
 #endif // __CBUILD_ARENA_H__

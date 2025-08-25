@@ -45,24 +45,24 @@ typedef struct cbuild_arglist_t {
  *
  * @param spec => char* -> Flag spec
  */
-void cbuild_flag_new(const char* spec);
+CBDEF void cbuild_flag_new(const char* spec);
 /**
  * @brief Parse flags
  *
  * @param argc => int -> Argument count
  * @param argv => char** -> Arguments, argv[0] is a binary name
  */
-void cbuild_flag_parse(int argc, char** argv);
+CBDEF void cbuild_flag_parse(int argc, char** argv);
 /**
  * @brief Prints help for all flags to a stdout
  */
-void cbuild_flag_print_help(void);
+CBDEF void cbuild_flag_print_help(void);
 /**
  * @brief Get positional arguments list
  *
  * @return cbuild_flag_arglist_t* -> List of positional arguments
  */
-cbuild_arglist_t* cbuild_flag_get_pargs(void);
+CBDEF cbuild_arglist_t* cbuild_flag_get_pargs(void);
 /**
  * @brief Get arguments of a specific flag
  *
@@ -70,13 +70,13 @@ cbuild_arglist_t* cbuild_flag_get_pargs(void);
  * @return cbuild_flag_arglist_t* -> List of flag's arguments or NULL if flag
  * not found
  */
-cbuild_arglist_t* cbuild_flag_get_flag(const char* opt);
+CBDEF cbuild_arglist_t* cbuild_flag_get_flag(const char* opt);
 /**
  * @brief Get app name as a C-string
  *
  * @return char* -> App name
  */
-char* cbuild_flag_app_name(void);
+CBDEF char* cbuild_flag_app_name(void);
 /**
  * @brief Function prototype fo a help print function, stub provided, but should
  * be reimplemented for best user experience.

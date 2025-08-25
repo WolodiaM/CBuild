@@ -6,6 +6,10 @@
 
 Maybe POSIX_C_SOURCE=200112L
 
+*** TODO Make all macro evaluate their argument only once.
+
+Some macro can be an exception, but this should be noted in documentation comment. All data-structure macro should handle elements only once, unless this is impossible.
+
 * Features todo list
 
 *** DONE Map.h rewrite
@@ -26,6 +30,8 @@ Groups through new metadata entry (something like "group=<name>"), purely for pr
 *** TODO Command.h - allow to limit number of async threads in 'cbuild_cmd_run'
 
 Need to pass a 'cbuild_proclist_t'. Need to pass int. Now it simply checks for number of procs, if there are too much - wait for them to finnish
+
+*** DONE Command.h - allow to print command using single opt
 
 * Thinking place
 
@@ -185,4 +191,64 @@ Implementations (can contains pseudo code):
   }
 #+END_SRC
 
+** TODO Command.h process waiting
+
+WARNING: AI code follows
+
+Can be done using process groups:
+
+#+NAME: proc_groups
+#+BEGIN_SRC C
+  // Set main proc as leader
+  pid_t leader_pid = getpid();
+  setpgid(0, leader_pid);
+  // Wait for one proc to finish
+  int status;
+  pid_t done = waitpid(-group_pid, &status, 0);
+  // Do something with pid
+#+END_SRC
+
+or signals:
+
+#+NAME: proc_groups
+#+BEGIN_SRC C
+  volatile sig_atomic_t last_child_pid = 0;
+  void sigchld_handler(int signo) {
+  	int status;
+  	pid_t pid = waitpid(-1, &status, WNOHANG);
+  	if (pid > 0) {
+  		last_child_pid = pid; // safe async-signal assignment
+  	}
+  }
+  // main
+  struct sigaction oldact, newact;
+  newact.sa_handler = my_handler;
+  sigemptyset(&newact.sa_mask);
+  newact.sa_flags = SA_RESTART;
+  // Set handler, save old handler
+  if (sigaction(SIGCHLD, &newact, &oldact) < 0) {
+  	perror("sigaction");
+  	return 1;
+  }
+  // Spawn childs
+  while (1) {
+  	if (last_child_pid != 0) {
+  		pid_t finished = last_child_pid;
+  		last_child_pid = 0;
+  		// handle finished child
+  	}
+  	pause(); // block until next signal
+  }
+  // Kill childs
+  // Restore old handler
+  if (sigaction(SIGCHLD, &oldact, NULL) < 0) {
+  	perror("sigaction restore");
+  	return 1;
+  }
+#+END_SRC
+
+or just busy-loop on process list with ~waitpid(pid, &status NOHANG)~ and ~nnanosleep~ to not fully busy-loop. This is actiully the best way (fastest/simplest)
+or just wait for all process to finish (eg. run batch-by-batch), much easier but may be slower.
+
 #  LocalWords:  struct structs alloc
+

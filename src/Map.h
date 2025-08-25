@@ -65,7 +65,7 @@ typedef struct cbuild_map_t {
  * @param map => cbuild_map_t* -> Map object
  * @param nbuckets => size_t -> New bucket count
  */
-void cbuild_map_init(cbuild_map_t* map, size_t nbuckets);
+CBDEF void cbuild_map_init(cbuild_map_t* map, size_t nbuckets);
 /**
  * @brief Get element from a map
  *
@@ -73,7 +73,7 @@ void cbuild_map_init(cbuild_map_t* map, size_t nbuckets);
  * @param key => void* -> Requested key
  * @return void* -> Element of NULL if not found
  */
-void* cbuild_map_get_raw(cbuild_map_t* map, const void* key);
+CBDEF void* cbuild_map_get_raw(cbuild_map_t* map, const void* key);
 /**
  * @brief Get element from a map
  *
@@ -111,7 +111,7 @@ void* cbuild_map_get_raw(cbuild_map_t* map, const void* key);
  * @param key => void* -> Requested key
  * @return void* -> Element
  */
-void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
+CBDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
 /**
  * @brief Get element from a map or allocate new
  *
@@ -151,7 +151,7 @@ void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
  * element. Can be NULL.
  * @return bool -> False if key not found
  */
-bool cbuild_map_remove_ex_raw(cbuild_map_t* map, const void* key,
+CBDEF bool cbuild_map_remove_ex_raw(cbuild_map_t* map, const void* key,
   cbuild_map_elem_clear_t elem_clear_func);
 /**
  * @brief Remove element from a map. Userdata should be memcpy-safe.
@@ -218,7 +218,7 @@ bool cbuild_map_remove_ex_raw(cbuild_map_t* map, const void* key,
  * @param elem_cear_func => cbuild_map_elem_clear_t -> Function that will clear
  * element. Can be called on all allocated elements. Can be NULL.
  */
-void cbuild_map_clear_ex(cbuild_map_t* map,
+CBDEF void cbuild_map_clear_ex(cbuild_map_t* map,
   cbuild_map_elem_clear_t elem_clear_func);
 /**
  * @brief Fully clear and deallocate map
@@ -231,7 +231,7 @@ void cbuild_map_clear_ex(cbuild_map_t* map,
  *
  * @param map => cbuild_map_t -> Map object
  */
-void cbuild_map_iter_reset(cbuild_map_t* map);
+CBDEF void cbuild_map_iter_reset(cbuild_map_t* map);
 /**
  * @brief Get next map element
  * Note: Removing invalidates iterator (undefined behaviour if iterator is used
@@ -242,7 +242,7 @@ void cbuild_map_iter_reset(cbuild_map_t* map);
  * @param map => cbuild_map_t -> Map object
  * @return void* -> Element pointer or NULL if end reached
  */
-void* cbuild_map_iter_next(cbuild_map_t* map);
+CBDEF void* cbuild_map_iter_next(cbuild_map_t* map);
 /**
  * @brief For-each loop over a map
  *

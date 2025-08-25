@@ -40,13 +40,7 @@ TEST_MAIN({
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.read_test");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		cbuild_sb_t sb  = {0};
@@ -86,13 +80,7 @@ TEST_MAIN({
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.copy_test.src");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		cbuild_sb_t f1  = {0};
@@ -120,7 +108,7 @@ TEST_MAIN({
 		cbuild_cmd_append_many(&file_writer, "dd", "bs=1024", "count=64",
 		  "status=none", "if=/dev/urandom",
 		  "of=build/FS.c.copy_big_test.src");
-		cbuild_cmd_sync(file_writer);
+		cbuild_cmd_run(&file_writer);
 		// Do testing
 		cbuild_sb_t f1  = {0};
 		cbuild_sb_t f2  = {0};
@@ -146,13 +134,7 @@ TEST_MAIN({
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.file_check_test.true");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		bool ch1 = cbuild_file_check("build/FS.c.file_check_test.true");
@@ -173,13 +155,7 @@ TEST_MAIN({
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.move_test.src");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		bool ret = cbuild_file_move("build/FS.c.move_test.src",
@@ -199,13 +175,7 @@ TEST_MAIN({
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.rename_test.src");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		bool ret = cbuild_file_rename("build/FS.c.rename_test.src",
@@ -225,13 +195,7 @@ TEST_MAIN({
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.remove_test");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		bool ret = cbuild_file_remove("build/FS.c.remove_test");
@@ -247,29 +211,17 @@ TEST_MAIN({
 		cbuild_cmd_t dir_creator = {0};
 		cbuild_cmd_append_many(&dir_creator, "mkdir",
 		  "build/FS.c.dirls_test/");
-		cbuild_cmd_sync(dir_creator);
+		cbuild_cmd_run(&dir_creator);
 		cbuild_cmd_t file_writer = {0};
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.dirls_test/a");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		file_writer.size = 0;
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		pattern_fd = cbuild_fd_open_write("build/FS.c.dirls_test/b");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		cbuild_pathlist_t dirls = {0};
@@ -302,7 +254,7 @@ TEST_MAIN({
 		cbuild_cmd_t dir_creator = {0};
 		cbuild_cmd_append_many(&dir_creator, "mkdir",
 		  "build/FS.c.dir_check_test.true/");
-		cbuild_cmd_sync(dir_creator);
+		cbuild_cmd_run(&dir_creator);
 		// Do testing
 		bool ch1 = cbuild_dir_check("build/FS.c.dir_check_test.true/");
 		TEST_ASSERT_EQ(
@@ -317,10 +269,16 @@ TEST_MAIN({
 	"Directory checking");
 	TEST_CASE(
 	{
-		bool ret = cbuild_dir_create("build/FS.c.dir_create_test/");
-		TEST_ASSERT_EQ(ret, true, "Function returened error%s", "");
+		printf("\tBase exists\n");
+		bool ret1 = cbuild_dir_create("build/FS.c.dir_create_test/");
+		TEST_ASSERT_EQ(ret1, true, "Function returened error%s", "");
 		bool ch1 = cbuild_dir_check("build/FS.c.dir_create_test/");
 		TEST_ASSERT_EQ(ch1, true, "Created directory does not exist%s", "");
+		printf("\tBase don't exist\n");
+		bool ret2 = cbuild_dir_create("build/FS.c.dir_create_no_base_test/dir/");
+		TEST_ASSERT_EQ(ret2, true, "Function returened error%s", "");
+		bool ch2 = cbuild_dir_check("build/FS.c.dir_create_no_base_test/dir");
+		TEST_ASSERT_EQ(ch2, true, "Created directory does not exist%s", "");
 	},
 	"Directory creation");
 	TEST_CASE(
@@ -331,37 +289,19 @@ TEST_MAIN({
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.dir_copy_test.src/a");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		file_writer.size = 0;
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		pattern_fd = cbuild_fd_open_write("build/FS.c.dir_copy_test.src/b");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		cbuild_dir_create("build/FS.c.dir_copy_test.src/c/");
 		file_writer.size = 0;
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.dir_copy_test.src/c/d");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		bool ret = cbuild_dir_copy("build/FS.c.dir_copy_test.src/",
@@ -388,36 +328,18 @@ TEST_MAIN({
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.dir_remove_test/a");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		file_writer.size = 0;
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		pattern_fd = cbuild_fd_open_write("build/FS.c.dir_remove_test/b");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		cbuild_dir_create("build/FS.c.dir_remove_test/c/");
 		file_writer.size = 0;
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		pattern_fd = cbuild_fd_open_write("build/FS.c.dir_remove_test/c/d");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		bool ret = cbuild_dir_remove("build/FS.c.dir_remove_test/");
@@ -440,18 +362,12 @@ TEST_MAIN({
 		cbuild_cmd_t dir_creator = {0};
 		cbuild_cmd_append_many(&dir_creator, "mkdir",
 		  "build/FS.c.path_type_check.dir/");
-		cbuild_cmd_sync(dir_creator);
+		cbuild_cmd_run(&dir_creator);
 		cbuild_cmd_t file_writer = {0};
 		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
 		cbuild_fd_t pattern_fd =
 		  cbuild_fd_open_write("build/FS.c.path_type_check.file");
-		cbuild_cmd_sync_redirect(
-		  file_writer,
-		(cbuild_cmd_fd_t) {
-			.fdstdin  = CBUILD_INVALID_FD,
-			.fdstdout = pattern_fd,
-			.fdstderr = CBUILD_INVALID_FD
-		});
+		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
 		cbuild_fd_close(pattern_fd);
 		// Do testing
 		cbuild_filetype_t f1 =
@@ -472,19 +388,19 @@ TEST_MAIN({
 	"Path typechecking");
 	TEST_CASE(
 	{
-		const char *p1 = "some/dir/file.txt";
-		const char *e1 = cbuild_path_ext(p1);
+		const char* p1 = "some/dir/file.txt";
+		const char* e1 = cbuild_path_ext(p1);
 		TEST_ASSERT_STREQ(e1, "txt",
 		  "Expected extension \"txt\" but got \"%s\"", e1);
-		const char *p2 = "some/dir/d";
-		const char *e2 = cbuild_path_ext(p2);
+		const char* p2 = "some/dir/d";
+		const char* e2 = cbuild_path_ext(p2);
 		TEST_ASSERT_STREQ(e2, "", "Expected extension \"\" but got \"%s\"", e2);
-		const char *p3 = "f.txt";
-		const char *e3 = cbuild_path_ext(p3);
+		const char* p3 = "f.txt";
+		const char* e3 = cbuild_path_ext(p3);
 		TEST_ASSERT_STREQ(e3, "txt",
 		  "Expected extension \"txt\" but got \"%s\"", e3);
-		const char *p4 = "f";
-		const char *e4 = cbuild_path_ext(p4);
+		const char* p4 = "f";
+		const char* e4 = cbuild_path_ext(p4);
 		TEST_ASSERT_STREQ(e4, "", "Expected extension \"\" but got \"%s\"", e4);
 		free((void*)e1);
 		free((void*)e2);
@@ -494,17 +410,17 @@ TEST_MAIN({
 	"Extracting extension from filepath");
 	TEST_CASE(
 	{
-		const char *p1 = "some/dir/file.txt";
-		const char *n1 = cbuild_path_name(p1);
+		const char* p1 = "some/dir/file.txt";
+		const char* n1 = cbuild_path_name(p1);
 		TEST_ASSERT_STREQ(n1, "file.txt",
 		  "Expected filename \"file.txt\" but got \"%s\"",  n1);
-		const char *p2 = "some/dir/another_dir/";
-		const char *n2 = cbuild_path_name(p2);
+		const char* p2 = "some/dir/another_dir/";
+		const char* n2 = cbuild_path_name(p2);
 		TEST_ASSERT_STREQ(
 		  n2, "another_dir/",
 		  "Expected dirname \"another_dir/\" but got \"%s\"", n2);
-		const char *p3 = "a.c";
-		const char *n3 = cbuild_path_name(p3);
+		const char* p3 = "a.c";
+		const char* n3 = cbuild_path_name(p3);
 		TEST_ASSERT_STREQ(n3, "a.c",
 		  "Expected filename \"a.c\" but got \"%s\"", n3);
 		free((void*)n1);
@@ -514,18 +430,18 @@ TEST_MAIN({
 	"Extracting filename from filepath");
 	TEST_CASE(
 	{
-		const char *p1 = "some/dir/file.txt";
-		const char *n1 = cbuild_path_base(p1);
+		const char* p1 = "some/dir/file.txt";
+		const char* n1 = cbuild_path_base(p1);
 		TEST_ASSERT_STREQ(n1, "some/dir/",
 		  "Expected basename \"some/dir/\" but got \"%s\"",
 		  n1);
-		const char *p2 = "some/dir/another_dir/";
-		const char *n2 = cbuild_path_base(p2);
+		const char* p2 = "some/dir/another_dir/";
+		const char* n2 = cbuild_path_base(p2);
 		TEST_ASSERT_STREQ(n2, "some/dir/",
 		  "Expected basename \"some/dir/\" but got \"%s\"",
 		  n2);
-		const char *p3 = "a.c";
-		const char *n3 = cbuild_path_base(p3);
+		const char* p3 = "a.c";
+		const char* n3 = cbuild_path_base(p3);
 		TEST_ASSERT_STREQ(n3, "", "Expected basename \"\" but got \"%s\"",
 		  n3);
 		free((void*)n1);
@@ -533,5 +449,62 @@ TEST_MAIN({
 		free((void*)n3);
 	},
 	"Extracting basename from filepath");
+	TEST_CASE({ // Test cases generated by AI, it is better at generating random data
+		const char* i = "/usr/bin/";
+		char* o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ("/usr/bin", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), "/usr/bin", o);
+		free(o);
+		i = "/usr//bin///env";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ("/usr/bin/env", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), "/usr/bin/env", o);
+		free(o);
+		i = "./src/././main.c";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ("src/main.c", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), "src/main.c", o);
+		free(o);
+		i = "src/../include/header.h";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ("include/header.h", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), "include/header.h", o);
+		free(o);
+		i = "../../etc/config";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ("../../etc/config", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), "../../etc/config", o);
+		free(o);
+		i = "/home/user/.././docs//file.txt";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ("/home/docs/file.txt", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), "/home/docs/file.txt", o);
+		free(o);
+		i = "///";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ("/", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), "/", o);
+		free(o);
+		i = "./././";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ(".", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), ".", o);
+		free(o);
+		i = "../a/./b/../../c/";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ("../c", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), "../c", o);
+		free(o);
+		i = "";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ(".", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), ".", o);
+		free(o);
+		i = "..";
+		o = cbuild_path_normalize(i);
+		TEST_ASSERT_STREQ("..", o, "Wrong path after normalization"
+		  TEST_EXPECT_MSG(s), "..", o);
+		free(o);
+	}, "Path normalization");
 },
 "Filesystem library")

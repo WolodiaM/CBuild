@@ -221,13 +221,39 @@
  *     - Optional utf8 supports
  *   StringBuilder.h [feature]
  *     - Optional utf8 support
- *   Command.h [change]
- *     - Added new API, 'cbuild_cmd_run'.
- *   Proc.h [feature]
- *     - Added ability to wait for multiple processes.
  *   General [bugfix]
  *     - Now functions that takes no arguments properly have 'void' as arguments
+ * --------------------------------------------
+ * 2025-08-18  v0.12    Switch to zero-ver
+ *   Compile.h [feature]
+ *     - New 'cbuild_selfrebuild_ex' allow to check more files before rebuild.
+ *   Command.h [change]
+ *     - Added new API, 'cbuild_cmd_run'.
+ *   Command.h [feature]
+ *     - Improved output of 'cbuild_cmd_to_sb'.
+ *   Proc.h [feature]
+ *     - Added ability to wait for multiple processes.
+ *   DynArray.h [feature]
+ *     - Added 'cbuild_da_remove_unordered'.
+ *   Compile.h [bugfix]
+ *     - Fixed 'CBUILD_CARGS_INCLUDE'.
+ *   FS.h [feature]
+ *     - Now 'cbuild_dir_create' will create all needed dirs recursively.
+ *     - Added 'cbuild_symlink', which forces symlink at destination.
+ *     - Added 'cbuild_path_normalize' to normalize paths without FS lookup.
+ *       Strips "<dir>/../: pairs, removes ".", remove trailing slashes
+ *       and collapse slash sequences.
+ *   FS.h [bugfix]
+ *     - 'cbuild_path_filetype' now use 'lstat'.
+ *   General [new]
  *     - Now test on 'musl' libc too.
+ *     - Now I use zero-ver. This will fully break all version checks.
+ *       The only change is that leading '1' will be '0'.
+ *       "Real" version number will be monotonically incremented as always.
+ *   General [bugfix]
+ *     - Better OS-detect logic
+ *     - First deprecated APIs
+ *     - Added CBDEF for all functions (user-overridable)
  */
 // Code
 // NOTE: CBuild should be a first header to be included in translation unit, or
@@ -322,7 +348,7 @@
  * @brief Temporary buffer size for file copies
  */
 #ifndef CBUILD_TMP_BUFF_SIZE
-	#define CBUILD_TMP_BUFF_SIZE (32 * 1024 * 1024)
+	#define CBUILD_TMP_BUFF_SIZE (32ul * 1024ul * 1024ul)
 #endif // CBUILD_TMP_BUFF_SIZE
 /**
  * @brief Default hash function for a hash map.
@@ -335,7 +361,7 @@
  * @brief Size of CBuild temporary allocator arena
  */
 #ifndef CBUILD_TEMP_ARENA_SIZE
-	#define CBUILD_TEMP_ARENA_SIZE (8 * 1024 * 1024)
+	#define CBUILD_TEMP_ARENA_SIZE (8ul * 1024ul * 1024ul)
 #endif // CBUILD_TEMP_ARENA_SIZE
 /**
 * @brief Default self-rebuild arguments
@@ -343,6 +369,17 @@
 #ifndef CBUILD_SELFREBUILD_ARGS
 	#define CBUILD_SELFREBUILD_ARGS CBUILD_CARGS_WARN
 #endif // CBUILD_SEFLREBUILD_ARGS
+// Print abstraction	// Print functions
+#define __CBUILD_PRINT(str)                printf((str))
+#define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
+#define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
+#define __CBUILD_FLUSH()                   fflush(stdout)
+// Maybe you want to redefine this two macro to work with stderr, but I prefer
+// to have my errors in standard stdout
+#define __CBUILD_ERR_PRINT(str)            printf((str))
+#define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
+#define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
+#define __CBUILD_ERR_FLUSH()               fflush(stdout)
 // Different between different APIs
 #if defined(CBUILD_API_POSIX)
 	// Platform includes
@@ -353,17 +390,6 @@
 		#include "sys/prctl.h"
 	#endif // CBUILD_OS_LINUX
 	#include "dlfcn.h"
-	// Print functions
-	#define __CBUILD_PRINT(str)                printf((str))
-	#define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
-	#define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
-	#define __CBUILD_FLUSH()                   fflush(stdout)
-	// Maybe you want to redefine this two macro to work with stderr, but I prefer
-	// to have my errors in standard stdout
-	#define __CBUILD_ERR_PRINT(str)            printf((str))
-	#define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
-	#define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
-	#define __CBUILD_ERR_FLUSH()               fflush(stdout)
 	// Process and file handles
 	typedef pid_t cbuild_proc_t;
 	#define CBUILD_INVALID_PROC -1
@@ -374,30 +400,33 @@
 #elif defined(CBUILD_API_WIN32)
 	// Platform includes
 	#include <Windows.h>
-	// Print functions
-	#define __CBUILD_PRINT(str)                printf((str))
-	#define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
-	#define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
-	#define __CBUILD_FLUSH()                   fflush(stdout)
-	// Maybe you want to redefine this two macro to work with stderr, but I prefer
-	// to have my errors in standard stdout
-	#define __CBUILD_ERR_PRINT(str)            printf((str))
-	#define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
-	#define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
-	#define __CBUILD_ERR_FLUSH()               fflush(stdout)
 	// Process and file handles
 	typedef HANDLE cbuild_proc_t;
-	#define CBUILD_INVALID_PROC                ((HANDLE)(intptr_t)-1)
+	#define CBUILD_INVALID_PROC ((HANDLE)(intptr_t)-1)
 	typedef HANDLE cbuild_fd_t;
-	#define CBUILD_INVALID_FD                  ((HANDLE)(intptr_t)-1)
+	#define CBUILD_INVALID_FD ((HANDLE)(intptr_t)-1)
 	// For pointer errors
-	#define CBUILD_PTR_ERR                     (void*)((intptr_t)-1)
+	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
 #endif // CBUILD_API_*
 // Macro functionality
 #define __CBUILD_STRINGIFY(var)  #var
 #define __CBUILD_XSTRINGIFY(var) __CBUILD_STRINGIFY(var)
 #define __CBUILD_CONCAT(a, b)    a##b
 #define __CBUILD_XCONCAT(a, b)   __CBUILD_CONCAT(a, b)
+// Attributes
+/**
+ * @brief Allow user to add more attributes to a functions
+ */
+#ifndef CBDEF
+	#define CBDEF
+#endif // CBDEF
+#if defined(__has_c_attribute)
+	#if __has_c_attribute(deprecated)
+		#define CBUILD_DEPRECATED(...) [[deprecated(__VA_ARGS__)]]
+	#endif // deprecated
+#else
+	#define CBUILD_DEPRECATED(...) __attribute__((deprecated(__VA_ARGS__)))
+#endif // __has_c_attribute
 // Global allocator
 extern void* (*cbuild_malloc)(size_t size);
 extern void* (*cbuild_realloc)(void* ptr, size_t size);
@@ -458,7 +487,7 @@ extern void (*cbuild_free)(void* ptr);
  * @param ...[0] => const char* -> Format string for and printf
  * @param ... -> Printf args
  */
-void __cbuild_assert(const char* file, unsigned int line, const char* func,
+CBDEF void __cbuild_assert(const char* file, unsigned int line, const char* func,
   const char* expr, ...) __attribute__((__noreturn__));
 /**
  * @brief Get element from array, errors-out at invalid index
@@ -468,7 +497,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
  */
 #define cbuild_arr_get(array, index)                                           \
 	(cbuild_assert((size_t)(index) < cbuild_arr_len(array),                      \
-	  "Index %zu is out of bounds!\n", (size_t)index),              \
+	  "Index %zu is out of bounds!\n", (size_t)index),                           \
 	  (array)[(size_t)(index)])
 /**
  * @brief Shift args from an array with size (like argv and argc pair). Should
@@ -491,7 +520,7 @@ void __cbuild_assert(const char* file, unsigned int line, const char* func,
 #define cbuild_shift_expect(argv, argc, ...)                                   \
 	(cbuild_assert((argc) > 0, __VA_ARGS__), (argc)--, *(argv)++)
 // Version
-#define CBUILD_VERSION "v1.11"
-#define CBUILD_VERSION_MAJOR 1
-#define CBUILD_VERSION_MINOR 11
+#define CBUILD_VERSION "v0.12"
+#define CBUILD_VERSION_MAJOR 0
+#define CBUILD_VERSION_MINOR 12
 #endif // __CBUILD_COMMON_H__
