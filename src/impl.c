@@ -1484,6 +1484,7 @@ char* cbuild_path_normalize(const char* path_) {
 	if(ret.size == 0) cbuild_sb_append(&ret, '.');
 	if(ret.size > 1 && ret.data[ret.size - 1] == '/') ret.size--;
 	cbuild_sb_append_null(&ret);
+	cbuild_stack_clear(&dirs);
 	return ret.data;
 }
 /* Compile.h impl */
