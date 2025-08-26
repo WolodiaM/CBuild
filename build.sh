@@ -177,6 +177,9 @@ test_run() {
 		cat build/test_"$1"_out.txt
 		printf "${cyan}%s${reset}\n" "----------    End of test output    ----------"
 	fi
+	if [[ $ERR -eq 2 ]]; then
+		printf "${red}\"\$MEMCHECK\" has thrown error!${reset}\n"
+	fi
 	return $ERR
 }
 test_run_all() {
