@@ -11,7 +11,6 @@ Maybe POSIX_C_SOURCE=200112L
 Some macro can be an exception, but this should be noted in documentation comment. All data-structure macro should handle elements only once, unless this is impossible.
 
 * Features todo list
-
 *** DONE Map.h rewrite
 
 I want to have a *plain*, *macro-based* map implementation.
@@ -30,6 +29,11 @@ Groups through new metadata entry (something like "group=<name>"), purely for pr
 *** TODO Command.h - allow to limit number of async threads in 'cbuild_cmd_run'
 
 Need to pass a 'cbuild_proclist_t'. Need to pass int. Now it simply checks for number of procs, if there are too much - wait for them to finnish
+
+*** TODO Command.h - better redirects
+
+Alow to redirect directly to fine, not fd (will be autoclosed)
+Maybe better piping?
 
 *** DONE Command.h - allow to print command using single opt
 
@@ -252,3 +256,13 @@ or just wait for all process to finish (eg. run batch-by-batch), much easier but
 
 #  LocalWords:  struct structs alloc
 
+
+
+* v 0.12
+*** Bugfixes
+
+* v0.13
+*** Command.h rework
+ + proper async
+ + thread count control
+ + Allow file redirects
