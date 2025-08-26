@@ -45,7 +45,7 @@
 /**
  * @brief Push element to a stack
  *
- * @param stack => CBUILD_STACK* -> Stack
+ * @param stack => CBUILD_STACK* -> Stack. Will be evaluated twice.
  * @param elem => VAL* -> Element
  */
 #define cbuild_stack_push(stack, elem)                                         \
@@ -58,7 +58,7 @@
 /**
  * @brief Pop element from a stack
  *
- * @param stack => CBUILD_STACK* -> Stack
+ * @param stack => CBUILD_STACK* -> Stack. Will be evaluated multiple times.
  * @return VAL -> Element
 */
 #define cbuild_stack_pop(stack)                                                \
@@ -69,7 +69,7 @@
 /**
  * @brief Get top element of the stack (same as for pop, but read-only)
  *
- * @param stack => CBUILD_STACK* -> Stack
+ * @param stack => CBUILD_STACK* -> Stack. Will be evaluated multiple times.
  * @return VAL -> Element
  */
 #define cbuild_stack_top(stack)                                                \
@@ -80,7 +80,7 @@
 /**
  * @brief Resize stack (done automatically most of the time ;) )
  *
- * @param stack => CBUILD_STACK* -> Stack
+ * @param stack => CBUILD_STACK* -> Stack. Will be evaluated multiple times.
  * @param size => size_t -> New element count. Stack will be truncated if it
  * will be lover than stack->ptr. If it is zero then default behaviour is used
  */
@@ -109,7 +109,7 @@
 /**
  * @brief Free stack
  *
- * @param stack => CBUILD_STACK* -> Stack
+ * @param stack => CBUILD_STACK* -> Stack. Will be evaluated multiple times.
  */
 #define cbuild_stack_clear(stack)                                              \
 	do {                                                                         \

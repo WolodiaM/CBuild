@@ -50,7 +50,7 @@ typedef struct cbuild_sv_t {
 /**
  * @brief Create string view from c string
  *
- * @param cstr => const char* -> C-string
+ * @param cstr => const char* -> C-string. Will be evaluated twice.
  * @return cbuild_sv_t -> New string view
  */
 #define cbuild_sv_from_cstr(cstr)                                              \
@@ -58,7 +58,8 @@ typedef struct cbuild_sv_t {
 /**
  * @brief Create string view from c string (compile-time literal)
  *
- * @param lit => const char* -> C-string (compile-time literal)
+ * @param lit => const char* -> C-string (compile-time literal).
+ * Will be evaluated twice.
  * @return cbuild_sv_t -> New string view
  */
 #define cbuild_sv_from_lit(lit)                                                \

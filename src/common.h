@@ -254,6 +254,7 @@
  *     - Better OS-detect logic
  *     - First deprecated APIs
  *     - Added CBDEF for all functions (user-overridable)
+ *     - Fixed macro to document when they evaluate args multiple times
  */
 // Code
 // NOTE: CBuild should be a first header to be included in translation unit, or
@@ -463,9 +464,9 @@ extern void (*cbuild_free)(void* ptr);
 	} while (0)
 // More user-friendly array operations
 /**
- * @brief get size of array
+ * @brief Get size of array
  *
- * @param array => any[] -> Array
+ * @param array => any[] -> Array. Evaluated twice by macro.
  */
 #define cbuild_arr_len(array) (sizeof(array) / sizeof((array)[0]))
 /**
@@ -504,7 +505,7 @@ CBDEF void __cbuild_assert(const char* file, unsigned int line, const char* func
  * work similartly to bash `shift`
  *
  * @param argv => T[] -> Array
- * @paran argc => Integer -> Array size
+ * @paran argc => Integer -> Array size. Evaluated twice by macro.
  * */
 #define cbuild_shift(argv, argc)                                               \
 	(cbuild_assert((argc) > 0, "More arguments is required!\n"), (argc)--,       \
@@ -514,7 +515,7 @@ CBDEF void __cbuild_assert(const char* file, unsigned int line, const char* func
  * work similartly to bash `shift`. Takes addiitional message to print on error
  *
  * @param argv => T[] -> Array
- * @paran argc => Integer -> Array size
+ * @paran argc => Integer -> Array size. Evaluated twice by macro.
  * @param ... -> Printf arfs
  * */
 #define cbuild_shift_expect(argv, argc, ...)                                   \

@@ -45,7 +45,7 @@
 /**
  *  @brief Append element to a dynamic array
  *
- *  @param da => CBUILD_DA* -> Dynamic array
+ *  @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  *  @param elem => VAL -> Element
  */
 #define cbuild_da_append(da, elem)                                             \
@@ -58,7 +58,7 @@
 /**
  * @brief Append an array to a da
  *
- * @param da => CBUILD_DA* -> Dynamic array
+ * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  * @param arr => VAL* -> Array pointer
  * @param arr_size => size_t -> Number of new elements
  */
@@ -74,7 +74,7 @@
 /**
  * @brief Append multiple elements to a da
  *
- * @param da => CBUILD_DA* -> Dynamic array
+ * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  * @param ... => VAL -> New elements
  */
 #define cbuild_da_append_many(da, ...)                                         \
@@ -87,7 +87,7 @@
 /**
  * @brief Set da element using its index
  *
- * @param da => CBUILD_DA* -> Dynamic array
+ * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  * @param idx => size_t -> Index
  * @param elem => VAL -> Element
  * @return bool -> Success or failure on overflow
@@ -107,7 +107,7 @@
 /**
  * @brief Get an element from a da using index
  *
- * @param da => CBUILD_DA* -> Dynamic array
+ * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  * @param idx => size_t -> Element index
  * @return VAL* -> Element or NULL on overflow
  */
@@ -125,7 +125,7 @@
 /**
  * @brief Remove an element from a da using index
  *
- * @param da => CBUILD_DA* -> Dynamic array
+ * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  * @param idx => size_t -> Element index
  * @return bool -> Success or failure on overflow
  */
@@ -147,7 +147,7 @@
 /**
  * @brief Remove an element from a da using index
  * O(1) but order is changed
- * @param da => CBUILD_DA* -> Dynamic array
+ * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  * @param idx => size_t -> Element index
  * @return bool -> Success or failure on overflow
  */
@@ -167,7 +167,7 @@
 /**
  * @brief Resize da (done automatically most of the time ;) )
  *
- * @param da => CBUILD_DA* -> Dynamic array
+ * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  * @param new_size => size_t -> New element count. Array will be truncated if it
  * will be lover than da->size. If zero then default growth behavior is used
  */
@@ -196,7 +196,7 @@
 /**
  * @brief Free da
  *
- * @param da => CBUILD_DA* -> Dynamic array
+ * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  */
 #define cbuild_da_clear(da)                                                    \
 	do {                                                                         \
@@ -208,7 +208,7 @@
 /**
  * @brief Foreach loop
  *
- * @param da => CBUILD_DA* -> Dynamic array
+ * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
  * @param iter => NAME -> Iteration value name
  */
 #define cbuild_da_foreach(da, iter)                                            \

@@ -44,14 +44,14 @@ typedef struct cbuild_sb_t {
 /**
  *  @brief Append character to a string builder
  *
- *  @param sb => cbuild_sb_t* -> String builder
+ *  @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
  *  @param elem => char -> Character
  */
 #define cbuild_sb_append(sb, elem) cbuild_da_append((sb), (elem))
 /**
  * @brief Append an array to a sb
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
  * @param arr => char* -> Array pointer
  * @param size => size_t -> Number of new elements
  */
@@ -60,7 +60,7 @@ typedef struct cbuild_sb_t {
 /**
  * @brief Append list of chars to a string builder
  *
- * @param sb => cbuild_sb_t* -> String builder to operate on
+ * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times. to operate on
  * @param ... => char ... -> Chars that need to be inserted
  */
 #define cbuild_sb_append_many(sb, ...)                                         \
@@ -68,7 +68,7 @@ typedef struct cbuild_sb_t {
 /**
  * @brief Append a C-string to a sb
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
  * @param cstr => char* -> C-string
  */
 #define cbuild_sb_append_cstr(sb, cstr)                                        \
@@ -76,13 +76,13 @@ typedef struct cbuild_sb_t {
 /**
  * @brief Append NULL-terminator to a string builder
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
  */
 #define cbuild_sb_append_null(sb) cbuild_da_append((sb), '\0')
 /**
  * @brief Set a character in a sb using index
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
  * @param idx => size_t -> Character index
  * @param elem => char -> New character
  */
@@ -90,7 +90,7 @@ typedef struct cbuild_sb_t {
 /**
  * @brief Get a character from a sb using index
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
  * @param idx => size_t -> Character index
  * @return VAL* -> Element
  */
@@ -105,7 +105,7 @@ typedef struct cbuild_sb_t {
 /**
  * @brief Resize sb (Done automatically most of the times ;) )
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
  * @param size => size_t -> New element count. String will be truncated if it
  * will be lover than sb->size. If it is zero then default behavior is used.
  */
@@ -114,7 +114,7 @@ typedef struct cbuild_sb_t {
 /**
  * @brief Free sb
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
  */
 #define cbuild_sb_clear(sb) cbuild_da_clear(sb)
 /**
@@ -173,8 +173,8 @@ CBDEF cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
 /**
  * @brief Append string view to a string builder
  *
- * @param sb => CBUILD_SB* -> String builder
- * @param sv => cbuild_sv_t -> String view
+ * @param sb => CBUILD_SB* -> String builder. Will be evaluated multiple times.
+ * @param sv => cbuild_sv_t -> String view. Will be evaluated twice
  */
 #define cbuild_sb_append_sv(sb, sv)                                            \
 	cbuild_sb_append_arr((sb), (sv).data, (sv).size)
@@ -200,7 +200,7 @@ __attribute__((format(printf, 2, 3)));
 /**
  * @brief Foreach loop
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
  * @param iter => NAME -> Iteration value name
  */
 #define cbuild_sb_foreach(sb, iter) cbuild_da_foreach(sb, iter)
@@ -226,7 +226,7 @@ CBDEF int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b);
 /**
  * @brief Get lengths of a string builder with utf8 content
  *
- * @param sv => cbuild_sb_t -> String builder to work with
+ * @param sv => cbuild_sb_t -> String builder
  * @return size_t -> Number of encoded utf8 codepoints
  */
 CBDEF size_t cbuild_sb_utf8len(cbuild_sb_t* sb);
