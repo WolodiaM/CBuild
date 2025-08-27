@@ -928,8 +928,13 @@ bool cbuild_proc_is_running(cbuild_proc_t proc) {
 	return kill(proc, 0) <= 0;
 }
 cbuild_proc_ptr_t cbuild_proc_malloc(size_t n) {
+#if defined(MAP_ANONYMOUS)
 	void* ptr =
 	  mmap(NULL, n, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+#elif defined(MAP_ANON)
+	void* ptr =
+	  mmap(NULL, n, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+#endif
 	if(ptr == MAP_FAILED) {
 		return (cbuild_proc_ptr_t) {
 			.ptr = NULL, .size = 0
