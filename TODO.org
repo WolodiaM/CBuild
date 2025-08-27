@@ -1,7 +1,6 @@
 #+STARTUP: content
 
 * Bugfix todo list
-
 *** DONE force specific POSIX
 
 Maybe POSIX_C_SOURCE=200112L
@@ -38,7 +37,6 @@ Maybe better piping?
 *** DONE Command.h - allow to print command using single opt
 
 * Thinking place
-
 ** DONE new hash-map implementation
 
 Element struct can be provided by a user, bucket should be auto-generated, map should have an ability to add custom fields.
@@ -254,12 +252,10 @@ or signals:
 or just busy-loop on process list with ~waitpid(pid, &status NOHANG)~ and ~nnanosleep~ to not fully busy-loop. This is actiully the best way (fastest/simplest)
 or just wait for all process to finish (eg. run batch-by-batch), much easier but may be slower.
 
-#  LocalWords:  struct structs alloc
-
-
-
 * v0.13
 *** Command.h rework
  + proper async
  + thread count control
  + Allow file redirects
+
+ #  LocalWords:  struct structs alloc
