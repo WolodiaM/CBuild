@@ -264,7 +264,7 @@
 // OS-specific defines
 #if defined(__linux__)
 	// Use GNU extentions if possible
-	#ifndef _GNU_SOURCE
+	#if !defined(_GNU_SOURCE) && !defined(STRICT_POSIX)
 		#define _GNU_SOURCE
 	#endif // _GNU_SOURCE
 	#include <features.h>
@@ -325,6 +325,7 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
+#include <signal.h>
 // Constants that can be redefined
 /**
  * @brief Init capacity of cbuild datastructures. `unsigned long`

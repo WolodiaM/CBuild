@@ -2,7 +2,7 @@
 # Environment
 set -euo pipefail
 # constants
-CARGS="-O3 -g -gdwarf-4 -std=gnu99 \
+CARGS="-O3 -g -gdwarf-4 -std=gnu99  \
 	-Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Wno-override-init \
 	-Werror \
 	-D_FORTIFY_SOURCE=2"
@@ -137,14 +137,17 @@ test_cmd() {
 	if [ "$#" -lt 1 ]; then
 		test_run_all
 	else
-		test_run "$1"
+		test_run "$1" "${2:-}" "${3:-}"
 	fi
 }
+# $1     - ID
+# ${2:-} - Extra CARGS
+# ${3:-} - Extra CC msg
 test_run() {
 	call_cmd rm -rf "build/$1.*"
 	printf "${green}Building test \"${red}$1${green}\" into executable.${reset}"
 	if [ "$Silent" == "no" ]; then
-		printf "${blue} $TEST_CC ${red}output will be shown.${reset}\n"
+		printf "${blue} $TEST_CC${3:-} ${red}output will be shown.${reset}\n"
 	else
 		printf "\n"
 	fi
@@ -155,7 +158,7 @@ test_run() {
 	if [ -f "tests/$1.args" ]; then
 		NEWCARGS="$CARGS $(cat "tests/$1.args")"
 	fi
-	call_cmd $TEST_CC $NEWCARGS tests/"$1".c src/impl.c -o build/test_"$1".run
+	call_cmd $TEST_CC $NEWCARGS "${2:-}" tests/"$1".c src/impl.c -o build/test_"$1".run
 	ERR=$?
 	if [ "$Silent" == "no" ]; then
 		printf "${cyan}%s${reset}\n" "----------  End of compiler output  ----------"
@@ -184,15 +187,26 @@ test_run() {
 }
 test_run_all() {
 	local compilers=(gcc clang musl-gcc musl-clang)
+	local modes=(gnu posix)
 	for file in tests/*.c; do
 		file="$(basename -- "$file")"
 		file="${file%.*}"
 		for compiler in ${compilers[@]}; do
-			TEST_CC=$compiler test_run "$file"
-			ERR=$?
-			if [ "$ERR" -ne 0 ]; then
-				exit 1
-			fi
+			for mode in ${modes[@]}; do
+				extra_cargs=""
+				extra_cc_msg=""
+				case "$mode" in
+					posix) extra_cargs="-DSTRICT_POSIX -D_POSIX_C_SOURCE=200112L"
+								 extra_cc_msg="/POSIX"
+								 ;;
+					gnu) ;;
+				esac
+				TEST_CC=$compiler test_run "$file" "$extra_cargs" "$extra_cc_msg"
+				ERR=$?
+				if [ "$ERR" -ne 0 ]; then
+					exit 1
+				fi
+			done
 		done
 	done
 	exit 0
@@ -239,7 +253,7 @@ help() {
 	printf "\t\t\tserve - run webserver for a wiki\n"
 
 	printf "\ttest - Run tests\n"
-	printf "\t\tUsage: ./build.sh test [test_id]\n"
+	printf "\t\tUsage: ./build.sh test [test_id] [extra_cargs] [extra_cc_msg]\n"
 
 	printf "\tclean - Clean all build artifacts\n"
 	printf "\t\tUsage: ./build.sh clean\n"

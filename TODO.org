@@ -2,11 +2,11 @@
 
 * Bugfix todo list
 
-*** TODO force sspecifc POSIX
+*** DONE force specific POSIX
 
 Maybe POSIX_C_SOURCE=200112L
 
-*** TODO Make all macro evaluate their argument only once.
+*** DONE Make all macro evaluate their argument only once.
 
 Some macro can be an exception, but this should be noted in documentation comment. All data-structure macro should handle elements only once, unless this is impossible.
 
@@ -257,9 +257,6 @@ or just wait for all process to finish (eg. run batch-by-batch), much easier but
 #  LocalWords:  struct structs alloc
 
 
-
-* v 0.12
-*** Bugfixes
 
 * v0.13
 *** Command.h rework

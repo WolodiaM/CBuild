@@ -15,15 +15,16 @@
 /* misc code */
 #if (defined(CBUILD_OS_LINUX) &&                                               \
 	!(defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL))) ||       \
-	defined(CBUILD_OS_UNIX)
+	defined(CBUILD_OS_UNIX) || defined(STRICT_POSIX)
 // glibc has its own way and generic Unix is user's problem
 extern const char* __progname;
 #endif
 const char* __cbuild_progname(void) {
-#if defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS)
+#if (defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS)) && !defined(STRICT_POSIX)
 	return getprogname();
-#elif defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) ||       \
-	defined(CBUILD_OS_LINUX_UCLIBC) || defined(CBUILD_OS_WINDOWS_CYGWIN)
+#elif (defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) ||      \
+	defined(CBUILD_OS_LINUX_UCLIBC) || defined(CBUILD_OS_WINDOWS_CYGWIN))        \
+	&& !defined(STRICT_POSIX)
 	return program_invocation_short_name;
 #elif defined(CBUILD_OS_LINUX) || defined(CBUILD_OS_UNIX)
 	return __progname;
@@ -292,8 +293,9 @@ ssize_t cbuild_sv_find(cbuild_sv_t sv, char c) {
 }
 ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
 	char* chrptr = sv.data;
-#if defined(CBUILD_API_POSIX) && (defined(CBUILD_OS_LINUX) ||                  \
-	defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS))
+#if (defined(CBUILD_API_POSIX) && ((defined(CBUILD_OS_LINUX_GLIBC) ||          \
+	defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) ||          \
+	defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS))) && !defined(STRICT_POSIX))
 	chrptr = memrchr(sv.data, c, sv.size);
 #else
 	chrptr += sv.size;
@@ -312,9 +314,9 @@ loop_end:
 	return chrptr - sv.data;
 }
 ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle) {
-#if defined(CBUILD_API_POSIX) && (defined(CBUILD_OS_LINUX_GLIBC) ||            \
+#if (defined(CBUILD_API_POSIX) && ((defined(CBUILD_OS_LINUX_GLIBC) ||          \
 	defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_BSD) ||                   \
-	defined(CBUILD_OS_MACOS))
+	defined(CBUILD_OS_MACOS))) && !defined(STRICT_POSIX))
 	char* chrptr = memmem(sv.data, sv.size, needle.data, needle.size);
 	if(chrptr == NULL) {
 		return -1;
@@ -1299,8 +1301,14 @@ bool cbuild_dir_check(const char* path) {
 int __cbuild_int_fs_dir_list_no_dots(const struct dirent *d) {
 	return !(strcmp(d->d_name, ".") == 0 || strcmp(d->d_name, "..") == 0);
 }
+int __cbuild_int_fs_compare(const void* a, const void* b) {
+	return strcmp(*(const char**)a, *(const char**)b);
+}
 bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 	cbuild_da_clear(elements);
+#if (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200809L)) ||              \
+	(defined(CBUILD_API_POSIX) && (defined(CBUILD_OS_LINUX_GLIBC) ||             \
+	defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS)) && !defined(STRICT_POSIX))
 	struct dirent** namelist;
 	int n = scandir(path, &namelist, __cbuild_int_fs_dir_list_no_dots, alphasort);
 	if(n < 0) {
@@ -1311,13 +1319,33 @@ bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 	for(int i = 0; i < n; i++) {
 		size_t len = strlen(namelist[i]->d_name);
 		char*  str = (char*)cbuild_malloc(len + 1);
-		cbuild_assert(str != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		cbuild_assert(str != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
 		memcpy(str, namelist[i]->d_name, len);
 		str[len] = '\0';
 		cbuild_da_append(elements, str);
 		free(namelist[i]);
 	}
 	free(namelist);
+#else // POSIX 2001 fallback
+	DIR* dir = opendir(path);
+	if(!dir) {
+		cbuild_log(CBUILD_LOG_ERROR, "Cannot open directory \"%s\", error: \"%s\"",
+		  path, strerror(errno));
+		return false;
+	}
+	struct dirent* entry;
+	while((entry = readdir(dir)) != NULL) {
+		if(!__cbuild_int_fs_dir_list_no_dots(entry)) continue;
+		size_t len = strlen(entry->d_name);
+		char* str = (char*)cbuild_malloc(len + 1);
+		cbuild_assert(str != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
+		memcpy(str, entry->d_name, len);
+		str[len] = '\0';
+		cbuild_da_append(elements, str);
+	}
+	closedir(dir);
+	qsort(elements->data, elements->size, sizeof(char*), __cbuild_int_fs_compare);
+#endif
 	return true;
 }
 void cbuild_pathlist_clear(cbuild_pathlist_t* list) {

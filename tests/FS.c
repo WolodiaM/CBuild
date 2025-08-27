@@ -229,20 +229,10 @@ TEST_MAIN({
 		TEST_ASSERT_EQ(ret, true, "Function returened error%s", "");
 		TEST_ASSERT_EQ(dirls.size, 2, "Expected 2 files but got %zu",
 		  dirls.size);
-		bool contains_a = false;
-		for(int i = 0; i < 4; i++) {
-			contains_a = contains_a || (strcmp(dirls.data[i], "a") == 0);
-		}
-		bool contains_b = false;
-		for(int i = 0; i < 4; i++) {
-			contains_b = contains_b || (strcmp(dirls.data[i], "b") == 0);
-		}
-		TEST_ASSERT_EQ(contains_a && contains_b, true,
-		  "Directory list wrong! %s %s",
-		  contains_a ? "Directory \"a\" found."
-		  : "Directory \"a\" does not found.",
-		  contains_b ? "Directory \"b\" found."
-		  : "Directory \"b\" does not found.");
+		TEST_ASSERT_STREQ(dirls.data[0], "a", "Wrong directory read at first index"
+		  TEST_EXPECT_MSG(s), "a", dirls.data[0]);
+		TEST_ASSERT_STREQ(dirls.data[1], "b", "Wrong directory read at second index"
+		  TEST_EXPECT_MSG(s), "b", dirls.data[1]);
 		cbuild_pathlist_clear(&dirls);
 		cbuild_cmd_clear(&dir_creator);
 		cbuild_cmd_clear(&file_writer);

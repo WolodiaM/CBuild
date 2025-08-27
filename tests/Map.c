@@ -28,6 +28,7 @@
 // Project includes
 #include "../src/Map.h"
 #include "framework.h"
+#include <string.h>
 // Code
 size_t test_int_hash(const void* map, const void* key) {
 	CBUILD_UNUSED(map);
@@ -42,6 +43,13 @@ size_t test_cstr_hash(const void* map, const void* key) {
 void test_cstr_free(const void* map, void* elem) {
 	CBUILD_UNUSED(map);
 	free(*((char**)elem));
+}
+char* test_strdup(char* str) {
+	size_t len = strlen(str);
+	char* ret = malloc(len + 1);
+	memcpy(ret, str, len);
+	ret[len] = '\0';
+	return ret;
 }
 // This tests uses two variants of a map - first is 'int->int' second is
 // 'cstr->intptr_t'.
@@ -166,10 +174,10 @@ TEST_MAIN({
 		cbuild_map_init(&map, 256);
 		key = "abc";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 1;
 		key = "def";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 2;
 		TEST_ASSERT_NEQ(
 		  map.buckets['a'].vals, NULL,
 		  "Key \"abc\" must be hashed in bucket %d but bucket is empty.", 'a');
@@ -199,10 +207,10 @@ TEST_MAIN({
 		cbuild_map_init(&map, 256);
 		key = "abc";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 1;
 		key = "aef";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 2;
 		TEST_ASSERT_NEQ(map.buckets['a'].vals, NULL,
 		  "Key 0 and 256 must be hashed in bucket %d but bucket is empty.", 'a');
 		TEST_ASSERT_EQ(
@@ -222,11 +230,11 @@ TEST_MAIN({
 		cbuild_map_init(&map, 256);
 		key = "abc";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 1;
 		key = "abc";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
 		free(((char**)elem)[0]);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 2;
 		TEST_ASSERT_NEQ(map.buckets['a'].vals, NULL, "%s",
 		  "Value was not written at all.");
 		TEST_ASSERT_EQ(
@@ -286,10 +294,10 @@ TEST_MAIN({
 		cbuild_map_init(&map, 256);
 		key = "abc";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 1;
 		key = "def";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 2;
 		key = "abc";
 		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get_ptr(&map, &key))[1], 1,
 		  "Wrong element read" TEST_EXPECT_MSG(ld), 1l,
@@ -304,10 +312,10 @@ TEST_MAIN({
 		cbuild_map_init(&map, 1);
 		key = "abc";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 1;
 		key = "aef";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 2;
 		key = "abc";
 		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get_ptr(&map, &key))[1], 1,
 		  "Wrong element read" TEST_EXPECT_MSG(ld), 1l,
@@ -351,10 +359,10 @@ TEST_MAIN({
 		cbuild_map_init(&map, 256);
 		key = "abc";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup("abc"); ((intptr_t*)elem)[1] = 1;
+		((char**)elem)[0] = test_strdup("abc"); ((intptr_t*)elem)[1] = 1;
 		key = "def";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 2;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 2;
 		key = "aaa";
 		cbuild_map_remove_ex_ptr(&map, &key, test_cstr_free);
 		key = "def";
@@ -402,10 +410,10 @@ TEST_MAIN({
 		cbuild_map_init(&map, 256);
 		key = "abc";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 1;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 1;
 		key = "def";
 		elem = cbuild_map_get_or_alloc_ptr(&map, &key);
-		((char**)elem)[0] = strdup(key); ((intptr_t*)elem)[1] = 4;
+		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 4;
 		bool found_abc = false;
 		bool found_def = false;
 		cbuild_map_foreach_raw(&map, iter) {
