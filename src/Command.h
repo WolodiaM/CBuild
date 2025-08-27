@@ -97,8 +97,8 @@ CBDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  * @param cmd => cbuild_cmd_t -> Command buffer
  * @return cbuild_proc_t -> Process associated with called command
  */
-CBDEF CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!")
-cbuild_proc_t cbuild_cmd_async(cbuild_cmd_t cmd);
+CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
+  CBDEF cbuild_proc_t cbuild_cmd_async(cbuild_cmd_t cmd));
 /**
  * @brief Call async command with io rediecting
  *
@@ -106,8 +106,9 @@ cbuild_proc_t cbuild_cmd_async(cbuild_cmd_t cmd);
  * @param fd => cbuild_cmd_fd_t -> IO redicrecting table
  * @return cbuild_proc_t -> Process associated with called command
  */
-CBDEF CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!")
-cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
+CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
+  CBDEF cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd,
+    cbuild_cmd_fd_t fd));
 /**
  * @brief Call sync command without io redirecting
  *
@@ -115,8 +116,8 @@ cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
  * @return true -> Command succeed
  * @return false -> Command failed
  */
-CBDEF CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!")
-bool cbuild_cmd_sync(cbuild_cmd_t cmd);
+CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
+  CBDEF bool cbuild_cmd_sync(cbuild_cmd_t cmd));
 /**
  * @brief Call sync command with io rediecting
  *
@@ -125,8 +126,8 @@ bool cbuild_cmd_sync(cbuild_cmd_t cmd);
  * @return true -> Command succeed
  * @return false -> Command failed
  */
-CBDEF CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!")
-bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd);
+CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
+  CBDEF bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd));
 typedef struct cbuild_cmd_opt_t {
 	// Redirect
 	cbuild_fd_t* fdstdin;

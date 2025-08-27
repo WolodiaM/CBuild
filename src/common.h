@@ -425,11 +425,13 @@
 #endif // CBDEF
 #if defined(__has_c_attribute)
 	#if __has_c_attribute(deprecated)
-		#define CBUILD_DEPRECATED(...) [[deprecated(__VA_ARGS__)]]
-	#endif // deprecated
+		#define CBUILD_DEPRECATED(msg, decl) [[deprecated(msg)]] decl
+	#else
+		#define CBUILD_DEPRECATED(msg, decl) decl __attribute__((deprecated(msg)))
+	#endif
 #else
-	#define CBUILD_DEPRECATED(...) __attribute__((deprecated(__VA_ARGS__)))
-#endif // __has_c_attribute
+	#define CBUILD_DEPRECATED(msg, decl) decl __attribute__((deprecated(msg)))
+#endif
 // Global allocator
 extern void* (*cbuild_malloc)(size_t size);
 extern void* (*cbuild_realloc)(void* ptr, size_t size);
