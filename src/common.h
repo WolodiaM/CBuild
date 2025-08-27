@@ -34,140 +34,140 @@
  * --------------------------------------------
  * 21.12.2024  v1.1    Few small additions
  *   Proc.h [feature]
- *     - Added 'cbuild_proc_start' function
+ *     - Added 'cbuild_proc_start' function.
  * --------------------------------------------
  * 27.12.2024  v1.2    Bugfix release
  *   Compile.h [bugfix]
- *     - Fixed type ('CBUILD_CARG_WARN' -> 'CBUILD_CARGS_WARN')
+ *     - Fixed type ('CBUILD_CARG_WARN' -> 'CBUILD_CARGS_WARN').
  *	 Log.h [bugfix]
- *     - Logger always use one output stream for its messages now
+ *     - Logger always use one output stream for its messages now.
  *   General [bugfix]
  *     - Added 'CBUILD_IMPL' macro to allow multiple includes in same
- *       translation unit
+ *       translation unit.
  * --------------------------------------------
  * 10.01.2025  v1.3    New API features and bugfixes
  *   common.h [bugfix]
- *     - Fixed bug in macro (wrong variable name used)
- *     - Switched 'CBuildFD' typedef from '__pid_t' to 'pid_t'
+ *     - Fixed bug in macro (wrong variable name used).
+ *     - Switched 'CBuildFD' typedef from '__pid_t' to 'pid_t.
  *   common.h	[feature]
  *     - Added 'cbuild_shift_expect' (allows to have error message on top of
- *       'cbuild_shift')
- *     - Added 'cbuild_assert'
+ *       'cbuild_shift').
+ *     - Added 'cbuild_assert'.
  *     - Added 'noreturn' attribute to an assert function.
  *   Command.h [bugfix]
  *     - Added 'fd' prefix to 'stdin', 'stdout' and 'stderr' for compatibility
- *       with libc that defines this names as a macro
- *     - Fixed typo in error message
+ *       with libc that defines this names as a macro.
+ *     - Fixed typo in error message.
  *	 Log.h [feature]
- *     - Logger now use 16-color ANSI mode
- *     - Added 'cbuild_vlog' that takes 'va_list' inserted of variadic arguments
+ *     - Logger now use 16-color ANSI mode.
+ *     - Added 'cbuild_vlog' that takes 'va_list' inserted of variadic arguments.
  *	 General [bugfix]
- *     - Added few 'const' annotations to pointers
- *     - Changed all asserts to 'cbuild_assert'
+ *     - Added few 'const' annotations to pointers.
+ *     - Changed all asserts to 'cbuild_assert'.
  * --------------------------------------------
  * 18.02.2025  v1.4    Small bugfix
  *   common.h [bugfix]
- *     - Wrong argument passed to '__CBUILD_ERR_PRINTF' in 'CBuild_UNREACHAGLE'
+ *     - Wrong argument passed to '__CBUILD_ERR_PRINTF' in 'CBuild_UNREACHAGLE'.
  * --------------------------------------------
  * 18.02.2025  v1.5    Bugfix release
  *   impl.c [bugfix]
- *     - Fixed buffer overflow in 'cbuild_dir_copy'
- *     - Improved 'cbuild_shift'
+ *     - Fixed buffer overflow in 'cbuild_dir_copy'.
+ *     - Improved 'cbuild_shift'.
  *   General [change]
- *     - Changed macro 'CBUILD_IMPL' to 'CBUILD_IMPLEMENTATION'
+ *     - Changed macro 'CBUILD_IMPL' to 'CBUILD_IMPLEMENTATION'.
  * --------------------------------------------
  * 16.06.2025  v1.6    Full rewrite
  *   Term.h [new]
- *     - ANSI wrapper module
+ *     - ANSI wrapper module.
  *   Log.h [feature]
- *     - Rely on 'Term.h' for colored output
- *     - Runtime configuration for minimum log level
- *     - Logger now support customizable formatting callbacks
+ *     - Rely on 'Term.h' for colored output.
+ *     - Runtime configuration for minimum log level.
+ *     - Logger now support customizable formatting callbacks.
  *   DynArray.h [new]
- *     - Different implementation
+ *     - Different implementation.
  *	 common.h [feature]
- *     - Fixes for MacOS related to '__progname'
- *     - Better OS and API abstraction
- *     - Unified INIT_CAPACITY macro
- *     - Better IO abstraction
- *     - Assert now use proper IO abstractions
- *     - Types for WinAPI
+ *     - Fixes for MacOS related to '__progname'.
+ *     - Better OS and API abstraction.
+ *     - Unified INIT_CAPACITY macro.
+ *     - Better IO abstraction.
+ *     - Assert now use proper IO abstractions.
+ *     - Types for WinAPI.
  *	 StringBuilder.h [new]
- *     - Rely on new 'DynArray.h'
- *     - Few new operations
+ *     - Rely on new 'DynArray.h'.
+ *     - Few new operations.
  *   Proc.h [feature]
- *     - Better naming scheme
- *     - Added ability to allocate inter-process shared memory
+ *     - Better naming scheme.
+ *     - Added ability to allocate inter-process shared memory.
  *   Command.h [feature]
- *     - More consistent names
+ *     - More consistent names.
  *   Map.h [new]
- *     - Hash-map implementation
- *     - Hash functions for string added
+ *     - Hash-map implementation.
+ *     - Hash functions for string added.
  *   Compile.h [change]
- *     - Added consistent prefixes
- *     - Added output arg	macro
+ *     - Added consistent prefixes.
+ *     - Added output arg	macro.
  *   FS.h [change]
- *     - Changes becouse of rewrite of other modules
+ *     - Changes becouse of rewrite of other modules.
  *   StringView.h [new]
- *     - New implementation, better functionality
- *     - 'find', 'rfind' and 'contains' function
- *     - 'memrchr' is used on MacOS, *BSD and Glibc (if detected)
+ *     - New implementation, better functionality.
+ *     - 'find', 'rfind' and 'contains' function.
+ *     - 'memrchr' is used on MacOS, *BSD and Glibc (if detected).
  *   Compile.h [feature]
- *     - Better naming
- *     - More macro
+ *     - Better naming.
+ *     - More macro.
  *   Span.h [new]
- *     - New module - array+size
+ *     - New module - array+size.
  *   Stack.h [new]
- *     - New module - basic re-sizable stack implementation
+ *     - New module - basic re-sizable stack implementation.
  *   DLload.h [new]
  *     - Small wrapper for runtime loading of dynamic libraries, first code to
- *       support 'WinAPI'
+ *       support 'WinAPI'.
  *   FlagParse.h [new]
- *     - CLI flag parser library
- *     - Supports long and short options
- *     - Support different flag arguments (but not support their types)
- *     - Pre-parses positional arguments - collects them in separate buffer
- *     - Has build-in help and version flags and build-in help and version subs
- *     - Has function to print proper help for all defined flags
- *     - Allow overrides to help and version stubs using 'weak' linking
+ *     - CLI flag parser library.
+ *     - Supports long and short options.
+ *     - Support different flag arguments (but not support their types).
+ *     - Pre-parses positional arguments - collects them in separate buffer.
+ *     - Has build-in help and version flags and build-in help and version subs.
+ *     - Has function to print proper help for all defined flags.
+ *     - Allow overrides to help and version stubs using 'weak' linking.
  *   General [feature]
- *     - Better error handling
- *     - More integrated logging
- *     - Slight formatting change
- *     - Proper use of asserts in place of older 'exit(0);'
+ *     - Better error handling.
+ *     - More integrated logging.
+ *     - Slight formatting change.
+ *     - Proper use of asserts in place of older 'exit(0);'.
  * --------------------------------------------
  * 2025-07-01  v1.7    Fix in build script and few code fixes
  *   General [bugfix]
- *     - Add 'FlagParse.h' into a output library ;)
+ *     - Add 'FlagParse.h' into a output library ;).
  *   Compile.h [bugfix]
- *     - New file now explicitly marked as executable
- *     - Allow adding compile argument for self-rebuild
+ *     - New file now explicitly marked as executable.
+ *     - Allow adding compile argument for self-rebuild.
  *     - Changed API of 'cbuild_cmd_to_sb' to match other 'cbuild_*_to_*'
- *       functions
+ *       functions.
  *   FlagParse.h [bugfix]
- *     - Fixed short flags for help and version
+ *     - Fixed short flags for help and version.
  *     - Fixed 'cbuild_flag_get_flag' to actually return NULL if flag was not
- *       specified.
+ *       specified..
  *   FS.h [change]
- *     - Different implementation for 'cbuild_dir_list'
- *     - '.' and '..' now excluded
- *     - Entries now sorted alphabetically
- *     - Disable file descriptor auto inheritance on exec by default
+ *     - Different implementation for 'cbuild_dir_list'.
+ *     - '.' and '..' now excluded.
+ *     - Entries now sorted alphabetically.
+ *     - Disable file descriptor auto inheritance on exec by default.
  * --------------------------------------------
  * 2025-07-09  v1.8    Command updates
  *   Command.h [feature]
- *     - Allow to autokill child processes on exit on Linux
+ *     - Allow to autokill child processes on exit on Linux.
  *   Command.h [change]
- *     - Changed cbuild_cmd_t format
+ *     - Changed cbuild_cmd_t format.
  * --------------------------------------------
  * 2025-07-21  v1.9    Back to beginning
  *   General
  *     - Revert basic data types to be implemented as a raw macro.
  *       Map is not rewritten because complexity is too high.
  *   Map.h [bugfix]
- *     - Fixed memory leak
+ *     - Fixed memory leak.
  *   Span.h [remove]
- *     - Removed because it is useless
+ *     - Removed because it is useless.
  * --------------------------------------------
  * 2025-07-24  v1.10    API cleanup
  *   Map.h [change]
@@ -177,22 +177,22 @@
  *       Map now access only a key (and only does 'read' access).
  *   Compile.h [change]
  *     - Now '-Wall', '-Wextra', '-Wno-comments', '-Wconversion' and
- *       '-Wcast-align' is default set of compile args on selfrebuild
+ *       '-Wcast-align' is default set of compile args on selfrebuild.
  *   FlagParse.h [change]
- *     - 'cbuild_flag_flg_help' renamed to 'cbuild_flag_print_help'
+ *     - 'cbuild_flag_flg_help' renamed to 'cbuild_flag_print_help'.
  *   StringView.h [feature]
- *     - Added compile-time constructor for string literals
+ *     - Added compile-time constructor for string literals.
  *   Stack.h [feature]
- *     - Added 'cbuild_stack_top' to get top element in a read mode
+ *     - Added 'cbuild_stack_top' to get top element in a read mode.
  *   Proc.h [feature]
- *     - Added 'cbuild_proc_is_running' to check process without blocking
+ *     - Added 'cbuild_proc_is_running' to check process without blocking.
  *   FS.h [feature]
  *     - Added 'cbuild_fd_read' and 'cbuild_fd_write' to abstract POSIX 'read'
- *       and 'write'
+ *       and 'write'.
  *   FlagParse.h [feature]
  *     - Added 'alias' command to DSL - allow to define long option aliases to
  *       another option, used in help message and while parsing, but cannot be
- *       targeted in 'cbuild_flag_get_flag'
+ *       targeted in 'cbuild_flag_get_flag'.
  *     - Added flag groups. Added metadata key 'group' that allow to append flag
  *       to a specific group. Added command 'group' that allow to add extended
  *       description to a group. Groups will only be used during help generation
@@ -200,29 +200,29 @@
  *   Arena.h [new]
  *     - Temporary allocated. Experimental module.
  *   General [new]
- *     - New allocator hook system
+ *     - New allocator hook system.
  *   DynArray.h [bugfix]
  *     - If 'cbuild_da_resize' shrinks array and size becomes invalid it is
- *       decrement
+ *       decrement.
  *   StringView.h [bugfix]
- *     - Function that can return '-1' now returns 'ssize_t' not 'size_t'
+ *     - Function that can return '-1' now returns 'ssize_t' not 'size_t'.
  * --------------------------------------------
  * 2025-08-05  v1.11		Cleanup and utf8
  *   FS.h [feature]
- *     - 'cbuild_fs_move' and 'cbuild_fs_remove' now try 'rename' before copying
+ *     - 'cbuild_fs_move' and 'cbuild_fs_remove' now try 'rename' before copying.
  *   Log.h [change]
- *     - Renamed types
+ *     - Renamed types.
  *   Compile.h [bugfix]
- *     - Now default warn flags include VLA warnings
- *     - Now if compilation failed in selfrebuild, old version will be run
+ *     - Now default warn flags include VLA warnings.
+ *     - Now if compilation failed in selfrebuild, old version will be run.
  *   FlagParse.h [change]
- *     - Short flag for version option is more more conventional 'V'
+ *     - Short flag for version option is more more conventional 'V'.
  *   StringView.h [feature]
- *     - Optional utf8 supports
+ *     - Optional utf8 supports.
  *   StringBuilder.h [feature]
- *     - Optional utf8 support
+ *     - Optional utf8 support.
  *   General [bugfix]
- *     - Now functions that takes no arguments properly have 'void' as arguments
+ *     - Now functions that takes no arguments properly have 'void' as arguments.
  * --------------------------------------------
  * 2025-08-18  v0.12    Switch to zero-ver
  *   Compile.h [feature]
@@ -247,14 +247,15 @@
  *     - 'cbuild_path_filetype' now use 'lstat'.
  *   General [new]
  *     - Now test on 'musl' libc too.
+ *     - Now test on strict POSIX.1-2001.
  *     - Now I use zero-ver. This will fully break all version checks.
  *       The only change is that leading '1' will be '0'.
  *       "Real" version number will be monotonically incremented as always.
  *   General [bugfix]
- *     - Better OS-detect logic
- *     - First deprecated APIs
- *     - Added CBDEF for all functions (user-overridable)
- *     - Fixed macro to document when they evaluate args multiple times
+ *     - Better OS-detect logic.
+ *     - First deprecated APIs.
+ *     - Added CBDEF for all functions (user-overridable).
+ *     - Fixed macro to document when they evaluate args multiple times.
  */
 // Code
 // NOTE: CBuild should be a first header to be included in translation unit, or

@@ -708,7 +708,6 @@ bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 	    .fdstdout = fd.fdstdout == CBUILD_INVALID_FD ? NULL : &fd.fdstdout,
 	    .fdstderr = fd.fdstderr == CBUILD_INVALID_FD ? NULL : &fd.fdstderr,);
 }
-#if defined(CBUILD_API_POSIX)
 bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
 	if(cmd->size < 1) {
 		cbuild_log(CBUILD_LOG_ERROR, "Empty command requested to be executed!");
@@ -796,7 +795,6 @@ bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
 	}
 	return true;
 }
-#endif // CBUILD_API_POSIX
 /* Log.h impl */
 void __cbuild_log_fmt(cbuild_log_level_t level) {
 	time_t     t       = time(NULL);
@@ -901,7 +899,6 @@ void cbuild_temp_reset(void) {
 	__cbuild_int_temp_size = 0;
 }
 /* Proc.h impl */
-#if defined(CBUILD_API_POSIX)
 int cbuild_proc_wait_code(cbuild_proc_t proc) {
 	if(proc == CBUILD_INVALID_PROC) {
 		return INT_MIN;
@@ -962,7 +959,6 @@ cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context) {
 	}
 	return proc;
 }
-#endif // CBUILD_API_POSIX
 bool cbuild_proc_wait(cbuild_proc_t proc) {
 	return cbuild_proc_wait_code(proc) == 0;
 }
@@ -1050,7 +1046,7 @@ bool cbuild_file_read(const char* path, cbuild_sb_t* data) {
 		cbuild_fd_close(fd);
 		return false;
 	}
-	ssize_t len = read(fd, data->data, size);
+	ssize_t len = cbuild_fd_read(fd, data->data, size);
 	if(len < 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot read file, error: \"%s\"",
 		  strerror(errno));
@@ -1070,7 +1066,7 @@ bool cbuild_file_write(const char* path, cbuild_sb_t* data) {
 	char*   buf = data->data;
 	ssize_t cnt = (ssize_t)data->size;
 	while(cnt > 0) {
-		ssize_t written = write(fd, buf, (size_t)cnt);
+		ssize_t written = cbuild_fd_write(fd, buf, (size_t)cnt);
 		if(written < 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
 			  "Wrror while writing to file \"%s\", error: \"%s\"", path,
@@ -1109,7 +1105,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 	char* tmp_buff = (char*)cbuild_malloc(CBUILD_TMP_BUFF_SIZE);
 	cbuild_assert(tmp_buff != NULL, "(LIB_CBUILD_FS) Allocation failed.y\n");
 	while(true) {
-		ssize_t cnt = read(src_fd, tmp_buff, CBUILD_TMP_BUFF_SIZE);
+		ssize_t cnt = cbuild_fd_read(src_fd, tmp_buff, CBUILD_TMP_BUFF_SIZE);
 		if(cnt == 0) {
 			break;
 		}
@@ -1121,7 +1117,7 @@ bool cbuild_file_copy(const char* src, const char* dst) {
 		}
 		char* buf = tmp_buff;
 		while(cnt > 0) {
-			ssize_t written = write(dst_fd, buf, (size_t)cnt);
+			ssize_t written = cbuild_fd_write(dst_fd, buf, (size_t)cnt);
 			if(written < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
 				  "Wrror while writing to file \"%s\", error: \"%s\"", dst,
@@ -1516,14 +1512,12 @@ char* cbuild_path_normalize(const char* path_) {
 	return ret.data;
 }
 /* Compile.h impl */
-#ifdef CBUILD_API_POSIX
 void __cbuild_compile_mark_exec(const char* file) {
 	if(chmod(file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH |
 	  S_IXOTH) != 0) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot mark file as executable!");
 	}
 }
-#endif // CBUILD_API_POSIX
 void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd) = NULL;
 void __cbuild_selfrebuild(int argc, char** argv, size_t num_files, ...) {
 	va_list va;
@@ -1580,7 +1574,6 @@ void __cbuild_selfrebuild_ex(int argc, char** argv, cbuild_cmd_t files) {
 	cbuild_sb_clear(&bname_old);
 	exit(0);
 }
-#ifdef CBUILD_API_POSIX
 int cbuild_compare_mtime(const char* output, const char* input) {
 	struct stat statbuff;
 	if(stat(input, &statbuff) < 0) {
@@ -1603,7 +1596,6 @@ int cbuild_compare_mtime(const char* output, const char* input) {
 		return 0;
 	}
 }
-#endif // CBUILD_API_POSIX
 int cbuild_compare_mtime_many(const char* output, const char** inputs,
   size_t num_inputs) {
 	int ret = 0;
