@@ -934,14 +934,57 @@ cbuild_proc_ptr_t cbuild_proc_malloc(size_t n) {
 #elif defined(MAP_ANON)
 	void* ptr =
 	  mmap(NULL, n, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+#else
+	// TODO: Ecen STRICT_POSIX passes without thin on my laptop but fails on CI
+	// Unix-only, so raw calls
+	int (*shm_open)(const char* name, int oflag, mode_t mode) =
+	  (int(*)(const char*, int, mode_t))dlsym(RTLD_DEFAULT, "shm_open");
+	if(shm_open == NULL) {
+		if(!dlopen("librt.so", RTLD_LAZY | RTLD_GLOBAL)) {
+			if(!dlopen("librt.so.1", RTLD_LAZY | RTLD_GLOBAL)) {
+				CBUILD_UNREACHABLE("libc dont expose 'shm_open' and librt not found!");
+			}
+		}
+		shm_open = (int(*)(const char*, int, mode_t))dlsym(RTLD_DEFAULT, "shm_open");
+	}
+	int (*shm_unlink)(const char* name) =
+	  (int(*)(const char*))dlsym(RTLD_DEFAULT, "shm_unlink");
+	int shmemfd = shm_open("/cbuild-proc-malloc-shmem", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+	if(shmemfd == -1) {
+		return (cbuild_proc_ptr_t) {
+			.ptr = NULL, .size = 0,
+		};
+	}
+	if(ftruncate(shmemfd, (long)n) == -1) {
+		shm_unlink("/cbuild-proc-malloc-shmem");
+		close(shmemfd);
+		return (cbuild_proc_ptr_t) {
+			.ptr = NULL, .size = 0,
+		};
+	}
+	void* ptr =
+	  mmap(NULL, n, PROT_READ | PROT_WRITE, MAP_SHARED, shmemfd, 0);
+	if(ptr == MAP_FAILED) {
+		close(shmemfd);
+		shm_unlink("/cbuild-proc-malloc-shmem");
+		return (cbuild_proc_ptr_t) {
+			.ptr = NULL, .size = 0,
+		};
+	} else {
+		close(shmemfd);
+		shm_unlink("/cbuild-proc-malloc-shmem");
+		return (cbuild_proc_ptr_t) {
+			.ptr = ptr, .size = n,
+		};
+	}
 #endif
 	if(ptr == MAP_FAILED) {
 		return (cbuild_proc_ptr_t) {
-			.ptr = NULL, .size = 0
+			.ptr = NULL, .size = 0,
 		};
 	} else {
 		return (cbuild_proc_ptr_t) {
-			.ptr = ptr, .size = n
+			.ptr = ptr, .size = n,
 		};
 	}
 }

@@ -40,7 +40,7 @@ int         thread(void* context) {
 	memcpy(context, MSG, strlen(MSG) + 1);
 	return 0;
 }
-TEST_MAIN( {
+TEST_MAIN({
 	TEST_CASE(
 	{
 		cbuild_proc_ptr_t context = cbuild_proc_malloc(strlen(MSG) + 1);
@@ -61,7 +61,7 @@ TEST_MAIN( {
 		  0, code);
 		if(code == 0) {
 			TEST_ASSERT_STREQ(context.ptr, MSG,
-			  "Wring shared memory copy" TEST_EXPECT_MSG(s),
+			  "Wr0ng shared memory copy" TEST_EXPECT_MSG(s),
 			  MSG, (char*)context.ptr);
 		} else {
 			err_code++;
