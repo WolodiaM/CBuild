@@ -1,6 +1,5 @@
 # Use arch to build, we are not dependent on compiler version
 image: debian:bookworm
-
 # Build stages
 stages:
     - test
@@ -34,6 +33,7 @@ build:
             - cbuild.h
 # Build wiki
 pages:
+    stage: build
     script:
         - mkdir -p public
         - ./build.sh pack

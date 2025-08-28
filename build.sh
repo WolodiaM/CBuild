@@ -196,8 +196,8 @@ test_run() {
 	return $ERR
 }
 test_run_all() {
-	local compilers=(gcc clang musl-gcc musl-clang)
-	local memchecks=(yes yes no no)
+	local compilers=(gcc clang musl-gcc) # musl-clang is not in debian:bookworm
+	local memchecks=(yes yes no)
 	local modes=(gnu posix)
 	for file in tests/*.c; do
 		file="$(basename -- "$file")"

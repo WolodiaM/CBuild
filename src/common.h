@@ -300,12 +300,11 @@
 	#define CBUILD_OS_WINDOWS_CYGWIN
 	#define CBUILD_API_POSIX
 #elif defined(__MINGW32__) || defined(__MINGW64__)
+	#define CBUILD_OS_WINDOWS
 	#define CBUILD_OS_WINDOWS_MINGW
 	#define CBUILD_API_WIN32
 	#error "This library support only POSIX api for now and MinGW only supports WinAPI"
 #elif defined(_MSC_VER)
-	#define CBUILD_OS_WINDOWS_MSVC
-	#define CBUILD_API_WIN32
 	#error "MSVC is fully unsupported as a compiler. Please use gcc/clang-compatible compiler! Compiler should support 'gnu99' standard!"
 #else
 	#error                                                                        \
