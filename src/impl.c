@@ -13,17 +13,17 @@
 #include "Arena.h"
 #include "Stack.h"
 /* misc code */
-#if (defined(CBUILD_OS_LINUX) &&                                               \
-	!(defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL))) ||       \
-	defined(CBUILD_OS_UNIX) || defined(STRICT_POSIX)
-// glibc has its own way and generic Unix is user's problem
-extern const char* __progname;
+#if (defined(CBUILD_OS_LINUX) && !(defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL))) ||	\
+	defined(CBUILD_OS_UNIX) || \
+	defined(STRICT_POSIX)
+	// glibc, bsd, macos has their own ways and generic Unix is user's problem
+	extern const char* __progname;
 #endif
 const char* __cbuild_progname(void) {
 #if (defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS)) && !defined(STRICT_POSIX)
 	return getprogname();
-#elif (defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) ||      \
-	defined(CBUILD_OS_LINUX_UCLIBC) || defined(CBUILD_OS_WINDOWS_CYGWIN))        \
+#elif (defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) || \
+	defined(CBUILD_OS_WINDOWS_CYGWIN)) \
 	&& !defined(STRICT_POSIX)
 	return program_invocation_short_name;
 #elif defined(CBUILD_OS_LINUX) || defined(CBUILD_OS_UNIX)
@@ -293,9 +293,10 @@ ssize_t cbuild_sv_find(cbuild_sv_t sv, char c) {
 }
 ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
 	char* chrptr = sv.data;
-#if (defined(CBUILD_API_POSIX) && ((defined(CBUILD_OS_LINUX_GLIBC) ||          \
-	defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) ||          \
-	defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS))) && !defined(STRICT_POSIX))
+#if (defined(CBUILD_API_POSIX) && \
+		((defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) || \
+		defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS))) && \
+		!defined(STRICT_POSIX))
 	chrptr = memrchr(sv.data, c, sv.size);
 #else
 	chrptr += sv.size;
@@ -314,9 +315,10 @@ loop_end:
 	return chrptr - sv.data;
 }
 ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle) {
-#if (defined(CBUILD_API_POSIX) && ((defined(CBUILD_OS_LINUX_GLIBC) ||          \
-	defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_BSD) ||                   \
-	defined(CBUILD_OS_MACOS))) && !defined(STRICT_POSIX))
+#if (defined(CBUILD_API_POSIX) && \
+		((defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || \
+		defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS))) && \
+		!defined(STRICT_POSIX))
 	char* chrptr = memmem(sv.data, sv.size, needle.data, needle.size);
 	if(chrptr == NULL) {
 		return -1;
@@ -1350,9 +1352,11 @@ int __cbuild_int_fs_compare(const void* a, const void* b) {
 }
 bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 	cbuild_da_clear(elements);
-#if (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200809L)) ||              \
-	(defined(CBUILD_API_POSIX) && (defined(CBUILD_OS_LINUX_GLIBC) ||             \
-	defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS)) && !defined(STRICT_POSIX))
+#if (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200809L)) || \
+	(defined(CBUILD_API_POSIX) && \
+		(defined(CBUILD_OS_LINUX_GLIBC) ||             \
+		defined(CBUILD_OS_BSD) || defined(CBUILD_OS_MACOS)) && \
+		!defined(STRICT_POSIX))
 	struct dirent** namelist;
 	int n = scandir(path, &namelist, __cbuild_int_fs_dir_list_no_dots, alphasort);
 	if(n < 0) {

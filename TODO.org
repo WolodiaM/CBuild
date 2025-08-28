@@ -9,6 +9,8 @@ Maybe POSIX_C_SOURCE=200112L
 
 Some macro can be an exception, but this should be noted in documentation comment. All data-structure macro should handle elements only once, unless this is impossible.
 
+*** TODO cbuild_fs_normalize broken on utf8 path
+
 * Features todo list
 *** DONE Map.h rewrite
 

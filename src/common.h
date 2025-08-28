@@ -285,6 +285,12 @@
 	#define CBUILD_API_POSIX
 #elif defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) ||   \
 	defined(__DragonFly__)
+	#if !defined(_DEFAULT_SOURCE) && !defined(STRICT_POSIX)
+		#define _DEFAULT_SOURCE
+	#endif
+	#if !defined(_BSD_SOURCE) && !defined(STRICT_POSIX)
+		#define _BSD_SOURCE
+	#endif
 	#define CBUILD_OS_BSD
 	#define CBUILD_API_POSIX
 #elif defined(__unix__)

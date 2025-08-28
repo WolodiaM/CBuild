@@ -2,13 +2,13 @@
 # Environment
 set -euo pipefail
 # constants
-CARGS="-O3 -g -gdwarf-4 -std=gnu99  \
-	-Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Wno-override-init \
+CARGS="-O3 -ggdb -gdwarf-4 -std=gnu99  \
+	-Wall -Wextra -Wno-comment -Wconversion -Wcast-align -Wvla -Wno-override-init \
 	-Werror \
 	-D_FORTIFY_SOURCE=2"
-: "${MEMCHECK:=valgrind --leak-check=full --show-leak-kinds=all \
-	--track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2}"
-: "${TEST_CC:=gcc}"
+MEMCHECK_DEFAULT="valgrind --leak-check=full --show-leak-kinds=all \
+	--track-origins=yes --errors-for-leak-kinds=all --error-exitcode=2"
+TEST_CC_DEFAULT="gcc"
 # Global variables
 Silent="no"  # Need to be set to `yes`
 Verbose="no" # Need to be set to `yes`
@@ -107,7 +107,7 @@ pack() {
 }
 # docs subcommand
 docs() {
-	if [ "$#" -lt 1 ]; then
+	if [[ "$#" -lt 1 ]]; then
 		help
 		return
 	fi
@@ -134,7 +134,7 @@ docs_serve() {
 }
 # test subcommand
 test_cmd() {
-	if [ "$#" -lt 1 ]; then
+	if [[ "$#" -lt 1 ]]; then
 		test_run_all
 	else
 		test_run "$1" "${2:-}" "${3:-}"
@@ -144,33 +144,43 @@ test_cmd() {
 # ${2:-} - Extra CARGS
 # ${3:-} - Extra CC msg
 test_run() {
+	# Check overrides
+	local cc="$TEST_CC_DEFAULT"
+	if [[ -n "$TEST_CC" ]]; then
+		cc="$TEST_CC"
+	fi
+	local memcheck="$MEMCHECK_DEFAULT"
+	if [[ -v MEMCHECK ]]; then
+		memcheck="$MEMCHECK"
+	fi
+	if [[ -f "tests/$1.nomem" ]]; then
+		memcheck=""
+	fi
+	local cargs="$CARGS"
+	if [[ -f "tests/$1.args" ]]; then
+		cargs="$CARGS $(cat "tests/$1.args")"
+	fi
+	# Build test
 	call_cmd rm -rf "build/$1.*"
 	printf "${green}Building test \"${red}$1${green}\" into executable.${reset}"
-	if [ "$Silent" == "no" ]; then
-		printf "${blue} $TEST_CC${3:-} ${red}output will be shown.${reset}\n"
+	if [[ "$Silent" == "no" ]]; then
+		printf "${blue} $cc${3:-} ${red}output will be shown.${reset}\n"
 	else
 		printf "\n"
 	fi
-	if [ "$Silent" == "no" ]; then
+	if [[ "$Silent" == "no" ]]; then
 		printf "${cyan}%s${reset}\n" "---------- Begin of compiler output ----------"
 	fi
-	NEWCARGS="$CARGS"
-	if [ -f "tests/$1.args" ]; then
-		NEWCARGS="$CARGS $(cat "tests/$1.args")"
-	fi
-	call_cmd $TEST_CC $NEWCARGS "${2:-}" tests/"$1".c src/impl.c -o build/test_"$1".run
+	call_cmd $cc $cargs "${2:-}" tests/"$1".c src/impl.c -o build/test_"$1".run
 	ERR=$?
-	if [ "$Silent" == "no" ]; then
+	if [[ "$Silent" == "no" ]]; then
 		printf "${cyan}%s${reset}\n" "----------  End of compiler output  ----------"
 	fi
-	if [ "$ERR" -ne 0 ]; then
+	if [[ "$ERR" -ne 0 ]]; then
 		printf "${red}Error, test \"${green}$1${red}\" failed to build!${reset}\n"
 	else
-		echo "Test output will be saved in \"build/test_${1}_out.txt\""
-		memcheck="$MEMCHECK"
-		if [[ -f "tests/$1.nomem" ]]; then
-			memcheck=""
-		fi
+		# Run test
+		printf "Test output will be saved in \"build/test_${1}_out.txt\"\n"
 		if call_cmd_ns $memcheck ./build/test_"$1".run >build/test_"$1"_out.txt; then
 			ERR=$?
 		else
@@ -187,11 +197,14 @@ test_run() {
 }
 test_run_all() {
 	local compilers=(gcc clang musl-gcc musl-clang)
+	local memchecks=(yes yes no no)
 	local modes=(gnu posix)
 	for file in tests/*.c; do
 		file="$(basename -- "$file")"
 		file="${file%.*}"
-		for compiler in ${compilers[@]}; do
+		for i in "${!compilers[@]}"; do
+			local compiler="${compilers[$i]}"
+			local memcheck="${memchecks[$i]}"
 			for mode in ${modes[@]}; do
 				extra_cargs=""
 				extra_cc_msg=""
@@ -201,9 +214,13 @@ test_run_all() {
 								 ;;
 					gnu) ;;
 				esac
-				TEST_CC=$compiler test_run "$file" "$extra_cargs" "$extra_cc_msg"
+				if [[ "$memcheck" == "yes" ]]; then
+					TEST_CC=$compiler test_run "$file" "$extra_cargs" "$extra_cc_msg"
+				else
+					MEMCHECK="" TEST_CC=$compiler test_run "$file" "$extra_cargs" "$extra_cc_msg"
+				fi
 				ERR=$?
-				if [ "$ERR" -ne 0 ]; then
+				if [[ "$ERR" -ne 0 ]]; then
 					exit 1
 				fi
 			done
@@ -285,24 +302,24 @@ handle_verbose() {
 }
 # Ignore silent flag. Needed for commands that already use redirect
 call_cmd_ns() {
-	if [ "$Verbose" == "yes" ]; then
+	if [[ "$Verbose" == "yes" ]]; then
 		printf "${gray}CMD: "
 		printf "%s " "$@"
 		printf "${reset}\n"
 	fi
-	if [ "$Silent" == "yes" ]; then
+	if [[ "$Silent" == "yes" ]]; then
 		$@ 2>/dev/null
 	else
 		$@
 	fi
 }
 call_cmd() {
-	if [ "$Verbose" == "yes" ]; then
+	if [[ "$Verbose" == "yes" ]]; then
 		printf "${gray}CMD: "
 		printf "%s " "$@"
 		printf "${reset}\n"
 	fi
-	if [ "$Silent" == "yes" ]; then
+	if [[ "$Silent" == "yes" ]]; then
 		$@ 2>/dev/null 1>/dev/null
 	else
 		$@
@@ -313,8 +330,9 @@ tags() {
 	ctags -eR --exclude='wiki/*' --exclude=doxygen.conf .
 }
 # Cli parser
+# Also can use TEST_CC and MEMCHECK env vars for 'test' subcommand
 parse_args() {
-	if [ "$#" -lt 1 ]; then
+	if [[ "$#" -lt 1 ]]; then
 		help "$@"
 		return 1
 	fi
@@ -341,7 +359,7 @@ parse_args() {
 }
 # Main
 ScriptPath=$(cd $(dirname "$0") && pwd)
-if [ "$#" -lt 1 ]; then
+if [[ "$#" -lt 1 ]]; then
 	help "$@"
 	exit 1
 fi
