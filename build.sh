@@ -91,18 +91,7 @@ pack() {
 	call_cmd_ns pack_header_strip "impl.c"
 	call_cmd_ns pack_endif
 	# Format
-	astyle \
-		--suffix=none \
-		--indent=tab=2 \
-		--indent-after-parens \
-		--keep-one-line-statements \
-		--style=attach \
-		--pad-oper \
-		--unpad-paren \
-		--indent-preproc-define \
-		--indent-preproc-block \
-		--align-pointer=type \
-		cbuild.h
+	uncrustify -c uncrustify.cfg --replace --no-backup cbuild.h
 	return
 }
 # docs subcommand
@@ -209,7 +198,7 @@ test_run_all() {
 				extra_cargs=""
 				extra_cc_msg=""
 				case "$mode" in
-					posix) extra_cargs="-DSTRICT_POSIX -D_POSIX_C_SOURCE=200112L"
+					posix) extra_cargs="-DCBUILD_API_DEFINED -DCBUILD_API_STRICT_POSIX"
 								 extra_cc_msg="/POSIX"
 								 ;;
 					gnu) ;;
