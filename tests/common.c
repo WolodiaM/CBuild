@@ -30,7 +30,7 @@
 #include "../src/common.h"
 #include "framework.h"
 // Code
-TEST_MAIN( {
+TEST_MAIN({
 	TEST_CASE(
 	{
 		int arr[3];
@@ -39,7 +39,7 @@ TEST_MAIN( {
 		arr[2] = 3;
 		TEST_ASSERT_EQ(cbuild_arr_len(arr), 3,
 		  "Incorect array length calculated, calculated "
-		  "\"%lu\", expected: \"%d\"",
+		  "\"%zu\", expected: \"%d\"",
 		  cbuild_arr_len(arr), 3);
 		TEST_ASSERT_EQ(cbuild_arr_get(arr, 1), 2,
 		  "Wrong element at array at position \"1\" - "

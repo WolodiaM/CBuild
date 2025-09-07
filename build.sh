@@ -90,8 +90,6 @@ pack() {
 	call_cmd_ns pack_ifdef
 	call_cmd_ns pack_header_strip "impl.c"
 	call_cmd_ns pack_endif
-	# Format
-	uncrustify -c uncrustify.cfg --replace --no-backup cbuild.h
 	return
 }
 # docs subcommand
@@ -135,7 +133,7 @@ test_cmd() {
 test_run() {
 	# Check overrides
 	local cc="$TEST_CC_DEFAULT"
-	if [[ -n "$TEST_CC" ]]; then
+	if [[ -v TEST_CC ]]; then
 		cc="$TEST_CC"
 	fi
 	local memcheck="$MEMCHECK_DEFAULT"

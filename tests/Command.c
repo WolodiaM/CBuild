@@ -31,6 +31,7 @@
 #include "../src/Compile.h"
 #include "../src/StringBuilder.h"
 #include "../src/common.h"
+#include "../src/FS.h"
 #include "framework.h"
 // Code
 TEST_MAIN({
@@ -41,7 +42,7 @@ TEST_MAIN({
 		  "val with spaces");
 		cbuild_sb_t sb1 = cbuild_cmd_to_sb(c1);
 		cbuild_sb_append_null(&sb1);
-		char *cmp1 = "a b --flag -f \'val with spaces\'";
+		char* cmp1 = "a b --flag -f \'val with spaces\'";
 		TEST_ASSERT_STREQ(sb1.data, cmp1,
 		  "Get: \"" CBuildSBFmt "\", expected: \"%s\"",
 		  CBuildSBArg(sb1), cmp1);
@@ -53,7 +54,7 @@ TEST_MAIN({
 		cbuild_sb_clear(&sb1);
 		sb1 = cbuild_cmd_to_sb(c1);
 		cbuild_sb_append_null(&sb1);
-		char *cmp2 =
+		char* cmp2 =
 		  CBUILD_CC " -DVER=1.0 --include common.h 'file with spaces.c' -o file.run";
 		TEST_ASSERT_STREQ(sb1.data, cmp2,
 		  "Get: \"" CBuildSBFmt "\", expected: \"%s\"",
@@ -66,20 +67,20 @@ TEST_MAIN({
 	{
 		cbuild_cmd_t cmd = {0};
 		cbuild_cmd_append_many(&cmd, "printf", "ABCD");
-		cbuild_fd_t fds[2]; // { [0] = read, [1] = write }
-		int         pstatus = pipe(fds);
-		if(pstatus < 0) {
+		cbuild_fd_t rd;
+		cbuild_fd_t wr;
+		if(!cbuild_fd_open_pipe(&rd, &wr)) {
 			printf("Test runner got error!\n");
 			exit(1);
 		}
-		bool ret = cbuild_cmd_run(&cmd, .fdstdout = &fds[1]);
+		bool ret = cbuild_cmd_run(&cmd, .fdstdout = &wr);
 		TEST_ASSERT_EQ(ret, true, "%s", "Function returned error!");
 		// To be able to capture errors
 		char str[1024];
-		long int  num = read(fds[0], str, 1024);
+		ssize_t num = cbuild_fd_read(rd, str, 1024);
 		TEST_ASSERT_EQ(
 		  num, 4,
-		  "Wrong number of bytes read from a pipe, 4 expected but got %ld",
+		  "Wrong number of bytes read from a pipe, 4 expected but got %"PRId64,
 		  num);
 		TEST_ASSERT_MEMEQ(
 		  str, "ABCD", 4,

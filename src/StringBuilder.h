@@ -64,7 +64,7 @@ typedef struct cbuild_sb_t {
  * @param ... => char ... -> Chars that need to be inserted
  */
 #define cbuild_sb_append_many(sb, ...)                                         \
-	cbuild_da_append_many((sb),  __VA_ARGS__)
+	cbuild_da_append_many((sb), __VA_ARGS__)
 /**
  * @brief Append a C-string to a sb
  *
@@ -128,7 +128,7 @@ typedef struct cbuild_sb_t {
  * @return 1  -> If first different character in first string builder is larger
  * @return 2  -> If size of first string builder is larger
  */
-CBDEF int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
+CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
 /**
  * @brief Compare two string builders ignoring case of an ASCII letter (Latin
  * only)
@@ -141,28 +141,28 @@ CBDEF int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
  * @return 1  -> If first different character in first string builder is larger
  * @return 2  -> If size of first string builder is larger
  */
-CBDEF int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b);
+CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b);
 /**
  * @brief Convert string builder to string view
  *
  * @param sb => cbuild_sb_t* -> String builder
  * @return cbuild_sv_t -> New string view
  */
-CBDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb);
+CBUILDDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb);
 /**
  * @brief Convert string builder to string view
  *
  * @param sb => cbuild_sb_t* -> String builder
  * @return cbuild_sv_t -> New string view
  */
-#define cbuild_sv_from_sb(sb) cbuild_sb_to_sv(sb)
+#define	cbuild_sv_from_sb(sb) cbuild_sb_to_sv(sb)
 /**
  * @brief Convert string view to a string builder. Does a copy.
  *
  * @param sv => cbuild_sv_t -> String view
  * @return cbuild_sb_t -> New string builder
  */
-CBDEF cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
+CBUILDDEF cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
 /**
  * @brief Convert string view to a string builder. Does a copy.
  *
@@ -186,7 +186,7 @@ CBDEF cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
  * @param args => va_list -> Variadic arguments
  * @return int -> Number of bytes printed or -1 on error
  */
-CBDEF int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args);
+CBUILDDEF int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args);
 /**
  * @brief sprintf for a string builder
  *
@@ -195,7 +195,7 @@ CBDEF int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args);
  * @param ... => ... -> Variadic arguments
  * @return int -> Number of bytes printed or -1 on error
  */
-CBDEF int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...)
+CBUILDDEF int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...)
 __attribute__((format(printf, 2, 3)));
 /**
  * @brief Foreach loop
@@ -210,7 +210,7 @@ __attribute__((format(printf, 2, 3)));
  * @param sb => cbuild_sb_t* -> String builder
  * @param cp => uint32_t -> Codepoint
  */
-CBDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
+CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
 /**
  * @brief strcmp for string builder encoded as utf8.
  * Will use cbuild_sb_utf8cmp under the hood
@@ -222,12 +222,12 @@ CBDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
  * @return 1  -> If first different character in first string builder is larger
  * @return 2  -> If size of first string builder is larger
  */
-CBDEF int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b);
+CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b);
 /**
  * @brief Get lengths of a string builder with utf8 content
  *
  * @param sv => cbuild_sb_t -> String builder
  * @return size_t -> Number of encoded utf8 codepoints
  */
-CBDEF size_t cbuild_sb_utf8len(cbuild_sb_t* sb);
+CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t* sb);
 #endif // __CBUILD_SB_H__

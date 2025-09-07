@@ -60,7 +60,7 @@
  *
  * @param stack => CBUILD_STACK* -> Stack. Will be evaluated multiple times.
  * @return VAL -> Element
-*/
+ */
 #define cbuild_stack_pop(stack)                                                \
 	({                                                                           \
 		cbuild_assert((stack)->ptr != 0, "(LIB_CBUILD_STACK) Stack underfloor.\n");\

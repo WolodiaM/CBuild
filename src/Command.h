@@ -53,7 +53,7 @@ typedef struct {
  * @param cmd => cbuild_cmd_t* -> Command bufer to work with
  * @param val => char* -> New token
  */
-#define cbuild_cmd_append(cmd, val) cbuild_da_append(cmd, val)
+#define	cbuild_cmd_append(cmd, val) cbuild_da_append(cmd, val)
 /**
  * @brief Append new args to cmd
  *
@@ -61,7 +61,7 @@ typedef struct {
  * @param vals => char** -> New tokens
  * @param vals_cnt => size_t -> Count of new tokens
  */
-#define cbuild_cmd_append_arr(cmd, vals, vals_cnt)                             \
+#define	cbuild_cmd_append_arr(cmd, vals, vals_cnt)                             \
 	cbuild_da_append_arr(cmd, vals, vals_cnt)
 /**
  * @brief Append new args to cmd
@@ -69,28 +69,28 @@ typedef struct {
  * @param cmd => cbuild_cmd_t* -> Command bufer to work with
  * @param ... => char* -> New tokens
  */
-#define cbuild_cmd_append_many(cmd, ...)                                       \
+#define	cbuild_cmd_append_many(cmd, ...)                                       \
 	cbuild_da_append_many(cmd, __VA_ARGS__)
 /**
  * @brief  Clear command buffer
  *
  * @param cmd => cbuild_cmd_t* -> Command bufer to work with
  */
-#define cbuild_cmd_clear(cmd) cbuild_da_clear(cmd)
+#define	cbuild_cmd_clear(cmd) cbuild_da_clear(cmd)
 /**
  * @brief Conver cbuild_cmd_t to cbuild_sb_t
  *
  * @param cmd => cbuild_cmd_t -> Command
  * @return CBuildStrBuff -> String buffer to work with
  */
-CBDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
+CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
 /**
  * @brief Conver cbuild_cmd_t to cbuild_sb_t
  *
  * @param cmd => cbuild_cmd_t -> Command
  * @return CBuildStrBuff -> String buffer to work with
  */
-#define cbuild_sb_from_cmd(cmd) cbuild_cmd_to_sb(cmd)
+#define	cbuild_sb_from_cmd(cmd) cbuild_cmd_to_sb(cmd)
 /**
  * @brief Call async command without io redirecting
  *
@@ -98,7 +98,7 @@ CBDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
  * @return cbuild_proc_t -> Process associated with called command
  */
 CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
-  CBDEF cbuild_proc_t cbuild_cmd_async(cbuild_cmd_t cmd));
+  CBUILDDEF cbuild_proc_t cbuild_cmd_async(cbuild_cmd_t cmd));
 /**
  * @brief Call async command with io rediecting
  *
@@ -107,7 +107,7 @@ CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
  * @return cbuild_proc_t -> Process associated with called command
  */
 CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
-  CBDEF cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd,
+  CBUILDDEF cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd,
     cbuild_cmd_fd_t fd));
 /**
  * @brief Call sync command without io redirecting
@@ -117,7 +117,7 @@ CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
  * @return false -> Command failed
  */
 CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
-  CBDEF bool cbuild_cmd_sync(cbuild_cmd_t cmd));
+  CBUILDDEF bool cbuild_cmd_sync(cbuild_cmd_t cmd));
 /**
  * @brief Call sync command with io rediecting
  *
@@ -127,7 +127,7 @@ CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
  * @return false -> Command failed
  */
 CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
-  CBDEF bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd));
+  CBUILDDEF bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd));
 typedef struct cbuild_cmd_opt_t {
 	// Redirect
 	cbuild_fd_t* fdstdin;
@@ -157,7 +157,7 @@ typedef struct cbuild_cmd_opt_t {
  * @brief cmd => cbuild_cmd_t* -> Command to execute
  * @brief opts => cbuild_cmd_opt_t -> Command options
  */
-CBDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts);
+CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts);
 /**
  * @brief Run commannd
  *

@@ -1,5 +1,5 @@
 /**
- * @file term.h
+ * @file Term.h
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Simple library for working with ANSI escape codes
  *
@@ -118,12 +118,12 @@
 	CBUILD_TERM_SGR("58;5;" __CBUILD_STRINGIFY(color))
 // Color - 24 bit
 #define CBUILD_TERM_FG24(r, g, b)                                              \
-	CBUILD_TERM_SGR("38;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(        \
-	  g) ";" __CBUILD_STRINGIFY(b))
+	CBUILD_TERM_SGR("38;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \
+	  __CBUILD_STRINGIFY(b))
 #define CBUILD_TERM_BG24(r, g, b)                                              \
-	CBUILD_TERM_SGR("48;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(        \
-	  g) ";" __CBUILD_STRINGIFY(b))
+	CBUILD_TERM_SGR("48;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \
+	  __CBUILD_STRINGIFY(b))
 #define CBUILD_TERM_UNDERLINE24(r, g, b)                                       \
-	CBUILD_TERM_SGR("58;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(        \
-	  g) ";" __CBUILD_STRINGIFY(b))
+	CBUILD_TERM_SGR("58;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \
+	  __CBUILD_STRINGIFY(b))
 #endif // __CBUILD_TERM_H__

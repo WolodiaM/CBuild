@@ -466,13 +466,13 @@ TEST_MAIN({
 	{
 		cbuild_sv_t sv1 = cbuild_sv_from_cstr("aaabacabaaa");
 		TEST_ASSERT_EQ(cbuild_sv_find(sv1, 'b'), 3,
-		  "Wrong index in find" TEST_EXPECT_MSG(zu), 3ul,
+		  "Wrong index in find" TEST_EXPECT_MSG(zu), (size_t)3,
 		  cbuild_sv_find(sv1, 'b'));
 		TEST_ASSERT_EQ(cbuild_sv_find(sv1, 'z'), -1,
 		  "Wrong error index in find" TEST_EXPECT_MSG(zd),
 		  (ssize_t) -1, cbuild_sv_find(sv1, 'z'));
 		TEST_ASSERT_EQ(cbuild_sv_rfind(sv1, 'b'), 7,
-		  "Wrong index in rfind" TEST_EXPECT_MSG(zu), 7ul,
+		  "Wrong index in rfind" TEST_EXPECT_MSG(zu), (size_t)7,
 		  cbuild_sv_rfind(sv1, 'b'));
 		TEST_ASSERT_EQ(cbuild_sv_contains(sv1, 'c'), true,
 		  "Wrong result from contains" TEST_EXPECT_MSG(s),
@@ -480,7 +480,7 @@ TEST_MAIN({
 		  cbuild_sv_contains(sv1, 'c') ? "true" : "false");
 		cbuild_sv_t sv2 = cbuild_sv_from_cstr("aaabacdcdcabaaa");
 		TEST_ASSERT_EQ(cbuild_sv_find_sv(sv2, cbuild_sv_from_cstr("dcd")), 6,
-		  "Wrong index in find" TEST_EXPECT_MSG(zu), 6ul,
+		  "Wrong index in find" TEST_EXPECT_MSG(zu), (size_t)6,
 		  cbuild_sv_find_sv(sv2, cbuild_sv_from_cstr("dcd")));
 		TEST_ASSERT_EQ(cbuild_sv_find_sv(sv2, cbuild_sv_from_cstr("zcz")), -1,
 		  "Wrong error index in find" TEST_EXPECT_MSG(zd),
@@ -549,7 +549,7 @@ TEST_MAIN({
 		cbuild_sv_t sv = cbuild_sv_from_cstr("Привіт, world!€😀..."); // 19 chars
 		size_t len = cbuild_sv_utf8len(sv);
 		TEST_ASSERT_EQ(len, 19,
-		  "Wrong length computed for utf8 string" TEST_EXPECT_MSG(zu), 19ul, len);
+		  "Wrong length computed for utf8 string" TEST_EXPECT_MSG(zu), (size_t)19, len);
 	}, "Length of a utf8 string view");
 	TEST_CASE({
 		cbuild_sv_t sv = cbuild_sv_from_cstr("aф€😀");
@@ -576,9 +576,9 @@ TEST_MAIN({
 		cbuild_sv_t chopped1 = cbuild_sv_chop_by_utf8(&sv1, 1092);
 		TEST_ASSERT_EQ(chopped1.size, 3,
 		  "Wrong string view size after a chop"
-		  TEST_EXPECT_MSG(zu), 3lu, chopped1.size);
+		  TEST_EXPECT_MSG(zu), (size_t)3, chopped1.size);
 		TEST_ASSERT_EQ(sv1.size, 3,
-		  "Wrong string view size after a chop" TEST_EXPECT_MSG(zu), 3lu, sv1.size);
+		  "Wrong string view size after a chop" TEST_EXPECT_MSG(zu), (size_t)3, sv1.size);
 		TEST_ASSERT_MEMEQ(chopped1.data, "aaa", 3,
 		  "Wrong string view chopped"
 		  TEST_EXPECT_RMSG(CBuildSVFmt),
@@ -597,9 +597,9 @@ TEST_MAIN({
 		  "Wrong character used as delimiter" TEST_EXPECT_RMSG("0x%08X"), 1092, cp);
 		TEST_ASSERT_EQ(chopped2.size, 3,
 		  "Wrong string view size after a chop"
-		  TEST_EXPECT_MSG(zu), 3ul, chopped2.size);
+		  TEST_EXPECT_MSG(zu), (size_t)3, chopped2.size);
 		TEST_ASSERT_EQ(sv2.size, 3,
-		  "Wrong string view size after a chop" TEST_EXPECT_MSG(zu), 3ul, sv2.size);
+		  "Wrong string view size after a chop" TEST_EXPECT_MSG(zu), (size_t)3, sv2.size);
 		TEST_ASSERT_MEMEQ(chopped2.data, "aaa", 3,
 		  "Wrong string view chopped"
 		  TEST_EXPECT_RMSG(CBuildSVFmt),

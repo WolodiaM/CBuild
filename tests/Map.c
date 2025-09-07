@@ -187,8 +187,8 @@ TEST_MAIN({
 		  'a', (size_t)1, map.buckets['a'].nvals);
 		TEST_ASSERT_EQ(
 		  ((intptr_t*)map.buckets['a'].vals)[1], 1,
-		  "Wrong element was written into bucket %d" TEST_EXPECT_MSG(ld),
-		  'a', 1l, ((intptr_t*)map.buckets['a'].vals)[1]);
+		  "Wrong element was written into bucket %d" TEST_EXPECT_RMSG("%"PRIu64),
+		  'a', (uint64_t)1, ((intptr_t*)map.buckets['a'].vals)[1]);
 		TEST_ASSERT_NEQ(
 		  map.buckets['d'].vals, NULL,
 		  "Key \"def\" must be hashed in bucket %d but bucket is empty.", 'd');
@@ -198,8 +198,8 @@ TEST_MAIN({
 		  'd', (size_t)1, map.buckets['d'].nvals);
 		TEST_ASSERT_EQ(
 		  ((intptr_t*)map.buckets['d'].vals)[1], 2,
-		  "Wrong element was written into bucket %d" TEST_EXPECT_MSG(ld),
-		  'd', 2l, ((intptr_t*)map.buckets['d'].vals)[1]);
+		  "Wrong element was written into bucket %d" TEST_EXPECT_RMSG("%"PRIu64),
+		  'd', (uint64_t)2, ((intptr_t*)map.buckets['d'].vals)[1]);
 		free(((char**)map.buckets['a'].vals)[0]);
 		free(((char**)map.buckets['d'].vals)[0]);
 		cbuild_map_clear(&map);
@@ -218,11 +218,11 @@ TEST_MAIN({
 		  "Wrong element count was set in bucket %d" TEST_EXPECT_MSG(zu),
 		  'a', (size_t)2, map.buckets['a'].nvals);
 		TEST_ASSERT_EQ(((intptr_t*)map.buckets['a'].vals)[1], 1,
-		  "Wrong element was written into bucket %d value 0" TEST_EXPECT_MSG(ld),
-		  'a', 1l, ((intptr_t*)map.buckets['a'].vals)[1]);
+		  "Wrong element was written into bucket %d value 0" TEST_EXPECT_RMSG("%"PRIu64),
+		  'a', (uint64_t)1, ((intptr_t*)map.buckets['a'].vals)[1]);
 		TEST_ASSERT_EQ(((intptr_t*)map.buckets['a'].vals)[3], 2,
-		  "Wrong element was written into bucket %d value 1" TEST_EXPECT_MSG(ld),
-		  'a', 2l, ((intptr_t*)map.buckets['a'].vals)[3]);
+		  "Wrong element was written into bucket %d value 1" TEST_EXPECT_RMSG("%"PRIu64),
+		  'a', (uint64_t)2, ((intptr_t*)map.buckets['a'].vals)[3]);
 		free(((char**)map.buckets['a'].vals)[0]);
 		free(((char**)map.buckets['a'].vals)[2]);
 		cbuild_map_clear(&map);
@@ -242,8 +242,8 @@ TEST_MAIN({
 		  "Wrong element count was set in bucket %d" TEST_EXPECT_MSG(zu),
 		  'a', (size_t)1, map.buckets[0].nvals);
 		TEST_ASSERT_EQ(((intptr_t*)map.buckets['a'].vals)[1], 2,
-		  "Wrong element was written into bucket %d value 0" TEST_EXPECT_MSG(ld),
-		  'a', 2l, ((intptr_t*)map.buckets[0].vals)[1]);
+		  "Wrong element was written into bucket %d value 0" TEST_EXPECT_RMSG("%"PRIu64),
+		  'a', (uint64_t)2, ((intptr_t*)map.buckets[0].vals)[1]);
 		free(((char**)map.buckets['a'].vals)[0]);
 		cbuild_map_clear(&map);
 	},
@@ -300,11 +300,11 @@ TEST_MAIN({
 		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 2;
 		key = "abc";
 		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get_ptr(&map, &key))[1], 1,
-		  "Wrong element read" TEST_EXPECT_MSG(ld), 1l,
+		  "Wrong element read" TEST_EXPECT_RMSG("%"PRIu64), (uint64_t)1,
 		  ((intptr_t*)cbuild_map_get_ptr(&map, &key))[1]);
 		key = "def";
 		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get_ptr(&map, &key))[1], 2,
-		  "Wrong element read" TEST_EXPECT_MSG(ld), 2l,
+		  "Wrong element read" TEST_EXPECT_RMSG("%"PRIu64), (uint64_t)2,
 		  ((intptr_t*)cbuild_map_get_ptr(&map, &key))[1]);
 		cbuild_map_clear_ex(&map, test_cstr_free);
 		printf("\tReads with hash collisions\n");
@@ -318,11 +318,11 @@ TEST_MAIN({
 		((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 2;
 		key = "abc";
 		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get_ptr(&map, &key))[1], 1,
-		  "Wrong element read" TEST_EXPECT_MSG(ld), 1l,
+		  "Wrong element read" TEST_EXPECT_RMSG("%"PRIu64), (uint64_t)1,
 		  ((intptr_t*)cbuild_map_get_ptr(&map, &key))[1]);
 		key = "aef";
 		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get_ptr(&map, &key))[1], 2,
-		  "Wrong element read" TEST_EXPECT_MSG(ld), 2l,
+		  "Wrong element read" TEST_EXPECT_RMSG("%"PRIu64), (uint64_t)2,
 		  ((intptr_t*)cbuild_map_get_ptr(&map, &key))[1]);
 		cbuild_map_clear_ex(&map, test_cstr_free);
 	},
@@ -369,7 +369,7 @@ TEST_MAIN({
 		cbuild_map_remove_ex_ptr(&map, &key, test_cstr_free);
 		key = "abc";
 		TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get_ptr(&map, &key))[1], 1,
-		  "Wrong element read" TEST_EXPECT_MSG(ld), 1l,
+		  "Wrong element read" TEST_EXPECT_RMSG("%"PRIu64), (uint64_t)1,
 		  ((intptr_t*)cbuild_map_get_ptr(&map, &key))[1]);
 		key =	"def";
 		TEST_ASSERT_EQ(cbuild_map_get_ptr(&map, &key), NULL,

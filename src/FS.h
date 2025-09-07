@@ -53,21 +53,21 @@ typedef enum {
  *  @param fd => cbuild_fd_t -> File descriptor that should be close
  *  @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_fd_close(cbuild_fd_t fd);
+CBUILDDEF bool cbuild_fd_close(cbuild_fd_t fd);
 /**
  * @brief Open file descriptor for reading using file path
  *
  * @param path => const char* -> Path to file
  * @return cbuild_fd_t -> New file descriptor
  */
-CBDEF cbuild_fd_t cbuild_fd_open_read(const char* path);
+CBUILDDEF cbuild_fd_t cbuild_fd_open_read(const char* path);
 /**
  * @brief Open file descriptor for writing using file path
  *
  * @param path => const char* -> Path to file
  * @return cbuild_fd_t -> New file descriptor
  */
-CBDEF cbuild_fd_t cbuild_fd_open_write(const char* path);
+CBUILDDEF cbuild_fd_t cbuild_fd_open_write(const char* path);
 /**
  * @brief Create and open pipe
  *
@@ -75,7 +75,7 @@ CBDEF cbuild_fd_t cbuild_fd_open_write(const char* path);
  * @param write => cbuild_fd_t* -> Write file descriptor return
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write);
+CBUILDDEF bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write);
 /**
  * @bytes Read data from specifc file descriptor. POSIX 'read' syscall
  *
@@ -84,7 +84,18 @@ CBDEF bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write);
  * @param nbytes => size_t -> Len of buffer in bytes
  * @return ssize_t -> Number of bytes read or -1 on error
  */
-CBDEF ssize_t cbuild_fd_read(cbuild_fd_t fd, void* buf, size_t nbytes);
+CBUILDDEF ssize_t cbuild_fd_read(cbuild_fd_t fd, void* buf, size_t nbytes);
+/**
+* @bytes Read data from specifc file descriptor. POSIX 'read' syscall
+*
+* @param fd => cbuild_fd_t -> File descriptor
+* @param buf => void* -> Data buffer
+* @param nbytes => size_t -> Len of buffer in bytes
+* @param path => const char* -> File path for error reporting
+* @return ssize_t -> Number of bytes read or -1 on error
+*/
+CBUILDDEF ssize_t cbuild_fd_read_file(cbuild_fd_t fd, void* buf, size_t nbytes,
+  const char* path);
 /**
  * @brief Write data to specifc file descritptor. POSIX 'write' syscall
  *
@@ -93,7 +104,25 @@ CBDEF ssize_t cbuild_fd_read(cbuild_fd_t fd, void* buf, size_t nbytes);
  * @param nbytes => size_t -> Len of buffer in bytes
  * @return ssize_t -> Number of bytes written or -1 on error
  */
-CBDEF ssize_t cbuild_fd_write(cbuild_fd_t fd, const void* buf, size_t nbytes);
+CBUILDDEF ssize_t cbuild_fd_write(cbuild_fd_t fd, const void* buf, size_t nbytes);
+/**
+ * @brief Write data to specifc file descritptor. POSIX 'write' syscall
+ *
+ * @param fd => cbuild_fd_t -> File descriptor
+ * @param buf => void* -> Data buffer
+ * @param nbytes => size_t -> Len of buffer in bytes
+ * @param path => const char* -> Path to file for error reporting
+ * @return ssize_t -> Number of bytes written or -1 on error
+ */
+CBUILDDEF ssize_t cbuild_fd_write_file(cbuild_fd_t fd, const void* buf,
+  size_t nbytes, const char* path);
+/**
+ * @brief Get size of files in bytes
+ *
+ * @param path => consh char* -> File path
+ * @return ssize_t -> Size of file in bytes
+ */
+CBUILDDEF ssize_t cbuild_file_len(const char* path);
 /**
  * @brief Read full file into buffer
  *
@@ -101,7 +130,7 @@ CBDEF ssize_t cbuild_fd_write(cbuild_fd_t fd, const void* buf, size_t nbytes);
  * @param data => cbuild_sb_t* -> String buffer
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_file_read(const char* path, cbuild_sb_t* data);
+CBUILDDEF bool cbuild_file_read(const char* path, cbuild_sb_t* data);
 /**
  * @brief Write full file (overwrite)
  *
@@ -109,7 +138,7 @@ CBDEF bool cbuild_file_read(const char* path, cbuild_sb_t* data);
  * @param data => cbuild_sb_t * -> Buffer to write
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_file_write(const char* path, cbuild_sb_t* data);
+CBUILDDEF bool cbuild_file_write(const char* path, cbuild_sb_t* data);
 /**
  * @brief Copy file
  *
@@ -117,7 +146,7 @@ CBDEF bool cbuild_file_write(const char* path, cbuild_sb_t* data);
  * @param dst => const char* -> Destination filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_file_copy(const char* src, const char* dst);
+CBUILDDEF bool cbuild_file_copy(const char* src, const char* dst);
 /**
  * @brief Move file
  *
@@ -125,7 +154,7 @@ CBDEF bool cbuild_file_copy(const char* src, const char* dst);
  * @param dst => const char* -> Destination filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_file_move(const char* src, const char* dst);
+CBUILDDEF bool cbuild_file_move(const char* src, const char* dst);
 /**
  * @brief Rename file
  *
@@ -133,21 +162,21 @@ CBDEF bool cbuild_file_move(const char* src, const char* dst);
  * @param dst => const char* -> Destination filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_file_rename(const char* src, const char* dst);
+CBUILDDEF bool cbuild_file_rename(const char* src, const char* dst);
 /**
  * @brief Check if file exist
  *
  * @param path => const char* -> Filepath
  * @return bool -> Result
  */
-CBDEF bool cbuild_file_check(const char* path);
+CBUILDDEF bool cbuild_file_check(const char* path);
 /**
  * @brief Remove file
  *
  * @param path => const char* -> Filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_file_remove(const char* path);
+CBUILDDEF bool cbuild_file_remove(const char* path);
 /**
  * @brief Create symbolic link. Will overwrite file if dst exists.
  *
@@ -155,7 +184,7 @@ CBDEF bool cbuild_file_remove(const char* path);
  * @param dst => const char* -> Destination file
  * @return bool -> true on success, false on failure
  */
-CBDEF bool cbuild_symlink(const char* src, const char* dst);
+CBUILDDEF bool cbuild_symlink(const char* src, const char* dst);
 /**
  * @brief Copy directory.
  *
@@ -163,7 +192,7 @@ CBDEF bool cbuild_symlink(const char* src, const char* dst);
  * @param dst => const char* -> Destination filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_dir_copy(const char* src, const char* dst);
+CBUILDDEF bool cbuild_dir_copy(const char* src, const char* dst);
 /**
  * @brief Move directory.
  *
@@ -171,7 +200,7 @@ CBDEF bool cbuild_dir_copy(const char* src, const char* dst);
  * @param dst => const char* -> Destination filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_dir_move(const char* src, const char* dst);
+CBUILDDEF bool cbuild_dir_move(const char* src, const char* dst);
 /**
  * @brief Rename directory.
  *
@@ -179,55 +208,55 @@ CBDEF bool cbuild_dir_move(const char* src, const char* dst);
  * @param dst => const char* -> Destination filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_dir_rename(const char* src, const char* dst);
+CBUILDDEF bool cbuild_dir_rename(const char* src, const char* dst);
 /**
  * @brief Remove directory.
  *
  * @param path => const char* -> Filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_dir_remove(const char* path);
+CBUILDDEF bool cbuild_dir_remove(const char* path);
 /**
  * @brief Check if directory exist.
  *
  * @param path => const char* -> Filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_dir_check(const char* path);
+CBUILDDEF bool cbuild_dir_check(const char* path);
 /**
  * @brief Get list of file in a directory.
  *
  * @param path => const char* -> Filepath
  * @param elements => cbuild_pathlist_t* -> Return valud
  */
-CBDEF bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements);
+CBUILDDEF bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements);
 /**
  * @brief Free path list structure
  *
  * @param list => cbuild_pathlist_t* -> Path list
  */
-CBDEF void cbuild_pathlist_clear(cbuild_pathlist_t* list);
+CBUILDDEF void cbuild_pathlist_clear(cbuild_pathlist_t* list);
 /**
  * @brief Create directory.
  *
  * @param path => const char* -> Filepath
  * @return bool -> true on success, false otherwise
  */
-CBDEF bool cbuild_dir_create(const char* path);
+CBUILDDEF bool cbuild_dir_create(const char* path);
 /**
  * @brief Get type of filesystem entry.
  *
  * @param path => const char* -> Path
  * @return CBuildFiletype -> Type of filesystem element
  */
-CBDEF cbuild_filetype_t cbuild_path_filetype(const char* path);
+CBUILDDEF cbuild_filetype_t cbuild_path_filetype(const char* path);
 /**
  * @brief Get file extension (after last '.')
  *
  * @param path => const char* -> Filepath
  * @return char* -> String allocated on heap
  */
-CBDEF char* cbuild_path_ext(const char* path);
+CBUILDDEF char* cbuild_path_ext(const char* path);
 /**
  * @brief Get file name (after last '/' and before last '.' or if path ends with
  * '/' then after previous '/' to last '/')
@@ -235,19 +264,19 @@ CBDEF char* cbuild_path_ext(const char* path);
  * @param path => const char* -> Filepath
  * @return char* -> String allocated on heap
  */
-CBDEF char* cbuild_path_name(const char* path);
+CBUILDDEF char* cbuild_path_name(const char* path);
 /**
  * @brief Everything that function cbuild_path_name removes
  *
  * @param path => const char* -> Filepath
  * @return char* -> String allocated on heap
  */
-CBDEF char* cbuild_path_base(const char* path);
+CBUILDDEF char* cbuild_path_base(const char* path);
 /**
  * @brief Normalize path
  *
  * @param path => const char* -> Filepath
  * @return char* -> String allocate on heap
  */
-CBDEF char* cbuild_path_normalize(const char* path);
+CBUILDDEF char* cbuild_path_normalize(const char* path);
 #endif // __CBUILD_FS_H__

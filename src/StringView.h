@@ -70,21 +70,21 @@ typedef struct cbuild_sv_t {
  * @param sv => cbuild_sv_t* -> String view to work with
  * @return size_t -> Number of characters removed
  */
-CBDEF size_t cbuild_sv_trim_left(cbuild_sv_t* sv);
+CBUILDDEF size_t cbuild_sv_trim_left(cbuild_sv_t* sv);
 /**
  * @brief Trim whitespaces from a string view starting from the right
  *
  * @param sv => cbuild_sv_t* -> String view to work with
  * @return size_t -> Number of characters removed
  */
-CBDEF size_t cbuild_sv_trim_right(cbuild_sv_t* sv);
+CBUILDDEF size_t cbuild_sv_trim_right(cbuild_sv_t* sv);
 /**
  * @brief Trim whitespaces from a string view starting from both sides
  *
  * @param sv => cbuild_sv_t* -> String view to work with
  * @return size_t -> Number of characters removed
  */
-CBDEF size_t cbuild_sv_trim(cbuild_sv_t* sv);
+CBUILDDEF size_t cbuild_sv_trim(cbuild_sv_t* sv);
 /**
  * @brief Chop characters from one string view into another
  * Note: Original string view will be truncated
@@ -92,7 +92,7 @@ CBDEF size_t cbuild_sv_trim(cbuild_sv_t* sv);
  * @param size => size_t -> Number of characters to chop
  * @return cbuild_sv_t -> New string view
  */
-CBDEF cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size);
+CBUILDDEF cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size);
 /**
  * @brief Chop characters from one string view into another
  * Note: Original string view will be truncated. delim will be removed from both
@@ -101,7 +101,7 @@ CBDEF cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size);
  * @param delim => char -> Character on which function stops.
  * @return cbuild_sv_t -> New string view
  */
-CBDEF cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim);
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim);
 /**
  * @brief Chop characters from one string view into another
  * Note: Original string view will be truncated. delim will be removed from both
@@ -110,7 +110,7 @@ CBDEF cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim);
  * @param delim => cbuild_sv_t -> Character on which function stops.
  * @return cbuild_sv_t -> New string view
  */
-CBDEF cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
 /**
  * @brief Delimiter func for sv_chop_by_func
  *
@@ -130,7 +130,7 @@ typedef bool (*cbuild_sv_delim_func)(const cbuild_sv_t* sv, size_t idx,
  * @param args => void* -> Will be passed into delim function
  * @return cbuild_sv_t -> New string view
  */
-CBDEF cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv,
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv,
   cbuild_sv_delim_func delim, void* args);
 /**
  * @brief strcmp for string view
@@ -143,7 +143,7 @@ CBDEF cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv,
  * @return 1  -> If first different character in first string view is larger
  * @return 2  -> If size of first string view is larger
  */
-CBDEF int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
+CBUILDDEF int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
 /**
  * @brief compare two string view ignoring case of a latin letters for string
  * view
@@ -156,7 +156,7 @@ CBDEF int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
  * @return 1  -> If first different character in first string view is larger
  * @return 2  -> If size of first string view is larger
  */
-CBDEF int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
+CBUILDDEF int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
 /**
  * @brief Check if string view has specific prefix
  *
@@ -164,7 +164,7 @@ CBDEF int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
  * @param prefix => cbuild_sv_t -> Prefix
  * @return bool -> True if sv contains prefix
  */
-CBDEF bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
+CBUILDDEF bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
 /**
  * @brief Check if string string view has specific suffix
  *
@@ -172,7 +172,7 @@ CBDEF bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
  * @param suffix => cbuild_sv_t -> Prefix
  * @return bool -> True if cbuild_sv contains suffix
  */
-CBDEF bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix);
+CBUILDDEF bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix);
 /**
  * @brief Find characte in a string view
  *
@@ -180,7 +180,7 @@ CBDEF bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix);
  * @param c => char -> Character to look for
  * @return ssize_t -> Index of a character or -1
  */
-CBDEF ssize_t cbuild_sv_find(cbuild_sv_t sv, char c);
+CBUILDDEF ssize_t cbuild_sv_find(cbuild_sv_t sv, char c);
 /**
  * @brief Find string view in another string view
  *
@@ -188,7 +188,7 @@ CBDEF ssize_t cbuild_sv_find(cbuild_sv_t sv, char c);
  * @param needle => cbuild_sv_t -> String view to look for
  * @return ssize_t -> Index of a character or -1
  */
-CBDEF ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle);
+CBUILDDEF ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle);
 /**
  * @brief Find char in a string view starting from the back
  *
@@ -196,7 +196,7 @@ CBDEF ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle);
  * @param c => char -> Character to look for
  * @return ssize_t -> Index of a character or -1
  */
-CBDEF ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c);
+CBUILDDEF ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c);
 /**
  * @brief Check if string view contains the cracter
  *
@@ -204,7 +204,7 @@ CBDEF ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c);
  * @param c => char -> Character to look for
  * @return bool -> Contains or not
  */
-CBDEF bool cbuild_sv_contains(cbuild_sv_t sv, char c);
+CBUILDDEF bool cbuild_sv_contains(cbuild_sv_t sv, char c);
 /**
  * @brief Check if string view contains another string view
  *
@@ -212,7 +212,7 @@ CBDEF bool cbuild_sv_contains(cbuild_sv_t sv, char c);
  * @param needle => cbuild_sv_t -> String view to look for
  * @return bool -> Contains or not
  */
-CBDEF bool cbuild_sv_contains_sv(cbuild_sv_t sv, cbuild_sv_t needle);
+CBUILDDEF bool cbuild_sv_contains_sv(cbuild_sv_t sv, cbuild_sv_t needle);
 /**
  * @brief	Get length of first utf8 codepoint in strting view
  *
@@ -220,7 +220,7 @@ CBDEF bool cbuild_sv_contains_sv(cbuild_sv_t sv, cbuild_sv_t needle);
  * @return Size of codepoint in bytes. 0 if size of string view is 0.
  * 1 If codepoint is invalid.
  */
-CBDEF int cbuild_sv_utf8cp_len(cbuild_sv_t sv);
+CBUILDDEF int cbuild_sv_utf8cp_len(cbuild_sv_t sv);
 /**
  * @brief strchr for string view
  *
@@ -229,7 +229,7 @@ CBDEF int cbuild_sv_utf8cp_len(cbuild_sv_t sv);
  * @return char* -> Pointer to a char inside of a string view or NULL if not
  * found
  */
-CBDEF char* cbuild_sv_strchr(cbuild_sv_t sv, char c);
+CBUILDDEF char* cbuild_sv_strchr(cbuild_sv_t sv, char c);
 /**
  * @brief strchr for string view with utf8 support
  *
@@ -238,14 +238,14 @@ CBDEF char* cbuild_sv_strchr(cbuild_sv_t sv, char c);
  * @return char* -> Pointer to a char inside of a string view or NULL if not
  * found
  */
-CBDEF char* cbuild_sv_utf8chr(cbuild_sv_t sv, uint32_t c);
+CBUILDDEF char* cbuild_sv_utf8chr(cbuild_sv_t sv, uint32_t c);
 /**
  * @brief Chop utf8 codepoint from a string view
  * Note: Original string view will be truncated
  * @param sv => scbuild_sv_t* -> String view to work with
  * @return uint32_t -> Unicode codepoint, UINT32_MAX means error
  */
-CBDEF uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv);
+CBUILDDEF uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv);
 /**
  * @brief Chop string view using unicode codepoint as delimeter
  * Note: Original string view will be truncated
@@ -253,7 +253,7 @@ CBDEF uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv);
  * @param delim => uint32_t -> Delimeter codepoint
  * @return cbuild_sv_t => New string view
  */
-CBDEF cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim);
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim);
 /**
  * @brief Delimiter func for sv_chop_by_func_utf8
  *
@@ -272,7 +272,7 @@ typedef bool (*cbuild_sv_utf8delim_func)(const cbuild_sv_t* sv, void* args);
  * @param args => void* -> Will be passed into delim function
  * @return cbuild_sv_t -> New string view
  */
-CBDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
   cbuild_sv_utf8delim_func delim, void* args);
 /**
  * @brief strcmp for string view with utf8 content
@@ -285,14 +285,14 @@ CBDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
  * @return 1  -> If first different character in first string view is larger
  * @return 2  -> If size of first string view is larger
  */
-CBDEF int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b);
+CBUILDDEF int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b);
 /**
  * @brief Get lengths of a string view with utf8 content
  *
  * @param sv => cbuild_sv_t -> String view to work with
  * @return size_t -> Number of encoded utf8 codepoints
  */
-CBDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
+CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
 /**
  * @brief Validate string as utf8-based
  *
@@ -300,5 +300,5 @@ CBDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
  * invalid codepoint, if validation failed.
  * @return bool -> true if valid, false otherwise
  */
-CBDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx);
+CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx);
 #endif // __CBUILD_SV_H_

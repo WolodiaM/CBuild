@@ -38,7 +38,7 @@ TEST_MAIN({
 		  "Data pointer NULL after resize");
 		TEST_ASSERT_EQ(
 		  stack.capacity, 256,
-		  "Wrong capacity was set on resize" TEST_EXPECT_MSG(zu), 256ul,
+		  "Wrong capacity was set on resize" TEST_EXPECT_MSG(zu), (size_t)256,
 		  stack.capacity);
 		TEST_ASSERT_NEQ(stack.data, NULL, "%s",
 		  "Data is set to NULL after allocation.");
@@ -47,9 +47,9 @@ TEST_MAIN({
 		  "Data pointer non-null after resize");
 		TEST_ASSERT_EQ(stack.capacity, 0,
 		  "Wrong capcity was set on clear" TEST_EXPECT_MSG(zu),
-		  0ul, stack.capacity);
+		  (size_t)0, stack.capacity);
 		TEST_ASSERT_EQ(stack.ptr, 0,
-		  "Ptr non zero after clear" TEST_EXPECT_MSG(zu), 0ul,
+		  "Ptr non zero after clear" TEST_EXPECT_MSG(zu), (size_t)0,
 		  stack.ptr);
 	},
 	"Allocation sequence");
@@ -60,7 +60,7 @@ TEST_MAIN({
 		cbuild_stack_push(&stack, 2);
 		TEST_ASSERT_EQ(
 		  stack.ptr, 2,
-		  "Wrong element count after insertion" TEST_EXPECT_MSG(zu), 2ul,
+		  "Wrong element count after insertion" TEST_EXPECT_MSG(zu), (size_t)2,
 		  stack.ptr);
 		TEST_ASSERT_EQ(stack.data[0], 1,
 		  "Wrong element at index 0" TEST_EXPECT_MSG(d), 1,

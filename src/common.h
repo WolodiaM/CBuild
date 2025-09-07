@@ -257,9 +257,11 @@
  *     - Added CBDEF for all functions (user-overridable).
  *     - Fixed macro to document when they evaluate args multiple times.
  * --------------------------------------------
- * 2025-09-02  v0.13    Windows support
+ * 2025-09-02  v0.13
  *   common.h [change]
- *     - Better platform detection logic
+ *     - Better platform detection logic.
+ *   General [change]
+ *     - Changed CBDEF to CBUILDDEF.
  */
 // Code
 // NOTE: CBuild should be a first header to be included in translation unit, or
@@ -271,25 +273,25 @@
 //   - CBUILD_CC_CLANG - clang or its derivative
 //   -- CBUILD_CC_GCC  - gcc or its derivative
 #if !defined(CBUILD_CC_DEFINED)
-	#if defined(__clang__)
-		#define CBUILD_CC_CLANG
-	#elif defined(__TINYC__)
-		#error "You are trying to compile CBuild with TinyC compiler. This compile is not supported. It should support 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions."
-	#elif defined(__GNUC__)
-		#define CBUILD_CC_GCC
-	#elif defined(_MSC_VER)
-		#error "You are trying to compile CBuild with MSVC compiler. It does not 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions."
-	#else
-		#error "This compile is unsupported. If it supports 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions; then you can simply add a check to this block for it."
-	#endif // Compiler check
-	#define CBUILD_CC_DEFINED
+#if defined(__clang__)
+#define CBUILD_CC_CLANG
+#elif defined(__TINYC__)
+#error "You are trying to compile CBuild with TinyC compiler. This compile is not supported. It should support 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions."
+#elif defined(__GNUC__)
+#define CBUILD_CC_GCC
+#elif defined(_MSC_VER)
+#error "You are trying to compile CBuild with MSVC compiler. It does not 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions."
+#else
+#error "This compile is unsupported. If it supports 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions; then you can simply add a check to this block for it."
+#endif // Compiler check
+#define CBUILD_CC_DEFINED
 #endif // !CBUILD_CC_DEFINNED
 // Valid OSes:
-//   - CBUILD_OS_LINUX   - any desktop Linux (eg. not android for example)
+//   - CBUILD_OS_LINUX   - any desktop Linux (eg. excluding Android or ChromeOS for example)
 //   - CBUILD_OS_MACOS   - MacOS
 //   - CBUILD_OS_BSD     - Any desktop BSD
 //   - CBUILD_OS_UNIX    - Generic Unix, should support POSIX.1-2001
-//   - CBUILD_OS_WINDOWS - Windows, should support WinAPI and NT.dll
+//   - CBUILD_OS_WINDOWS - Windows, should support WinAPI and NT native API
 // Also, there are some auxiliary OS checks, valid values are:
 //   - CBUILD_OS_WINDOWS:
 //       * CBUILD_OS_WINDOWS_CYGWIN - windows under cygwin
@@ -298,117 +300,120 @@
 //       * CBUILD_OS_LINUX_UCLIBC - Linux with uclibc
 //       * CBUILD_OS_LINUX_MUSL   - Linux with musl (fallback, because musl provides no way of detection)
 #if !defined(CBUILD_OS_DEFINED)
-	#if defined(__linux__) || defined(linux) || defined(__linux)
-		#define CBUILD_OS_LINUX
-	#elif defined(__APPLE__) || defined(__MACH__)
-		#define CBUILD_OS_MACOS
-	#elif defined(__FreeBSD__) || defined(__NetBSD__) || defined(__NETBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
-		#define CBUILD_OS_BSD
-	#elif defined(__unix__) || defined(unix) || defined(__unix)
-		#define CBUILD_OS_UNIX
-	#elif defined(__CYGWIN__)
-		#define CBUILD_OS_WINDOWS
-		#define CBUILD_OS_WINDOWS_CYGWIN
-	#elif defined(_WIN32) || defined(_WIN64) || defined(__MINGW32__) || defined(__MINGW64__)
-		#define CBUILD_OS_WINDOWS
-	#else
-		#error "This OS is unsupported by CBuild. If it supports POSIX.1-2001 or WinAPI+NT.dll you can simply add check for it to a list of checks here. If not you should add a check for OS and a macro for its API and then implement OS/API specifc parts of CBuild."
-	#endif // OS detect
-	// TODO: Android and IOS
+#if defined(__linux__) || defined(linux) || defined(__linux)
+#define CBUILD_OS_LINUX
+#elif defined(__APPLE__) || defined(__MACH__)
+#define CBUILD_OS_MACOS
+#elif defined(__FreeBSD__) || defined(__NetBSD__) || defined(__NETBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
+#define CBUILD_OS_BSD
+#elif defined(__unix__) || defined(unix) || defined(__unix)
+#define CBUILD_OS_UNIX
+#elif defined(__CYGWIN__)
+#define CBUILD_OS_WINDOWS
+#define CBUILD_OS_WINDOWS_CYGWIN
+#elif defined(_WIN32) || defined(_WIN64) || defined(__MINGW32__) || defined(__MINGW64__)
+#define CBUILD_OS_WINDOWS
+#else
+#error "This OS is unsupported by CBuild. If it supports POSIX.1-2001 you can simply add check for it to a list of checks here. If not you should add a check for OS and a macro for its API and then implement OS/API specifc parts of CBuild."
+#endif // OS detect
+// TODO: Android and IOS
 #endif // !CBUILD_OS_DEFINED
 // Valid APIs:
-//   - CBUILD_API_POSIX        - POSIX.1-2001 with some GNU extensions, supports Linux, MacOS and BSD.
-//   - CBUILD_API_STRICT_POSIX - POSIX.1-2001. Support any Unix that has this POSIX version supported. Only extension used could be MAP_ANON/MAP_ANONYMOUS if found. If none is available require 'shm_opem' to be provided by either libc, 'librt.so' or 'librt.so.1', also required dlopen+dlsym to be provided by libc in this case.
-//   - CBUILD_API_WINAPI        - WinAPI+NT.dll. Requires codepage to be set to 65001 if utf8 functions are needed. Tries to use WinAPi when possible but relies on NT.dll for more low-level tasks.
+//   - CBUILD_API_POSIX        - POSIX.1-2001 (_POSIX_C_SOURCE == 200112L) with some GNU extensions, supports Linux, MacOS and BSD.
+//   - CBUILD_API_STRICT_POSIX - POSIX.1-2001 (_POSIX_C_SOURCE == 200112L). Support any Unix that has this POSIX version supported. Only extension used could be MAP_ANON/MAP_ANONYMOUS if found. If none is available require 'shm_opem' to be provided by either libc, 'librt.so' or 'librt.so.1', also required dlopen+dlsym to be provided by libc in this case. It can use extension if they are from later POSIX version and newer POSIX is detected.
+//   - CBUILD_API_WINAPI        - WinAPI+NT native API. Requires codepage to be set to 65001 if utf8 functions are needed. Tries to use WinAPi when possible but relies on NT native API for more low-level tasks.
 #if !defined(CBUILD_API_DEFINED)
-	#if defined(CBUILD_OS_LINUX) || defined(CBUILD_OS_MACOS) || defined(CBUILD_OS_BSD)
-		#define CBUILD_API_POSIX
-	#elif defined(CBUILD_OS_UNIX)
-		#define CBUILD_API_STRICT_POSIX
-	#elif defined(CBUILD_OS_WINDOWS_CYGWIN)
-		#define CBUILD_API_POSIX
-	#elif defined(CBUILD_OS_WINDOWS)
-		#define CBUILD_API_WINAPI
-	#else
-		#error "This OS is not known by CBuild. If it supports POSIX.1-2001 or WinAPI+NT.dll you can simply add check for it to a list of checks here. If not you should add a check for OS and a macro for its API and then implement OS/API specifc parts of CBuild."
-	#endif // API select
+#if defined(CBUILD_OS_LINUX) || defined(CBUILD_OS_MACOS) || defined(CBUILD_OS_BSD)
+#define CBUILD_API_POSIX
+#elif defined(CBUILD_OS_UNIX)
+#define CBUILD_API_STRICT_POSIX
+#elif defined(CBUILD_OS_WINDOWS_CYGWIN)
+#define CBUILD_API_POSIX
+#elif defined(CBUILD_OS_WINDOWS)
+#define CBUILD_API_WINAPI
+#error "WinAPI is unsupported!"
+#else
+// TODO: Android/IOS/ChromeOS/IPadOS
+#error "This API is not known by CBuild. If it supports POSIX.1-2001 you can simply add check for it's OS to a list of OS checks and define appropriate API macro there. If not you should add a check for OS and a macro for its API and then implement OS/API specifc parts of CBuild."
+#endif // API select
 #endif // !CBUILD_API_DEFINED
 // Different between different APIs
 #if defined(CBUILD_API_POSIX)
-	// Use GNU extentions if possible
-	#if !defined(_GNU_SOURCE)
-		#define _GNU_SOURCE
-	#endif // _GNU_SOURCE
-	// Platform include
-	#include <dirent.h>
-	#include <dlfcn.h>
-	#include <errno.h>
-	#include <fcntl.h>
-	#include <signal.h>
-	#include <sys/mman.h>
-	#include <sys/stat.h>
-	#include <sys/time.h>
-	#include <sys/types.h>
-	#include <sys/wait.h>
-	#include <unistd.h>
-	#if defined(CBUILD_OS_MACOS)
-		#include <crt_externs.h>
-	#endif // CBUILD_OS_MACOS
-	#if defined(CBUILD_OS_LINUX)
-		#if defined(__GLIBC__)
-			#define CBUILD_OS_LINUX_GLIBC
-		#elif defined(__UCLIBC__)
-			#define CBUILD_OS_LINUX_UCLIBC
-		#else // Assume musl
-			#define CBUILD_OS_LINUX_MUSL
-		#endif // Libc selecto
-		#include <sys/prctl.h>
-	#endif // CBUILD_OS_LINUX
-	// Process and file handles
-	typedef pid_t cbuild_proc_t;
-	#define CBUILD_INVALID_PROC -1
-	typedef int cbuild_fd_t;
-	#define CBUILD_INVALID_FD -1
-	// For pointer errors
-	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
+// Use GNU extentions if possible
+#if !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif // _GNU_SOURCE
+// Platform include
+#include <dirent.h>
+#include <dlfcn.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#if defined(CBUILD_OS_MACOS)
+#include <crt_externs.h>
+#endif // CBUILD_OS_MACOS
+#if defined(CBUILD_OS_LINUX)
+#if defined(__GLIBC__)
+#define CBUILD_OS_LINUX_GLIBC
+#elif defined(__UCLIBC__)
+#define CBUILD_OS_LINUX_UCLIBC
+#else // Assume musl
+#define CBUILD_OS_LINUX_MUSL
+#endif // Libc selecto
+#include <sys/prctl.h>
+#endif // CBUILD_OS_LINUX
+// Process and file handles
+typedef pid_t cbuild_proc_t;
+#define CBUILD_INVALID_PROC -1
+typedef int cbuild_fd_t;
+#define CBUILD_INVALID_FD -1
+// For pointer errors
+#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
 #elif defined(CBUILD_API_STRICT_POSIX)
-	#if !defined(_POSIX_C_SOURCE)
-		#define _POSIX_C_SOURCE 200112L
-	#endif
-	// Platform includes
-	#include <dirent.h>
-	#include <dlfcn.h>
-	#include <errno.h>
-	#include <fcntl.h>
-	#include <signal.h>
-	#include <sys/mman.h>
-	#include <sys/stat.h>
-	#include <sys/time.h>
-	#include <sys/types.h>
-	#include <sys/wait.h>
-	#include <unistd.h>
-	// Process and file handles
-	typedef pid_t cbuild_proc_t;
-	#define CBUILD_INVALID_PROC -1
-	typedef int cbuild_fd_t;
-	#define CBUILD_INVALID_FD -1
-	// For pointer errors
-	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
+#if !defined(_POSIX_C_SOURCE)
+#define _POSIX_C_SOURCE 200112L
+#endif
+// Platform includes
+#include <dirent.h>
+#include <dlfcn.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+// Process and file handles
+typedef pid_t cbuild_proc_t;
+#define CBUILD_INVALID_PROC -1
+typedef int cbuild_fd_t;
+#define CBUILD_INVALID_FD -1
+// For pointer errors
+#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
 #elif defined(CBUILD_API_WINAPI)
-	#error "TODO: WinAPI+NT.dll support"
-	// Platform includes
-	#include <Windows.h>
-	// Process and file handles
-	typedef HANDLE cbuild_proc_t;
-	#define CBUILD_INVALID_PROC ((HANDLE)(intptr_t)-1)
-	typedef HANDLE cbuild_fd_t;
-	#define CBUILD_INVALID_FD ((HANDLE)(intptr_t)-1)
-	// For pointer errors
-	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
+// Platform includes
+#include <windows.h>
+#include <io.h>
+// Process and file handles
+typedef HANDLE cbuild_proc_t;
+#define CBUILD_INVALID_PROC ((HANDLE)(intptr_t)-1)
+typedef HANDLE cbuild_fd_t;
+#define CBUILD_INVALID_FD ((HANDLE)(intptr_t)-1)
+// For pointer errors
+#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
 #endif // CBUILD_API_*
 // Includes (all external included of CBuild. Other header could only have
 // project-level includes)
 #include <ctype.h>
+#include <inttypes.h>
 #include <limits.h>
 #include <stdarg.h>
 #include <stdbool.h>
@@ -420,48 +425,48 @@
 #include <time.h>
 // Constants that can be redefined
 /**
- * @brief Init capacity of cbuild datastructures. `unsigned long`
+ * @brief Init capacity of cbuild datastructures. `size_t`
  */
 #ifndef CBUILD_INIT_CAPACITY
-	#define CBUILD_INIT_CAPACITY 256ul
+#define CBUILD_INIT_CAPACITY (size_t)256
 #endif // CBUILD_INIT_CAPACITY
 /**
  * @brief Minimim log level. `CBuildLogLevel`
  */
 #ifndef CBUILD_LOG_MIN_LEVEL
-	#define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_ERROR
+#define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_ERROR
 #endif // CBUILD_LOG_MIN_LEVEL
 /**
- * @brief	Size of sprintf buffer that will be used as a fast-path.
+ * @brief	Size of sprintf buffer that will be used as a fast-path. `size_t`
  * `unsigned long`
  */
 #ifndef CBUILD_SB_QUICK_SPRINTF_SIZE
-	#define CBUILD_SB_QUICK_SPRINTF_SIZE 512ul
+#define CBUILD_SB_QUICK_SPRINTF_SIZE (size_t)512
 #endif // CBUILD_SB_QUICK_SPRINTF_SIZE
 /**
- * @brief Temporary buffer size for file copies
+ * @brief Temporary buffer size for file copies. `size_t`
  */
 #ifndef CBUILD_TMP_BUFF_SIZE
-	#define CBUILD_TMP_BUFF_SIZE (32ul * 1024ul * 1024ul)
+#define CBUILD_TMP_BUFF_SIZE ((size_t)32 * (size_t)1024 * (size_t)1024)
 #endif // CBUILD_TMP_BUFF_SIZE
 /**
  * @brief Default hash function for a hash map.
  * Function signature is this: size_t func(const void* key, size_t len)
  */
 #ifndef CBUILD_MAP_DEFAULT_HASH_FUNC
-	#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_int_map_hash_func
+#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_int_map_hash_func
 #endif // CBUILD_MAP_DEFAULT_HASH_FUNC
 /**
- * @brief Size of CBuild temporary allocator arena
+ * @brief Size of CBuild temporary allocator arena. `size_t`
  */
 #ifndef CBUILD_TEMP_ARENA_SIZE
-	#define CBUILD_TEMP_ARENA_SIZE (8ul * 1024ul * 1024ul)
+#define CBUILD_TEMP_ARENA_SIZE ((size_t)8 * (size_t)1024 * (size_t)1024)
 #endif // CBUILD_TEMP_ARENA_SIZE
 /**
-* @brief Default self-rebuild arguments
-*/
+ * @brief Default self-rebuild arguments
+ */
 #ifndef CBUILD_SELFREBUILD_ARGS
-	#define CBUILD_SELFREBUILD_ARGS CBUILD_CARGS_WARN
+#define CBUILD_SELFREBUILD_ARGS CBUILD_CARGS_WARN
 #endif // CBUILD_SEFLREBUILD_ARGS
 // Print abstraction	// Print functions
 #define __CBUILD_PRINT(str)                printf((str))
@@ -477,27 +482,27 @@
 // Macro functionality
 #define __CBUILD_STRINGIFY(var)  #var
 #define __CBUILD_XSTRINGIFY(var) __CBUILD_STRINGIFY(var)
-#define __CBUILD_CONCAT(a, b)    a##b
+#define __CBUILD_CONCAT(a, b)    a ## b
 #define __CBUILD_XCONCAT(a, b)   __CBUILD_CONCAT(a, b)
 // Attributes
 /**
  * @brief Allow user to add more attributes to a functions
  */
-#ifndef CBDEF
-	#define CBDEF
-#endif // CBDEF
+#ifndef CBUILDDEF
+#define CBUILDDEF
+#endif // CBUILDDEF
 #if defined(__has_c_attribute)
-	#if __has_c_attribute(deprecated)
-		#define CBUILD_DEPRECATED(msg, decl) [[deprecated(msg)]] decl
-	#else
-		#define CBUILD_DEPRECATED(msg, decl) decl __attribute__((deprecated(msg)))
-	#endif
+#if __has_c_attribute(deprecated)
+#define CBUILD_DEPRECATED(msg, decl) [[deprecated(msg)]] decl
 #else
-	#define CBUILD_DEPRECATED(msg, decl) decl __attribute__((deprecated(msg)))
+#define CBUILD_DEPRECATED(msg, decl) decl __attribute__((deprecated(msg)))
+#endif
+#else
+#define CBUILD_DEPRECATED(msg, decl) decl __attribute__((deprecated(msg)))
 #endif
 // Global allocator
-extern void* (*cbuild_malloc)(size_t size);
-extern void* (*cbuild_realloc)(void* ptr, size_t size);
+extern void*  (*cbuild_malloc)(size_t size);
+extern void*  (*cbuild_realloc)(void* ptr, size_t size);
 extern void (*cbuild_free)(void* ptr);
 // Some preprocessor trickery
 /**
@@ -555,8 +560,8 @@ extern void (*cbuild_free)(void* ptr);
  * @param ...[0] => const char* -> Format string for and printf
  * @param ... -> Printf args
  */
-CBDEF void __cbuild_assert(const char* file, unsigned int line, const char* func,
-  const char* expr, ...) __attribute__((__noreturn__));
+CBUILDDEF void __cbuild_assert(const char* file, unsigned int line,
+  const char* func, const char* expr, ...) __attribute__((__noreturn__));
 /**
  * @brief Get element from array, errors-out at invalid index
  *

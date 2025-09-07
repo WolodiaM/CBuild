@@ -2,45 +2,35 @@
 
 * Bugfix todo list
 *** DONE force specific POSIX
-
 Maybe POSIX_C_SOURCE=200112L
-
 *** DONE Make all macro evaluate their argument only once.
-
 Some macro can be an exception, but this should be noted in documentation comment. All data-structure macro should handle elements only once, unless this is impossible.
-
 *** TODO cbuild_fs_normalize broken on utf8 path
-
+*** DONE New Compiler/OS/API detection macro
 * Features todo list
 *** DONE Map.h rewrite
-
 I want to have a *plain*, *macro-based* map implementation.
 I don't want to have a declaration macro, or it can define a list of structs at most.
 I want to minimize usage of function pointers.
 Macro should be relatively small.
-
 *** TODO wikimk should not be a part of this repository
 *** TODO wikimk - allow to collapse folders in a site tree
 *** DONE temporary allocator/functions (malloc/sprintf/?). Reset resets all allocations
 *** DONE few additions to FlagParse.h
-
 Aliases through commands (something like "-alias:name:lopt-which-is-aliased", only long aliases supported)
 Groups through new metadata entry (something like "group=<name>"), purely for pretty print
-
 *** TODO Command.h - allow to limit number of async threads in 'cbuild_cmd_run'
-
 Need to pass a 'cbuild_proclist_t'. Need to pass int. Now it simply checks for number of procs, if there are too much - wait for them to finnish
-
 *** TODO Command.h - better redirects
-
 Alow to redirect directly to fine, not fd (will be autoclosed)
 Maybe better piping?
-
 *** DONE Command.h - allow to print command using single opt
-
+*** TODO function to get time and nanosecond time in platform-independant way
+*** TODO abstract filesize getting
+*** TODO add needs_rebuild to abstract compare_mtime
+*** TODO Proc.h - add ability to get number of CPU cores. By default command should scale to this+1 for async runs
 * Thinking place
 ** DONE new hash-map implementation
-
 Element struct can be provided by a user, bucket should be auto-generated, map should have an ability to add custom fields.
 #+NAME: hashmap_struct
 #+BEGIN_SRC C
@@ -261,3 +251,4 @@ or just wait for all process to finish (eg. run batch-by-batch), much easier but
  + Allow file redirects
 
  #  LocalWords:  struct structs alloc
+ 

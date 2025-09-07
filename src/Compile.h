@@ -177,7 +177,7 @@
  * First will be used in compilation.
  * Other will just be checked to determine if rebuild is needed.
  */
-CBDEF void __cbuild_selfrebuild(int argc, char** argv, size_t num_files, ...);
+CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv, size_t num_files, ...);
 /**
  * @brief Enables self-rebuild functionality
  *
@@ -187,7 +187,7 @@ CBDEF void __cbuild_selfrebuild(int argc, char** argv, size_t num_files, ...);
  * First will be used in compilation.
  * Other will just be checked to determine if rebuild is needed.
  */
-CBDEF void __cbuild_selfrebuild_ex(int argc, char** argv, cbuild_cmd_t files);
+CBUILDDEF void __cbuild_selfrebuild_ex(int argc, char** argv, cbuild_cmd_t files);
 /**
  * @brief Allow to add additional arguments for self-rebuild.
  * Called with compiler command already in place.
@@ -202,7 +202,7 @@ extern void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd);
  * @return int<0 -> Error
  * @return int>0 -> Output is older than input
  */
-CBDEF int cbuild_compare_mtime(const char* output, const char* input);
+CBUILDDEF int cbuild_compare_mtime(const char* output, const char* input);
 /**
  * @brief Compare mtime of one output file and many input files and report if
  * any input is newer than output
@@ -214,6 +214,6 @@ CBDEF int cbuild_compare_mtime(const char* output, const char* input);
  * @return int<0 -> Error
  * @return int>0 -> Output is older than input, indicates number of newer inputs
  */
-CBDEF int cbuild_compare_mtime_many(const char* output, const char** inputs,
+CBUILDDEF int cbuild_compare_mtime_many(const char* output, const char** inputs,
   size_t num_inputs);
 #endif // __CBUILD_COMPILE_H__

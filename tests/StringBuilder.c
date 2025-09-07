@@ -315,7 +315,7 @@ TEST_MAIN({
 		cbuild_sb_append_utf8(&sb, 128512);
 		cbuild_sb_append_null(&sb);
 		TEST_ASSERT_EQ(sb.size, 11,
-		  "Wrong size after appends" TEST_EXPECT_MSG(zu), 11ul, sb.size);
+		  "Wrong size after appends" TEST_EXPECT_MSG(zu), (size_t)11, sb.size);
 		TEST_ASSERT_MEMEQ(sb.data, test, 10,
 		  "Error while appending utf8 characters to a string builder"
 		  TEST_EXPECT_MSG(s), test, sb.data);
@@ -331,7 +331,7 @@ TEST_MAIN({
 		  "%s", "Different utf8 string reported as same!");
 		size_t len = cbuild_sb_utf8len(&sb);
 		TEST_ASSERT_EQ(len, 5,
-		  "Wrong codepoint count calculated" TEST_EXPECT_MSG(zu), 5ul, len);
+		  "Wrong codepoint count calculated" TEST_EXPECT_MSG(zu), (size_t)5, len);
 		cbuild_sb_clear(&sb);
 		cbuild_sb_clear(&copy);
 		cbuild_sb_clear(&different);
