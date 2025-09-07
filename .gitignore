@@ -4,6 +4,5 @@ wiki/mkdocs/docs/doxygen
 wiki/out
 wiki/wikimk/template/nav.html
 build/
-cbuild.h
 wikimk.run
 TAGS
