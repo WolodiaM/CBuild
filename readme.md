@@ -3,8 +3,7 @@
 ![Build status](https://gitlab.com/cbuild/cbuild/badges/master/pipeline.svg?key_text=Build)
 ![Lates release](https://gitlab.com/cbuild/cbuild/-/badges/release.svg)
 
-
-Build system that allows you to write your buildscripts for C or C++ (or actually any other scripts) with C, C++ or any language that can use C headers.
+C standard library extender and simple build system library.
 
 # Goals
 
@@ -20,20 +19,18 @@ Build system that allows you to write your buildscripts for C or C++ (or actuall
 
 # [Inspired by nob.h](https://github.com/tsoding/nob.h)
 
-I had idea of cbuild.h before I found nob.h, but then I was using c++. This resulted in legacy CBuild version, which was heavy, very limiting and too much complex. I found nob.h and it was a really simple thing, so i decided to write my own. Few things are relatively close (cbuild\_da\_t, command.h module). But there were few thing that I don't liked - missing a few useful modules, weird API decisions because of c99 target (I target gnu99, so I have a lot more language features to work with). Also, my code has tests and proper documentation (eg. Doxygen built documentation, reading code is cool, but not always a good way to find what function expects).
-
-# Inspired by [nob.h](https://github.com/tsoding/nob.h)
+I had idea of cbuild.h before I found nob.h, but then I was using c++. This resulted in legacy CBuild version, which was heavy, very limiting and too much complex. I found nob.h and it was a really simple thing, so i decided to write my own. Few things are relatively close (cbuild\_da\_t, command.h module). But there were few thing that I don't liked - missing a few useful modules, weird API decisions because of c99 target (I target gnu99, so I have a lot more language features to work with). Also, I provide full Doxygen documentation, if this matters (reading code is cool, but not always convenient). No code from nob.h were explicitly used, but I have looked into API for some modules, and maybe used same API decisions sometimes.
 
 # How to use
 
- 1. Download [cbuild.h](https://gitlab.com/cbuild/cbuild/-/releases/permalink/latest).
+ 1. Download cbuild.h from repo.
  2. Write some logic for your build into `cbuild.c`.
  3. Run `cc -o cbuild.run cbuild.c`
 
-If you want to build from source you can clone this repo and run `./build.sh pack`. This expects POSIX environment with `bash`, `cat`, `tr`, `sed`, `echo`, `rm`, `astyle`.
-
 Actually, you can use any filename for any of your files, provided filenames are examples only.
+
+Releases are not supported for now! But I will make a tags for each new release.
 
 # wikimk.c
 
-This is also a my project - small wiki generator. It uses pandoc and build a bunch of markdown files into static websites, which does not depends on anything and use a very little js (and are fully "Baseline" spec-conformant). In future this will be in its own repo, but for now it is here. I plan to replace Doxygenn with it (not a full doxygen alternative, but support a subset that I need, and only for C). But this will be in future.
+This is also a my project - small wiki generator. It uses pandoc and build a bunch of markdown files into static websites, which does not depends on anything and use a very little js (and are fully "Baseline" spec-conformant). In future this will be in its own repo, but for now it is here. I plan to replace Doxygenn with it (not a full doxygen alternative, but support a subset that I need, and only for C). But this will be in future. It does not belong to this repo, have 0 documentation and is not finished. If you want to use it - expect bugs and no support. When I will decide to finish it, it will be in its own repo.

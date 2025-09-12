@@ -20,8 +20,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // Project includes
-#include "../src/Stack.h"
+#include "../cbuild.h"
 #include "framework.h"
+#define CBUILD_IMPLEMENTATION
+#include "../cbuild.h"
 /* code */
 typedef struct stack_int_t {
 	int* data;

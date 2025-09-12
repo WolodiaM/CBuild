@@ -46,52 +46,6 @@ else
 	gray=""
 	cyan=""
 fi
-# pack subcommand
-pack_header_strip() {
-	cat "src/$1" | tr "\n" "$" | sed "s/#include \"[^\"]*\"\\\$//g" | sed "s/\\/\\/ Project includes\\\$//g" | tr "$" "\n" >>cbuild.h
-}
-pack_nostrip() {
-	cat "src/$1" >>"cbuild.h"
-}
-pack_ifdef() {
-	echo "#ifdef CBUILD_IMPLEMENTATION" >>cbuild.h
-}
-pack_endif() {
-	echo "#endif // CBUILD_IMPLEMENTATION" >>cbuild.h
-}
-pack() {
-	call_cmd rm -rf cbuild.h
-	# Common code
-	call_cmd_ns pack_nostrip "common.h"
-	# ANSI helper
-	call_cmd_ns pack_header_strip	"Term.h"
-	# Logger
-	call_cmd_ns pack_header_strip "Log.h"
-	# Temp allocator
-	call_cmd_ns pack_header_strip "Arena.h"
-	# Datatypes
-	call_cmd_ns pack_header_strip "DynArray.h"
-	call_cmd_ns pack_header_strip "StringView.h"
-	call_cmd_ns pack_header_strip "StringBuilder.h"
-	call_cmd_ns pack_header_strip "Map.h"
-	call_cmd_ns pack_header_strip "Stack.h"
-	# External processes
-	call_cmd_ns pack_header_strip "Proc.h"
-	call_cmd_ns pack_header_strip "Command.h"
-	# Filesystem
-	call_cmd_ns pack_header_strip "FS.h"
-	# Compilation helper
-	call_cmd_ns pack_header_strip "Compile.h"
-	# Runtime dynamic library loaded
-	call_cmd_ns pack_header_strip "DLload.h"
-	# CLI flag parser
-	call_cmd_ns	pack_header_strip "FlagParse.h"
-	# Implementation
-	call_cmd_ns pack_ifdef
-	call_cmd_ns pack_header_strip "impl.c"
-	call_cmd_ns pack_endif
-	return
-}
 # docs subcommand
 docs() {
 	if [[ "$#" -lt 1 ]]; then
@@ -158,7 +112,7 @@ test_run() {
 	if [[ "$Silent" == "no" ]]; then
 		printf "${cyan}%s${reset}\n" "---------- Begin of compiler output ----------"
 	fi
-	call_cmd $cc $cargs "${2:-}" tests/"$1".c src/impl.c -o build/test_"$1".run
+	call_cmd $cc $cargs "${2:-}" tests/"$1".c -o build/test_"$1".run
 	ERR=$?
 	if [[ "$Silent" == "no" ]]; then
 		printf "${cyan}%s${reset}\n" "----------  End of compiler output  ----------"
@@ -246,9 +200,6 @@ help() {
 
 	printf "Subcommands:\n"
 
-	printf "\tpack - Pack all lib headers into \"CBuild.h\"\n"
-	printf "\t\tUsage: ./build.sh pack\n"
-
 	printf "\tdocs - Manage documentation\n"
 	printf "\t\tUsage: ./build.sh docs <operation>\n"
 	printf "\t\tList of operations:\n"
@@ -326,7 +277,6 @@ parse_args() {
 	arg="${1:-}"
 	shift
 	case "$arg" in
-		"pack") pack "$@" ;;
 		"docs") docs "$@" ;;
 		"test") test_cmd "$@" ;;
 		"clean") clean "$@" ;;
