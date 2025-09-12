@@ -9,7 +9,7 @@ Some macro can be an exception, but this should be noted in documentation commen
 Any valid ASCII byte cannot be a part of utf8 multi-byte character
 *** DONE New Compiler/OS/API detection macro
 *** DONE cbuild_proc_wait_code fixes (proper sygnal handling), handle errors
-*** TODO cbuild_proc_wait_any implementation
+*** DONE cbuild_proc_wait_any implementation
 * Features todo list
 *** DONE Map.h rewrite
 I want to have a *plain*, *macro-based* map implementation.
