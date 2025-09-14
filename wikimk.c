@@ -21,16 +21,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // Includes
-#define CBUILD_IMPLEMENTATION
 #define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_TRACE
 #include "cbuild.h"
+#include "sys/socket.h"
+#include "netinet/in.h"
+#define CBUILD_IMPLEMENTATION
+#include "cbuild.h"
 // Config
-
 #define WIKIMK_WIKI_NAME "My cool wiki"
 #define WIKIMK_WIKI_AUTHOR "WolodiaM"
 #define WIKIMK_WIKI_LICENSE "GFDL-1.3-or-later"
 #define WIKIMK_WIKI_EDIT_BASE "https://gitlab.com/cbuild/cbuild/edit/master/wiki/wikimk/src"
-
 #define WIKIMK_DIR_SRC "wiki/wikimk/src"
 #define WIKIMK_DIR_TEMPLATE "wiki/wikimk/template"
 #define WIKIMK_DIR_SCRIPT "wiki/wikimk/script"
@@ -44,36 +45,36 @@ bool build_md_to_html(cbuild_sv_t filename) {
 	// Args
 	cbuild_cmd_append_many(&cmd, "--template", WIKIMK_DIR_TEMPLATE "/template.html");
 	cbuild_cmd_append_many(&cmd,
-	  "-M", "name:" WIKIMK_WIKI_NAME,
-	  "-M", "author:" WIKIMK_WIKI_AUTHOR,
-	  "-M", "license:" WIKIMK_WIKI_LICENSE);
+		"-M", "name:" WIKIMK_WIKI_NAME,
+		"-M", "author:" WIKIMK_WIKI_AUTHOR,
+		"-M", "license:" WIKIMK_WIKI_LICENSE);
 	// Files
 	cbuild_sb_t src = {0};
 	cbuild_sb_appendf(&src,
-	  WIKIMK_DIR_SRC "/" CBuildSVFmt ".md", CBuildSVArg(filename));
+		WIKIMK_DIR_SRC "/" CBuildSVFmt ".md", CBuildSVArg(filename));
 	cbuild_sb_append_null(&src);
 	cbuild_cmd_append(&cmd, src.data);
 	cbuild_sb_t dst = {0};
 	cbuild_sb_appendf(&dst,
-	  WIKIMK_DIR_OUT "/" CBuildSVFmt ".html", CBuildSVArg(filename));
+		WIKIMK_DIR_OUT "/" CBuildSVFmt ".html", CBuildSVArg(filename));
 	cbuild_sb_append_null(&dst);
 	// Edit block
 	cbuild_sb_t edit_url = {0};
 	cbuild_sb_appendf(&edit_url,
-	  "EDIT-URL:"  WIKIMK_WIKI_EDIT_BASE "/" CBuildSVFmt ".md", CBuildSVArg(filename));
+		"EDIT-URL:"  WIKIMK_WIKI_EDIT_BASE "/" CBuildSVFmt ".md", CBuildSVArg(filename));
 	cbuild_sb_append_null(&edit_url);
 	cbuild_cmd_append_many(&cmd, "-M", edit_url.data);
 	cbuild_sb_t edit_filename = {0};
 	cbuild_sb_appendf(&edit_filename,
-	  "EDIT-FILENAME:/" CBuildSVFmt ".md", CBuildSVArg(filename));
+		"EDIT-FILENAME:/" CBuildSVFmt ".md", CBuildSVArg(filename));
 	cbuild_sb_append_null(&edit_filename);
 	cbuild_cmd_append_many(&cmd, "-M", edit_filename.data);
 	// Append files to cmd
 	cbuild_cmd_append_many(&cmd, "-o", dst.data);
 	// Call to pandoc
 	cbuild_log(CBUILD_LOG_TRACE,
-	  "Building source file %s into %s.", src.data, dst.data);
-	if(!cbuild_cmd_sync(cmd)) {
+		"Building source file %s into %s.", src.data, dst.data);
+	if(!cbuild_cmd_run(&cmd)) {
 		return false;
 	}
 	// Clean-up
@@ -89,15 +90,15 @@ bool gen_index_redirect(cbuild_sb_t* index_cfg) {
 	cbuild_sb_append_null(&redirect_meta);
 	cbuild_cmd_t cmd = {0};
 	cbuild_cmd_append_many(&cmd, "pandoc", "-t", "html5",
-	  "-M", redirect_meta.data,
-	  "-M", "name:" WIKIMK_WIKI_NAME,
-	  "-M", "author:" WIKIMK_WIKI_AUTHOR,
-	  "-M", "license:" WIKIMK_WIKI_LICENSE,
+		"-M", redirect_meta.data,
+		"-M", "name:" WIKIMK_WIKI_NAME,
+		"-M", "author:" WIKIMK_WIKI_AUTHOR,
+		"-M", "license:" WIKIMK_WIKI_LICENSE,
 		"-M", "title:", "-f", "markdown", "--quiet",
-	  "--template", WIKIMK_DIR_TEMPLATE "/redirect.html",
-	  "-o", WIKIMK_DIR_OUT "/index.html",
+		"--template", WIKIMK_DIR_TEMPLATE "/redirect.html",
+		"-o", WIKIMK_DIR_OUT "/index.html",
 		"/dev/null");
-	if(!cbuild_cmd_sync(cmd)) {
+	if(!cbuild_cmd_run(&cmd)) {
 		return false;
 	}
 	return true;
@@ -108,14 +109,10 @@ bool gentoc_get_title(const char* path, cbuild_sb_t* out) {
 	cbuild_fd_open_pipe(&rd, &wr);
 	cbuild_cmd_t cmd = {0};
 	cbuild_cmd_append_many(&cmd,
-	  "pandoc",
-	  "--template", WIKIMK_DIR_TEMPLATE "/metadata-extract.txt",
-	  (char*)path);
-	if(!cbuild_cmd_sync_redirect(cmd, (cbuild_cmd_fd_t) {
-	.fdstdout = wr,
-	.fdstdin = CBUILD_INVALID_FD,
-	.fdstderr = CBUILD_INVALID_FD
-})) {
+		"pandoc",
+		"--template", WIKIMK_DIR_TEMPLATE "/metadata-extract.txt",
+		(char*)path);
+	if(!cbuild_cmd_run(&cmd, .fdstdout = &wr)) {
 		cbuild_log(CBUILD_LOG_ERROR, "Cannot extract metadata!");
 		return false;
 	}
@@ -158,8 +155,8 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 			if(cbuild_sv_suffix(filename_sv, cbuild_sv_from_cstr(".md"))) {
 				filename_sv.size -= 3;
 				cbuild_sb_appendf(out,
-				  "<li><a href=\"/"CBuildSVFmt".html\">",
-				  CBuildSVArg(filename_sv));
+					"<li><a href=\"/"CBuildSVFmt".html\">",
+					CBuildSVArg(filename_sv));
 				gentoc_get_title(filepath.data, out);
 				cbuild_sb_appendf(out, "</a></li>\n");
 			} else if(cbuild_sv_suffix(filename_sv, cbuild_sv_from_cstr(".url"))) {
@@ -289,8 +286,8 @@ bool build() {
 			if(cbuild_sv_suffix(filename, cbuild_sv_from_cstr(".md"))) {
 				filename.size -= 3;
 				cbuild_sb_appendf(&nav_html,
-				  "<li><a href=\"/"CBuildSVFmt".html\">",
-				  CBuildSVArg(filename));
+					"<li><a href=\"/"CBuildSVFmt".html\">",
+					CBuildSVArg(filename));
 				gentoc_get_title(root_filepath.data, &nav_html);
 				cbuild_sb_appendf(&nav_html, "</a></li>\n");
 			} else if(cbuild_sv_suffix(filename, cbuild_sv_from_cstr(".url"))) {
@@ -384,12 +381,202 @@ bool build() {
 			cbuild_dir_remove(dirs[i + 1]);
 		}
 		cbuild_log(CBUILD_LOG_TRACE, "Copying %s to %s.",
-		  dirs[i], dirs[i + 1]);
+			dirs[i], dirs[i + 1]);
 		cbuild_dir_copy(dirs[i], dirs[i + 1]);
 	}
 	return true;
 }
+// --------------------------------------------
+// Server
+// --------------------------------------------
+#define HTTP_SERVER_RECV_BUFFER_SIZE 4096
+cbuild_map_t http_server_mimecache = {0};
+#define http_server_write_mimecache(extension, mime)                           \
+	key = extension;                                                             \
+	elem = cbuild_map_get_or_alloc(&http_server_mimecache, key);                 \
+	elem[0] = key; elem[1] = mime;
+void http_server_build_mimecache(void) {
+	http_server_mimecache.key_size = 0;
+	http_server_mimecache.elem_size = sizeof(char*) * 2;
+	cbuild_map_init(&http_server_mimecache, 64);
+	char** elem;
+	char* key;
+	http_server_write_mimecache("html", "text/html; charset=utf-8");
+	http_server_write_mimecache("htm",  "text/html; charset=utf-8");
+	http_server_write_mimecache("css",  "text/css");
+	http_server_write_mimecache("js",   "application/javascript");
+	http_server_write_mimecache("json", "application/json");
+	http_server_write_mimecache("png",  "image/png");
+	http_server_write_mimecache("jpg",  "image/jpeg");
+	http_server_write_mimecache("jpeg", "image/jpeg");
+	http_server_write_mimecache("gif",  "image/gif");
+	http_server_write_mimecache("svg",  "image/svg+xml");
+	http_server_write_mimecache("ico",  "image/x-icon");
+	http_server_write_mimecache("txt",  "text/plain; charset=utf-8");
+	// TODO: More mimetypes ?
+}
+char*	http_server_mime(const char* filepath) {
+	char* ext = cbuild_path_ext(filepath);
+	char** elem = cbuild_map_get(&http_server_mimecache, ext);
+	free(ext);
+	if(elem == NULL) {
+		return "application/octet-stream";
+	} else {
+		return elem[1];
+	}
+}
+// False if file should not be sent
+bool http_server_serve_headers(int client_socket, int responce, const char* mime, cbuild_sb_t file) {
+	char* header;
+	size_t header_len;
+	static const char* responce_text[600] = {
+		[200] = "OK",
+		[400] = "Bad Request",
+		[404] = "Not found",
+		[405] = "Method Not Allowed",
+	};
+	ssize_t hlen = asprintf(&header,
+		"HTTP/1.1 %d %s\r\n"
+		"Content-Type: %s\r\n"
+		"Content-Length: %zu\r\n"
+		"Connection: close\r\n"
+		"\r\n",
+		responce, responce_text[responce],
+		mime,
+		file.size);
+	if(hlen > 0) {
+		header_len = (size_t)hlen;
+		send(client_socket, header, (size_t)header_len, 0);
+	}
+	free(header);
+	return true;
+}
+// static_ means that responce html filename should be generated based on on responce code. filepath is root then.
+// TODO: 304 responces
+void http_server_serve_file(int client_socket, const char* filepath, int responce, bool static_) {
+	cbuild_sb_t file = {0};
+	char* mime;
+	if(static_ == false) {
+		cbuild_file_read(filepath, &file);
+		mime = http_server_mime(filepath);
+	} else {
+		cbuild_sb_t fpath = {0};
+		cbuild_sb_appendf(&fpath, "%s/%d.html", filepath, responce);
+		cbuild_sb_append_null(&fpath);
+		cbuild_file_read(fpath.data, &file);
+		mime = http_server_mime(fpath.data);
+		cbuild_sb_clear(&fpath);
+	}
+	if(http_server_serve_headers(client_socket, responce, mime, file)) {
+		send(client_socket, file.data, file.size, 0);
+	}
+	cbuild_sb_clear(&file);
+}
+bool http_server(short unsigned int port, const char* root) {
+	// Init mimecache
+	http_server_build_mimecache();
+	// Create socket
+	int server_socket = socket(AF_INET, SOCK_STREAM, 0);
+	if(server_socket < 0) {
+		cbuild_log_error("Failed to create socket, error: \"%s\".",	strerror(errno));
+		return false;
+	}
+	int opt = 1;
+	setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+	// Bind socket
+	struct sockaddr_in server_addr;
+	server_addr.sin_family = AF_INET;
+	server_addr.sin_addr.s_addr = INADDR_ANY;
+	server_addr.sin_port = htons(port);
+	if(bind(server_socket,
+			(struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+		cbuild_log_error("Failed to bind socket to port %d, error: \"%s\".",
+			port, strerror(errno));
+		return false;
+	}
+	// Listen for a client
+	if(listen(server_socket, 10) < 0) {
+		cbuild_log_error("Failed to listen for a client, error: \"%s\".",
+			strerror(errno));
+		return false;
+	}
+	// Main loop of a server
+	while(true) {
+		// Accept client
+		struct sockaddr_in client_addr;
+		socklen_t client_addr_len = sizeof(client_addr);
+		int client_socket = accept(server_socket,
+			(struct sockaddr *)&client_addr, &client_addr_len);
+		if(client_socket < 0) {
+			cbuild_log_error("Failed to accept client, error: \"%s\".",
+				strerror(errno));
+		}
+		// Read request
+		char buf[HTTP_SERVER_RECV_BUFFER_SIZE];
+		// TODO: Dynamic buffer
+		ssize_t len = recv(client_socket, buf, sizeof(buf), 0);
+		if(len < 0) {
+			cbuild_log_error("Received malformed request from client.");
+			goto defer1;
+		}
+		cbuild_sv_t request = cbuild_sv_from_parts(buf, (size_t)len);
+		cbuild_sv_t type = cbuild_sv_chop_by_delim(&request, ' ');
+		cbuild_sv_t path = cbuild_sv_chop_by_delim(&request, ' ');
+		cbuild_sv_t protocol =
+			cbuild_sv_chop_by_sv(&request, cbuild_sv_from_cstr("\r\n"));
+		if(cbuild_sv_cmp(type, cbuild_sv_from_cstr("GET")) == 0 &&
+			cbuild_sv_cmp(protocol, cbuild_sv_from_cstr("HTTP/1.1")) == 0) {
+			cbuild_log_trace("Received request from client.");
+			cbuild_log_trace("Requested path \""CBuildSVFmt"\".",
+				CBuildSBArg(path));
+			cbuild_sb_t fpath = {0};
+			cbuild_sb_append_cstr(&fpath, root);
+			// TODO: Expands '%' in path
+			if(cbuild_sv_suffix(path, cbuild_sv_from_cstr("/"))) {
+				cbuild_sb_append_sv(&fpath, path);
+				cbuild_sb_append_cstr(&fpath, "index.html");
+			} else {
+				cbuild_sb_append_sv(&fpath, path);
+			}
+			cbuild_sb_append_null(&fpath);
+			if(cbuild_sv_contains_sv(path, cbuild_sv_from_cstr(".."))) {
+				cbuild_log_warn("Path contains \"..\", aborting.");
+			} else {
+				cbuild_log_trace("Path resolves to \"%s\"", fpath.data);
+				if(!cbuild_file_check(fpath.data)) {
+					cbuild_log_warn("File not found, sending 404.");
+					http_server_serve_file(client_socket, root, 404, true);
+				} else {
+					cbuild_log_trace("File found, sending 200.");
+					http_server_serve_file(client_socket, fpath.data, 200, false);
+				}
+			}
+			cbuild_sb_clear(&fpath);
+		} else {
+			cbuild_log_warn("Received invalid request from client.");
+			if((cbuild_sv_cmp(type, cbuild_sv_from_cstr("CONNECT")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("DELETE")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("HEAD")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("OPTIONS")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("PATCH")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("POST")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("PUT")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("TRACE")) == 0) &&
+				cbuild_sv_cmp(protocol, cbuild_sv_from_cstr("HTTP/1.1")) == 0) {
+				cbuild_log_warn("Invalid request type, sending 405.");
+				http_server_serve_file(client_socket, root, 405, true);
+			}
+		}
+	defer1:
+		close(client_socket);
+		cbuild_log_trace("Finished handling request from client.");
+	}
+	close(server_socket);
+	return true;
+}
+// --------------------------------------------
 // Code
+// --------------------------------------------
 int main(int argc, char** argv) {
 	cbuild_selfrebuild(argc, argv);
 	cbuild_shift(argv, argc);
@@ -409,12 +596,7 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 	} else if(strcmp(subcmd, "serve") == 0) {
-		cbuild_log(CBUILD_LOG_INFO, "Serving site using python SimpleHTTPServer.");
-		cbuild_cmd_t cmd = {0};
-		cbuild_cmd_append_many(&cmd, "python", "-m", "http.server", "8000", "-d", WIKIMK_DIR_OUT);
-		if(!cbuild_cmd_sync(cmd)) {
-			return 1;
-		}
+		if(!http_server(8000, WIKIMK_DIR_OUT)) return 1;
 	}
 	return 0;
 }
