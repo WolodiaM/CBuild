@@ -268,6 +268,8 @@
  *   Proc.h [feature]
  *     - Ability to get amount of CPU cores
  *     - Ability to wait for any process from a list
+ *   Log.h [feature]
+ *     - Added shortcuts for build-in log levels
  *   General [change]
  *     - Changed CBDEF to CBUILDDEF.
  *     - Remove build stage for a header.
@@ -731,6 +733,15 @@ typedef void (*cbuild_log_fmt_t)(cbuild_log_level_t level);
  */
 CBUILDDEF void cbuild_log(cbuild_log_level_t level, const char* fmt, ...)
 __attribute__((format(printf, 2, 3)));
+// Shortcuts
+#define cbuild_log_error(msg, ...)                                             \
+	cbuild_log(CBUILD_LOG_ERROR, msg __VA_OPT__(,) __VA_ARGS__)
+#define cbuild_log_warn(msg, ...)                                              \
+	cbuild_log(CBUILD_LOG_WARN, msg __VA_OPT__(,) __VA_ARGS__)
+#define cbuild_log_info(msg, ...)                                              \
+	cbuild_log(CBUILD_LOG_INFO, msg __VA_OPT__(,) __VA_ARGS__)
+#define cbuild_log_trace(msg, ...)                                             \
+	cbuild_log(CBUILD_LOG_TRACE, msg __VA_OPT__(,) __VA_ARGS__)
 /**
  * @brief Print logs but takes va list
  *
@@ -2385,7 +2396,7 @@ CBUILDDEF int cbuild_compare_mtime_many(const char* output, const char** inputs,
 #endif // CBUILD_API_*
 /* FlagParse.h */
 typedef struct cbuild_arglist_t {
-	const char** data;
+	char** data;
 	size_t size;
 	size_t capacity;
 } cbuild_arglist_t;
@@ -3263,7 +3274,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		int code = 0;
 		if(opts.procs != NULL && opts.async_threads != -1) {
 			if(opts.async_threads == 0) opts.async_threads = cbuild_nproc() + 1;
-			if(opts.async_threads == opts.procs->size) {
+			if((size_t)opts.async_threads == opts.procs->size) {
 				proc_idx = (size_t)cbuild_procs_wait_any(*opts.procs, &code);
 				if(code != 0) {
 					goto cleanup;
@@ -3278,7 +3289,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			*opts.proc = proc;
 		} else if(opts.procs != NULL) {
 			if(opts.async_threads != -1) {
-				if(opts.async_threads == opts.procs->size) {
+				if((size_t)opts.async_threads == opts.procs->size) {
 					cbuild_da_set(opts.procs, proc_idx, proc);
 				} else {
 					cbuild_da_append(opts.procs, proc);
@@ -3870,7 +3881,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		bool err = cbuild_dir_list(path, &list);
 		if(err == false) {
 			cbuild_log(CBUILD_LOG_ERROR,
-				"Could not list source directory \"%s\", error: \"%s\"", path,
+				"Could not remove source directory \"%s\", error: \"%s\"", path,
 				strerror(errno));
 			if(list.data != NULL) {
 				cbuild_pathlist_clear(&list);
@@ -4215,6 +4226,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, (char*)bname_new, (char*)spath);
 		if(!cbuild_cmd_run(&cmd)) {
 			cbuild_file_rename(bname_old.data, bname_new);
+			cbuild_log(CBUILD_LOG_TRACE, "Rebuild failed\n");
 			return; // If compilation failed the let old version run
 		}
 		__cbuild_int_compile_mark_exec(bname_new);
