@@ -1,8 +1,14 @@
+# Wiki output
 wiki/doxygen/
 wiki/mkdocs/site/
 wiki/mkdocs/docs/doxygen
 wiki/out
 wiki/wikimk/template/nav.html
+# Build output
 build/
+# Binaries
 wikimk.run
+cbuild.run
+cbuild.run.old
+# Ctags
 TAGS
