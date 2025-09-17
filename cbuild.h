@@ -33,7 +33,7 @@
  * --------------------------------------------
  * 27.12.2024  v1.2    Bugfix release
  *   Compile.h [bugfix]
- *     - Fixed type ('CBUILD_CARG_WARN' -> 'CBUILD_CARGS_WARN').
+ *     - Fixed typo ('CBUILD_CARG_WARN' -> 'CBUILD_CARGS_WARN').
  *	 Log.h [bugfix]
  *     - Logger always use one output stream for its messages now.
  *   General [bugfix]
@@ -270,6 +270,10 @@
  *     - Ability to wait for any process from a list
  *   Log.h [feature]
  *     - Added shortcuts for build-in log levels
+ *     - Made CBUILD_LOG_PRINT print always (except if
+ *       CBUILD_LOG_NO_LOGS is enabled)
+ *     - Made enum for modes not sparse
+ *     - Removed cbuild_log_fmt
  *   General [change]
  *     - Changed CBDEF to CBUILDDEF.
  *     - Remove build stage for a header.
@@ -592,7 +596,7 @@ CBUILDDEF void __cbuild_assert(const char* file, unsigned int line,
  *
  * @param argv => T[] -> Array
  * @paran argc => Integer -> Array size. Evaluated twice by macro.
- * */
+ */
 #define cbuild_shift(argv, argc)                                               \
 	(cbuild_assert((argc) > 0, "More arguments is required!\n"), (argc)--,       \
 		*(argv)++)
@@ -603,7 +607,7 @@ CBUILDDEF void __cbuild_assert(const char* file, unsigned int line,
  * @param argv => T[] -> Array
  * @paran argc => Integer -> Array size. Evaluated twice by macro.
  * @param ... -> Printf arfs
- * */
+ */
 #define cbuild_shift_expect(argv, argc, ...)                                   \
 	(cbuild_assert((argc) > 0, __VA_ARGS__), (argc)--, *(argv)++)
 /**
@@ -717,13 +721,12 @@ CBUILDDEF uint64_t cbuild_time_nanos(void);
 /* Log.h */
 typedef enum {
 	CBUILD_LOG_NO_LOGS = -1,
-	CBUILD_LOG_ERROR   = 10,
-	CBUILD_LOG_WARN    = 20,
-	CBUILD_LOG_INFO    = 30,
-	CBUILD_LOG_TRACE   = 40,
-	CBUILD_LOG_PRINT   = 100,
+	CBUILD_LOG_ERROR   = 1,
+	CBUILD_LOG_WARN    = 2,
+	CBUILD_LOG_INFO    = 3,
+	CBUILD_LOG_TRACE   = 4,
+	CBUILD_LOG_PRINT   = 5,
 } cbuild_log_level_t;
-typedef void (*cbuild_log_fmt_t)(cbuild_log_level_t level);
 /**
  * @brief Print logs
  *
@@ -742,6 +745,8 @@ __attribute__((format(printf, 2, 3)));
 	cbuild_log(CBUILD_LOG_INFO, msg __VA_OPT__(,) __VA_ARGS__)
 #define cbuild_log_trace(msg, ...)                                             \
 	cbuild_log(CBUILD_LOG_TRACE, msg __VA_OPT__(,) __VA_ARGS__)
+#define cbuild_log_print(msg, ...)                                             \
+	cbuild_log(CBUILD_LOG_PRINT, msg __VA_OPT__(,) __VA_ARGS__)
 /**
  * @brief Print logs but takes va list
  *
@@ -763,12 +768,6 @@ CBUILDDEF void cbuild_log_set_min_level(cbuild_log_level_t level);
  * @return cbuild_log_level_t -> Current log level
  */
 CBUILDDEF cbuild_log_level_t cbuild_log_get_min_level(void);
-/**
- * @brief Set formatter for loger attributes
- *
- * @param fmt => cbuild_log_fmt_t  -> Log formatter
- */
-CBUILDDEF void cbuild_log_set_fmt(cbuild_log_fmt_t fmt);
 /* Arena.h */
 /**
  * @brief Create new temp allocation
@@ -2306,7 +2305,7 @@ CBUILDDEF char* cbuild_path_normalize(const char* path);
 	#endif // Compiler select
 #endif   // CBUILD_CC_OUT
 // Predefined compiler arguments
-#define CBUILD_CARGS_WARN                     "-Wall", "-Wextra", "-Wno-comments", "-Wconversion", "-Wcast-align", "-Wvla", "-Wno-override-init"
+#define CBUILD_CARGS_WARN                     "-Wall", "-Wextra", "-Wno-comments", "-Wconversion", "-Wcast-align", "-Wvla"
 #define CBUILD_CARGS_WERROR                   "-Werror"
 #if defined(CBUILD_CC_CLANG)
 	#define CBUILD_CARGS_STATIC_ANALYZER        "--analyze", "-Xanalyzer", "-analyzer-output=text"
@@ -3315,32 +3314,28 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return code == 0;
 	}
 	/* Log.h impl */
-	void __cbuild_log_fmt(cbuild_log_level_t level) {
+	static cbuild_log_level_t __CBUILD_LOG_MIN_LEVEL = CBUILD_LOG_MIN_LEVEL;
+	char* __cbuild_int_log_level_names[CBUILD_LOG_PRINT] = { // Print is next index so should be fine
+		[CBUILD_LOG_ERROR] = CBUILD_TERM_FG(CBUILD_TERM_RED)"[ERROR]"CBUILD_TERM_RESET" ",
+		[CBUILD_LOG_WARN] = CBUILD_TERM_FG(CBUILD_TERM_YELLOW)"[WARN]"CBUILD_TERM_RESET" ",
+		[CBUILD_LOG_INFO] = "[INFO] ",
+		[CBUILD_LOG_TRACE] = CBUILD_TERM_FG(CBUILD_TERM_BRBLACK)"[TRACE]"CBUILD_TERM_RESET" ",
+	};
+	void __cbuild_int_vlog(const char* level, const char* fmt, va_list args) {
 		time_t t = time(NULL);
 		struct tm* tm_info = localtime(&t);
 		__CBUILD_ERR_PRINTF("[%02d:%02d:%02d] ", tm_info->tm_hour, tm_info->tm_min,
 			tm_info->tm_sec);
-		switch(level) {
-		case CBUILD_LOG_NO_LOGS: break;
-	case CBUILD_LOG_ERROR:
-			__CBUILD_ERR_PRINT(
-				CBUILD_TERM_FG(CBUILD_TERM_RED) "[ERROR]" CBUILD_TERM_RESET " ");
-			break;
-	case CBUILD_LOG_WARN:
-			__CBUILD_ERR_PRINT(
-				CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "[WARN]" CBUILD_TERM_RESET " ");
-			break;
-		case CBUILD_LOG_INFO: __CBUILD_ERR_PRINT("[INFO] "); break;
-	case CBUILD_LOG_TRACE:
-			__CBUILD_ERR_PRINT(
-				CBUILD_TERM_FG(CBUILD_TERM_BRBLACK) "[TRACE]" CBUILD_TERM_RESET " ");
-			break;
-		case CBUILD_LOG_PRINT: break;
-		default : break;
-		}
+		__CBUILD_ERR_PRINT(level);
+		__CBUILD_ERR_VPRINTF(fmt, args);
+		__CBUILD_ERR_PRINT("\n");
 	}
-	static cbuild_log_level_t __CBUILD_LOG_MIN_LEVEL = CBUILD_LOG_MIN_LEVEL;
-	static cbuild_log_fmt_t __CBUILD_LOG_FMT = __cbuild_log_fmt;
+	void __cbuild_int_log(const char* level, const char* fmt, ...) {
+		va_list args;
+		va_start(args, fmt);
+		__cbuild_int_vlog(level, fmt, args);
+		va_end(args);
+	}
 	void cbuild_log(cbuild_log_level_t level, const char* fmt, ...) {
 		va_list args;
 		va_start(args, fmt);
@@ -3351,16 +3346,10 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		if(level == CBUILD_LOG_NO_LOGS) {
 			return;
 		}
-		if(level > __CBUILD_LOG_MIN_LEVEL) {
-			return;
-		}
-		if(level < CBUILD_LOG_PRINT) {
-			__CBUILD_LOG_FMT(level);
-			__CBUILD_ERR_VPRINTF(fmt, args);
-			__CBUILD_ERR_PRINT("\n");
-		} else {
-			__CBUILD_VPRINTF(fmt, args);
-			__CBUILD_PRINT("\n");
+		if(level == CBUILD_LOG_PRINT) {
+			__cbuild_int_vlog("", fmt, args);
+		} else if (level <= __CBUILD_LOG_MIN_LEVEL) {
+			__cbuild_int_vlog(__cbuild_int_log_level_names[level], fmt, args);
 		}
 	}
 	void cbuild_log_set_min_level(cbuild_log_level_t level) {
@@ -3368,9 +3357,6 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	cbuild_log_level_t cbuild_log_get_min_level(void) {
 		return __CBUILD_LOG_MIN_LEVEL;
-	}
-	void cbuild_log_set_fmt(cbuild_log_fmt_t fmt) {
-		__CBUILD_LOG_FMT = fmt;
 	}
 	/* Arena.h impl */
 	size_t __cbuild_int_temp_size = 0;
@@ -3796,9 +3782,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 					cbuild_filetype_t type = cbuild_path_filetype(dst);
 					switch(type) {
 					case CBUILD_FTYPE_DIRECTORY: cbuild_dir_remove(dst); break;
-				case CBUILD_FTYPE_REGULAR:
-				case CBUILD_FTYPE_SYMLINK:
-				case CBUILD_FTYPE_OTHER:
+					case CBUILD_FTYPE_REGULAR:
+					case CBUILD_FTYPE_SYMLINK:
+					case CBUILD_FTYPE_OTHER:
 						cbuild_file_remove(dst);
 						break;
 					default: CBUILD_UNREACHABLE("Invalid filetype in create_symlink.");
@@ -4664,7 +4650,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			&spec, __cbuild_int_flag_first_delim_func, &type_delim);
 		size_t parse_offset = new_spec.opt.size;
 		switch(type_delim) {
-	case '\t':
+		case '\t':
 			if(spec.size < 2) {
 				cbuild_log(
 					CBUILD_LOG_ERROR,
@@ -4685,11 +4671,11 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			spec.size -= 2;
 			parse_offset += 3; // Offset is one lower than real parse position
 			__attribute__((fallthrough));
-	case '\n':
+		case '\n':
 			__CBUILD_INT_FLAG_SET_TYPE(new_spec.type, 0b00);
 			__cbuild_int_flag_parse_metadata_spec(&new_spec, &spec, &parse_offset);
 			break;
-	default:
+		default:
 			cbuild_log(
 				CBUILD_LOG_ERROR,
 				"Syntax error [%zu]: Invalid type specifier, expected '\\t', '\\n' "
@@ -4890,7 +4876,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		// For normal args
 		switch(__CBUILD_INT_FLAG_GET_ARGT(spec->type)) {
 		case 0b000: break;
-	case 0b001:
+		case 0b001:
 			if(spec->type_hint.size > 0) {
 				cbuild_sb_append_cstr(&sb, " <");
 				cbuild_sb_append_sv(&sb, spec->type_hint);
@@ -4900,7 +4886,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				cbuild_sb_append(&sb, '>');
 			}
 			break;
-	case 0b010:
+		case 0b010:
 			if(spec->type_hint.size > 0 ||
 				__CBUILD_INT_FLAG_GET_ARGO(spec->type) == 0b1 ||
 				__CBUILD_INT_FLAG_GET_PRM1(spec->type) != 0) {
@@ -4922,7 +4908,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				cbuild_sb_append(&sb, '>');
 			}
 			break;
-	case 0b011:
+		case 0b011:
 			cbuild_sb_append_cstr(&sb, " <");
 			if(spec->type_hint.size > 0) {
 				cbuild_sb_append_sv(&sb, spec->type_hint);
