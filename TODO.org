@@ -246,12 +246,26 @@ or signals:
 or just busy-loop on process list with ~waitpid(pid, &status NOHANG)~ and ~nnanosleep~ to not fully busy-loop. This is actiully the best way (fastest/simplest)
 or just wait for all process to finish (eg. run batch-by-batch), much easier but may be slower.
 
+* Tests runner
+*** TODO Make new shared header. Should load cbuild and have asserts.
+*** TODO One test case per file
+*** TODO New way of listing tests
+File, human name, attributes (for which platform test can be used), argv for test, should test return 0 or 1 to succeed.
+*** TODO Test runner
+Just iterate over list of tests and then over a list of supported platforms. Test return 1/0. stdout is used by test. No more input/output can be used (except argv).
+*** TODO New test reporting
+For one-by-one runs do full logging
+For batch runs do full logging (few tests specified on command line)
+For full run just print table. Row - test case, column - platform. 4 possible report values.
+ + "skipped" (gray '.') Test was marked as unsupported for platform
+ + "passed" (green '+') Test return 0 code
+ + "failed" (red '-') Test returned non-0 code
+ + "comp-failed" (yellow '!') Test failed to compile (compiler returned non-0 code or binary was not produced)
 * v0.13
 *** Command.h rework
  + proper async
  + thread count control
  + Allow file redirects
-
 * v0.xx
 *** Make windows partially-supported target
 Not everything can be ported to Windows with proper semantics
