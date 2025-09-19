@@ -25,27 +25,192 @@
 #define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_TRACE
 #include "cbuild.h"
 #include "tests/framework.h"
-#define CBUILD_IMPLEMENTATION
-#include "cbuild.h"
 // Globals
 #define BUILD_VERSION "v1.0"
 #define BUILD_FOLDER "build"
 #define TEST_FOLDER "tests"
 // Test system globals
-#define TEST_FILES_SIZE 1
-const char* TEST_FILES[] = {
-	"Command"
+typedef enum test_status_t {
+	TEST_SKIPPED = -1,
+	TEST_SUCCEED = 0,
+	TEST_FAILED = 1,
+	TEST_COMP_FAILED = 2,
+} test_status_t;
+#define TPL_ALL 0xFFFFFFFF
+typedef struct test_case_t {
+	union {
+		struct {
+			uint32_t x86_64_linux_glibc_gcc   : 1;
+			uint32_t x86_64_linux_glibc_clang : 1;
+			uint32_t x86_64_linux_musl_gcc    : 1;
+			uint32_t x86_64_posix_gcc         : 1; // Run on Linux under glibc
+			uint32_t x86_64_posix_clang       : 1; // Run on Linux under glibc
+			uint32_t                          : 27;
+		} platform;
+		uint32_t platforms;
+	};
+	uint32_t flags;
+	const char* file;
+	cbuild_arglist_t argv;
+} test_case_t;
+#define TEST_COUNT 1
+test_case_t TESTS[TEST_COUNT] = {
+	{
+		.file = "cmd_to_sb",
+		.platforms = TPL_ALL,
+	}
 };
 // Test runner
-bool test_case(const char* name) {
-	return true;
+#define test_log_failed(msg, ...)                                              \
+	__cbuild_int_log(CBUILD_TERM_FG(CBUILD_TERM_RED)"[FAILED]"                   \
+		CBUILD_TERM_RESET" ",                                                      \
+		msg __VA_OPT__(,) __VA_ARGS__)
+#define test_log_success(msg, ...)                                             \
+	__cbuild_int_log(CBUILD_TERM_FG(CBUILD_TERM_GREEN)"[SUCCESS]"                \
+		CBUILD_TERM_RESET" "   ,                                                   \
+		msg __VA_OPT__(,) __VA_ARGS__)
+#define test_log_start(msg, ...)                                               \
+	__cbuild_int_log(CBUILD_TERM_FG(CBUILD_TERM_MAGENTA)"[START]"                \
+		CBUILD_TERM_RESET" "   ,                                                   \
+		msg __VA_OPT__(,) __VA_ARGS__)
+test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Linux/glibc, Arch: x86_64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_gcc_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_log_trace("Running test \"%s\"...", test.file);
+	cbuild_cmd_append(&cmd, oname);
+	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_FAILED;
+	}
+	test_log_success("Test \"%s\" succeed.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return TEST_SUCCEED;
 }
-bool test(void) {
+test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Linux/glibc, Arch: x86_64, Compiler: clang");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_clang_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "clang");
+	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_log_trace("Running test \"%s\"...", test.file);
+	cbuild_cmd_append(&cmd, oname);
+	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_FAILED;
+	}
+	test_log_success("Test \"%s\" succeed.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return TEST_SUCCEED;
+}
+test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Linux/musl, Arch: x86_64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_musl_gcc_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_log_trace("Running test \"%s\"...", test.file);
+	cbuild_cmd_append(&cmd, oname);
+	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_FAILED;
+	}
+	test_log_success("Test \"%s\" succeed.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return TEST_SUCCEED;
+}
+// Single-case runner
+bool test_case(test_case_t test) {
 	bool failed = false;
-	for(size_t i = 0; i < TEST_FILES_SIZE; i++) {
-		if(!test_case(TEST_FILES[i])) failed = true;
+	if((test.platform.x86_64_linux_glibc_gcc)) {
+		if(test_x86_64_linux_glibc_gcc(test) != TEST_SUCCEED) failed = true;
+	}
+	if((test.platform.x86_64_linux_glibc_clang)) {
+		if(test_x86_64_linux_glibc_clang(test) != TEST_SUCCEED) failed = true;
+	}
+	if((test.platform.x86_64_linux_musl_gcc)) {
+		if(test_x86_64_linux_musl_gcc(test) != TEST_SUCCEED) failed = true;
 	}
 	return !failed;
+}
+// Full runner
+typedef struct test_da_status_t {
+	test_status_t* data;
+	size_t size;
+	size_t capacity;
+} test_da_status_t;
+bool test(void) {
+	test_da_status_t x86_64_linux_glibc_gcc = {0};
+	// Silence output
+	cbuild_fd_t dev_null = cbuild_fd_open_write("/dev/null");
+	cbuild_fd_t fdstdout = dup(STDOUT_FILENO);
+	cbuild_fd_t fdstderr = dup(STDERR_FILENO);
+	fflush(stdout);
+	fflush(stderr);
+	dup2(dev_null, STDOUT_FILENO);
+	dup2(dev_null, STDERR_FILENO);
+	// Run tests
+	for(size_t i = 0; i < TEST_COUNT; i++) {
+		cbuild_da_append(&x86_64_linux_glibc_gcc,
+			test_x86_64_linux_glibc_gcc(TESTS[i]));
+	}
+	// Restore output
+	fflush(stdout);
+	fflush(stderr);
+	dup2(fdstdout, STDOUT_FILENO);
+	dup2(fdstderr, STDERR_FILENO);
+	close(dev_null);
+	close(fdstdout);
+	close(fdstderr);
+	// Print report
+	for(size_t i = 0; i < TEST_COUNT; i++) {
+		printf("%s -> %d\n", TESTS[i].file, x86_64_linux_glibc_gcc.data[i]);
+	}
+	return true;
 }
 // Hooks
 void help(const char* app_name) {
@@ -58,8 +223,8 @@ void help(const char* app_name) {
 	printf("\t\tdoxygen    Build doxygen\n");
 	printf("\t\tserve      Host local copy of wiki on localhost:\n");
 	printf("\ttest     Run test. If no argument is provided run all available tests.\n");
-	for(size_t i = 0; i < TEST_FILES_SIZE; i++) {
-		printf("\t\t%s\n", TEST_FILES[i]);
+	for(size_t i = 0; i < TEST_COUNT; i++) {
+		printf("\t\t%s\n", TESTS[i].file);
 	}
 	printf("\tclean    Clean all generated files\n");
 	printf("\ttags     Generate CTags\n");
@@ -138,7 +303,9 @@ int main(int argc, char** argv) {
 		} else {
 			bool failed = false;
 			cbuild_da_foreach(&pargs, test_name) {
-				if(!test_case(*test_name)) failed = true;
+				for(size_t i = 0; i < TEST_COUNT; i++) {
+					if(!test_case(TESTS[i])) failed = true;
+				}
 			}
 			if(failed) return 1;
 		}
