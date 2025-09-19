@@ -27,35 +27,17 @@
 #include "../cbuild.h"
 // Asserts
 #define TEST_ASSERT_EQ(val, expected, msg, ...)                                \
-	if ((val) != (expected)) {                                                   \
-		printf(msg "\n" __VA_OPT__(,) __VA_ARGS__);                                \
-		failed++;                                                                  \
-	}
+	cbuild_assert((val) == (expected), msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_ASSERT_NEQ(val, expected, msg, ...)                               \
-	if ((val) == (expected)) {                                                   \
-		printf(msg "\n" __VA_OPT__(,) __VA_ARGS__);                                \
-		failed++;                                                                  \
-	}
+	cbuild_assert((val) != (expected), msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_ASSERT_STREQ(val, expected, msg, ...)                             \
-	if (strcmp((val), (expected)) != 0) {                                        \
-		printf(msg "\n" __VA_OPT__(,) __VA_ARGS__);                                \
-		failed++;                                                                  \
-	}
+	cbuild_assert(strcmp((val), (expected)) == 0, msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_ASSERT_MEMEQ(val, expected, size, msg, ...)                       \
-	if (memcmp((void*)(val), (void*)(expected), size) != 0) {                    \
-		printf(msg "\n" __VA_OPT__(,) __VA_ARGS__);                                \
-		failed++;                                                                  \
-	}
+	cbuild_assert(strcmp((val), (expected)) != 0, msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_ASSERT(func, msg, ...)                                            \
-	if (!((func))) {                                                             \
-		printf(msg "\n" __VA_OPT__(,) __VA_ARGS__);                                \
-		failed++;                                                                  \
-	}
+	cbuild_assert((func), msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_NASSERT(func, msg, ...)                                           \
-	if ((func)) {                                                                \
-		printf(msg "\n" __VA_OPT__(,) __VA_ARGS__);                                \
-		failed++;                                                                  \
-	}
+	cbuild_assert(!(func), msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_EXPECT_MSG(type)  ", expected '%" #type "' but found '%" #type "'."
 #define TEST_EXPECT_RMSG(type) ", expected '" type "' but found '" type "'."
 #endif // __FRAMEWORK_H__
