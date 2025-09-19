@@ -338,7 +338,10 @@
 #endif // !CBUILD_OS_DEFINED
 // Valid APIs:
 //   - CBUILD_API_POSIX        - POSIX.1-2001 (_POSIX_C_SOURCE == 200112L) with some GNU extensions, supports Linux, MacOS and BSD.
-//   - CBUILD_API_STRICT_POSIX - POSIX.1-2001 (_POSIX_C_SOURCE == 200112L). Support any Unix that has this POSIX version supported. Only extension used could be MAP_ANON/MAP_ANONYMOUS if found, sysconf(_SC_NPROCESSORS_ONLN). If none is available require 'shm_opem' to be provided by either libc, 'librt.so' or 'librt.so.1', also required dlopen+dlsym to be provided by libc in this case. It can use extension if they are from later POSIX version and newer POSIX is detected.
+//   - CBUILD_API_STRICT_POSIX - POSIX.1-2001 (_POSIX_C_SOURCE == 200112L). Support any Unix that has this POSIX version supported. Only extension used:
+//       * MAP_ANON/MAP_ANONYMOUS. If none is available require 'shm_opem' to be provided by either libc, 'librt.so' or 'librt.so.1', also required dlopen+dlsym to be provided by libc in this case.
+//       * sysconf(_SC_NPROCESSORS_ONLN). Fallback is 1 because no way exist to query this information.
+//     It can use extension if they are from later POSIX version and newer POSIX is detected.
 //   - CBUILD_API_WINAPI        - WinAPI+NT native API. Requires codepage to be set to 65001 if utf8 functions are needed. Tries to use WinAPi when possible but relies on NT native API for more low-level tasks.
 #if !defined(CBUILD_API_DEFINED)
 	#if defined(CBUILD_OS_LINUX) || defined(CBUILD_OS_MACOS) || defined(CBUILD_OS_BSD)
@@ -2476,7 +2479,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	void* (*cbuild_realloc)(void* ptr, size_t size) = realloc;
 	void (*cbuild_free)(void* ptr) = free;
 	/* common.h impl */
-	void __cbuild_assert(const char* file, unsigned int line, const char* func,
+	CBUILDDEF void __cbuild_assert(const char* file, unsigned int line, const char* func,
 		const char* expr, ...) {
 		__CBUILD_ERR_PRINTF("%s: %s:%u: %s: Assertion \"%s\" failed with message:\n",
 			__cbuild_progname(), file, line, func, expr);
@@ -2489,14 +2492,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		abort();
 	}
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		uint64_t cbuild_time_nanos(void) {
+		CBUILDDEF uint64_t cbuild_time_nanos(void) {
 			struct timespec t;
 			clock_gettime(CLOCK_MONOTONIC, &t);
 			return (uint64_t)(CBUILD_NANOS_PER_SEC * t.tv_sec + t.tv_nsec);
 		}
 	#endif // CBUILD_API_*
 	/* StringBuilder.h impl */
-	int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
+	CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
 		if(a->size < b->size) {
 			return -2;
 		}
@@ -2513,7 +2516,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		CBUILD_UNREACHABLE("cbuild_sb_cmp fallthrough");
 	}
-	int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b) {
+	CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b) {
 		if(a->size < b->size) {
 			return -2;
 		}
@@ -2534,17 +2537,17 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return 0;
 	}
-	cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv) {
+	CBUILDDEF cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv) {
 		cbuild_sb_t ret = {0};
 		cbuild_sb_append_arr(&ret, sv.data, sv.size);
 		return ret;
 	}
-	cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb) {
+	CBUILDDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb) {
 		return (cbuild_sv_t) {
 			.data = sb->data, .size = sb->size
 		};
 	}
-	int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args) {
+	CBUILDDEF int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args) {
 		va_list args_copy;
 		va_copy(args_copy, args);
 		char buff[CBUILD_SB_QUICK_SPRINTF_SIZE];
@@ -2565,14 +2568,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		va_end(args_copy);
 		return ret;
 	}
-	int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...) {
+	CBUILDDEF int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...) {
 		va_list args;
 		va_start(args, fmt);
 		int ret = cbuild_sb_vappendf(sb, fmt, args);
 		va_end(args);
 		return ret;
 	}
-	void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t codepoint) {
+	CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t codepoint) {
 		unsigned char buffer[4] = {0};
 		size_t len = 0;
 		if(codepoint <= 0x7F) {
@@ -2598,14 +2601,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		cbuild_sb_append_arr(sb, buffer, len);
 	}
-	int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
+	CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
 		return cbuild_sv_utf8cmp(cbuild_sv_from_sb(a), cbuild_sv_from_sb(b));
 	}
-	size_t cbuild_sb_utf8len(cbuild_sb_t* sb) {
+	CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t* sb) {
 		return cbuild_sv_utf8len(cbuild_sv_from_sb(sb));
 	}
 	/* StringView.h impl */
-	size_t cbuild_sv_trim_left(cbuild_sv_t* sv) {
+	CBUILDDEF size_t cbuild_sv_trim_left(cbuild_sv_t* sv) {
 		size_t i = 0;
 		while(i < sv->size && isspace(sv->data[i])) {
 			i++;
@@ -2614,7 +2617,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		sv->size -= i;
 		return i;
 	}
-	size_t cbuild_sv_trim_right(cbuild_sv_t* sv) {
+	CBUILDDEF size_t cbuild_sv_trim_right(cbuild_sv_t* sv) {
 		size_t i = sv->size;
 		while(i > 0 && isspace(sv->data[i - 1])) {
 			i--;
@@ -2623,12 +2626,12 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		sv->size  -= tmp;
 		return tmp;
 	}
-	size_t cbuild_sv_trim(cbuild_sv_t* sv) {
+	CBUILDDEF size_t cbuild_sv_trim(cbuild_sv_t* sv) {
 		size_t ret = cbuild_sv_trim_left(sv);
 		ret       += cbuild_sv_trim_right(sv);
 		return ret;
 	}
-	cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size) {
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size) {
 		if(size > sv->size) {
 			size = sv->size;
 		}
@@ -2637,7 +2640,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		sv->size -= size;
 		return cbuild_sv_from_parts(tmp, size);
 	}
-	cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim) {
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim) {
 		char* chrptr = memchr(sv->data, delim, sv->size);
 		if(chrptr != NULL) {
 			size_t i = (size_t)(chrptr - sv->data);
@@ -2648,7 +2651,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return cbuild_sv_chop(sv, sv->size);
 	}
-	cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
 		if(delim.size == 0 || delim.size > sv->size) {
 			return cbuild_sv_from_parts(sv->data, 0);
 		}
@@ -2667,7 +2670,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		} while(chrptr != NULL);
 		return cbuild_sv_chop(sv, sv->size);
 	}
-	cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
 		void* args) {
 		size_t i = 0;
 		while(i <= sv->size && !delim(sv, i, args)) {
@@ -2681,7 +2684,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		sv->size -= i + 1;
 		return cbuild_sv_from_parts(tmp, i);
 	}
-	int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b) {
+	CBUILDDEF int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b) {
 		if(a.size < b.size) {
 			return -2;
 		}
@@ -2698,7 +2701,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return 0;
 	}
-	int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b) {
+	CBUILDDEF int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b) {
 		if(a.size < b.size) {
 			return -2;
 		}
@@ -2717,13 +2720,13 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return 0;
 	}
-	bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix) {
+	CBUILDDEF bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix) {
 		if(sv.size < prefix.size) {
 			return false;
 		}
 		return cbuild_sv_cmp(cbuild_sv_from_parts(sv.data, prefix.size), prefix) == 0;
 	}
-	bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix) {
+	CBUILDDEF bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix) {
 		if(sv.size < suffix.size) {
 			return false;
 		}
@@ -2731,14 +2734,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			cbuild_sv_from_parts(sv.data + sv.size - suffix.size, suffix.size),
 			suffix) == 0;
 	}
-	ssize_t cbuild_sv_find(cbuild_sv_t sv, char c) {
+	CBUILDDEF ssize_t cbuild_sv_find(cbuild_sv_t sv, char c) {
 		char* chrptr = memchr(sv.data, c, sv.size);
 		if(chrptr == NULL) {
 			return -1;
 		}
 		return chrptr - sv.data;
 	}
-	ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
+	CBUILDDEF ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
 		char* chrptr = sv.data;
 		#if defined(CBUILD_API_POSIX) && ( \
 				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) || \
@@ -2761,7 +2764,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return chrptr - sv.data;
 	}
-	ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle) {
+	CBUILDDEF ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle) {
 		#if defined(CBUILD_API_POSIX) && ( \
 				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || \
 				defined(CBUILD_OS_BSD) || \
@@ -2788,13 +2791,13 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return -1;
 		#endif // Extension check
 	}
-	bool cbuild_sv_contains(cbuild_sv_t sv, char c) {
+	CBUILDDEF bool cbuild_sv_contains(cbuild_sv_t sv, char c) {
 		return cbuild_sv_find(sv, c) != -1;
 	}
-	bool cbuild_sv_contains_sv(cbuild_sv_t sv, cbuild_sv_t needle) {
+	CBUILDDEF bool cbuild_sv_contains_sv(cbuild_sv_t sv, cbuild_sv_t needle) {
 		return cbuild_sv_find_sv(sv, needle) != -1;
 	}
-	int cbuild_sv_utf8cp_len(cbuild_sv_t sv) {
+	CBUILDDEF int cbuild_sv_utf8cp_len(cbuild_sv_t sv) {
 		if(sv.size == 0) return 0;
 		if((*(unsigned char*)sv.data) < 0x80) return 1;
 		if((*sv.data & 0xE0) == 0xC0 && sv.size >= 2) return 2;
@@ -2802,10 +2805,10 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		if((*sv.data & 0xF8) == 0xF0 && sv.size >= 4) return 4;
 		return 1;
 	}
-	char* cbuild_sv_strchr(cbuild_sv_t sv, char c) {
+	CBUILDDEF char* cbuild_sv_strchr(cbuild_sv_t sv, char c) {
 		return memchr(sv.data, c, sv.size);
 	}
-	char* cbuild_sv_utf8chr(cbuild_sv_t sv, uint32_t c) {
+	CBUILDDEF char* cbuild_sv_utf8chr(cbuild_sv_t sv, uint32_t c) {
 		while(sv.size > 0) {
 			char* curr = sv.data;
 			uint32_t codepoint = cbuild_sv_chop_utf8(&sv);
@@ -2813,7 +2816,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return NULL;
 	}
-	uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv) {
+	CBUILDDEF uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv) {
 		if(sv->size == 0) return UINT32_MAX;
 		unsigned char* s = (unsigned char*)sv->data;
 		if(*s < 0x80) {
@@ -2860,7 +2863,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		sv->size--;
 		return *(s - 1);
 	}
-	cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim) {
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim) {
 		char* chrptr = cbuild_sv_utf8chr(*sv, delim);
 		if(chrptr != NULL) {
 			size_t i = (size_t)(chrptr - sv->data);
@@ -2874,7 +2877,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return cbuild_sv_chop(sv, sv->size);
 	}
-	cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
 		cbuild_sv_utf8delim_func delim, void* args) {
 		cbuild_sv_t ret = cbuild_sv_from_parts(sv->data, 0);
 		while(sv->size > 0) {
@@ -2891,7 +2894,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return ret;
 	}
-	int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b) {
+	CBUILDDEF int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b) {
 		size_t a_size = cbuild_sv_utf8len(a);
 		size_t b_size = cbuild_sv_utf8len(b);
 		if(a_size < b_size) {
@@ -2914,7 +2917,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return 0;
 	}
-	size_t cbuild_sv_utf8len(cbuild_sv_t sv) {
+	CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv) {
 		size_t ret = 0;
 		while(sv.size > 0) {
 			cbuild_sv_chop_utf8(&sv);
@@ -2922,7 +2925,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return ret;
 	}
-	bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx) {
+	CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx) {
 		size_t ret = 0;
 		while(sv.size > 0) {
 			signed char cs = *sv.data;
@@ -3111,7 +3114,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return false;
 	}
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		int cbuild_nproc(void) {
+		CBUILDDEF int cbuild_nproc(void) {
 			// Reasoning: no alternatives are available and benefits are high-enough to go slightly off-spec
 			#if defined(_SC_NPROCESSORS_ONLN) // Also used on strict POSIX
 				return abs((int)sysconf(_SC_NPROCESSORS_ONLN));
@@ -3121,7 +3124,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 	#endif // CBUILD_API_*
 	/* Command.h impl */
-	cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
+	CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 		cbuild_sb_t sb = {0};
 		if(cmd.size < 1) {
 			return sb;
@@ -3139,7 +3142,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return sb;
 	}
-	cbuild_proc_t cbuild_cmd_async(cbuild_cmd_t cmd) {
+	CBUILDDEF cbuild_proc_t cbuild_cmd_async(cbuild_cmd_t cmd) {
 		cbuild_proc_t ret = CBUILD_INVALID_PROC;
 		if(!cbuild_cmd_run(&cmd, .no_reset = true,
 				.no_print_cmd = true, .proc = &ret)) {
@@ -3147,7 +3150,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return ret;
 	}
-	cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
+	CBUILDDEF cbuild_proc_t cbuild_cmd_async_redirect(cbuild_cmd_t cmd,
+		cbuild_cmd_fd_t fd) {
 		cbuild_proc_t ret = CBUILD_INVALID_PROC;
 		if(!cbuild_cmd_run(&cmd, .no_reset = true, .no_print_cmd = true, .proc = &ret,
 				.fdstdin = fd.fdstdin == CBUILD_INVALID_FD ? NULL : &fd.fdstdin,
@@ -3157,10 +3161,10 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return ret;
 	}
-	bool cbuild_cmd_sync(cbuild_cmd_t cmd) {
+	CBUILDDEF bool cbuild_cmd_sync(cbuild_cmd_t cmd) {
 		return cbuild_cmd_run(&cmd, .no_reset = true, .no_print_cmd = true);
 	}
-	bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
+	CBUILDDEF bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd) {
 		return cbuild_cmd_run(&cmd, .no_reset = true, .no_print_cmd = true,
 			.fdstdin = fd.fdstdin == CBUILD_INVALID_FD ? NULL : &fd.fdstdin,
 			.fdstdout = fd.fdstdout == CBUILD_INVALID_FD ? NULL : &fd.fdstdout,
@@ -3168,8 +3172,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
 		// We needs opts here, because I dont want to bloat function signature when I will add more call-level flags
-		cbuild_proc_t __cbuild_int_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t* opts,
-			cbuild_fd_t fdstdin, cbuild_fd_t fdstdout, cbuild_fd_t fdstderr) {
+		CBUILDDEF cbuild_proc_t __cbuild_int_cmd_run_opt(cbuild_cmd_t* cmd,
+			cbuild_cmd_opt_t* opts, cbuild_fd_t fdstdin, cbuild_fd_t fdstdout,
+			cbuild_fd_t fdstderr) {
 			// Get args
 			cbuild_cmd_t argv = {0};
 			cbuild_cmd_append_arr(&argv, cmd->data, cmd->size);
@@ -3235,7 +3240,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return proc;
 		}
 	#endif // CBUILD_API_*
-	bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
+	CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
 		if(cmd->size == 0) {
 			cbuild_log(CBUILD_LOG_ERROR, "Empty command requested to be executed!");
 			return CBUILD_INVALID_PROC;
@@ -3321,28 +3326,30 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		[CBUILD_LOG_INFO] = "[INFO] ",
 		[CBUILD_LOG_TRACE] = CBUILD_TERM_FG(CBUILD_TERM_BRBLACK)"[TRACE]"CBUILD_TERM_RESET" ",
 	};
-	void __cbuild_int_vlog(const char* level, const char* fmt, va_list args) {
+	CBUILDDEF void __cbuild_int_vlog(const char* level, const char* fmt,
+		va_list args) {
 		time_t t = time(NULL);
 		struct tm* tm_info = localtime(&t);
 		__CBUILD_ERR_PRINTF("[%02d:%02d:%02d] ", tm_info->tm_hour, tm_info->tm_min,
 			tm_info->tm_sec);
-		__CBUILD_ERR_PRINT(level);
+		__CBUILD_ERR_PRINTF("%s", level);
 		__CBUILD_ERR_VPRINTF(fmt, args);
 		__CBUILD_ERR_PRINT("\n");
 	}
-	void __cbuild_int_log(const char* level, const char* fmt, ...) {
+	CBUILDDEF void __cbuild_int_log(const char* level, const char* fmt, ...) {
 		va_list args;
 		va_start(args, fmt);
 		__cbuild_int_vlog(level, fmt, args);
 		va_end(args);
 	}
-	void cbuild_log(cbuild_log_level_t level, const char* fmt, ...) {
+	CBUILDDEF void cbuild_log(cbuild_log_level_t level, const char* fmt, ...) {
 		va_list args;
 		va_start(args, fmt);
 		cbuild_vlog(level, fmt, args);
 		va_end(args);
 	}
-	void cbuild_vlog(cbuild_log_level_t level, const char* fmt, va_list args) {
+	CBUILDDEF void cbuild_vlog(cbuild_log_level_t level, const char* fmt,
+		va_list args) {
 		if(level == CBUILD_LOG_NO_LOGS) {
 			return;
 		}
@@ -3352,29 +3359,29 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			__cbuild_int_vlog(__cbuild_int_log_level_names[level], fmt, args);
 		}
 	}
-	void cbuild_log_set_min_level(cbuild_log_level_t level) {
+	CBUILDDEF void cbuild_log_set_min_level(cbuild_log_level_t level) {
 		__CBUILD_LOG_MIN_LEVEL = level;
 	}
-	cbuild_log_level_t cbuild_log_get_min_level(void) {
+	CBUILDDEF cbuild_log_level_t cbuild_log_get_min_level(void) {
 		return __CBUILD_LOG_MIN_LEVEL;
 	}
 	/* Arena.h impl */
 	size_t __cbuild_int_temp_size = 0;
 	char __cbuild_int_temp[CBUILD_TEMP_ARENA_SIZE] = {0};
-	void* cbuild_temp_alloc(size_t size) {
+	CBUILDDEF void* cbuild_temp_alloc(size_t size) {
 		if(size > CBUILD_TEMP_ARENA_SIZE - __cbuild_int_temp_size) return NULL;
 		void* ptr = (void*)(__cbuild_int_temp + __cbuild_int_temp_size);
 		__cbuild_int_temp_size += size;
 		return ptr;
 	}
-	char* cbuild_temp_sprintf(char* fmt, ...) {
+	CBUILDDEF char* cbuild_temp_sprintf(char* fmt, ...) {
 		va_list va;
 		va_start(va, fmt);
 		char* ret = cbuild_temp_vsprintf(fmt, va);
 		va_end(va);
 		return ret;
 	}
-	char* cbuild_temp_vsprintf(char* fmt, va_list ap) {
+	CBUILDDEF char* cbuild_temp_vsprintf(char* fmt, va_list ap) {
 		va_list va;
 		va_copy(va, ap);
 		int n = vsnprintf(NULL, 0, fmt, va);
@@ -3387,25 +3394,25 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return NULL;
 		}
 	}
-	char* cbuild_temp_strdup(char* str) {
+	CBUILDDEF char* cbuild_temp_strdup(char* str) {
 		size_t len = strlen(str) + 1;
 		char* dup = (char*)cbuild_temp_alloc(len);
 		if(dup == NULL) return NULL;
 		memcpy(dup, str, len);
 		return dup;
 	}
-	void* cbuild_temp_memdup(void* mem, size_t size) {
+	CBUILDDEF void* cbuild_temp_memdup(void* mem, size_t size) {
 		char* dup = (char*)cbuild_temp_alloc(size);
 		if(dup == NULL) return NULL;
 		memcpy(dup, mem, size);
 		return dup;
 	}
-	void cbuild_temp_reset(void) {
+	CBUILDDEF void cbuild_temp_reset(void) {
 		__cbuild_int_temp_size = 0;
 	}
 	/* Proc.h impl */
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		int cbuild_proc_wait_code(cbuild_proc_t proc) {
+		CBUILDDEF int cbuild_proc_wait_code(cbuild_proc_t proc) {
 			if(proc == CBUILD_INVALID_PROC) {
 				return INT_MIN;
 			}
@@ -3435,7 +3442,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				}
 			}
 		}
-		ssize_t cbuild_procs_wait_any(cbuild_proclist_t procs, int* code) {
+		CBUILDDEF ssize_t cbuild_procs_wait_any(cbuild_proclist_t procs, int* code) {
 			if(procs.size == 0) {
 				return -1;
 			}
@@ -3471,11 +3478,11 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 			return -1;
 		}
-		bool cbuild_proc_is_running(cbuild_proc_t proc) {
+		CBUILDDEF bool cbuild_proc_is_running(cbuild_proc_t proc) {
 			if(proc <= 0) return false;
 			return kill(proc, 0) <= 0;
 		}
-		cbuild_proc_ptr_t cbuild_proc_malloc(size_t n) {
+		CBUILDDEF cbuild_proc_ptr_t cbuild_proc_malloc(size_t n) {
 			// Reasoning: Tooo big benefits
 			#if defined(MAP_ANONYMOUS) // Also used on strict POSIX
 				void* ptr =
@@ -3535,12 +3542,13 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				};
 			}
 		}
-		void cbuild_proc_free(cbuild_proc_ptr_t ptr) {
+		CBUILDDEF void cbuild_proc_free(cbuild_proc_ptr_t ptr) {
 			if(ptr.ptr != NULL) {
 				munmap(ptr.ptr, ptr.size);
 			}
 		}
-		cbuild_proc_t cbuild_proc_start(int (*callback)(void* context), void* context) {
+		CBUILDDEF cbuild_proc_t cbuild_proc_start(int (*callback)(void* context),
+			void* context) {
 			cbuild_proc_t proc = fork();
 			if(proc < 0) {
 				cbuild_log(CBUILD_LOG_ERROR, "Could not create child process, error: \"%s\"",
@@ -3554,10 +3562,10 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return proc;
 		}
 	#endif // CBUILD_API_*
-	bool cbuild_proc_wait(cbuild_proc_t proc) {
+	CBUILDDEF bool cbuild_proc_wait(cbuild_proc_t proc) {
 		return cbuild_proc_wait_code(proc) == 0;
 	}
-	bool cbuild_procs_wait(cbuild_proclist_t procs) {
+	CBUILDDEF bool cbuild_procs_wait(cbuild_proclist_t procs) {
 		bool ret = true;
 		cbuild_da_foreach(&procs, proc) {
 			if(!cbuild_proc_wait(*proc)) ret = false;
@@ -3566,7 +3574,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	/* FS.h impl */
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		bool cbuild_fd_close(cbuild_fd_t fd) {
+		CBUILDDEF bool cbuild_fd_close(cbuild_fd_t fd) {
 			if(fd == CBUILD_INVALID_FD) {
 				cbuild_log(CBUILD_LOG_ERROR,
 					"Invalid file descriptor passed to close, error: \"%s\"",
@@ -3575,7 +3583,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 			return close(fd) < 0;
 		}
-		cbuild_fd_t cbuild_fd_open_read(const char* path) {
+		CBUILDDEF cbuild_fd_t cbuild_fd_open_read(const char* path) {
 			cbuild_fd_t fd = open(path, O_RDONLY);
 			if(fd < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
@@ -3586,7 +3594,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			fcntl(fd, F_SETFD, FD_CLOEXEC);
 			return fd;
 		}
-		cbuild_fd_t cbuild_fd_open_write(const char* path) {
+		CBUILDDEF cbuild_fd_t cbuild_fd_open_write(const char* path) {
 			cbuild_fd_t fd = open(path, O_WRONLY | O_CREAT | O_TRUNC,
 				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			if(fd < 0) {
@@ -3598,7 +3606,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			fcntl(fd, F_SETFD, FD_CLOEXEC);
 			return fd;
 		}
-		bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write) {
+		CBUILDDEF bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write) {
 			cbuild_fd_t fds[2];
 			int ret = pipe(fds);
 			if(ret < 0) {
@@ -3614,7 +3622,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			fcntl(*write, F_SETFD, FD_CLOEXEC);
 			return true;
 		}
-		ssize_t cbuild_fd_read(cbuild_fd_t fd, void* buf, size_t nbytes) {
+		CBUILDDEF ssize_t cbuild_fd_read(cbuild_fd_t fd, void* buf, size_t nbytes) {
 			ssize_t len = read(fd, buf, nbytes);
 			if(len < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
@@ -3622,8 +3630,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 			return len;
 		}
-		ssize_t cbuild_fd_read_file(cbuild_fd_t fd, void* buf, size_t nbytes,
-			const char* path) {
+		CBUILDDEF ssize_t cbuild_fd_read_file(cbuild_fd_t fd, void* buf,
+			size_t nbytes, const char* path) {
 			ssize_t len = read(fd, buf, nbytes);
 			if(len < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
@@ -3632,7 +3640,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 			return len;
 		}
-		ssize_t cbuild_fd_write(cbuild_fd_t fd, const void* buf, size_t nbytes) {
+		CBUILDDEF ssize_t cbuild_fd_write(cbuild_fd_t fd, const void* buf,
+			size_t nbytes) {
 			ssize_t len = write(fd, buf, nbytes);
 			if(len < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
@@ -3640,8 +3649,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 			return len;
 		}
-		ssize_t cbuild_fd_write_file(cbuild_fd_t fd, const void* buf, size_t nbytes,
-			const char* path) {
+		CBUILDDEF ssize_t cbuild_fd_write_file(cbuild_fd_t fd, const void* buf,
+			size_t nbytes, const char* path) {
 			ssize_t len = write(fd, buf, nbytes);
 			if(len < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
@@ -3650,7 +3659,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 			return len;
 		}
-		ssize_t cbuild_file_len(const char* path) {
+		CBUILDDEF ssize_t cbuild_file_len(const char* path) {
 			struct stat statbuff;
 			if(stat(path, &statbuff) < 0) {
 				cbuild_log(CBUILD_LOG_ERROR, "Could not stat file \"%s\", error: \"%s\"", path,
@@ -3660,7 +3669,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return statbuff.st_size;
 		}
 	#endif // CBUILD_API_*
-	bool cbuild_file_read(const char* path, cbuild_sb_t* data) {
+	CBUILDDEF bool cbuild_file_read(const char* path, cbuild_sb_t* data) {
 		cbuild_fd_t fd = cbuild_fd_open_read(path);
 		if(CBUILD_INVALID_FD == fd) {
 			return false;
@@ -3677,7 +3686,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_fd_close(fd);
 		return true;
 	}
-	bool cbuild_file_write(const char* path, cbuild_sb_t* data) {
+	CBUILDDEF bool cbuild_file_write(const char* path, cbuild_sb_t* data) {
 		cbuild_fd_t fd = cbuild_fd_open_write(path);
 		if(CBUILD_INVALID_FD == fd) {
 			return false;
@@ -3696,7 +3705,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_fd_close(fd);
 		return true;
 	}
-	bool cbuild_file_copy(const char* src, const char* dst) {
+	CBUILDDEF bool cbuild_file_copy(const char* src, const char* dst) {
 		cbuild_fd_t src_fd = cbuild_fd_open_read(src);
 		cbuild_fd_t dst_fd = cbuild_fd_open_write(dst);
 		if(src_fd == CBUILD_INVALID_FD) {
@@ -3737,7 +3746,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return true;
 	}
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		bool cbuild_file_move(const char* src, const char* dst) {
+		CBUILDDEF bool cbuild_file_move(const char* src, const char* dst) {
 			if(rename(src, dst) == 0) {
 				return true;
 			}
@@ -3748,14 +3757,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return false;
 		}
 	#endif // CBUILD_API_*
-	bool cbuild_file_rename(const char* src, const char* dst) {
+	CBUILDDEF bool cbuild_file_rename(const char* src, const char* dst) {
 		return cbuild_file_move(src, dst);
 	}
-	bool cbuild_file_check(const char* path) {
+	CBUILDDEF bool cbuild_file_check(const char* path) {
 		return !(cbuild_file_len(path) < 0);
 	}
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		bool cbuild_file_remove(const char* path) {
+		CBUILDDEF bool cbuild_file_remove(const char* path) {
 			if(unlink(path) < 0) {
 				cbuild_log(CBUILD_LOG_ERROR, "Could not remove file \"%s\", error: \"%s\"",
 					path, strerror(errno));
@@ -3763,7 +3772,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 			return true;
 		}
-		bool cbuild_symlink(const char* src, const char* dst) {
+		CBUILDDEF bool cbuild_symlink(const char* src, const char* dst) {
 			char* base = cbuild_path_base(dst);
 			if(*base) {
 				if(!cbuild_dir_check(base)) {
@@ -3799,7 +3808,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return true;
 		}
 	#endif // CBUILD_API_*
-	bool cbuild_dir_copy(const char* src, const char* dst) {
+	CBUILDDEF bool cbuild_dir_copy(const char* src, const char* dst) {
 		bool err = cbuild_dir_create(dst);
 		if(err == false) {
 			cbuild_log(CBUILD_LOG_ERROR, "Could not create destination directory \"%s\"",
@@ -3839,19 +3848,19 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_pathlist_clear(&list);
 		return ret;
 	}
-	bool cbuild_dir_move(const char* src, const char* dst) {
+	CBUILDDEF bool cbuild_dir_move(const char* src, const char* dst) {
 		bool ret = cbuild_dir_copy(src, dst);
 		if(ret == false) {
 			return false;
 		}
 		return cbuild_dir_remove(src);
 	}
-	bool cbuild_dir_rename(const char* src, const char* dst) {
+	CBUILDDEF bool cbuild_dir_rename(const char* src, const char* dst) {
 		return cbuild_dir_move(src, dst);
 	}
-	bool __cbuild_int_fs_rmdir(const char* path);
+	CBUILDDEF bool __cbuild_int_fs_rmdir(const char* path);
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		bool __cbuild_int_fs_rmdir(const char* path) {
+		CBUILDDEF bool __cbuild_int_fs_rmdir(const char* path) {
 			int stat = rmdir(path);
 			if(stat < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
@@ -3862,7 +3871,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return true;
 		}
 	#endif // CBUILD_API_*
-	bool cbuild_dir_remove(const char* path) {
+	CBUILDDEF bool cbuild_dir_remove(const char* path) {
 		cbuild_pathlist_t list = {0};
 		bool err = cbuild_dir_list(path, &list);
 		if(err == false) {
@@ -3895,17 +3904,17 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_pathlist_clear(&list);
 		return ret;
 	}
-	bool cbuild_dir_check(const char* path) {
+	CBUILDDEF bool cbuild_dir_check(const char* path) {
 		return cbuild_file_check(path);
 	}
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		int __cbuild_int_fs_dir_list_no_dots(const struct dirent *d) {
+		CBUILDDEF int __cbuild_int_fs_dir_list_no_dots(const struct dirent *d) {
 			return !(strcmp(d->d_name, ".") == 0 || strcmp(d->d_name, "..") == 0);
 		}
-		int __cbuild_int_fs_compare(const void* a, const void* b) {
+		CBUILDDEF int __cbuild_int_fs_compare(const void* a, const void* b) {
 			return strcmp(*(const char**)a, *(const char**)b);
 		}
-		bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
+		CBUILDDEF bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 			cbuild_da_clear(elements);
 			#if (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200809L)) || \
 				(defined(CBUILD_API_POSIX) && ( \
@@ -3951,7 +3960,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			#endif // Extension check
 			return true;
 		}
-		char* cbuild_dir_current(void) {
+		CBUILDDEF char* cbuild_dir_current(void) {
 			#if defined(CBUILD_API_POSIX) && \
 				(defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL))
 				return get_current_dir_name();
@@ -3979,7 +3988,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				return NULL;
 			#endif // Extension check
 		}
-		bool cbuild_dir_set_current(char* path) {
+		CBUILDDEF bool cbuild_dir_set_current(char* path) {
 			if(chdir(path) < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
 					"Could not set current working directory to \"%s\", error: \"%s\"",
@@ -3989,14 +3998,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return true;
 		}
 	#endif // CBUILD_API_*
-	void cbuild_pathlist_clear(cbuild_pathlist_t* list) {
+	CBUILDDEF void cbuild_pathlist_clear(cbuild_pathlist_t* list) {
 		for(size_t i = 0; i < list->size; i++) {
 			free((void*)list->data[i]);
 		}
 		cbuild_da_clear(list);
 	}
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		bool __cbuild_dir_create_int(const char* path_, bool inplace) {
+		CBUILDDEF bool __cbuild_dir_create_int(const char* path_, bool inplace) {
 			int ret = mkdir(path_, 0755);
 			if(ret < 0) {
 				if(errno == EEXIST) {
@@ -4037,10 +4046,10 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 			return true;
 		}
-		bool cbuild_dir_create(const char* path) {
+		CBUILDDEF bool cbuild_dir_create(const char* path) {
 			return __cbuild_dir_create_int(path, false);
 		}
-		cbuild_filetype_t cbuild_path_filetype(const char* path) {
+		CBUILDDEF cbuild_filetype_t cbuild_path_filetype(const char* path) {
 			struct stat statbuff;
 			if(lstat(path, &statbuff) < 0) {
 				cbuild_log(CBUILD_LOG_ERROR, "Could not stat file \"%s\", error: \"%s\"", path,
@@ -4059,7 +4068,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return CBUILD_FTYPE_OTHER;
 		}
 	#endif // CBUILD_API_*
-	char* cbuild_path_ext(const char* path) {
+	CBUILDDEF char* cbuild_path_ext(const char* path) {
 		ssize_t i = (ssize_t)strlen(path);
 		bool found = false;
 		for(; i >= 0; i--) {
@@ -4080,7 +4089,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		memcpy(ret, path + i + 1, len);
 		return ret;
 	}
-	char* cbuild_path_name(const char* path) {
+	CBUILDDEF char* cbuild_path_name(const char* path) {
 		ssize_t i = (ssize_t)strlen(path);
 		if(path[i - 1] == '/') {
 			i -= 2;
@@ -4096,7 +4105,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		memcpy(ret, path + i + 1, len);
 		return ret;
 	}
-	char* cbuild_path_base(const char* path) {
+	CBUILDDEF char* cbuild_path_base(const char* path) {
 		ssize_t i = (ssize_t)strlen(path);
 		if(path[i - 1] == '/') {
 			i -= 2;
@@ -4126,7 +4135,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		size_t ptr;
 		size_t capacity;
 	} __cbuild_int_stack_cstr_t;
-	char* cbuild_path_normalize(const char* path_) {
+	CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 		cbuild_sb_t ret = {0};
 		__cbuild_int_stack_cstr_t dirs = {0};
 		cbuild_sv_t path = cbuild_sv_from_cstr(path_);
@@ -4159,9 +4168,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return ret.data;
 	}
 	/* Compile.h impl */
-	void __cbuild_int_compile_mark_exec(const char* file);
+	CBUILDDEF void __cbuild_int_compile_mark_exec(const char* file);
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		void __cbuild_int_compile_mark_exec(const char* file) {
+		CBUILDDEF void __cbuild_int_compile_mark_exec(const char* file) {
 			if(chmod(file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH |
 					S_IXOTH) != 0) {
 				cbuild_log(CBUILD_LOG_ERROR, "Could not mark file as executable!");
@@ -4169,7 +4178,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 	#endif // CBUILD_API_*
 	void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd) = NULL;
-	void __cbuild_selfrebuild(int argc, char** argv, size_t num_files, ...) {
+	CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv, size_t num_files, ...) {
 		va_list va;
 		cbuild_cmd_t files = {0};;
 		va_start(va, num_files);
@@ -4181,7 +4190,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		__cbuild_selfrebuild_ex(argc, argv, files);
 		cbuild_cmd_clear(&files);
 	}
-	void __cbuild_selfrebuild_ex(int argc, char** argv, cbuild_cmd_t files) {
+	CBUILDDEF void __cbuild_selfrebuild_ex(int argc, char** argv,
+		cbuild_cmd_t files) {
 		const char* spath = files.data[0];
 		char* bname_new = cbuild_shift(argv, argc);
 		cbuild_sb_t bname_old = {0};
@@ -4226,7 +4236,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		exit(0);
 	}
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-		int cbuild_compare_mtime(const char* output, const char* input) {
+		CBUILDDEF int cbuild_compare_mtime(const char* output, const char* input) {
 			struct stat statbuff;
 			if(stat(input, &statbuff) < 0) {
 				cbuild_log(CBUILD_LOG_ERROR, "Could not stat file \"%s\", error: \"%s\"",
@@ -4249,7 +4259,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 		}
 	#endif //CBUILD_API_*
-	int cbuild_compare_mtime_many(const char* output, const char** inputs,
+	CBUILDDEF int cbuild_compare_mtime_many(const char* output, const char** inputs,
 		size_t num_inputs) {
 		int ret = 0;
 		for(size_t i = 0; i < num_inputs; i++) {
@@ -4263,7 +4273,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return ret;
 	}
 	/* Map.h impl */
-	size_t __cbuild_int_map_hash_func(const void* data, size_t len) {
+	CBUILDDEF size_t __cbuild_int_map_hash_func(const void* data, size_t len) {
 		const unsigned char* ucPtr = (const unsigned char*)data;
 		size_t hash = 5381;
 		for(size_t i = 0; i < len; i++) {
@@ -4271,7 +4281,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return hash;
 	}
-	size_t __cbuild_int_map_get_hash(cbuild_map_t* map, const void* key) {
+	CBUILDDEF size_t __cbuild_int_map_get_hash(cbuild_map_t* map, const void* key) {
 		size_t hash = 0;
 		if(map->hash_func == NULL) {
 			if(map->key_size > 0) {
@@ -4286,7 +4296,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return hash;
 	}
-	void* __cbuild_int_map_check_bucket(cbuild_map_t* map,
+	CBUILDDEF void* __cbuild_int_map_check_bucket(cbuild_map_t* map,
 		const cbuild_map_bucket_t* bucket, const void* key) {
 		if(map->keycmp_func == NULL) {
 			if(map->key_size > 0) {
@@ -4314,13 +4324,13 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return NULL;
 	}
-	void cbuild_map_init(cbuild_map_t* map, size_t nbuckets) {
+	CBUILDDEF void cbuild_map_init(cbuild_map_t* map, size_t nbuckets) {
 		map->nbuckets = nbuckets;
 		map->buckets = cbuild_malloc(map->nbuckets * sizeof(cbuild_map_bucket_t));
 		cbuild_assert(map->buckets != NULL, "(LIB_CBUILD_MAP) Allocation failed.\n");
 		memset(map->buckets, 0, nbuckets * sizeof(cbuild_map_bucket_t));
 	}
-	void* cbuild_map_get_raw(cbuild_map_t* map, const void* key) {
+	CBUILDDEF void* cbuild_map_get_raw(cbuild_map_t* map, const void* key) {
 		if(map->nbuckets == 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
 				"Trying to call 'cbuild_map_get' on an empty map!");
@@ -4330,7 +4340,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_map_bucket_t* bucket = &map->buckets[hash];
 		return __cbuild_int_map_check_bucket(map, bucket, key);
 	}
-	void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key) {
+	CBUILDDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key) {
 		if(map->nbuckets == 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
 				"Trying to call 'cbuild_map_get_or_alloc' with an empty map!");
@@ -4348,7 +4358,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			map->elem_size);
 		return (char*)bucket->vals + ((bucket->nvals - 1) * map->elem_size);
 	}
-	bool cbuild_map_remove_ex_raw(cbuild_map_t* map, const void* key,
+	CBUILDDEF bool cbuild_map_remove_ex_raw(cbuild_map_t* map, const void* key,
 		cbuild_map_elem_clear_t elem_clear_func) {
 		if(map->nbuckets == 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
@@ -4372,7 +4382,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return true;
 	}
-	void cbuild_map_clear_ex(cbuild_map_t* map,
+	CBUILDDEF void cbuild_map_clear_ex(cbuild_map_t* map,
 		cbuild_map_elem_clear_t elem_clear_func) {
 		if(elem_clear_func == NULL) {
 			for(size_t i = 0; i < map->nbuckets; i++) {
@@ -4399,11 +4409,11 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			map->nbuckets = 0;
 		}
 	}
-	void cbuild_map_iter_reset(cbuild_map_t* map) {
+	CBUILDDEF void cbuild_map_iter_reset(cbuild_map_t* map) {
 		map->iter_buckets = 0;
 		map->iter_vals = 0;
 	}
-	void* cbuild_map_iter_next(cbuild_map_t* map) {
+	CBUILDDEF void* cbuild_map_iter_next(cbuild_map_t* map) {
 		while(map->iter_buckets < map->nbuckets) {
 			cbuild_map_bucket_t* bucket = &map->buckets[map->iter_buckets];
 			while(map->iter_vals < bucket->nvals) {
@@ -4482,7 +4492,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	#define __CBUILD_INT_FLGCTX_GET_SEPARATOR()                                    \
 		(((__cbuild_int_flag_context.metadata) >> 0) & 0b1)
 	static struct __cbuild_int_flag_context_t __cbuild_int_flag_context = {0};
-	struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
+	CBUILDDEF struct __cbuild_int_flag_spec_t*
+		__cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
 		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
 			if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
 					__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
@@ -4492,7 +4503,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return NULL;
 	}
-	struct __cbuild_int_flag_spec_t*
+	CBUILDDEF struct __cbuild_int_flag_spec_t*
 		__cbuild_int_flag_get_lopt_aliased(cbuild_sv_t opt) {
 		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
 			if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
@@ -4508,7 +4519,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return NULL;
 	}
-	struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_sopt(char opt) {
+	CBUILDDEF struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_sopt(char opt) {
 		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
 			if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01 && spec->sopt == opt) {
 				return spec;
@@ -4516,8 +4527,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return NULL;
 	}
-	bool __cbuild_int_flag_first_delim_func(const cbuild_sv_t* sv, size_t idx,
-		void* args) {
+	CBUILDDEF bool __cbuild_int_flag_first_delim_func(const cbuild_sv_t* sv,
+		size_t idx, void* args) {
 		if(sv->data[idx] == '\t' || sv->data[idx] == '\n' || sv->data[idx] == '\r') {
 			*((char*)args) = sv->data[idx];
 			return true;
@@ -4525,8 +4536,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return false;
 		}
 	}
-	bool __cbuild_int_flag_metadata_delim_func(const cbuild_sv_t* sv, size_t idx,
-		void* args) {
+	CBUILDDEF bool __cbuild_int_flag_metadata_delim_func(const cbuild_sv_t* sv,
+		size_t idx, void* args) {
 		if(sv->data[idx] == '\t' || sv->data[idx] == ';') {
 			*((char*)args) = sv->data[idx];
 			return true;
@@ -4534,7 +4545,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return false;
 		}
 	}
-	void __cbuild_int_flag_parse_metadata_entry(
+	CBUILDDEF void __cbuild_int_flag_parse_metadata_entry(
 		struct __cbuild_int_flag_spec_t* new_spec, size_t parse_offset,
 		cbuild_sv_t opt) {
 		static const cbuild_sv_t key_arg    = cbuild_sv_from_lit("arg");
@@ -4573,7 +4584,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			exit(1);
 		}
 	}
-	void __cbuild_int_flag_parse_metadata_spec(
+	CBUILDDEF void __cbuild_int_flag_parse_metadata_spec(
 		struct __cbuild_int_flag_spec_t* new_spec, cbuild_sv_t* spec,
 		size_t* parse_offset) {
 		char delim = '\t';
@@ -4592,7 +4603,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			__cbuild_int_flag_parse_metadata_entry(new_spec, * parse_offset, opt);
 		}
 	}
-	void __cbuild_int_flag_parse_cmd(cbuild_sv_t spec) {
+	CBUILDDEF void __cbuild_int_flag_parse_cmd(cbuild_sv_t spec) {
 		static const cbuild_sv_t cmd_separator = cbuild_sv_from_lit("separator");
 		static const cbuild_sv_t cmd_alias     = cbuild_sv_from_lit("alias");
 		static const cbuild_sv_t cmd_group     = cbuild_sv_from_lit("group");
@@ -4635,7 +4646,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			__cbuild_int_flag_context.group_desc_len - 1] = spec;
 		}
 	}
-	void cbuild_flag_new(const char* spec_cstr) {
+	CBUILDDEF void cbuild_flag_new(const char* spec_cstr) {
 		cbuild_sv_t                     spec     = cbuild_sv_from_cstr(spec_cstr);
 		struct __cbuild_int_flag_spec_t new_spec = { 0 };
 		if(spec.data[0] == '-') {
@@ -4691,8 +4702,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		};
 		cbuild_da_append(&(__cbuild_int_flag_context.flags), new_spec);
 	}
-	void __cbuild_int_parse_flag_args(struct __cbuild_int_flag_spec_t* spec,
-		int argc, char** argv, int* parse_ptr) {
+	CBUILDDEF void __cbuild_int_parse_flag_args(
+		struct __cbuild_int_flag_spec_t* spec, int argc, char** argv,
+		int* parse_ptr) {
 		// no args
 		if(__CBUILD_INT_FLAG_GET_ARGT(spec->type) == 0b000) {
 			(*parse_ptr)--;
@@ -4766,7 +4778,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			exit(1);
 		}
 	}
-	void cbuild_flag_parse(int argc, char** argv) {
+	CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 		static const cbuild_sv_t arg_help    = cbuild_sv_from_cstr("help");
 		static const cbuild_sv_t arg_version = cbuild_sv_from_cstr("version");
 		static const cbuild_sv_t arg_lprefix = cbuild_sv_from_cstr("--");
@@ -4860,7 +4872,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 		}
 	}
-	char* __cbuild_int_flag_help_fmt(struct __cbuild_int_flag_spec_t* spec) {
+	CBUILDDEF char* __cbuild_int_flag_help_fmt(
+	struct __cbuild_int_flag_spec_t* spec) {
 		cbuild_sb_t sb = {0};
 		// Short opt
 		if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) {
@@ -4930,13 +4943,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_sb_append_null(&sb);
 		return sb.data;
 	}
-	size_t __cbuild_int_flag_get_flgh_len(struct __cbuild_int_flag_spec_t* spec) {
+	CBUILDDEF size_t __cbuild_int_flag_get_flgh_len(
+	struct __cbuild_int_flag_spec_t* spec) {
 		char* str = __cbuild_int_flag_help_fmt(spec);
 		size_t ret = strlen(str);
 		cbuild_free(str);
 		return ret;
 	}
-	void cbuild_flag_print_help(void) {
+	CBUILDDEF void cbuild_flag_print_help(void) {
 		// Get length of longest option
 		size_t opt_len = strlen("\t-v, --version"); // minimal length
 		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
@@ -5028,10 +5042,10 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 		}
 	}
-	cbuild_arglist_t* cbuild_flag_get_pargs(void) {
+	CBUILDDEF cbuild_arglist_t* cbuild_flag_get_pargs(void) {
 		return &__cbuild_int_flag_context.pargs;
 	}
-	cbuild_arglist_t* cbuild_flag_get_flag(const char* opt) {
+	CBUILDDEF cbuild_arglist_t* cbuild_flag_get_flag(const char* opt) {
 		struct __cbuild_int_flag_spec_t* spec =
 			__cbuild_int_flag_get_lopt(cbuild_sv_from_cstr(opt));
 		if(spec == NULL) {
@@ -5042,16 +5056,16 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return &spec->args;
 	}
-	char* cbuild_flag_app_name(void) {
+	CBUILDDEF char* cbuild_flag_app_name(void) {
 		return (char*)__cbuild_int_flag_context.app_name;
 	}
-	void __cbuild_int_flag_help(const char* name) {
+	CBUILDDEF void __cbuild_int_flag_help(const char* name) {
 		__CBUILD_PRINTF("Usage: %s [OPTIONS]\n\n", name);
 		cbuild_flag_print_help();
 	}
 	void (*cbuild_flag_help)(const char* app_name) = __cbuild_int_flag_help;
-	void __cbuild_int_flag_version(const char* name) {
+	CBUILDDEF void __cbuild_int_flag_version(const char* name) {
 		__CBUILD_PRINTF("%s - v1.0\n", name);
 	}
 	void (*cbuild_flag_version)(const char* app_name) = __cbuild_int_flag_version;
-#endif // CBUILD_IMPLEMENTATION
+#endif // CBUILD_IMPLEMENTATIO
