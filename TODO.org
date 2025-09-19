@@ -1,3 +1,4 @@
+
 #+STARTUP: content
 
 * Bugfix todo list
@@ -31,6 +32,8 @@ Maybe better piping?
 *** DONE function to get time and nanosecond time in platform-independant way
 *** DONE abstract filesize getting
 *** DONE Proc.h - add ability to get number of CPU cores. By default command should scale to this+1 for async runs
+*** TODO Export __cbuild_int_log and __cbuild_log_vlog
+*** TODO Allow rewinding and rewind point for cbuild_temp_*
 * Thinking place
 ** DONE new hash-map implementation
 Element struct can be provided by a user, bucket should be auto-generated, map should have an ability to add custom fields.
@@ -247,11 +250,11 @@ or just busy-loop on process list with ~waitpid(pid, &status NOHANG)~ and ~nnano
 or just wait for all process to finish (eg. run batch-by-batch), much easier but may be slower.
 
 * Tests runner
-*** TODO Make new shared header. Should load cbuild and have asserts.
+*** DONE Make new shared header. Should load cbuild and have asserts.
 *** TODO One test case per file
-*** TODO New way of listing tests
+*** DONE New way of listing tests
 File, human name, attributes (for which platform test can be used), argv for test, should test return 0 or 1 to succeed.
-*** TODO Test runner
+*** DONE Test runner
 Just iterate over list of tests and then over a list of supported platforms. Test return 1/0. stdout is used by test. No more input/output can be used (except argv).
 *** TODO New test reporting
 For one-by-one runs do full logging
