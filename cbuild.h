@@ -256,24 +256,25 @@
  *   common.h [change]
  *     - Better platform detection logic.
  *   common.h [feature]
- *     - New timing function
+ *     - New timing function.
+ *     - CBUILD_MAX and CBUILD_MIN macro.
  *   Commang.h [feature]
  *     - Added 'file_std*' as optional args that can be used to redirect directly
  *       to a file.
- *     - Added ability to control how many async workers can be spawned
+ *     - Added ability to control how many async workers can be spawned.
  *   Command.h [remove]
  *     - Few small changes to an API. Removed few useless args.
  *   FS.h [feature]
  *     - Added 'cbuild_dir_current' and 'cbuild_dir_set_current'.
  *   Proc.h [feature]
- *     - Ability to get amount of CPU cores
- *     - Ability to wait for any process from a list
+ *     - Ability to get amount of CPU cores.
+ *     - Ability to wait for any process from a list.
  *   Log.h [feature]
- *     - Added shortcuts for build-in log levels
+ *     - Added shortcuts for build-in log levels.
  *     - Made CBUILD_LOG_PRINT print always (except if
- *       CBUILD_LOG_NO_LOGS is enabled)
- *     - Made enum for modes not sparse
- *     - Removed cbuild_log_fmt
+ *       CBUILD_LOG_NO_LOGS is enabled).
+ *     - Made enum for modes not sparse.
+ *     - Removed cbuild_log_fmt.
  *   General [change]
  *     - Changed CBDEF to CBUILDDEF.
  *     - Remove build stage for a header.
@@ -386,7 +387,7 @@
 			#define CBUILD_OS_LINUX_UCLIBC
 		#else // Assume musl
 			#define CBUILD_OS_LINUX_MUSL
-		#endif // Libc selecto
+		#endif // Libc select
 		#include <sys/prctl.h>
 	#endif // CBUILD_OS_LINUX
 	// Process and file handles
@@ -490,13 +491,13 @@
 	#define CBUILD_SELFREBUILD_ARGS CBUILD_CARGS_WARN
 #endif // CBUILD_SEFLREBUILD_ARGS
 // Print abstraction	// Print functions
-#define __CBUILD_PRINT(str)                printf((str))
+#define __CBUILD_PRINT(str)                printf("%s", (str))
 #define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
 #define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
 #define __CBUILD_FLUSH()                   fflush(stdout)
 // Maybe you want to redefine this two macro to work with stderr, but I prefer
 // to have my errors in standard stdout
-#define __CBUILD_ERR_PRINT(str)            printf((str))
+#define __CBUILD_ERR_PRINT(str)            printf("%s", (str))
 #define __CBUILD_ERR_PRINTF(fmt, ...)      printf((fmt), __VA_ARGS__)
 #define __CBUILD_ERR_VPRINTF(fmt, va_args) vprintf((fmt), (va_args))
 #define __CBUILD_ERR_FLUSH()               fflush(stdout)
@@ -591,7 +592,7 @@ CBUILDDEF void __cbuild_assert(const char* file, unsigned int line,
  */
 #define cbuild_arr_get(array, index)                                           \
 	(cbuild_assert((size_t)(index) < cbuild_arr_len(array),                      \
-			"Index %zu is out of bounds!\n", (size_t)index),                           \
+			"Index %zu is out of bounds!\n", (size_t)index),                         \
 		(array)[(size_t)(index)])
 /**
  * @brief Shift args from an array with size (like argv and argc pair). Should
@@ -620,6 +621,20 @@ CBUILDDEF void __cbuild_assert(const char* file, unsigned int line,
  */
 CBUILDDEF uint64_t cbuild_time_nanos(void);
 #define CBUILD_NANOS_PER_SEC (1000*1000*1000)
+/**
+ * @brief Return maximum from 2 numbers.
+ *
+ * @param	a	=> number -> First number. Evaluated twice by macro.
+ * @param b => number -> Second number. Evaluated twice by macro.
+ */
+#define CBUILD_MAX(a, b) a > b ? a : b
+/**
+ * @brief Return minimum from 2 numbers.
+ *
+ * @param	a	=> number -> First number. Evaluated twice by macro.
+ * @param b => number -> Second number. Evaluated twice by macro.
+ */
+#define CBUILD_MIN(a, b) a < b ? a : b
 // Version
 #define CBUILD_VERSION "v0.13"
 #define CBUILD_VERSION_MAJOR 0
@@ -3332,7 +3347,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		struct tm* tm_info = localtime(&t);
 		__CBUILD_ERR_PRINTF("[%02d:%02d:%02d] ", tm_info->tm_hour, tm_info->tm_min,
 			tm_info->tm_sec);
-		__CBUILD_ERR_PRINTF("%s", level);
+		__CBUILD_ERR_PRINT(level);
 		__CBUILD_ERR_VPRINTF(fmt, args);
 		__CBUILD_ERR_PRINT("\n");
 	}
@@ -4228,7 +4243,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		__cbuild_int_compile_mark_exec(bname_new);
 		cbuild_cmd_append(&cmd, bname_new);
 		cbuild_cmd_append_arr(&cmd, argv, (size_t)argc);
-		if(cbuild_cmd_run(&cmd)) {
+		if(!cbuild_cmd_run(&cmd)) {
 			cbuild_sb_clear(&bname_old);
 			exit(1);
 		}
@@ -4873,7 +4888,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 	}
 	CBUILDDEF char* __cbuild_int_flag_help_fmt(
-	struct __cbuild_int_flag_spec_t* spec) {
+		struct __cbuild_int_flag_spec_t* spec) {
 		cbuild_sb_t sb = {0};
 		// Short opt
 		if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) {
@@ -4944,7 +4959,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return sb.data;
 	}
 	CBUILDDEF size_t __cbuild_int_flag_get_flgh_len(
-	struct __cbuild_int_flag_spec_t* spec) {
+		struct __cbuild_int_flag_spec_t* spec) {
 		char* str = __cbuild_int_flag_help_fmt(spec);
 		size_t ret = strlen(str);
 		cbuild_free(str);
