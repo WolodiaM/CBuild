@@ -22,6 +22,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // Includes
+#define CBUILDDEF static inline
 #define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_TRACE
 #include "cbuild.h"
 #include "tests/framework.h"
@@ -31,33 +32,63 @@
 #define TEST_FOLDER "tests"
 // Test system globals
 typedef enum test_status_t {
-	TEST_SKIPPED = -1,
-	TEST_SUCCEED = 0,
-	TEST_FAILED = 1,
-	TEST_COMP_FAILED = 2,
+	TEST_SUCCEED = 0,         // Should be 0
+	TEST_FAILED = 1,          // 1 is expected here
+	TEST_SKIPPED = 2,         // Should be placed somewhere
+	TEST_MEMCHECK_FAILED = 3, // Now errors can just continue
+	TEST_COMP_FAILED = 4,
 } test_status_t;
-#define TPL_ALL 0xFFFFFFFF
+static const char* TEST_STATUS_REPORTS[] = {
+	[TEST_SUCCEED]         = CBUILD_TERM_FG(CBUILD_TERM_GREEN)  "+"CBUILD_TERM_RESET,
+	[TEST_FAILED]          = CBUILD_TERM_FG(CBUILD_TERM_RED)    "-"CBUILD_TERM_RESET,
+	[TEST_SKIPPED]         = CBUILD_TERM_FG(CBUILD_TERM_BRBLACK)"."CBUILD_TERM_RESET,
+	[TEST_MEMCHECK_FAILED] = CBUILD_TERM_FG(CBUILD_TERM_MAGENTA)"M"CBUILD_TERM_RESET,
+	[TEST_COMP_FAILED]     = CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "!"CBUILD_TERM_RESET,
+};
+enum {
+	TPL_X86_64_LINUX_GLIBC_GCC = 0,
+	TPL_X86_64_LINUX_GLIBC_CLANG,
+	TPL_X86_64_LINUX_MUSL_GCC,
+	TPL_X86_64_POSIX_GCC,
+	TPL_X86_64_POSIX_CLANG,
+	TPL_COUNT,
+};
+#define TPL_MASK(idx) (1u << (idx))
+#define TPLM_ALL      ((1u << TPL_COUNT) - 1u)
+enum {
+	TPLM_X86_64_LINUX_GLIBC_GCC   = TPL_MASK(TPL_X86_64_LINUX_GLIBC_GCC),
+	TPLM_X86_64_LINUX_GLIBC_CLANG = TPL_MASK(TPL_X86_64_LINUX_GLIBC_CLANG),
+	TPLM_X86_64_LINUX_MUSL_GCC    = TPL_MASK(TPL_X86_64_LINUX_MUSL_GCC),
+	TPLM_X86_64_POSIX_GCC         = TPL_MASK(TPL_X86_64_POSIX_GCC),
+	TPLM_X86_64_POSIX_CLANG       = TPL_MASK(TPL_X86_64_POSIX_CLANG),
+};
+static_assert(TPL_COUNT == 5, "Enum TPLM_* expects 5 test platforms.");
 typedef struct test_case_t {
 	union {
-		struct {
-			uint32_t x86_64_linux_glibc_gcc   : 1;
-			uint32_t x86_64_linux_glibc_clang : 1;
-			uint32_t x86_64_linux_musl_gcc    : 1;
-			uint32_t x86_64_posix_gcc         : 1; // Run on Linux under glibc
-			uint32_t x86_64_posix_clang       : 1; // Run on Linux under glibc
-			uint32_t                          : 27;
-		} platform;
 		uint32_t platforms;
 	};
 	uint32_t flags;
 	const char* file;
 	cbuild_arglist_t argv;
 } test_case_t;
+#define	TPL_RUN_REGISTERED(run_callback, skip_callback)                        \
+	do {                                                                         \
+		for(size_t i = 0; i < TPL_COUNT; i++) {                                    \
+			if(test.platforms & (1u << i)) {                                         \
+				cbuild_assert(i < sizeof(TPL_RUNNERS)/sizeof(TPL_RUNNERS[0]),          \
+					"Invalid test platform specified!");                                 \
+				test_status_t status = TPL_RUNNERS[i](test);                           \
+				run_callback;                                                          \
+			} else {                                                                 \
+				skip_callback;                                                         \
+			}                                                                        \
+		}                                                                          \
+	} while (0)
 #define TEST_COUNT 1
 test_case_t TESTS[TEST_COUNT] = {
 	{
 		.file = "cmd_to_sb",
-		.platforms = TPL_ALL,
+		.platforms = TPLM_ALL,
 	}
 };
 // Test runner
@@ -73,6 +104,35 @@ test_case_t TESTS[TEST_COUNT] = {
 	__cbuild_int_log(CBUILD_TERM_FG(CBUILD_TERM_MAGENTA)"[START]"                \
 		CBUILD_TERM_RESET" "   ,                                                   \
 		msg __VA_OPT__(,) __VA_ARGS__)
+void test_cmd_append_memcheck(cbuild_cmd_t* cmd) {
+	cbuild_cmd_append(cmd, "valgrind");
+	cbuild_cmd_append(cmd, "--error-exitcode=255");
+	cbuild_cmd_append(cmd, "--track-origins=yes");
+	cbuild_cmd_append_many(cmd, "--leak-check=full", "--show-leak-kinds=all");
+	cbuild_cmd_append(cmd, "--errors-for-leak-kinds=definite,indirect,possible");
+}
+test_status_t test_case_run_memcheck(test_case_t test, const char* oname) {
+	cbuild_cmd_t cmd = {0};
+	cbuild_log_trace("Running test \"%s\"...", test.file);
+	test_cmd_append_memcheck(&cmd);
+	cbuild_cmd_append(&cmd, oname);
+	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
+	cbuild_proc_t proc;
+	cbuild_cmd_run(&cmd, .proc = &proc);
+	cbuild_cmd_clear(&cmd);
+	int code = cbuild_proc_wait_code(proc);
+	if(code == 255) {
+		test_log_failed("Test \"%s\" leaks memory.", test.file);
+		return TEST_MEMCHECK_FAILED;
+	} else if(code != 0) {
+		test_log_failed("Test \"%s\" failed.", test.file);
+		cbuild_file_remove(cbuild_temp_sprintf("vgcore.%d", proc));
+		return TEST_FAILED;
+	} else {
+		test_log_success("Test \"%s\" succeed.", test.file);
+		return TEST_SUCCEED;
+	}
+}
 test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Linux/glibc, Arch: x86_64, Compiler: gcc");
@@ -91,17 +151,8 @@ test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_log_trace("Running test \"%s\"...", test.file);
-	cbuild_cmd_append(&cmd, oname);
-	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
-	if(!cbuild_cmd_run(&cmd)) {
-		test_log_failed("Test \"%s\" failed.", test.file);
-		cbuild_cmd_clear(&cmd);
-		return TEST_FAILED;
-	}
-	test_log_success("Test \"%s\" succeed.", test.file);
 	cbuild_cmd_clear(&cmd);
-	return TEST_SUCCEED;
+	return test_case_run_memcheck(test, oname);
 }
 test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
@@ -121,17 +172,8 @@ test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_log_trace("Running test \"%s\"...", test.file);
-	cbuild_cmd_append(&cmd, oname);
-	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
-	if(!cbuild_cmd_run(&cmd)) {
-		test_log_failed("Test \"%s\" failed.", test.file);
-		cbuild_cmd_clear(&cmd);
-		return TEST_FAILED;
-	}
-	test_log_success("Test \"%s\" succeed.", test.file);
 	cbuild_cmd_clear(&cmd);
-	return TEST_SUCCEED;
+	return test_case_run_memcheck(test, oname);
 }
 test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
@@ -141,7 +183,7 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_musl_gcc_%s.run", test.file);
-	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_cmd_append(&cmd, "musl-gcc");
 	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
@@ -163,19 +205,73 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return TEST_SUCCEED;
 }
+test_status_t test_x86_64_posix_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Poosix, Arch: x86_64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_gcc_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+test_status_t test_x86_64_posix_clang(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Poosix, Arch: x86_64, Compiler: clang");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_clang_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "clang");
+	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+static test_status_t (*TPL_RUNNERS[])(test_case_t test) = {
+	[TPL_X86_64_LINUX_GLIBC_GCC]   = test_x86_64_linux_glibc_gcc,
+	[TPL_X86_64_LINUX_GLIBC_CLANG] = test_x86_64_linux_glibc_clang,
+	[TPL_X86_64_LINUX_MUSL_GCC]    = test_x86_64_linux_musl_gcc,
+	[TPL_X86_64_POSIX_GCC]         = test_x86_64_posix_gcc,
+	[TPL_X86_64_POSIX_CLANG]       = test_x86_64_posix_clang,
+};
+static_assert(TPL_COUNT == sizeof(TPL_RUNNERS)/sizeof(TPL_RUNNERS[0]),
+	"TPL_RUNNERS expect 5 test platforms.");
+static const char* TPL_NAMES[] = {
+	[TPL_X86_64_LINUX_GLIBC_GCC]   = "x86_64-linux-glibc-gcc",
+	[TPL_X86_64_LINUX_GLIBC_CLANG] = "x86_64-linux-glibc-clang",
+	[TPL_X86_64_LINUX_MUSL_GCC]    = "x86_64-linux-musl-gcc",
+	[TPL_X86_64_POSIX_GCC]         = "x86_64-posix-gcc",
+	[TPL_X86_64_POSIX_CLANG]       = "x86_64-posix-clang",
+};
+static_assert(TPL_COUNT == sizeof(TPL_NAMES)/sizeof(TPL_NAMES[0]),
+	"TPL_NAMES expect 5 test platforms.");
 // Single-case runner
 bool test_case(test_case_t test) {
 	bool failed = false;
-	if((test.platform.x86_64_linux_glibc_gcc)) {
-		if(test_x86_64_linux_glibc_gcc(test) != TEST_SUCCEED) failed = true;
-	}
-	if((test.platform.x86_64_linux_glibc_clang)) {
-		if(test_x86_64_linux_glibc_clang(test) != TEST_SUCCEED) failed = true;
-	}
-	if((test.platform.x86_64_linux_musl_gcc)) {
-		if(test_x86_64_linux_musl_gcc(test) != TEST_SUCCEED) failed = true;
-	}
-	return !failed;
+	TPL_RUN_REGISTERED(if(status != TEST_SUCCEED) failed = true,);
+	return failed;
 }
 // Full runner
 typedef struct test_da_status_t {
@@ -184,7 +280,10 @@ typedef struct test_da_status_t {
 	size_t capacity;
 } test_da_status_t;
 bool test(void) {
-	test_da_status_t x86_64_linux_glibc_gcc = {0};
+	test_da_status_t statuses[] = {{0}, {0}, {0}, {0}, {0}};
+	static_assert(TPL_COUNT == sizeof(statuses)/sizeof(statuses[0]),
+		"test/statuses expect 5 test platforms.");
+	bool failed = false;
 	// Silence output
 	cbuild_fd_t dev_null = cbuild_fd_open_write("/dev/null");
 	cbuild_fd_t fdstdout = dup(STDOUT_FILENO);
@@ -195,8 +294,11 @@ bool test(void) {
 	dup2(dev_null, STDERR_FILENO);
 	// Run tests
 	for(size_t i = 0; i < TEST_COUNT; i++) {
-		cbuild_da_append(&x86_64_linux_glibc_gcc,
-			test_x86_64_linux_glibc_gcc(TESTS[i]));
+		test_case_t test = TESTS[i];
+		cbuild_fd_write(fdstdout, test.file, strlen(test.file));
+		cbuild_fd_write(fdstdout, "\n", 1);
+		TPL_RUN_REGISTERED(cbuild_da_append(&statuses[i], status),
+			cbuild_da_append(&statuses[i], TEST_SKIPPED));
 	}
 	// Restore output
 	fflush(stdout);
@@ -207,10 +309,45 @@ bool test(void) {
 	close(fdstdout);
 	close(fdstderr);
 	// Print report
+	size_t name_len = 0;
 	for(size_t i = 0; i < TEST_COUNT; i++) {
-		printf("%s -> %d\n", TESTS[i].file, x86_64_linux_glibc_gcc.data[i]);
+		name_len = CBUILD_MAX(name_len, strlen(TESTS[i].file));
 	}
-	return true;
+	for(size_t i = 0; i < TPL_COUNT; i++) {
+		printf("%*s", (int)name_len, "");
+		for(size_t j = 0; j < i; j++) printf(" | ");
+		printf(" /-");
+		for(size_t j = 0; j < TPL_COUNT - i; j++) printf("---");
+		printf(" "CBUILD_TERM_FG(CBUILD_TERM_BLUE)"%s"CBUILD_TERM_RESET"\n",
+			TPL_NAMES[i]);
+	}
+	printf("%*s", (int)name_len, "");
+	for(size_t i = 0; i < TPL_COUNT; i++) printf(" | ");
+	printf("\n");
+	for(size_t i = 0; i < TEST_COUNT; i++) {
+		printf(CBUILD_TERM_FG(CBUILD_TERM_CYAN)"%s"CBUILD_TERM_RESET, TESTS[i].file);
+		for(size_t j = 0; j < TPL_COUNT; j++) {
+			printf(" %s ", TEST_STATUS_REPORTS[statuses[j].data[i]]);
+			if(statuses[j].data[i] != TEST_SUCCEED &&
+				statuses[j].data[i] != TEST_SKIPPED) {
+				failed = true;
+			}
+		}
+		printf("\n");
+	}
+	printf("%*s", (int)name_len, "");
+	for(size_t i = 0; i < TPL_COUNT; i++) printf(" | ");
+	printf("\n");
+	for(ssize_t i = (ssize_t)TPL_COUNT - 1; i >= 0; i--) {
+		printf("%*s", (int)name_len, "");
+		for(ssize_t j = 0; j < i; j++) printf(" | ");
+		printf(" \\-");
+		for(ssize_t j = 0; j < TPL_COUNT - i; j++) printf("---");
+		printf(" "CBUILD_TERM_FG(CBUILD_TERM_BLUE)"%s"CBUILD_TERM_RESET"\n",
+			TPL_NAMES[i]);
+	}
+	// Exit
+	return failed;
 }
 // Hooks
 void help(const char* app_name) {
@@ -299,12 +436,12 @@ int main(int argc, char** argv) {
 		}
 	} else if(strcmp(cmd, "test") == 0) {
 		if(pargs.size == 0) {
-			if(!test()) return 1;
+			if(test()) return 1;
 		} else {
 			bool failed = false;
 			cbuild_da_foreach(&pargs, test_name) {
 				for(size_t i = 0; i < TEST_COUNT; i++) {
-					if(!test_case(TESTS[i])) failed = true;
+					if(test_case(TESTS[i])) failed = true;
 				}
 			}
 			if(failed) return 1;

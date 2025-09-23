@@ -1,4 +1,3 @@
-
 #+STARTUP: content
 
 * Bugfix todo list
@@ -256,7 +255,7 @@ or just wait for all process to finish (eg. run batch-by-batch), much easier but
 File, human name, attributes (for which platform test can be used), argv for test, should test return 0 or 1 to succeed.
 *** DONE Test runner
 Just iterate over list of tests and then over a list of supported platforms. Test return 1/0. stdout is used by test. No more input/output can be used (except argv).
-*** TODO New test reporting
+*** DONE New test reporting
 For one-by-one runs do full logging
 For batch runs do full logging (few tests specified on command line)
 For full run just print table. Row - test case, column - platform. 4 possible report values.
@@ -275,5 +274,6 @@ Not everything can be ported to Windows with proper semantics
 Waits for dexygen replacement. I want to be able to properly document this, and I can make wikimk do this.
 
  #  LocalWords:  struct structs alloc
+ 
  
  
