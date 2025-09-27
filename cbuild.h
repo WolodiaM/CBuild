@@ -266,6 +266,7 @@
  *     - Few small changes to an API. Removed few useless args.
  *   FS.h [feature]
  *     - Added 'cbuild_dir_current' and 'cbuild_dir_set_current'.
+ *     - Now cbuild_path_normalize respect POSIX network paths stating from '//'
  *   Proc.h [feature]
  *     - Ability to get amount of CPU cores.
  *     - Ability to wait for any process from a list.
@@ -275,6 +276,10 @@
  *       CBUILD_LOG_NO_LOGS is enabled).
  *     - Made enum for modes not sparse.
  *     - Removed cbuild_log_fmt.
+ *     - Exported few internal function to allow easier extension of logger
+ *   Arena.h [feature]
+ *     - Added ability to do checkpoint and rewind allocator to that checkpoint.
+ *       To reset allocator you should use '0' in place of a checkpoint.
  *   General [change]
  *     - Changed CBDEF to CBUILDDEF.
  *     - Remove build stage for a header.
@@ -786,6 +791,19 @@ CBUILDDEF void cbuild_log_set_min_level(cbuild_log_level_t level);
  * @return cbuild_log_level_t -> Current log level
  */
 CBUILDDEF cbuild_log_level_t cbuild_log_get_min_level(void);
+// This two functions are semi-internal. They should not be used in normal code.
+// But they are useful for for extending logger with small wrappers, like this:
+// #define my_custom_log(msg, ...) \
+//   __cbuild_int_log("[My custom level] ", msg __VA_OPT__(,) __VA_ARGS__)
+// You can also use Term.h to provide additional styling for log level.
+// Timestamp will be inserted automatically by logger in this case
+// Second way to extend logger is to redefine cbuild_log_level_t and
+// change __cbuild_int_log_level_names to provide your custom names and then
+// just create a macro similar to default cbuild_log_* group (this will respect
+// CBUILD_LOG_MIN_LEVEL but will require more work)
+CBUILDDEF void __cbuild_int_vlog(const char* level, const char* fmt,
+	va_list args);
+CBUILDDEF void __cbuild_int_log(const char* level, const char* fmt, ...);
 /* Arena.h */
 /**
  * @brief Create new temp allocation
@@ -828,8 +846,18 @@ CBUILDDEF char* cbuild_temp_strdup(char* str);
 CBUILDDEF void* cbuild_temp_memdup(void* mem, size_t size);
 /**
  * @brief Deallocate all temporary allocations
+ *
+ * @param checkpoint => size_t  -> Either a temp allocator checkpoint
+ * or 0 to fully reset
  */
-CBUILDDEF void cbuild_temp_reset(void);
+CBUILDDEF void cbuild_temp_reset(size_t checkpoint);
+/**
+ * @brief Create checkpoint for temporary allocator.
+ * It can be restored to this state.
+ *
+ * @return size_t -> Temp allocator checkpoint
+ */
+CBUILDDEF size_t cbuild_temp_checkpoint(void);
 /* DynArray.h */
 /**
  *  @brief Append element to a dynamic array
@@ -3422,8 +3450,11 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		memcpy(dup, mem, size);
 		return dup;
 	}
-	CBUILDDEF void cbuild_temp_reset(void) {
-		__cbuild_int_temp_size = 0;
+	CBUILDDEF void cbuild_temp_reset(size_t checkpoint) {
+		__cbuild_int_temp_size = checkpoint;
+	}
+	CBUILDDEF size_t cbuild_temp_checkpoint(void) {
+		return __cbuild_int_temp_size;
 	}
 	/* Proc.h impl */
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
@@ -4155,6 +4186,12 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		__cbuild_int_stack_cstr_t dirs = {0};
 		cbuild_sv_t path = cbuild_sv_from_cstr(path_);
 		if(*path_ == '/') cbuild_sb_append(&ret, '/');
+		#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
+			if(cbuild_sv_prefix(path, cbuild_sv_from_lit("//")) &&
+				!cbuild_sv_prefix(path, cbuild_sv_from_lit("///"))) {
+				cbuild_sb_append(&ret, "/");
+			}
+		#endif
 		do {
 			cbuild_sv_t dir = cbuild_sv_chop_by_delim(&path, '/');
 			if(dir.size == 0) continue;
@@ -4177,7 +4214,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			cbuild_sb_appendf(&ret, CBuildSVFmt"/", CBuildSVArg(dirs.data[i]));
 		}
 		if(ret.size == 0) cbuild_sb_append(&ret, '.');
-		if(ret.size > 1 && ret.data[ret.size - 1] == '/') ret.size--;
+		if(!((ret.size == 1 && *ret.data[0] == '/') ||
+				(ret.size == 2 && ret.data[0] == '/' && ret.data[1] == '/')) &&
+			(ret.data[ret.size - 1] == '/')) ret.size--;
 		cbuild_sb_append_null(&ret);
 		cbuild_stack_clear(&dirs);
 		return ret.data;
