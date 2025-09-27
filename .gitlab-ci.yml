@@ -10,35 +10,25 @@ variables:
 # Install base packages
 before_script:
   - apt-get update -qq
-  - apt-get install -yqq build-essential clang valgrind uncrustify doxygen pandoc musl musl-tools
+  - apt-get install -yqq build-essential clang valgrind doxygen pandoc musl musl-tools
 # Run all tests
 test:
     stage: test
     script:
-        - ./build.sh test
+        - gcc cbuild.c -o cbuild.run
+        - ./build.run test
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-# Create cbuild.h header
-build:
-    stage: build
-    script:
-        - ./build.sh pack
-    rules:
-        - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
-        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    artifacts:
-        name: "$CI_COMMIT_REF_NAME"
-        paths:
-            - cbuild.h
 # Build wiki
 pages:
     stage: build
     script:
         - mkdir -p public
-        - ./build.sh pack
-        - ./build.sh docs wiki
-        - ./build.sh docs doxygen
+        - gcc cbuild.c -o cbuild.run
+        - ./build.run test
+        - ./build.run docs wiki
+        - ./build.run docs doxygen
         - cp -r wiki/out/* public/
     artifacts:
         paths:
