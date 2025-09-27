@@ -8,8 +8,9 @@ Some macro can be an exception, but this should be noted in documentation commen
 *** DONE cbuild_fs_normalize broken on utf8 path
 Any valid ASCII byte cannot be a part of utf8 multi-byte character
 *** DONE New Compiler/OS/API detection macro
-*** DONE cbuild_proc_wait_code fixes (proper sygnal handling), handle errors
+*** DONE cbuild_proc_wait_code fixes (proper signal handling), handle errors
 *** DONE cbuild_proc_wait_any implementation
+*** DONE POSIX have special meaning for paths starting from '//'. Account for this during normalization
 * Features todo list
 *** DONE Map.h rewrite
 I want to have a *plain*, *macro-based* map implementation.
@@ -31,8 +32,8 @@ Maybe better piping?
 *** DONE function to get time and nanosecond time in platform-independant way
 *** DONE abstract filesize getting
 *** DONE Proc.h - add ability to get number of CPU cores. By default command should scale to this+1 for async runs
-*** TODO Export __cbuild_int_log and __cbuild_log_vlog
-*** TODO Allow rewinding and rewind point for cbuild_temp_*
+*** DONE Export __cbuild_int_log and __cbuild_log_vlog
+*** DONE Allow rewinding and rewind point for cbuild_temp_*
 * Thinking place
 ** DONE new hash-map implementation
 Element struct can be provided by a user, bucket should be auto-generated, map should have an ability to add custom fields.
@@ -271,7 +272,7 @@ For full run just print table. Row - test case, column - platform. 4 possible re
 * v0.xx
 *** Make windows partially-supported target
 Not everything can be ported to Windows with proper semantics
-Waits for dexygen replacement. I want to be able to properly document this, and I can make wikimk do this.
+Waits for dexygen replacement. I want to be able to properly document this, and I can make wikimk do this. Maybe I will do it before this, but documentation will be broken.
 
  #  LocalWords:  struct structs alloc
  
