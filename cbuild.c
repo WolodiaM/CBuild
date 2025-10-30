@@ -63,40 +63,305 @@ typedef struct test_case_t {
 	union {
 		uint32_t platforms;
 	};
-	uint32_t flags;
+	union {
+		struct {
+			uint32_t group : 1;
+			uint32_t end   : 1;
+			uint32_t       : 30;
+		};
+		uint32_t flags;
+	};
 	const char* file;
-	cbuild_arglist_t argv;
+	cbuild_arglist_t argv; // 'capacity' can be unset. Runner guarantee to not update this DA
+	cbuild_cmd_t cargs;    // 'capacity' can be unset. Runner guarantee to not update this DA
 } test_case_t;
+volatile size_t TPL_RUN_REGISTERED_CURR = 0;
+volatile const char* TPL_RUN_REGISTERED_GROUP = NULL;
 #define	TPL_RUN_REGISTERED(run_callback, skip_callback)                        \
-	do {                                                                         \
-		for(size_t i = 0; i < TPL_COUNT; i++) {                                    \
-			if(test.platforms & (1u << i)) {                                         \
-				cbuild_assert(i < sizeof(TPL_RUNNERS)/sizeof(TPL_RUNNERS[0]),          \
-					"Invalid test platform specified!");                                 \
-				size_t checkpoint = cbuild_temp_checkpoint();                          \
-				test_status_t status = TPL_RUNNERS[i](test);                           \
-				cbuild_temp_reset(checkpoint);                                         \
-				run_callback;                                                          \
-			} else {                                                                 \
-				skip_callback;                                                         \
-			}                                                                        \
+	for(size_t tpl_idx = 0; tpl_idx < TPL_COUNT; tpl_idx++) {                    \
+		if(test.platforms & TPL_MASK(tpl_idx)) {                                   \
+			cbuild_assert(tpl_idx < cbuild_arr_len(TPL_RUNNERS),                     \
+				"Invalid test platform specified!");                                   \
+			size_t checkpoint = cbuild_temp_checkpoint();                            \
+			TPL_RUN_REGISTERED_CURR = tpl_idx;                                       \
+			test_status_t status = TPL_RUNNERS[tpl_idx](test);                       \
+			cbuild_temp_reset(checkpoint);                                           \
+			run_callback;                                                            \
+		} else {                                                                   \
+			skip_callback;                                                           \
 		}                                                                          \
-	} while (0)
-#define TEST_COUNT 3
-test_case_t TESTS[TEST_COUNT] = {
+	}
+test_case_t TESTS[] = {
+	{
+		.file = "Command",
+		.group = true,
+	},
 	{
 		.file = "cmd_to_sb",
 		.platforms = TPLM_ALL,
 	},
 	{
-		.file = "cmd_run_sync",
+		.file = "run_sync",
 		.platforms = TPLM_ALL,
 	},
 	{
-		.file = "cmd_run_async",
+		.file = "run_async",
 		.platforms = TPLM_ALL,
 	},
+	{
+		.file = "redirect",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "common",
+		.group = true,
+	},
+	{
+		.file = "arr",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "shift",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "Compile",
+		.group = true,
+	},
+	{
+		.file = "mtime_single",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "mtime_multi",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "DynArray",
+		.group = true,
+	},
+	{
+		.file = "alloc",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "append_single",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "append_arr",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "append_multi",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "set",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "get",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "remove_ordered",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "remove_unordered",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "foreach",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "StringBuilder",
+		.group = true,
+	},
+	{
+		.file = "alloc",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "append_single",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "append_arr",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "append_multi",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "append_cstr",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "append_utf8",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "append_fmt",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "set",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "get",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "remove",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "foreach",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "cmp",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "SB-SV",
+		.group = true,
+	},
+	{
+		.file = "interop",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "Stack",
+		.group = true,
+	},
+	{
+		.file = "alloc",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "push",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "pop",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_INIT_CAPACITY=2ul",
+		}, .size = 1},
+	},
+	{
+		.file = "StringView",
+		.group = true,
+	},
+	{
+		.file = "create",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "trim",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "cmp",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "chop",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "search",
+		.platforms = TPLM_ALL,
+	},
+	{.end = true},
 };
+static const char* TPL_NAMES[] = {
+	[TPL_X86_64_LINUX_GLIBC_GCC]   = "x86_64-linux-glibc-gcc",
+	[TPL_X86_64_LINUX_GLIBC_CLANG] = "x86_64-linux-glibc-clang",
+	[TPL_X86_64_LINUX_MUSL_GCC]    = "x86_64-linux-musl-gcc",
+	[TPL_X86_64_POSIX_GCC]         = "x86_64-posix-gcc",
+	[TPL_X86_64_POSIX_CLANG]       = "x86_64-posix-clang",
+};
+static_assert(TPL_COUNT == cbuild_arr_len(TPL_NAMES),
+	"TPL_NAMES expect 5 test platforms.");
 // Test runner
 #define test_log_failed(msg, ...)                                              \
 	__cbuild_int_log(CBUILD_TERM_FG(CBUILD_TERM_RED)"[FAILED]"                   \
@@ -117,10 +382,14 @@ void test_cmd_append_memcheck(cbuild_cmd_t* cmd) {
 	cbuild_cmd_append_many(cmd, "--leak-check=full", "--show-leak-kinds=all");
 	cbuild_cmd_append(cmd, "--errors-for-leak-kinds=definite,indirect,possible");
 }
-void test_cmd_append_cc_base(cbuild_cmd_t* cmd) {
+void test_cmd_append_cc_base(test_case_t test, cbuild_cmd_t* cmd) {
 	cbuild_cmd_append_many(cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
 	cbuild_cmd_append_many(cmd, CBUILD_CARGS_INCLUDE("framework.h"));
 	cbuild_cmd_append_many(cmd, "-fmacro-prefix-map=tests/=");
+	cbuild_cmd_append_many(cmd,
+		cbuild_temp_sprintf("-DTEST_RUN_PLATFORM=\"%s\"",
+			TPL_NAMES[TPL_RUN_REGISTERED_CURR]));
+	cbuild_cmd_append_arr(cmd, test.cargs.data, test.cargs.size);
 }
 test_status_t test_case_run_memcheck(test_case_t test, const char* oname) {
 	cbuild_cmd_t cmd = {0};
@@ -149,11 +418,12 @@ test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 	cbuild_log_info("Platform: Linux/glibc, Arch: x86_64, Compiler: gcc");
 	cbuild_log_trace("Building test \"%s\"...", test.file);
 	cbuild_cmd_t cmd = {0};
-	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_gcc_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "gcc");
-	test_cmd_append_cc_base(&cmd);
+	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
@@ -170,11 +440,12 @@ test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	cbuild_log_info("Platform: Linux/glibc, Arch: x86_64, Compiler: clang");
 	cbuild_log_trace("Building test \"%s\"...", test.file);
 	cbuild_cmd_t cmd = {0};
-	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_clang_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "clang");
-	test_cmd_append_cc_base(&cmd);
+	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
@@ -191,11 +462,12 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	cbuild_log_info("Platform: Linux/musl, Arch: x86_64, Compiler: gcc");
 	cbuild_log_trace("Building test \"%s\"...", test.file);
 	cbuild_cmd_t cmd = {0};
-	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_musl_gcc_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "musl-gcc");
-	test_cmd_append_cc_base(&cmd);
+	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
@@ -218,14 +490,15 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 }
 test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
-	cbuild_log_info("Platform: Poosix, Arch: x86_64, Compiler: gcc");
+	cbuild_log_info("Platform: Posix, Arch: x86_64, Compiler: gcc");
 	cbuild_log_trace("Building test \"%s\"...", test.file);
 	cbuild_cmd_t cmd = {0};
-	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_gcc_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "gcc");
-	test_cmd_append_cc_base(&cmd);
+	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
@@ -240,14 +513,15 @@ test_status_t test_x86_64_posix_gcc(test_case_t test) {
 }
 test_status_t test_x86_64_posix_clang(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
-	cbuild_log_info("Platform: Poosix, Arch: x86_64, Compiler: clang");
+	cbuild_log_info("Platform: Posix, Arch: x86_64, Compiler: clang");
 	cbuild_log_trace("Building test \"%s\"...", test.file);
 	cbuild_cmd_t cmd = {0};
-	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s.c", test.file);
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_clang_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "clang");
-	test_cmd_append_cc_base(&cmd);
+	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
@@ -267,17 +541,8 @@ static test_status_t (*TPL_RUNNERS[])(test_case_t test) = {
 	[TPL_X86_64_POSIX_GCC]         = test_x86_64_posix_gcc,
 	[TPL_X86_64_POSIX_CLANG]       = test_x86_64_posix_clang,
 };
-static_assert(TPL_COUNT == sizeof(TPL_RUNNERS)/sizeof(TPL_RUNNERS[0]),
+static_assert(TPL_COUNT == cbuild_arr_len(TPL_RUNNERS),
 	"TPL_RUNNERS expect 5 test platforms.");
-static const char* TPL_NAMES[] = {
-	[TPL_X86_64_LINUX_GLIBC_GCC]   = "x86_64-linux-glibc-gcc",
-	[TPL_X86_64_LINUX_GLIBC_CLANG] = "x86_64-linux-glibc-clang",
-	[TPL_X86_64_LINUX_MUSL_GCC]    = "x86_64-linux-musl-gcc",
-	[TPL_X86_64_POSIX_GCC]         = "x86_64-posix-gcc",
-	[TPL_X86_64_POSIX_CLANG]       = "x86_64-posix-clang",
-};
-static_assert(TPL_COUNT == sizeof(TPL_NAMES)/sizeof(TPL_NAMES[0]),
-	"TPL_NAMES expect 5 test platforms.");
 // Single-case runner
 bool test_case(test_case_t test) {
 	bool failed = false;
@@ -285,15 +550,15 @@ bool test_case(test_case_t test) {
 	return failed;
 }
 // Full runner
-typedef struct test_da_status_t {
-	test_status_t* data;
-	size_t size;
-	size_t capacity;
-} test_da_status_t;
 bool test(void) {
-	test_da_status_t statuses[] = {{0}, {0}, {0}, {0}, {0}};
-	static_assert(TPL_COUNT == sizeof(statuses)/sizeof(statuses[0]),
-		"test/statuses expect 5 test platforms.");
+	// Prepare output array
+	size_t testcnt = 0;
+	for(size_t i = 0; !TESTS[i].end; i++) testcnt++;
+	test_status_t* statuses = calloc(testcnt * TPL_COUNT,  sizeof(test_status_t));
+	inline test_status_t* get_status(size_t test, size_t tpl) {
+		return &statuses[test * TPL_COUNT + tpl];
+	}
+	// Failure marker
 	bool failed = false;
 	// Silence output
 	cbuild_fd_t dev_null = cbuild_fd_open_write("/dev/null");
@@ -304,12 +569,25 @@ bool test(void) {
 	dup2(dev_null, STDOUT_FILENO);
 	dup2(dev_null, STDERR_FILENO);
 	// Run tests
-	for(size_t i = 0; i < TEST_COUNT; i++) {
-		test_case_t test = TESTS[i];
+	for(size_t test_idx = 0; !TESTS[test_idx].end; test_idx++) {
+		test_case_t test = TESTS[test_idx];
+		if (test.group) {
+			TPL_RUN_REGISTERED_GROUP = (char*)test.file;
+			cbuild_fd_write(fdstdout, test.file, strlen(test.file));
+			cbuild_fd_write(fdstdout, "\n", 1);
+			// Just pad things
+			for(size_t tpl_idx = 0; tpl_idx < TPL_COUNT; tpl_idx++) {
+				*get_status(test_idx, tpl_idx) = TEST_SKIPPED;
+			}
+			continue;
+		}
+		// To see progress
+		cbuild_fd_write(fdstdout, "  ", 2);
 		cbuild_fd_write(fdstdout, test.file, strlen(test.file));
 		cbuild_fd_write(fdstdout, "\n", 1);
-		TPL_RUN_REGISTERED(cbuild_da_append(&statuses[i], status),
-			cbuild_da_append(&statuses[i], TEST_SKIPPED));
+		// Test platforms
+		TPL_RUN_REGISTERED(*get_status(test_idx, tpl_idx) = status,
+			*get_status(test_idx, tpl_idx) = TEST_SKIPPED);
 	}
 	// Restore output
 	fflush(stdout);
@@ -321,8 +599,9 @@ bool test(void) {
 	close(fdstderr);
 	// Print report
 	size_t name_len = 0;
-	for(size_t i = 0; i < TEST_COUNT; i++) {
-		name_len = CBUILD_MAX(name_len, strlen(TESTS[i].file));
+	for(size_t i = 0; !TESTS[i].end; i++) {
+		if(TESTS[i].group) name_len = CBUILD_MAX(name_len, strlen(TESTS[i].file));
+		else name_len = CBUILD_MAX(name_len, strlen(TESTS[i].file) + 2);
 	}
 	// Top platform names
 	for(size_t i = 0; i < TPL_COUNT; i++) {
@@ -337,14 +616,20 @@ bool test(void) {
 	for(size_t i = 0; i < TPL_COUNT; i++) printf(" | ");
 	printf("\n");
 	// Test cases
-	for(size_t i = 0; i < TEST_COUNT; i++) {
-		printf(CBUILD_TERM_FG(CBUILD_TERM_CYAN)"%-*s"CBUILD_TERM_RESET,
-			(int)name_len, TESTS[i].file);
-		for(size_t j = 0; j < TPL_COUNT; j++) {
-			printf(" %s ", TEST_STATUS_REPORTS[statuses[j].data[i]]);
-			if(statuses[j].data[i] != TEST_SUCCEED &&
-				statuses[j].data[i] != TEST_SKIPPED) {
-				failed = true;
+	for(size_t i = 0; !TESTS[i].end; i++) {
+		if(TESTS[i].group) {
+			printf(CBUILD_TERM_FG(CBUILD_TERM_BRCYAN)"%-*s"CBUILD_TERM_RESET,
+				(int)name_len, TESTS[i].file);
+			for(size_t j = 0; j < TPL_COUNT; j++) printf(" | ");
+		} else {
+			printf(CBUILD_TERM_FG(CBUILD_TERM_CYAN)"  %-*s"CBUILD_TERM_RESET,
+				(int)name_len - 2, TESTS[i].file);
+			for(size_t j = 0; j < TPL_COUNT; j++) {
+				printf(" %s ", TEST_STATUS_REPORTS[*get_status(i, j)]);
+				if(*get_status(i, j) != TEST_SUCCEED &&
+					*get_status(i, j) != TEST_SKIPPED) {
+					failed = true;
+				}
 			}
 		}
 		printf("\n");
@@ -362,6 +647,7 @@ bool test(void) {
 			TPL_NAMES[i]);
 	}
 	// Exit
+	free(statuses);
 	return failed;
 }
 // Hooks
@@ -374,12 +660,16 @@ void help(const char* app_name) {
 	printf("\t\twiki       Build wiki\n");
 	printf("\t\tdoxygen    Build doxygen\n");
 	printf("\t\tserve      Host local copy of wiki on localhost:\n");
-	printf("\ttest     Run test. If no argument is provided run all available tests. If argument is provided, each argument is run as a test case. Test platform can be specified after a '/' after a test name.\n");
+	printf("\ttest     Run test. Format of argument is <group>:<test>[/platform]. If no platform is specified that test is run for all registered platforms.\n");
 	printf("\tclean    Clean all generated files\n");
 	printf("\ttags     Generate CTags\n");
 	printf("Tests:\n");
-	for(size_t i = 0; i < TEST_COUNT; i++) {
-		printf("\t%s\n", TESTS[i].file);
+	for(size_t i = 0; !TESTS[i].end; i++) {
+		if(TESTS[i].group) {
+			printf("\tGroup %s\n", TESTS[i].file);
+		} else {
+			printf("\t\t- %s\n", TESTS[i].file);
+		}
 	}
 	printf("Test platforms:\n");
 	for(size_t i = 0; i < TPL_COUNT; i++) {
@@ -393,14 +683,19 @@ void version(const char* app_name) {
 	printf("License: GPL-3.0-or-later\n");
 	printf("Author: WolodiaM\n");
 }
+
 pid_t MAIN_PID = 0;
 void temp_profiler(void) {
 	if(getpid() != MAIN_PID) return;
 	cbuild_log(CBUILD_LOG_TRACE, "Used %zu/%zu bytes of temp.",
 		__cbuild_int_temp_size, CBUILD_TEMP_ARENA_SIZE);
 }
+void add_selfrebuild_args(cbuild_cmd_t* cmd) {
+	cbuild_cmd_append(cmd, "-fopenmp");
+}
 // Main
 int main(int argc, char** argv) {
+	cbuild_selfrebuild_hook = add_selfrebuild_args;
 	cbuild_selfrebuild(argc, argv);
 	MAIN_PID = getpid();
 	atexit(temp_profiler);
@@ -459,42 +754,66 @@ int main(int argc, char** argv) {
 			if(test()) return 1;
 		} else {
 			bool failed = false;
-			cbuild_da_foreach(&pargs, test_name) {
-				char*	tpl_name = strchr(*test_name, '/');
+			cbuild_da_foreach(&pargs, test_group) {
+				// Parse spec
+				char* test_name = strchr(*test_group, ':');
+				if(test_name != NULL) {
+					*test_name = '\0';
+					test_name++;
+				} else {
+					cbuild_log_error("Test group is required!");
+					help(cbuild_flag_app_name());
+				}
+				char*	tpl_name = strchr(test_name, '/');
 				if(tpl_name != NULL) {
 					*tpl_name = '\0';
 					tpl_name++;
 				}
-				bool test_found = false;
-				for(size_t i = 0; i < TEST_COUNT; i++) {
-					test_case_t test = TESTS[i];
-					if(strcmp(*test_name, test.file) == 0) {
-						if(tpl_name != NULL) {
-							bool platform_found  = false;
-							for(int j = 0; j < TPL_COUNT; j++) {
-								if(strcmp(tpl_name, TPL_NAMES[j]) == 0) {
-									test.platforms = 1u << j;
-									platform_found = true;
-									break;
-								}
-							}
-							if(!platform_found) {
-								cbuild_log_error("Invalid test platform specified: \"%s\"!",
-									tpl_name);
-								help(cbuild_flag_app_name());
-								return 1;
-							}
+				// Check platform
+				bool platform_found = false;
+				uint32_t platform_mask = 0;
+				if(tpl_name != NULL) {
+					for(int j = 0; j < TPL_COUNT; j++) {
+						if(strcmp(tpl_name, TPL_NAMES[j]) == 0) {
+							platform_mask = TPL_MASK(j);
+							platform_found = true;
+							break;
 						}
-						test_found = true;
-						if(test_case(test)) failed = true;
+					}
+					if(!platform_found) {
+						cbuild_log_error("Invalid test platform specified: \"%s\"!",
+							tpl_name);
+						help(cbuild_flag_app_name());
+						return 1;
+					}
+				}
+				// Setup test group and run test
+				bool test_found = false;
+				for(size_t i = 0; !TESTS[i].end; i++) {
+					test_case_t test = TESTS[i];
+					if(test.group) {
+						if(TPL_RUN_REGISTERED_GROUP != NULL) break;
+						if(strcmp(test.file, *test_group) == 0) {
+							TPL_RUN_REGISTERED_GROUP = *test_group;
+						}
+					} else {
+						if(TPL_RUN_REGISTERED_GROUP != NULL &&
+							strcmp(test.file, test_name) == 0) {
+							if(platform_found) test.platforms = platform_mask;
+							test_found = true;
+							if(test_case(test)) failed = true;
+						}
 					}
 				}
 				if(!test_found) {
-					cbuild_log_error("Invalid test specified: \"%s\"!", *test_name);
+					cbuild_log_error("Invalid test specified: \"%s:%s\"!",
+						*test_group, test_name);
 					help(cbuild_flag_app_name());
 					return 1;
 				}
 				if(failed) return 1;
+				// Reset group
+				TPL_RUN_REGISTERED_GROUP = NULL;
 			}
 		}
 	} else if(strcmp(cmd, "clean") == 0) {
