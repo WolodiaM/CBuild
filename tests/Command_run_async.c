@@ -8,17 +8,17 @@ int main(void) {
 	cbuild_cmd_append_many(&cmd, "sh", "-c", "sleep 3; printf 1");
 	TEST_ASSERT(cbuild_cmd_run(&cmd, .async_threads = 2, .procs = &procs,
 			.fdstdout = &wr, .no_reset = true),
-		"Failed to run first command!");
+		"Failed to run first command.");
 	cmd.size = 0;
 	cbuild_cmd_append_many(&cmd, "sh", "-c", "sleep 1; printf 2");
 	TEST_ASSERT(cbuild_cmd_run(&cmd, .async_threads = 2, .procs = &procs,
 			.fdstdout = &wr, .no_reset = true),
-		"Failed to run first command!");
+		"Failed to run first command.");
 	cmd.size = 0;
 	cbuild_cmd_append_many(&cmd, "sh", "-c", "printf 3");
 	TEST_ASSERT(cbuild_cmd_run(&cmd, .async_threads = 2, .procs = &procs,
 			.fdstdout = &wr, .no_reset = true),
-		"Failed to run first command!");
+		"Failed to run first command.");
 	cmd.size = 0;
 	cbuild_procs_wait(procs);
 	cbuild_fd_close(wr);
