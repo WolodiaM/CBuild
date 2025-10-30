@@ -25,11 +25,7 @@
 #define CBUILDDEF static inline
 #define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_TRACE
 #include "cbuild.h"
-#include "tests/framework.h"
-// Globals
-#define BUILD_VERSION "v1.0"
-#define BUILD_FOLDER "build"
-#define TEST_FOLDER "tests"
+#include "framework.h"
 // Test system globals
 typedef enum test_status_t {
 	TEST_SUCCEED = 0,         // Should be 0
@@ -77,19 +73,29 @@ typedef struct test_case_t {
 			if(test.platforms & (1u << i)) {                                         \
 				cbuild_assert(i < sizeof(TPL_RUNNERS)/sizeof(TPL_RUNNERS[0]),          \
 					"Invalid test platform specified!");                                 \
+				size_t checkpoint = cbuild_temp_checkpoint();                          \
 				test_status_t status = TPL_RUNNERS[i](test);                           \
+				cbuild_temp_reset(checkpoint);                                         \
 				run_callback;                                                          \
 			} else {                                                                 \
 				skip_callback;                                                         \
 			}                                                                        \
 		}                                                                          \
 	} while (0)
-#define TEST_COUNT 1
+#define TEST_COUNT 3
 test_case_t TESTS[TEST_COUNT] = {
 	{
 		.file = "cmd_to_sb",
 		.platforms = TPLM_ALL,
-	}
+	},
+	{
+		.file = "cmd_run_sync",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "cmd_run_async",
+		.platforms = TPLM_ALL,
+	},
 };
 // Test runner
 #define test_log_failed(msg, ...)                                              \
@@ -110,6 +116,11 @@ void test_cmd_append_memcheck(cbuild_cmd_t* cmd) {
 	cbuild_cmd_append(cmd, "--track-origins=yes");
 	cbuild_cmd_append_many(cmd, "--leak-check=full", "--show-leak-kinds=all");
 	cbuild_cmd_append(cmd, "--errors-for-leak-kinds=definite,indirect,possible");
+}
+void test_cmd_append_cc_base(cbuild_cmd_t* cmd) {
+	cbuild_cmd_append_many(cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	cbuild_cmd_append_many(cmd, CBUILD_CARGS_INCLUDE("framework.h"));
+	cbuild_cmd_append_many(cmd, "-fmacro-prefix-map=tests/=");
 }
 test_status_t test_case_run_memcheck(test_case_t test, const char* oname) {
 	cbuild_cmd_t cmd = {0};
@@ -142,7 +153,7 @@ test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_gcc_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "gcc");
-	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	test_cmd_append_cc_base(&cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
@@ -163,7 +174,7 @@ test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_clang_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "clang");
-	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	test_cmd_append_cc_base(&cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
@@ -184,7 +195,7 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_musl_gcc_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "musl-gcc");
-	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	test_cmd_append_cc_base(&cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
@@ -214,7 +225,7 @@ test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_gcc_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "gcc");
-	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	test_cmd_append_cc_base(&cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
@@ -236,7 +247,7 @@ test_status_t test_x86_64_posix_clang(test_case_t test) {
 	const char*	oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_clang_%s.run", test.file);
 	cbuild_cmd_append(&cmd, "clang");
-	cbuild_cmd_append_many(&cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	test_cmd_append_cc_base(&cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
@@ -313,6 +324,7 @@ bool test(void) {
 	for(size_t i = 0; i < TEST_COUNT; i++) {
 		name_len = CBUILD_MAX(name_len, strlen(TESTS[i].file));
 	}
+	// Top platform names
 	for(size_t i = 0; i < TPL_COUNT; i++) {
 		printf("%*s", (int)name_len, "");
 		for(size_t j = 0; j < i; j++) printf(" | ");
@@ -324,8 +336,10 @@ bool test(void) {
 	printf("%*s", (int)name_len, "");
 	for(size_t i = 0; i < TPL_COUNT; i++) printf(" | ");
 	printf("\n");
+	// Test cases
 	for(size_t i = 0; i < TEST_COUNT; i++) {
-		printf(CBUILD_TERM_FG(CBUILD_TERM_CYAN)"%s"CBUILD_TERM_RESET, TESTS[i].file);
+		printf(CBUILD_TERM_FG(CBUILD_TERM_CYAN)"%-*s"CBUILD_TERM_RESET,
+			(int)name_len, TESTS[i].file);
 		for(size_t j = 0; j < TPL_COUNT; j++) {
 			printf(" %s ", TEST_STATUS_REPORTS[statuses[j].data[i]]);
 			if(statuses[j].data[i] != TEST_SUCCEED &&
@@ -335,6 +349,7 @@ bool test(void) {
 		}
 		printf("\n");
 	}
+	// Bottom platform names
 	printf("%*s", (int)name_len, "");
 	for(size_t i = 0; i < TPL_COUNT; i++) printf(" | ");
 	printf("\n");
@@ -359,12 +374,17 @@ void help(const char* app_name) {
 	printf("\t\twiki       Build wiki\n");
 	printf("\t\tdoxygen    Build doxygen\n");
 	printf("\t\tserve      Host local copy of wiki on localhost:\n");
-	printf("\ttest     Run test. If no argument is provided run all available tests.\n");
-	for(size_t i = 0; i < TEST_COUNT; i++) {
-		printf("\t\t%s\n", TESTS[i].file);
-	}
+	printf("\ttest     Run test. If no argument is provided run all available tests. If argument is provided, each argument is run as a test case. Test platform can be specified after a '/' after a test name.\n");
 	printf("\tclean    Clean all generated files\n");
 	printf("\ttags     Generate CTags\n");
+	printf("Tests:\n");
+	for(size_t i = 0; i < TEST_COUNT; i++) {
+		printf("\t%s\n", TESTS[i].file);
+	}
+	printf("Test platforms:\n");
+	for(size_t i = 0; i < TPL_COUNT; i++) {
+		printf("\t%s\n", TPL_NAMES[i]);
+	}
 }
 void version(const char* app_name) {
 	CBUILD_UNUSED(app_name);
@@ -440,11 +460,42 @@ int main(int argc, char** argv) {
 		} else {
 			bool failed = false;
 			cbuild_da_foreach(&pargs, test_name) {
-				for(size_t i = 0; i < TEST_COUNT; i++) {
-					if(test_case(TESTS[i])) failed = true;
+				char*	tpl_name = strchr(*test_name, '/');
+				if(tpl_name != NULL) {
+					*tpl_name = '\0';
+					tpl_name++;
 				}
+				bool test_found = false;
+				for(size_t i = 0; i < TEST_COUNT; i++) {
+					test_case_t test = TESTS[i];
+					if(strcmp(*test_name, test.file) == 0) {
+						if(tpl_name != NULL) {
+							bool platform_found  = false;
+							for(int j = 0; j < TPL_COUNT; j++) {
+								if(strcmp(tpl_name, TPL_NAMES[j]) == 0) {
+									test.platforms = 1u << j;
+									platform_found = true;
+									break;
+								}
+							}
+							if(!platform_found) {
+								cbuild_log_error("Invalid test platform specified: \"%s\"!",
+									tpl_name);
+								help(cbuild_flag_app_name());
+								return 1;
+							}
+						}
+						test_found = true;
+						if(test_case(test)) failed = true;
+					}
+				}
+				if(!test_found) {
+					cbuild_log_error("Invalid test specified: \"%s\"!", *test_name);
+					help(cbuild_flag_app_name());
+					return 1;
+				}
+				if(failed) return 1;
 			}
-			if(failed) return 1;
 		}
 	} else if(strcmp(cmd, "clean") == 0) {
 		cbuild_dir_remove(BUILD_FOLDER);

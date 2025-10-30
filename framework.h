@@ -24,7 +24,11 @@
 #define __FRAMEWORK_H__
 // Includes
 #define CBUILD_IMPLEMENTATION
-#include "../cbuild.h"
+#include "cbuild.h"
+// Globals
+#define BUILD_VERSION "v1.0"
+#define BUILD_FOLDER "build"
+#define TEST_FOLDER "tests"
 // Asserts
 #define TEST_ASSERT_EQ(val, expected, msg, ...)                                \
 	cbuild_assert((val) == (expected), msg "\n" __VA_OPT__(,) __VA_ARGS__);
@@ -33,11 +37,18 @@
 #define TEST_ASSERT_STREQ(val, expected, msg, ...)                             \
 	cbuild_assert(strcmp((val), (expected)) == 0, msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_ASSERT_MEMEQ(val, expected, size, msg, ...)                       \
-	cbuild_assert(strcmp((val), (expected)) != 0, msg "\n" __VA_OPT__(,) __VA_ARGS__);
+	cbuild_assert(memcmp((val), (expected), (size)) == 0,                        \
+		msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_ASSERT(func, msg, ...)                                            \
 	cbuild_assert((func), msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_NASSERT(func, msg, ...)                                           \
 	cbuild_assert(!(func), msg "\n" __VA_OPT__(,) __VA_ARGS__);
 #define TEST_EXPECT_MSG(type)  ", expected '%" #type "' but found '%" #type "'."
 #define TEST_EXPECT_RMSG(type) ", expected '" type "' but found '" type "'."
+// Temp files
+#define TEST_TEMP_FILE_EX(fmt, ...)                                            \
+	cbuild_temp_sprintf(BUILD_FOLDER"/test_%.*s_%02d_pl_"TEST_RUN_PLATFORM"_"fmt,\
+		(int)strlen(__FILE_NAME__) - 2, __FILE_NAME__, __LINE__                    \
+		__VA_OPT__(,) __VA_ARGS__)
+#define TEST_TEMP_FILE TEST_TEMP_FILE_EX("tmp.txt")
 #endif // __FRAMEWORK_H__
