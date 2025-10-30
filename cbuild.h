@@ -1999,12 +1999,12 @@ typedef struct cbuild_cmd_opt_t {
 	cbuild_proclist_t* procs; // Non-null implies async
 	cbuild_proc_t* proc;      // Non-null implies async
 	// Redirect 'fdstd* ' and 'file_std*' is mutually exclusive.
-	cbuild_fd_t* fdstdin;
-	char* file_stdin;
-	cbuild_fd_t* fdstdout;
-	char* file_stdout;
-	cbuild_fd_t* fdstderr;
-	char* file_stderr;
+	const cbuild_fd_t* fdstdin;
+	const char* file_stdin;
+	const cbuild_fd_t* fdstdout;
+	const char* file_stdout;
+	const cbuild_fd_t* fdstderr;
+	const char* file_stderr;
 	// Async
 	int async_threads; // 0 means implementation-defined. -1 means unlimited. Expects 'procs' to be a valid empty array.
 	// Flags
@@ -3618,7 +3618,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	CBUILDDEF bool cbuild_procs_wait(cbuild_proclist_t procs) {
 		bool ret = true;
-		cbuild_da_foreach(&procs, proc) {
+		cbuild_da_foreach (&procs, proc) {
 			if(!cbuild_proc_wait(*proc)) ret = false;
 		}
 		return ret;
@@ -3713,7 +3713,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		CBUILDDEF ssize_t cbuild_file_len(const char* path) {
 			struct stat statbuff;
 			if(stat(path, &statbuff) < 0) {
-				cbuild_log(CBUILD_LOG_ERROR, "Could not stat file \"%s\", error: \"%s\"", path,
+				cbuild_log(CBUILD_LOG_ERROR, "Could not stat \"%s\", error: \"%s\"", path,
 					strerror(errno));
 				return -1;
 			}
@@ -4194,7 +4194,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
 			if(cbuild_sv_prefix(path, cbuild_sv_from_lit("//")) &&
 				!cbuild_sv_prefix(path, cbuild_sv_from_lit("///"))) {
-				cbuild_sb_append(&ret, "/");
+				cbuild_sb_append(&ret, '/');
 			}
 		#endif
 		do {
@@ -4219,7 +4219,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			cbuild_sb_appendf(&ret, CBuildSVFmt"/", CBuildSVArg(dirs.data[i]));
 		}
 		if(ret.size == 0) cbuild_sb_append(&ret, '.');
-		if(!((ret.size == 1 && *ret.data[0] == '/') ||
+		if(!((ret.size == 1 && ret.data[0] == '/') ||
 				(ret.size == 2 && ret.data[0] == '/' && ret.data[1] == '/')) &&
 			(ret.data[ret.size - 1] == '/')) ret.size--;
 		cbuild_sb_append_null(&ret);
@@ -4553,7 +4553,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	static struct __cbuild_int_flag_context_t __cbuild_int_flag_context = {0};
 	CBUILDDEF struct __cbuild_int_flag_spec_t*
 		__cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
-		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 			if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
 					__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
 				cbuild_sv_cmp(spec->opt, opt) == 0) {
@@ -4564,7 +4564,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	CBUILDDEF struct __cbuild_int_flag_spec_t*
 		__cbuild_int_flag_get_lopt_aliased(cbuild_sv_t opt) {
-		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 			if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
 					__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
 				cbuild_sv_cmp(spec->opt, opt) == 0) {
@@ -4579,7 +4579,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return NULL;
 	}
 	CBUILDDEF struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_sopt(char opt) {
-		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 			if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01 && spec->sopt == opt) {
 				return spec;
 			}
@@ -5012,7 +5012,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	CBUILDDEF void cbuild_flag_print_help(void) {
 		// Get length of longest option
 		size_t opt_len = strlen("\t-v, --version"); // minimal length
-		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 			size_t new_opt_len = __cbuild_int_flag_get_flgh_len(spec);
 			opt_len            = new_opt_len > opt_len ? new_opt_len : opt_len;
 		}
@@ -5029,7 +5029,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		// Extract groups and print ungrouped args
 		cbuild_sv_t* groups = NULL;
 		size_t groups_len = 0;
-		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 			if(spec->group_name.size == 0) {
 				char* opt   = __cbuild_int_flag_help_fmt(spec);
 				int written = __CBUILD_PRINTF("%s", opt);
@@ -5052,7 +5052,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				}
 			}
 		}
-		cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 			if(spec->group_name.size == 0) {
 				if(spec->aliases_len == 0) continue;
 				__CBUILD_PRINT("\t");
@@ -5076,7 +5076,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 					break;
 				}
 			}
-			cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+			cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 				if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
 					char* opt   = __cbuild_int_flag_help_fmt(spec);
 					int written = __CBUILD_PRINTF("%s", opt);
@@ -5086,7 +5086,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 					__CBUILD_PRINT("\n");
 				}
 			}
-			cbuild_da_foreach(&__cbuild_int_flag_context.flags, spec) {
+			cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 				if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
 					if(spec->aliases_len == 0) continue;
 					__CBUILD_PRINT("\t");
