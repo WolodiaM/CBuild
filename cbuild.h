@@ -280,6 +280,9 @@
  *   Arena.h [feature]
  *     - Added ability to do checkpoint and rewind allocator to that checkpoint.
  *       To reset allocator you should use '0' in place of a checkpoint.
+ *   StringView.h [bugfix]
+ *     - Fixed bug in rfind for strict POSIX
+ *     - Added early return for both find and rfind
  *   General [change]
  *     - Changed CBDEF to CBUILDDEF.
  *     - Remove build stage for a header.
@@ -2778,6 +2781,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			suffix) == 0;
 	}
 	CBUILDDEF ssize_t cbuild_sv_find(cbuild_sv_t sv, char c) {
+		if(sv.size == 0) return -1;
 		char* chrptr = memchr(sv.data, c, sv.size);
 		if(chrptr == NULL) {
 			return -1;
@@ -2785,6 +2789,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return chrptr - sv.data;
 	}
 	CBUILDDEF ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
+		if(sv.size == 0) return -1;
 		char* chrptr = sv.data;
 		#if defined(CBUILD_API_POSIX) && ( \
 				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) || \
@@ -2798,7 +2803,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				if(*chrptr == c) {
 					goto loop_end;
 				}
-			} while(chrptr != sv.data);
+			} while(chrptr > sv.data);
 			chrptr = NULL;
 		loop_end:
 		#endif // Extension check
