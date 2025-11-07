@@ -11,6 +11,9 @@ Any valid ASCII byte cannot be a part of utf8 multi-byte character
 *** DONE cbuild_proc_wait_code fixes (proper signal handling), handle errors
 *** DONE cbuild_proc_wait_any implementation
 *** DONE POSIX have special meaning for paths starting from '//'. Account for this during normalization
+*** TODO GNU style CLI options also support ~--opt=arg~, I don't support them
+*** TODO use proper argv[0] on reexec in selfrebuild, path still can be absolute
+Maybe allow to pass another argument that will be used as exec path and use cmd just as argv
 * Features todo list
 *** DONE Map.h rewrite
 I want to have a *plain*, *macro-based* map implementation.
@@ -269,10 +272,12 @@ For full run just print table. Row - test case, column - platform. 4 possible re
  + proper async
  + thread count control
  + Allow file redirects
+*** Use proper argv[0]
 * v0.xx
 *** Make windows partially-supported target
 Not everything can be ported to Windows with proper semantics
 Waits for dexygen replacement. I want to be able to properly document this, and I can make wikimk do this. Maybe I will do it before this, but documentation will be broken.
+*** CLI opts with '='
 
  #  LocalWords:  struct structs alloc
  
