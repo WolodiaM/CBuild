@@ -364,7 +364,11 @@ test_case_t TESTS[] = {
 		.platforms = TPLM_ALL,
 	},
 	{
-		.file = "utf8_cmp",
+		.file = "Proc",
+		.group = true,
+	},
+	{
+		.file = "ctrl",
 		.platforms = TPLM_ALL,
 	},
 	{.end = true},
@@ -772,6 +776,7 @@ int main(int argc, char** argv) {
 			bool failed = false;
 			cbuild_da_foreach (&pargs, test_group) {
 				// Parse spec
+				// TODO: Implement globs (*) for tests
 				char* test_name = strchr(*test_group, ':');
 				if(test_name != NULL) {
 					*test_name = '\0';

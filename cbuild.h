@@ -1288,7 +1288,8 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
  * @return 1  -> If first different character in first string view is larger
  * @return 2  -> If size of first string view is larger
  */
-CBUILDDEF int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b);
+CBUILD_DEPRECATED("Please use cbuild_sv_cmp instead!",
+	CBUILDDEF int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b));
 /**
  * @brief Get lengths of a string view with utf8 content
  *
@@ -1493,7 +1494,8 @@ CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
  * @return 1  -> If first different character in first string builder is larger
  * @return 2  -> If size of first string builder is larger
  */
-CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b);
+CBUILD_DEPRECATED("Please use cbuild_sb_cmp instead!",
+	CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b));
 /**
  * @brief Get lengths of a string builder with utf8 content
  *
@@ -2648,7 +2650,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_sb_append_arr(sb, buffer, len);
 	}
 	CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
-		return cbuild_sv_utf8cmp(cbuild_sv_from_sb(a), cbuild_sv_from_sb(b));
+		return cbuild_sv_cmp(cbuild_sv_from_sb(a), cbuild_sv_from_sb(b));
 	}
 	CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t* sb) {
 		return cbuild_sv_utf8len(cbuild_sv_from_sb(sb));
@@ -2943,27 +2945,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return ret;
 	}
 	CBUILDDEF int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b) {
-		size_t a_size = cbuild_sv_utf8len(a);
-		size_t b_size = cbuild_sv_utf8len(b);
-		if(a_size < b_size) {
-			return -2;
-		}
-		if(a_size > b_size) {
-			return 2;
-		}
-		while(a.size > 0) {
-			int64_t ac = cbuild_sv_chop_utf8(&a);
-			cbuild_assert(ac >= 0, "(LIB_CBUILD_SV) Invalid utf8!\n");
-			int64_t bc = cbuild_sv_chop_utf8(&b);
-			cbuild_assert(bc >= 0, "(LIB_CBUILD_SV) Invalid utf8!\n");
-			int64_t diff = (int64_t)ac - (int64_t)bc;
-			if(diff < 0) {
-				return -1;
-			} else if(diff > 0) {
-				return 1;
-			}
-		}
-		return 0;
+		return cbuild_sv_cmp(a, b);
 	}
 	CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv) {
 		size_t ret = 0;
