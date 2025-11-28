@@ -11,10 +11,11 @@ int main(void) {
 	char str[1024];
 	ssize_t num = cbuild_fd_read(rd, str, 1024);
 	TEST_ASSERT_EQ(num, 4,
-		"Wrong number of bytes read from a pipe" TEST_EXPECT_RMSG("%"PRId64), 4, num);
-	TEST_ASSERT_MEMEQ(
-		str, TEST_STR, 4,
-		"Wrong string read from a pipe" TEST_EXPECT_MSG(.*s), 4, TEST_STR, 1024, str);
+		"Wrong number of bytes read from sync stdout pipe"
+		TEST_EXPECT_RMSG("%"PRId64), 4, num);
+	TEST_ASSERT_MEMEQ(str, TEST_STR, 4,
+		"Wrong string read from sync stdout pipe" TEST_EXPECT_RMSG(CBuildSVFmt),
+		cbuild_sv_from_cstr(TEST_STR), cbuild_sv_from_parts(str, (size_t)num));
 	cbuild_cmd_clear(&cmd);
 	cbuild_fd_close(rd);
 	return 0;

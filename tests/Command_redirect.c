@@ -8,11 +8,11 @@ int main(void) {
 	cbuild_sb_t sb = {0};
 	cbuild_file_read(tmp_file, &sb);
 	TEST_ASSERT(cbuild_file_check(tmp_file),
-		"File \"%s\" was not created.", tmp_file);
-	TEST_ASSERT_EQ(3, sb.size, "Wrong size of file"TEST_EXPECT_MSG(zu),
+		"Command did not create the expected redirect file: \"%s\".", tmp_file);
+	TEST_ASSERT_EQ(3, sb.size, "Redirect file has wrong size"TEST_EXPECT_MSG(zu),
 		(size_t)3, sb.size);
 	TEST_ASSERT_MEMEQ(STR, sb.data, 3,
-		"Wrong data read from file"TEST_EXPECT_RMSG(CBuildSBFmt),
+		"Redirect file content mismatch"TEST_EXPECT_RMSG(CBuildSBFmt),
 		3, STR, CBuildSBArg(sb));
 	cbuild_sb_clear(&sb);
 	cbuild_cmd_clear(&cmd);

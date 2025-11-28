@@ -17,9 +17,9 @@ int main(void) {
 		strlen(str), sv2.size);
 	TEST_ASSERT_MEMEQ(sv3.data, "ABC", 3,
 		"Wrong value sv after cbuild_sv_from_lit"
-		TEST_EXPECT_MSG(p), "ABC", sv2.data);
+		TEST_EXPECT_MSG(p), "ABC", sv3.data);
 	TEST_ASSERT_EQ(sv3.size, 3,
 		"Wrong lengths for cbuild_sv_from_lit"TEST_EXPECT_MSG(zu),
-		3, sv2.size);
+		(size_t)3, sv3.size);
 	return 0;
 }

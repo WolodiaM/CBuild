@@ -31,9 +31,9 @@ int main(void) {
 		TEST_EXPECT_MSG(zd), (ssize_t)10, res24);
 	// contains
 	TEST_ASSERT(cbuild_sv_contains(sv1, 'c'),
-		"cbuild_sv_contains - valid character not found.");
+		"cbuild_sv_contains: valid character not found.");
 	TEST_NASSERT(cbuild_sv_contains(sv1, 'f'),
-		"cbuild_sv_contains - valid character not found.");
+		"cbuild_sv_contains: found an unexpected character.");
 	// sv ops
 	cbuild_sv_t sv2 = cbuild_sv_from_lit("aaabacdcdcabaaa");
 	// find_sv
@@ -54,8 +54,8 @@ int main(void) {
 		TEST_EXPECT_MSG(zd), (ssize_t)0, res44);
 	// contains_sv
 	TEST_ASSERT(cbuild_sv_contains_sv(sv2, cbuild_sv_from_lit("dcd")),
-		"cbuild_sv_contains_sv - valid character not found.");
+		"cbuild_sv_contains_sv: valid substring not found.");
 	TEST_NASSERT(cbuild_sv_contains_sv(sv2, cbuild_sv_from_lit("zcz")),
-		"cbuild_sv_contains_sv - valid character not found.");
+		"cbuild_sv_contains_sv: found an unexpected substring.");
 	return 0;
 }

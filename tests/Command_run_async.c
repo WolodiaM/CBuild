@@ -8,27 +8,28 @@ int main(void) {
 	cbuild_cmd_append_many(&cmd, "sh", "-c", "sleep 3; printf 1");
 	TEST_ASSERT(cbuild_cmd_run(&cmd, .async_threads = 2, .procs = &procs,
 			.fdstdout = &wr, .no_reset = true),
-		"Failed to run first command.");
+		"Failed to run async command 1.");
 	cmd.size = 0;
 	cbuild_cmd_append_many(&cmd, "sh", "-c", "sleep 1; printf 2");
 	TEST_ASSERT(cbuild_cmd_run(&cmd, .async_threads = 2, .procs = &procs,
 			.fdstdout = &wr, .no_reset = true),
-		"Failed to run first command.");
+		"Failed to run async command 2.");
 	cmd.size = 0;
 	cbuild_cmd_append_many(&cmd, "sh", "-c", "printf 3");
 	TEST_ASSERT(cbuild_cmd_run(&cmd, .async_threads = 2, .procs = &procs,
 			.fdstdout = &wr, .no_reset = true),
-		"Failed to run first command.");
+		"Failed to run async command 3.");
 	cmd.size = 0;
 	cbuild_procs_wait(procs);
 	cbuild_fd_close(wr);
 	char str[1024];
 	ssize_t num = cbuild_fd_read(rd, str, 1024);
 	TEST_ASSERT_EQ(num, 3,
-		"Wrong number of bytes read from a pipe" TEST_EXPECT_RMSG("%"PRId64), 3, num);
-	TEST_ASSERT_MEMEQ(
-		str, TEST_STR, 3,
-		"Wrong string read from a pipe" TEST_EXPECT_MSG(.*s), 3, TEST_STR, 1024, str);
+		"Wrong number of bytes read from async stdout pipe"
+		TEST_EXPECT_RMSG("%"PRId64), 3, num);
+	TEST_ASSERT_MEMEQ(str, TEST_STR, 3,
+		"Wrong string read from async stdout pipe" TEST_EXPECT_RMSG(CBuildSVFmt),
+		cbuild_sv_from_cstr(TEST_STR), cbuild_sv_from_parts(str, (size_t)num));
 	cbuild_fd_close(rd);
 	cbuild_cmd_clear(&cmd);
 	cbuild_proclist_clear(&procs);
