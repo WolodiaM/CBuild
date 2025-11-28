@@ -1,3 +1,4 @@
+
 #+STARTUP: content
 
 * Bugfix todo list
@@ -12,8 +13,10 @@ Any valid ASCII byte cannot be a part of utf8 multi-byte character
 *** DONE cbuild_proc_wait_any implementation
 *** DONE POSIX have special meaning for paths starting from '//'. Account for this during normalization
 *** TODO GNU style CLI options also support ~--opt=arg~, I don't support them
-*** TODO use proper argv[0] on reexec in selfrebuild, path still can be absolute
+*** DONE use proper argv[0] on reexec in selfrebuild, path still can be absolute
 Maybe allow to pass another argument that will be used as exec path and use cmd just as argv
+*** TODO cbuild_sv_utf8cmp can just be an alias to cbuild_sv_cmp.
+utf8 is BE, so memcmp will properly compare chars
 * Features todo list
 *** DONE Map.h rewrite
 I want to have a *plain*, *macro-based* map implementation.
@@ -37,6 +40,7 @@ Maybe better piping?
 *** DONE Proc.h - add ability to get number of CPU cores. By default command should scale to this+1 for async runs
 *** DONE Export __cbuild_int_log and __cbuild_log_vlog
 *** DONE Allow rewinding and rewind point for cbuild_temp_*
+*** TODO cbuild_temp_sv_to_cstr(), cbuild_sv_to_cstr
 * Thinking place
 ** DONE new hash-map implementation
 Element struct can be provided by a user, bucket should be auto-generated, map should have an ability to add custom fields.
