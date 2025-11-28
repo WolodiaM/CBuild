@@ -283,6 +283,10 @@
  *   StringView.h [bugfix]
  *     - Fixed bug in rfind for strict POSIX
  *     - Added early return for both find and rfind
+ *   StringView.h [change]
+ *     - Deprecated cbuild_sv_utf8cmp. cbuild_sv_cmp is enough.
+ *   StringBuilder.h [change]
+ *     - Deprecated cbuild_sb_utf8cmp. cbuild_sb_cmp is enough.
  *   General [change]
  *     - Changed CBDEF to CBUILDDEF.
  *     - Remove build stage for a header.
