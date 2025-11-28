@@ -409,6 +409,7 @@ void test_cmd_append_cc_base(test_case_t test, cbuild_cmd_t* cmd) {
 	cbuild_cmd_append_many(cmd,
 		cbuild_temp_sprintf("-DTEST_RUN_PLATFORM=\"%s\"",
 			TPL_NAMES[TPL_RUN_REGISTERED_CURR]));
+	cbuild_cmd_append(cmd, "-ggdb");
 	cbuild_cmd_append_arr(cmd, test.cargs.data, test.cargs.size);
 }
 test_status_t test_case_run_memcheck(test_case_t test, const char* oname) {
@@ -819,7 +820,8 @@ int main(int argc, char** argv) {
 						}
 					} else {
 						if(TPL_RUN_REGISTERED_GROUP != NULL &&
-							strcmp(test.file, test_name) == 0) {
+							(strcmp(test.file, test_name) == 0 ||
+								strcmp(test_name, "*") == 0)) {
 							if(platform_found) test.platforms = platform_mask;
 							test_found = true;
 							if(test_case(test)) failed = true;
