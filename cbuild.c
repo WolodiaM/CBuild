@@ -21,18 +21,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// TODO: Use pre-compiled header for cbuild
+// -x=c-header -o cbuild.h.pch
+// Linking will be done automatically
+
 // Includes
 #define CBUILDDEF static inline
 #define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_TRACE
 #include "cbuild.h"
+#define GLOB_IMPLEMENTATION
+#include "rglob.h"
 #include "framework.h"
 // Test system globals
 typedef enum test_status_t {
-	TEST_SUCCEED = 0,         // Should be 0
-	TEST_FAILED = 1,          // 1 is expected here
-	TEST_SKIPPED = 2,         // Should be placed somewhere
-	TEST_MEMCHECK_FAILED = 3, // Now errors can just continue
-	TEST_COMP_FAILED = 4,
+	TEST_SUCCEED = 0,     // Should be 0
+	TEST_FAILED,          // 1 is expected here
+	TEST_SKIPPED,         // Should be placed somewhere
+	TEST_MEMCHECK_FAILED, // Now errors can just continue
+	TEST_COMP_FAILED,     // Compilation failed
+	TEST_STATUS_COUNT = 5,
 } test_status_t;
 static const char* TEST_STATUS_REPORTS[] = {
 	[TEST_SUCCEED]         = CBUILD_TERM_FG(CBUILD_TERM_GREEN)  "+"CBUILD_TERM_RESET,
@@ -41,6 +48,8 @@ static const char* TEST_STATUS_REPORTS[] = {
 	[TEST_MEMCHECK_FAILED] = CBUILD_TERM_FG(CBUILD_TERM_MAGENTA)"M"CBUILD_TERM_RESET,
 	[TEST_COMP_FAILED]     = CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "!"CBUILD_TERM_RESET,
 };
+static_assert(TEST_STATUS_COUNT == cbuild_arr_len(TEST_STATUS_REPORTS),
+	"TEST_STATUS_REPORS should have one report per test_status_t entry");
 enum {
 	TPL_X86_64_LINUX_GLIBC_GCC = 0,
 	TPL_X86_64_LINUX_GLIBC_CLANG,
@@ -66,8 +75,7 @@ typedef struct test_case_t {
 	union {
 		struct {
 			uint32_t group : 1;
-			uint32_t end   : 1;
-			uint32_t       : 30;
+			uint32_t       : 31;
 		};
 		uint32_t flags;
 	};
@@ -371,7 +379,46 @@ test_case_t TESTS[] = {
 		.file = "ctrl",
 		.platforms = TPLM_ALL,
 	},
-	{.end = true},
+	{
+		.file = "Map",
+		.group = true,
+	},
+	{
+		.file = "alloc",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "write_ii",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "write_ci",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "read_ii",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "read_ci",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "remove_ii",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "remove_ci",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "iter_ii",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "iter_ci",
+		.platforms = TPLM_ALL,
+	},
 };
 static const char* TPL_NAMES[] = {
 	[TPL_X86_64_LINUX_GLIBC_GCC]   = "x86_64-linux-glibc-gcc",
@@ -412,6 +459,7 @@ void test_cmd_append_cc_base(test_case_t test, cbuild_cmd_t* cmd) {
 	cbuild_cmd_append(cmd, "-ggdb");
 	cbuild_cmd_append_arr(cmd, test.cargs.data, test.cargs.size);
 }
+static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_case_run_memcheck(test_case_t test, const char* oname) {
 	cbuild_cmd_t cmd = {0};
 	cbuild_log_trace("Running test \"%s\"...", test.file);
@@ -434,6 +482,7 @@ test_status_t test_case_run_memcheck(test_case_t test, const char* oname) {
 		return TEST_SUCCEED;
 	}
 }
+static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Linux/glibc, Arch: x86_64, Compiler: gcc");
@@ -456,6 +505,7 @@ test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return test_case_run_memcheck(test, oname);
 }
+static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Linux/glibc, Arch: x86_64, Compiler: clang");
@@ -478,6 +528,7 @@ test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return test_case_run_memcheck(test, oname);
 }
+static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Linux/musl, Arch: x86_64, Compiler: gcc");
@@ -509,6 +560,7 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return TEST_SUCCEED;
 }
+static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Posix, Arch: x86_64, Compiler: gcc");
@@ -532,6 +584,7 @@ test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return test_case_run_memcheck(test, oname);
 }
+static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_posix_clang(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Posix, Arch: x86_64, Compiler: clang");
@@ -574,7 +627,7 @@ bool test_case(test_case_t test) {
 bool test(void) {
 	// Prepare output array
 	size_t testcnt = 0;
-	for(size_t i = 0; !TESTS[i].end; i++) testcnt++;
+	for(size_t i = 0; i < cbuild_arr_len(TESTS); i++) testcnt++;
 	test_status_t* statuses = calloc(testcnt * TPL_COUNT,  sizeof(test_status_t));
 	inline test_status_t* get_status(size_t test, size_t tpl) {
 		return &statuses[test * TPL_COUNT + tpl];
@@ -590,7 +643,7 @@ bool test(void) {
 	dup2(dev_null, STDOUT_FILENO);
 	dup2(dev_null, STDERR_FILENO);
 	// Run tests
-	for(size_t test_idx = 0; !TESTS[test_idx].end; test_idx++) {
+	for(size_t test_idx = 0; test_idx < cbuild_arr_len(TESTS); test_idx++) {
 		test_case_t test = TESTS[test_idx];
 		if (test.group) {
 			TPL_RUN_REGISTERED_GROUP = (char*)test.file;
@@ -620,7 +673,7 @@ bool test(void) {
 	close(fdstderr);
 	// Print report
 	size_t name_len = 0;
-	for(size_t i = 0; !TESTS[i].end; i++) {
+	for(size_t i = 0; i < cbuild_arr_len(TESTS); i++) {
 		if(TESTS[i].group) name_len = CBUILD_MAX(name_len, strlen(TESTS[i].file));
 		else name_len = CBUILD_MAX(name_len, strlen(TESTS[i].file) + 2);
 	}
@@ -637,7 +690,7 @@ bool test(void) {
 	for(size_t i = 0; i < TPL_COUNT; i++) printf(" | ");
 	printf("\n");
 	// Test cases
-	for(size_t i = 0; !TESTS[i].end; i++) {
+	for(size_t i = 0; i < cbuild_arr_len(TESTS); i++) {
 		if(TESTS[i].group) {
 			printf(CBUILD_TERM_FG(CBUILD_TERM_BRCYAN)"%-*s"CBUILD_TERM_RESET,
 				(int)name_len, TESTS[i].file);
@@ -667,6 +720,13 @@ bool test(void) {
 		printf(" "CBUILD_TERM_FG(CBUILD_TERM_BLUE)"%s"CBUILD_TERM_RESET"\n",
 			TPL_NAMES[i]);
 	}
+	// Help
+	static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+	printf("'%s' - Test succeed.\n", TEST_STATUS_REPORTS[TEST_SUCCEED]);
+	printf("'%s' - Test assertion failed.\n", TEST_STATUS_REPORTS[TEST_FAILED]);
+	printf("'%s' - Test was skipped.\n", TEST_STATUS_REPORTS[TEST_SKIPPED]);
+	printf("'%s' - Test leaks memory.\n", TEST_STATUS_REPORTS[TEST_MEMCHECK_FAILED]);
+	printf("'%s' - Test failed to compile.\n", TEST_STATUS_REPORTS[TEST_COMP_FAILED]);
 	// Exit
 	free(statuses);
 	return failed;
@@ -685,7 +745,7 @@ void help(const char* app_name) {
 	printf("\tclean    Clean all generated files\n");
 	printf("\ttags     Generate CTags\n");
 	printf("Tests:\n");
-	for(size_t i = 0; !TESTS[i].end; i++) {
+	for(size_t i = 0; i < cbuild_arr_len(TESTS); i++) {
 		if(TESTS[i].group) {
 			printf("\tGroup %s\n", TESTS[i].file);
 		} else {
@@ -736,8 +796,8 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 	}
-	char* cmd = cbuild_shift(pargs.data, pargs.size);
-	if(strcmp(cmd, "docs") == 0) {
+	char* subcommand = cbuild_shift(pargs.data, pargs.size);
+	if(strcmp(subcommand, "docs") == 0) {
 		if(pargs.size == 0) {
 			cbuild_log(CBUILD_LOG_ERROR, "No argument specified!");
 			help(cbuild_flag_app_name());
@@ -770,14 +830,13 @@ int main(int argc, char** argv) {
 			help(cbuild_flag_app_name());
 			return 1;
 		}
-	} else if(strcmp(cmd, "test") == 0) {
+	} else if(strcmp(subcommand, "test") == 0) {
 		if(pargs.size == 0) {
 			if(test()) return 1;
 		} else {
 			bool failed = false;
 			cbuild_da_foreach (&pargs, test_group) {
 				// Parse spec
-				// TODO: Implement globs (*) for tests
 				char* test_name = strchr(*test_group, ':');
 				if(test_name != NULL) {
 					*test_name = '\0';
@@ -811,7 +870,10 @@ int main(int argc, char** argv) {
 				}
 				// Setup test group and run test
 				bool test_found = false;
-				for(size_t i = 0; !TESTS[i].end; i++) {
+				glob_t glob_state = {0};
+				int cres = glob(test_name, GLOB_COMPILE, &glob_state, NULL, 0);
+				if(cres != 0 && cres < GLOB_REGERROR_MAX) return 1;
+				for(size_t i = 0; i < cbuild_arr_len(TESTS); i++) {
 					test_case_t test = TESTS[i];
 					if(test.group) {
 						if(TPL_RUN_REGISTERED_GROUP != NULL) break;
@@ -819,15 +881,17 @@ int main(int argc, char** argv) {
 							TPL_RUN_REGISTERED_GROUP = *test_group;
 						}
 					} else {
-						if(TPL_RUN_REGISTERED_GROUP != NULL &&
-							(strcmp(test.file, test_name) == 0 ||
-								strcmp(test_name, "*") == 0)) {
-							if(platform_found) test.platforms = platform_mask;
-							test_found = true;
-							if(test_case(test)) failed = true;
+						if(TPL_RUN_REGISTERED_GROUP != NULL) {
+							int mres = glob(test_name, 0, &glob_state, &test.file, 1);
+							if (mres == GLOB_NOERROR && glob_state.size > 0) {
+								if(platform_found) test.platforms = platform_mask;
+								test_found = true;
+								if(test_case(test)) failed = true;
+							}
 						}
 					}
 				}
+				globfree(&glob_state);
 				if(!test_found) {
 					cbuild_log_error("Invalid test specified: \"%s:%s\"!",
 						*test_group, test_name);
@@ -839,14 +903,14 @@ int main(int argc, char** argv) {
 				TPL_RUN_REGISTERED_GROUP = NULL;
 			}
 		}
-	} else if(strcmp(cmd, "clean") == 0) {
+	} else if(strcmp(subcommand, "clean") == 0) {
 		cbuild_dir_remove(BUILD_FOLDER);
 		cbuild_dir_remove("wiki/doxygen/html");
 		cbuild_dir_remove("wiki/out");
 		cbuild_file_remove("wiki/wikimk/template/nav.html");
 		cbuild_file_remove("TAGS");
 		cbuild_file_remove("wikimk.run");
-	} else if(strcmp(cmd, "tags") == 0) {
+	} else if(strcmp(subcommand, "tags") == 0) {
 		cbuild_cmd_t cmd = {0};
 		cbuild_cmd_append_many(&cmd, "ctags",
 			"-e", "--languages=C", "--kinds-C=+px",
@@ -855,7 +919,7 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 	} else {
-		cbuild_log(CBUILD_LOG_ERROR, "Invalid subcommand specified: \"%s\"!", cmd);
+		cbuild_log(CBUILD_LOG_ERROR, "Invalid subcommand specified: \"%s\"!", subcommand);
 		help(cbuild_flag_app_name());
 		return 1;
 	}
