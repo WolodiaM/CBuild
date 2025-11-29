@@ -2360,7 +2360,7 @@ CBUILDDEF char* cbuild_path_normalize(const char* path);
 	#endif // Compiler select
 #endif   // CBUILD_CC_OUT
 // Predefined compiler arguments
-#define CBUILD_CARGS_WARN                     "-Wall", "-Wextra", "-Wno-comments", "-Wconversion", "-Wcast-align", "-Wvla"
+#define CBUILD_CARGS_WARN                     "-Wall", "-Wextra", "-Wno-comments", "-Wconversion", "-Wcast-align", "-Wvla", "-Wno-override-init", "-Wshadow"
 #define CBUILD_CARGS_WERROR                   "-Werror"
 #if defined(CBUILD_CC_CLANG)
 	#define CBUILD_CARGS_STATIC_ANALYZER        "--analyze", "-Xanalyzer", "-analyzer-output=text"
@@ -5018,7 +5018,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 			if(spec->group_name.size == 0) {
 				char* opt   = __cbuild_int_flag_help_fmt(spec);
-				int written = __CBUILD_PRINTF("%s", opt);
+				written = __CBUILD_PRINTF("%s", opt);
 				cbuild_free(opt);
 				__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
 				__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
@@ -5065,7 +5065,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
 				if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
 					char* opt   = __cbuild_int_flag_help_fmt(spec);
-					int written = __CBUILD_PRINTF("%s", opt);
+					written = __CBUILD_PRINTF("%s", opt);
 					cbuild_free(opt);
 					__CBUILD_PRINTF("%-*s", (int)(((int)opt_len + 2) - written), "");
 					__CBUILD_PRINTF(CBuildSVFmt, CBuildSVArg(spec->description));
@@ -5076,9 +5076,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
 					if(spec->aliases_len == 0) continue;
 					__CBUILD_PRINT("\t");
-					for(size_t i = 0; i < spec->aliases_len; i++) {
+					for(size_t j = 0; j < spec->aliases_len; j++) {
 						__CBUILD_PRINTF("--"CBuildSVFmt, CBuildSVArg(spec->aliases[i]));
-						if(i + 1 < spec->aliases_len) {
+						if(j + 1 < spec->aliases_len) {
 							__CBUILD_PRINT(", ");
 						}
 					}
