@@ -287,12 +287,22 @@
  *     - Deprecated cbuild_sv_utf8cmp. cbuild_sv_cmp is enough.
  *   StringBuilder.h [change]
  *     - Deprecated cbuild_sb_utf8cmp. cbuild_sb_cmp is enough.
+ *   Compile.h [feature]
+ *     - Added 'CBUILD_CARGS_DEFINE_TEMP' and 'CBUILD_CARGS_DEFINE_VAL_TEMP'
+ *      that use 'cbuild_temp_sprintf' to support runtime values or names
+ *      for defines.
+ *     - Added 'CBUILD_CARGS_DEBUG_GDB' that expands to '-ggdb'. It will be fine
+ *       if you use gdb debugger or your debugger support all of gdb extensions.
  *   General [change]
  *     - Changed CBDEF to CBUILDDEF.
  *     - Remove build stage for a header.
  */
 // NOTE: CBuild should be a first header to be included in translation unit, or
-// you need to define '_GNU_SOURCE' yourself
+// you need to define '_GNU_SOURCE' yourself if you use default CBuild API for
+// POSIX (CBUILD_API_POSIX).
+// CBuild load a lot of C and platform specific headers, so you are not required
+// to load them manually (but no one forbids you to do that). Also, while most
+// of basic ones are loaded, only headers required for CBuild are present.
 #ifndef __CBUILD_H__
 #define __CBUILD_H__
 /* common.h */
@@ -308,7 +318,7 @@
 	#elif defined(__GNUC__)
 		#define CBUILD_CC_GCC
 	#elif defined(_MSC_VER)
-		#error "You are trying to compile CBuild with MSVC compiler. It does not 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions."
+		#error "You are trying to compile CBuild with MSVC compiler. It does not support 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions."
 	#else
 		#error "This compile is unsupported. If it supports 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions; then you can simply add a check to this block for it."
 	#endif // Compiler check
@@ -368,7 +378,7 @@
 		#error "WinAPI is unsupported!"
 	#else
 		// TODO: Android/IOS/ChromeOS/IPadOS
-		#error "This API is not known by CBuild. If it supports POSIX.1-2001 you can simply add check for it's OS to a list of OS checks and define appropriate API macro there. If not you should add a check for OS and a macro for its API and then implement OS/API specifc parts of CBuild."
+		#error "This OS is not known by CBuild. If it supports POSIX.1-2001 you can simply add check for it's OS to a list of OS checks and define appropriate API macro there. If not you should add a check for OS and a macro for its API and then implement OS/API specifc parts of CBuild."
 	#endif // API select
 #endif // !CBUILD_API_DEFINED
 // Different between different APIs
@@ -1309,6 +1319,34 @@ CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
  * @return bool -> true if valid, false otherwise
  */
 CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx);
+/**
+ * @brief Convert string view to a c-style string
+ *
+ * @param sv => cbuild_sv_t -> String view to convert
+ * @return char* -> C-style string. Allocated with malloc
+ */
+CBUILDDEF char* cbuild_sv_to_cstr(cbuild_sv_t sv);
+/**
+ * @brief Convert string view to a c-style string
+ *
+ * @param sv => cbuild_sv_t -> String view to convert
+ * @return char* -> C-style string. Allocated with malloc
+ */
+#define cbuild_cstr_from_sv(sv) cbuild_sv_to_cstr(sv)
+/**
+ * @brief Convert string view to a c-style string
+ *
+ * @param sv => cbuild_sv_t -> String view to convert
+ * @return char* -> C-style string. Allocated with cbuild_temp_alloc
+ */
+CBUILDDEF char* cbuild_temp_sv_to_cstr(cbuild_sv_t sv);
+/**
+ * @brief Convert string view to a c-style string
+ *
+ * @param sv => cbuild_sv_t -> String view to convert
+ * @return char* -> C-style string. Allocated with cbuild_temp_alloc
+ */
+#define cbuild_temp_cstr_from_sv(sv) cbuild_temp_sv_to_cstr(sv)
 /* StringBuilder.h */
 #define CBuildSBFmt     "%.*s"
 #define CBuildSBArg(sb) (int)(sb).size, (sb).data
@@ -2370,16 +2408,19 @@ CBUILDDEF char* cbuild_path_normalize(const char* path);
 	#warn "Unknown compiler. Analyzer flags are empty"
 	#define CBUILD_CARGS_STATIC_ANALYZER
 #endif // Compiler select (clang/gcc)
-#define CBUILD_CARGS_PROFILE                  "-pg"
-#define CBUILD_CARGS_DEBUG                    "-g"
-#define CBUILD_CARGS_MT                       "-pthread"
-#define CBUILD_CARGS_DEFINE(defname)          "-D" defname
-#define CBUILD_CARGS_DEFINE_VAL(defname, val) "-D" defname "=" val
-#define CBUILD_CARGS_UNDEF(defname)           "-U" defname
-#define CBUILD_CARGS_INCLUDE(file)            "--include", file
-#define CBUILD_CARGS_LIBINCLUDE(lib)          "-l" lib
-#define CBUILD_CARGS_LIBDIR(src, obj)         "-I" src, "-L" obj
-#define CBUILD_CARGS_STD(std)                 "-std=" std
+#define CBUILD_CARGS_PROFILE                       "-pg"
+#define CBUILD_CARGS_DEBUG                         "-g"
+#define CBUILD_CARGS_DEBUG_GDB                     "-ggdb"
+#define CBUILD_CARGS_MT                            "-pthread"
+#define CBUILD_CARGS_DEFINE(defname)               "-D" defname
+#define CBUILD_CARGS_DEFINE_TEMP(defname)          cbuild_temp_sprintf("-D%s", defname)
+#define CBUILD_CARGS_DEFINE_VAL(defname, val)      "-D" defname "=" val
+#define CBUILD_CARGS_DEFINE_VAL_TEMP(defname, val) cbuild_temp_sprintf("-D%s=%s", defname, val)
+#define CBUILD_CARGS_UNDEF(defname)                "-U" defname
+#define CBUILD_CARGS_INCLUDE(file)                 "--include", file
+#define CBUILD_CARGS_LIBINCLUDE(lib)               "-l" lib
+#define CBUILD_CARGS_LIBDIR(src, obj)              "-I" src, "-L" obj
+#define CBUILD_CARGS_STD(std)                      "-std=" std
 // Self-rebuild wrapper macro
 #define cbuild_selfrebuild(argc, argv)                                         \
 	__cbuild_selfrebuild(argc, argv, 1, __FILE__)
@@ -2550,6 +2591,18 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return (uint64_t)(CBUILD_NANOS_PER_SEC * t.tv_sec + t.tv_nsec);
 		}
 	#endif // CBUILD_API_*
+	char* cbuild_sv_to_cstr(cbuild_sv_t sv) {
+		char* ret = malloc(sv.size + 1);
+		memcpy(ret, sv.data, sv.size);
+		ret[sv.size] = '\0';
+		return ret;
+	}
+	char* cbuild_temp_sv_to_cstr(cbuild_sv_t sv) {
+		char* ret = cbuild_temp_alloc(sv.size + 1);
+		memcpy(ret, sv.data, sv.size);
+		ret[sv.size] = '\0';
+		return ret;
+	}
 	/* StringBuilder.h impl */
 	CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
 		if(a->size < b->size) {
@@ -5113,4 +5166,4 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		__CBUILD_PRINTF("%s - v1.0\n", name);
 	}
 	void (*cbuild_flag_version)(const char* app_name) = __cbuild_int_flag_version;
-#endif // CBUILD_IMPLEMENTATIO
+#endif // CBUILD_IMPLEMENTATION
