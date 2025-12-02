@@ -15,7 +15,7 @@ Any valid ASCII byte cannot be a part of utf8 multi-byte character
 *** TODO GNU style CLI options also support ~--opt=arg~, I don't support them
 *** DONE use proper argv[0] on reexec in selfrebuild, path still can be absolute
 Maybe allow to pass another argument that will be used as exec path and use cmd just as argv
-*** TODO cbuild_sv_utf8cmp can just be an alias to cbuild_sv_cmp.
+*** DONE cbuild_sv_utf8cmp can just be an alias to cbuild_sv_cmp.
 utf8 is BE, so memcmp will properly compare chars
 * Features todo list
 *** DONE Map.h rewrite

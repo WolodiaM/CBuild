@@ -17,7 +17,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
+ * You should
+ have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 // Project includes
@@ -29,157 +30,37 @@
 TEST_MAIN({
 	TEST_CASE(
 	{
-		// Create test data
-		cbuild_cmd_t file_writer = {0};
-		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
-		cbuild_fd_t pattern_fd =
-		  cbuild_fd_open_write("build/FS.c.read_test");
-		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
-		cbuild_fd_close(pattern_fd);
-		// Do testing
-		cbuild_sb_t sb  = {0};
-		bool        ret = cbuild_file_read("build/FS.c.read_test", &sb);
-		TEST_ASSERT_EQ(ret, true, "Function returened error%s", "");
-		cbuild_sb_append_null(&sb);
-		TEST_ASSERT_STREQ(
-		  sb.data, "ABCD",
-		  "Wrong value read from a file: \"%s\", expected: \"%s\"",
-		  sb.data, "ABCD");
-		cbuild_cmd_clear(&file_writer);
-		cbuild_sb_clear(&sb);
+
 	},
 	"File reading");
 	TEST_CASE(
 	{
-		cbuild_sb_t sb = {0};
-		cbuild_sb_append_cstr(&sb, "ABCD");
-		cbuild_file_write("build/FS.c.write_test", &sb);
-		cbuild_sb_t check = {0};
-		bool        ret = cbuild_file_read("build/FS.c.write_test", &check);
-		TEST_ASSERT_EQ(ret, true, "Function returened error%s", "");
-		cbuild_sb_append_null(&sb);
-		cbuild_sb_append_null(&check);
-		TEST_ASSERT_STREQ(
-		  check.data, sb.data,
-		  "Wrong value read from a file: \"%s\", expected: \"%s\"",
-		  check.data, sb.data);
-		cbuild_sb_clear(&sb);
-		cbuild_sb_clear(&check);
+
 	},
 	"File writing (and then reread)");
 	TEST_CASE(
 	{
-		// Create test data
-		cbuild_cmd_t file_writer = {0};
-		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
-		cbuild_fd_t pattern_fd =
-		  cbuild_fd_open_write("build/FS.c.copy_test.src");
-		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
-		cbuild_fd_close(pattern_fd);
-		// Do testing
-		cbuild_sb_t f1  = {0};
-		cbuild_sb_t f2  = {0};
-		bool        ret = cbuild_file_copy("build/FS.c.copy_test.src",
-		    "build/FS.c.copy_test.dst");
-		TEST_ASSERT_EQ(ret, true, "Function returened error%s", "");
-		cbuild_file_read("build/FS.c.copy_test.src", &f1);
-		cbuild_file_read("build/FS.c.copy_test.dst", &f2);
-		cbuild_sb_append_null(&f1);
-		cbuild_sb_append_null(&f2);
-		TEST_ASSERT_STREQ(
-		  f1.data, f2.data,
-		  "Wrong value read from a file copy: \"%s\", expected: \"%s\"",
-		  f1.data, f2.data);
-		cbuild_cmd_clear(&file_writer);
-		cbuild_sb_clear(&f1);
-		cbuild_sb_clear(&f2);
+
 	},
 	"File copy");
 	TEST_CASE(
 	{
-		// Create test data
-		cbuild_cmd_t file_writer = {0};
-		cbuild_cmd_append_many(&file_writer, "dd", "bs=1024", "count=64",
-		  "status=none", "if=/dev/urandom",
-		  "of=build/FS.c.copy_big_test.src");
-		cbuild_cmd_run(&file_writer);
-		// Do testing
-		cbuild_sb_t f1  = {0};
-		cbuild_sb_t f2  = {0};
-		bool        ret = cbuild_file_copy("build/FS.c.copy_big_test.src",
-		    "build/FS.c.copy_big_test.dst");
-		TEST_ASSERT_EQ(ret, true, "Function returened error%s", "");
-		cbuild_file_read("build/FS.c.copy_big_test.src", &f1);
-		cbuild_file_read("build/FS.c.copy_big_test.dst", &f2);
-		TEST_ASSERT_MEMEQ(
-		  f1.data, f2.data, 64 * 1024,
-		  "Wrong value read from a file copy: \"" CBuildSBFmt
-		  "\", expected: \"" CBuildSBFmt "\"",
-		  CBuildSBArg(f1), CBuildSBArg(f2));
-		cbuild_cmd_clear(&file_writer);
-		cbuild_sb_clear(&f1);
-		cbuild_sb_clear(&f2);
+
 	},
 	"Big file copy (Much larger than tmp buffer size)");
 	TEST_CASE(
 	{
-		// Create test data
-		cbuild_cmd_t file_writer = {0};
-		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
-		cbuild_fd_t pattern_fd =
-		  cbuild_fd_open_write("build/FS.c.file_check_test.true");
-		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
-		cbuild_fd_close(pattern_fd);
-		// Do testing
-		bool ch1 = cbuild_file_check("build/FS.c.file_check_test.true");
-		TEST_ASSERT_EQ(
-		  ch1, true,
-		  "Wrong file detection, file exist but check returned flase%s",
-		  "");
-		bool ch2 = cbuild_file_check("build/FS.c.file_check_test.false");
-		TEST_ASSERT_EQ(ch2, false, "%s",
-		  "Wrong file detection, file does not exist but check returned true");
-		cbuild_cmd_clear(&file_writer);
+
 	},
 	"File checking");
 	TEST_CASE(
 	{
-		// Create test data
-		cbuild_cmd_t file_writer = {0};
-		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
-		cbuild_fd_t pattern_fd =
-		  cbuild_fd_open_write("build/FS.c.move_test.src");
-		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
-		cbuild_fd_close(pattern_fd);
-		// Do testing
-		bool ret = cbuild_file_move("build/FS.c.move_test.src",
-		    "build/FS.c.move_test.dst");
-		TEST_ASSERT_EQ(ret, true, "Function returened error%s", "");
-		bool ch1 = cbuild_file_check("build/FS.c.move_test.dst");
-		TEST_ASSERT_EQ(ch1, true, "Move distination does not exist%s", "");
-		bool ch2 = cbuild_file_check("build/FS.c.move_test.src");
-		TEST_ASSERT_EQ(ch2, false, "Move source was not removed%s", "");
-		cbuild_cmd_clear(&file_writer);
+
 	},
 	"File move");
 	TEST_CASE(
 	{
-		// Create test data
-		cbuild_cmd_t file_writer = {0};
-		cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
-		cbuild_fd_t pattern_fd =
-		  cbuild_fd_open_write("build/FS.c.rename_test.src");
-		cbuild_cmd_run(&file_writer, .fdstdout = &pattern_fd);
-		cbuild_fd_close(pattern_fd);
-		// Do testing
-		bool ret = cbuild_file_rename("build/FS.c.rename_test.src",
-		    "build/FS.c.rename_test.dst");
-		TEST_ASSERT_EQ(ret, true, "Function returened error%s", "");
-		bool ch1 = cbuild_file_check("build/FS.c.rename_test.dst");
-		TEST_ASSERT_EQ(ch1, true, "Renamed file does not exist%s", "");
-		bool ch2 = cbuild_file_check("build/FS.c.rename_test.src");
-		TEST_ASSERT_EQ(ch2, false, "Source file exists%s", "");
-		cbuild_cmd_clear(&file_writer);
+
 	},
 	"File rename");
 	TEST_CASE(

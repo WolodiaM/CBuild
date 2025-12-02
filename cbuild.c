@@ -158,58 +158,34 @@ test_case_t TESTS[] = {
 	{
 		.file = "append_single",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "append_arr",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "append_multi",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "set",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "get",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "remove_ordered",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "remove_unordered",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "foreach",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "StringBuilder",
@@ -225,79 +201,46 @@ test_case_t TESTS[] = {
 	{
 		.file = "append_single",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "append_arr",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "append_multi",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "append_cstr",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "append_utf8",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "append_fmt",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "set",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "get",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "remove",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "foreach",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "cmp",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "SB-SV",
@@ -306,9 +249,6 @@ test_case_t TESTS[] = {
 	{
 		.file = "interop",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "Stack",
@@ -324,16 +264,10 @@ test_case_t TESTS[] = {
 	{
 		.file = "push",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "pop",
 		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
 	},
 	{
 		.file = "StringView",
@@ -417,6 +351,48 @@ test_case_t TESTS[] = {
 	},
 	{
 		.file = "iter_ci",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "FS",
+		.group = true,
+	},
+	{
+		.file = "file_read",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "file_write",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "file_copy",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_TMP_BUFF_SIZE=64",
+		}, .size = 1},
+	},
+	{
+		.file = "file_copy_big",
+		.platforms = TPLM_ALL,
+		.cargs = {.data = (const char*[]){
+			"-DCBUILD_TMP_BUFF_SIZE=64",
+		}, .size = 1},
+	},
+	{
+		.file = "file_check",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "file_move",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "file_rename",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "file_remove",
 		.platforms = TPLM_ALL,
 	},
 };
