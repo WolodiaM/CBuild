@@ -55,7 +55,8 @@
  *     - Fixed typo in error message.
  *	 Log.h [feature]
  *     - Logger now use 16-color ANSI mode.
- *     - Added 'cbuild_vlog' that takes 'va_list' inserted of variadic arguments.
+ *     - Added 'cbuild_vlog' that takes 'va_list' inserted of variadic
+ *       arguments.
  *	 General [bugfix]
  *     - Added few 'const' annotations to pointers.
  *     - Changed all asserts to 'cbuild_assert'.
@@ -204,7 +205,8 @@
  * --------------------------------------------
  * 2025-08-05  v1.11		Cleanup and utf8
  *   FS.h [feature]
- *     - 'cbuild_fs_move' and 'cbuild_fs_remove' now try 'rename' before copying.
+ *     - 'cbuild_fs_move' and 'cbuild_fs_remove' now try 'rename' before
+ *       copying.
  *   Log.h [change]
  *     - Renamed types.
  *   Compile.h [bugfix]
@@ -217,7 +219,8 @@
  *   StringBuilder.h [feature]
  *     - Optional utf8 support.
  *   General [bugfix]
- *     - Now functions that takes no arguments properly have 'void' as arguments.
+ *     - Now functions that takes no arguments properly have 'void' as
+ *       arguments.
  * --------------------------------------------
  * 2025-08-18  v0.12    Switch to zero-ver
  *   Compile.h [feature]
@@ -259,7 +262,8 @@
  *     - New timing function.
  *     - CBUILD_MAX and CBUILD_MIN macro.
  *   Commang.h [feature]
- *     - Added 'file_std*' as optional args that can be used to redirect directly
+ *     - Added 'file_std*' as optional args that can be used to redirect
+ *       directly.
  *       to a file.
  *     - Added ability to control how many async workers can be spawned.
  *   Command.h [remove]
@@ -267,6 +271,10 @@
  *   FS.h [feature]
  *     - Added 'cbuild_dir_current' and 'cbuild_dir_set_current'.
  *     - Now cbuild_path_normalize respect POSIX network paths stating from '//'
+ *     - Added 'CBUILD_FTYPE_MISSING'
+ *   FS.h [change]
+ *     - Now 'cbuild_path_filetype' return 'CBUILD_FTYPE_MISSING' on invalid
+ *       files.
  *   Proc.h [feature]
  *     - Ability to get amount of CPU cores.
  *     - Ability to wait for any process from a list.
@@ -2089,6 +2097,7 @@ typedef struct cbuild_pathlist_t {
  * @brief Type of filesystem element
  */
 typedef enum {
+	CBUILD_FTYPE_MISSING   = -1,
 	CBUILD_FTYPE_REGULAR   = 0,
 	CBUILD_FTYPE_DIRECTORY = 1,
 	CBUILD_FTYPE_SYMLINK   = 2,
@@ -3886,6 +3895,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 					case CBUILD_FTYPE_OTHER:
 						cbuild_file_remove(dst);
 						break;
+					case CBUILD_FTYPE_MISSING:
+						CBUILD_UNREACHABLE("File cannot be missing if it exists.");
+						break;
 					default: CBUILD_UNREACHABLE("Invalid filetype in create_symlink.");
 					}
 					if(symlink(src, dst) == 0) return true;
@@ -3925,7 +3937,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			cbuild_assert(tmpdst != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 			sprintf(tmpdst, "%s/%s", dst, list.data[i]);
 			cbuild_filetype_t f = cbuild_path_filetype(tmpsrc);
-			if(f == CBUILD_FTYPE_DIRECTORY) {
+			if (f == CBUILD_FTYPE_MISSING) {
+				CBUILD_UNREACHABLE("cbuild_dir_list should not return invalid files.");
+			} else if(f == CBUILD_FTYPE_DIRECTORY) {
 				bool tmp = ret && cbuild_dir_copy(tmpsrc, tmpdst);
 				ret = tmp;
 			} else {
@@ -3980,7 +3994,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			cbuild_assert(tmppath != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 			sprintf(tmppath, "%s/%s", path, list.data[i]);
 			cbuild_filetype_t f = cbuild_path_filetype(tmppath);
-			if(f == CBUILD_FTYPE_DIRECTORY) {
+			if (f == CBUILD_FTYPE_MISSING) {
+				CBUILD_UNREACHABLE("cbuild_dir_list should not return invalid files.");
+			} else if(f == CBUILD_FTYPE_DIRECTORY) {
 				if(!cbuild_dir_remove(tmppath)) ret = false;
 			} else {
 				if(!cbuild_file_remove(tmppath)) ret = false;
@@ -4144,7 +4160,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			if(lstat(path, &statbuff) < 0) {
 				cbuild_log(CBUILD_LOG_ERROR, "Could not stat file \"%s\", error: \"%s\"", path,
 					strerror(errno));
-				return CBUILD_FTYPE_OTHER;
+				return CBUILD_FTYPE_MISSING;
 			}
 			if(S_ISREG(statbuff.st_mode)) {
 				return CBUILD_FTYPE_REGULAR;
