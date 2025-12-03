@@ -306,6 +306,10 @@ test_case_t TESTS[] = {
 		.platforms = TPLM_ALL,
 	},
 	{
+		.file = "convert_cstr",
+		.platforms = TPLM_ALL,
+	},
+	{
 		.file = "Proc",
 		.group = true,
 	},
@@ -393,6 +397,50 @@ test_case_t TESTS[] = {
 	},
 	{
 		.file = "file_remove",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "dir_check",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "dir_list",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "dir_create",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "dir_copy",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "dir_move",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "dir_remove",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "path_check_type",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "path_ext",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "path_filename",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "path_basename",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "path_normalize",
 		.platforms = TPLM_ALL,
 	},
 };
