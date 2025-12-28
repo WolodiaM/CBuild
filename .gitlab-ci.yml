@@ -26,9 +26,9 @@ pages:
     script:
         - mkdir -p public
         - gcc cbuild.c -o cbuild.run
-        - ./build.run test
-        - ./build.run docs wiki
-        - ./build.run docs doxygen
+        - ./cbuild.run test
+        - ./cbuild.run docs wiki
+        - ./cbuild.run docs doxygen
         - cp -r wiki/out/* public/
     artifacts:
         paths:
