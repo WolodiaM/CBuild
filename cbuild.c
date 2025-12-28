@@ -443,6 +443,23 @@ test_case_t TESTS[] = {
 		.file = "path_normalize",
 		.platforms = TPLM_ALL,
 	},
+	{
+		.file = "FlagParse",
+		.group = true,
+	},
+	{
+		.file = "basic",
+		.platforms = TPLM_ALL,
+		.argv =  {.data = (char*[]){
+			"--long",
+			"--arg1", "a",
+			"-L", "foo", "bar",
+			"-t", "-foo", "---bar", "baz", "^",
+			"--long",
+			"-bc",
+			"bar", "--", "--foo"
+		}, .size = 16},
+	},
 };
 static const char* TPL_NAMES[] = {
 	[TPL_X86_64_LINUX_GLIBC_GCC]   = "x86_64-linux-glibc-gcc",
@@ -653,9 +670,7 @@ bool test(void) {
 	size_t testcnt = 0;
 	for(size_t i = 0; i < cbuild_arr_len(TESTS); i++) testcnt++;
 	test_status_t* statuses = calloc(testcnt * TPL_COUNT,  sizeof(test_status_t));
-	inline test_status_t* get_status(size_t test, size_t tpl) {
-		return &statuses[test * TPL_COUNT + tpl];
-	}
+	#define get_status(test, tpl) (&statuses[test * TPL_COUNT + tpl])
 	// Failure marker
 	bool failed = false;
 	// Silence output
@@ -856,6 +871,11 @@ int main(int argc, char** argv) {
 		}
 	} else if(strcmp(subcommand, "test") == 0) {
 		if(pargs.size == 0) {
+			// Remove temp files
+			cbuild_cmd_t cmd = {0};
+			cbuild_cmd_append_many(&cmd, "sh", "-c", "rm -rf "BUILD_FOLDER"/test_*");
+			if(!cbuild_cmd_run(&cmd)) return 1;
+			// Run tests
 			if(test()) return 1;
 		} else {
 			bool failed = false;
@@ -892,6 +912,12 @@ int main(int argc, char** argv) {
 						return 1;
 					}
 				}
+				// Remove temp files
+				cbuild_cmd_t cmd = {0};
+				cbuild_cmd_append_many(&cmd, "sh", "-c",
+					cbuild_temp_sprintf("rm -rf "BUILD_FOLDER"/test_%s_%s_%s_*", 
+						tpl_name ? tpl_name : "*", *test_group, test_name));
+				if(!cbuild_cmd_run(&cmd)) return 1;
 				// Setup test group and run test
 				bool test_found = false;
 				glob_t glob_state = {0};

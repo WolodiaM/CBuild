@@ -1,1 +1,0 @@
-All allocation are "leaked" by design. This is global state.

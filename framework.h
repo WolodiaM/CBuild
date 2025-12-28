@@ -47,7 +47,7 @@
 #define TEST_EXPECT_RMSG(type) ", expected '" type "' but found '" type "'."
 // Temp files
 #define TEST_TEMP_FILE_EX(fmt, ...)                                            \
-	cbuild_temp_sprintf(BUILD_FOLDER"/test_%.*s_%02d_pl_"TEST_RUN_PLATFORM"_"fmt,\
+	cbuild_temp_sprintf(BUILD_FOLDER"/test_"TEST_RUN_PLATFORM"_%.*s_%02d_"fmt,\
 		(int)strlen(__FILE_NAME__) - 2, __FILE_NAME__, __LINE__                    \
 		__VA_OPT__(,) __VA_ARGS__)
 #define TEST_TEMP_FILE TEST_TEMP_FILE_EX("tmp.txt")
