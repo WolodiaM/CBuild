@@ -40,7 +40,7 @@ Maybe better piping?
 *** DONE Proc.h - add ability to get number of CPU cores. By default command should scale to this+1 for async runs
 *** DONE Export __cbuild_int_log and __cbuild_log_vlog
 *** DONE Allow rewinding and rewind point for cbuild_temp_*
-*** TODO cbuild_temp_sv_to_cstr(), cbuild_sv_to_cstr
+*** DONE cbuild_temp_sv_to_cstr(), cbuild_sv_to_cstr
 * Thinking place
 ** DONE new hash-map implementation
 Element struct can be provided by a user, bucket should be auto-generated, map should have an ability to add custom fields.
@@ -253,12 +253,12 @@ or signals:
   }
 #+END_SRC
 
-or just busy-loop on process list with ~waitpid(pid, &status NOHANG)~ and ~nnanosleep~ to not fully busy-loop. This is actiully the best way (fastest/simplest)
+or just busy-loop on process list with ~waitpid(pid, &status NOHANG)~ and ~nanosleep~ to not fully busy-loop. This is actiully the best way (fastest/simplest)
 or just wait for all process to finish (eg. run batch-by-batch), much easier but may be slower.
 
 * Tests runner
 *** DONE Make new shared header. Should load cbuild and have asserts.
-*** TODO One test case per file
+*** DONE One test case per file
 *** DONE New way of listing tests
 File, human name, attributes (for which platform test can be used), argv for test, should test return 0 or 1 to succeed.
 *** DONE Test runner

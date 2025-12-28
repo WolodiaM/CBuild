@@ -1,24 +1,26 @@
 # -*- mode: conf -*-
 CompileFlags:
-  Add: [ -xc, -std=gnu99 ]
-  Compiler: gcc
+	Add: [ -xc, -std=gnu99, -Wall, -Wextra, -Wno-comments, -Wconversion, -Wcast-align, -Wvla, -Wno-override-init, -Wshadow ]
+	Compiler: gcc
 Diagnostics:
-  Suppress: [ -Wunused-function ]
+	Suppress: [ -Wunused-function ]
 ---
 If:
-  PathMatch: src/.*\.h
+	PathMatch: cbuild.c
 CompileFlags:
-  Add: [ -Wall, -Wextra, -Wpedantic, -Werror, -Wno-empty-translation-unit ]
-  Compiler: gcc
----
-If:
-  PathMatch: src/impl.c
-CompileFlags:
-  Add: [ -Wall, -Wextra, -Wpedantic, -Werror ]
-  Compiler: gcc
+	Add: [ -std=gnu23 ]
 ---
 If:
   PathMatch: tests/.*\.c
 CompileFlags:
-  Add: [ -Wall, -Wextra ]
-  Compiler: gcc
+  Add: [ -include, ../framework.h, -DTEST_RUN_PLATFORM="" ]
+---
+If:
+	PathMatch: cbuild.h
+CompileFlags:
+	Add: [ -DCBUILD_IMPLEMENTATION ]
+---
+If:
+	PathMatch: rglob.h
+CompileFlags:
+	Add: [ -DGLOB_IMPLEMENTATION ]
