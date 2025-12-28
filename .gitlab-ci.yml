@@ -26,6 +26,7 @@ pages:
     script:
         - mkdir -p public
         - gcc cbuild.c -o cbuild.run
+        - ./cbuild.run docs wikimk
         - ./cbuild.run docs wiki
         - ./cbuild.run docs doxygen
         - cp -r wiki/out/* public/
