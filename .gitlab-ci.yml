@@ -16,7 +16,7 @@ test:
     stage: test
     script:
         - gcc cbuild.c -o cbuild.run
-        - ./build.run test
+        - ./cbuild.run test
     rules:
         - if: $CI_PIPELINE_SOURCE == 'merge_request_event' 
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
