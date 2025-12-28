@@ -847,7 +847,7 @@ int main(int argc, char** argv) {
 			cbuild_cmd_t cmd = {0};
 			cbuild_cmd_append_many(&cmd, "doxygen", "doxygen.conf");
 			if(!cbuild_cmd_run(&cmd)) return 1;
-			if(!cbuild_dir_remove("wiki/out/doxygen")) return 1;
+			cbuild_dir_remove("wiki/out/doxygen");
 			if(!cbuild_dir_move("wiki/doxygen/html", "wiki/out/doxygen")) return 1;
 		} else if(strcmp(arg, "wikimk") == 0) {
 			cbuild_cmd_t cmd = {0};
