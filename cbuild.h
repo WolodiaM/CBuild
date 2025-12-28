@@ -279,10 +279,11 @@
  *     - Ability to get amount of CPU cores.
  *     - Ability to wait for any process from a list.
  *   Log.h [feature]
- *     - Added shortcuts for build-in log levels.
+ *     - Added shortcuts for built-in log levels.
  *     - Made CBUILD_LOG_PRINT print always (except if
  *       CBUILD_LOG_NO_LOGS is enabled).
- *     - Made enum for modes not sparse.
+ *     - Made enum for print levels not sparse. Extension of log level was not really 
+ *       a useful feature.
  *     - Removed cbuild_log_fmt.
  *     - Exported few internal function to allow easier extension of logger
  *   Arena.h [feature]
@@ -301,6 +302,8 @@
  *      for defines.
  *     - Added 'CBUILD_CARGS_DEBUG_GDB' that expands to '-ggdb'. It will be fine
  *       if you use gdb debugger or your debugger support all of gdb extensions.
+ *     - Added __cbuild_selfrebuild_ex_argv to allow having self-rebuilding 
+ *       binaries in PATH. For normal binaries can be 'argv[0]'.
  *   General [change]
  *     - Changed CBDEF to CBUILDDEF.
  *     - Remove build stage for a header.
@@ -317,7 +320,22 @@
 // OS-specific defines
 // Valid compilers:
 //   - CBUILD_CC_CLANG - clang or its derivative
-//   -- CBUILD_CC_GCC  - gcc or its derivative
+//   - CBUILD_CC_GCC   - gcc or its derivative
+// Several compiler extensions are required from supported compiler:
+//   - Binary literals support (0b) either trough c standard (c23+) or as extension
+//   - Attributes trough __attribute__((...)) syntax, some are supported trough [[...]]
+//     syntax if support is detected 
+//       * deprecated
+//       * format
+//       * noreturn
+//       * falltrough
+//   - Unnamed structs/enums/unions
+//   - typeof
+//   - __VA_OPT__
+//   - GNU statement expressions '({...})'. This requirement may be removed in the future.
+// Explicetely unsupported compilers:
+//   - TCC  - no statement expression (at least).
+//   - MSVC - no extensions at all.
 #if !defined(CBUILD_CC_DEFINED)
 	#if defined(__clang__)
 		#define CBUILD_CC_CLANG
@@ -333,7 +351,7 @@
 	#define CBUILD_CC_DEFINED
 #endif // !CBUILD_CC_DEFINNED
 // Valid OSes:
-//   - CBUILD_OS_LINUX   - any desktop Linux (eg. excluding Android or ChromeOS for example)
+//   - CBUILD_OS_LINUX   - any desktop Linux (excluding Android or ChromeOS for example)
 //   - CBUILD_OS_MACOS   - MacOS
 //   - CBUILD_OS_BSD     - Any desktop BSD
 //   - CBUILD_OS_UNIX    - Generic Unix, should support POSIX.1-2001
@@ -2463,6 +2481,20 @@ CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv, size_t num_files, ...
  */
 CBUILDDEF void __cbuild_selfrebuild_ex(int argc, char** argv, cbuild_cmd_t files);
 /**
+ * @brief Enables self-rebuild functionality
+ *
+ * @param argc => int -> Number of cli arguments
+ * @param argv => char** -> Params passed to an app. Needed to get binary path.
+ * @param argv0_path => Full path to argv[0]. Required mostly for self-rebuilding 
+ * binaries which may be in PATH and called directly using PATH. For binaries 
+ * which are not in PATH can just be 'argv[0].
+ * @param filess => cbuild_cmd_t -> Dependency files.
+ * First will be used in compilation.
+ * Other will just be checked to determine if rebuild is needed.
+ */
+CBUILDDEF void __cbuild_selfrebuild_ex_argv(int argc, char** argv, 
+	const char* argv0_path, cbuild_cmd_t files);
+/**
  * @brief Allow to add additional arguments for self-rebuild.
  * Called with compiler command already in place.
  */
@@ -3379,7 +3411,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				if(code != 0) {
 					goto cleanup;
 				}
-
+				
 			}
 		}
 		// Call app
@@ -4306,8 +4338,13 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	CBUILDDEF void __cbuild_selfrebuild_ex(int argc, char** argv,
 		cbuild_cmd_t files) {
+		__cbuild_selfrebuild_ex_argv(argc, argv, argv[0], files);
+	}
+	CBUILDDEF void __cbuild_selfrebuild_ex_argv(int argc, char** argv, 
+		const char* argv0_path, cbuild_cmd_t files) {
 		const char* spath = files.data[0];
-		char* bname_new = cbuild_shift(argv, argc);
+		char* bname_new_raw = cbuild_shift(argv, argc);
+		const char* bname_new = argv0_path; 
 		cbuild_sb_t bname_old = {0};
 		cbuild_sb_append_cstr(&bname_old, bname_new);
 		cbuild_sb_append_cstr(&bname_old, ".old");
@@ -4340,7 +4377,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return; // If compilation failed the let old version run
 		}
 		__cbuild_int_compile_mark_exec(bname_new);
-		cbuild_cmd_append(&cmd, bname_new);
+		cbuild_cmd_append(&cmd, bname_new_raw);
 		cbuild_cmd_append_arr(&cmd, argv, (size_t)argc);
 		if(!cbuild_cmd_run(&cmd)) {
 			cbuild_sb_clear(&bname_old);
