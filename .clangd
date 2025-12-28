@@ -8,7 +8,7 @@ Diagnostics:
 If:
 	PathMatch: cbuild.c
 CompileFlags:
-	Add: [ -std=gnu23 ]
+	Add: [ -std=gnu99 ]
 ---
 If:
   PathMatch: tests/.*\.c

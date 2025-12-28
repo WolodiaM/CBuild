@@ -48,7 +48,7 @@ static const char* TEST_STATUS_REPORTS[] = {
 	[TEST_MEMCHECK_FAILED] = CBUILD_TERM_FG(CBUILD_TERM_MAGENTA)"M"CBUILD_TERM_RESET,
 	[TEST_COMP_FAILED]     = CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "!"CBUILD_TERM_RESET,
 };
-static_assert(TEST_STATUS_COUNT == cbuild_arr_len(TEST_STATUS_REPORTS),
+_Static_assert(TEST_STATUS_COUNT == cbuild_arr_len(TEST_STATUS_REPORTS),
 	"TEST_STATUS_REPORS should have one report per test_status_t entry");
 enum {
 	TPL_X86_64_LINUX_GLIBC_GCC = 0,
@@ -67,7 +67,7 @@ enum {
 	TPLM_X86_64_POSIX_GCC         = TPL_MASK(TPL_X86_64_POSIX_GCC),
 	TPLM_X86_64_POSIX_CLANG       = TPL_MASK(TPL_X86_64_POSIX_CLANG),
 };
-static_assert(TPL_COUNT == 5, "Enum TPLM_* expects 5 test platforms.");
+_Static_assert(TPL_COUNT == 5, "Enum TPLM_* expects 5 test platforms.");
 typedef struct test_case_t {
 	union {
 		uint32_t platforms;
@@ -468,7 +468,7 @@ static const char* TPL_NAMES[] = {
 	[TPL_X86_64_POSIX_GCC]         = "x86_64-posix-gcc",
 	[TPL_X86_64_POSIX_CLANG]       = "x86_64-posix-clang",
 };
-static_assert(TPL_COUNT == cbuild_arr_len(TPL_NAMES),
+_Static_assert(TPL_COUNT == cbuild_arr_len(TPL_NAMES),
 	"TPL_NAMES expect 5 test platforms.");
 // Test runner
 #define test_log_failed(msg, ...)                                              \
@@ -500,7 +500,7 @@ void test_cmd_append_cc_base(test_case_t test, cbuild_cmd_t* cmd) {
 	cbuild_cmd_append(cmd, "-ggdb");
 	cbuild_cmd_append_arr(cmd, test.cargs.data, test.cargs.size);
 }
-static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_case_run_memcheck(test_case_t test, const char* oname) {
 	cbuild_cmd_t cmd = {0};
 	cbuild_log_trace("Running test \"%s\"...", test.file);
@@ -523,7 +523,7 @@ test_status_t test_case_run_memcheck(test_case_t test, const char* oname) {
 		return TEST_SUCCEED;
 	}
 }
-static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Linux/glibc, Arch: x86_64, Compiler: gcc");
@@ -546,7 +546,7 @@ test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return test_case_run_memcheck(test, oname);
 }
-static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Linux/glibc, Arch: x86_64, Compiler: clang");
@@ -569,7 +569,7 @@ test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return test_case_run_memcheck(test, oname);
 }
-static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Linux/musl, Arch: x86_64, Compiler: gcc");
@@ -601,7 +601,7 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return TEST_SUCCEED;
 }
-static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Posix, Arch: x86_64, Compiler: gcc");
@@ -625,7 +625,7 @@ test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return test_case_run_memcheck(test, oname);
 }
-static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_posix_clang(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Posix, Arch: x86_64, Compiler: clang");
@@ -656,7 +656,7 @@ static test_status_t (*TPL_RUNNERS[])(test_case_t test) = {
 	[TPL_X86_64_POSIX_GCC]         = test_x86_64_posix_gcc,
 	[TPL_X86_64_POSIX_CLANG]       = test_x86_64_posix_clang,
 };
-static_assert(TPL_COUNT == cbuild_arr_len(TPL_RUNNERS),
+_Static_assert(TPL_COUNT == cbuild_arr_len(TPL_RUNNERS),
 	"TPL_RUNNERS expect 5 test platforms.");
 // Single-case runner
 bool test_case(test_case_t test) {
@@ -760,7 +760,7 @@ bool test(void) {
 			TPL_NAMES[i]);
 	}
 	// Help
-	static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+	_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 	printf("'%s' - Test succeed.\n", TEST_STATUS_REPORTS[TEST_SUCCEED]);
 	printf("'%s' - Test assertion failed.\n", TEST_STATUS_REPORTS[TEST_FAILED]);
 	printf("'%s' - Test was skipped.\n", TEST_STATUS_REPORTS[TEST_SKIPPED]);
