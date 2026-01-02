@@ -29,9 +29,7 @@ jobs:
           ./cbuild.run docs wiki
           ./cbuild.run docs doxygen
       - name: Setup GitHub Pages
-        uses: actions/configure-pages@v4
-        with:
-          path: ./wiki/out
+        uses: actions/configure-pages@v5
       - name: Upload artifacts
         uses: actions/upload-pages-artifact@v3
         with:
@@ -45,5 +43,5 @@ jobs:
     needs: build
     steps:
       - name: Deploy wiki to GitHub Pages
-        id: wiki
+        id: deployment
         uses: actions/deploy-pages@v4
