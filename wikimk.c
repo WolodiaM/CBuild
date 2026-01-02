@@ -155,7 +155,7 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 			if(cbuild_sv_suffix(filename_sv, cbuild_sv_from_cstr(".md"))) {
 				filename_sv.size -= 3;
 				cbuild_sb_appendf(out,
-					"<li><a href=\"/"CBuildSVFmt".html\">",
+					"<li><a href=\""CBuildSVFmt".html\">",
 					CBuildSVArg(filename_sv));
 				gentoc_get_title(filepath.data, out);
 				cbuild_sb_appendf(out, "</a></li>\n");
@@ -170,7 +170,7 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 					cbuild_sb_append_sv(out, url);
 				} else {
 					const char *base = cbuild_path_base(filename.data);
-					cbuild_sb_appendf(out, "/%s"CBuildSVFmt, base, CBuildSVArg(url));
+					cbuild_sb_appendf(out, "%s"CBuildSVFmt, base, CBuildSVArg(url));
 					free((void*)base);
 				}
 				cbuild_sb_appendf(out, "\">"CBuildSVFmt"</a></li>\n", CBuildSVArg(name));
@@ -286,7 +286,7 @@ bool build() {
 			if(cbuild_sv_suffix(filename, cbuild_sv_from_cstr(".md"))) {
 				filename.size -= 3;
 				cbuild_sb_appendf(&nav_html,
-					"<li><a href=\"/"CBuildSVFmt".html\">",
+					"<li><a href=\""CBuildSVFmt".html\">",
 					CBuildSVArg(filename));
 				gentoc_get_title(root_filepath.data, &nav_html);
 				cbuild_sb_appendf(&nav_html, "</a></li>\n");
@@ -300,7 +300,7 @@ bool build() {
 				if(cbuild_sv_prefix(url, cbuild_sv_from_cstr("http"))) {
 					cbuild_sb_append_sv(&nav_html, url);
 				} else {
-					cbuild_sb_appendf(&nav_html, "/"CBuildSVFmt, CBuildSVArg(url));
+					cbuild_sb_appendf(&nav_html, ""CBuildSVFmt, CBuildSVArg(url));
 				}
 				cbuild_sb_appendf(&nav_html, "\">"CBuildSVFmt"</a></li>\n", CBuildSVArg(name));
 			}
