@@ -31,7 +31,7 @@
 #define WIKIMK_WIKI_NAME "My cool wiki"
 #define WIKIMK_WIKI_AUTHOR "WolodiaM"
 #define WIKIMK_WIKI_LICENSE "GFDL-1.3-or-later"
-#define WIKIMK_WIKI_EDIT_BASE "https://gitlab.com/cbuild/cbuild/edit/master/wiki/wikimk/src"
+#define WIKIMK_WIKI_EDIT_BASE "https://github.com/WolodiaM/CBuild/edit/master/wiki/wikimk/src"
 #define WIKIMK_DIR_SRC "wiki/wikimk/src"
 #define WIKIMK_DIR_TEMPLATE "wiki/wikimk/template"
 #define WIKIMK_DIR_SCRIPT "wiki/wikimk/script"

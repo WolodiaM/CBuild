@@ -4,7 +4,7 @@
  * @brief C standard library extender and simple build system library.
  * Library consists of several modules. Some of them require other modules.
  * Some of the modules can work almost independantly. FOr more information,
- * please visit [CBuild wiki](https://cbuild.gitlab.io/cbuild/).
+ * please visit [CBuild wiki](https://WolodiaM.github.io/CBuild/).
  *
  * @date 2025-09-07
  * @copyright (C) 2025 WolodiaM

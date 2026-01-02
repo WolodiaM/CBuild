@@ -15,7 +15,7 @@ C standard library extender and simple build system library.
  - Provide minimal but simple API
  - Be properly documented
 
-# [Documentation](https://cbuild.gitlab.io/cbuild/)
+# [Documentation](https://WolodiaM.github.io/CBuild/)
 
 # [Inspired by nob.h](https://github.com/tsoding/nob.h)
 
