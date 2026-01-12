@@ -9,7 +9,7 @@ int main(void) {
 	// Could be done only because it is baked by C-string and size included '\0'
 	TEST_ASSERT_STREQ(sb.data, sv.data,
 		"Wrong string appended"TEST_EXPECT_MSG(s), sb.data, sv.data)
-	cbuild_sv_t sv_out = cbuild_sb_to_sv(&sb);
+	cbuild_sv_t sv_out = cbuild_sb_to_sv(sb);
 	TEST_ASSERT_EQ(sv.size, sv_out.size,
 		"Wrong number of elements after transformations (sv->sb->sv)"
 		TEST_EXPECT_MSG(zu), sv.size, sv_out.size)
