@@ -307,6 +307,10 @@
  *   General [change]
  *     - Changed CBDEF to CBUILDDEF.
  *     - Remove build stage for a header.
+ * --------------------------------------------
+ * 2025-01-12  v0.14
+ *   DynArray.h [feature]
+ *     - Add macro to allow easy creation of required structures.
  */
 // NOTE: CBuild should be a first header to be included in translation unit, or
 // you need to define '_GNU_SOURCE' yourself if you use default CBuild API for
@@ -684,9 +688,9 @@ CBUILDDEF uint64_t cbuild_time_nanos(void);
  */
 #define CBUILD_MIN(a, b) a < b ? a : b
 // Version
-#define CBUILD_VERSION "v0.13"
+#define CBUILD_VERSION "v0.14"
 #define CBUILD_VERSION_MAJOR 0
-#define CBUILD_VERSION_MINOR 13
+#define CBUILD_VERSION_MINOR 14
 /* Term.h */
 // Escape
 #define CBUILD_TERM_ESCAPE "\033["
@@ -902,6 +906,12 @@ CBUILDDEF void cbuild_temp_reset(size_t checkpoint);
  */
 CBUILDDEF size_t cbuild_temp_checkpoint(void);
 /* DynArray.h */
+#define cbuild_da_new(type) \
+	struct {                  \
+		type* data;             \
+		size_t size;            \
+		size_t capacity;        \
+	}
 /**
  *  @brief Append element to a dynamic array
  *
