@@ -311,6 +311,9 @@
  * 2025-01-12  v0.14
  *   DynArray.h [feature]
  *     - Add macro to allow easy creation of required structures.
+ *   General [bugfix]
+ *     - Added some 'const' annotations
+ *     - Moved few functions to take parameters by value and not by pointer
  */
 // NOTE: CBuild should be a first header to be included in translation unit, or
 // you need to define '_GNU_SOURCE' yourself if you use default CBuild API for
@@ -866,7 +869,7 @@ CBUILDDEF void* cbuild_temp_alloc(size_t size);
  * @param ... => variadics -> rguments
  * @return char* -> New string
  */
-CBUILDDEF char* cbuild_temp_sprintf(char* fmt, ...)
+CBUILDDEF char* cbuild_temp_sprintf(const char* fmt, ...)
 __attribute__((format(printf, 1, 2)));
 /**
  * @brief vsprintf using temp allocation
@@ -875,14 +878,14 @@ __attribute__((format(printf, 1, 2)));
  * @param ap. => va_list -> rguments
  * @return char* -> New string
  */
-CBUILDDEF char* cbuild_temp_vsprintf(char* fmt, va_list ap);
+CBUILDDEF char* cbuild_temp_vsprintf(const char* fmt, va_list ap);
 /**
  * @brief strdup using temp allocation
  *
  * @param str => char* -> Original string
  * @return char* -> New dupped string
  */
-CBUILDDEF char* cbuild_temp_strdup(char* str);
+CBUILDDEF char* cbuild_temp_strdup(const char* str);
 /**
  * @brief Dupes memory using temporary allocation
  *
@@ -890,7 +893,7 @@ CBUILDDEF char* cbuild_temp_strdup(char* str);
  * @param size => size_t -> Number of bytes to dup
  * @return char* -> New dupped memory block
  */
-CBUILDDEF void* cbuild_temp_memdup(void* mem, size_t size);
+CBUILDDEF void* cbuild_temp_memdup(const void* mem, size_t size);
 /**
  * @brief Deallocate all temporary allocations
  *
@@ -965,11 +968,11 @@ CBUILDDEF size_t cbuild_temp_checkpoint(void);
 #define cbuild_da_set(da, idx, elem)                                           \
 	({                                                                           \
 		bool __cbuild__ret = false;                                                \
-		if ((idx) >= (da)->size) {                                                 \
+		if ((idx) >= (da)->size) {                                                  \
 			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in set.");  \
 			__cbuild__ret = false;                                                   \
 		} else {                                                                   \
-			(da)->data[(idx)] = elem;                                                \
+			(da)->data[(idx)] = elem;                                                 \
 			__cbuild__ret = true;                                                    \
 		}                                                                          \
 		__cbuild__ret;                                                             \
@@ -977,18 +980,18 @@ CBUILDDEF size_t cbuild_temp_checkpoint(void);
 /**
  * @brief Get an element from a da using index
  *
- * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
+ * @param da => CBUILD_DA -> Dynamic array. Will be evaluated multiple times.
  * @param idx => size_t -> Element index
  * @return VAL* -> Element or NULL on overflow
  */
 #define cbuild_da_get(da, idx)                                                 \
 	({                                                                           \
-		typeof(*(da)->data)* __cbuild__ret = NULL;                                 \
-		if ((idx) >= (da)->size) {                                                 \
+		typeof(*(da).data)* __cbuild__ret = NULL;                                  \
+		if ((idx) >= (da).size) {                                                  \
 			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in get.");  \
 			__cbuild__ret = NULL;                                                    \
 		} else {                                                                   \
-			__cbuild__ret = &((da)->data[(idx)]);                                    \
+			__cbuild__ret = &((da).data[(idx)]);                                     \
 		}                                                                          \
 		__cbuild__ret;                                                             \
 	})
@@ -1078,12 +1081,12 @@ CBUILDDEF size_t cbuild_temp_checkpoint(void);
 /**
  * @brief Foreach loop
  *
- * @param da => CBUILD_DA* -> Dynamic array. Will be evaluated multiple times.
+ * @param da => CBUILD_DA -> Dynamic array. Will be evaluated multiple times.
  * @param iter => NAME -> Iteration value name
  */
 #define cbuild_da_foreach(da, iter)                                            \
-	for (typeof(*((da)->data))* iter = (da)->data;                               \
-		iter < ((da)->data + (da)->size); iter++)
+	for (typeof(*((da).data))* iter = (da).data;                                 \
+		iter < ((da).data + (da).size); iter++)
 /* StringView.h */
 typedef struct cbuild_sv_t {
 	char*  data;
@@ -1432,7 +1435,7 @@ typedef struct cbuild_sb_t {
 /**
  * @brief Set a character in a sb using index
  *
- * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
+ * @param sb => cbuild_sb_t -> String builder. Will be evaluated multiple times.
  * @param idx => size_t -> Character index
  * @param elem => char -> New character
  */
@@ -1440,7 +1443,7 @@ typedef struct cbuild_sb_t {
 /**
  * @brief Get a character from a sb using index
  *
- * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
+ * @param sb => cbuild_sb_t -> String builder. Will be evaluated multiple times.
  * @param idx => size_t -> Character index
  * @return VAL* -> Element
  */
@@ -1478,31 +1481,31 @@ typedef struct cbuild_sb_t {
  * @return 1  -> If first different character in first string builder is larger
  * @return 2  -> If size of first string builder is larger
  */
-CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b);
+CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t a, cbuild_sb_t b);
 /**
  * @brief Compare two string builders ignoring case of an ASCII letter (Latin
  * only)
  *
- * @param a => cbuild_sb_t* -> First string builder
- * @param b => cbuild_sb_t* -> Second string builder
+ * @param a => cbuild_sb_t -> First string builder
+ * @param b => cbuild_sb_t -> Second string builder
  * @return -2 -> If size of first string builder is smaller
  * @return -1 -> If first different character in first StringBuiler is smaller
  * @return 0  -> If two string builders are equal
  * @return 1  -> If first different character in first string builder is larger
  * @return 2  -> If size of first string builder is larger
  */
-CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b);
+CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t a, cbuild_sb_t b);
 /**
  * @brief Convert string builder to string view
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t -> String builder
  * @return cbuild_sv_t -> New string view
  */
-CBUILDDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb);
+CBUILDDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t sb);
 /**
  * @brief Convert string builder to string view
  *
- * @param sb => cbuild_sb_t* -> String builder
+ * @param sb => cbuild_sb_t -> String builder
  * @return cbuild_sv_t -> New string view
  */
 #define	cbuild_sv_from_sb(sb) cbuild_sb_to_sv(sb)
@@ -1550,7 +1553,7 @@ __attribute__((format(printf, 2, 3)));
 /**
  * @brief Foreach loop
  *
- * @param sb => cbuild_sb_t* -> String builder. Will be evaluated multiple times.
+ * @param sb => cbuild_sb_t -> String builder. Will be evaluated multiple times.
  * @param iter => NAME -> Iteration value name
  */
 #define cbuild_sb_foreach(sb, iter) cbuild_da_foreach(sb, iter)
@@ -1564,8 +1567,8 @@ CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
 /**
  * @brief strcmp for string builder encoded as utf8.
  * Will use cbuild_sb_utf8cmp under the hood
- * @param a => cbuild_sb_t* -> First string buffer
- * @param b => cbuild_sb_t* -> Second String buffer
+ * @param a => cbuild_sb_t -> First string buffer
+ * @param b => cbuild_sb_t -> Second String buffer
  * @return -2 -> If size of first string builder is smaller
  * @return -1 -> If first different character in first string builder is smaller
  * @return 0  -> If two string builders are equal
@@ -1573,14 +1576,14 @@ CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
  * @return 2  -> If size of first string builder is larger
  */
 CBUILD_DEPRECATED("Please use cbuild_sb_cmp instead!",
-	CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b));
+	CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t a, cbuild_sb_t b));
 /**
  * @brief Get lengths of a string builder with utf8 content
  *
  * @param sv => cbuild_sb_t -> String builder
  * @return size_t -> Number of encoded utf8 codepoints
  */
-CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t* sb);
+CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t sb);
 /* Map.h */
 typedef struct cbuild_map_bucket_t {
 	void* vals;
@@ -1623,7 +1626,7 @@ CBUILDDEF void cbuild_map_init(cbuild_map_t* map, size_t nbuckets);
  * @param key => void* -> Requested key
  * @return void* -> Element of NULL if not found
  */
-CBUILDDEF void* cbuild_map_get_raw(cbuild_map_t* map, const void* key);
+CBUILDDEF void* cbuild_map_get_raw(const cbuild_map_t* map, const void* key);
 /**
  * @brief Get element from a map
  *
@@ -2326,7 +2329,7 @@ CBUILDDEF char* cbuild_dir_current(void);
  * @param path => char* -> Path to set as current working directory
  * @return bool -> True on success, false otherwise
  */
-CBUILDDEF bool cbuild_dir_set_current(char* path);
+CBUILDDEF bool cbuild_dir_set_current(const char* path);
 /**
  * @brief Free path list structure
  *
@@ -2534,7 +2537,7 @@ CBUILDDEF int cbuild_compare_mtime_many(const char* output, const char** inputs,
 	size_t num_inputs);
 /* DLLoad.h */
 #if defined(CBUILD_API_POSIX)
-	#define	cbuild_dlib_handle                         void*
+	#define	cbuild_dlib_t                              void*
 	#define	cbuild_dlib_load(filename)                 dlopen(filename, RTLD_LAZY)
 	#define	cbuild_dlib_load_force(filename)           dlopen(filename, RTLD_NOW)
 	#define	cbuild_dlib_get_function(handle, funcName) dlsym(handle, funcName)
@@ -2583,7 +2586,7 @@ CBUILDDEF cbuild_arglist_t* cbuild_flag_get_flag(const char* opt);
  *
  * @return char* -> App name
  */
-CBUILDDEF char* cbuild_flag_app_name(void);
+CBUILDDEF const char* cbuild_flag_app_name(void);
 /**
  * @brief Function prototype fo a help print function, stub provided, but should
  * be reimplemented for best user experience.
@@ -2655,14 +2658,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return ret;
 	}
 	/* StringBuilder.h impl */
-	CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
-		if(a->size < b->size) {
+	CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t a, cbuild_sb_t b) {
+		if(a.size < b.size) {
 			return -2;
 		}
-		if(a->size > b->size) {
+		if(a.size > b.size) {
 			return 2;
 		}
-		int ret = memcmp(a->data, b->data, a->size);
+		int ret = memcmp(a.data, b.data, a.size);
 		if(ret == 0) {
 			return 0;
 		} else if(ret < 0) {
@@ -2672,18 +2675,18 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		CBUILD_UNREACHABLE("cbuild_sb_cmp fallthrough");
 	}
-	CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t* a, cbuild_sb_t* b) {
-		if(a->size < b->size) {
+	CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t a, cbuild_sb_t b) {
+		if(a.size < b.size) {
 			return -2;
 		}
-		if(a->size > b->size) {
+		if(a.size > b.size) {
 			return 2;
 		}
-		for(size_t i = 0; i < a->size; i++) {
+		for(size_t i = 0; i < a.size; i++) {
 			char ac =
-				'A' <= a->data[i] && a->data[i] <= 'Z' ? a->data[i] + 32 : a->data[i];
+				'A' <= a.data[i] && a.data[i] <= 'Z' ? a.data[i] + 32 : a.data[i];
 			char bc =
-				'A' <= b->data[i] && b->data[i] <= 'Z' ? b->data[i] + 32 : b->data[i];
+				'A' <= b.data[i] && b.data[i] <= 'Z' ? b.data[i] + 32 : b.data[i];
 			int diff = ac - bc;
 			if(diff < 0) {
 				return -1;
@@ -2698,9 +2701,9 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_sb_append_arr(&ret, sv.data, sv.size);
 		return ret;
 	}
-	CBUILDDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t* sb) {
+	CBUILDDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t sb) {
 		return (cbuild_sv_t) {
-			.data = sb->data, .size = sb->size
+			.data = sb.data, .size = sb.size
 		};
 	}
 	CBUILDDEF int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args) {
@@ -2757,10 +2760,10 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		cbuild_sb_append_arr(sb, buffer, len);
 	}
-	CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t* a, cbuild_sb_t* b) {
+	CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t a, cbuild_sb_t b) {
 		return cbuild_sv_cmp(cbuild_sv_from_sb(a), cbuild_sv_from_sb(b));
 	}
-	CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t* sb) {
+	CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t sb) {
 		return cbuild_sv_utf8len(cbuild_sv_from_sb(sb));
 	}
 	/* StringView.h impl */
@@ -3512,14 +3515,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		__cbuild_int_temp_size += size;
 		return ptr;
 	}
-	CBUILDDEF char* cbuild_temp_sprintf(char* fmt, ...) {
+	CBUILDDEF char* cbuild_temp_sprintf(const char* fmt, ...) {
 		va_list va;
 		va_start(va, fmt);
 		char* ret = cbuild_temp_vsprintf(fmt, va);
 		va_end(va);
 		return ret;
 	}
-	CBUILDDEF char* cbuild_temp_vsprintf(char* fmt, va_list ap) {
+	CBUILDDEF char* cbuild_temp_vsprintf(const char* fmt, va_list ap) {
 		va_list va;
 		va_copy(va, ap);
 		int n = vsnprintf(NULL, 0, fmt, va);
@@ -3532,14 +3535,14 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return NULL;
 		}
 	}
-	CBUILDDEF char* cbuild_temp_strdup(char* str) {
+	CBUILDDEF char* cbuild_temp_strdup(const char* str) {
 		size_t len = strlen(str) + 1;
 		char* dup = (char*)cbuild_temp_alloc(len);
 		if(dup == NULL) return NULL;
 		memcpy(dup, str, len);
 		return dup;
 	}
-	CBUILDDEF void* cbuild_temp_memdup(void* mem, size_t size) {
+	CBUILDDEF void* cbuild_temp_memdup(const void* mem, size_t size) {
 		char* dup = (char*)cbuild_temp_alloc(size);
 		if(dup == NULL) return NULL;
 		memcpy(dup, mem, size);
@@ -3708,7 +3711,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	CBUILDDEF bool cbuild_procs_wait(cbuild_proclist_t procs) {
 		bool ret = true;
-		cbuild_da_foreach (&procs, proc) {
+		cbuild_da_foreach(procs, proc) {
 			if(!cbuild_proc_wait(*proc)) ret = false;
 		}
 		return ret;
@@ -4136,7 +4139,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				return NULL;
 			#endif // Extension check
 		}
-		CBUILDDEF bool cbuild_dir_set_current(char* path) {
+		CBUILDDEF bool cbuild_dir_set_current(const char* path) {
 			if(chdir(path) < 0) {
 				cbuild_log(CBUILD_LOG_ERROR,
 					"Could not set current working directory to \"%s\", error: \"%s\"",
@@ -4442,7 +4445,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return hash;
 	}
-	CBUILDDEF size_t __cbuild_int_map_get_hash(cbuild_map_t* map, const void* key) {
+	CBUILDDEF size_t __cbuild_int_map_get_hash(const cbuild_map_t* map, const void* key) {
 		size_t hash = 0;
 		if(map->hash_func == NULL) {
 			if(map->key_size > 0) {
@@ -4457,7 +4460,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return hash;
 	}
-	CBUILDDEF void* __cbuild_int_map_check_bucket(cbuild_map_t* map,
+	CBUILDDEF void* __cbuild_int_map_check_bucket(const cbuild_map_t* map,
 		const cbuild_map_bucket_t* bucket, const void* key) {
 		if(map->keycmp_func == NULL) {
 			if(map->key_size > 0) {
@@ -4491,7 +4494,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		cbuild_assert(map->buckets != NULL, "(LIB_CBUILD_MAP) Allocation failed.\n");
 		memset(map->buckets, 0, nbuckets * sizeof(cbuild_map_bucket_t));
 	}
-	CBUILDDEF void* cbuild_map_get_raw(cbuild_map_t* map, const void* key) {
+	CBUILDDEF void* cbuild_map_get_raw(const cbuild_map_t* map, const void* key) {
 		if(map->nbuckets == 0) {
 			cbuild_log(CBUILD_LOG_ERROR,
 				"Trying to call 'cbuild_map_get' on an empty map!");
@@ -4655,7 +4658,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	static struct __cbuild_int_flag_context_t __cbuild_int_flag_context = {0};
 	CBUILDDEF struct __cbuild_int_flag_spec_t*
 		__cbuild_int_flag_get_lopt(cbuild_sv_t opt) {
-		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach(__cbuild_int_flag_context.flags, spec) {
 			if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
 					__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
 				cbuild_sv_cmp(spec->opt, opt) == 0) {
@@ -4666,7 +4669,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	CBUILDDEF struct __cbuild_int_flag_spec_t*
 		__cbuild_int_flag_get_lopt_aliased(cbuild_sv_t opt) {
-		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach(__cbuild_int_flag_context.flags, spec) {
 			if((__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b00 ||
 					__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01) &&
 				cbuild_sv_cmp(spec->opt, opt) == 0) {
@@ -4681,7 +4684,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		return NULL;
 	}
 	CBUILDDEF struct __cbuild_int_flag_spec_t* __cbuild_int_flag_get_sopt(char opt) {
-		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach(__cbuild_int_flag_context.flags, spec) {
 			if(__CBUILD_INT_FLAG_GET_TYPE(spec->type) == 0b01 && spec->sopt == opt) {
 				return spec;
 			}
@@ -5114,7 +5117,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	CBUILDDEF void cbuild_flag_print_help(void) {
 		// Get length of longest option
 		size_t opt_len = strlen("\t-v, --version"); // minimal length
-		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach(__cbuild_int_flag_context.flags, spec) {
 			size_t new_opt_len = __cbuild_int_flag_get_flgh_len(spec);
 			opt_len            = new_opt_len > opt_len ? new_opt_len : opt_len;
 		}
@@ -5131,7 +5134,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		// Extract groups and print ungrouped args
 		cbuild_sv_t* groups = NULL;
 		size_t groups_len = 0;
-		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach(__cbuild_int_flag_context.flags, spec) {
 			if(spec->group_name.size == 0) {
 				char* opt   = __cbuild_int_flag_help_fmt(spec);
 				written = __CBUILD_PRINTF("%s", opt);
@@ -5154,7 +5157,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				}
 			}
 		}
-		cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
+		cbuild_da_foreach(__cbuild_int_flag_context.flags, spec) {
 			if(spec->group_name.size == 0) {
 				if(spec->aliases_len == 0) continue;
 				__CBUILD_PRINT("\t");
@@ -5178,7 +5181,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 					break;
 				}
 			}
-			cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
+			cbuild_da_foreach(__cbuild_int_flag_context.flags, spec) {
 				if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
 					char* opt   = __cbuild_int_flag_help_fmt(spec);
 					written = __CBUILD_PRINTF("%s", opt);
@@ -5188,7 +5191,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 					__CBUILD_PRINT("\n");
 				}
 			}
-			cbuild_da_foreach (&__cbuild_int_flag_context.flags, spec) {
+			cbuild_da_foreach(__cbuild_int_flag_context.flags, spec) {
 				if(cbuild_sv_cmp(spec->group_name, groups[i]) == 0) {
 					if(spec->aliases_len == 0) continue;
 					__CBUILD_PRINT("\t");
@@ -5217,8 +5220,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return &spec->args;
 	}
-	CBUILDDEF char* cbuild_flag_app_name(void) {
-		return (char*)__cbuild_int_flag_context.app_name;
+	CBUILDDEF const char* cbuild_flag_app_name(void) {
+		return __cbuild_int_flag_context.app_name;
 	}
 	CBUILDDEF void __cbuild_int_flag_help(const char* name) {
 		__CBUILD_PRINTF("Usage: %s [OPTIONS]\n\n", name);

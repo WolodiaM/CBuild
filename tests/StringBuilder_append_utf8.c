@@ -16,11 +16,11 @@ int main(void) {
 	cbuild_sb_t different = {0};
 	cbuild_sb_append_cstr(&different, "abc");
 	cbuild_sb_append_null(&different);
-	TEST_ASSERT_EQ(cbuild_sb_cmp(&sb, &copy), 0,
+	TEST_ASSERT_EQ(cbuild_sb_cmp(sb, copy), 0,
 		"Same utf8 string reported as different in comparisons.");
-	TEST_ASSERT_NEQ(cbuild_sb_cmp(&sb, &different), 0,
+	TEST_ASSERT_NEQ(cbuild_sb_cmp(sb, different), 0,
 		"Different utf8 string reported as same in comparisons.");
-	size_t len = cbuild_sb_utf8len(&sb);
+	size_t len = cbuild_sb_utf8len(sb);
 	TEST_ASSERT_EQ(len, 5,
 		"Wrong codepoint count calculated"TEST_EXPECT_MSG(zu), (size_t)5, len);
 	cbuild_sb_clear(&sb);

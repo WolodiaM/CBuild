@@ -879,7 +879,7 @@ int main(int argc, char** argv) {
 			if(test()) return 1;
 		} else {
 			bool failed = false;
-			cbuild_da_foreach (&pargs, test_group) {
+			cbuild_da_foreach(pargs, test_group) {
 				// Parse spec
 				char* test_name = strchr(*test_group, ':');
 				if(test_name != NULL) {
