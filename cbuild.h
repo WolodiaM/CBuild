@@ -347,13 +347,13 @@
 	#if defined(__clang__)
 		#define CBUILD_CC_CLANG
 	#elif defined(__TINYC__)
-		#error "You are trying to compile CBuild with TinyC compiler. This compile is not supported. It should support 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions."
+		#error "You are trying to compile CBuild with TinyC compiler. This compile is not supported. It should support 'gnu99' extensions, including binary literals; attributes; unnamed (anonymous) structs, enums, unions; typeof; __VA_OPT__; statement expressions."
 	#elif defined(__GNUC__)
 		#define CBUILD_CC_GCC
 	#elif defined(_MSC_VER)
-		#error "You are trying to compile CBuild with MSVC compiler. It does not support 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions."
+		#error "You are trying to compile CBuild with MSVC compiler. It does not support 'gnu99' extensions, including binary literals; attributes; unnamed (anonymous) structs, enums, unions; typeof; __VA_OPT__; statement expressions."
 	#else
-		#error "This compile is unsupported. If it supports 'gnu99' extensions, including binary literals; attributes; unnamed structs, enums, unions; typeof; __VA_OPT__; statement expressions; then you can simply add a check to this block for it."
+		#error "This compile is unsupported. If it supports 'gnu99' extensions, including binary literals; attributes; unnamed (anonymous) structs, enums, unions; typeof; __VA_OPT__; statement expressions; then you can simply add a check to this block for it."
 	#endif // Compiler check
 	#define CBUILD_CC_DEFINED
 #endif // !CBUILD_CC_DEFINNED
