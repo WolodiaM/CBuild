@@ -82,7 +82,7 @@ bool build_md_to_html(cbuild_sv_t filename) {
 	cbuild_sb_clear(&dst);
 	return true;
 }
-bool gen_index_redirect(cbuild_sb_t* index_cfg) {
+bool gen_index_redirect(cbuild_sb_t index_cfg) {
 	cbuild_sv_t cfg =	cbuild_sb_to_sv(index_cfg);
 	cbuild_sv_t path = cbuild_sv_chop_by_delim(&cfg, '\n');
 	cbuild_sb_t redirect_meta = {0};
@@ -138,7 +138,7 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 	}
 	cbuild_sb_clear(&dir_path);
 	// Build
-	cbuild_da_foreach(&list, file) {
+	cbuild_da_foreach(list, file){
 		// Generate full filename
 		cbuild_sb_t filename = {0};
 		cbuild_sb_appendf(&filename, "%s/%s", name, *file);
@@ -162,7 +162,7 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 			} else if(cbuild_sv_suffix(filename_sv, cbuild_sv_from_cstr(".url"))) {
 				cbuild_sb_t buffer = {0};
 				cbuild_file_read(filepath.data, &buffer);
-				cbuild_sv_t buffer_sv = cbuild_sb_to_sv(&buffer);
+				cbuild_sv_t buffer_sv = cbuild_sb_to_sv(buffer);
 				cbuild_sv_t	name = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
 				cbuild_sv_t url = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
 				cbuild_sb_appendf(out, "<li><a href =\"");
@@ -183,7 +183,7 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 			if(cbuild_file_check(dirname_path.data)) {
 				cbuild_sb_t dirname = {0};
 				cbuild_file_read(dirname_path.data, &dirname);
-				cbuild_sv_t	dirname_sv_full = cbuild_sb_to_sv(&dirname);
+				cbuild_sv_t	dirname_sv_full = cbuild_sb_to_sv(dirname);
 				cbuild_sv_t dirname_sv = cbuild_sv_chop_by_delim(&dirname_sv_full, '\n');
 				cbuild_sb_appendf(out, "<li>"CBuildSVFmt"\n<ul>\n", CBuildSVArg(dirname_sv));
 				cbuild_sb_clear(&dirname);
@@ -229,7 +229,7 @@ bool build_subdir_recursively(const char* name) {
 	}
 	cbuild_sb_clear(&out_dir);
 	// Build
-	cbuild_da_foreach(&list, file) {
+	cbuild_da_foreach(list, file){
 		// Generate full filename
 		cbuild_sb_t filename = {0};
 		cbuild_sb_appendf(&filename, "%s/%s", name, *file);
@@ -275,7 +275,7 @@ bool build() {
 	cbuild_log(CBUILD_LOG_TRACE, "Generating navigation tree.");
 	cbuild_sb_t nav_html = {0};
 	cbuild_sb_appendf(&nav_html, "<ul>\n");
-	cbuild_da_foreach(&root_list, root_file) {
+	cbuild_da_foreach(root_list, root_file){
 		cbuild_sb_t root_filepath = {0};
 		cbuild_sb_appendf(&root_filepath, WIKIMK_DIR_SRC "/%s", *root_file);
 		cbuild_sb_append_null(&root_filepath);
@@ -293,7 +293,7 @@ bool build() {
 			} else if(cbuild_sv_suffix(filename, cbuild_sv_from_cstr(".url"))) {
 				cbuild_sb_t buffer = {0};
 				cbuild_file_read(root_filepath.data, &buffer);
-				cbuild_sv_t buffer_sv = cbuild_sb_to_sv(&buffer);
+				cbuild_sv_t buffer_sv = cbuild_sb_to_sv(buffer);
 				cbuild_sv_t	name = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
 				cbuild_sv_t url = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
 				cbuild_sb_appendf(&nav_html, "<li><a href =\"");
@@ -312,7 +312,7 @@ bool build() {
 			if(cbuild_file_check(dirname_path.data)) {
 				cbuild_sb_t dirname = {0};
 				cbuild_file_read(dirname_path.data, &dirname);
-				cbuild_sv_t	dirname_sv_full = cbuild_sb_to_sv(&dirname);
+				cbuild_sv_t	dirname_sv_full = cbuild_sb_to_sv(dirname);
 				cbuild_sv_t dirname_sv = cbuild_sv_chop_by_delim(&dirname_sv_full, '\n');
 				cbuild_sb_appendf(&nav_html, "<li>"CBuildSVFmt"\n<ul>\n", CBuildSVArg(dirname_sv));
 				cbuild_sb_clear(&dirname);
@@ -336,7 +336,7 @@ bool build() {
 	}
 	cbuild_sb_clear(&nav_html);
 	// Build
-	cbuild_da_foreach(&root_list, root_file) {
+	cbuild_da_foreach(root_list, root_file){
 		cbuild_sb_t root_filepath = {0};
 		cbuild_sb_appendf(&root_filepath, WIKIMK_DIR_SRC "/%s", *root_file);
 		cbuild_sb_append_null(&root_filepath);
@@ -353,7 +353,7 @@ bool build() {
 			} else if(cbuild_sv_cmp(filename, cbuild_sv_from_cstr("index.cfg")) == 0) {
 				cbuild_sb_t index_cfg = {0};
 				cbuild_file_read(root_filepath.data, &index_cfg);
-				if(!gen_index_redirect(&index_cfg)) {
+				if(!gen_index_redirect(index_cfg)){
 					return false;
 				}
 				cbuild_sb_clear(&index_cfg);
