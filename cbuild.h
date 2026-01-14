@@ -4374,9 +4374,13 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		cbuild_log(CBUILD_LOG_INFO, "Rebuilding CBuild buildscript");
 		if(!cbuild_file_rename(bname_new, bname_old.data)) {
-			cbuild_log(CBUILD_LOG_ERROR, "Could not rename old buildscript!");
-			cbuild_sb_clear(&bname_old);
-			exit(1);
+			if(!cbuild_file_check(bname_new)) {
+				cbuild_log_warn("File %s does not exists, skipping rename step", bname_new);
+			} else {
+				cbuild_log_error("Could not rename old buildscript, aborting.");
+				cbuild_sb_clear(&bname_old);
+				exit(1);
+			}
 		}
 		cbuild_cmd_t cmd = {0};
 		cbuild_cmd_append_many(&cmd, CBUILD_CC, CBUILD_SELFREBUILD_ARGS);
