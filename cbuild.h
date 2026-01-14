@@ -3566,6 +3566,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				if(waitpid(proc, &status, 0) < 0) {
 					if(errno ==	ECHILD) {
 						return INT_MAX;
+					} else if (errno == EINTR) {
+						errno = 0;
 					} else {
 						cbuild_log(CBUILD_LOG_ERROR,
 							"Could not wait for child process (pid %d), error: \"%s\"", proc,
