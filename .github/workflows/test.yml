@@ -18,5 +18,7 @@ jobs:
           sudo apt-get install -yqq build-essential clang valgrind musl musl-tools
       - name: Build test runner
         run: gcc cbuild.c -o cbuild.run
+      - name: Build wikimk (check if it builds)
+        run: ./cbuild.run docs wikimk
       - name: Run tests
         run: ./cbuild.run test
