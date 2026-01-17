@@ -311,6 +311,12 @@
  * 2025-01-12  v0.14
  *   DynArray.h [feature]
  *     - Add macro to allow easy creation of required structures.
+ *   Proc.h [bugfix]
+ *     - Handle EINTR in cbuild_proc_wait_code
+ *   Compile.h [bugfix]
+ *     - Selfrebuild now will not abort if argv0 binary not found
+ *   StringView.h [feature]
+ *     - Added cbuild_sv_chop_right* functions to chop from the end of string view
  *   General [bugfix]
  *     - Added some 'const' annotations
  *     - Moved few functions to take parameters by value and not by pointer
@@ -1151,6 +1157,14 @@ CBUILDDEF size_t cbuild_sv_trim(cbuild_sv_t* sv);
 CBUILDDEF cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size);
 /**
  * @brief Chop characters from one string view into another
+ * Note: Original string view will be truncated
+ * @param sv => cbuild_sv_t* -> String view to work with
+ * @param size => size_t -> Number of characters to chop
+ * @return cbuild_sv_t -> New string view
+ */
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right(cbuild_sv_t* sv, size_t size);
+/**
+ * @brief Chop characters from one string view into another
  * Note: Original string view will be truncated. delim will be removed from both
  * string views
  * @param sv => cbuild_sv_t* -> String view to work with
@@ -1158,6 +1172,24 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size);
  * @return cbuild_sv_t -> New string view
  */
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim);
+/**
+ * @brief Chop characters from one string view into another
+ * Note: Original string view will be truncated. delim will be removed from both
+ * string views
+ * @param sv => cbuild_sv_t* -> String view to work with
+ * @param delim => char -> Character on which function stops.
+ * @return cbuild_sv_t -> New string view
+ */
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_delim(cbuild_sv_t* sv, char delim);
+/**
+ * @brief Chop characters from one string view into another
+ * Note: Original string view will be truncated. delim will be removed from both
+ * string views
+ * @param sv => cbuild_sv_t* -> String view to work with
+ * @param delim => cbuild_sv_t -> Character on which function stops.
+ * @return cbuild_sv_t -> New string view
+ */
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
 /**
  * @brief Chop characters from one string view into another
  * Note: Original string view will be truncated. delim will be removed from both
@@ -1187,6 +1219,17 @@ typedef bool (*cbuild_sv_delim_func)(const cbuild_sv_t* sv, size_t idx,
  * @return cbuild_sv_t -> New string view
  */
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv,
+	cbuild_sv_delim_func delim, void* args);
+/**
+ * @brief Chop characters from one string view into another
+ * Note: Original string view will be truncated. Index which function marked as
+ * an end will not be in any string view string views.
+ * @param sv => cbuild_sv_t* -> String view to work with
+ * @param delim => cbuild_sv_delim_func -> Delimiter scanner
+ * @param args => void* -> Will be passed into delim function
+ * @return cbuild_sv_t -> New string view
+ */
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_func(cbuild_sv_t* sv,
 	cbuild_sv_delim_func delim, void* args);
 /**
  * @brief strcmp for string view
@@ -2625,6 +2668,26 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	void* (*cbuild_malloc)(size_t size) = malloc;
 	void* (*cbuild_realloc)(void* ptr, size_t size) = realloc;
 	void (*cbuild_free)(void* ptr) = free;
+	void* __cbuild_memrchr(void* s, int c, size_t n) {
+		#if defined(CBUILD_API_POSIX) && ( \
+				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) || \
+				defined(CBUILD_OS_BSD) || \
+				defined(CBUILD_OS_MACOS))
+			return memrchr(s, c, n);
+		#else
+			char* chrptr = s;
+			chrptr += n;
+			do {
+				chrptr--;
+				if(*chrptr == c) {
+					goto loop_end;
+				}
+			} while(chrptr > s);
+			chrptr = NULL;
+		loop_end:
+			return chrptr;
+		#endif // Extension check
+	}
 	/* common.h impl */
 	CBUILDDEF void __cbuild_assert(const char* file, unsigned int line, const char* func,
 		const char* expr, ...) {
@@ -2799,6 +2862,13 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		sv->size -= size;
 		return cbuild_sv_from_parts(tmp, size);
 	}
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop_right(cbuild_sv_t* sv, size_t size) {
+		if(size > sv->size) {
+			size = sv->size;
+		}
+		sv->size -= size;
+		return cbuild_sv_from_parts(sv->data + sv->size, size);
+	}
 	CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim) {
 		char* chrptr = memchr(sv->data, delim, sv->size);
 		if(chrptr != NULL) {
@@ -2810,20 +2880,50 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		}
 		return cbuild_sv_chop(sv, sv->size);
 	}
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_delim(cbuild_sv_t* sv, char delim) {
+		char* chrptr = __cbuild_memrchr(sv->data, delim, sv->size);
+		if(chrptr != NULL) {
+			size_t i = (size_t)(chrptr - sv->data);
+			cbuild_sv_t ret = cbuild_sv_from_parts(chrptr + 1, (sv->size - i) - 1);
+			sv->size -= (sv->size - i);
+			return ret;
+		}
+		return cbuild_sv_chop(sv, sv->size);
+	}
 	CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
 		if(delim.size == 0 || delim.size > sv->size) {
 			return cbuild_sv_from_parts(sv->data, 0);
 		}
-		char* chrptr = sv->data;
+		char* chrptr = sv->data - 1;
 		size_t i = 0;
 		do {
-			chrptr = memchr(chrptr + 1, delim.data[0], sv->size);
+			chrptr = memchr(chrptr + 1, delim.data[0], sv->size - i);
+			i = (size_t)(chrptr - sv->data);
 			if(chrptr != NULL && sv->size - i >= delim.size &&
 				memcmp(chrptr, delim.data, delim.size) == 0) {
-				i = (size_t)(chrptr - sv->data);
 				cbuild_sv_t ret = cbuild_sv_from_parts(sv->data, i);
 				sv->data += delim.size + i;
 				sv->size -= delim.size + i;
+				return ret;
+			}
+		} while(chrptr != NULL);
+		return cbuild_sv_chop(sv, sv->size);
+	}
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
+		if(delim.size == 0 || delim.size > sv->size) {
+			return cbuild_sv_from_parts(sv->data, 0);
+		}
+		char* chrptr = sv->data;
+		size_t i = sv->size;
+		do {
+			chrptr = __cbuild_memrchr(sv->data, delim.data[0], sv->size - (sv->size - i));
+			i = (size_t)(chrptr - sv->data);
+			if(chrptr != NULL && sv->size - (sv->size - i) >= delim.size &&
+				memcmp(chrptr, delim.data, delim.size) == 0) {
+				cbuild_sv_t ret = cbuild_sv_from_parts(
+					sv->data + delim.size + i, 
+					sv->size - delim.size - i);
+				sv->size = i;
 				return ret;
 			}
 		} while(chrptr != NULL);
@@ -2842,6 +2942,21 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		sv->data += i + 1;
 		sv->size -= i + 1;
 		return cbuild_sv_from_parts(tmp, i);
+	}
+	CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_func(cbuild_sv_t* sv,
+		cbuild_sv_delim_func delim, void* args) {
+		ssize_t i = (ssize_t)sv->size - 1;
+		while(i >= 0 && !delim(sv, (size_t)i, args)) {
+			i--;
+		}
+		if(i < 0) {
+			cbuild_sv_t ret = cbuild_sv_from_parts(sv->data, sv->size);
+			sv->size = 0;
+			return ret;
+		}
+		size_t tmp = sv->size;
+		sv->size = (size_t)i;
+		return cbuild_sv_from_parts(sv->data + i + 1, tmp - ((size_t)i + 1));
 	}
 	CBUILDDEF int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b) {
 		if(a.size < b.size) {
@@ -2903,23 +3018,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	CBUILDDEF ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c) {
 		if(sv.size == 0) return -1;
-		char* chrptr = sv.data;
-		#if defined(CBUILD_API_POSIX) && ( \
-				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) || \
-				defined(CBUILD_OS_BSD) || \
-				defined(CBUILD_OS_MACOS))
-			chrptr = memrchr(sv.data, c, sv.size);
-		#else
-			chrptr += sv.size;
-			do {
-				chrptr--;
-				if(*chrptr == c) {
-					goto loop_end;
-				}
-			} while(chrptr > sv.data);
-			chrptr = NULL;
-		loop_end:
-		#endif // Extension check
+		char* chrptr = __cbuild_memrchr(sv.data, c, sv.size);
 		if(chrptr == NULL) {
 			return -1;
 		}

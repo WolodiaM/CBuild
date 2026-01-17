@@ -11,6 +11,13 @@ bool tdelim2(const cbuild_sv_t* sv, size_t idx, void* args) {
 	CBUILD_UNUSED(args);
 	return false;
 }
+bool tdelim3(const cbuild_sv_t* sv, size_t idx, void* args) {
+	CBUILD_UNUSED(args);
+	if(idx < 8 && sv->data[idx] == '|') {
+		return true;
+	}
+	return false;
+}
 int main(void) {
 	const char* str1 = "abc|def|-|ghj";
 	// cbuild_sv_chop
@@ -98,36 +105,154 @@ int main(void) {
 		TEST_EXPECT_RMSG(CBuildSVFmt),
 		CBuildSVArg(cbuild_sv_from_cstr(str1)), CBuildSVArg(sv16));
 	// Some more chops for some edge-cases
-	// Delimeter is part of long sequence of same chars
+	// Delimiter is part of long sequence of same chars
 	{
 		const char* str   = "foo---bar---baz";
 		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
 		cbuild_sv_t delim = cbuild_sv_from_cstr("--");
 		cbuild_sv_t part  = cbuild_sv_chop_by_sv(&sv, delim);
 		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("foo")), 0,
-			"Multi-char delim chop from long sequence: chopped part mismatch"
+			"Multi-char delim cbuild_sv_chop_by_sv from long sequence: chopped part mismatch"
 			TEST_EXPECT_RMSG(CBuildSVFmt),
 			CBuildSVArg(cbuild_sv_from_cstr("foo")), CBuildSVArg(part));
 		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("-bar---baz")), 0,
-			"Multi-char delim chop from long sequence: remaining part mismatch"
+			"Multi-char delim cbuid_sv_chop_by_sv from long sequence: remaining part mismatch"
 			TEST_EXPECT_RMSG(CBuildSVFmt),
 			CBuildSVArg(cbuild_sv_from_cstr("-bar---baz")),
 			CBuildSVArg(sv));
 	}
-	// Delimeter is a single character
+	// Delimiter is a single character
 	{
 		const char* str   = "foo---bar---baz";
 		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
 		cbuild_sv_t delim = cbuild_sv_from_cstr("-");
 		cbuild_sv_t part  = cbuild_sv_chop_by_sv(&sv, delim);
 		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("foo")), 0,
-			"Single-char delim chop from long sequence: chopped part mismatch"
+			"Single-char delim cbuild_sv_chop_by_sv from long sequence: chopped part mismatch"
 			TEST_EXPECT_RMSG(CBuildSVFmt),
 			CBuildSVArg(cbuild_sv_from_cstr("foo")), CBuildSVArg(part));
 		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("--bar---baz")), 0,
-			"Single-char delim chop from long sequence: remaining part mismatch"
+			"Single-char delim cbuild_sv_chop_by_sv from long sequence: remaining part mismatch"
 			TEST_EXPECT_RMSG(CBuildSVFmt),
 			CBuildSVArg(cbuild_sv_from_cstr("--bar---baz")),
+			CBuildSVArg(sv));
+	}
+	// cbuild_sv_chop_right
+	cbuild_sv_t sv17 = cbuild_sv_from_cstr(str1);
+	cbuild_sv_t sv18 = cbuild_sv_chop_right(&sv17, 3);
+	cbuild_sv_t sv19 = cbuild_sv_from_cstr(str1);
+	cbuild_sv_t sv20 = cbuild_sv_chop(&sv19, 40);
+	cbuild_sv_t cmp9 = cbuild_sv_from_cstr("abc|def|-|");
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv17, cmp9), 0,
+		"Wrong part left after cbuild_sv_chop_right"TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cmp9), CBuildSVArg(sv17));
+	cbuild_sv_t cmp10 = cbuild_sv_from_cstr("ghj");
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv18, cmp10), 0,
+		"Wrong part chopped after cbuild_sv_chop_right"TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cmp10), CBuildSVArg(sv18));
+	TEST_ASSERT_EQ(
+		cbuild_sv_cmp(sv19, cbuild_sv_from_cstr("")), 0,
+		"Wrong part left after chopping (on overflow) after cbuild_sv_chop_right"
+		TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cbuild_sv_from_cstr("")), CBuildSVArg(sv3));
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv20, cbuild_sv_from_cstr(str1)), 0,
+		"Wrong part chopped (on overflow) after cbuild_sv_chop_right"
+		TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cbuild_sv_from_cstr(str1)), CBuildSVArg(sv20));
+	// cbuild_sv_chop_right_by_delim
+	cbuild_sv_t sv21 = cbuild_sv_from_cstr(str1);
+	cbuild_sv_t sv22 = cbuild_sv_chop_right_by_delim(&sv21, '|');
+	cbuild_sv_t sv23 = cbuild_sv_from_cstr(str1);
+	cbuild_sv_t sv24 = cbuild_sv_chop_right_by_delim(&sv23, '/');
+	cbuild_sv_t cmp11 = cbuild_sv_from_cstr("abc|def|-");
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv21, cmp11), 0,
+		"Wrong part left after cbuild_sv_chop_right_by_delim"TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cmp11), CBuildSVArg(sv21));
+	cbuild_sv_t cmp12 = cbuild_sv_from_cstr("ghj");
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv22, cmp12), 0,
+		"Wrong part chopped after cbuild_sv_chop_right_by_delim"TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cmp12), CBuildSVArg(sv22));
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv23, cbuild_sv_from_cstr("")), 0,
+		"Wrong part left after chopping (on overflow) on cbuild_sv_chop_right_by_delim"
+		TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cbuild_sv_from_cstr("")), CBuildSVArg(sv23));
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv24, cbuild_sv_from_cstr(str1)), 0,
+		"Wrong part chopped (on overflow) on cbuild_sv_chop_right_by_delim"
+		TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cbuild_sv_from_cstr(str1)), CBuildSVArg(sv24));
+	// cbuild_sv_chop_by_func
+	cbuild_sv_t sv25 = cbuild_sv_from_cstr(str1);
+	cbuild_sv_t sv26 = cbuild_sv_chop_right_by_func(&sv25, tdelim3, NULL);
+	cbuild_sv_t sv27 = cbuild_sv_from_cstr(str1);
+	cbuild_sv_t sv28 = cbuild_sv_chop_right_by_func(&sv27, tdelim2, NULL);
+	cbuild_sv_t cmp13 = cbuild_sv_from_cstr("abc|def");
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv25, cmp13), 0,
+		"Wrong part left after cbuild_sv_chop_right_by_func"TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cmp13), CBuildSVArg(sv25));
+	cbuild_sv_t cmp14 = cbuild_sv_from_cstr("-|ghj");
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv26, cmp14), 0,
+		"Wrong part chopped after cbuild_sv_chop_right_by_func"TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cmp14), CBuildSVArg(sv26));
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv27, cbuild_sv_from_cstr("")), 0,
+		"Wrong part left after chopping (on overflow) after cbuild_sv_chop_right_by_func"
+		TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cbuild_sv_from_cstr("")), CBuildSVArg(sv27));
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv28, cbuild_sv_from_cstr(str1)), 0,
+		"Wrong part chopped (on overflow) after cbuild_sv_chop_right_by_func"
+		TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cbuild_sv_from_cstr(str1)), CBuildSVArg(sv28));
+	// cbuild_sv_chop_by_sv
+	cbuild_sv_t sv29 = cbuild_sv_from_cstr(str1);
+	cbuild_sv_t sv30 = cbuild_sv_chop_right_by_sv(&sv29, cbuild_sv_from_cstr("|-|"));
+	cbuild_sv_t sv31 = cbuild_sv_from_cstr(str1);
+	cbuild_sv_t sv32 = cbuild_sv_chop_right_by_sv(&sv31, cbuild_sv_from_cstr("---"));
+	cbuild_sv_t cmp15 = cbuild_sv_from_cstr("abc|def");
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv29, cmp15), 0,
+		"Wrong part left after cbuild_sv_chop_right_by_sv"TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cmp15), CBuildSVArg(sv29));
+	cbuild_sv_t cmp16 = cbuild_sv_from_cstr("ghj");
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv30, cmp16), 0,
+		"Wrong part chopped after cbuild_sv_chop_right_by_sv"TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cmp16), CBuildSVArg(sv30));
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv31, cbuild_sv_from_cstr("")), 0,
+		"Wrong part left after chopping (on overflow) after cbuild_sv_chop_right_by_sv"
+		TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cbuild_sv_from_cstr("")), CBuildSVArg(sv31));
+	TEST_ASSERT_EQ(cbuild_sv_cmp(sv32, cbuild_sv_from_cstr(str1)), 0,
+		"Wrong part chopped (on overflow) after cbuild_sv_chop_right_by_sv"
+		TEST_EXPECT_RMSG(CBuildSVFmt),
+		CBuildSVArg(cbuild_sv_from_cstr(str1)), CBuildSVArg(sv32));
+	// Some more chops for some edge-cases
+	// Delimiter is part of long sequence of same chars
+	{
+		const char* str   = "foo---bar---baz";
+		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
+		cbuild_sv_t delim = cbuild_sv_from_cstr("--");
+		cbuild_sv_t part  = cbuild_sv_chop_right_by_sv(&sv, delim);
+		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("baz")), 0,
+			"Multi-char delim cbuild_sv_chop_right_by_sv from long sequence: chopped part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("baz")), CBuildSVArg(part));
+		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("foo---bar-")), 0,
+			"Multi-char delim cbuild_sv_chop_right_by_sv from long sequence: remaining part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("foo---bar-")),
+			CBuildSVArg(sv));
+	}
+	// Delimiter is a single character
+	{
+		const char* str   = "foo---bar---baz";
+		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
+		cbuild_sv_t delim = cbuild_sv_from_cstr("-");
+		cbuild_sv_t part  = cbuild_sv_chop_right_by_sv(&sv, delim);
+		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("baz")), 0,
+			"Single-char delim cbuild_sv_chop_right_by_sv from long sequence: chopped part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("baz")), CBuildSVArg(part));
+		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("foo---bar--")), 0,
+			"Single-char delim cbuild_sv_chop_right_by_sv from long sequence: remaining part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("foo---bar--")),
 			CBuildSVArg(sv));
 	}
 	return 0;
