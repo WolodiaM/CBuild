@@ -48,22 +48,17 @@ jobs:
         uses: cygwin/cygwin-install-action@v6
         with:
           packages: gcc make valgrind
-      - name: Change back to workspace
-        run: ln -s "${{ github.workspace }}" CBuild
-      - name: Test
         run: |
-          ls -la
-          echo $PWD
-        working-directory: ${{ github.workspace }}
-      - name: Build test runner
-        run: |
+          ln -sf "${{ github.workspace }}" CBuild
           cd CBuild
           gcc cbuild.c -o cbuild.exe
       - name: Build wikimk (check if it builds)
         run: |
+          ln -sf "${{ github.workspace }}" CBuild
           cd CBuild
           ./cbuild.exe docs wikimk
       - name: Run tests
         run: |
+          ln -sf "${{ github.workspace }}" CBuild
           cd CBuild
           ./cbuild.exe test
