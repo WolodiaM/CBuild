@@ -54,6 +54,7 @@ jobs:
         run: |
           ls -la
           echo $PWD
+        working-directory: ${{ github.workspace }}
       - name: Build test runner
         run: |
           cd CBuild
