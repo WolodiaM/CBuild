@@ -2675,7 +2675,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				defined(CBUILD_OS_MACOS))
 			return memrchr(s, c, n);
 		#else
-			char* chrptr = s;
+			char* chrptr = (char*)s;
 			chrptr += n;
 			do {
 				chrptr--;
