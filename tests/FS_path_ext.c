@@ -15,9 +15,9 @@ int main(void) {
 	const char* e4 = cbuild_path_ext(p4);
 	TEST_ASSERT_STREQ(e4, "", "Wrong extension extracted from \"%s\""
 		TEST_EXPECT_MSG(s), p4, "", e4);
-	free((void*)e1);
-	free((void*)e2);
-	free((void*)e3);
-	free((void*)e4);
+	const char* p5 = "file.tar.gz";
+	const char* e5 = cbuild_path_ext(p4, .dot = 2);
+	TEST_ASSERT_STREQ(e5, "", "Wrong extension extracted from \"%s\""
+		TEST_EXPECT_MSG(s), p5, "tar.gz", e5);
 	return 0;
 }

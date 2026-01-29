@@ -11,8 +11,5 @@ int main(void) {
 	const char* n3 = cbuild_path_name(p3);
 	TEST_ASSERT_STREQ(n3, "a.c", "Wrong filename extracted from \"%s\""
 		TEST_EXPECT_MSG(s), p3, "a.c", n3);
-	free((void*)n1);
-	free((void*)n2);
-	free((void*)n3);
 	return 0;
 }
