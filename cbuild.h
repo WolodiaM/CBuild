@@ -2671,8 +2671,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	void* __cbuild_memrchr(const void* s, int c, size_t n) {
 		#if defined(CBUILD_API_POSIX) && ( \
 				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) || \
-				defined(CBUILD_OS_BSD) || \
-				defined(CBUILD_OS_MACOS))
+				defined(CBUILD_OS_BSD))
 			return memrchr(s, c, n);
 		#else
 			char* chrptr = (char*)s;
@@ -2682,7 +2681,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				if(*chrptr == c) {
 					goto loop_end;
 				}
-			} while(chrptr >= (char*)s);
+			} while(chrptr > (char*)s);
 			chrptr = NULL;
 		loop_end:
 			return chrptr;
@@ -3168,7 +3167,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx) {
 		size_t ret = 0;
 		while(sv.size > 0) {
-			signed char cs = *sv.data;
+			signed char cs = *(signed char*)sv.data;
 			ret++;
 			if(cs > 0) { // ASCII, 'signed char' abuse
 				sv.size--;
@@ -4077,11 +4076,11 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			size_t lensrc = strlen(src) + 1 + strlen(list.data[i]);
 			char* tmpsrc = cbuild_malloc(lensrc + 1);
 			cbuild_assert(tmpsrc != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-			sprintf(tmpsrc, "%s/%s", src, list.data[i]);
+			snprintf(tmpsrc, lensrc + 1,"%s/%s", src, list.data[i]);
 			size_t lendst = strlen(dst) + 1 + strlen(list.data[i]);
 			char* tmpdst = cbuild_malloc(lendst + 1);
 			cbuild_assert(tmpdst != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-			sprintf(tmpdst, "%s/%s", dst, list.data[i]);
+			snprintf(tmpdst, lendst + 1,"%s/%s", dst, list.data[i]);
 			cbuild_filetype_t f = cbuild_path_filetype(tmpsrc);
 			if (f == CBUILD_FTYPE_MISSING) {
 				CBUILD_UNREACHABLE("cbuild_dir_list should not return invalid files.");
@@ -4138,7 +4137,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			size_t lenpath = strlen(path) + 1 + strlen(list.data[i]);
 			char* tmppath = cbuild_malloc(lenpath + 1);
 			cbuild_assert(tmppath != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-			sprintf(tmppath, "%s/%s", path, list.data[i]);
+			snprintf(tmppath, lenpath + 1, "%s/%s", path, list.data[i]);
 			cbuild_filetype_t f = cbuild_path_filetype(tmppath);
 			if (f == CBUILD_FTYPE_MISSING) {
 				CBUILD_UNREACHABLE("cbuild_dir_list should not return invalid files.");
@@ -4335,7 +4334,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			memcpy(ret, "\0", 1);
 			return ret;
 		}
-		size_t len = strlen(path) - (size_t)i + 1;
+		size_t len = strlen(path) - (size_t)i;
 		char* ret = (char*)cbuild_malloc(len);
 		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		memcpy(ret, path + i + 1, len);
@@ -4351,7 +4350,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				break;
 			}
 		}
-		size_t len = strlen(path) - (size_t)i + 1;
+		size_t len = strlen(path) - (size_t)i;
 		char* ret = (char*)cbuild_malloc(len);
 		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
 		memcpy(ret, path + i + 1, len);
