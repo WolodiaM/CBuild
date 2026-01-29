@@ -4076,11 +4076,11 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			size_t lensrc = strlen(src) + 1 + strlen(list.data[i]);
 			char* tmpsrc = cbuild_malloc(lensrc + 1);
 			cbuild_assert(tmpsrc != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-			sprintf(tmpsrc, "%s/%s", src, list.data[i]);
+			snprintf(tmpsrc, lensrc + 1,"%s/%s", src, list.data[i]);
 			size_t lendst = strlen(dst) + 1 + strlen(list.data[i]);
 			char* tmpdst = cbuild_malloc(lendst + 1);
 			cbuild_assert(tmpdst != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-			sprintf(tmpdst, "%s/%s", dst, list.data[i]);
+			snprintf(tmpdst, lendst + 1,"%s/%s", dst, list.data[i]);
 			cbuild_filetype_t f = cbuild_path_filetype(tmpsrc);
 			if (f == CBUILD_FTYPE_MISSING) {
 				CBUILD_UNREACHABLE("cbuild_dir_list should not return invalid files.");
@@ -4137,7 +4137,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			size_t lenpath = strlen(path) + 1 + strlen(list.data[i]);
 			char* tmppath = cbuild_malloc(lenpath + 1);
 			cbuild_assert(tmppath != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-			sprintf(tmppath, "%s/%s", path, list.data[i]);
+			snprintf(tmppath, lenpath + 1, "%s/%s", path, list.data[i]);
 			cbuild_filetype_t f = cbuild_path_filetype(tmppath);
 			if (f == CBUILD_FTYPE_MISSING) {
 				CBUILD_UNREACHABLE("cbuild_dir_list should not return invalid files.");
