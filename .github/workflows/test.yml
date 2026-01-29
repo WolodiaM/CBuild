@@ -51,7 +51,9 @@ jobs:
       - name: Change back to workspace
         run: ln -s "${{ github.workspace }}" CBuild
       - name: Test
-        run: ls -la
+        run: |
+          ls -la
+          echo $PWD
       - name: Build test runner
         run: |
           cd CBuild
