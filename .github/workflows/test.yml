@@ -53,8 +53,14 @@ jobs:
       - name: Test
         run: ls -la
       - name: Build test runner
-        run: gcc cbuild.c -o cbuild.exe
+        run: |
+          cd "${{ github.workspace }}"
+          gcc cbuild.c -o cbuild.exe
       - name: Build wikimk (check if it builds)
-        run: ./cbuild.exe docs wikimk
+        run: |
+          cd "${{ github.workspace }}"
+          ./cbuild.exe docs wikimk
       - name: Run tests
-        run: ./cbuild.exe test
+        run: |
+          cd "${{ github.workspace }}"
+          ./cbuild.exe test
