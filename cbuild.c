@@ -1012,10 +1012,12 @@ bool test(void) {
 	cbuild_fd_t dev_null = cbuild_fd_open_write("/dev/null");
 	cbuild_fd_t fdstdout = dup(STDOUT_FILENO);
 	cbuild_fd_t fdstderr = dup(STDERR_FILENO);
-	fflush(stdout);
-	fflush(stderr);
-	dup2(dev_null, STDOUT_FILENO);
-	dup2(dev_null, STDERR_FILENO);
+	if (getenv("CBUILD_TEST_LOG_FULL") == NULL) {
+		fflush(stdout);
+		fflush(stderr);
+		dup2(dev_null, STDOUT_FILENO);
+		dup2(dev_null, STDERR_FILENO);
+	}
 	// Run tests
 	for(size_t test_idx = 0; test_idx < cbuild_arr_len(TESTS); test_idx++) {
 		test_case_t test = TESTS[test_idx];
@@ -1037,14 +1039,16 @@ bool test(void) {
 		TPL_RUN_REGISTERED(*get_status(test_idx, tpl_idx) = status,
 			*get_status(test_idx, tpl_idx) = TEST_SKIPPED);
 	}
-	// Restore output
-	fflush(stdout);
-	fflush(stderr);
-	dup2(fdstdout, STDOUT_FILENO);
-	dup2(fdstderr, STDERR_FILENO);
-	close(dev_null);
-	close(fdstdout);
-	close(fdstderr);
+	if (getenv("CBUILD_TEST_LOG_FULL") == NULL) {
+		// Restore output
+		fflush(stdout);
+		fflush(stderr);
+		dup2(fdstdout, STDOUT_FILENO);
+		dup2(fdstderr, STDERR_FILENO);
+		close(dev_null);
+		close(fdstdout);
+		close(fdstderr);
+	}
 	// Print report
 	size_t name_len = 0;
 	for(size_t i = 0; i < cbuild_arr_len(TESTS); i++) {
