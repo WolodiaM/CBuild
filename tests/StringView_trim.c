@@ -21,7 +21,7 @@ int main(void) {
 		"cbuild_sv_trim_left(str1): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)6, r1);
 	char fmt1[20] = {0};
-	sprintf(fmt1, CBuildSVFmt, CBuildSVArg(sv1));
+	snprintf(fmt1, 20, CBuildSVFmt, CBuildSVArg(sv1));
 	TEST_ASSERT_STREQ(fmt1, "abc",
 		"cbuild_sv_trim_left(str1): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "abc", fmt1);
@@ -30,7 +30,7 @@ int main(void) {
 		"cbuild_sv_trim_left(str2): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)0, r4);
 	char fmt4[20] = {0};
-	sprintf(fmt4, CBuildSVFmt, CBuildSVArg(sv4));
+	snprintf(fmt4, 20, CBuildSVFmt, CBuildSVArg(sv4));
 	TEST_ASSERT_STREQ(fmt4, "abc \t \t \t",
 		"cbuild_sv_trim_left(str2): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "abc \t \t \t", fmt4);
@@ -39,7 +39,7 @@ int main(void) {
 		"cbuild_sv_trim_left(str3): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)3, r7);
 	char fmt7[20] = {0};
-	sprintf(fmt7, CBuildSVFmt, CBuildSVArg(sv7));
+	snprintf(fmt7, 20, CBuildSVFmt, CBuildSVArg(sv7));
 	TEST_ASSERT_STREQ(fmt7, "abc\t \t",
 		"cbuild_sv_trim_left(str3): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "abc\t \t", fmt7);
@@ -48,7 +48,7 @@ int main(void) {
 		"cbuild_sv_trim_left(str4): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)10, r10);
 	char fmt10[20] = {0};
-	sprintf(fmt10, CBuildSVFmt, CBuildSVArg(sv10));
+	snprintf(fmt10, 20, CBuildSVFmt, CBuildSVArg(sv10));
 	TEST_ASSERT_STREQ(fmt10, "",
 		"cbuild_sv_trim_left(str4): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "",	fmt10);
@@ -58,7 +58,7 @@ int main(void) {
 		"cbuild_sv_trim_right(str1): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)0, r2);
 	char fmt2[20] = {0};
-	sprintf(fmt2, CBuildSVFmt, CBuildSVArg(sv2));
+	snprintf(fmt2, 20, CBuildSVFmt, CBuildSVArg(sv2));
 	TEST_ASSERT_STREQ(fmt2, "   \t\t\tabc",
 		"cbuild_sv_trim_right(str1): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "   \t\t\tabc", fmt2);
@@ -67,7 +67,7 @@ int main(void) {
 		"cbuild_sv_trim_right(str2): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)6, cbuild_sv_trim_right(&sv5));
 	char fmt5[20] = {0};
-	sprintf(fmt5, CBuildSVFmt, CBuildSVArg(sv5));
+	snprintf(fmt5, 20, CBuildSVFmt, CBuildSVArg(sv5));
 	TEST_ASSERT_STREQ(fmt5, "abc",
 		"cbuild_sv_trim_right(str2): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "abc", fmt5);
@@ -76,7 +76,7 @@ int main(void) {
 		"cbuild_sv_trim_right(str3): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)3, cbuild_sv_trim_right(&sv8));
 	char fmt8[20] = {0};
-	sprintf(fmt8, CBuildSVFmt, CBuildSVArg(sv8));
+	snprintf(fmt8, 20, CBuildSVFmt, CBuildSVArg(sv8));
 	TEST_ASSERT_STREQ(fmt8, " \t abc",
 		"cbuild_sv_trim_right(str3): Wrong data after trim"
 		TEST_EXPECT_MSG(s), " \t abc", fmt8);
@@ -85,7 +85,7 @@ int main(void) {
 		"cbuild_sv_trim_right(str4): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)10, cbuild_sv_trim_right(&sv11));
 	char fmt11[20] = {0};
-	sprintf(fmt11, CBuildSVFmt, CBuildSVArg(sv11));
+	snprintf(fmt11, 20, CBuildSVFmt, CBuildSVArg(sv11));
 	TEST_ASSERT_STREQ(fmt11, "",
 		"cbuild_sv_trim_right(str4): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "", fmt11);
@@ -95,7 +95,7 @@ int main(void) {
 		"cbuild_sv_trim(str1): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)6, cbuild_sv_trim(&sv3));
 	char fmt3[20] = {0};
-	sprintf(fmt3, CBuildSVFmt, CBuildSVArg(sv3));
+	snprintf(fmt3, 20, CBuildSVFmt, CBuildSVArg(sv3));
 	TEST_ASSERT_STREQ(fmt3, "abc",
 		"cbuild_sv_trim(str1): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "abc", fmt3);
@@ -104,7 +104,7 @@ int main(void) {
 		"cbuild_sv_trim(str2): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)6, cbuild_sv_trim(&sv6));
 	char fmt6[20] = {0};
-	sprintf(fmt6, CBuildSVFmt, CBuildSVArg(sv6));
+	snprintf(fmt6, 20, CBuildSVFmt, CBuildSVArg(sv6));
 	TEST_ASSERT_STREQ(fmt6, "abc",
 		"cbuild_sv_trim(str2): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "abc", fmt6);
@@ -113,7 +113,7 @@ int main(void) {
 		"cbuild_sv_trim(str3): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)6, cbuild_sv_trim(&sv9));
 	char fmt9[20] = {0};
-	sprintf(fmt9, CBuildSVFmt, CBuildSVArg(sv9));
+	snprintf(fmt9, 20, CBuildSVFmt, CBuildSVArg(sv9));
 	TEST_ASSERT_STREQ(fmt9, "abc",
 		"cbuild_sv_trim(str3): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "abc", fmt9);
@@ -122,7 +122,7 @@ int main(void) {
 		"cbuild_sv_trim(str4): Wrong number of characters trimmed"
 		TEST_EXPECT_MSG(zu), (size_t)10, cbuild_sv_trim(&sv12));
 	char fmt12[20] = {0};
-	sprintf(fmt12, CBuildSVFmt, CBuildSVArg(sv12));
+	snprintf(fmt12, 20, CBuildSVFmt, CBuildSVArg(sv12));
 	TEST_ASSERT_STREQ(fmt12, "",
 		"cbuild_sv_trim(str4): Wrong data after trim"
 		TEST_EXPECT_MSG(s), "", fmt12);

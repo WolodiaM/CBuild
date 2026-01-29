@@ -2678,6 +2678,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			chrptr += n;
 			do {
 				chrptr--;
+		printf("[%p] == [%p]\n", chrptr, s);
 				if(*chrptr == c) {
 					goto loop_end;
 				}
