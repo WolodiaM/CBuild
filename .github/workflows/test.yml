@@ -17,7 +17,7 @@ jobs:
   #       # CBUILD_TEST_LOG_FULL: yes
   #   steps:
   #     - name: Checkout
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v6
   #     - name: Install dependencies (Linux)
   #       if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
   #       run: |
@@ -41,10 +41,10 @@ jobs:
         os: [windows-latest] # TODO: windows-11-arm - partner runner, but seems to be free, different setup? No cygwinn-arm
     defaults:
       run:
-        shell: bash -l -o pipefail {0}
+        shell: bash.exe -l -o pipefail {0}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Install Cygwin and dependencies
         uses: cygwin/cygwin-install-action@v6
         with:
