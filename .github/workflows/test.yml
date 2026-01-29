@@ -49,8 +49,8 @@ jobs:
         uses: cygwin/cygwin-install-action@v6
         with:
           packages: gcc make valgrind
-      - name: Test
-        run: ls -la
+      - name: Change back to workspace
+        run: cd "${{ github.workspace }}"
       - name: Build test runner
         run: gcc cbuild.c -o cbuild.exe
       - name: Build wikimk (check if it builds)
