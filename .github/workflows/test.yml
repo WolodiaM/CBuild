@@ -48,6 +48,7 @@ jobs:
         uses: cygwin/cygwin-install-action@v6
         with:
           packages: gcc make valgrind
+      - name: Build test runner
         run: |
           ln -sf "${{ github.workspace }}" CBuild
           cd CBuild
