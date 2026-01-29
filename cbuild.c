@@ -49,25 +49,78 @@ static const char* TEST_STATUS_REPORTS[] = {
 	[TEST_COMP_FAILED]     = CBUILD_TERM_FG(CBUILD_TERM_YELLOW) "!"CBUILD_TERM_RESET,
 };
 _Static_assert(TEST_STATUS_COUNT == cbuild_arr_len(TEST_STATUS_REPORTS),
-	"TEST_STATUS_REPORS should have one report per test_status_t entry");
+	"TEST_STATUS_ERRORS should have one report per test_status_t entry");
 enum {
 	TPL_X86_64_LINUX_GLIBC_GCC = 0,
 	TPL_X86_64_LINUX_GLIBC_CLANG,
 	TPL_X86_64_LINUX_MUSL_GCC,
+	TPL_AARCH64_LINUX_GLIBC_GCC,
+	TPL_AARCH64_LINUX_GLIBC_CLANG,
+	TPL_AARCH64_LINUX_MUSL_GCC,
 	TPL_X86_64_POSIX_GCC,
 	TPL_X86_64_POSIX_CLANG,
+	TPL_AARCH64_POSIX_GCC,
+	TPL_AARCH64_POSIX_CLANG,
+	TPL_X86_64_MACOS_GCC,
+	TPL_X86_64_MACOS_CLANG,
+	TPL_AARCH64_MACOS_GCC,
+	TPL_AARCH64_MACOS_CLANG,
+	TPL_X86_64_WINDOWS_CYGWIN_GCC,
 	TPL_COUNT,
 };
 #define TPL_MASK(idx) (1u << (idx))
 #define TPLM_ALL      ((1u << TPL_COUNT) - 1u)
 enum {
-	TPLM_X86_64_LINUX_GLIBC_GCC   = TPL_MASK(TPL_X86_64_LINUX_GLIBC_GCC),
-	TPLM_X86_64_LINUX_GLIBC_CLANG = TPL_MASK(TPL_X86_64_LINUX_GLIBC_CLANG),
-	TPLM_X86_64_LINUX_MUSL_GCC    = TPL_MASK(TPL_X86_64_LINUX_MUSL_GCC),
-	TPLM_X86_64_POSIX_GCC         = TPL_MASK(TPL_X86_64_POSIX_GCC),
-	TPLM_X86_64_POSIX_CLANG       = TPL_MASK(TPL_X86_64_POSIX_CLANG),
+	TPLM_X86_64_LINUX_GLIBC_GCC    = TPL_MASK(TPL_X86_64_LINUX_GLIBC_GCC),
+	TPLM_X86_64_LINUX_GLIBC_CLANG  = TPL_MASK(TPL_X86_64_LINUX_GLIBC_CLANG),
+	TPLM_X86_64_LINUX_MUSL_GCC     = TPL_MASK(TPL_X86_64_LINUX_MUSL_GCC),
+	TPLM_AARCH64_LINUX_GLIBC_GCC   = TPL_MASK(TPL_AARCH64_LINUX_GLIBC_GCC),
+	TPLM_AARCH64_LINUX_GLIBC_CLANG = TPL_MASK(TPL_AARCH64_LINUX_GLIBC_CLANG),
+	TPLM_AARCH64_LINUX_MUSL_GCC    = TPL_MASK(TPL_AARCH64_LINUX_MUSL_GCC),
+	TPLM_X86_64_POSIX_GCC          = TPL_MASK(TPL_X86_64_POSIX_GCC),
+	TPLM_X86_64_POSIX_CLANG        = TPL_MASK(TPL_X86_64_POSIX_CLANG),
+	TPLM_AARCH64_POSIX_GCC         = TPL_MASK(TPL_AARCH64_POSIX_GCC),
+	TPLM_AARCH64_POSIX_CLANG       = TPL_MASK(TPL_AARCH64_POSIX_CLANG),
+	TPLM_X86_64_MACOS_GCC          = TPL_MASK(TPL_X86_64_MACOS_GCC),
+	TPLM_X86_64_MACOS_CLANG        = TPL_MASK(TPL_X86_64_MACOS_CLANG),
+	TPLM_AARCH64_MACOS_GCC         = TPL_MASK(TPL_AARCH64_MACOS_GCC),
+	TPLM_AARCH64_MACOS_CLANG       = TPL_MASK(TPL_AARCH64_MACOS_CLANG),
+	TPLM_X86_64_WINDOWS_CYGWIN_GCC = TPL_MASK(TPL_X86_64_WINDOWS_CYGWIN_GCC),
 };
-_Static_assert(TPL_COUNT == 5, "Enum TPLM_* expects 5 test platforms.");
+_Static_assert(TPL_COUNT == 15, "Enum TPLM_* expects 15 test platforms.");
+#if defined(CBUILD_OS_LINUX)
+	#define EXE_NAME "run"
+	#if defined(__x86_64__)
+		const uint32_t TPLM_RUNNER_HOST = \
+			TPLM_X86_64_LINUX_GLIBC_GCC   | \
+			TPLM_X86_64_LINUX_GLIBC_CLANG | \
+			TPLM_X86_64_LINUX_MUSL_GCC    | \
+			TPLM_X86_64_POSIX_GCC         | \
+			TPLM_X86_64_POSIX_CLANG;
+	#elif defined(__aarch64__)
+		const uint32_t TPLM_RUNNER_HOST =  \
+			TPLM_AARCH64_LINUX_GLIBC_GCC   | \
+			TPLM_AARCH64_LINUX_GLIBC_CLANG | \
+			TPLM_AARCH64_LINUX_MUSL_GCC    | \
+			TPLM_AARCH64_POSIX_GCC         | \
+			TPLM_AARCH64_POSIX_CLANG;
+	#endif
+#elif defined(CBUILD_OS_MACOS)
+	#define EXE_NAME "run"
+	#if defined(__x86_64__)
+		const uint32_t TPLM_RUNNER_HOST = \
+			TPLM_X86_64_MACOS_GCC         | \
+			TPLM_X86_64_MACOS_CLANG;
+	#elif defined(__aarch64__)
+		const uint32_t TPLM_RUNNER_HOST = \
+			TPLM_AARCH64_MACOS_GCC        | \
+			TPLM_AARCH64_MACOS_CLANG;
+	#endif
+#elif defined(CBUILD_OS_WINDOWS_CYGWIN)
+	#define EXE_NAME "exe"
+	const uint32_t TPLM_RUNNER_HOST = \
+		TPLM_X86_64_WINDOWS_CYGWIN_GCC;
+#endif
 typedef struct test_case_t {
 	union {
 		uint32_t platforms;
@@ -85,19 +138,19 @@ typedef struct test_case_t {
 } test_case_t;
 volatile size_t TPL_RUN_REGISTERED_CURR = 0;
 volatile const char* TPL_RUN_REGISTERED_GROUP = NULL;
-#define	TPL_RUN_REGISTERED(run_callback, skip_callback)                        \
-	for(size_t tpl_idx = 0; tpl_idx < TPL_COUNT; tpl_idx++) {                    \
-		if(test.platforms & TPL_MASK(tpl_idx)) {                                   \
-			cbuild_assert(tpl_idx < cbuild_arr_len(TPL_RUNNERS),                     \
-				"Invalid test platform specified!");                                   \
-			size_t checkpoint = cbuild_temp_checkpoint();                            \
-			TPL_RUN_REGISTERED_CURR = tpl_idx;                                       \
-			test_status_t status = TPL_RUNNERS[tpl_idx](test);                       \
-			cbuild_temp_reset(checkpoint);                                           \
-			run_callback;                                                            \
-		} else {                                                                   \
-			skip_callback;                                                           \
-		}                                                                          \
+#define	TPL_RUN_REGISTERED(run_callback, skip_callback)         \
+	for(size_t tpl_idx = 0; tpl_idx < TPL_COUNT; tpl_idx++) {     \
+		if(test.platforms & TPL_MASK(tpl_idx) & TPLM_RUNNER_HOST) { \
+			cbuild_assert(tpl_idx < cbuild_arr_len(TPL_RUNNERS),      \
+				"Invalid test platform specified!");                    \
+			size_t checkpoint = cbuild_temp_checkpoint();             \
+			TPL_RUN_REGISTERED_CURR = tpl_idx;                        \
+			test_status_t status = TPL_RUNNERS[tpl_idx](test);        \
+			cbuild_temp_reset(checkpoint);                            \
+			run_callback;                                             \
+		} else {                                                    \
+			skip_callback;                                            \
+		}                                                           \
 	}
 test_case_t TESTS[] = {
 	{
@@ -462,14 +515,24 @@ test_case_t TESTS[] = {
 	},
 };
 static const char* TPL_NAMES[] = {
-	[TPL_X86_64_LINUX_GLIBC_GCC]   = "x86_64-linux-glibc-gcc",
-	[TPL_X86_64_LINUX_GLIBC_CLANG] = "x86_64-linux-glibc-clang",
-	[TPL_X86_64_LINUX_MUSL_GCC]    = "x86_64-linux-musl-gcc",
-	[TPL_X86_64_POSIX_GCC]         = "x86_64-posix-gcc",
-	[TPL_X86_64_POSIX_CLANG]       = "x86_64-posix-clang",
+	[TPL_X86_64_LINUX_GLIBC_GCC]    = "x86_64-linux-glibc-gcc",
+	[TPL_X86_64_LINUX_GLIBC_CLANG]  = "x86_64-linux-glibc-clang",
+	[TPL_X86_64_LINUX_MUSL_GCC]     = "x86_64-linux-musl-gcc",
+	[TPL_AARCH64_LINUX_GLIBC_GCC]   = "aarch64-linux-glibc-gcc",
+	[TPL_AARCH64_LINUX_GLIBC_CLANG] = "aarch64-linux-glibc-clang",
+	[TPL_AARCH64_LINUX_MUSL_GCC]    = "aarch64-linux-musl-gcc",
+	[TPL_X86_64_POSIX_GCC]          = "x86_64-posix-gcc",
+	[TPL_X86_64_POSIX_CLANG]        = "x86_64-posix-clang",
+	[TPL_AARCH64_POSIX_GCC]         = "aarch64-posix-gcc",
+	[TPL_AARCH64_POSIX_CLANG]       = "aarch64-posix-clang",
+	[TPL_X86_64_MACOS_GCC]          = "x86_64-macos-gcc",
+	[TPL_X86_64_MACOS_CLANG]        = "x86_64-macos-clang",
+	[TPL_AARCH64_MACOS_GCC]         = "aarch64-macos-gcc",
+	[TPL_AARCH64_MACOS_CLANG]       = "aarch64-macos-clang",
+	[TPL_X86_64_WINDOWS_CYGWIN_GCC] = "x86_64-windows-cygwin-gcc",
 };
 _Static_assert(TPL_COUNT == cbuild_arr_len(TPL_NAMES),
-	"TPL_NAMES expect 5 test platforms.");
+	"TPL_NAMES expect 14 test platforms.");
 // Test runner
 #define test_log_failed(msg, ...)                                              \
 	__cbuild_int_log(CBUILD_TERM_FG(CBUILD_TERM_RED)"[FAILED]"                   \
@@ -602,6 +665,84 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	return TEST_SUCCEED;
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_aarch64_linux_glibc_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Linux/glibc, Arch: aarch64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_glibc_gcc_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "gcc");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_aarch64_linux_glibc_clang(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Linux/glibc, Arch: aarch64, Compiler: clang");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_glibc_clang_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "clang");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_aarch64_linux_musl_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Linux/musl, Arch: aarch64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_musl_gcc_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "musl-gcc");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_log_trace("Running test \"%s\"...", test.file);
+	cbuild_cmd_append(&cmd, oname);
+	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_FAILED;
+	}
+	test_log_success("Test \"%s\" succeed.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return TEST_SUCCEED;
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	test_log_start("Running test case \"%s\"", test.file);
 	cbuild_log_info("Platform: Posix, Arch: x86_64, Compiler: gcc");
@@ -649,12 +790,185 @@ test_status_t test_x86_64_posix_clang(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return test_case_run_memcheck(test, oname);
 }
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_aarch64_posix_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Posix, Arch: aarch64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_posix_gcc_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "gcc");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_aarch64_posix_clang(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Posix, Arch: aarch64, Compiler: clang");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_posix_clang_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "clang");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_x86_64_macos_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: MacOS, Arch: x86_64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_macos_gcc_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "gcc-15");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_x86_64_macos_clang(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: MacOS, Arch: x86_64, Compiler: clang");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_macos_clang_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "clang");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_aarch64_macos_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: MacOS, Arch: aarch64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_macos_clang_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "gcc-15");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_aarch64_macos_clang(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: MacOS, Arch: aarch64, Compiler: clang");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_macos_clang_%s.run", test.file);
+	cbuild_cmd_append(&cmd, "clang");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_x86_64_windows_cygwin_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: Windows/Cygwin, Arch: x86_64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char*	fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char*	oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_windows_cygwin_gcc_%s.exe", test.file);
+	cbuild_cmd_append(&cmd, "gcc");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_memcheck(test, oname);
+}
 static test_status_t (*TPL_RUNNERS[])(test_case_t test) = {
-	[TPL_X86_64_LINUX_GLIBC_GCC]   = test_x86_64_linux_glibc_gcc,
-	[TPL_X86_64_LINUX_GLIBC_CLANG] = test_x86_64_linux_glibc_clang,
-	[TPL_X86_64_LINUX_MUSL_GCC]    = test_x86_64_linux_musl_gcc,
-	[TPL_X86_64_POSIX_GCC]         = test_x86_64_posix_gcc,
-	[TPL_X86_64_POSIX_CLANG]       = test_x86_64_posix_clang,
+	[TPL_X86_64_LINUX_GLIBC_GCC]    = test_x86_64_linux_glibc_gcc,
+	[TPL_X86_64_LINUX_GLIBC_CLANG]  = test_x86_64_linux_glibc_clang,
+	[TPL_X86_64_LINUX_MUSL_GCC]     = test_x86_64_linux_musl_gcc,
+	[TPL_AARCH64_LINUX_GLIBC_GCC]   = test_aarch64_linux_glibc_gcc,
+	[TPL_AARCH64_LINUX_GLIBC_CLANG] = test_aarch64_linux_glibc_clang,
+	[TPL_AARCH64_LINUX_MUSL_GCC]    = test_aarch64_linux_musl_gcc,
+	[TPL_X86_64_POSIX_GCC]          = test_x86_64_posix_gcc,
+	[TPL_X86_64_POSIX_CLANG]        = test_x86_64_posix_clang,
+	[TPL_AARCH64_POSIX_GCC]         = test_aarch64_posix_gcc,
+	[TPL_AARCH64_POSIX_CLANG]       = test_aarch64_posix_clang,
+	[TPL_X86_64_MACOS_GCC]          = test_x86_64_macos_gcc,
+	[TPL_X86_64_MACOS_CLANG]        = test_x86_64_macos_clang,
+	[TPL_AARCH64_MACOS_GCC]         = test_aarch64_macos_gcc,
+	[TPL_AARCH64_MACOS_CLANG]       = test_aarch64_macos_clang,
+	[TPL_X86_64_WINDOWS_CYGWIN_GCC] = test_x86_64_windows_cygwin_gcc,
 };
 _Static_assert(TPL_COUNT == cbuild_arr_len(TPL_RUNNERS),
 	"TPL_RUNNERS expect 5 test platforms.");
@@ -853,16 +1167,16 @@ int main(int argc, char** argv) {
 			cbuild_cmd_t cmd = {0};
 			cbuild_cmd_append_many(&cmd,
 				CBUILD_CC, CBUILD_CARGS_WARN,
-				CBUILD_CC_OUT, "wikimk.run",
+				CBUILD_CC_OUT, "wikimk."EXE_NAME,
 				"wikimk.c");
 			if(!cbuild_cmd_run(&cmd)) return 1;
 		} else if(strcmp(arg, "wiki") == 0) {
 			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, "./wikimk.run", "build");
+			cbuild_cmd_append_many(&cmd, "./wikimk."EXE_NAME, "build");
 			if(!cbuild_cmd_run(&cmd)) return 1;
 		} else if(strcmp(arg, "serve") == 0) {
 			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, "./wikimk.run", "serve");
+			cbuild_cmd_append_many(&cmd, "./wikimk."EXE_NAME, "serve");
 			if(!cbuild_cmd_run(&cmd)) return 1;
 		} else {
 			cbuild_log(CBUILD_LOG_ERROR, "Invalid argument specified: \"%s\"!", arg);
@@ -959,7 +1273,7 @@ int main(int argc, char** argv) {
 		cbuild_dir_remove("wiki/out");
 		cbuild_file_remove("wiki/wikimk/template/nav.html");
 		cbuild_file_remove("TAGS");
-		cbuild_file_remove("wikimk.run");
+		cbuild_file_remove("wikimk."EXE_NAME);
 	} else if(strcmp(subcommand, "tags") == 0) {
 		cbuild_cmd_t cmd = {0};
 		cbuild_cmd_append_many(&cmd, "ctags",
