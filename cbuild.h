@@ -3167,7 +3167,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx) {
 		size_t ret = 0;
 		while(sv.size > 0) {
-			signed char cs = *sv.data;
+			signed char cs = *(signed char*)sv.data;
 			ret++;
 			if(cs > 0) { // ASCII, 'signed char' abuse
 				sv.size--;
