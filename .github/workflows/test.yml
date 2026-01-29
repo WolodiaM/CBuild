@@ -39,7 +39,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest] # TODO: windows-11-arm - partner runner, but seems to be free, different setup? No cygwinn-arm
-    default:
+    defaults:
       run:
         shell: bash -l -o pipefail {0}
     steps:
