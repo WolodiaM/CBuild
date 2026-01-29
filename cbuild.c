@@ -554,7 +554,7 @@ void test_cmd_append_valrind(cbuild_cmd_t* cmd) {
 	cbuild_cmd_append(cmd, "--errors-for-leak-kinds=definite,indirect,possible");
 }
 void test_cmd_append_clang_san(cbuild_cmd_t* cmd) {
-	cbuild_cmd_append(cmd, "-fsanitize=address,memory");
+	cbuild_cmd_append(cmd, "-fsanitize=address");
 }
 void test_cmd_append_cc_base(test_case_t test, cbuild_cmd_t* cmd) {
 	cbuild_cmd_append_many(cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
