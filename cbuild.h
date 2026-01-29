@@ -4337,7 +4337,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		size_t len = strlen(path) - (size_t)i + 1;
 		char* ret = (char*)cbuild_malloc(len);
 		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-		memcpy(ret, path + i + 1, len);
+		memcpy(ret, path + i - 1, len);
 		return ret;
 	}
 	CBUILDDEF char* cbuild_path_name(const char* path) {
