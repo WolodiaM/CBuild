@@ -635,7 +635,8 @@ test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_gcc_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_gcc_%s_%s.run", 
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
@@ -658,9 +659,11 @@ test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_clang_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_clang_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
+	test_cmd_append_clang_san(&cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
@@ -670,7 +673,7 @@ test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
 	cbuild_cmd_clear(&cmd);
-	return test_case_run_valgrind(test, oname);
+	return test_case_run_clang_san(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
@@ -681,7 +684,8 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_musl_gcc_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_musl_gcc_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "musl-gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
@@ -704,7 +708,8 @@ test_status_t test_aarch64_linux_glibc_gcc(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_glibc_gcc_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_glibc_gcc_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
@@ -727,9 +732,11 @@ test_status_t test_aarch64_linux_glibc_clang(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_glibc_clang_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_glibc_clang_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
+	test_cmd_append_clang_san(&cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
@@ -739,7 +746,7 @@ test_status_t test_aarch64_linux_glibc_clang(test_case_t test) {
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
 	cbuild_cmd_clear(&cmd);
-	return test_case_run_valgrind(test, oname);
+	return test_case_run_clang_san(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_aarch64_linux_musl_gcc(test_case_t test) {
@@ -750,7 +757,8 @@ test_status_t test_aarch64_linux_musl_gcc(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_musl_gcc_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_musl_gcc_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "musl-gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
@@ -773,7 +781,8 @@ test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_gcc_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_gcc_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
@@ -797,9 +806,11 @@ test_status_t test_x86_64_posix_clang(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_clang_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_clang_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
+	test_cmd_append_clang_san(&cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
@@ -821,7 +832,8 @@ test_status_t test_aarch64_posix_gcc(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_posix_gcc_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_posix_gcc_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
@@ -845,9 +857,11 @@ test_status_t test_aarch64_posix_clang(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_posix_clang_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_posix_clang_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
+	test_cmd_append_clang_san(&cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
@@ -869,7 +883,8 @@ test_status_t test_x86_64_macos_gcc(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_macos_gcc_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_macos_gcc_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc-15");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
@@ -892,11 +907,12 @@ test_status_t test_x86_64_macos_clang(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_macos_clang_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_macos_clang_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	test_cmd_append_clang_san(&cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -916,7 +932,8 @@ test_status_t test_aarch64_macos_gcc(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_macos_gcc_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_macos_gcc_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc-15");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
@@ -939,11 +956,12 @@ test_status_t test_aarch64_macos_clang(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_macos_clang_%s.run", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_macos_clang_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	test_cmd_append_clang_san(&cmd);
+	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -963,7 +981,8 @@ test_status_t test_x86_64_windows_cygwin_gcc(test_case_t test) {
 	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
 		TPL_RUN_REGISTERED_GROUP, test.file);
 	const char* oname =
-		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_windows_cygwin_gcc_%s.exe", test.file);
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_windows_cygwin_gcc_%s_%s.exe",
+			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
@@ -1154,6 +1173,7 @@ void temp_profiler(void) {
 }
 // Main
 int main(int argc, char** argv) {
+	setenv("ASAN_OPTIONS", "exitcode=255", false);
 	cbuild_selfrebuild(argc, argv);
 	MAIN_PID = getpid();
 	atexit(temp_profiler);
