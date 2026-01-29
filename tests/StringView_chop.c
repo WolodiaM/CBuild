@@ -137,6 +137,54 @@ int main(void) {
 			CBuildSVArg(cbuild_sv_from_cstr("--bar---baz")),
 			CBuildSVArg(sv));
 	}
+	// Extreme cases - start of a string
+	{
+		const char* str   = "foo---bar---baz";
+		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
+		cbuild_sv_t delim = cbuild_sv_from_cstr("foo");
+		cbuild_sv_t part  = cbuild_sv_chop_by_sv(&sv, delim);
+		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("")), 0,
+			"Delim of cbuild_sv_chop_by_sv is at the start of sequence: chopped part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("")), CBuildSVArg(part));
+		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("---bar---baz")), 0,
+			"Delim of cbuild_sv_chop_by_sv is at the start of sequence: remaining part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("---bar---baz")),
+			CBuildSVArg(sv));
+	}
+	// Extreme cases - end of a string
+	{
+		const char* str   = "foo---bar---baz";
+		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
+		cbuild_sv_t delim = cbuild_sv_from_cstr("baz");
+		cbuild_sv_t part  = cbuild_sv_chop_by_sv(&sv, delim);
+		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("foo---bar---")), 0,
+			"Delim of cbuild_sv_chop_by_sv is at the end of sequence: chopped part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("foo---bar---")), CBuildSVArg(part));
+		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("")), 0,
+			"Delim of cbuild_sv_chop_by_sv is at the end of sequence: remaining part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("")),
+			CBuildSVArg(sv));
+	}
+	// Extreme cases - full string
+	{
+		const char* str   = "foo---bar---baz";
+		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
+		cbuild_sv_t delim = cbuild_sv_from_cstr(str);
+		cbuild_sv_t part  = cbuild_sv_chop_by_sv(&sv, delim);
+		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("")), 0,
+			"Delim of cbuild_sv_chop_by_sv is full sequence: chopped part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("")), CBuildSVArg(part));
+		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("")), 0,
+			"Delim of cbuild_sv_chop_by_sv is full sequence: remaining part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("")),
+			CBuildSVArg(sv));
+	}
 	// cbuild_sv_chop_right
 	cbuild_sv_t sv17 = cbuild_sv_from_cstr(str1);
 	cbuild_sv_t sv18 = cbuild_sv_chop_right(&sv17, 3);
@@ -253,6 +301,54 @@ int main(void) {
 			"Single-char delim cbuild_sv_chop_right_by_sv from long sequence: remaining part mismatch"
 			TEST_EXPECT_RMSG(CBuildSVFmt),
 			CBuildSVArg(cbuild_sv_from_cstr("foo---bar--")),
+			CBuildSVArg(sv));
+	}
+	// Extreme cases - start of a string
+	{
+		const char* str   = "foo---bar---baz";
+		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
+		cbuild_sv_t delim = cbuild_sv_from_cstr("foo");
+		cbuild_sv_t part  = cbuild_sv_chop_right_by_sv(&sv, delim);
+		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("---bar---baz")), 0,
+			"Delim of cbuild_sv_chop_right_by_sv is at the start of sequence: chopped part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("---bar---baz")), CBuildSVArg(part));
+		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("")), 0,
+			"Delim of cbuild_sv_chop_right_by_sv is at the start of sequence: remaining part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("")),
+			CBuildSVArg(sv));
+	}
+	// Extreme cases - end of a string
+	{
+		const char* str   = "foo---bar---baz";
+		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
+		cbuild_sv_t delim = cbuild_sv_from_cstr("baz");
+		cbuild_sv_t part  = cbuild_sv_chop_right_by_sv(&sv, delim);
+		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("")), 0,
+			"Delim of cbuild_sv_chop_right_by_sv is at the end of sequence: chopped part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("")), CBuildSVArg(part));
+		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("foo---bar---")), 0,
+			"Delim of cbuild_sv_chop_right_by_sv is at the end of sequence: remaining part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("for---bar---")),
+			CBuildSVArg(sv));
+	}
+	// Extreme cases - full string
+	{
+		const char* str   = "foo---bar---baz";
+		cbuild_sv_t sv    = cbuild_sv_from_cstr(str);
+		cbuild_sv_t delim = cbuild_sv_from_cstr(str);
+		cbuild_sv_t part  = cbuild_sv_chop_right_by_sv(&sv, delim);
+		TEST_ASSERT_EQ(cbuild_sv_cmp(part, cbuild_sv_from_cstr("")), 0,
+			"Delim of cbuild_sv_chop_right_by_sv is full sequence: chopped part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("")), CBuildSVArg(part));
+		TEST_ASSERT_EQ(cbuild_sv_cmp(sv, cbuild_sv_from_cstr("")), 0,
+			"Delim of cbuild_sv_chop_right_by_sv is full sequence: remaining part mismatch"
+			TEST_EXPECT_RMSG(CBuildSVFmt),
+			CBuildSVArg(cbuild_sv_from_cstr("")),
 			CBuildSVArg(sv));
 	}
 	return 0;

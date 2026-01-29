@@ -2668,7 +2668,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	void* (*cbuild_malloc)(size_t size) = malloc;
 	void* (*cbuild_realloc)(void* ptr, size_t size) = realloc;
 	void (*cbuild_free)(void* ptr) = free;
-	void* __cbuild_memrchr(void* s, int c, size_t n) {
+	void* __cbuild_memrchr(const void* s, int c, size_t n) {
 		#if defined(CBUILD_API_POSIX) && ( \
 				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) || \
 				defined(CBUILD_OS_BSD) || \
@@ -2682,7 +2682,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				if(*chrptr == c) {
 					goto loop_end;
 				}
-			} while(chrptr > s);
+			} while(chrptr >= (char*)s);
 			chrptr = NULL;
 		loop_end:
 			return chrptr;
@@ -2918,7 +2918,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		do {
 			chrptr = __cbuild_memrchr(sv->data, delim.data[0], sv->size - (sv->size - i));
 			i = (size_t)(chrptr - sv->data);
-			if(chrptr != NULL && sv->size - (sv->size - i) >= delim.size &&
+			if(chrptr != NULL && sv->size - i >= delim.size &&
 				memcmp(chrptr, delim.data, delim.size) == 0) {
 				cbuild_sv_t ret = cbuild_sv_from_parts(
 					sv->data + delim.size + i, 
@@ -3026,7 +3026,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	CBUILDDEF ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle) {
 		#if defined(CBUILD_API_POSIX) && ( \
-				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || \
+				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINNUX_UCLIBC) || \
 				defined(CBUILD_OS_BSD) || \
 				defined(CBUILD_OS_MACOS))
 			char* chrptr = memmem(sv.data, sv.size, needle.data, needle.size);
