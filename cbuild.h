@@ -2671,8 +2671,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	void* __cbuild_memrchr(const void* s, int c, size_t n) {
 		#if defined(CBUILD_API_POSIX) && ( \
 				defined(CBUILD_OS_LINUX_GLIBC) || defined(CBUILD_OS_LINUX_MUSL) || defined(CBUILD_OS_LINUX_UCLIBC) || \
-				defined(CBUILD_OS_BSD) || \
-				defined(CBUILD_OS_MACOS))
+				defined(CBUILD_OS_BSD))
 			return memrchr(s, c, n);
 		#else
 			char* chrptr = (char*)s;
