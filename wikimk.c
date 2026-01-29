@@ -163,17 +163,18 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 				cbuild_sb_t buffer = {0};
 				cbuild_file_read(filepath.data, &buffer);
 				cbuild_sv_t buffer_sv = cbuild_sb_to_sv(buffer);
-				cbuild_sv_t	name = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
+				cbuild_sv_t	name_sv = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
 				cbuild_sv_t url = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
 				cbuild_sb_appendf(out, "<li><a href =\"");
 				if(cbuild_sv_prefix(url, cbuild_sv_from_cstr("http"))) {
 					cbuild_sb_append_sv(out, url);
 				} else {
-					const char *base = cbuild_path_base(filename.data);
+					size_t checkpoint = cbuild_temp_checkpoint();
+					char *base = cbuild_path_base(filename.data);
 					cbuild_sb_appendf(out, "%s"CBuildSVFmt, base, CBuildSVArg(url));
-					free((void*)base);
+					cbuild_temp_reset(checkpoint);
 				}
-				cbuild_sb_appendf(out, "\">"CBuildSVFmt"</a></li>\n", CBuildSVArg(name));
+				cbuild_sb_appendf(out, "\">"CBuildSVFmt"</a></li>\n", CBuildSVArg(name_sv));
 			}
 		} break;
 		case CBUILD_FTYPE_DIRECTORY: {
@@ -416,9 +417,10 @@ void http_server_build_mimecache(void) {
 	// TODO: More mimetypes ?
 }
 char*	http_server_mime(const char* filepath) {
+	size_t checkpoint = cbuild_temp_checkpoint();
 	char* ext = cbuild_path_ext(filepath);
 	char** elem = cbuild_map_get(&http_server_mimecache, ext);
-	free(ext);
+	cbuild_temp_reset(checkpoint);
 	if(elem == NULL) {
 		return "application/octet-stream";
 	} else {

@@ -2120,7 +2120,7 @@ CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
  */
 CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
 	CBUILDDEF bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd));
-typedef struct cbuild_cmd_opt_t {
+struct cbuild_cmd_opt_t {
 	// Async
 	cbuild_proclist_t* procs; // Non-null implies async
 	cbuild_proc_t* proc;      // Non-null implies async
@@ -2143,14 +2143,14 @@ typedef struct cbuild_cmd_opt_t {
 			uint32_t              : 29;
 		};
 	};
-} cbuild_cmd_opt_t;
+};
 /**
  * @brief Run commannd
  *
  * @brief cmd => cbuild_cmd_t* -> Command to execute
  * @brief opts => cbuild_cmd_opt_t -> Command options
  */
-CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts);
+CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opt_t opts);
 /**
  * @brief Run commannd
  *
@@ -2159,7 +2159,7 @@ CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts);
  * will be inserted in struct intiliazier.
  */
 #define cbuild_cmd_run(cmd, ...)                                               \
-cbuild_cmd_run_opt(cmd, (cbuild_cmd_opt_t){ __VA_ARGS__ })
+cbuild_cmd_run_opt(cmd, (struct cbuild_cmd_opt_t){ __VA_ARGS__ })
 /* FS.h */
 typedef struct cbuild_pathlist_t {
 	char** data;
@@ -2393,26 +2393,31 @@ CBUILDDEF bool cbuild_dir_create(const char* path);
  * @return CBuildFiletype -> Type of filesystem element
  */
 CBUILDDEF cbuild_filetype_t cbuild_path_filetype(const char* path);
+struct cbuild_path_ext_opts_t {
+	int dot; // Get n-th dot fro the end, 0 is last one (same as 1)
+};
 /**
  * @brief Get file extension (after last '.')
  *
  * @param path => const char* -> Filepath
- * @return char* -> String allocated on heap
+ * @param opts => cbuild_path_ext_opts_t -> options
+ * @return char* -> String from temp allocator
  */
-CBUILDDEF char* cbuild_path_ext(const char* path);
+CBUILDDEF char* cbuild_path_ext_opt(const char* path, struct cbuild_path_ext_opts_t opts);
+#define cbuild_path_ext(path, ...)                                    \
+cbuild_path_ext_opt(path, (struct cbuild_path_ext_opts_t){ __VA_ARGS__ })
 /**
- * @brief Get file name (after last '/' and before last '.' or if path ends with
- * '/' then after previous '/' to last '/')
+ * @brief Get file name with extension
  *
  * @param path => const char* -> Filepath
- * @return char* -> String allocated on heap
+ * @return char* -> String from temp allocator
  */
 CBUILDDEF char* cbuild_path_name(const char* path);
 /**
  * @brief Everything that function cbuild_path_name removes
  *
  * @param path => const char* -> Filepath
- * @return char* -> String allocated on heap
+ * @return char* -> String from temp allocator
  */
 CBUILDDEF char* cbuild_path_base(const char* path);
 /**
@@ -3412,8 +3417,8 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
 		// We needs opts here, because I dont want to bloat function signature when I will add more call-level flags
 		CBUILDDEF cbuild_proc_t __cbuild_int_cmd_run_opt(cbuild_cmd_t* cmd,
-			cbuild_cmd_opt_t* opts, cbuild_fd_t fdstdin, cbuild_fd_t fdstdout,
-			cbuild_fd_t fdstderr) {
+			struct cbuild_cmd_opt_t* opts, cbuild_fd_t fdstdin, 
+			cbuild_fd_t fdstdout, cbuild_fd_t fdstderr) {
 			// Get args
 			cbuild_cmd_t argv = {0};
 			cbuild_cmd_append_arr(&argv, cmd->data, cmd->size);
@@ -3479,7 +3484,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return proc;
 		}
 	#endif // CBUILD_API_*
-	CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, cbuild_cmd_opt_t opts) {
+	CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opt_t opts) {
 		if(cmd->size == 0) {
 			cbuild_log(CBUILD_LOG_ERROR, "Empty command requested to be executed!");
 			return CBUILD_INVALID_PROC;
@@ -4017,18 +4022,19 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return true;
 		}
 		CBUILDDEF bool cbuild_symlink(const char* src, const char* dst) {
+			size_t checkpoint = cbuild_temp_checkpoint();
 			char* base = cbuild_path_base(dst);
 			if(*base) {
 				if(!cbuild_dir_check(base)) {
 					if(!cbuild_dir_create(base)) {
 						cbuild_log(CBUILD_LOG_ERROR,
 							"Destination base path \"%s\" is invalid!", base);
-						cbuild_free(base);
+						cbuild_temp_reset(checkpoint);
 						return false;
 					}
 				}
 			}
-			cbuild_free(base);
+			cbuild_temp_reset(checkpoint);
 			int ret = symlink(src, dst);
 			if(ret < 0) {
 				if(errno == EEXIST) {
@@ -4264,6 +4270,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 					return false;
 				} else if(errno == ENOENT) {
 					char* path = (char*)path_;
+					size_t checkpoint = cbuild_temp_checkpoint();
 					if(!inplace) path = cbuild_path_normalize(path_);
 					cbuild_log_level_t old_log_level = cbuild_log_get_min_level();
 					if(!inplace) cbuild_log_set_min_level(CBUILD_LOG_ERROR);
@@ -4271,7 +4278,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 					if(slash) *slash = '\0';
 					if(!__cbuild_dir_create_int(path, true)) {
 						if(!inplace) {
-							cbuild_free(path);
+							cbuild_temp_reset(checkpoint);
 							cbuild_log_set_min_level(old_log_level);
 						}
 						return false;
@@ -4280,13 +4287,13 @@ extern void (*cbuild_flag_version)(const char* app_name);
 					ret = mkdir(path, 0755);
 					if(ret == 0) {
 						if(!inplace) {
-							cbuild_free(path);
+							cbuild_temp_reset(checkpoint);
 							cbuild_log_set_min_level(old_log_level);
 						}
 						return true;
 					}
 					if(!inplace) {
-						cbuild_free(path);
+						cbuild_temp_reset(checkpoint);
 						cbuild_log_set_min_level(old_log_level);
 					}
 				}
@@ -4319,64 +4326,64 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return CBUILD_FTYPE_OTHER;
 		}
 	#endif // CBUILD_API_*
-	CBUILDDEF char* cbuild_path_ext(const char* path) {
-		ssize_t i = (ssize_t)strlen(path);
-		bool found = false;
-		for(; i >= 0; i--) {
-			if(path[i] == '.') {
-				found = true;
-				break;
-			}
-		}
-		if(!found) {
-			char* ret = cbuild_malloc(1);
-			cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+	CBUILDDEF char* cbuild_path_ext_opt(const char* path, struct cbuild_path_ext_opts_t opts) {
+		if (opts.dot == 0) opts.dot = 1;
+		const char* dot = path + strlen(path);
+		do {
+			dot = __cbuild_memrchr(path, '.', (size_t)(dot - path));
+			opts.dot--;
+		} while (dot != NULL && opts.dot > 0);
+		if(dot == NULL) {
+			char* ret = cbuild_temp_alloc(1);
+			cbuild_assert(ret != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
 			memcpy(ret, "\0", 1);
 			return ret;
 		}
+		ptrdiff_t i = dot - path;
 		size_t len = strlen(path) - (size_t)i;
-		char* ret = (char*)cbuild_malloc(len);
-		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		char* ret = (char*)cbuild_temp_alloc(len);
+		cbuild_assert(ret != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
 		memcpy(ret, path + i + 1, len);
+		ret[len - 1] = '\0';
 		return ret;
 	}
 	CBUILDDEF char* cbuild_path_name(const char* path) {
-		ssize_t i = (ssize_t)strlen(path);
+		size_t i = strlen(path);
 		if(path[i - 1] == '/') {
 			i -= 2;
 		}
-		for(; i >= 0; i--) {
-			if(path[i] == '/') {
-				break;
-			}
+		const char* slash = __cbuild_memrchr(path, '/', i);
+		if (slash == NULL) {
+			char* ret = (char*)cbuild_temp_alloc(i + 1);
+			cbuild_assert(ret != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
+			memcpy(ret, path, i);
+			ret[i] = '\0';
+			return ret;
 		}
-		size_t len = strlen(path) - (size_t)i;
-		char* ret = (char*)cbuild_malloc(len);
-		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
-		memcpy(ret, path + i + 1, len);
+		ptrdiff_t base = slash - path;
+		size_t len = strlen(path) - (size_t)base;
+		char* ret = (char*)cbuild_temp_alloc(len);
+		cbuild_assert(ret != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
+		memcpy(ret, path + base + 1, len);
+		ret[len - 1] = '\0';
 		return ret;
 	}
 	CBUILDDEF char* cbuild_path_base(const char* path) {
-		ssize_t i = (ssize_t)strlen(path);
+		size_t i = strlen(path);
 		if(path[i - 1] == '/') {
 			i -= 2;
 		}
-		bool found = false;
-		for(; i >= 0; i--) {
-			if(path[i] == '/') {
-				found = true;
-				break;
-			}
-		}
-		if(!found) {
-			char* ret = cbuild_malloc(1);
-			cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		const char* slash = __cbuild_memrchr(path, '/', i);
+		if(slash == NULL) {
+			char* ret = cbuild_temp_alloc(1);
+			cbuild_assert(ret != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
 			memcpy(ret, "\0", 1);
 			return ret;
 		}
-		size_t len = (size_t)i + 2;
-		char* ret = (char*)cbuild_malloc(len);
-		cbuild_assert(ret != NULL, "(LIB_CBUILD_SB) Allocation failed.\n");
+		slash++;
+		size_t len = (size_t)(slash - path) + 1;
+		char* ret = (char*)cbuild_temp_alloc(len);
+		cbuild_assert(ret != NULL, "(LIB_CBUILD_FS) Allocation failed.\n");
 		memcpy(ret, path, len - 1);
 		ret[len - 1] = '\0';
 		return ret;
@@ -4387,16 +4394,23 @@ extern void (*cbuild_flag_version)(const char* app_name);
 		size_t capacity;
 	} __cbuild_int_stack_cstr_t;
 	CBUILDDEF char* cbuild_path_normalize(const char* path_) {
-		cbuild_sb_t ret = {0};
+		cbuild_sb_t buff = {0};
 		__cbuild_int_stack_cstr_t dirs = {0};
 		cbuild_sv_t path = cbuild_sv_from_cstr(path_);
-		if(*path_ == '/') cbuild_sb_append(&ret, '/');
-		#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
-			if(cbuild_sv_prefix(path, cbuild_sv_from_lit("//")) &&
-				!cbuild_sv_prefix(path, cbuild_sv_from_lit("///"))) {
-				cbuild_sb_append(&ret, '/');
-			}
-		#endif
+		// Windows paths can have drive letter
+		// Drive letter is only one character
+		if (isalpha(path.data[0]) && path.data[0] == ':') {
+			cbuild_sb_append_arr(&buff, path.data, 2);
+			path.data += 2;
+			path.size -= 2;
+		}
+		if(*path_ == '/') cbuild_sb_append(&buff, '/');
+		// Unix paths threat double slash differently
+		// POSIX threats paths starting with '//' specially.
+		if(cbuild_sv_prefix(path, cbuild_sv_from_lit("//")) &&
+			!cbuild_sv_prefix(path, cbuild_sv_from_lit("///"))) {
+			cbuild_sb_append(&buff, '/');
+		}
 		do {
 			cbuild_sv_t dir = cbuild_sv_chop_by_delim(&path, '/');
 			if(dir.size == 0) continue;
@@ -4404,7 +4418,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 				// Do nothing
 			} else if(cbuild_sv_cmp(dir, cbuild_sv_from_lit("..")) == 0) {
 				if(dirs.ptr == 0) { // Underflow
-					cbuild_sb_append_cstr(&ret, "../");
+					cbuild_sb_append_cstr(&buff, "../");
 					// Underflow on absolute path is undefined anyway
 					// and on relative path we can guarantee that this will be fine
 					// (we have nothing in directory stack anyway)
@@ -4416,15 +4430,16 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			}
 		} while(path.size > 0);
 		for(size_t i = 0; i <	dirs.ptr; i++) {
-			cbuild_sb_appendf(&ret, CBuildSVFmt"/", CBuildSVArg(dirs.data[i]));
+			cbuild_sb_appendf(&buff, CBuildSVFmt"/", CBuildSVArg(dirs.data[i]));
 		}
-		if(ret.size == 0) cbuild_sb_append(&ret, '.');
-		if(!((ret.size == 1 && ret.data[0] == '/') ||
-				(ret.size == 2 && ret.data[0] == '/' && ret.data[1] == '/')) &&
-			(ret.data[ret.size - 1] == '/')) ret.size--;
-		cbuild_sb_append_null(&ret);
+		if(buff.size == 0) cbuild_sb_append(&buff, '.');
+		if(!((buff.size == 1 && buff.data[0] == '/') ||
+				(buff.size == 2 && buff.data[0] == '/' && buff.data[1] == '/')) &&
+			(buff.data[buff.size - 1] == '/')) buff.size--;
 		cbuild_stack_clear(&dirs);
-		return ret.data;
+		char* ret = cbuild_temp_sprintf(CBuildSBFmt, CBuildSBArg(buff));
+		cbuild_sb_clear(&buff);
+		return ret;
 	}
 	/* Compile.h impl */
 	CBUILDDEF void __cbuild_int_compile_mark_exec(const char* file);
@@ -5337,3 +5352,4 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	}
 	void (*cbuild_flag_version)(const char* app_name) = __cbuild_int_flag_version;
 #endif // CBUILD_IMPLEMENTATION
+
