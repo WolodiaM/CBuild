@@ -163,7 +163,7 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 				cbuild_sb_t buffer = {0};
 				cbuild_file_read(filepath.data, &buffer);
 				cbuild_sv_t buffer_sv = cbuild_sb_to_sv(buffer);
-				cbuild_sv_t	name = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
+				cbuild_sv_t	name_sv = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
 				cbuild_sv_t url = cbuild_sv_chop_by_delim(&buffer_sv, '\n');
 				cbuild_sb_appendf(out, "<li><a href =\"");
 				if(cbuild_sv_prefix(url, cbuild_sv_from_cstr("http"))) {
@@ -173,7 +173,7 @@ bool gentoc_subdir_recursively(const char* name, cbuild_sb_t* out) {
 					cbuild_sb_appendf(out, "%s"CBuildSVFmt, base, CBuildSVArg(url));
 					free((void*)base);
 				}
-				cbuild_sb_appendf(out, "\">"CBuildSVFmt"</a></li>\n", CBuildSVArg(name));
+				cbuild_sb_appendf(out, "\">"CBuildSVFmt"</a></li>\n", CBuildSVArg(name_sv));
 			}
 		} break;
 		case CBUILD_FTYPE_DIRECTORY: {
