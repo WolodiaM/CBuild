@@ -49,15 +49,18 @@ jobs:
         with:
           packages: gcc make valgrind
       - name: Change back to workspace
-        run: cd "${{ github.workspace }}"
+        run: ln -s "${{ github.workspace }}" CBuild
       - name: Test
         run: ls -la
       - name: Build test runner
-        run: gcc cbuild.c -o cbuild.exe
-        working-directory: ${{ github.workspace }}
+        run: |
+          cd CBuild
+          gcc cbuild.c -o cbuild.exe
       - name: Build wikimk (check if it builds)
-        run: ./cbuild.exe docs wikimk
-        working-directory: ${{ github.workspace }}
+        run: |
+          cd CBuild
+          ./cbuild.exe docs wikimk
       - name: Run tests
-        run: ./cbuild.exe test
-        working-directory: ${{ github.workspace }}
+        run: |
+          cd CBuild
+          ./cbuild.exe test
