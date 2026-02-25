@@ -2,7 +2,7 @@
  * @file cbuild.c
  * @author WolodiaM (w_melnyk@outlook.com)
  * @brief Build script for CBuild
- * Replaces old build.sh. So this repo will becode C+Markdown.
+ * Replaces old build.sh. So this repo will become C+Markdown.
  * And a lot of generated HTML ;)
  *
  * @date 2025-09-12
@@ -1131,11 +1131,61 @@ bool test(void) {
 	free(statuses);
 	return failed;
 }
+// Amalgamation
+#define SOURCE_DIR "src"
+bool amalgamate(void) {
+	cbuild_log_info("Building cbuild.h");
+	cbuild_sb_t output = {0};
+	cbuild_sb_append_cstr(&output, "// cbuild.h by WolodiaM\n");
+	cbuild_sb_append_cstr(&output, "// License: GPL-3.0-or-later\n");
+	cbuild_sb_append_cstr(&output, "#ifndef __CBUILD_H__\n");
+	cbuild_sb_append_cstr(&output, "#define __CBUILD_H__\n");
+	const char* headers[] = {
+		SOURCE_DIR"/Common.h",
+		SOURCE_DIR"/Version.h",
+		SOURCE_DIR"/Term.h",
+		SOURCE_DIR"/Log.h",
+		SOURCE_DIR"/Arena.h",
+		SOURCE_DIR"/Temp.h",
+		SOURCE_DIR"/DynArray.h",
+		SOURCE_DIR"/StringBuilder.h",
+		SOURCE_DIR"/StringView.h",
+		SOURCE_DIR"/Stack.h",
+		SOURCE_DIR"/Map.h",
+		SOURCE_DIR"/Proc.h",
+		SOURCE_DIR"/Command.h",
+		SOURCE_DIR"/FS.h",
+		SOURCE_DIR"/Compile.h",
+		SOURCE_DIR"/DLLoad.h",
+		SOURCE_DIR"/FlagParse.h",
+		SOURCE_DIR"/RGlob.h",
+	};
+	cbuild_sb_t header = {0};
+	for (size_t i = 0; i < cbuild_arr_len(headers); i++) {
+		if(!cbuild_file_read(headers[i], &header)) return false;
+		cbuild_sv_t content = cbuild_sv_from_sb(header);
+		while (content.size > 0) {
+			cbuild_sv_t line = cbuild_sv_chop_by_delim(&content, '\n');
+			if (cbuild_sv_prefix(line, cbuild_sv_from_lit("#pragma once")) ||
+				(i != 0 && cbuild_sv_prefix(line, cbuild_sv_from_lit("#include")))) {
+				cbuild_sb_append_cstr(&output, "// ");
+			}
+			cbuild_sb_append_sv(&output, line);
+			cbuild_sb_append_cstr(&output, "\n");
+		}
+		header.size = 0;
+	}
+	cbuild_sb_clear(&header);
+	cbuild_sb_append_cstr(&output, "#endif __CBUILD_H__");
+	if(!cbuild_file_write("cbuild.h.new", &output)) return false;
+	return true;
+}
 // Hooks
 void help(const char* app_name) {
 	printf("Usage: %s [OPTIONS] <subcommand> [argument]\n", app_name);
 	cbuild_flag_print_help();
 	printf("Commands:\n");
+	printf("\tbuild    Build cbuild.h\n");
 	printf("\tdocs     Build documentation. Requires argument\n");
 	printf("\t\twikimk     Build wikimk.run\n");
 	printf("\t\twiki       Build wiki\n");
@@ -1164,7 +1214,6 @@ void version(const char* app_name) {
 	printf("License: GPL-3.0-or-later\n");
 	printf("Author: WolodiaM\n");
 }
-
 pid_t MAIN_PID = 0;
 void temp_profiler(void) {
 	if(getpid() != MAIN_PID) return;
@@ -1326,6 +1375,8 @@ int main(int argc, char** argv) {
 		if(!cbuild_cmd_run(&cmd)) {
 			return 1;
 		}
+	} else if (strcmp(subcommand, "build") == 0) {
+		if (!amalgamate()) return 1;
 	} else {
 		cbuild_log(CBUILD_LOG_ERROR, "Invalid subcommand specified: \"%s\"!", subcommand);
 		help(cbuild_flag_app_name());

@@ -1,0 +1,2490 @@
+// cbuild.h by WolodiaM
+// License: GPL-3.0-or-later
+#ifndef __CBUILD_H__
+#define __CBUILD_H__
+// #pragma once // For LSP 
+//! This file provides OS-selection logic, includes and some general utilities.
+//! 
+//! ::: note
+//! CBuild should be first header included in translation unit. On `CBUILD_API_POSIX`
+//! (default for modern Unixes) it defines `_GNU_SOURCE`.
+//! :::
+
+//! # Compiler defines [line:cbuild-cc-defines]
+//!
+//! Valid compilers:
+//! - `CBUILD_CC_CLANG` - clang or its derivative.
+//! - `CBUILD_CC_GCC` - gcc or its derivative.
+//!
+//! ::: note
+//! This selection can be overriden by manually defining valid compiler and `CBUILD_CC_DEFINED`.
+//! :::
+//!
+//! Several compiler extensions are required from supported compiler:
+//! - Binary literals support (`0b`) either trough c standard (c23+) or as extension.
+//! - Attributes trough `__attribute__((...))` syntax, some are supported trough `[[...]]` syntax if support is detected 
+//!   * deprecated.
+//!   * format.
+//!   * noreturn.
+//!   * falltrough.
+//! - Unnamed structs/enums/unions.
+//! - typeof.
+//! - `__VA_OPT__`.
+//! - GNU statement expressions `({...})`.
+//! - `__auto_type`.
+//!
+//! Explicetely unsupported compilers:
+//! - TCC - no statement expression (at least).
+//! - MSVC - no extensions at all.
+//!
+//! # Debug
+//!
+//! By default CBuild provides _debug_ logging from most of its modules. All logging goes
+//! trough `cbuild_log`, so if your app does no need any messages in terminal you can
+//! disable CBuild's logger (which will hide all messages).
+
+//@ cbuild-cc-defines
+#if !defined(CBUILD_CC_DEFINED)
+	#if defined(__clang__)
+		#define CBUILD_CC_CLANG
+	#elif defined(__TINYC__)
+		#error "You are trying to compile CBuild with TinyC compiler. This compile is not supported. It should support 'gnu99' extensions, including binary literals; attributes; unnamed (anonymous) structs, enums, unions; typeof; __VA_OPT__; statement expressions."
+	#elif defined(__GNUC__)
+		#define CBUILD_CC_GCC
+	#elif defined(_MSC_VER)
+		#error "You are trying to compile CBuild with MSVC compiler. It does not support 'gnu99' extensions, including binary literals; attributes; unnamed (anonymous) structs, enums, unions; typeof; __VA_OPT__; statement expressions."
+	#else
+		#error "This compile is unsupported. If it supports 'gnu99' extensions, including binary literals; attributes; unnamed (anonymous) structs, enums, unions; typeof; __VA_OPT__; statement expressions; then you can simply add a check to this block for it."
+	#endif // Compiler check
+	#define CBUILD_CC_DEFINED
+#endif // !CBUILD_CC_DEFINNED
+
+//! # OS defines [line:cbuild-os-defines]
+//!
+//! Valid OSes:
+//! - `CBUILD_OS_LINUX` - Any desktop Linux (excluding Android or ChromeOS for example).
+//! - `CBUILD_OS_MACOS` - MacOS.
+//! - `CBUILD_OS_BSD` - Any desktop BSD.
+//! - `CBUILD_OS_UNIX` - Generic Unix, should support at least POSIX.1-2001.
+//! - `CBUILD_OS_WINDOWS` - Windows.
+//!
+//! Also, there are some auxiliary OS checks, valid values are:
+//! - `CBUILD_OS_WINDOWS`:
+//!   * `CBUILD_OS_WINDOWS_CYGWIN `- Windows under Cygwin.
+//! - `CBUILD_OS_LINUX`:
+//!   * `CBUILD_OS_LINUX_GLIBC` - Linux with glibc.
+//!   * `CBUILD_OS_LINUX_UCLIBC` - Linux with uclibc.
+//!   * `CBUILD_OS_LINUX_MUSL` - Linux with musl (fallback, because musl provides no way of detection).
+
+//@ cbuild-os-defines
+#if !defined(CBUILD_OS_DEFINED)
+	#if defined(__linux__) || defined(linux) || defined(__linux)
+		#define CBUILD_OS_LINUX
+	#elif defined(__APPLE__) || defined(__MACH__)
+		#define CBUILD_OS_MACOS
+	#elif defined(__FreeBSD__) || \
+		defined(__NetBSD__) || defined(__NETBSD__) || \
+		defined(__OpenBSD__) || \
+		defined(__DragonFly__)
+		#define CBUILD_OS_BSD
+	#elif defined(__unix__) || defined(unix) || defined(__unix)
+		#define CBUILD_OS_UNIX
+	#elif defined(__CYGWIN__)
+		#define CBUILD_OS_WINDOWS
+		#define CBUILD_OS_WINDOWS_CYGWIN
+	#elif defined(_WIN32) || defined(_WIN64) || defined(__MINGW32__) || defined(__MINGW64__)
+		#define CBUILD_OS_WINDOWS
+	#else
+		#error "This OS is unsupported by CBuild. If it supports POSIX.1-2001 you can simply add check for it to a list of checks here. If not you should add a check for OS and a macro for its API and then implement OS/API specifc parts of CBuild."
+	#endif // OS detect
+	// TODO: Android and IOS
+#endif // !CBUILD_OS_DEFINED
+
+//! # API defines [line:cbuild-api-defines]
+//!
+//! Valid APIs:
+//! - `CBUILD_API_POSIX`.
+//!   POSIX.1-2001 (`_POSIX_C_SOURCE == 200112L`). 
+//!   Any detected extension can be used.
+//!   Permorms detection for extensions on MacOS, BSD, Linux.
+//!   Default for:
+//!   * `CBUILD_OS_LINUX`
+//!   * `CBUILD_OS_MACOS`
+//!   * `CBUILD_OS_BSD`
+//!   * `CBUILD_OS_WINDOWS_CYGWIN`
+//! - `CBUILD_API_STRICT_POSIX`
+//!   POSIX.1-2001 (`_POSIX_C_SOURCE == 200112L`). 
+//!   Only two extension are used and one extension type is considered: 
+//!   * `MAP_ANON/MAP_ANONYMOUS`. If none is available fallabck to `shm_open` is provided but needs `dlopen` and `dlsym` provided.
+//!   * `sysconf(_SC_NPROCESSORS_ONLN)`. Literal `1` is used as fallback.
+//!   * Newer POSIX versions can be used if detected.
+//! - `CBUILD_API_WINAPI`
+//!   WinAPI and possibly NT API.
+//!   Not implemented for now.
+
+//@ cbuild-api-defines
+#if !defined(CBUILD_API_DEFINED)
+	#if defined(CBUILD_OS_LINUX) || defined(CBUILD_OS_MACOS) || defined(CBUILD_OS_BSD)
+		#define CBUILD_API_POSIX
+	#elif defined(CBUILD_OS_UNIX)
+		#define CBUILD_API_STRICT_POSIX
+	#elif defined(CBUILD_OS_WINDOWS_CYGWIN)
+		#define CBUILD_API_POSIX
+	#elif defined(CBUILD_OS_WINDOWS)
+		#define CBUILD_API_WINAPI
+		#error "WinAPI is unsupported!"
+	#else
+		// TODO: Android/IOS/ChromeOS/IPadOS
+		#error "This OS is not known by CBuild. If it supports POSIX.1-2001 you can simply add check for it's OS to a list of OS checks and define appropriate API macro there. If not you should add a check for OS and a macro for its API and then implement OS/API specifc parts of CBuild."
+	#endif // API select
+#endif // !CBUILD_API_DEFINED
+//! # Platform selector [line:cbuild-platform-selector]
+//!
+//! This selector include platform-specific headers and configures platforms's libc.
+
+//@ cbuild-platform-selector
+#if defined(CBUILD_API_POSIX)
+	// Use GNU extentions if possible
+	#if !defined(_GNU_SOURCE)
+		#define _GNU_SOURCE
+	#endif // _GNU_SOURCE
+	// Platform include
+	#include <dirent.h>
+	#include <dlfcn.h>
+	#include <errno.h>
+	#include <fcntl.h>
+	#include <signal.h>
+	#include <sys/mman.h>
+	#include <sys/stat.h>
+	#include <sys/time.h>
+	#include <sys/types.h>
+	#include <sys/wait.h>
+	#include <unistd.h>
+	#if defined(CBUILD_OS_MACOS)
+		#include <crt_externs.h>
+	#endif // CBUILD_OS_MACOS
+	#if defined(CBUILD_OS_LINUX)
+		#if defined(__GLIBC__)
+			#define CBUILD_OS_LINUX_GLIBC
+		#elif defined(__UCLIBC__)
+			#define CBUILD_OS_LINUX_UCLIBC
+		#else // Assume musl
+			#define CBUILD_OS_LINUX_MUSL
+		#endif // Libc select
+		#include <sys/prctl.h>
+	#endif // CBUILD_OS_LINUX
+	/// Process handle
+	typedef pid_t cbuild_proc_t;
+	/// Invalid process handle
+	#define CBUILD_INVALID_PROC -1
+	/// File descriptor
+	typedef int cbuild_fd_t;
+	/// Invalid file descriptor
+	#define CBUILD_INVALID_FD -1
+	/// Additional error value for pointers (when error and not found are separate cases)
+	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
+#elif defined(CBUILD_API_STRICT_POSIX)
+	#if !defined(_POSIX_C_SOURCE)
+		#define _POSIX_C_SOURCE 200112L
+	#endif
+	// Platform includes
+	#include <dirent.h>
+	#include <dlfcn.h>
+	#include <errno.h>
+	#include <fcntl.h>
+	#include <signal.h>
+	#include <sys/mman.h>
+	#include <sys/stat.h>
+	#include <sys/time.h>
+	#include <sys/types.h>
+	#include <sys/wait.h>
+	#include <unistd.h>
+	// Process and file handles
+	typedef pid_t cbuild_proc_t;
+	#define CBUILD_INVALID_PROC -1
+	typedef int cbuild_fd_t;
+	#define CBUILD_INVALID_FD -1
+	// For pointer errors
+	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
+#elif defined(CBUILD_API_WINAPI)
+	// Platform includes
+	#include <windows.h>
+	#include <io.h>
+	/// Process handle
+	typedef HANDLE cbuild_proc_t;
+	/// Invalid process handle
+	#define CBUILD_INVALID_PROC ((HANDLE)(intptr_t)-1)
+	/// File descriptor
+	typedef HANDLE cbuild_fd_t;
+	/// Invalid file descriptor
+	#define CBUILD_INVALID_FD ((HANDLE)(intptr_t)-1)
+	/// Additional error value for pointers (when error and not found are separate cases)
+	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
+#endif // CBUILD_API_*
+
+//! # Normal platform-independent includes [lines:cbuild-includes]
+
+//@ cbuild-includes
+#include <ctype.h>
+#include <inttypes.h>
+#include <limits.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <regex.h> // mingw seems to provide it
+
+//! # Configuration values [line:cbuild-configuration]
+//!
+//! All of this are defines that user can redefine.
+
+//@ cbuild-configuration
+#ifndef CBUILD_INIT_CAPACITY
+	/// Initial capacity of cbuild dynamic arrays. Size is in elements.
+	///
+	/// Type: `size_t`{.c}.
+	#define CBUILD_INIT_CAPACITY (size_t)256
+#endif // CBUILD_INIT_CAPACITY
+#ifndef CBUILD_QUICK_SPRINTF_SIZE
+	/// Size of stack buffer used to speedup `sprintf` for small strings.
+	///
+	/// Type: `size_t`{.c}.
+	#define CBUILD_QUICK_SPRINTF_SIZE (size_t)512
+#endif // CBUILD_QUICK_SPRINTF_SIZE
+#ifndef CBUILD_FS_TMP_SIZE
+	/// Size of temporary buffer used for FS operations
+	///
+	/// Type: `size_t`{.c}.
+	#define CBUILD_FS_TMP_SIZE ((size_t)32 * (size_t)1024 * (size_t)1024)
+#endif // CBUILD_FS_TMP_SIZE
+#ifndef CBUILD_TEMP_ARENA_SIZE
+	/// Size of temporary allocator.
+	///
+	/// Type: `size_t`{.c}.
+	#define CBUILD_TEMP_ARENA_SIZE ((size_t)8 * (size_t)1024 * (size_t)1024)
+#endif // CBUILD_TEMP_ARENA_SIZE
+#ifndef CBUILD_MAP_DEFAULT_HASH_FUNC
+	/// Default hash function for CBuild map. User can override it in runtime 
+	/// for specific map instance.
+	///
+	/// [Type](map.html#cbuild_map_hash_t): `size_t func(const void* key, size_t len)`{.c}. 
+	#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_int_map_hash_func
+#endif // CBUILD_MAP_DEFAULT_HASH_FUNC
+#ifndef CBUILD_SELFREBUILD_ARGS
+	/// Default arguments for `cbuild_selfrebuild`.
+	///
+	/// Type: Comma-separated list of `const char*`{.c}.
+	#define CBUILD_SELFREBUILD_ARGS CBUILD_CARGS_WARN
+#endif // CBUILD_SEFLREBUILD_ARGS
+#ifndef CBUILD_LOG_MIN_LEVEL
+	/// Minimal log level for `cbuild_log`.
+	/// 
+	/// [Type](log.html#cbuild_log_level_t): `cbuild_log_level_t`.
+	#define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_ERROR
+#endif // CBUILD_LOG_MIN_LEVEL
+#ifndef CBUILD_GLOB_CAPTURE_COUNT
+	/// Number og "capture groups" glob supports. This is used for underlying regex engine.
+	#define CBUILD_GLOB_CAPTURE_COUNT 10
+#endif // CBUILD_GLOB_CAPTURE_COUNT
+#ifndef CBUILDDEF
+	/// This is prepended to all cbuild's functions. Can be set to eg. `static inline`
+	/// for build that use only one translation unit.
+	///
+	/// Type: function attributes.
+	#define CBUILDDEF
+#endif // CBUILDDEF
+
+//! # Preprocessor configuration [line:cbuild-misc-preproc] {#preprocessor-configuration}
+//!
+//! This section provides several miscellaneous preprocessor macro.
+//! - Print hooks. These can not be overridden by user and should be edited here.
+//! - Macro helpers for '##' and '#' operators
+//! - Attribute abstractions to support both new C23 attributes and older 
+//!   gnu-style attributes.
+//! - Allocator hooks (__CBUILD_MALLOC, __CBUILD_REALLOC, __CBUILD_FREE) which
+//!   can be overridden by defining CBUILD_CUSTOM_ALLOC
+
+//@ cbuild-misc-preproc
+// These are used for logging only (both from assert and from logger).
+#define __CBUILD_PRINT(str)                printf("%s", (str))
+#define __CBUILD_PRINTF(fmt, ...)          printf((fmt), __VA_ARGS__)
+#define __CBUILD_VPRINTF(fmt, va_args)     vprintf((fmt), (va_args))
+#define __CBUILD_FLUSH()                   fflush(stdout)
+// Macro helpers
+#define __CBUILD_STRINGIFY(var)  #var
+#define __CBUILD_XSTRINGIFY(var) __CBUILD_STRINGIFY(var)
+#define __CBUILD_CONCAT(a, b)    a ## b
+#define __CBUILD_XCONCAT(a, b)   __CBUILD_CONCAT(a, b)
+#define __CBUILD_EXPAND(a)       a
+// Attributes
+#if defined(__has_c_attribute)
+	#if __has_c_attribute(deprecated)
+		#define CBUILD_ATTR_DEPRECATED(msg, decl) [[deprecated(msg)]] decl
+	#else
+		#define CBUILD_ATTR_DEPRECATED(msg, decl) decl __attribute__((deprecated(msg)))
+	#endif //__has_c_attribute(deprecated)
+#else
+	#define CBUILD_ATTR_DEPRECATED(msg, decl) decl __attribute__((deprecated(msg)))
+#endif // defined(__has_c_attribute)
+#if defined(__has_c_attribute)
+	#if __has_c_attribute(noreturn)
+		#define CBUILD_ATTR_NORETURN(decl) [[noreturn]] decl
+	#else
+		#define CBUILD_ATTR_NORETURN(decl) decl __attribute__((noreturn))
+	#endif // __has_c_attribute(noreturn)
+#else
+	#define CBUILD_ATTR_NORETURN(decl) decl __attribute__((noreturn))
+#endif // defined(__has_c_attribute)
+#if defined(__has_c_attribute)
+	#if __has_c_attribute(fallthrough)
+		#define CBUILD_ATTR_FALLTHROUGH() [[fallthrough]] 
+	#else
+		#define CBUILD_ATTR_FALLTHROUGH() __attribute__((fallthrough))
+	#endif // __has_c_attribute(fallthrough)
+#else
+	#define CBUILD_ATTR_FALLTHROUGH() __attribute__((fallthrough))
+#endif // defined(__has_c_attribute)
+#define __CBUILD_ATTR_ADD1_0 1
+#define __CBUILD_ATTR_ADD1_1 2
+#define __CBUILD_ATTR_ADD1_2 3
+#define __CBUILD_ATTR_ADD1_3 4
+#define __CBUILD_ATTR_ADD1_4 5
+#define __CBUILD_ATTR_ADD1_5 6
+#if defined(__has_c_attribute)
+	#if __has_c_attribute(gnu::format)
+		#define CBUILD_ATTR_PRINTF(arg, decl) [[gnu::format(printf, arg, __CBUILD_XCONCAT(__CBUILD_ATTR_ADD1_, arg))]] decl
+	#else
+		#define CBUILD_ATTR_PRINTF(arg, decl) decl __attribute__((format(printf, arg, __CBUILD_XCONCAT(__CBUILD_ATTR_ADD1_, arg))))
+	#endif // __has_c_attribute(gnu::format)
+#else
+	#define CBUILD_ATTR_PRINTF(arg, decl) decl __attribute__((format(printf, arg, __CBUILD_XCONCAT(__CBUILD_ATTR_ADD1_, arg))))
+#endif // defined(__has_c_attribute)
+// Allocator hooks
+#ifndef CBUILD_CUSTOM_ALLOC
+	#define __CBUILD_MALLOC(size)       malloc(size)
+	#define __CBUILD_REALLOC(ptr, size) realloc(ptr, size)
+	#define __CBUILD_FREE(ptr)          free(ptr)
+#endif // CBUILD_CUSTOM_ALLOC
+
+/// Mark some variable as unused.
+///
+/// * [pl:val:name] Variable name.
+#define CBUILD_UNUSED(val)       (void)(val)
+
+/// Place `TODO` marker in code. Upon reaching it execution will abort with message. 
+///
+/// * [pl:message:const char*] Message that will be printed before aborting.
+#define CBUILD_TODO(message)                                             \
+	do {                                                                   \
+		__CBUILD_PRINTF("%s:%d: TODO: %s\n", __FILE__, __LINE__, (message)); \
+		abort();                                                             \
+	} while (0)
+/// Mark some code as unreachable. This will abort with message if executed.
+///
+/// * [pl:message:const char*] Message that will be printed before aborting.
+#define CBUILD_UNREACHABLE(message)                                             \
+	do {                                                                          \
+		__CBUILD_PRINTF("%s:%d: UNREACHABLE: %s\n", __FILE__, __LINE__, (message)); \
+		abort();                                                                    \
+	} while (0)
+
+/// Assert that can pretty-print messages.
+///
+/// * [pl:expr:() => bool] Any expression returns boolean.
+/// * [pl:...:format string] Printf-style format string and its arguments.
+#define cbuild_assert(expr, ...)                                      \
+	(expr) ? (void)(0)                                                  \
+	: __cbuild_assert(__FILE__, __LINE__, __func__, #expr, __VA_ARGS__)
+/// Pretty-printer for `cbuild_assert`.
+///
+/// * [pl:file] File that should be reported.
+/// * [pl:line] Line that should be reported.
+/// * [pl:func] Function that should be reported.
+/// * [pl:expr] Expression that should be reported.
+/// * [pl:...:format string] Printf-style format string and its arguments.
+CBUILD_ATTR_NORETURN(CBUILDDEF void __cbuild_assert(const char* file, unsigned int line,
+	const char* func, const char* expr, ...));
+
+/// Get length of array whose size is know at compile-time
+///
+/// * [pl:array:any*] Array, not just a pointer.
+///
+/// [r:size_t] Length of an array in elements.
+#define cbuild_arr_len(array) (sizeof(array) / sizeof((array)[0]))
+/// Get element from array with bound checking (array size should be know at compile-time)
+/// Abort execution if index is out of bounds.
+///
+/// * [pl:array:any*] Array, not just a pointer.
+/// * [pl:index:size_t] 
+///
+/// [r:any] Element from an array.
+#define cbuild_arr_get(array, index)                      \
+	(cbuild_assert((size_t)(index) < cbuild_arr_len(array), \
+			"Index %zu is out of bounds.", (size_t)index),      \
+		(array)[(size_t)(index)])
+
+/// Shift arguments from "standard" C array view - pointer and size as separate variables.
+/// Size will be decremented and pointer will be incremented.
+///
+/// * [pl:argv:any*] Array.
+/// * [pl:argc:size_t] Length of an array.
+///
+/// [r:any] Shifted First element of an array.
+#define cbuild_shift(argv, argc)                                        \
+	(cbuild_assert((argc) > 0, "More arguments are required."), (argc)--, \
+		*(argv)++)
+/// Shift arguments from "standard" C array view - pointer and size as separate variables.
+/// Size will be decremented and pointer will be incremented.
+/// Allows for a used-defined message.
+///
+/// * [pl:argv:any*] Array.
+/// * [pl:argc:size_t] Length of an array.
+/// * [pl:...:format string] Message that will be printed if array does not have enough elements.
+///
+/// [r:any] Shifted First element of an array.
+#define cbuild_shift_expect(argv, argc, ...)                    \
+	(cbuild_assert((argc) > 0, __VA_ARGS__), (argc)--, *(argv)++)
+
+/// Get time in nanoseconds.
+///
+/// [r:] Nanoseconds from unspecified epoch.
+CBUILDDEF uint64_t cbuild_time_nanos(void);
+/// Number of nanoseconds in one second
+#define CBUILD_NANOS_PER_SEC (size_t)(1000*1000*1000)
+
+/// Return bigger number from 2 numbers
+#define CBUILD_MAX(a, b) a > b ? a : b
+/// Return smaller number from 2 numbers
+#define CBUILD_MIN(a, b) a < b ? a : b
+#define CBUILD_VERSION "v0.15"
+#define CBUILD_VERSION_MAJOR 0
+#define CBUILD_VERSION_MINOR 14
+// #pragma once // For LSP 
+//! This file provides utilities to construct ANSII escape codes.
+//!
+//! ::: note
+//! This only provides strings for escape codes and some macro to build that strings
+//! :::
+
+/// ANSII escape starter.
+#define CBUILD_TERM_ESCAPE "\x1b["
+/// CSI - Control Sequence Introducer.
+#define CBUILD_TERM_CSI    CBUILD_TERM_ESCAPE
+/// SGR - Select Graphic Rendition, meta-function to generate proper code.
+#define CBUILD_TERM_SGR(n) CBUILD_TERM_ESCAPE n "m"
+
+/// Set cursor to specific coordinates.
+#define CBUILD_TERM_CURSOR_SET(x, y)                                           \
+	CBUILD_TERM_CSI __CBUILD_STRINGIFY(x) ";" __CBUILD_STRINGIFY(y) "H"
+/// Set cursor to specific column in current line
+#define CBUILD_TERM_CURSOR_SETH(x) CBUILD_TERM_CSI __CBUILD_STRINGIFY(x) "G"
+/// Move cursor in specific direction for specified number of steps.
+///
+/// * [pl:direction:direction] One of CBUILD_TERM_[UP|DOWN|RIGHT|LEFT].
+/// * [pl:num_steps:unsigned int] Number of steps, should be either literal or define.
+#define CBUILD_TERM_CURSOR_MOVE(direction, num_steps)                          \
+	CBUILD_TERM_CSI __CBUILD_XSTRINGIFY(num_steps) direction
+///
+#define CBUILD_TERM_UP        "A"
+///
+#define CBUILD_TERM_DOWN      "B"
+///
+#define CBUILD_TERM_RIGHT     "C"
+///
+#define CBUILD_TERM_LEFT      "D"
+///
+#define CBUILD_TERM_NEXT_LINE "E"
+///
+#define CBUILD_TERM_PREV_LINE "F"
+/// Get current position of a cursor.
+#define CBUILD_TERM_CURSOR_GET CBUILD_TERM_CSI "6n"
+
+/// Clean specific part of terminal
+///
+/// * [pl:mode:clear mode] One of CBUILD_TERM_[CURSOR_TO_END|CURSOR_TO_BEGIN|FULL|FULL_SCROLLBACK].
+#define CBUILD_TERM_ERASE_SCR(mode) CBUILD_TERM_CSI __CBUILD_STRINGIFY(mode) "J"
+/// Clean specific part of terminal
+///
+/// * [pl:mode:clear mode] One of CBUILD_TERM_[CURSOR_TO_END|CURSOR_TO_BEGIN|FULL].
+#define CBUILD_TERM_ERASE_LINE(mode)                                           \
+	CBUILD_TERM_CSI __CBUILD_STRINGIFY(mode) "K"
+///
+#define CBUILD_TERM_CURSOR_TO_END    0
+///
+#define CBUILD_TERM_CURSOR_TO_BEGIN  1
+///
+#define CBUILD_TERM_FULL             2
+///
+#define CBUILD_TERM_FULL_SCROLLBACK  3
+
+/// Reset all styling
+#define CBUILD_TERM_RESET            CBUILD_TERM_SGR("0")
+///
+#define CBUILD_TERM_BOLD             CBUILD_TERM_SGR("1")
+///
+#define CBUILD_TERM_FAINT            CBUILD_TERM_SGR("2")
+///
+#define CBUILD_TERM_ITALIC           CBUILD_TERM_SGR("3")
+/// Disable italic
+#define CBUILD_TERM_NITALIC          CBUILD_TERM_SGR("23")
+///
+#define CBUILD_TERM_UNDERLINE        CBUILD_TERM_SGR("4")
+/// Disable underline
+#define CBUILD_TERM_NUNDERLINE       CBUILD_TERM_SGR("24")
+/// Enable blinking text
+#define CBUILD_TERM_BLINK            CBUILD_TERM_SGR("5")
+/// Disable blinking text
+#define CBUILD_TERM_NBLINK           CBUILD_TERM_SGR("25")
+/// Enable swapping of background and foreground color
+#define CBUILD_TERM_REVERSE          CBUILD_TERM_SGR("7")
+/// Disable reverse mode
+#define CBUILD_TERM_NREVERSE         CBUILD_TERM_SGR("27")
+/// Enable crossed-out text rendering
+#define CBUILD_TERM_CROSS_OUT        CBUILD_TERM_SGR("9")
+/// Disable crossed-out rendering
+#define CBUILD_TERM_NCROSS_OUT       CBUILD_TERM_SGR("29")
+///
+#define CBUILD_TERM_DOUBLE_UNDERLINE CBUILD_TERM_SGR("21")
+///
+#define CBUILD_TERM_OVERLINE         CBUILD_TERM_SGR("53")
+/// Disable overline
+#define CBUILD_TERM_NOVERLINE        CBUILD_TERM_SGR("55")
+
+/// Set foreground color based on 16 color palette.
+///
+/// * [pl:color:Color] One of CBUILD_TERM_<COLOR> defines.
+#define CBUILD_TERM_FG(color) CBUILD_TERM_SGR(__CBUILD_XSTRINGIFY(color))
+/// Set background color based on 16 color palette.
+///
+/// * [pl:color:Color] One of CBUILD_TERM_<COLOR> defines.
+#define CBUILD_TERM_BG(color) CBUILD_TERM_SGR(__CBUILD_XSTRINGIFY(color##addten))
+/// Set foreground color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit)
+#define CBUILD_TERM_FG8(color)                                                 \
+	CBUILD_TERM_SGR("38;5;" __CBUILD_STRINGIFY(color))
+/// Set background color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit)
+#define CBUILD_TERM_BG8(color)                                                 \
+	CBUILD_TERM_SGR("48;5;" __CBUILD_STRINGIFY(color))
+/// Set underline color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit)
+#define CBUILD_TERM_UNDERLINE8(color)                                          \
+	CBUILD_TERM_SGR("58;5;" __CBUILD_STRINGIFY(color))
+/// Set foreground color to to some RGB888 color
+#define CBUILD_TERM_FG24(r, g, b)                                              \
+	CBUILD_TERM_SGR("38;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \
+		__CBUILD_STRINGIFY(b))
+/// Set background color to to some RGB888 color
+#define CBUILD_TERM_BG24(r, g, b)                                              \
+	CBUILD_TERM_SGR("48;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \
+		__CBUILD_STRINGIFY(b))
+/// Set underline color to to some RGB888 color
+#define CBUILD_TERM_UNDERLINE24(r, g, b)                                       \
+	CBUILD_TERM_SGR("58;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \
+		__CBUILD_STRINGIFY(b))
+
+//! # Colors
+
+///
+#define CBUILD_TERM_BLACK           30
+///
+#define CBUILD_TERM_RED             31
+///
+#define CBUILD_TERM_GREEN           32
+///
+#define CBUILD_TERM_YELLOW          33
+///
+#define CBUILD_TERM_BLUE            34
+///
+#define CBUILD_TERM_MAGENTA         35
+///
+#define CBUILD_TERM_CYAN            36
+///
+#define CBUILD_TERM_WHITE           37
+///
+#define CBUILD_TERM_BRBLACK         90
+///
+#define CBUILD_TERM_BRRED           91
+///
+#define CBUILD_TERM_BRGREEN         92
+///
+#define CBUILD_TERM_BRYELLOW        93
+///
+#define CBUILD_TERM_BRBLUE          94
+///
+#define CBUILD_TERM_BRMAGENTA       95
+///
+#define CBUILD_TERM_BRCYAN          96
+///
+#define CBUILD_TERM_BRWHITE         97
+#define CBUILD_TERM_BLACKaddten     40
+#define CBUILD_TERM_REDaddten       41
+#define CBUILD_TERM_GREENaddten     42
+#define CBUILD_TERM_YELLOWaddten    43
+#define CBUILD_TERM_BLUEaddten      44
+#define CBUILD_TERM_MAGENTAaddten   45
+#define CBUILD_TERM_CYANaddten      46
+#define CBUILD_TERM_WHITEaddten     47
+#define CBUILD_TERM_BRBLACKaddten   100
+#define CBUILD_TERM_BRREDaddten     101
+#define CBUILD_TERM_BRGREENaddten   102
+#define CBUILD_TERM_BRYELLOWaddten  103
+#define CBUILD_TERM_BRBLUEaddten    104
+#define CBUILD_TERM_BRMAGENTAaddten 105
+#define CBUILD_TERM_BRCYANaddten    106
+#define CBUILD_TERM_BRWHITEaddten   107
+// #pragma once // For LSP 
+//! This file provides small logger utility.
+
+// #include "Common.h"
+
+#ifndef CBUILD_LOG_CUSTOM_LEVELS
+	/// Supported log levels. Compared arithmetically.
+	///
+	/// This can be overridden by defining `CBUILD_LOG_CUSTOM_LEVELS` and then providing
+	/// enumeration `cbuild_custom_log_level_t` (without typedef).
+	/// This 4 levels should be present in you implementation of this enum, because
+	/// they are used by CBuild itself.
+	///
+	/// You would also need to provide `const char* __cbuild_int_log_level_names[]`.
+	/// This array is used by default handler to format names of log levels.
+	typedef enum {
+		CBUILD_LOG_ERROR   = 1,
+		CBUILD_LOG_WARN    = 2,
+		CBUILD_LOG_INFO    = 3,
+		CBUILD_LOG_TRACE   = 4,
+	} cbuild_log_level_t;
+#else
+	typedef enum cbuild_custom_log_level_t cbuild_log_level_t;
+#endif // CBUILD_LOG_CUSTOM_LEVELS
+
+/// Main dispatcher for logger. Support printf-style formatting.
+///
+/// * [pl:level] Log level. Will be used both for printing and for disabling logs based on minimum level. 
+/// * [pl:fmt] Format string for printf.
+/// * [pl:...] Arguments for format string.
+CBUILD_ATTR_PRINTF(2,
+	CBUILDDEF void cbuild_log(cbuild_log_level_t level, const char* fmt, ...));
+
+/// Wrapper for [`cbuild_log`](#cbuild_log) that sets level to `CBUILD_LOG_ERROR`.
+#define cbuild_log_error(msg, ...)                            \
+	cbuild_log(CBUILD_LOG_ERROR, msg __VA_OPT__(,) __VA_ARGS__)
+/// Wrapper for [`cbuild_log`](#cbuild_log) that sets level to `CBUILD_LOG_WARN`.
+#define cbuild_log_warn(msg, ...)                             \
+	cbuild_log(CBUILD_LOG_WARN, msg __VA_OPT__(,) __VA_ARGS__)
+/// Wrapper for [`cbuild_log`](#cbuild_log) that sets level to `CBUILD_LOG_INFO`.
+#define cbuild_log_info(msg, ...)                             \
+	cbuild_log(CBUILD_LOG_INFO, msg __VA_OPT__(,) __VA_ARGS__)
+/// Wrapper for [`cbuild_log`](#cbuild_log) that sets level to `CBUILD_LOG_TRACE`.
+#define cbuild_log_trace(msg, ...)                            \
+	cbuild_log(CBUILD_LOG_TRACE, msg __VA_OPT__(,) __VA_ARGS__)
+
+/// Same as [`cbuild_log`](#cbuild_log) but takes `va_list`{.c} instead of variadics. 
+///
+/// * [pl:level] Log level. Will be used both for printing and for disabling logs based on minimum level. 
+/// * [pl:fmt] Format string for printf.
+/// * [pl:args] Arguments for format string.
+CBUILDDEF void cbuild_vlog(cbuild_log_level_t level, const char* fmt, va_list args);
+
+/// Set minimum level of logs that will be printed.
+///
+/// Name of this functions is rather misleading, because it disable all levels that are
+/// arithmetically higher than specified here. So technically it set maximum level. But
+/// for logs levels lower technically means  less severe, so name is like this.
+CBUILDDEF void cbuild_log_set_min_level(cbuild_log_level_t level);
+/// Get minimum level of logs that would be printed.
+CBUILDDEF cbuild_log_level_t cbuild_log_get_min_level(void);
+
+/// This function will be called only for messages that should be printed.
+/// It can be treated as a formatter for logged messages.
+///
+/// * [pl:level] Log level. Needed to pretty-print it.
+/// * [pl:fmt] Format string for printf.
+/// * [pl:args] Arguments for format string.
+typedef void (*cbuild_log_handler_t)(cbuild_log_level_t level, const char* fmt, va_list args);
+/// Setup handler for logger. Passing NULL will disable logs.
+/// Default log handler will be setup by default.
+CBUILDDEF void cbuild_log_set_handler(cbuild_log_handler_t handler);
+/// Get current log handler.
+CBUILDDEF cbuild_log_handler_t cbuild_log_get_handler(void);
+// #pragma once // For LSP 
+//! Arena allocator.
+
+// #include "Common.h"
+
+/// Arena allocator state.
+///
+/// ::: note
+/// Arena automatically pad things to `2 * sizeof(void*)`{.c}. This is done to
+/// be a little more cache-friendly. Padding is done after allocation so it is
+/// always placed after the data.
+/// :::
+///
+/// * [fl:base] Base pointer for allocated memory.
+/// * [fl:capacity] Capacity of this arena.
+/// * [fl:pointer] Pointer to first unallocated byte.
+typedef struct cbuild_arena_t {
+	void* base;
+	size_t capacity;
+	size_t pointer;
+} cbuild_arena_t;
+
+/// Reallocate arena base to new size.
+///
+/// If old base is `NULL` then new memory will be allocated.
+///
+/// ::: note
+/// This is just a direct call to `realloc` plus some metadata management.
+/// :::
+CBUILDDEF bool cbuild_arena_base_realloc(cbuild_arena_t* arena, size_t new_capacity);
+/// Allocate new arena base.
+///
+/// * [pl:arena:cbuild_arena_t*] Arena object.
+/// * [pl:capacity:size_t] Capacity of arena.
+///
+/// [r:] `false` on failure.
+#define cbuild_arena_base_alloc(arena, capacity) cbuild_arena_base_realloc(arena, capacity)
+/// Free arena base.
+CBUILDDEF void cbuild_arena_base_free(cbuild_arena_t* arena);
+/// Allocate inside of arena.
+///
+/// * [pl:arena] Arena object.
+/// * [pl:size] Number of bytes to allocate.
+///
+/// [r:] Pointer into arena. NULL if out-of-memory.
+CBUILDDEF void* cbuild_arena_malloc(cbuild_arena_t* arena, size_t size);
+/// `realloc` for arena. Will not free old memory.
+CBUILDDEF void* cbuild_arena_realloc(cbuild_arena_t* arena, size_t size);
+/// Save checkpoint into arena.
+CBUILDDEF size_t cbuild_arena_checkpoint(cbuild_arena_t* arena);
+/// Reset arena to some checkpoint.
+CBUILDDEF void cbuild_arena_reset(cbuild_arena_t* arena, size_t checkpoint);
+/// Free arena. Set `pointer` to 0.
+///
+/// * [pl:arena:cbuild_arena_t*] Arena object.
+#define cbuild_arena_free(arena) cbuild_arena_reset(arena, 0)
+/// `strdup` that uses arena as allocator.
+CBUILDDEF char* cbuild_arena_strdup(cbuild_arena_t* arena, const char* src);
+/// `memdup` that uses arena as its allocator.
+CBUILDDEF void* cbuild_arena_memdup(cbuild_arena_t* arena, void* src, size_t n);
+/// `sprintf` that uses arena as its allocator.
+CBUILDDEF char* cbuild_arena_sprintf(cbuild_arena_t* arena, const char* fmt, ...);
+/// `vsprintf` that uses arena as its allocator.
+CBUILDDEF char* cbuild_arena_vsprintf(cbuild_arena_t* arena, const char* fmt, va_list args);
+// #pragma once // For LSP 
+//! Global arena for CBuild. Uses bump allocator under the hood.
+
+// #include "Common.h"
+
+/// Same as `malloc`. Can return NULL.
+CBUILDDEF void* cbuild_temp_alloc(size_t size);
+/// `sprintf` that allocates using `cbuild_temp_alloc`.
+CBUILDDEF char* cbuild_temp_sprintf(const char* fmt, ...)
+__attribute__((format(printf, 1, 2)));
+/// `vsprintf` that allocates using `cbuild_temp_alloc`.
+CBUILDDEF char* cbuild_temp_vsprintf(const char* fmt, va_list ap);
+/// `strdup` that allocates using `cbuild_temp_alloc`.
+CBUILDDEF char* cbuild_temp_strdup(const char* str);
+/// Same as `strdup` but copies raw memory. Allocates using `cbuild_temp_alloc`.
+CBUILDDEF void* cbuild_temp_memdup(const void* mem, size_t size);
+/// Reset temporary allocator back to [p:checkpoint]. 
+CBUILDDEF void cbuild_temp_reset(size_t checkpoint);
+/// Create new allocator checkpoint.
+CBUILDDEF size_t cbuild_temp_checkpoint(void);
+// #pragma once // For LSP 
+//! Implements dynamic array datatype. It works over structures with
+//! specific "form", where `T` is a generic type:
+//!
+//! ```c
+//! typedef struct cbuild_da_t
+//!     T* data;
+//!     size_t size;
+//!     size_t capacity;
+//! }
+//! ```
+
+/// Create type for a new dynamic array.
+///
+/// * [pl:type:type] Type of elements for a new dynamic array.
+#define cbuild_da_new(type) \
+	struct {                  \
+		type* data;             \
+		size_t size;            \
+		size_t capacity;        \
+	}
+/// Append new element to dynamic array.
+///
+/// * [pl:da:cbuild_da_t*] Dynamic array object.
+/// * [pl:elem:*typeof(da->data)] Element to append.
+#define cbuild_da_append(da, elem)                                             \
+	do {                                                                         \
+		if (((da)->size + 1) > (da)->capacity) {                                   \
+			cbuild_da_resize((da), 0);                                               \
+		}                                                                          \
+		(da)->data[(da)->size++] = elem;                                           \
+	} while(0)
+/// Append new elements to dynamic array.
+///
+/// * [pl:da:cbuild_da_t*] Dynamic array object.
+/// * [pl:arr:typeof(da->data)] Elements to append.
+/// * [pl:arr_size:size_t] Number of elements to append.
+#define cbuild_da_append_arr(da, arr, arr_size)                                \
+	do {                                                                         \
+		if (((da)->size + (arr_size)) > (da)->capacity) {                          \
+			cbuild_da_resize((da), (da)->capacity + (arr_size));                     \
+		}                                                                          \
+		memcpy((da)->data + (da)->size, (arr),                                     \
+			(arr_size) * sizeof(typeof(*(da)->data)));                               \
+		(da)->size += (arr_size);                                                  \
+	} while(0)
+/// Append new elements to dynamic array.
+///
+/// * [pl:da:cbuild_da_t*] Dynamic array object.
+/// * [pl:...:*typeof(da->data)] Elements to append.
+#define cbuild_da_append_many(da, ...)                                         \
+	do {                                                                         \
+		typeof(*((da)->data))   __cbuild_da_tmp_arr[] = { __VA_ARGS__ };           \
+		size_t __cbuild_da_tmp_count =                                             \
+			sizeof(__cbuild_da_tmp_arr) / sizeof(__cbuild_da_tmp_arr[0]);            \
+		cbuild_da_append_arr((da), __cbuild_da_tmp_arr, __cbuild_da_tmp_count);    \
+	} while (0)
+/// Set element in dynamic array using its index.
+///
+/// * [pl:da:cbuild_da_t*] Dynamic array object.
+/// * [pl:idx:size_t] Element index.
+/// * [pl:elem:*typeof(da->data)] New element's value.
+/// 
+/// [r:bool] False on overflow.
+#define cbuild_da_set(da, idx, elem)                                           \
+	({                                                                           \
+		bool __cbuild__ret = false;                                                \
+		if ((idx) >= (da)->size) {                                                 \
+			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in set.");  \
+			__cbuild__ret = false;                                                   \
+		} else {                                                                   \
+			(da)->data[(idx)] = elem;                                                \
+			__cbuild__ret = true;                                                    \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
+/// Get element from dynamic array using its index.
+///
+/// * [pl:da:const cbuild_da_t*] Dynamic array object.
+/// * [pl:idx:size_t] Element index.
+/// 
+/// [r:typeof(da->data)] Pointer to an element or `NULL`{.c} on overflow.
+#define cbuild_da_get(da, idx)                                                 \
+	({                                                                           \
+		typeof(*(da)->data)* __cbuild__ret = NULL;                                 \
+		if ((idx) >= (da)->size) {                                                 \
+			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in get.");  \
+			__cbuild__ret = NULL;                                                    \
+		} else {                                                                   \
+			__cbuild__ret = &((da)->data[(idx)]);                                    \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
+/// Remove element dynamic array using its index.
+///
+/// * [pl:da:cbuild_da_t*] Dynamic array object.
+/// * [pl:idx:size_t] Element index.
+/// 
+/// [r:bool] False on overflow.
+#define cbuild_da_remove(da, idx)                                              \
+	({                                                                           \
+		bool __cbuild__ret = false;                                                \
+		if ((idx) >= (da)->size) {                                                 \
+			cbuild_log(CBUILD_LOG_ERROR,                                             \
+				"(LIB_CBUILD_DA) Index overflow in remove.");                          \
+			__cbuild__ret = false;                                                   \
+		} else {                                                                   \
+			memmove((da)->data + (idx), ((da)->data + ((idx) + 1)),                  \
+				((da)->size - ((idx) + 1)) * sizeof(typeof(*(da)->data)));             \
+			(da)->size--;                                                            \
+			__cbuild__ret = true;                                                    \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
+/// Remove element dynamic array using its index.
+///
+/// This function has O(1) complexity but changes ordering of elements in 
+/// an array. It copies last element into same index as removed one, overriding
+/// it and then just decrease size by 1.
+///
+/// * [pl:da:cbuild_da_t*] Dynamic array object.
+/// * [pl:idx:size_t] Element index.
+/// 
+/// [r:bool] False on overflow.
+#define cbuild_da_remove_unordered(da, idx)                                    \
+	({                                                                           \
+		bool __cbuild__ret = false;                                                \
+		if ((idx) >= (da)->size) {                                                 \
+			cbuild_log(CBUILD_LOG_ERROR,                                             \
+				"(LIB_CBUILD_DA) Index overflow in remove.");                          \
+			__cbuild__ret = false;                                                   \
+		} else {                                                                   \
+			(da)->data[(idx)] = (da)->data[--(da)->size];                            \
+			__cbuild__ret = true;                                                    \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
+/// Resize dynamic array.
+///
+/// * [pl:da:cbuild_da_t*] Dynamic array object.
+/// * [pl:new_size:size_t] Resize dynamic array. If new_size equal 0 default growth strategy will be used.
+#define cbuild_da_resize(da, new_size)                                         \
+	do {                                                                         \
+		if ((da)->data == NULL) {                                                  \
+			if ((new_size) == 0) {                                                   \
+				(da)->capacity = CBUILD_INIT_CAPACITY;                                 \
+			} else {                                                                 \
+				(da)->capacity = (new_size);                                           \
+			}                                                                        \
+			(da)->data = __CBUILD_MALLOC(                                            \
+				(da)->capacity * sizeof(typeof(*(da)->data)));                         \
+		} else {                                                                   \
+			if ((new_size) == 0) {                                                   \
+				(da)->capacity *= 2;                                                   \
+			} else {                                                                 \
+				(da)->capacity = (new_size);                                           \
+			}                                                                        \
+			(da)->data = __CBUILD_REALLOC((da)->data,                                \
+				(da)->capacity * sizeof(typeof(*(da)->data)));                         \
+		}                                                                          \
+		cbuild_assert((da)->data != NULL, "(LIB_CBUILD_DA) Allocation failed.\n"); \
+		((da)->size > (da)->capacity) ? ((da)->size = (da)->capacity) : 0;         \
+	} while(0)
+/// Free dynamic array.
+///
+/// This should be used only if you want to free underlying memory, if you just
+/// want to clear array and reuse it, setting `size` to `0` would be much faster.
+///
+/// * [pl:da:cbuild_da_t*] Dynamic array object.
+#define cbuild_da_clear(da)                                                    \
+	do {                                                                         \
+		__CBUILD_FREE((da)->data);                                                 \
+		(da)->data     = NULL;                                                     \
+		(da)->size     = 0;                                                        \
+		(da)->capacity = 0;                                                        \
+	} while(0)
+/// Foreach implementation for dynamic array. Same semantics as 'for' loop.
+///
+/// * [pl:da:cbuild_da_t*] Dynamic array object.
+/// * [pl:iter:name] Name if variable that will be used as iterator. Will have type `typeof(da->data)`{.c}.
+#define cbuild_da_foreach(da, iter)                                            \
+	for (typeof(*((da).data))* iter = (da).data;                                 \
+		iter < ((da).data + (da).size); iter++)
+// #pragma once // For LSP 
+//! Dynamic string - string builder. Specialization of DynArray.h for `char`{.c} datatype.
+
+// #include "Common.h"
+// #include "StringView.h"
+
+/// String builder string builder.
+///
+/// * [fl:sbta] Pointer to data. This pointer "owns" the data.
+/// * [fl:size] Length of string builder. Data in range from `data`{.c} to `data+size`{.c} is guaranteed to be valid.
+/// * [fl:capacity] Length of allocated data. Data is guaranteed to be allocated (but may be not initialized) from `data`{.c} to `data+size`{.c}.
+typedef struct cbuild_sb_t {
+	char* data;
+	size_t size;
+	size_t capacity;
+} cbuild_sb_t;
+/// Format description for string view for printf-style formatters.
+#define CBuildSBFmt     "%.*s"
+/// Format argument for string view for printf-style formatters.
+#define CBuildSBArg(sb) (int)(sb).size, (sb).data
+/// Append new element to string builder.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+/// * [pl:elem:char] Element to append.
+#define cbuild_sb_append(sb, elem) cbuild_da_append((sb), (elem))
+/// Append new elements to string builder.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+/// * [pl:arr:char*] Elements to append.
+/// * [pl:arr_size:size_t] Number of elements to append.
+#define cbuild_sb_append_arr(sb, arr, size) cbuild_da_append_arr((sb), (arr), (size))
+/// Append new elements to string builder.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+/// * [pl:...:char] Elements to append.
+#define cbuild_sb_append_many(sb, ...) cbuild_da_append_many((sb), __VA_ARGS__)
+/// Append c-string to string builder.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+/// * [pl:cstr:char*] C-string (NULL-terminated).
+#define cbuild_sb_append_cstr(sb, cstr)	cbuild_da_append_arr((sb), (cstr), strlen(cstr))
+/// Append NULL-terminator to string builder.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+#define cbuild_sb_append_null(sb) cbuild_da_append((sb), '\0')
+/// Set element in string builder using its index.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+/// * [pl:idx:size_t] Element index.
+/// * [pl:elem:char] New element's value.
+/// 
+/// [r:bool] False on overflow.
+#define cbuild_sb_set(sb, idx, elem) cbuild_da_set((sb), (idx), (elem))
+/// Get element from string builder using its index.
+///
+/// * [pl:sb:const cbuild_sb_t*] String builder object.
+/// * [pl:idx:size_t] Element index.
+/// 
+/// [r:char] Pointer to an element or NULL on overflow.
+#define cbuild_sb_get(sb, idx) cbuild_da_get((sb), (idx))
+/// Remove element string builder using its index.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+/// * [pl:idx:size_t] Element index.
+/// 
+/// [r:bool] False on overflow.
+#define cbuild_sb_remove(sb, idx) cbuild_da_remove((sb), (idx))
+/// Resize string builder.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+/// * [pl:new_size:size_t] Resize string builder. If new_size equal 0 default growth strategy will be used.
+#define cbuild_sb_resize(sb, new_capacity) cbuild_da_resize((sb), (new_capacity))
+/// Free string builder.
+///
+/// This should be used only if you want to free underlying memory, if you just
+/// want to clear array and reuse it, setting `size` to `0` would be much faster.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+#define cbuild_sb_clear(sb) cbuild_da_clear(sb)
+/// Foreach implementation for string builder. Same semantics as 'for' loop.
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+/// * [pl:iter:name] Name if variable that will be used as iterator. Will have type `char`{.c}.
+#define cbuild_sb_foreach(sb, iter) cbuild_da_foreach(sb, iter)
+/// `strcmp` for string builder. Fully compatible but extends API. 
+///
+/// [r:-2] If size of first string builder is smaller.
+/// [r:-1] If first different character in first string builder is smaller.
+/// [r:0] If two string builders are equal.
+/// [r:1] If first different character in first string builder is larger.
+/// [r:2] If size of first string builder is larger.
+CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t a, cbuild_sb_t b);
+/// `strcmp` for string builder. Fully compatible but extends API. 
+/// Performs case folding for ASCII.
+///
+/// [r:-2] If size of first string builder is smaller.
+/// [r:-1] If first different character in first string builder is smaller.
+/// [r:0] If two string builders are equal.
+/// [r:1] If first different character in first string builder is larger.
+/// [r:2] If size of first string builder is larger.
+CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
+/// Append utf8 character to a string builder.
+///
+/// * [pl:sb] String builder object.
+/// * [pl:cp] UTF8 codepoint.
+CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
+/// `strcmp` for string builder. Fully compatible but extends API. 
+///
+/// ::: deprecated
+/// Comparison is same for UTF8 strings, ASCII strings or just raw byte data.
+/// :::
+///
+/// [r:-2] If size of first string builder is smaller.
+/// [r:-1] If first different character in first string builder is smaller.
+/// [r:0] If two string builders are equal.
+/// [r:1] If first different character in first string builder is larger.
+/// [r:2] If size of first string builder is larger.
+CBUILD_ATTR_DEPRECATED("Please use cbuild_sb_cmp instead!",
+	CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t a, cbuild_sb_t b));
+/// Get length of a string builder in utf8 codepoints.
+///
+/// ::: note
+/// Invalid codepoints assumed to have length of 1
+/// :::
+CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t sb);
+/// Convert string builder to a string view.
+CBUILDDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t sb);
+/// Convert string builder to a string view.
+#define	cbuild_sv_from_sb(sb) cbuild_sb_to_sv(sb)
+/// Convert string view to a string builder (allocated new data).
+CBUILDDEF cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
+/// Convert string view to a string builder (allocated new data).
+#define cbuild_sb_from_sv(sv) cbuild_sv_to_sb(sv)
+/// Apppend string view to a string builder
+///
+/// * [pl:sb:cbuild_sb_t*] String builder object.
+/// * [pl:cstr:cbuild_sv_t] String view.
+#define cbuild_sb_append_sv(sb, sv) cbuild_sb_append_arr((sb), (sv).data, (sv).size)
+/// Append data to a string builder using printf-style format string.
+CBUILD_ATTR_PRINTF(2,
+	CBUILDDEF int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...));
+/// Append data to a string builder using printf-style format string.
+CBUILDDEF int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args);
+// #pragma once // For LSP 
+//! Implementation of string view in C.
+
+// #include "Common.h"
+
+/// String view datatype
+///
+/// * [fl:data] Pointer into data. This pointer does not "own" its data.
+/// * [fl:size] Length of string view. Data in range from `data`{.c} to `data+size`{.c} is guaranteed to be valid.
+typedef struct cbuild_sv_t {
+	char*  data;
+	size_t size;
+} cbuild_sv_t;
+/// Format description for string view for printf-style formatters.
+#define CBuildSVFmt     "%.*s"
+/// Format argument for string view for printf-style formatters.
+#define CBuildSVArg(sv) (int)(sv).size, (sv).data
+/// Create new string view from raw parts
+#define cbuild_sv_from_parts(_data, _size)                   \
+	((cbuild_sv_t){ .data = (char*)(_data), .size = (_size) })
+/// Create new string view from C-string. 
+#define cbuild_sv_from_cstr(cstr)                                \
+((cbuild_sv_t){ .data = (char*)(cstr), .size = strlen((cstr)) })
+/// Create new string view from C-string literal (compile-time). 
+#define cbuild_sv_from_lit(lit)                                  \
+((cbuild_sv_t){ .data = (char*)(lit), .size = sizeof(lit) - 1 })
+/// Trim whitespaces from a string view starting from the left.
+///
+/// [r:] Number of characters removed.
+CBUILDDEF size_t cbuild_sv_trim_left(cbuild_sv_t* sv);
+/// Trim whitespaces from a string view starting from the right.
+///
+/// [r:] Number of characters removed.
+CBUILDDEF size_t cbuild_sv_trim_right(cbuild_sv_t* sv);
+/// Trim whitespaces from a string view starting from both sides.
+///
+/// [r:] Number of characters removed.
+CBUILDDEF size_t cbuild_sv_trim(cbuild_sv_t* sv);
+/// Chop [p:size] characters from string view starting from the left.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:size] Number of character that will be chopped.
+///
+/// [r:] New string view containing chopped characters.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size);
+/// Chop [p:size] characters from string view starting from the right.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:size] Number of character that will be chopped.
+///
+/// [r:] New string view containing chopped characters.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right(cbuild_sv_t* sv, size_t size);
+/// Chop characters from string view starting from the left until [p:delim] is found.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] Delimiter character.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim);
+/// Chop characters from string view starting from the right until [p:delim] is found.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] Delimiter character.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_delim(cbuild_sv_t* sv, char delim);
+/// Chop characters from string view starting from the left until [p:delim] is found.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] Delimiter string view.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
+/// Chop characters from string view starting from the right until [p:delim] is found.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] Delimiter string view.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
+/// Delimiter function. Used as comparator in [`cbuild_sv_chop_by_func`](#cbuild_sv_chop_by_func)
+/// and [`cbuild_sv_chop_right_by_func`](#cbuild_sv_chop_right_by_func)
+///
+/// * [pl:sv] String view passed to function.
+/// * [pl:idx] Current character.
+/// * [pl:args] Arguments passed by caller.
+///
+/// [r:] If true is returned this character will be considered a delimiter
+typedef bool (*cbuild_sv_delim_func)(const cbuild_sv_t* sv, size_t idx, void* args);
+/// chop characters from string view starting from the left until [p:delim] returns `true`.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. its size will be reduced.
+/// * [pl:delim] Delimiter function.
+/// * [pl:args] Arguments to a function.
+///
+/// [r:] new string view containing chopped characters. delimeter character will not be in any string view.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv,
+	cbuild_sv_delim_func delim, void* args);
+/// chop characters from string view starting from the right until [p:delim] returns `true`.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] Delimiter function.
+/// * [pl:args] Arguments to a function.
+///
+/// [r:] new string view containing chopped characters. Delimiter character will not be in any string view.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_func(cbuild_sv_t* sv,
+	cbuild_sv_delim_func delim, void* args);
+/// `strcmp` for string view. Fully compatible but extends API. 
+///
+/// [r:-2] If size of first string view is smaller.
+/// [r:-1] If first different character in first string view is smaller.
+/// [r:0] If two string views are equal.
+/// [r:1] If first different character in first string view is larger.
+/// [r:2] If size of first string view is larger.
+CBUILDDEF int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
+/// `strcmp` for string view. Fully compatible but extends API. 
+/// Performs case folding for ASCII.
+///
+/// [r:-2] If size of first string view is smaller.
+/// [r:-1] If first different character in first string view is smaller.
+/// [r:0] If two string views are equal.
+/// [r:1] If first different character in first string view is larger.
+/// [r:2] If size of first string view is larger.
+CBUILDDEF int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
+/// Check if string view has specific prefix.
+CBUILDDEF bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
+/// Check if string view has specific suffix.
+CBUILDDEF bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix);
+/// Find specific character in string view.
+///
+/// [r:] Index of character or `-1`{.c} if not found
+CBUILDDEF ssize_t cbuild_sv_find(cbuild_sv_t sv, char c);
+/// Find specific substring (provided as string view) in another string view.
+///
+/// [r:] Index of first character of [p:needle] or `-1`{.c} if not found
+CBUILDDEF ssize_t cbuild_sv_find_sv(cbuild_sv_t sv, cbuild_sv_t needle);
+/// Find specific character in string view. Searches from the end.
+///
+/// [r:] Index of character or `-1`{.c} if not found
+CBUILDDEF ssize_t cbuild_sv_rfind(cbuild_sv_t sv, char c);
+/// Check if string view contains some character.
+CBUILDDEF bool cbuild_sv_contains(cbuild_sv_t sv, char c);
+/// Check substring (provided as string view) is contained in another string view.
+CBUILDDEF bool cbuild_sv_contains_sv(cbuild_sv_t sv, cbuild_sv_t needle);
+/// Get length of first utf8 codepoint in string view.
+///
+/// ::: note
+/// Invalid codepoints assumed to have length of 1
+/// :::
+///
+/// [r:] Length of codepoint in bytes.
+CBUILDDEF int cbuild_sv_utf8cp_len(cbuild_sv_t sv);
+/// `strchr` implementation for string view.
+///
+/// * [pl:sv] String view to work with
+/// * [pl:c] Character that will be searched.
+///
+/// [r:] Pointer to character or NULL if not found.
+CBUILDDEF char* cbuild_sv_strchr(cbuild_sv_t sv, char c);
+/// `strchr` implementation for string view.
+/// Operates on utf8 codepoints instead of ASCII characters.
+///
+/// * [pl:sv] String view to work with
+/// * [pl:c] Codepoint that will be searched.
+///
+/// [r:] Pointer to character or NULL if not found.
+CBUILDDEF char* cbuild_sv_utf8chr(cbuild_sv_t sv, uint32_t c);
+/// Chop first utf8 codepoint out of string view.
+///
+/// [r:] Unicode codepoint. `UINT32_MAX`{.c} means error.
+CBUILDDEF uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv);
+/// Chop characters from string view starting from the left until [p:delim] is found.
+/// Operates on utf8 codepoints instead of ASCII characters.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] Delimiter character.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim);
+/// Delimiter function. Used as comparator in 
+/// [`cbuild_sv_chop_by_func_utf8`](#cbuild_sv_chop_by_func_utf8)
+///
+/// * [pl:sv] String view, prechopped, so first character is possible delimiter and should be checked.
+/// * [pl:args] Arguments passed by caller.
+///
+/// [r:] If true is returned this character will be considered a delimiter
+typedef bool (*cbuild_sv_utf8delim_func)(const cbuild_sv_t* sv, void* args);
+/// chop characters from string view starting from the right until [p:delim] returns `true`.
+/// Operates on utf8 codepoints instead of ASCII characters.
+///
+/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] Delimiter function.
+/// * [pl:args] Arguments to a function.
+///
+/// [r:] new string view containing chopped characters. Delimiter character will not be in any string view.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
+	cbuild_sv_utf8delim_func delim, void* args);
+/// `strcmp` for string view. Fully compatible but extends API. 
+///
+/// ::: deprecated
+/// Comparison is same for UTF8 strings, ASCII strings or just raw byte data.
+/// :::
+///
+/// [r:-2] If size of first string view is smaller.
+/// [r:-1] If first different character in first string view is smaller.
+/// [r:0] If two string views are equal.
+/// [r:1] If first different character in first string view is larger.
+/// [r:2] If size of first string view is larger.
+CBUILD_ATTR_DEPRECATED("Please use cbuild_sv_cmp instead!",
+	CBUILDDEF int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b));
+/// Get length of a string view in utf8 codepoints.
+///
+/// ::: note
+/// Invalid codepoints assumed to have length of 1
+/// :::
+CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
+/**
+ * @brief Validate string as utf8-based
+ *
+ * @param idx => size_t* -> If non-NULL here will be stored	index of first
+ * invalid codepoint, if validation failed.
+ * @return bool -> true if valid, false otherwise
+ */
+/// Check if string view is a valid utf8 data.
+///
+/// * [pl:sv] String view to work with.
+/// * [pl:idx] If validation failed this will store index of first invalid codepoint. Can be `NULL`{.c}.
+///
+/// [r:] `false` if validation failed.
+CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx);
+/// Convert string view to c-string. Allocate memory via `malloc`.
+CBUILDDEF char* cbuild_sv_to_cstr(cbuild_sv_t sv);
+/// Convert string view to c-string. Allocate memory via `malloc`.
+#define cbuild_cstr_from_sv(sv) cbuild_sv_to_cstr(sv)
+/// Convert string view to c-string. Allocate memory via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+CBUILDDEF char* cbuild_temp_sv_to_cstr(cbuild_sv_t sv);
+/// Convert string view to c-string. Allocate memory via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+#define cbuild_temp_cstr_from_sv(sv) cbuild_temp_sv_to_cstr(sv)
+// #pragma once // For LSP 
+//! Stack datatype implementation. This implements same overall datastructure
+//! as dynamic array but with simplified API to only allow `push`, `pop` and
+//! `top` (just read top element without poping it) operations. It works over
+//! structures with specific "form", where `T` is a generic type:
+//!
+//! ```c
+//! typedef struct cbuild_da_t
+//!     T* data;
+//!     size_t ptr;
+//!     size_t capacity;
+//! }
+//! ```
+
+/// Push a new element on top of a stack.
+///
+/// * [pl:stack:cbuild_stack_t*] Stack object.
+/// * [pl:elem:*typeof(stack->data)] New element.
+#define cbuild_stack_push(stack, elem)                                         \
+	do {                                                                         \
+		if ((stack)->ptr >= (stack)->capacity) {                                   \
+			cbuild_stack_resize((stack), 0);                                         \
+		}                                                                          \
+		(stack)->data[(stack)->ptr++] = elem;                                      \
+	} while(0)
+/// Pop element from top of a stack.
+///
+/// * [pl:stack:cbuild_stack_t*] Stack object.
+/// 
+/// [r:*typeof(stack->data)] Popped element.
+#define cbuild_stack_pop(stack)                                                \
+	({                                                                           \
+		cbuild_assert((stack)->ptr != 0, "(LIB_CBUILD_STACK) Stack underfloor.\n");\
+		(stack)->data[--(stack)->ptr];                                             \
+	})
+/// Get element from top of a stack.
+///
+/// * [pl:stack:cbuild_stack_t*] Stack object.
+/// 
+/// [r:*typeof(stack->data)] Element on top of a stack.
+#define cbuild_stack_top(stack)                                                \
+	({                                                                           \
+		cbuild_assert((stack)->ptr != 0, "(LIB_CBUILD_STACK) Stack underfloor.\n");\
+		(stack)->data[(stack)->ptr - 1];                                           \
+	})
+/// Resize dynamic array.
+///
+/// * [pl:stack:cbuild_stack_t*] Stack object.
+/// * [pl:new_size:size_t] Resize stack If new_size equal 0 default growth strategy will be used.
+#define cbuild_stack_resize(stack, size)                                       \
+	do {                                                                         \
+		if ((stack)->data == NULL) {                                               \
+			if (size == 0) {                                                         \
+				(stack)->capacity = CBUILD_INIT_CAPACITY;                              \
+			} else {                                                                 \
+				(stack)->capacity = size;                                              \
+			}                                                                        \
+			(stack)->data = __CBUILD_MALLOC(                                         \
+				(stack)->capacity * sizeof(typeof(*(stack)->data)));                   \
+		} else {                                                                   \
+			if (size == 0) {                                                         \
+				(stack)->capacity *= 2;                                                \
+			} else {                                                                 \
+				(stack)->capacity = size;                                              \
+			}                                                                        \
+			(stack)->data = __CBUILD_REALLOC((stack)->data,                          \
+				(stack)->capacity * sizeof(typeof(*(stack)->data)));                   \
+		}                                                                          \
+		cbuild_assert((stack)->data != NULL,                                       \
+			"(LIB_CBUILD_STACK) Allocation failed.\n");                              \
+	} while (0)
+/// Free stack.
+///
+/// This should be used only if you want to free underlying memory, if you just
+/// want to clear stack and reuse it, setting `ptr` to `0` would be much faster.
+///
+/// * [pl:stack:cbuild_stack_t*] Stack object.
+#define cbuild_stack_clear(stack)                                              \
+	do {                                                                         \
+		__CBUILD_FREE((stack)->data);                                              \
+		(stack)->data     = NULL;                                                  \
+		(stack)->ptr      = 0;                                                     \
+		(stack)->capacity = 0;                                                     \
+	} while(0)
+// #pragma once // For LSP 
+//! Hasmap implementation in C.
+//!
+//! This map has rather interesting API and contains.
+//!
+//! # No resize
+//!
+//! It does not resize on its own, but you can approximate usage by checking
+//! number of elements in each bucket and reallocate map when it will not create
+//! performance problems in your app. This can be done by just creating a new
+//! map and copying data from an old one (this is then only way to resize
+//! hasmap implemented like this).
+//!
+//! # Not a tree
+//!
+//! It is implemented as a real hasmap and has O(1) access time (at least until
+//! most buckets have at most one element in them). If buckets are full performace
+//! start to degrade to O(n) where n is average number of elements in a bucket.
+//!
+//! # Managing data is user's responsibility
+//!
+//! It does not have **set** operation, only **get** and **get_or_alloc**.
+//! Because working with generic datatypes in C is pretty hard, this map does not
+//! rely on a type of key or data. User need to supply size of a key and full
+//! pair struct in bytes, and then key compared and hashed as byte array of
+//! specified size. Map functions always take key by pointer because of this.
+//! Elements is never written and **get_or_alloc** returns empty zero-initialized
+//! memory. You need to write key and value yourself there. You can treat this
+//! memory as either two byte arrays one after another or cast it to some struct.
+//!
+//! Map can also use custom clear function for elements (because it can consist
+//! of any data, including pointers that "own" some external memory. While this
+//! function primary role is to clear element, it can also be used to properly
+//! free key that need some extra care to do that.
+//!
+//! # Support for C-strings as keys
+//!
+//! For key one extra case is handled - if key size is declared as 0, then key
+//! is assumed to be `const char*` pointer to NULL-terminated string. This will
+//! be used only when hashing or comparing keys, so if key is not a constant
+//! string and may need to be freed, proper clear function should be provided.
+//!
+//! # Extensibility
+//!
+//! If key has some specific properties, or is not stored inline in *pair*
+//! structure, then custom **hash** and **keycmp** functions can be provided.
+//!
+//! If extra data need to be attached to a map, eg. key is an array, with size
+//! fixed per map object, structure like this can be defined:
+//!
+//! ```c
+//! typedef struct map_with_array_key_t {
+//!     cbuild_map_t map;
+//!     size_t key_element_count;
+//! } map_with_array_key_t;
+//! ```
+//!
+//! Then pointer to `.map` is passe to map function, but because C places struct
+//! fields in memory in a same way they are defined in code, this pointer can
+//! later be converted to pointer to outside structure by any of user-passed
+//! hook function. This will allow to access any additional data without using
+//! standard way of passing arguments to callback via `void*`{.c} parameter, thus
+//! simplifying API for a general use case.
+
+// #include "Common.h"
+
+/// Hash function for a key.
+///
+/// * [pl:map] Pointer to map object. Can be used to retrieve extra data.
+/// * [pl:key] Pointer to a start of key (start of pair structure).
+///
+/// [r:] Hash of this specific key. Will be truncated via `% nbuckets`{.c}.
+typedef size_t (*cbuild_map_hash_t)(const void* map, const void* key);
+/// Key comparison function. Should return `true` if keys are the same.
+///
+/// ::: note
+/// This function should resolve hash collisions, so it can not rely on
+/// comparing hashes.
+/// :::
+///
+/// * [pl:map] Pointer to map object. Can be used to retrieve extra data.
+/// * [pl:k1] Pointer to a start of key 1 (start of pair structure).
+/// * [pl:k2] Pointer to a start of key 2 (start of pair structure).
+typedef bool (*cbuild_map_keycmp_t)(const void* map, const void* k1,
+	const void* k2);
+/// Element clear function.
+///
+/// * [pl:map] Pointer to map object. Can be used to retrieve extra data.
+/// * [pl:elem] Element that should be cleared. Pointer to a start of a pair structure.
+typedef void (*cbuild_map_clear_t)(const void* map, void* elem);
+
+/// This structure is internal and should not be used outside of a map.
+/// It is docomented because it can be used to retrieve usage starts from a map.
+///
+/// * [fl:vals] Data of this bucket. Byte array of all pairs.
+/// * [fl:nvals] Number of values stored in this bucket.
+typedef struct cbuild_map_bucket_t {
+	void* vals;
+	size_t nvals;
+} cbuild_map_bucket_t;
+
+/// Map structure. Some fields here are considered as configuration data, and
+/// should be modified by user by hand, while others are considered internal
+/// values and should not be modified (but still can be if you know what you
+/// are doing).
+///
+/// * [fl:buckets] List of bucket this map has. Pre-allocated on by [`cbuild_map_init`](#cbuild_map_init).
+/// * [fl:nbuckets] Number of buckets. Parameter to [`cbuild_map_init`](#cbuild_map_init).
+/// * [fl:hash_func] Custom hash function, can be left as `NULL`{.c} if unused.
+/// * [fl:keycmp_func] Custom key comparison function, can be `NULL`{.c} if unused.
+/// * [fl:key_size] Size of key. Should be set manually before call to [`cbuild_map_init`](#cbuild_map_init).
+/// * [fl:elem_size] Size of pair structure. Should be set manually before call to [`cbuild_map_init`](#cbuild_map_init).
+/// * [fl:iter_buckets] Internal counter used by iterator functions.
+/// * [fl:iter_vals] Internal counter used by iterator functions.
+typedef struct cbuild_map_t {
+	cbuild_map_bucket_t* buckets;
+	size_t nbuckets;
+	cbuild_map_hash_t hash_func;
+	cbuild_map_keycmp_t keycmp_func;
+	cbuild_map_clear_t clear_func;
+	size_t key_size;
+	size_t elem_size;
+	size_t iter_buckets;
+	size_t iter_vals;
+} cbuild_map_t;
+
+/// Initialize a new map. Both *key_size* and *elem_size* must be valid at
+/// this point. If needed *hash_func*, *keycmp_func* and *clear_func* can be
+/// invalid, but it is better to init everything in one place, so it is a good
+/// practive to have them valid before call to init too.
+CBUILDDEF void cbuild_map_init(cbuild_map_t* map, size_t nbuckets);
+/// Get element from a map. Raw semi-internal function.
+///
+/// * [pl:map] Map object.
+/// * [pl:key] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
+///
+/// [r:] Pointer to a pair structure or NULL if not found.
+CBUILDDEF void* cbuild_map_get_raw(const cbuild_map_t* map, const void* key);
+/// Get element from a map.
+///
+/// This function will allocate one stack variable that will hold copy of key.
+/// This function will check if size of this variable matches `map->key_size`{.c}.
+///
+/// * [pl:map] Map object.
+/// * [pl:key] Value of a key. Need to be copyable via `=`.
+///
+/// [r:] Pointer to a pair structure or NULL if not found.
+#define cbuild_map_get(map, key)                                               \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(__cbuild_tmp_key) == (map)->key_size ||               \
+			((map)->key_size == 0 && sizeof(__cbuild_tmp_key) == sizeof(char*)),     \
+			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_get_raw((map), &__cbuild_tmp_key);                              \
+	})
+/// Get element from a map.
+///
+/// This function will allocate one stack variable that will hold copy of pointer
+/// to a key. This function will check if size of this variable matches 
+/// `map->key_size`{.c}.
+///
+/// * [pl:map] Map object.
+/// * [pl:key] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
+///
+/// [r:] Pointer to a pair structure or NULL if not found.
+#define cbuild_map_get_ptr(map, key)                                           \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(*__cbuild_tmp_key) == (map)->key_size ||              \
+			((map)->key_size == 0 && sizeof(*__cbuild_tmp_key) == sizeof(char*)),    \
+			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_get_raw((map), __cbuild_tmp_key);                               \
+	})
+/// Get element from a map or allocate a new one. Raw semi-internal function.
+///
+/// ::: note
+/// This will not insert key into an element. You will get full pair structure
+/// that is at best zero-initialized. If you are inserted value you may copy key
+/// unconditionally. If you key is small you can do this too. If key is big and
+/// it may take a lot of time for copy you can have some checks to verify that
+/// key is valid.
+/// :::
+///
+/// * [pl:map] Map object.
+/// * [pl:key] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
+///
+/// [r:] Pointer to a pair structure or NULL if not found.
+CBUILDDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
+/// Get element from a map or allocate a new one. Raw semi-internal function.
+///
+/// ::: note
+/// This will not insert key into an element. You will get full pair structure
+/// that is at best zero-initialized. If you are inserted value you may copy key
+/// unconditionally. If you key is small you can do this too. If key is big and
+/// it may take a lot of time for copy you can have some checks to verify that
+/// key is valid.
+/// :::
+///
+/// This function will allocate one stack variable that will hold copy of key.
+/// This function will check if size of this variable matches `map->key_size`{.c}.
+///
+/// * [pl:map] Map object.
+/// * [pl:key] Value of a key. Need to be copyable via `=`.
+///
+/// [r:] Pointer to a pair structure or NULL if not found.
+#define cbuild_map_get_or_alloc(map, key)                                      \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(__cbuild_tmp_key) == (map)->key_size ||               \
+			((map)->key_size == 0 && sizeof(__cbuild_tmp_key) == sizeof(char*)),     \
+			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_get_or_alloc_raw((map), &__cbuild_tmp_key);                     \
+	})
+/// Get element from a map or allocate a new one. Raw semi-internal function.
+///
+/// ::: note
+/// This will not insert key into an element. You will get full pair structure
+/// that is at best zero-initialized. If you are inserted value you may copy key
+/// unconditionally. If you key is small you can do this too. If key is big and
+/// it may take a lot of time for copy you can have some checks to verify that
+/// key is valid.
+/// :::
+///
+/// This function will allocate one stack variable that will hold copy of pointer
+/// to a key. This function will check if size of this variable matches 
+/// `map->key_size`{.c}.
+///
+/// * [pl:map] Map object.
+/// * [pl:key] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
+///
+/// [r:] Pointer to a pair structure or NULL if not found.
+#define cbuild_map_get_or_alloc_ptr(map, key)                                  \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(*__cbuild_tmp_key) == (map)->key_size ||              \
+			((map)->key_size == 0 && sizeof(*__cbuild_tmp_key) == sizeof(char*)),    \
+			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_get_or_alloc_raw((map), __cbuild_tmp_key);                      \
+	})
+/// Remove element from a map. Custom clear func will be used if provided in
+/// the map. Internal data will be freed automatically. Semi-internal function.
+///
+/// * [pl:map] Map object.
+/// * [pl:key] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
+///
+/// [r:] `false` if key was not found.
+CBUILDDEF bool cbuild_map_remove_raw(cbuild_map_t* map, const void* key);
+/// Remove element from a map. Custom clear func will be used if provided in
+/// the map. Internal data will be freed automatically.
+///
+/// This function will allocate one stack variable that will hold copy of key.
+/// This function will check if size of this variable matches `map->key_size`{.c}.
+///
+/// * [pl:map] Map object.
+/// * [pl:key] Value of a key. Need to be copyable via `=`.
+///
+/// [r:] `false` if key was not found.
+#define cbuild_map_remove(map, key)                                            \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(__cbuild_tmp_key) == (map)->key_size ||               \
+			((map)->key_size == 0 && sizeof(__cbuild_tmp_key) == sizeof(char*)),     \
+			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_remove_raw((map), &__cbuild_tmp_key);                           \
+	})
+/// Remove element from a map. Custom clear func will be used if provided in
+/// the map. Internal data will be freed automatically.
+///
+/// This function will allocate one stack variable that will hold copy of pointer
+/// to a key. This function will check if size of this variable matches 
+/// `map->key_size`{.c}.
+///
+/// * [pl:map] Map object.
+/// * [pl:key] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
+///
+/// [r:] `false` if key was not found.
+#define cbuild_map_remove_ptr(map, key)                                        \
+	({                                                                           \
+		__auto_type __cbuild_tmp_key = key;                                        \
+		cbuild_assert(sizeof(*__cbuild_tmp_key) == (map)->key_size ||              \
+			((map)->key_size == 0 && sizeof(*__cbuild_tmp_key) == sizeof(char*)),    \
+			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+		cbuild_map_remove_raw((map), __cbuild_tmp_key);                            \
+	})
+/// Fully clear the map. Custom clear func will be used if provided in the map.
+/// Internal data will be freed automatically.
+CBUILDDEF void cbuild_map_clear(cbuild_map_t* map);
+/// Reset map allocator.
+CBUILDDEF void cbuild_map_iter_reset(cbuild_map_t* map);
+/// Get pointer to a next map element from iterator. `NULL` will be returned when
+/// iterator is empty.
+///
+/// ::: note
+/// Removed or addition of elements in map without reset of iterator is UB.
+/// While allocation of a new element should not break iterator, it is not
+/// known if new element will be iterated over.
+/// :::
+CBUILDDEF void* cbuild_map_iter_next(cbuild_map_t* map);
+/// Foreach loop over map. Based on iterator. This is raw semi-internal function.
+///
+/// * [pl:map:const cbuild_map_t*] Map object.
+/// * [pl:iter:name] Name of variable that will be used in iteration. Will contain `void*`{.c} value.
+#define	cbuild_map_foreach_raw(map, iter)                                      \
+	cbuild_map_iter_reset(map);                                                  \
+	for (void* iter = NULL; ((iter) = cbuild_map_iter_next(map));)
+/// Foreach loop over map. Based on iterator.
+///
+/// * [pl:map:const cbuild_map_t*] Map object.
+/// * [pl:T:type] Type of iterator variable.
+/// * [pl:iter:name] Name of variable that will be used in iteration. Will contain `T`{.c} value.
+#define cbuild_map_foreach(map, T, iter)                                       \
+	cbuild_map_iter_reset(map);                                                  \
+	for (T* iter = NULL;((iter) = (T*)cbuild_map_iter_next(map));)
+// #pragma once // For LSP 
+//! Abstractions for process control.
+
+// #include "Common.h"
+
+/// Dynamic array of processes.
+typedef struct cbuild_proclist_t {
+	cbuild_proc_t* data;
+	size_t size;
+	size_t capacity;
+} cbuild_proclist_t;
+/// Append new element to list of processes.
+///
+/// * [pl:proclist:cbuild_proclist_t*] Dynamic array object.
+/// * [pl:proc:cbuild_proc_t] Process handle.
+#define cbuild_proclist_append(proclist, proc) cbuild_da_append(proclist, proc)
+/// Clears list of processes.
+///
+/// * [pl:proclist:cbuild_proclist_t*] Dynamic array object.
+#define cbuild_proclist_clear(proclist) cbuild_da_clear(proclist)
+/// Set element in process list using its index.
+///
+/// * [pl:proclist:cbuild_proclist_t*] List of processes.
+/// * [pl:idx:size_t] Element index.
+/// * [pl:proc:cbuild_proc_t] New element's value.
+/// 
+/// [r:bool] False on overflow.
+#define cbuild_proclist_set(proclist, idx, proc) cbuild_da_set(proclist, idx, proc)
+/// Get element from process list using its index.
+///
+/// * [pl:proclist:cbuild_proclist_t*] List of processes.
+/// * [pl:idx:size_t] Slement index.
+/// 
+/// [r:cbuild_proc_t*] Pointer to an element or `NULL`{.c} on overflow.
+#define cbuild_proclist_get(proclist, idx) cbuild_da_get(proclist, idx)
+/// Blocking wait until specific process finishes.
+///
+/// [r:] `false`{.c} if process returned with an error.
+CBUILDDEF bool cbuild_proc_wait(cbuild_proc_t proc);
+/// Blocking wait until all processes from list exits.
+///
+/// [r:] `false`{.c} if at least one process returned with an error.
+CBUILDDEF bool cbuild_procs_wait(cbuild_proclist_t procs);
+/// Blocking wait until specific process finishes.
+///
+/// [r:] Process exit code or `INT_MIN`{.c} if [p:proc] is invalid or negative signal value if process exited due to a signal.
+CBUILDDEF int cbuild_proc_wait_code(cbuild_proc_t proc);
+/// Blocking wait until any process from list exits.
+///
+/// * [pl:procs] List of processess.
+/// * [pl:code] Return value for exit code of exited process, Could be `NULL`{.c}.
+///
+/// [r:] Index of exited process in [p:procs] array.
+CBUILDDEF ssize_t cbuild_procs_wait_any(cbuild_proclist_t procs, int* code);
+/// Check if specific process is still running.
+CBUILDDEF bool cbuild_proc_is_running(cbuild_proc_t proc);
+/// Start a new process.
+///
+/// * [pl:func] Function that will be used as process' entry point. Function should return exit code.
+/// * [pl:args] Arguments that will be passed to that function
+///
+/// [r:] Process handle of new process.
+CBUILDDEF cbuild_proc_t cbuild_proc_start(int (*func)(void* args), void* args);
+/// Pointer wrapper for shared memory.
+///
+/// * [fl:ptr] Pointer to a memory.
+/// * [fl:size] Length of memory region in bytes.
+typedef struct cbuild_proc_ptr_t {
+	void*  ptr;
+	size_t size;
+} cbuild_proc_ptr_t;
+/// Allocate memory that will be shared between child processes. Same as `malloc`.
+CBUILDDEF cbuild_proc_ptr_t cbuild_proc_malloc(size_t n);
+/// Free memory that was allocated via [`cbuild_proc_malloc`](#cbuild_proc_malloc).
+/// Same as`free`.
+CBUILDDEF void cbuild_proc_free(cbuild_proc_ptr_t ptr);
+/// Get amount of CPU cores (or threads).
+CBUILDDEF int cbuild_nproc(void);
+// #pragma once // For LSP 
+//! Command runner
+
+// #include "Common.h"
+// #include "StringBuilder.h"
+// #include "Proc.h"
+
+/// Command structure - dynamic array of arguments.
+///
+/// ::: note
+/// [f:data] has same format as `arg` in `execv` except NULL termination.
+/// :::
+typedef struct cbuild_cmd_t {
+	const char** data;
+	size_t size;
+	size_t capacity;
+} cbuild_cmd_t;
+/// Append new argument to a command.
+///
+/// * [pl:cmd:cbuild_cmd_t*] Command object.
+/// * [pl:val:const char*] Element to append.
+#define	cbuild_cmd_append(cmd, val) cbuild_da_append(cmd, val)
+/// Append new arguments to a command.
+///
+/// * [pl:cmd:cbuild_cmd_t*] Command object.
+/// * [pl:vals:const char**] Elements to append.
+/// * [pl:vals_cnt:size_t] Number of elements to append.
+#define	cbuild_cmd_append_arr(cmd, vals, vals_cnt)                             \
+	cbuild_da_append_arr(cmd, vals, vals_cnt)
+/// Append new arguments to a command.
+///
+/// * [pl:cmd:cbuild_cmd_t*] Command object.
+/// * [pl:...:const char*] Elements to append.
+#define	cbuild_cmd_append_many(cmd, ...)                                       \
+	cbuild_da_append_many(cmd, __VA_ARGS__)
+/// Free command.
+///
+/// This should be used only if you want to free underlying memory, if you just
+/// want to clear array and reuse it, setting `size` to `0` would be much faster.
+///
+/// * [pl:cmd:cbuild_cmd_t*] Dynamic array object.
+#define	cbuild_cmd_clear(cmd) cbuild_da_clear(cmd)
+/// Convert command to string builder.
+///
+/// ::: note
+/// This function properly formats arguments with spaces by wrapping them in `'`.
+/// But arguments that has both spaces and `'` are not handler properly.
+/// :::
+CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
+/// Convert command to string builder.
+///
+/// ::: note
+/// This function properly formats arguments with spaces by wrapping them in `'`.
+/// But arguments that has both spaces and `'` are not handler properly.
+/// :::
+#define	cbuild_sb_from_cmd(cmd) cbuild_cmd_to_sb(cmd)
+/// Configuration for command.
+///
+/// This structure consists of a few separate blocks:
+///
+/// * Async - first two values are mutually exclusive:
+///   - [fl:procs] Process list used for async execution. Non-`NULL`{.c} value enables async.
+///   - [fl:proc] Process return value used for async execution. Non-`NULL`{.c} value enables async.
+///   - [fl:async_threads] Control how many threads async runner can spawn (works in conjunction with [p:procs]). `0` means implementation-defined. `-1` means unlimited.
+/// * IO redirection:
+///   - [fl:fdstdin] Redirect `stdin` to some file descriptor.
+///   - [fl:file_stdin] Redirect `stdin` to some file.
+///   - [fl:fdstdout] Redirect `stdout` to some file descriptor.
+///   - [fl:file_stdout] Redirect `stdout` to some file.
+///   - [fl:fdstderr] Redirect `stderr` to some file descriptor.
+///   - [fl:file_stderr] Redirect `stderr` to some file.
+/// * Miscellaneous lags:
+///   - [fl:no_reset] By default `size` filed of command is reset. This make it stay untouched.
+///   - [fl:autokill] Works only on Linux. Automatically kills process if parent dies.
+///   - [fl:no_print_cmd] By default command is printed as `TRACE` log. This flag disable this log message.
+struct cbuild_cmd_opt_t {
+	// Async
+	cbuild_proclist_t* procs; // Non-null implies async
+	cbuild_proc_t* proc;      // Non-null implies async
+	// Redirect 'fdstd* ' and 'file_std*' is mutually exclusive.
+	const cbuild_fd_t* fdstdin;
+	const char* file_stdin;
+	const cbuild_fd_t* fdstdout;
+	const char* file_stdout;
+	const cbuild_fd_t* fdstderr;
+	const char* file_stderr;
+	// Async
+	int async_threads; // 0 means implementation-defined. -1 means unlimited. Expects 'procs' to be a valid empty array.
+	// Flags
+	union {
+		uint32_t flags;
+		struct {
+			uint32_t no_reset     : 1;
+			uint32_t autokill     : 1;
+			uint32_t no_print_cmd : 1;
+			uint32_t              : 29;
+		};
+	};
+};
+/// Run command. This function is semi-internal.
+CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opt_t opts);
+/// Run command.
+///
+/// * [pl:cmd:cbuild_cmd_t*] Command to execute.
+/// * [pl:...:...cbuid_cmd_opt_t] Fields of configuration structure in initializer-list form.
+#define cbuild_cmd_run(cmd, ...)                                               \
+cbuild_cmd_run_opt(cmd, (struct cbuild_cmd_opt_t){ __VA_ARGS__ })
+// #pragma once // For LSP 
+
+//! File system access abstraction layer.
+
+// #include "Common.h"
+// #include "StringBuilder.h"
+
+/// Dynamic array of paths
+typedef struct cbuild_pathlist_t {
+	char** data;
+	size_t size;
+	size_t capacity;
+} cbuild_pathlist_t;
+/// Get element from list of paths using its index.
+///
+/// * [pl:list:const cbuild_pathlist_t*] Path list object.
+/// * [pl:idx:size_t] Element index.
+/// 
+/// [r:char**] Pointer to an element or `NULL`{.c} on overflow.
+#define cbuild_pathlist_get(list, idx) cbuild_da_get(list, idx)
+/// Free pathlist.
+/// 
+/// ::: note
+/// This function should *really* be used instead of simple `free(list->data)`{.c}
+/// because pathlist allocated memory in two levels.
+/// :::
+///
+/// * [pl:list:const cbuild_pathlist_t*] Path list object.
+CBUILDDEF void cbuild_pathlist_clear(cbuild_pathlist_t* list);
+/// Type of file. Mostly cross-platform because no special Unix files are included.
+typedef enum {
+	CBUILD_FTYPE_MISSING   = -1,
+	CBUILD_FTYPE_REGULAR   = 0,
+	CBUILD_FTYPE_DIRECTORY = 1,
+	CBUILD_FTYPE_SYMLINK   = 2,
+	CBUILD_FTYPE_OTHER     = 3,
+} cbuild_filetype_t;
+/// Close file descriptor.
+CBUILDDEF bool cbuild_fd_close(cbuild_fd_t fd);
+/// Open file for reading.
+CBUILDDEF cbuild_fd_t cbuild_fd_open_read(const char* path);
+/// Open file for writing.
+CBUILDDEF cbuild_fd_t cbuild_fd_open_write(const char* path);
+/// Create and open new pipe. File descriptors for both ends are provided.
+CBUILDDEF bool cbuild_fd_open_pipe(cbuild_fd_t* read, cbuild_fd_t* write);
+/// POSIX `read`{.c} wrapper.
+///
+/// * [pl:fd] File descriptor.
+/// * [pl:buf] Buffer in which data will be read.
+/// * [pl:nbytes] Number of bytes to read.
+///
+/// [r:] Number of bytes read or `-1`{.c} on error.
+CBUILDDEF ssize_t cbuild_fd_read(cbuild_fd_t fd, void* buf, size_t nbytes);
+/// POSIX `read`{.c} "wrapper".
+/// This function uses [p:path] only for error-reporting.
+///
+/// * [pl:fd] File descriptor.
+/// * [pl:buf] Buffer in which data will be read.
+/// * [pl:nbytes] Number of bytes to read.
+/// * [pl:path] File name used in error reporting.
+///
+/// [r:] Number of bytes read or `-1`{.c} on error.
+CBUILDDEF ssize_t cbuild_fd_read_file(cbuild_fd_t fd, void* buf, size_t nbytes,
+	const char* path);
+/// POSIX `write`{.c} wrapper.
+///
+/// * [pl:fd] File descriptor.
+/// * [pl:buf] Buffer from which data will be written.
+/// * [pl:nbytes] Number of bytes to write.
+///
+/// [r:] Number of bytes written or `-1`{.c} on error.
+CBUILDDEF ssize_t cbuild_fd_write(cbuild_fd_t fd, const void* buf, size_t nbytes);
+/// POSIX `write`{.c} "wrapper".
+/// This function uses [p:path] only for error-reporting.
+///
+/// * [pl:fd] File descriptor.
+/// * [pl:buf] Buffer from which data will be written.
+/// * [pl:nbytes] Number of bytes to write.
+/// * [pl:path] File name used in error reporting.
+///
+/// [r:] Number of bytes written or `-1`{.c} on error.
+CBUILDDEF ssize_t cbuild_fd_write_file(cbuild_fd_t fd, const void* buf,
+	size_t nbytes, const char* path);
+/// Get length of file in bytes.
+CBUILDDEF ssize_t cbuild_file_len(const char* path);
+/// Read file into string builder.
+CBUILDDEF bool cbuild_file_read(const char* path, cbuild_sb_t* data);
+/// Overwrite file with string builder content.
+CBUILDDEF bool cbuild_file_write(const char* path, cbuild_sb_t* data);
+/// Copy file.
+/// 
+/// ::: note
+/// This copies file by reading from [p:src] and writing to [p:dst].
+/// "Chunked" copy is used to limit memory usage.
+/// :::
+CBUILDDEF bool cbuild_file_copy(const char* src, const char* dst);
+/// Move file.
+///
+/// Uses optimal method for moving file, but in worst case falls back
+/// to `cbuild_file_copy(src, dst); cbuild_file_remove(src)`{.c}.
+CBUILDDEF bool cbuild_file_move(const char* src, const char* dst);
+/// Rename file. Alias to [`cbuild_file_move`](#cbuild_file_move).
+///
+/// Uses optimal method for moving file, but in worst case falls back
+/// to `cbuild_file_copy(src, dst); cbuild_file_remove(src)`{.c}.
+///
+/// * [pl:src:const char*]
+/// * [pl:dst:const char*]
+///
+/// [r:bool]
+#define cbuild_file_rename(src, dst) cbuild_file_move(src, dst)
+/// Check if file exists.
+CBUILDDEF bool cbuild_file_check(const char* path);
+/// Delete file.
+CBUILDDEF bool cbuild_file_remove(const char* path);
+/// Create symbolic link. Will overwrite [p:dst] if it exists.
+CBUILDDEF bool cbuild_symlink(const char* src, const char* dst);
+/// Recursively copy a directory.
+CBUILDDEF bool cbuild_dir_copy(const char* src, const char* dst);
+/// Move a directory.
+///
+/// Uses optimal method for moving directory, but in worst case falls back
+/// to `cbuild_dir_copy(src, dst); cbuild_dir_remove(src)`{.c}.
+CBUILDDEF bool cbuild_dir_move(const char* src, const char* dst);
+/// Rename a directory. Alias to [`cbuild_dir_move`](#cbuild_dir_move).
+///
+/// Uses optimal method for moving directory, but in worst case falls back
+/// to `cbuild_dir_copy(src, dst); cbuild_dir_remove(src)`{.c}.
+///
+/// * [pl:src:const char*]
+/// * [pl:dst:const char*]
+///
+/// [r:bool]
+#define cbuild_dir_rename(src, dst) cbuild_dir_move(src, dst)
+/// Delete directory.
+CBUILDDEF bool cbuild_dir_remove(const char* path);
+/// Check if directory exists.
+CBUILDDEF bool cbuild_dir_check(const char* path);
+/// List all files in directory.
+///
+/// * [pl:path] Path to a directory.
+/// * [pl:elements] List of elements in directory.
+CBUILDDEF bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements);
+/// Get current working directory.
+///
+/// [r:] Current working directory values. Allocated with `malloc` or `cbuild_malloc` depending on who allocated value (standard library or cbuild).
+CBUILDDEF char* cbuild_dir_current(void);
+/// Set current working directory.
+CBUILDDEF bool cbuild_dir_set_current(const char* path);
+/// Create new directory.
+CBUILDDEF bool cbuild_dir_create(const char* path);
+/// Result for [`cbuild_dir_walk_func_t`](#cbuild_dir_walk_func_t).
+///
+/// * [fl:CBUILD_DIR_WALK_CONTINUE] Default value. Just continue.
+/// * [fl:CBUILD_DIR_WALK_NO_ENTER] Do not enter into a directory.
+/// * [fl:CBUILD_DIR_WALK_STOP] Stop entirely (but does not return an error).
+enum cbuild_dir_walk_result_t {
+	CBUILD_DIR_WALK_CONTINUE = 0,
+	CBUILD_DIR_WALK_NO_ENTER,
+	CBUILD_DIR_WALK_STOP = -1,
+};
+/// Arguments for [`cbuild_dir_walk_func_t`](#cbuild_dir_walk_func_t).
+///
+/// This structure can be divided into multiple sections:
+///
+/// * Current entry:
+///   - [fl:path] Path to the file system object object (relative and including directory passed to [`cbuild_dir_walk`](#cbuild_dir_walk).
+///   - [fl:type] Type of current file-system object. 
+/// * Iteration state:
+///   - [fl:level] How deep iteration goes (`0` means base directory).
+/// * Context:
+///   - [fl:context] Some arguments passed by user. 
+///   - [fl:result] Return value.
+typedef struct cbuild_dir_walk_func_args_t {
+	const char* path;
+	cbuild_filetype_t type;
+	size_t level;
+	enum cbuild_dir_walk_result_t result;
+	void* context;
+} cbuild_dir_walk_func_args_t;
+/// Function used as callback by directory walker.
+///
+/// [r:] `false` means error.
+typedef bool (*cbuild_dir_walk_func_t)(cbuild_dir_walk_func_args_t args);
+/// Arguments to a directory walker.
+///
+/// * [fl:content] Some arguments that will be passed to callback.
+/// * [fl:visit_dir_last] Inverts order. Now all child files are visited first and parent directory is visited last.
+struct cbuild_dir_walk_opts_t {
+	void* context;
+	bool visit_dir_last;
+};
+/// Walk over dir. Takes path, callback and some optional options. Semi-internal function.
+CBUILDDEF bool cbuild_dir_walk_opt(const char* path, cbuild_dir_walk_func_t func,
+	struct cbuild_dir_walk_opts_t opts);
+/// Walk over dir.
+///
+/// * [pl:path:const char*] Path to a file.
+/// * [pl:callback:cbuild_dir_walk_func_t] Function that will be called for each file system object.
+/// * [pl:...:...cbuild_dir_walk_opts_t] Fields of configuration structure in initializer-list form.
+#define cbuild_dir_walk(path, callback, ...)                                        \
+cbuild_dir_walk_opt(path, callback, (struct cbuild_dir_walk_opts_t){ __VA_ARGS__ })
+/// Get type of file.
+CBUILDDEF cbuild_filetype_t cbuild_path_filetype(const char* path);
+/// Optional arguments for [`cbuild_path_ext`](#cbuild_path_ext).
+///
+/// * [fl:dot] Get extensions after n-th dot from the end. `0` is default value
+/// (for now it is same as `1`).
+struct cbuild_path_ext_opts_t {
+	int dot; // Get n-th dot from the end, 0 is last one (same as 1)
+};
+/// Get extension of specific file. Semi-internal.
+/// File pointer by [p:path] is not checked in any way.
+///
+/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+CBUILDDEF char* cbuild_path_ext_opt(const char* path, struct cbuild_path_ext_opts_t opts);
+/// Get extension of specific file.
+/// File pointer by [p:path] is not checked in any way.
+///
+/// * [pl:path:const char*] Path to a file.
+/// * [pl:...:...cbuild_path_ext_opts_t] Fields of configuration structure in initializer-list form.
+///
+/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+#define cbuild_path_ext(path, ...)                                    \
+cbuild_path_ext_opt(path, (struct cbuild_path_ext_opts_t){ __VA_ARGS__ })
+/// Get file name with extension (all after last `/`).
+/// For directories special case exists that strips last `/` if it is last character.
+/// File pointer by [p:path] is not checked in any way.
+/// 
+/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+CBUILDDEF char* cbuild_path_name(const char* path);
+/// Get base name (all before last `/`).
+/// For directories special case exists that strips last `/` if it is last character.
+/// File pointer by [p:path] is not checked in any way.
+///
+/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+CBUILDDEF char* cbuild_path_base(const char* path);
+/// Normalize path. All normalization is based on heuristics and does not involve
+/// such steps as eg. symlink resolving.
+/// File pointer by [p:path] is not checked in any way.
+///
+/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+CBUILDDEF char* cbuild_path_normalize(const char* path);
+// #pragma once // For LSP
+//! Some helpers specifically for a compilation
+//!
+//! # `CBUILD_CC` [line:cbuild-compiler-self]
+//!
+//! This will hold compiler command for compiler that was used to compiler CBuild.
+//!
+//! # `CC` [line:cbuild-bare-cc]
+//!
+//! CBuild can provide bare define `CC`. Because it is not prefixed it can be disabled.
+//! This defined will be an alias to `CBUILD_CC`. If `CBUILD_NO_CC` is defined, CBuild
+//! will not provide `CC` define.
+
+// #include "Common.h"
+// #include "Command.h"
+
+//@ cbuild-compiler-self
+#if !defined(CBUILD_CC)
+	#if defined(CBUILD_CC_CLANG)
+		#define CBUILD_CC "clang"
+	#elif defined(CBUILD_CC_GCC)
+		#define CBUILD_CC "gcc"
+	#else
+		#define CBUILD_CC "cc"
+	#endif // Compiler select
+#endif // CBUILD_CC
+
+//@ cbuild-bare-cc
+#if !defined(CBUILD_NO_CC)
+	#define CC CBUILD_CC
+#endif
+
+/// Default warning options.
+/// Enables almost all warnings except `-Wcomments` and `-Woverride-init`.
+#define CBUILD_CARGS_WARN \
+	"-Wall", "-Wextra", "-Wno-comments", "-Wconversion", "-Wcast-align", "-Wvla", \
+	"-Wno-override-init", "-Wshadow"
+/// Promote all warnings to errors.
+#define CBUILD_CARGS_WERROR           "-Werror"
+/// Setup profiles,
+#define CBUILD_CARGS_PROFILE          "-pg"
+/// Add debug symbols,
+#define CBUILD_CARGS_DEBUG            "-g"
+/// Add debug symbols targeting **gdb**.
+#define CBUILD_CARGS_DEBUG_GDB        "-ggdb"
+/// Enable multithreading (eg. add `-pthread` for POSIX).
+#define CBUILD_CARGS_MT               "-pthread"
+/// Add a define based on compile-time literal.
+#define CBUILD_CARGS_DEFINE(defname)  "-D" defname
+/// Add a define based on runtime string.
+/// Uses [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+#define CBUILD_CARGS_DEFINE_TEMP(defname) \
+	cbuild_temp_sprintf("-D%s", defname)
+/// Add a define with a value. Both based on compile-time literal.
+#define CBUILD_CARGS_DEFINE_VAL(defname, val)      "-D" defname "=" val
+/// Add a define with a value. Both based on runtime string.
+/// Uses [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+#define CBUILD_CARGS_DEFINE_VAL_TEMP(defname, val) \
+	cbuild_temp_sprintf("-D%s=%s", defname, val)
+/// Remove define based on compile-time literal.
+#define CBUILD_CARGS_UNDEF(defname)   "-U" defname
+/// Add include based on compile-time literal.
+#define CBUILD_CARGS_INCLUDE(file)    "--include", file
+/// Add library include (`-l`) based on compile-time literal.
+#define CBUILD_CARGS_LIBINCLUDE(lib)  "-l" lib
+/// Add library directories (`-I` and `-L`) based on compile-time literal.
+#define CBUILD_CARGS_LIBDIR(src, obj) "-I" src, "-L" obj
+/// Set standard based on compile-time literal.
+#define CBUILD_CARGS_STD(std)         "-std=" std
+
+/// Simple wrapper for self-rebuild. Only `argv[0]`{.c} is used.
+/// Other elements are used only to re-exec new binary with same arguments.
+#define cbuild_selfrebuild(argc, argv)                                         \
+	do {                                                                         \
+		const char* expanded_file = __FILE__;                                      \
+		cbuild_cmd_t files = { .data = &expanded_file, .size = 1 };                \
+		__cbuild_selfrebuild(argc, argv, argv[0], files);                          \
+	} while(0)
+/// Complex wrapper for self-rebuild. Only `argv[0]`{.c} is used.
+/// This function allow to specify additional files to be checked when
+/// decision is made to rebuild binary or not.
+#define cbuild_selfrebuild_ex(argc, argv, ...)                                 \
+	do {                                                                         \
+		const char* tmp_files[] = {__FILE__ __VA_OPT__(,) __VA_ARGS__ };           \
+		size_t tmp_files_len = cbuild_arr_len(tmp_files);                          \
+		cbuild_cmd_t files = { .data = tmp_files, .size = tmp_files_len };         \
+		__cbuild_selfrebuild(argc, argv, argv[0], files);                          \
+	} while(0)
+/// Perms self-rebuild.
+/// 
+/// * [pl:argc] ARGC of program.
+/// * [pl:argv] ARGV of program.
+/// * [pl:argv0_path] Path to file specified by `argv[0]`{.c}.
+/// * [pl:files] Additional dependency files.
+///
+/// # When this will result in a new binary
+///
+/// If any of the files from [p:files] are newer than `argv[0]`{.c}.
+/// If any of files in this array does not exist program will exit with error.
+///
+/// # How rebuild is performed
+///
+/// `CBUILD_CC` is used as compiler. `CBUILD_CARGS_WARN` is used as default set
+/// of arguments. [`cbuild_selfrebuild_hook`](#cbuild_selfrebuild_hook) is called
+/// to resolve dynamic or user-provided arguments.
+CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv,
+	const char* argv0_path, cbuild_cmd_t files);
+/// This function will receive self-rebuild command with all arguments
+/// applied but without files. It can modify it to add arguments.
+extern void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd);
+/// Compare mtime of 2 files.
+/// Same check as done by `make`.
+///
+/// [r:=0] - Output is newer than input.
+/// [r:<0] - Error.
+/// [r:>0] - Output is older than input.
+CBUILDDEF int cbuild_compare_mtime(const char* output, const char* input);
+/// Compare mtime of 1 output file and multiple input files.
+/// Same check as done by `make`.
+///
+/// [r:=0] - Output is newer than input.
+/// [r:<0] - Error.
+/// [r:>0] - Output is older than input. Number of files that are newer.
+CBUILDDEF int cbuild_compare_mtime_many(const char* output, const char** inputs,
+	size_t num_inputs);
+// #pragma once // For LSP
+//! Abstract runtime loading of dynamic libraries.
+
+// #include "Common.h"
+
+#if defined(CBUILD_API_POSIX)
+	/// Handle for dynamic library
+	typedef void* cbuild_dlib_t;
+#elif defined(CBUILD_API_STRICT_POSIX)
+	/// Handle for dynamic library
+	typedef void* cbuild_dlib_t;
+#endif // CBUILD_API_*
+
+/// Load dynamic library into handle.
+///
+/// * [pl:filename] Full path to a library or its platform-dependant "ID".
+/// * [pl:eager] By default symbols are loaded lazily (during calls to [`cbuild_dlib_get_sym`](#cbuild_dlib_get_sym). This makes them load eagerly. Can be user to run global constructors.
+///
+/// [r:] `NULL` if error happened.
+CBUILDDEF cbuild_dlib_t cbuild_dlib_open(const char* filename, bool eager);
+/// Get symbols from library handle.
+///
+/// [r:] `NULL` if error happened.
+CBUILDDEF void* cbuild_dlib_get_sym(cbuild_dlib_t handle, const char* name);
+/// Close dynamic library handle and unload library.
+CBUILDDEF void cbuild_dlib_close(cbuild_dlib_t handle);
+// #pragma once // For LSP
+//! Parser for command-line flags with GNU-style format.
+//!
+//! # Features
+//!
+//! - Support for long and short options.
+//! - Support for long option aliases.
+//! - Support for adding `--` to list of long options (for custom parsing semantics).
+//! - It support *terminated* arguments - argument list ends not only when size is
+//!   reached (or when argument starts from `-`) but only when terminator reached.
+//! - It support optional arguments.
+//! - Flag grouping (to pretty-print them for help).
+//! - Help formatter.
+//! - Custom help and version hooks (parsing for that flags are built-in).
+//!
+//! # Limitations
+//! 
+//! - Short options can be only 1 character.
+//! - Arguments are always returned as strings.
+
+// #include "Common.h"
+
+/// Options for a new flag
+///
+/// * [fl:short_option] Character for short options. If `'\0'` (`0`) then disabled.
+/// * [fl:optional_arg] Arguments to this flag are optional. This augments `num_arguments` field by allowing another option of passing no arguments (in addition to one provided by `num_arguments`).
+/// * [fl:num_arguments] Number of arguments required. `-1` means `>0`.
+/// * [fl:group_name] Name of arguments group. Used only for help message. Can be `NULL`{.c}.
+/// * [fl:terminator] Terminator argument. Can be `NULL`{.c} (unset, non-terminated argument list).
+/// * [fl:desc] Description. Can be `NULL`{.c}, then nothing will be printed.
+struct cbuild_flag_new_opts_t {
+	char short_option;
+	bool optional_arg;
+	// char __padding[2];
+	int num_arguments;
+	// char __padding[4];
+	const char* group_name;
+	const char* terminator;
+	const char* desc;
+};
+
+/// Register new flag. Semi-internal function.
+CBUILDDEF void cbuild_flag_new_opt(const char* option, struct cbuild_flag_new_opts_t opts);
+//// Register a new flag.
+///
+/// * [pl:option:const char*] Long flag name. Will be used as its internal "ID'.
+/// * [pl:...:...cbuild_flag_new_opts_t] Fields of configuration structure in initializer-list form.
+#define cbuild_flag_new(option, ...)                                        \
+cbuild_flag_new_opt(option, (struct cbuild_flag_new_opts_t){ __VA_ARGS__ })
+/// Options for a flag parser
+///
+/// * [fl:CBUILD_FLAG_PASS_SEPARATOR] Pass `--` inside of pargs. No arguments.
+/// * [fl:CBUILD_FLAG_ADD_ALIAS] Add new alias for a flag. Arguments are flag id (const char*) and NULL-terminated sequence of aliases (const char*).
+/// * [fl:CBUILD_FLAG_SET_GROUP_DESCRIPTION] Set description for a flag group. Arguments are group ID (const char*) and description string (const char*)
+/// * [fl:CBUILD_FLAG_HELP_HOOK] Set hook for `--help`. Argument - [`cbuild_flag_print_func_t`](#cbuild_flag_print_func_t)
+/// * [fl:CBUILD_FLAG_VERSION_HOOK] Set hook for `--version`. Argument - [`cbuild_flag_print_func_t`](#cbuild_flag_print_func_t)
+enum cbuild_flag_options_t {
+	CBUILD_FLAG_PASS_SEPARATOR,
+	CBUILD_FLAG_ADD_ALIAS,
+	CBUILD_FLAG_SET_GROUP_DESCRIPTION,
+	CBUILD_FLAG_HELP_HOOK,
+	CBUILD_FLAG_VERSION_HOOK,
+};
+/// Function used for print-type hooks. Takes `argv[0]`{.c} as input.
+typedef void (*cbuild_flag_print_func_t)(const char* app_name);
+/// Set some option for a flag parser.
+///
+/// ::: note
+/// Options can take some flags, they are passed via variadic arguments.
+/// :::
+CBUILDDEF void cbuild_flag_set_option(enum cbuild_flag_options_t option, ...);
+/// List of arguments
+typedef struct cbuild_arglist_t {
+	char** data;
+	size_t size;
+	size_t capacity;
+} cbuild_arglist_t;
+/// Get element from argument list using its index.
+///
+/// * [pl:arglist:const cbuild_arglist_t*] Argument list.
+/// * [pl:idx:size_t] Element index.
+/// 
+/// [r:char**] Pointer to an element or `NULL`{.c} on overflow.
+#define cbuild_arglist_get(arglist, idx) cbuild_da_get(arglist, idx)
+/// Parse flags.
+///
+/// ::: note
+/// This function prints error and aborts on invalid flags and when parsed 
+/// argument count differs from required (uses `exit(1)`).
+/// :::
+CBUILDDEF void cbuild_flag_parse(int argc, char** argv);
+/// Print help for all flags via [`__CBUILD_PRINT`](Common.html#preprocessor-configuration)
+CBUILDDEF void cbuild_flag_print_help(void);
+/// Get list of positional arguments.
+///
+/// [r:] List of positional arguments (pointer to a global state).
+CBUILDDEF cbuild_arglist_t* cbuild_flag_get_pargs(void);
+/// Get arguments for a specific flag.
+///
+/// [r:] List of arguments for that flag (pointer to a global state) or NULL if flag was not provided.
+CBUILDDEF cbuild_arglist_t* cbuild_flag_get_flag(const char* opt);
+/// Get current app name (`argv[0]`{.c}).
+CBUILDDEF const char* cbuild_flag_app_name(void);
+// #pragma once // For LSP
+//! Glob syntax implementation over POSIX regex.
+
+// #include "Common.h"
+// #include "FS.h"
+
+/// Glob context.
+///
+/// * [fl:data] Data for dynamic array of matches.
+///   - [fl:data.res] Match text. Points to original data.
+///   - [fl:data.res_idx] Match index.
+///   - [fl:data.captures] Copy of capture groups for that match.
+/// * [fl:capacity] Capacity for dynamic array of matches.
+/// * [fl:size] Count of elements for dynamic array of matches.
+/// * [fl:regex] Cache for compiled regex.
+/// * [fl:captures] Scratchpad captures for regex engine.
+typedef struct cbuild_glob_t {
+	struct __cbuild_glob_res_t {
+		const char* res;
+		size_t res_tdx;
+		regmatch_t captures[CBUILD_GLOB_CAPTURE_COUNT];
+	} *data;
+	size_t size;
+	size_t capacity;
+	regex_t regex;
+	regmatch_t captures[CBUILD_GLOB_CAPTURE_COUNT];
+} cbuild_glob_t;
+/// Compile new glob patter.
+///
+/// This is a two-step process, first it will transform glob expression
+/// into a regx one and then it will call `regcomp`. POSIX ERE will be used.
+CBUILDDEF bool cbuild_glob_compile(cbuild_glob_t* glob, const char* pattern);
+/// Find matches in a list.
+CBUILDDEF bool cbuild_glob_match(cbuild_glob_t* glob, const char** list, size_t size);
+/// Find glob matches in file system.
+///
+/// This will match against full path and put full path in a resulting array.
+///
+/// * [fl:glob] Glob context.
+/// * [fl:pathlist] This will be used to store full list of scanned paths.
+/// * [fl:base_path] Base search path.
+CBUILDDEF bool cbuild_glob_match_fs(cbuild_glob_t* glob, cbuild_pathlist_t* pathlist, const char* base_path);
+/// Find glob matches in file system.
+///
+/// This will match against filename+extension only but put full path in a resulting array.
+///
+/// * [fl:glob] Glob context.
+/// * [fl:pathlist] This will be used to store full list of scanned paths.
+/// * [fl:base_path] Base search path.
+CBUILDDEF bool cbuild_glob_match_files(cbuild_glob_t* glob, cbuild_pathlist_t* pathlist, const char* base_path);
+/// Clean underlying regex and free matches array.
+CBUILDDEF void cbuild_glob_free(cbuild_glob_t* glob);
+#endif __CBUILD_H__
