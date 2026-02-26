@@ -1133,11 +1133,62 @@ bool test(void) {
 }
 // Amalgamation
 #define SOURCE_DIR "src"
+#define CHANGELOG_DIR "changelog"
+#define CHANGELOG_FIRST_NEW_ZEROVER 15
+bool insert_new_changelog_entry(cbuild_sb_t* output, const char* path);
 bool amalgamate(void) {
 	cbuild_log_info("Building cbuild.h");
 	cbuild_sb_t output = {0};
+	// Changelog
 	cbuild_sb_append_cstr(&output, "// cbuild.h by WolodiaM\n");
 	cbuild_sb_append_cstr(&output, "// License: GPL-3.0-or-later\n");
+	cbuild_sb_append_cstr(&output, "/* CHANGELOG\n");
+	cbuild_sb_t changelog_old = {0};
+	if (!cbuild_file_read(CHANGELOG_DIR"/changelog.txt", &changelog_old)) return false;
+	cbuild_sv_t changelog_old_content = cbuild_sv_from_sb(changelog_old);
+	while (changelog_old_content.size > 0) {
+		cbuild_sv_t line = cbuild_sv_chop_by_delim(&changelog_old_content, '\n');
+		cbuild_sb_append_cstr(&output, " * ");
+		cbuild_sb_append_sv(&output, line);
+		cbuild_sb_append_cstr(&output, "\n");
+	}
+	cbuild_sb_clear(&changelog_old);
+	// NOTE: For now I use zerover, so it is really easy to iterate over versions
+	int version = CHANGELOG_FIRST_NEW_ZEROVER;
+	const char* ch_path = cbuild_temp_sprintf(CHANGELOG_DIR"/v0.%d.md", version++);
+	cbuild_sb_t changelog = {0};
+	while (cbuild_file_check(ch_path)) {
+		cbuild_sb_append_cstr(&output, " * --------------------------------------------\n");
+		if (!cbuild_file_read(ch_path, &changelog)) return false;
+		cbuild_sv_t ch = cbuild_sv_from_sb(changelog);
+		cbuild_sv_chop_by_delim(&ch, '\n'); // ---
+		cbuild_sv_chop_by_delim(&ch, '\n'); // title: ...
+		cbuild_sv_chop_by_delim(&ch, ' ');  // date: 
+		cbuild_sv_t date = cbuild_sv_chop_by_delim(&ch, '\n'); // yyyy-mm-dd
+		cbuild_sv_chop_by_delim(&ch, '\n'); // ---
+		cbuild_sv_chop_by_delim(&ch, '\n'); // <blank>
+		cbuild_sb_appendf(&output, " * "CBuildSVFmt"  v0.%d\n", CBuildSVArg(date), version - 1);
+		while (ch.size > 0) {
+			cbuild_sv_t header = cbuild_sv_chop_by_delim(&ch, '\n');
+			cbuild_sv_chop(&header, 2); // #<space>
+			cbuild_sb_append_cstr(&output, " * ");
+			cbuild_sb_append_sv(&output, header);
+			cbuild_sb_append_cstr(&output, "\n");
+			cbuild_sv_chop_by_delim(&ch, '\n'); // <blank>
+			cbuild_sv_t line = cbuild_sv_chop_by_delim(&ch, '\n');
+			while (line.size > 0) {
+				cbuild_sb_append_cstr(&output, " *   ");
+				cbuild_sb_append_sv(&output, line);
+				cbuild_sb_append_cstr(&output, "\n");
+				line = cbuild_sv_chop_by_delim(&ch, '\n');
+			}
+		}
+		changelog.size = 0;
+		ch_path = cbuild_temp_sprintf(CHANGELOG_DIR"/v0.%d.md", version++);
+	}
+	cbuild_sb_clear(&changelog);
+	cbuild_sb_append_cstr(&output, " */\n");
+	// Headers
 	cbuild_sb_append_cstr(&output, "#ifndef __CBUILD_H__\n");
 	cbuild_sb_append_cstr(&output, "#define __CBUILD_H__\n");
 	const char* headers[] = {
@@ -1178,6 +1229,7 @@ bool amalgamate(void) {
 	cbuild_sb_clear(&header);
 	cbuild_sb_append_cstr(&output, "#endif __CBUILD_H__");
 	if(!cbuild_file_write("cbuild.h.new", &output)) return false;
+	cbuild_sb_clear(&output);
 	return true;
 }
 // Hooks
@@ -1376,7 +1428,11 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 	} else if (strcmp(subcommand, "build") == 0) {
-		if (!amalgamate()) return 1;
+		if (!amalgamate()) {
+			cbuild_log_error("Creation of cbuild.h failed.");
+			return 1;
+		}
+		cbuild_log_info("Successfully created cbuild.h");
 	} else {
 		cbuild_log(CBUILD_LOG_ERROR, "Invalid subcommand specified: \"%s\"!", subcommand);
 		help(cbuild_flag_app_name());
