@@ -1,0 +1,79 @@
+Parse version.h
+Validate that version numbers and string match
+Validate that changelog exists
+Validate that changelog has date string
+Build changelog
+Build header, changelog, all headers, and source into cbuild.h
+
+Order:
+Common.h
+Version.h
+Term.h
+Log.h
+Arena.h
+Temp.h
+DynArray.h
+StringBuilder.h
+StringView.h
+Stack.h
+Map.h
+Proc.h
+Command.h
+FS.h
+Compile.h
+DLLoad.h
+FlagParse.h
+RGlob.h
+
+Changed functions:
+
+path_normalize
+cbuild_dir_walk_opt
+
+cbuild_map_clear
+cbuild_map_remove
+
+__cbuild_selfrebuild
+
+cbuild_dlib_open
+cbuild_dlib_get_sym
+cbuild_dlib_close
+
+cbuild_flag_new_opt
+cbuild_flag_set_option
+cbuild_flag_parse
+cbuild_flag_get
+
+cbuild_arena_base_realloc
+cbuild_arena_base_free
+cbuild_arena_malloc
+cbuild_arena_realloc
+cbuild_arena_checkpoint
+cbuild_arena_reset
+cbuild_arena_strdup 
+cbuild_arena_memdup
+cbuild_arena_sprintf
+cbuild_arena_vsprintf
+
+cbuild_temp_alloc
+cbuild_temp_sprintf
+cbuild_temp_vsprintf
+cbuild_temp_strdup
+cbuild_temp_memdup
+cbuild_temp_reset
+cbuild_temp_checkpoint
+
+cbuild_glob_t
+__cbuild_glob_res_t
+cbuid_glob_compile
+cbuild_glob_match
+cbuild_glob_match_fs
+cbuild_glob_match_files
+cbuild_glob_free
+
+Error functions:
+errno
+strerror
+dlerror
+
+Issues to fix: 23;22;21;2;6;
