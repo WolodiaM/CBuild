@@ -11,8 +11,9 @@
 	/// This 4 levels should be present in you implementation of this enum, because
 	/// they are used by CBuild itself.
 	///
-	/// You would also need to provide `const char* __cbuild_int_log_level_names[]`.
+	/// You would also need to provide `const char* __cbuild_log_level_names[]`.
 	/// This array is used by default handler to format names of log levels.
+	/// Level is used as index and value is treated as a c-string.
 	typedef enum {
 		CBUILD_LOG_ERROR   = 1,
 		CBUILD_LOG_WARN    = 2,
@@ -63,12 +64,16 @@ CBUILDDEF cbuild_log_level_t cbuild_log_get_min_level(void);
 /// This function will be called only for messages that should be printed.
 /// It can be treated as a formatter for logged messages.
 ///
-/// * [pl:level] Log level. Needed to pretty-print it.
+/// * [pl:level] Log level name. 
 /// * [pl:fmt] Format string for printf.
 /// * [pl:args] Arguments for format string.
-typedef void (*cbuild_log_handler_t)(cbuild_log_level_t level, const char* fmt, va_list args);
+typedef void (*cbuild_log_handler_t)(const char* level, const char* fmt, va_list args);
 /// Setup handler for logger. Passing NULL will disable logs.
 /// Default log handler will be setup by default.
 CBUILDDEF void cbuild_log_set_handler(cbuild_log_handler_t handler);
 /// Get current log handler.
 CBUILDDEF cbuild_log_handler_t cbuild_log_get_handler(void);
+/// Default log handler for CBuild.
+CBUILDDEF void __cbuild_default_log_handler(const char* level,
+	const char* fmt, va_list args);
+

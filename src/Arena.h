@@ -27,13 +27,11 @@ typedef struct cbuild_arena_t {
 /// ::: note
 /// This is just a direct call to `realloc` plus some metadata management.
 /// :::
-CBUILDDEF bool cbuild_arena_base_realloc(cbuild_arena_t* arena, size_t new_capacity);
+CBUILDDEF void cbuild_arena_base_realloc(cbuild_arena_t* arena, size_t new_capacity);
 /// Allocate new arena base.
 ///
 /// * [pl:arena:cbuild_arena_t*] Arena object.
 /// * [pl:capacity:size_t] Capacity of arena.
-///
-/// [r:] `false` on failure.
 #define cbuild_arena_base_alloc(arena, capacity) cbuild_arena_base_realloc(arena, capacity)
 /// Free arena base.
 CBUILDDEF void cbuild_arena_base_free(cbuild_arena_t* arena);
@@ -45,7 +43,12 @@ CBUILDDEF void cbuild_arena_base_free(cbuild_arena_t* arena);
 /// [r:] Pointer into arena. NULL if out-of-memory.
 CBUILDDEF void* cbuild_arena_malloc(cbuild_arena_t* arena, size_t size);
 /// `realloc` for arena. Will not free old memory.
-CBUILDDEF void* cbuild_arena_realloc(cbuild_arena_t* arena, size_t size);
+///
+/// It [p:size] is bigger than old size then memory from adjacent allocations
+/// will be used to initialize new memory block. This is safe access (no
+/// segmentation fault possible), but can expose unrelated memory trough
+/// new allocation.
+CBUILDDEF void* cbuild_arena_realloc(cbuild_arena_t* arena, void* ptr, size_t size);
 /// Save checkpoint into arena.
 CBUILDDEF size_t cbuild_arena_checkpoint(cbuild_arena_t* arena);
 /// Reset arena to some checkpoint.
@@ -61,4 +64,7 @@ CBUILDDEF void* cbuild_arena_memdup(cbuild_arena_t* arena, void* src, size_t n);
 /// `sprintf` that uses arena as its allocator.
 CBUILDDEF char* cbuild_arena_sprintf(cbuild_arena_t* arena, const char* fmt, ...);
 /// `vsprintf` that uses arena as its allocator.
-CBUILDDEF char* cbuild_arena_vsprintf(cbuild_arena_t* arena, const char* fmt, va_list args);
+CBUILDDEF char* cbuild_arena_vsprintf(cbuild_arena_t* arena, const char* fmt,
+	va_list args);
+/// Print formatter arena usage.
+CBUILDDEF void cbuild_arena_profile(cbuild_arena_t* arena);

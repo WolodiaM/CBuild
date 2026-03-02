@@ -66,7 +66,7 @@
 	({                                                                           \
 		bool __cbuild__ret = false;                                                \
 		if ((idx) >= (da)->size) {                                                 \
-			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in set.");  \
+			cbuild_log(CBUILD_LOG_ERROR, "Index overflow in set.");                  \
 			__cbuild__ret = false;                                                   \
 		} else {                                                                   \
 			(da)->data[(idx)] = elem;                                                \
@@ -79,12 +79,12 @@
 /// * [pl:da:const cbuild_da_t*] Dynamic array object.
 /// * [pl:idx:size_t] Element index.
 /// 
-/// [r:typeof(da->data)] Pointer to an element or `NULL`{.c} on overflow.
+/// [r:typeof(da->data)] Pointer to an element or `NULL`{.c} if index out of bounds.
 #define cbuild_da_get(da, idx)                                                 \
 	({                                                                           \
 		typeof(*(da)->data)* __cbuild__ret = NULL;                                 \
 		if ((idx) >= (da)->size) {                                                 \
-			cbuild_log(CBUILD_LOG_ERROR, "(LIB_CBUILD_DA) Index overflow in get.");  \
+			cbuild_log(CBUILD_LOG_ERROR, "Index overflow in get.");                  \
 			__cbuild__ret = NULL;                                                    \
 		} else {                                                                   \
 			__cbuild__ret = &((da)->data[(idx)]);                                    \
@@ -101,8 +101,7 @@
 	({                                                                           \
 		bool __cbuild__ret = false;                                                \
 		if ((idx) >= (da)->size) {                                                 \
-			cbuild_log(CBUILD_LOG_ERROR,                                             \
-				"(LIB_CBUILD_DA) Index overflow in remove.");                          \
+			cbuild_log(CBUILD_LOG_ERROR, "Index overflow in remove.");               \
 			__cbuild__ret = false;                                                   \
 		} else {                                                                   \
 			memmove((da)->data + (idx), ((da)->data + ((idx) + 1)),                  \
@@ -126,8 +125,7 @@
 	({                                                                           \
 		bool __cbuild__ret = false;                                                \
 		if ((idx) >= (da)->size) {                                                 \
-			cbuild_log(CBUILD_LOG_ERROR,                                             \
-				"(LIB_CBUILD_DA) Index overflow in remove.");                          \
+			cbuild_log(CBUILD_LOG_ERROR, "Index overflow in remove.");               \
 			__cbuild__ret = false;                                                   \
 		} else {                                                                   \
 			(da)->data[(idx)] = (da)->data[--(da)->size];                            \
@@ -158,7 +156,7 @@
 			(da)->data = __CBUILD_REALLOC((da)->data,                                \
 				(da)->capacity * sizeof(typeof(*(da)->data)));                         \
 		}                                                                          \
-		cbuild_assert((da)->data != NULL, "(LIB_CBUILD_DA) Allocation failed.\n"); \
+		cbuild_assert((da)->data != NULL, "Allocation failed.\n");                 \
 		((da)->size > (da)->capacity) ? ((da)->size = (da)->capacity) : 0;         \
 	} while(0)
 /// Free dynamic array.

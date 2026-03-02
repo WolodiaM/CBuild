@@ -56,7 +56,7 @@ typedef struct cbuild_sb_t {
 /// * [pl:sb:const cbuild_sb_t*] String builder object.
 /// * [pl:idx:size_t] Element index.
 /// 
-/// [r:char] Pointer to an element or NULL on overflow.
+/// [r:char] Pointer to an element or `NULL`{.c} if index out of bounds.
 #define cbuild_sb_get(sb, idx) cbuild_da_get((sb), (idx))
 /// Remove element string builder using its index.
 ///
@@ -98,25 +98,12 @@ CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t a, cbuild_sb_t b);
 /// [r:0] If two string builders are equal.
 /// [r:1] If first different character in first string builder is larger.
 /// [r:2] If size of first string builder is larger.
-CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
+CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t a, cbuild_sb_t b);
 /// Append utf8 character to a string builder.
 ///
 /// * [pl:sb] String builder object.
 /// * [pl:cp] UTF8 codepoint.
 CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
-/// `strcmp` for string builder. Fully compatible but extends API. 
-///
-/// ::: deprecated
-/// Comparison is same for UTF8 strings, ASCII strings or just raw byte data.
-/// :::
-///
-/// [r:-2] If size of first string builder is smaller.
-/// [r:-1] If first different character in first string builder is smaller.
-/// [r:0] If two string builders are equal.
-/// [r:1] If first different character in first string builder is larger.
-/// [r:2] If size of first string builder is larger.
-CBUILD_ATTR_DEPRECATED("Please use cbuild_sb_cmp instead!",
-	CBUILDDEF int cbuild_sb_utf8cmp(cbuild_sb_t a, cbuild_sb_t b));
 /// Get length of a string builder in utf8 codepoints.
 ///
 /// ::: note

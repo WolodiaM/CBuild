@@ -177,6 +177,10 @@
 	typedef int cbuild_fd_t;
 	/// Invalid file descriptor
 	#define CBUILD_INVALID_FD -1
+	/// Directory descriptor
+	typedef DIR* cbuild_dir_t;
+	/// Invalid directory descriptor
+	#define CBUILD_INVALID_DIR NULL
 	/// Additional error value for pointers (when error and not found are separate cases)
 	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
 #elif defined(CBUILD_API_STRICT_POSIX)
@@ -200,6 +204,10 @@
 	#define CBUILD_INVALID_PROC -1
 	typedef int cbuild_fd_t;
 	#define CBUILD_INVALID_FD -1
+	/// Directory descriptor
+	typedef DIR* cbuild_dir_t;
+	/// Invalid directory descriptor
+	#define CBUILD_INVALID_DIR NULL
 	// For pointer errors
 	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
 #elif defined(CBUILD_API_WINAPI)
@@ -268,7 +276,7 @@
 	/// for specific map instance.
 	///
 	/// [Type](map.html#cbuild_map_hash_t): `size_t func(const void* key, size_t len)`{.c}. 
-	#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_int_map_hash_func
+	#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_map_hash_func
 #endif // CBUILD_MAP_DEFAULT_HASH_FUNC
 #ifndef CBUILD_SELFREBUILD_ARGS
 	/// Default arguments for `cbuild_selfrebuild`.
@@ -373,19 +381,23 @@
 
 /// Place `TODO` marker in code. Upon reaching it execution will abort with message. 
 ///
-/// * [pl:message:const char*] Message that will be printed before aborting.
-#define CBUILD_TODO(message)                                             \
-	do {                                                                   \
-		__CBUILD_PRINTF("%s:%d: TODO: %s\n", __FILE__, __LINE__, (message)); \
-		abort();                                                             \
+/// * [pl:message:const char*] Message that will be printed before aborting. printf-style.
+/// * [pl:...] Format string arguments.
+#define CBUILD_TODO(message, ...)                              \
+	do {                                                         \
+		__CBUILD_PRINTF("%s:%d: TODO: %s\n", __FILE__, __LINE__,   \
+			cbuild_temp_sprintf(message __VA_OPT__(,) __VA_ARGS__)); \
+		abort();                                                   \
 	} while (0)
 /// Mark some code as unreachable. This will abort with message if executed.
 ///
-/// * [pl:message:const char*] Message that will be printed before aborting.
-#define CBUILD_UNREACHABLE(message)                                             \
-	do {                                                                          \
-		__CBUILD_PRINTF("%s:%d: UNREACHABLE: %s\n", __FILE__, __LINE__, (message)); \
-		abort();                                                                    \
+/// * [pl:message:const char*] Message that will be printed before aborting. printf-style.
+/// * [pl:...] Format string arguments.
+#define CBUILD_UNREACHABLE(message, ...)                            \
+	do {                                                              \
+		__CBUILD_PRINTF("%s:%d: UNREACHABLE: %s\n", __FILE__, __LINE__, \
+			cbuild_temp_sprintf(message __VA_OPT__(,) __VA_ARGS__));      \
+		abort();                                                        \
 	} while (0)
 
 /// Assert that can pretty-print messages.
@@ -403,7 +415,7 @@
 /// * [pl:expr] Expression that should be reported.
 /// * [pl:...:format string] Printf-style format string and its arguments.
 CBUILD_ATTR_NORETURN(CBUILDDEF void __cbuild_assert(const char* file, unsigned int line,
-	const char* func, const char* expr, ...));
+		const char* func, const char* expr, ...));
 
 /// Get length of array whose size is know at compile-time
 ///
@@ -450,9 +462,22 @@ CBUILD_ATTR_NORETURN(CBUILDDEF void __cbuild_assert(const char* file, unsigned i
 /// [r:] Nanoseconds from unspecified epoch.
 CBUILDDEF uint64_t cbuild_time_nanos(void);
 /// Number of nanoseconds in one second
-#define CBUILD_NANOS_PER_SEC (size_t)(1000*1000*1000)
+#define CBUILD_NANOS_PER_SEC (long long)(1000*1000*1000)
 
 /// Return bigger number from 2 numbers
 #define CBUILD_MAX(a, b) a > b ? a : b
 /// Return smaller number from 2 numbers
 #define CBUILD_MIN(a, b) a < b ? a : b
+
+//! # Internal API [line:cbuild-api-internal]
+//! These are internal function, so their API can break at any time.
+//! But they still can be considered mostly stable (eg. I ddeos not
+//! break their API that often).
+
+/// Get name of program (`argv[0]`).
+CBUILDDEF const char* __cbuild_progname(void);
+/// `memrchr` wrapper.
+CBUILDDEF void* __cbuild_memrchr(const void* s, int c, size_t n);
+/// `memmem` wrapper
+CBUILDDEF void* __cbuild_memmem(const void* haystack, size_t hsize,
+	const void* needle, size_t nsize);

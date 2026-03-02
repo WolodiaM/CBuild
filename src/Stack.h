@@ -30,7 +30,7 @@
 /// [r:*typeof(stack->data)] Popped element.
 #define cbuild_stack_pop(stack)                                                \
 	({                                                                           \
-		cbuild_assert((stack)->ptr != 0, "(LIB_CBUILD_STACK) Stack underfloor.\n");\
+		cbuild_assert((stack)->ptr != 0, "Stack underfloor.\n");                   \
 		(stack)->data[--(stack)->ptr];                                             \
 	})
 /// Get element from top of a stack.
@@ -40,7 +40,7 @@
 /// [r:*typeof(stack->data)] Element on top of a stack.
 #define cbuild_stack_top(stack)                                                \
 	({                                                                           \
-		cbuild_assert((stack)->ptr != 0, "(LIB_CBUILD_STACK) Stack underfloor.\n");\
+		cbuild_assert((stack)->ptr != 0, "Stack underfloor.\n");                   \
 		(stack)->data[(stack)->ptr - 1];                                           \
 	})
 /// Resize dynamic array.
@@ -66,8 +66,7 @@
 			(stack)->data = __CBUILD_REALLOC((stack)->data,                          \
 				(stack)->capacity * sizeof(typeof(*(stack)->data)));                   \
 		}                                                                          \
-		cbuild_assert((stack)->data != NULL,                                       \
-			"(LIB_CBUILD_STACK) Allocation failed.\n");                              \
+		cbuild_assert((stack)->data != NULL, "Allocation failed.\n");              \
 	} while (0)
 /// Free stack.
 ///

@@ -16,7 +16,7 @@ typedef struct cbuild_pathlist_t {
 /// * [pl:list:const cbuild_pathlist_t*] Path list object.
 /// * [pl:idx:size_t] Element index.
 /// 
-/// [r:char**] Pointer to an element or `NULL`{.c} on overflow.
+/// [r:char**] Pointer to an element or `NULL`{.c} if index out of bounds.
 #define cbuild_pathlist_get(list, idx) cbuild_da_get(list, idx)
 /// Free pathlist.
 /// 
@@ -82,6 +82,8 @@ CBUILDDEF ssize_t cbuild_fd_write(cbuild_fd_t fd, const void* buf, size_t nbytes
 CBUILDDEF ssize_t cbuild_fd_write_file(cbuild_fd_t fd, const void* buf,
 	size_t nbytes, const char* path);
 /// Get length of file in bytes.
+///
+/// [r:] Length of file in bytes or `-1` on error.
 CBUILDDEF ssize_t cbuild_file_len(const char* path);
 /// Read file into string builder.
 CBUILDDEF bool cbuild_file_read(const char* path, cbuild_sb_t* data);
@@ -143,7 +145,7 @@ CBUILDDEF bool cbuild_dir_check(const char* path);
 CBUILDDEF bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements);
 /// Get current working directory.
 ///
-/// [r:] Current working directory values. Allocated with `malloc` or `cbuild_malloc` depending on who allocated value (standard library or cbuild).
+/// [r:] Current working directory values. Allocated `__CBUILD_MALLOC`.
 CBUILDDEF char* cbuild_dir_current(void);
 /// Set current working directory.
 CBUILDDEF bool cbuild_dir_set_current(const char* path);
@@ -175,7 +177,7 @@ typedef struct cbuild_dir_walk_func_args_t {
 	const char* path;
 	cbuild_filetype_t type;
 	size_t level;
-	enum cbuild_dir_walk_result_t result;
+	enum cbuild_dir_walk_result_t* result;
 	void* context;
 } cbuild_dir_walk_func_args_t;
 /// Function used as callback by directory walker.
@@ -200,6 +202,19 @@ CBUILDDEF bool cbuild_dir_walk_opt(const char* path, cbuild_dir_walk_func_t func
 /// * [pl:...:...cbuild_dir_walk_opts_t] Fields of configuration structure in initializer-list form.
 #define cbuild_dir_walk(path, callback, ...)                                        \
 cbuild_dir_walk_opt(path, callback, (struct cbuild_dir_walk_opts_t){ __VA_ARGS__ })
+/// Open directory.
+CBUILDDEF cbuild_dir_t cbuild_dir_open(const char* path);
+/// Get next element from directory.
+/// 
+/// * [pl:dir] Directory handle.
+/// * [pl:element] Return value for filename.
+///
+/// [r:0] No error and directory iterator is still not empty.
+/// [r:1] No error but directory iterator is empty. [p:element] is `NULL`.
+/// [r:-1] Error happened.
+CBUILDDEF int cbuild_dir_next(cbuild_dir_t dir, const char** element);
+/// Close directory.
+CBUILDDEF bool cbuild_dir_close(cbuild_dir_t dir);
 /// Get type of file.
 CBUILDDEF cbuild_filetype_t cbuild_path_filetype(const char* path);
 /// Optional arguments for [`cbuild_path_ext`](#cbuild_path_ext).
@@ -212,7 +227,7 @@ struct cbuild_path_ext_opts_t {
 /// Get extension of specific file. Semi-internal.
 /// File pointer by [p:path] is not checked in any way.
 ///
-/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+/// [r:] String allocated via [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 CBUILDDEF char* cbuild_path_ext_opt(const char* path, struct cbuild_path_ext_opts_t opts);
 /// Get extension of specific file.
 /// File pointer by [p:path] is not checked in any way.
@@ -220,24 +235,24 @@ CBUILDDEF char* cbuild_path_ext_opt(const char* path, struct cbuild_path_ext_opt
 /// * [pl:path:const char*] Path to a file.
 /// * [pl:...:...cbuild_path_ext_opts_t] Fields of configuration structure in initializer-list form.
 ///
-/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+/// [r:] String allocated via [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 #define cbuild_path_ext(path, ...)                                    \
 cbuild_path_ext_opt(path, (struct cbuild_path_ext_opts_t){ __VA_ARGS__ })
 /// Get file name with extension (all after last `/`).
 /// For directories special case exists that strips last `/` if it is last character.
 /// File pointer by [p:path] is not checked in any way.
 /// 
-/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+/// [r:] String allocated via [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 CBUILDDEF char* cbuild_path_name(const char* path);
 /// Get base name (all before last `/`).
 /// For directories special case exists that strips last `/` if it is last character.
 /// File pointer by [p:path] is not checked in any way.
 ///
-/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+/// [r:] String allocated via [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 CBUILDDEF char* cbuild_path_base(const char* path);
 /// Normalize path. All normalization is based on heuristics and does not involve
 /// such steps as eg. symlink resolving.
 /// File pointer by [p:path] is not checked in any way.
 ///
-/// [r:] String allocated via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+/// [r:] String allocated via [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 CBUILDDEF char* cbuild_path_normalize(const char* path);

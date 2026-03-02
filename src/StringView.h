@@ -195,19 +195,6 @@ typedef bool (*cbuild_sv_utf8delim_func)(const cbuild_sv_t* sv, void* args);
 /// [r:] new string view containing chopped characters. Delimiter character will not be in any string view.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
 	cbuild_sv_utf8delim_func delim, void* args);
-/// `strcmp` for string view. Fully compatible but extends API. 
-///
-/// ::: deprecated
-/// Comparison is same for UTF8 strings, ASCII strings or just raw byte data.
-/// :::
-///
-/// [r:-2] If size of first string view is smaller.
-/// [r:-1] If first different character in first string view is smaller.
-/// [r:0] If two string views are equal.
-/// [r:1] If first different character in first string view is larger.
-/// [r:2] If size of first string view is larger.
-CBUILD_ATTR_DEPRECATED("Please use cbuild_sv_cmp instead!",
-	CBUILDDEF int cbuild_sv_utf8cmp(cbuild_sv_t a, cbuild_sv_t b));
 /// Get length of a string view in utf8 codepoints.
 ///
 /// ::: note
@@ -232,7 +219,7 @@ CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx);
 CBUILDDEF char* cbuild_sv_to_cstr(cbuild_sv_t sv);
 /// Convert string view to c-string. Allocate memory via `malloc`.
 #define cbuild_cstr_from_sv(sv) cbuild_sv_to_cstr(sv)
-/// Convert string view to c-string. Allocate memory via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+/// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 CBUILDDEF char* cbuild_temp_sv_to_cstr(cbuild_sv_t sv);
-/// Convert string view to c-string. Allocate memory via [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+/// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 #define cbuild_temp_cstr_from_sv(sv) cbuild_temp_sv_to_cstr(sv)

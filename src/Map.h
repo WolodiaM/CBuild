@@ -150,7 +150,7 @@ CBUILDDEF void* cbuild_map_get_raw(const cbuild_map_t* map, const void* key);
 		__auto_type __cbuild_tmp_key = key;                                        \
 		cbuild_assert(sizeof(__cbuild_tmp_key) == (map)->key_size ||               \
 			((map)->key_size == 0 && sizeof(__cbuild_tmp_key) == sizeof(char*)),     \
-			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+			"Key type mismatch!\n");                                                 \
 		cbuild_map_get_raw((map), &__cbuild_tmp_key);                              \
 	})
 /// Get element from a map.
@@ -168,7 +168,7 @@ CBUILDDEF void* cbuild_map_get_raw(const cbuild_map_t* map, const void* key);
 		__auto_type __cbuild_tmp_key = key;                                        \
 		cbuild_assert(sizeof(*__cbuild_tmp_key) == (map)->key_size ||              \
 			((map)->key_size == 0 && sizeof(*__cbuild_tmp_key) == sizeof(char*)),    \
-			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+			"Key type mismatch!\n");                                                 \
 		cbuild_map_get_raw((map), __cbuild_tmp_key);                               \
 	})
 /// Get element from a map or allocate a new one. Raw semi-internal function.
@@ -208,7 +208,7 @@ CBUILDDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
 		__auto_type __cbuild_tmp_key = key;                                        \
 		cbuild_assert(sizeof(__cbuild_tmp_key) == (map)->key_size ||               \
 			((map)->key_size == 0 && sizeof(__cbuild_tmp_key) == sizeof(char*)),     \
-			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+			"Key type mismatch!\n");                                                 \
 		cbuild_map_get_or_alloc_raw((map), &__cbuild_tmp_key);                     \
 	})
 /// Get element from a map or allocate a new one. Raw semi-internal function.
@@ -234,7 +234,7 @@ CBUILDDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
 		__auto_type __cbuild_tmp_key = key;                                        \
 		cbuild_assert(sizeof(*__cbuild_tmp_key) == (map)->key_size ||              \
 			((map)->key_size == 0 && sizeof(*__cbuild_tmp_key) == sizeof(char*)),    \
-			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+			"Key type mismatch!\n");                                                 \
 		cbuild_map_get_or_alloc_raw((map), __cbuild_tmp_key);                      \
 	})
 /// Remove element from a map. Custom clear func will be used if provided in
@@ -260,7 +260,7 @@ CBUILDDEF bool cbuild_map_remove_raw(cbuild_map_t* map, const void* key);
 		__auto_type __cbuild_tmp_key = key;                                        \
 		cbuild_assert(sizeof(__cbuild_tmp_key) == (map)->key_size ||               \
 			((map)->key_size == 0 && sizeof(__cbuild_tmp_key) == sizeof(char*)),     \
-			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+			"Key type mismatch!\n");                                                 \
 		cbuild_map_remove_raw((map), &__cbuild_tmp_key);                           \
 	})
 /// Remove element from a map. Custom clear func will be used if provided in
@@ -279,7 +279,7 @@ CBUILDDEF bool cbuild_map_remove_raw(cbuild_map_t* map, const void* key);
 		__auto_type __cbuild_tmp_key = key;                                        \
 		cbuild_assert(sizeof(*__cbuild_tmp_key) == (map)->key_size ||              \
 			((map)->key_size == 0 && sizeof(*__cbuild_tmp_key) == sizeof(char*)),    \
-			"(LIB_CBUILD_MAP) Key type mismatch!\n");                                \
+			"Key type mismatch!\n");                                                 \
 		cbuild_map_remove_raw((map), __cbuild_tmp_key);                            \
 	})
 /// Fully clear the map. Custom clear func will be used if provided in the map.
@@ -311,3 +311,10 @@ CBUILDDEF void* cbuild_map_iter_next(cbuild_map_t* map);
 #define cbuild_map_foreach(map, T, iter)                                       \
 	cbuild_map_iter_reset(map);                                                  \
 	for (T* iter = NULL;((iter) = (T*)cbuild_map_iter_next(map));)
+
+//! # Internal functions [line:cbuild-map-internal]
+
+//@ cbuild-map-internal
+
+/// Default map hash function. Use dbj2 hash.
+CBUILDDEF size_t __cbuild_map_hash_func(const void* data, size_t len);

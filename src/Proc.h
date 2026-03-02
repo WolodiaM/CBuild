@@ -43,7 +43,7 @@ CBUILDDEF bool cbuild_proc_wait(cbuild_proc_t proc);
 CBUILDDEF bool cbuild_procs_wait(cbuild_proclist_t procs);
 /// Blocking wait until specific process finishes.
 ///
-/// [r:] Process exit code or `INT_MIN`{.c} if [p:proc] is invalid or negative signal value if process exited due to a signal.
+/// [r:] Process exit code or `INT_MIN`{.c} if [p:proc] is invalid or `INT_MAX`{.c} on ECHILD or negative signal value if process exited due to a signal.
 CBUILDDEF int cbuild_proc_wait_code(cbuild_proc_t proc);
 /// Blocking wait until any process from list exits.
 ///

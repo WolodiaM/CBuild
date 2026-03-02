@@ -48,13 +48,13 @@
 /// Add a define based on compile-time literal.
 #define CBUILD_CARGS_DEFINE(defname)  "-D" defname
 /// Add a define based on runtime string.
-/// Uses [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+/// Uses [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 #define CBUILD_CARGS_DEFINE_TEMP(defname) \
 	cbuild_temp_sprintf("-D%s", defname)
 /// Add a define with a value. Both based on compile-time literal.
 #define CBUILD_CARGS_DEFINE_VAL(defname, val)      "-D" defname "=" val
 /// Add a define with a value. Both based on runtime string.
-/// Uses [`cbuild_temp_alloc`](Temp.html#cbuild_temp_alloc).
+/// Uses [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 #define CBUILD_CARGS_DEFINE_VAL_TEMP(defname, val) \
 	cbuild_temp_sprintf("-D%s=%s", defname, val)
 /// Remove define based on compile-time literal.
