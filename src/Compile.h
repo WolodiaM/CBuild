@@ -91,7 +91,7 @@
 /// * [pl:argc] ARGC of program.
 /// * [pl:argv] ARGV of program.
 /// * [pl:argv0_path] Path to file specified by `argv[0]`{.c}.
-/// * [pl:files] Additional dependency files.
+/// * [pl:files] Primary file as first element and additional dependency files as other.
 ///
 /// # When this will result in a new binary
 ///

@@ -42,7 +42,7 @@ CBUILDDEF char* cbuild_arena_strdup(cbuild_arena_t* arena, const char* src) {
 	dst[len] = 0;
 	return dst;
 }
-CBUILDDEF void* cbuild_arena_memdup(cbuild_arena_t* arena, void* src, size_t n) {
+CBUILDDEF void* cbuild_arena_memdup(cbuild_arena_t* arena, const void* src, size_t n) {
 	void* dst = cbuild_arena_malloc(arena, n);
 	if (!dst) return NULL;
 	memcpy(dst, src, n);

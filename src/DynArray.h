@@ -174,7 +174,7 @@
 	} while(0)
 /// Foreach implementation for dynamic array. Same semantics as 'for' loop.
 ///
-/// * [pl:da:cbuild_da_t*] Dynamic array object.
+/// * [pl:da:cbuild_da_t] Dynamic array object.
 /// * [pl:iter:name] Name if variable that will be used as iterator. Will have type `typeof(da->data)`{.c}.
 #define cbuild_da_foreach(da, iter)                                            \
 	for (typeof(*((da).data))* iter = (da).data;                                 \

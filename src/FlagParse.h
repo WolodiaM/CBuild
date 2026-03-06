@@ -5,9 +5,11 @@
 //!
 //! - Support for long and short options.
 //! - Support for long option aliases.
-//! - Support for adding `--` to list of long options (for custom parsing semantics).
-//! - It support *terminated* arguments - argument list ends not only when size is
-//!   reached (or when argument starts from `-`) but only when terminator reached.
+//! - Support for adding `--` to list of long options (for custom parsing
+//!   semantics).
+//! - It support *terminated* arguments - argument list ends not only when size
+//!   is reached (or when argument starts from `-`) but only when terminator
+//!   reached.
 //! - It support optional arguments.
 //! - Flag grouping (to pretty-print them for help).
 //! - Help formatter.
@@ -17,6 +19,14 @@
 //! 
 //! - Short options can be only 1 character.
 //! - Arguments are always returned as strings.
+//!
+//! ::: note
+//! Some of these functions takes pointers. They expect this pointers either to
+//! be statically allocated or be dynamically allocated and then leaked. This
+//! memory will live trough full app lifetime, so this leakage has no problems.
+//! But if you use valgrind you should probably not use `reachable` in 
+//! `--errors-for-leak-kinds` (because flag context live as global variable).
+//! :::
 
 #include "Common.h"
 
@@ -25,20 +35,20 @@
 /// * [fl:short_option] Character for short options. If `'\0'` (`0`) then disabled.
 /// * [fl:optional_arg] Arguments to this flag are optional. This augments `num_arguments` field by allowing another option of passing no arguments (in addition to one provided by `num_arguments`).
 /// * [fl:num_arguments] Number of arguments required. `-1` means `>0`.
-/// * [fl:group_name] Name of arguments group. Used only for help message. Can be `NULL`{.c}.
+/// * [fl:group] Name of arguments group. Used only for help message. Can be `NULL`{.c}.
 /// * [fl:terminator] Terminator argument. Can be `NULL`{.c} (unset, non-terminated argument list).
 /// * [fl:desc] Description. Can be `NULL`{.c}, then nothing will be printed.
+/// * [fl:argument_desc] Description for argumentt. Can be `NULL`{.c}, then default 'ARGUMENT' will be used. Used only if `num_arguments != 0`{.c}.
 struct cbuild_flag_new_opts_t {
 	char short_option;
 	bool optional_arg;
-	// char __padding[2];
-	int num_arguments;
-	// char __padding[4];
-	const char* group_name;
+	int8_t num_arguments; // No one need more than 127 arguments (at least then fixed count becomes meaningless).
+	// uint8_t __padding[1];
+	const char* group;
 	const char* terminator;
 	const char* desc;
+	const char* argument_desc;
 };
-
 /// Register new flag. Semi-internal function.
 CBUILDDEF void cbuild_flag_new_opt(const char* option, struct cbuild_flag_new_opts_t opts);
 //// Register a new flag.
@@ -50,14 +60,10 @@ cbuild_flag_new_opt(option, (struct cbuild_flag_new_opts_t){ __VA_ARGS__ })
 /// Options for a flag parser
 ///
 /// * [fl:CBUILD_FLAG_PASS_SEPARATOR] Pass `--` inside of pargs. No arguments.
-/// * [fl:CBUILD_FLAG_ADD_ALIAS] Add new alias for a flag. Arguments are flag id (const char*) and NULL-terminated sequence of aliases (const char*).
-/// * [fl:CBUILD_FLAG_SET_GROUP_DESCRIPTION] Set description for a flag group. Arguments are group ID (const char*) and description string (const char*)
 /// * [fl:CBUILD_FLAG_HELP_HOOK] Set hook for `--help`. Argument - [`cbuild_flag_print_func_t`](#cbuild_flag_print_func_t)
 /// * [fl:CBUILD_FLAG_VERSION_HOOK] Set hook for `--version`. Argument - [`cbuild_flag_print_func_t`](#cbuild_flag_print_func_t)
 enum cbuild_flag_options_t {
 	CBUILD_FLAG_PASS_SEPARATOR,
-	CBUILD_FLAG_ADD_ALIAS,
-	CBUILD_FLAG_SET_GROUP_DESCRIPTION,
 	CBUILD_FLAG_HELP_HOOK,
 	CBUILD_FLAG_VERSION_HOOK,
 };

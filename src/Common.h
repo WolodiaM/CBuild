@@ -149,12 +149,14 @@
 	#include <dlfcn.h>
 	#include <errno.h>
 	#include <fcntl.h>
+	#include <termios.h>
 	#include <signal.h>
 	#include <sys/mman.h>
 	#include <sys/stat.h>
 	#include <sys/time.h>
 	#include <sys/types.h>
 	#include <sys/wait.h>
+	#include <sys/ioctl.h>
 	#include <unistd.h>
 	#if defined(CBUILD_OS_MACOS)
 		#include <crt_externs.h>
@@ -183,6 +185,8 @@
 	#define CBUILD_INVALID_DIR NULL
 	/// Additional error value for pointers (when error and not found are separate cases)
 	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
+	/// Handle for dynamic library
+	typedef void* cbuild_dlib_t;
 #elif defined(CBUILD_API_STRICT_POSIX)
 	#if !defined(_POSIX_C_SOURCE)
 		#define _POSIX_C_SOURCE 200112L
@@ -224,6 +228,8 @@
 	#define CBUILD_INVALID_FD ((HANDLE)(intptr_t)-1)
 	/// Additional error value for pointers (when error and not found are separate cases)
 	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
+	/// Handle for dynamic library
+	typedef void* cbuild_dlib_t;
 #endif // CBUILD_API_*
 
 //! # Normal platform-independent includes [lines:cbuild-includes]

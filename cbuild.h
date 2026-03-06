@@ -2120,7 +2120,7 @@ CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
  */
 CBUILD_DEPRECATED("Please use cbuild_cmd_run instead!",
 	CBUILDDEF bool cbuild_cmd_sync_redirect(cbuild_cmd_t cmd, cbuild_cmd_fd_t fd));
-struct cbuild_cmd_opt_t {
+struct cbuild_cmd_opts_t {
 	// Async
 	cbuild_proclist_t* procs; // Non-null implies async
 	cbuild_proc_t* proc;      // Non-null implies async
@@ -2150,7 +2150,7 @@ struct cbuild_cmd_opt_t {
  * @brief cmd => cbuild_cmd_t* -> Command to execute
  * @brief opts => cbuild_cmd_opt_t -> Command options
  */
-CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opt_t opts);
+CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opts_t opts);
 /**
  * @brief Run commannd
  *
@@ -3417,7 +3417,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 	#if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
 		// We needs opts here, because I dont want to bloat function signature when I will add more call-level flags
 		CBUILDDEF cbuild_proc_t __cbuild_int_cmd_run_opt(cbuild_cmd_t* cmd,
-			struct cbuild_cmd_opt_t* opts, cbuild_fd_t fdstdin, 
+			struct cbuild_cmd_opts_t* opts, cbuild_fd_t fdstdin, 
 			cbuild_fd_t fdstdout, cbuild_fd_t fdstderr) {
 			// Get args
 			cbuild_cmd_t argv = {0};
@@ -3484,7 +3484,7 @@ extern void (*cbuild_flag_version)(const char* app_name);
 			return proc;
 		}
 	#endif // CBUILD_API_*
-	CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opt_t opts) {
+	CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opts_t opts) {
 		if(cmd->size == 0) {
 			cbuild_log(CBUILD_LOG_ERROR, "Empty command requested to be executed!");
 			return CBUILD_INVALID_PROC;

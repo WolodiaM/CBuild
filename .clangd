@@ -17,7 +17,9 @@ Diagnostics:
   Suppress: [ -Wunused-function ]
 ---
 If:
-  PathMatch: cbuild.c
+  PathMatch:
+    - cbuild.c
+    - cbuild.split.c
 CompileFlags:
   Add: [ -std=gnu99 ]
 ---

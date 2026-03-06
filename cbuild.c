@@ -91,34 +91,34 @@ _Static_assert(TPL_COUNT == 15, "Enum TPLM_* expects 15 test platforms.");
 #if defined(CBUILD_OS_LINUX)
 	#define EXE_NAME "run"
 	#if defined(__x86_64__)
-		const uint32_t TPLM_RUNNER_HOST = \
-			TPLM_X86_64_LINUX_GLIBC_GCC   | \
-			TPLM_X86_64_LINUX_GLIBC_CLANG | \
-			TPLM_X86_64_LINUX_MUSL_GCC    | \
-			TPLM_X86_64_POSIX_GCC         | \
+		const uint32_t TPLM_RUNNER_HOST =
+			TPLM_X86_64_LINUX_GLIBC_GCC   |
+			TPLM_X86_64_LINUX_GLIBC_CLANG |
+			TPLM_X86_64_LINUX_MUSL_GCC    |
+			TPLM_X86_64_POSIX_GCC         |
 			TPLM_X86_64_POSIX_CLANG;
 	#elif defined(__aarch64__)
-		const uint32_t TPLM_RUNNER_HOST =  \
-			TPLM_AARCH64_LINUX_GLIBC_GCC   | \
-			TPLM_AARCH64_LINUX_GLIBC_CLANG | \
-			TPLM_AARCH64_LINUX_MUSL_GCC    | \
-			TPLM_AARCH64_POSIX_GCC         | \
+		const uint32_t TPLM_RUNNER_HOST = 
+			TPLM_AARCH64_LINUX_GLIBC_GCC   |
+			TPLM_AARCH64_LINUX_GLIBC_CLANG |
+			TPLM_AARCH64_LINUX_MUSL_GCC    |
+			TPLM_AARCH64_POSIX_GCC         |
 			TPLM_AARCH64_POSIX_CLANG;
 	#endif
 #elif defined(CBUILD_OS_MACOS)
 	#define EXE_NAME "run"
 	#if defined(__x86_64__)
-		const uint32_t TPLM_RUNNER_HOST = \
-			TPLM_X86_64_MACOS_GCC         | \
+		const uint32_t TPLM_RUNNER_HOST =
+			TPLM_X86_64_MACOS_GCC         |
 			TPLM_X86_64_MACOS_CLANG;
 	#elif defined(__aarch64__)
-		const uint32_t TPLM_RUNNER_HOST = \
-			TPLM_AARCH64_MACOS_GCC        | \
+		const uint32_t TPLM_RUNNER_HOST =
+			TPLM_AARCH64_MACOS_GCC        |
 			TPLM_AARCH64_MACOS_CLANG;
 	#endif
 #elif defined(CBUILD_OS_WINDOWS_CYGWIN)
 	#define EXE_NAME "exe"
-	const uint32_t TPLM_RUNNER_HOST = \
+	const uint32_t TPLM_RUNNER_HOST =
 		TPLM_X86_64_WINDOWS_CYGWIN_GCC;
 #endif
 typedef struct test_case_t {
@@ -458,6 +458,10 @@ test_case_t TESTS[] = {
 	},
 	{
 		.file = "dir_list",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "dir_walk",
 		.platforms = TPLM_ALL,
 	},
 	{

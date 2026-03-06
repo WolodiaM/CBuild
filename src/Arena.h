@@ -60,7 +60,7 @@ CBUILDDEF void cbuild_arena_reset(cbuild_arena_t* arena, size_t checkpoint);
 /// `strdup` that uses arena as allocator.
 CBUILDDEF char* cbuild_arena_strdup(cbuild_arena_t* arena, const char* src);
 /// `memdup` that uses arena as its allocator.
-CBUILDDEF void* cbuild_arena_memdup(cbuild_arena_t* arena, void* src, size_t n);
+CBUILDDEF void* cbuild_arena_memdup(cbuild_arena_t* arena, const void* src, size_t n);
 /// `sprintf` that uses arena as its allocator.
 CBUILDDEF char* cbuild_arena_sprintf(cbuild_arena_t* arena, const char* fmt, ...);
 /// `vsprintf` that uses arena as its allocator.

@@ -73,7 +73,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
 ///   - [fl:no_reset] By default `size` filed of command is reset. This make it stay untouched.
 ///   - [fl:autokill] Works only on Linux. Automatically kills process if parent dies.
 ///   - [fl:no_print_cmd] By default command is printed as `TRACE` log. This flag disable this log message.
-struct cbuild_cmd_opt_t {
+struct cbuild_cmd_opts_t {
 	// Async
 	cbuild_proclist_t* procs; // Non-null implies async
 	cbuild_proc_t* proc;      // Non-null implies async
@@ -98,10 +98,10 @@ struct cbuild_cmd_opt_t {
 	};
 };
 /// Run command. This function is semi-internal.
-CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opt_t opts);
+CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opts_t opts);
 /// Run command.
 ///
 /// * [pl:cmd:cbuild_cmd_t*] Command to execute.
-/// * [pl:...:...cbuid_cmd_opt_t] Fields of configuration structure in initializer-list form.
+/// * [pl:...:...cbuid_cmd_opts_t] Fields of configuration structure in initializer-list form.
 #define cbuild_cmd_run(cmd, ...)                                               \
-cbuild_cmd_run_opt(cmd, (struct cbuild_cmd_opt_t){ __VA_ARGS__ })
+cbuild_cmd_run_opt(cmd, (struct cbuild_cmd_opts_t){ __VA_ARGS__ })

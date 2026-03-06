@@ -26,7 +26,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 #if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
 	// We needs opts here, because I dont want to bloat function signature when I will add more call-level flags
 	CBUILDDEF cbuild_proc_t __cbuild_cmd_run_opt(cbuild_cmd_t* cmd,
-		struct cbuild_cmd_opt_t* opts, cbuild_fd_t fdstdin, 
+		struct cbuild_cmd_opts_t* opts, cbuild_fd_t fdstdin, 
 		cbuild_fd_t fdstdout, cbuild_fd_t fdstderr) {
 		// Get args
 		cbuild_cmd_t argv = {0};
@@ -89,7 +89,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 		return proc;
 	}
 #endif // CBUILD_API_*
-CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opt_t opts) {
+CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opts_t opts) {
 	if(cmd->size == 0) {
 		cbuild_log_error( "Empty command requested to be executed!");
 		return false;

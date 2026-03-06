@@ -3,14 +3,6 @@
 
 #include "Common.h"
 
-#if defined(CBUILD_API_POSIX)
-	/// Handle for dynamic library
-	typedef void* cbuild_dlib_t;
-#elif defined(CBUILD_API_STRICT_POSIX)
-	/// Handle for dynamic library
-	typedef void* cbuild_dlib_t;
-#endif // CBUILD_API_*
-
 /// Load dynamic library into handle.
 ///
 /// * [pl:filename] Full path to a library or its platform-dependant "ID".
