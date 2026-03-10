@@ -68,10 +68,10 @@ CBUILDDEF int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args)
 		char* buff1 = __CBUILD_MALLOC((size_t)ret + 1);
 		cbuild_assert(buff1 != NULL, "Allocation failed.\n");
 		vsnprintf(buff1, (size_t)ret + 1, fmt, args_copy);
-		cbuild_sb_append_arr(sb, buff1, (size_t)ret + 1);
+		cbuild_sb_append_arr(sb, buff1, (size_t)ret);
 		__CBUILD_FREE(buff1);
 	} else {
-		cbuild_sb_append_arr(sb, buff, (size_t)ret + 1);
+		cbuild_sb_append_arr(sb, buff, (size_t)ret);
 	}
 	va_end(args_copy);
 	return ret;
