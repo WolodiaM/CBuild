@@ -21,6 +21,7 @@ int main(void) {
 	char* key;
 	void* elem;
 	cbuild_map_init(&map, 256);
+	map.clear_func = test_cstr_free;
 	key = "abc";
 	elem = cbuild_map_get_or_alloc_ptr(&map, &key);
 	((char**)elem)[0] = test_strdup("abc"); ((intptr_t*)elem)[1] = 1;
@@ -28,9 +29,9 @@ int main(void) {
 	elem = cbuild_map_get_or_alloc_ptr(&map, &key);
 	((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 2;
 	key = "aaa";
-	cbuild_map_remove_ex_ptr(&map, &key, test_cstr_free);
+	cbuild_map_remove_ptr(&map, &key);
 	key = "def";
-	cbuild_map_remove_ex_ptr(&map, &key, test_cstr_free);
+	cbuild_map_remove_ptr(&map, &key);
 	key = "abc";
 	TEST_ASSERT_EQ(((intptr_t*)cbuild_map_get_ptr(&map, &key))[1], 1,
 		"Value for key 'abc' should still exist after other keys were removed"
@@ -40,5 +41,5 @@ int main(void) {
 	TEST_ASSERT_EQ(cbuild_map_get_ptr(&map, &key), NULL,
 		"Value for key 'def' should have been removed" TEST_EXPECT_MSG(p), NULL,
 		(void*)cbuild_map_get_ptr(&map, &key));
-	cbuild_map_clear_ex(&map, test_cstr_free);
+	cbuild_map_clear(&map);
 }

@@ -48,7 +48,9 @@ int main(void) {
 		"[no collision] Wrong element was written into bucket %d"
 		TEST_EXPECT_RMSG("%"PRIu64),
 		'd', (uint64_t)2, ((intptr_t*)map.buckets['d'].vals)[1]);
-	cbuild_map_clear_ex(&map, test_cstr_free);
+	map.clear_func = test_cstr_free;
+	cbuild_map_clear(&map);
+	map.clear_func = NULL;
 	// Writes with hash collisions
 	cbuild_map_init(&map, 256);
 	key = "abc";

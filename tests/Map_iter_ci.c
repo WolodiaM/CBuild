@@ -21,6 +21,7 @@ int	main(void) {
 	char* key;
 	void* elem;
 	cbuild_map_init(&map, 256);
+	map.clear_func = test_cstr_free;
 	key = "abc";
 	elem = cbuild_map_get_or_alloc_ptr(&map, &key);
 	((char**)elem)[0] = test_strdup(key); ((intptr_t*)elem)[1] = 1;
@@ -35,6 +36,6 @@ int	main(void) {
 	}
 	TEST_ASSERT(found_abc, "Element with key \"abc\" was not iterated.");
 	TEST_ASSERT(found_def, "Element with key \"def\" was not iterated.");
-	cbuild_map_clear_ex(&map, test_cstr_free);
+	cbuild_map_clear(&map);
 	return 0;
 }
