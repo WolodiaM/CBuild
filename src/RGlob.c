@@ -84,11 +84,9 @@ CBUILDDEF bool cbuild_glob_match(cbuild_glob_t* glob, const char** list, size_t 
 		int ecode = regexec(&glob->regex, list[i], 
 			CBUILD_GLOB_CAPTURE_COUNT, glob->captures, 0);
 		if (ecode == 0) {
-			struct __cbuild_glob_res_t res = {
-				.res = list[i],
-				.res_idx = i,
-				.captures = {0},
-			};
+			struct __cbuild_glob_res_t res = {0};
+			res.res = list[i];
+			res.res_idx = i;
 			memcpy(res.captures, glob->captures, sizeof(glob->captures));
 			cbuild_da_append(glob, res);
 		}

@@ -74,25 +74,165 @@ CBUILDDEF void cbuild_flag_set_option(enum cbuild_flag_options_t option, ...) {
 		sscanf(resp, "\033[%d;%dR", x, y);
 		tcsetattr(STDIN_FILENO, TCSANOW, &orig);
 	}
-	
 #endif // CBUILD_API_*
-CBUILDDEF void cbuild_flag_parse(int argc, char** argv);
+CBUILDDEF void __cbuild_flag_parse_args(struct __cbuild_flag_t* spec,
+	char** argv, int* argc) {
+	int num_parsed = 0;
+	while (*argc > 0) {
+		if (spec->spec.num_arguments == num_parsed) return; // For '-1' this will limit at ~2^32
+		char* arg = cbuild_shift(argv, *argc);
+		if (spec->spec.terminator == NULL && arg[0] == '-') {
+			argv--;
+			(*argc)++;
+			break;
+		} else if (spec->spec.terminator != NULL) {
+			if (strcmp(spec->spec.terminator, arg) == 0) {
+				argv--;
+				(*argc)++;
+				break;
+			}
+		}
+		num_parsed++;
+		cbuild_da_append(&spec->args, arg);
+	}
+	if (spec->spec.optional_arg && num_parsed == 0) {
+		// Fine - args can be omitted and none were provided
+	} else if (spec->spec.optional_arg && spec->spec.num_arguments == -1) {
+		// Fine, anything goes
+	} else if (spec->spec.num_arguments == -1 && num_parsed > 0) {
+		// Fine, at least one argument needed 
+	} else if (spec->spec.num_arguments == -1 && num_parsed == 0) {
+		// Error, at least one arguments is needed
+		cbuild_log_error(
+			"Too little arguments provided for flag --%s, %d provided but some are expected",
+			spec->option, num_parsed);
+		__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+		exit(1);
+	} else if (spec->spec.num_arguments == num_parsed) {
+		// Fine, we have required number of arguments, optional does not matter here
+	} else if (spec->spec.num_arguments != num_parsed) {
+		// We parsed some arguments, but less than needed, this is an error, optional does not matter here
+		cbuild_log_error(
+			"Too little arguments provided for flag --%s, %d provided but %d expected",
+			spec->option, num_parsed, spec->spec.num_arguments);
+		__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+		exit(1);
+	}
+}
+CBUILDDEF void __cbuild_flag_help(const char* name) {
+	__CBUILD_PRINTF("Usage: %s [OPTIONS]\n\n", name);
+	cbuild_flag_print_help();
+}
+CBUILDDEF void __cbuild_flag_version(const char* name) {
+	__CBUILD_PRINTF("%s - v1.0\n", name);
+}
+CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
+	// Register built-in flags and parameters
+	cbuild_flag_new("help", .short_option = 'h', .desc = "Print this message.");
+	cbuild_flag_new("version", .short_option = 'v',
+		.desc = "Print version information.");
+	cbuild_flag_set_option(CBUILD_FLAG_HELP_HOOK, __cbuild_flag_help);
+	cbuild_flag_set_option(CBUILD_FLAG_VERSION_HOOK, __cbuild_flag_version);
+	// Parse flags
+	__cbuild_flag_context.app_name = cbuild_shift(argv, argc);
+	bool parse_flags = true;
+	while (argc > 0) {
+		char* token = cbuild_shift(argv, argc);
+		if (!parse_flags) { // Parser is inhibited
+			cbuild_da_append(&__cbuild_flag_context.pargs, token);
+		} else if (strcmp(token, "--") == 0) { // Special case - '--'
+			parse_flags = false;
+			if (__cbuild_flag_context.pass_separator) {
+				cbuild_da_append(&__cbuild_flag_context.pargs, token);
+			}
+		} else if (token[0] == '-' && token[1] == '-') { // Long option flag
+			cbuild_sv_t tk = cbuild_sv_from_cstr(token + 2); // Strip leading '--'
+			cbuild_sv_t arg = {0};
+			if (cbuild_sv_contains(tk, '=')) {
+				arg = tk;
+				tk = cbuild_sv_chop_by_delim(&arg, '=');
+			}
+			cbuild_da_foreach(__cbuild_flag_context.flags, spec) {
+				if (cbuild_sv_cmp(tk, cbuild_sv_from_cstr(spec->option))) {
+					spec->found = true;
+					if (arg.data != NULL) {
+						if (spec->spec.num_arguments == 1 || spec->spec.num_arguments == -1) {
+							cbuild_da_append(&spec->args, arg.data); // 'arg.data' will be NULL-terminated
+						} else if (spec->spec.num_arguments > 1) {
+							cbuild_log_error(
+								"Too few arguments for flag --"CBuildSVFmt", 1 provided but %d expected.",
+								CBuildSVArg(tk), spec->spec.num_arguments);
+							__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+							exit(1);
+						} else if (spec->spec.num_arguments == 0) {
+							cbuild_log_error(
+								"Too many arguments for flag --"CBuildSVFmt", 1 provided but %d expected.",
+								CBuildSVArg(tk), spec->spec.num_arguments);
+							__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+							exit(1);
+						}
+					} else {
+						__cbuild_flag_parse_args(spec, argv, &argc);
+					}
+					continue;
+				}
+			}
+			cbuild_log_error("Invalid flag specified: --"CBuildSVFmt, CBuildSVArg(tk));
+			__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+			exit(1);
+		} else if (token[0] == '-') { // Short option flag
+			token += 1; // Strip '-'
+			size_t len = strlen(token);
+			for (size_t i = 0; i < len; i++) {
+				cbuild_da_foreach(__cbuild_flag_context.flags, spec) {
+					if (spec->spec.short_option == token[i]) {
+						spec->found = true;
+						if ((i + 1) == len) { // We can parse arguments
+							__cbuild_flag_parse_args(spec, argv, &argc);
+						} else { // No arguments are possible
+							if (spec->spec.optional_arg || spec->spec.num_arguments == 0) {
+								// Either we must omit arguments or we can do omit them
+							} else {
+								cbuild_log_error(
+									"Too few arguments for flag -%c, none provided but %d expected.",
+									token[i], spec->spec.num_arguments);
+								__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+								exit(1);
+							}
+						}
+						continue;
+					}
+				}
+				cbuild_log_error("Invalid flag specified: -%c", token[i]);
+				__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+				exit(1);
+			}
+		} else { // Positional argument
+		}
+		cbuild_da_append(&__cbuild_flag_context.pargs, token);
+	}
+	// Check built-in flags
+	if (cbuild_flag_get_flag("help")) {
+		__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+		exit(0);
+	}
+	if (cbuild_flag_get_flag("version")) {
+		__cbuild_flag_context.version(__cbuild_flag_context.app_name);
+		exit(0);
+	}
+}
 // 'offset' is just length of tab in characters.
 // 'len' is length of column with flag values, 30 max (if flag is longer than it should just wrap first line a little differently, no need to penalize all flags.
 CBUILDDEF char* __cbuild_flag_fmt_flag(struct __cbuild_flag_t* flag, int offset, int len) {
 	cbuild_sb_t sb = {0};
 	// cbuild_sb_append(&sb, '\t'); // NOTE: This tab should be handled by caller.
-	int len_adj = 2; // For '--'
-	if (flag->spec.short_option != '\0') {
-		cbuild_sb_appendf(&sb, "-%c, ", flag->spec.short_option);
-		len_adj += 4;
-	}
 	cbuild_sb_appendf(&sb, "--%s", flag->option);
 	if (flag->spec.num_arguments) {
 		cbuild_sb_append(&sb, ' ');
 		if (flag->spec.optional_arg) cbuild_sb_append(&sb, '[');
 		else cbuild_sb_append(&sb, '<');
-		cbuild_sb_append_cstr(&sb, flag->spec.argument_desc);
+		if (flag->spec.argument_desc) cbuild_sb_append_cstr(&sb, flag->spec.argument_desc);
+		else cbuild_sb_append_cstr(&sb, "ARGUMENT");
 		if (flag->spec.terminator) {
 			cbuild_sb_appendf(&sb, "|%s", flag->spec.terminator);
 		}
@@ -113,7 +253,7 @@ CBUILDDEF char* __cbuild_flag_fmt_flag(struct __cbuild_flag_t* flag, int offset,
 		cbuild_sb_append_arr(&sb, desc, CBUILD_MIN(line_len, (size_t)desc_len));
 		cbuild_sb_append(&sb, '\n');
 		desc += line_len;
-		desc_len -= line_len;
+		desc_len -= (ssize_t)line_len;
 	}
 	return sb.data;
 }
@@ -123,14 +263,15 @@ CBUILDDEF void cbuild_flag_print_help(void) {
 	cbuild_da_foreach(__cbuild_flag_context.flags, flag) {
 		int flag_len = 3; // '--' and space after it.
 		if (flag->spec.short_option != '\0') flag_len += 4;
-		flag_len += strlen(flag->option);
+		flag_len += (int)strlen(flag->option);
 		name_len = CBUILD_MAX(name_len, flag_len);
 		if (flag->spec.num_arguments != 0) {
 			flag_len += 3; // ' <...>' or ' [...]'
-			flag_len += strlen(flag->spec.argument_desc);
+			if (flag->spec.argument_desc) flag_len += (int)strlen(flag->spec.argument_desc);
+			else flag_len += 8;
 			if (flag->spec.terminator != NULL) {
 				flag_len += 1; // 'Terminator is shown as 'desc|terminator'
-				flag_len += strlen(flag->spec.terminator);
+				flag_len += (int)strlen(flag->spec.terminator);
 			}
 		}
 	}
@@ -173,7 +314,7 @@ CBUILDDEF void cbuild_flag_print_help(void) {
 			}
 		}
 	}
-	cbuild_sb_clear(&groups);
+	cbuild_da_clear(&groups);
 }
 CBUILDDEF cbuild_arglist_t* cbuild_flag_get_pargs(void) {
 	return &__cbuild_flag_context.pargs;

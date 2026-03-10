@@ -154,26 +154,6 @@ volatile const char* TPL_RUN_REGISTERED_GROUP = NULL;
 	}
 test_case_t TESTS[] = {
 	{
-		.file = "Command",
-		.group = true,
-	},
-	{
-		.file = "cmd_to_sb",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "run_sync",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "run_async",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "redirect",
-		.platforms = TPLM_ALL,
-	},
-	{
 		.file = "common",
 		.group = true,
 	},
@@ -368,6 +348,26 @@ test_case_t TESTS[] = {
 	},
 	{
 		.file = "ctrl",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "Command",
+		.group = true,
+	},
+	{
+		.file = "cmd_to_sb",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "run_sync",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "run_async",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "redirect",
 		.platforms = TPLM_ALL,
 	},
 	{
