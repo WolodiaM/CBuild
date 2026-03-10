@@ -646,7 +646,9 @@ CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 		path.data += 2;
 		path.size -= 2;
 	}
-	if(*path_ == '/') cbuild_sb_append(&buff, '/');
+	if(*path.data == '/') {
+		cbuild_sb_append(&buff, '/');
+	}
 	// Unix paths threat double slash differently
 	// POSIX threats paths starting with '//' specially.
 	if(cbuild_sv_prefix(path, cbuild_sv_from_lit("//")) &&
@@ -676,11 +678,12 @@ CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 	}
 	if(buff.size == 0) cbuild_sb_append(&buff, '.');
 	if(!((buff.size == 1 && buff.data[0] == '/') ||
-			(buff.size == 2 && buff.data[0] == '/' && buff.data[1] == '/')) &&
+			(buff.size == 2 && buff.data[0] == '/' && buff.data[1] == '/') ||
+			(buff.size == 3 && isalpha(buff.data[0]) && 
+				buff.data[1] == ':' && buff.data[2] == '/')) &&
 		(buff.data[buff.size - 1] == '/')) buff.size--;
 	cbuild_stack_clear(&dirs);
 	char* ret = cbuild_temp_sprintf(CBuildSBFmt, CBuildSBArg(buff));
 	cbuild_sb_clear(&buff);
 	return ret;
 }
-
