@@ -4,7 +4,6 @@
 //! # Features
 //!
 //! - Support for long and short options.
-//! - Support for long option aliases.
 //! - Support for adding `--` to list of long options (for custom parsing
 //!   semantics).
 //! - It support *terminated* arguments - argument list ends not only when size
@@ -27,13 +26,25 @@
 //! But if you use valgrind you should probably not use `reachable` in 
 //! `--errors-for-leak-kinds` (because flag context live as global variable).
 //! :::
+//!
+//! # Flags format
+//!
+//! This parses uses something that roughly mimics "GNU" style of flags. This
+//! means that `--` precedes long versions of flags and `-` short versions.
+//! Also, should versions can be grouped together and each character will then
+//! be parsed as a separate flag. `=` is supported for both long and short flag
+//! versions so things like `--flag=argument` or `-f=argument` can be used.
+//! Even things like `-abc=argument` will be correctly parsed to 3 flags - `a`,
+//! `b` and `c`, with last one having 1 argument - `argument`. Support for `--`
+//! is implemented and it stops searching for flags. Positional arguments are
+//! supported too.
 
 #include "Common.h"
 
 /// Options for a new flag
 ///
 /// * [fl:short_option] Character for short options. If `'\0'` (`0`) then disabled.
-/// * [fl:optional_arg] Arguments to this flag are optional. This augments `num_arguments` field by allowing another option of passing no arguments (in addition to one provided by `num_arguments`).
+/// * [fl:optional] Arguments to this flag are optional. This augments `num_arguments` field by allowing another option of passing no arguments (in addition to one provided by `num_arguments`).
 /// * [fl:num_arguments] Number of arguments required. `-1` means `>0`.
 /// * [fl:group] Name of arguments group. Used only for help message. Can be `NULL`{.c}.
 /// * [fl:terminator] Terminator argument. Can be `NULL`{.c} (unset, non-terminated argument list).
@@ -41,7 +52,7 @@
 /// * [fl:argument_desc] Description for argumentt. Can be `NULL`{.c}, then default 'ARGUMENT' will be used. Used only if `num_arguments != 0`{.c}.
 struct cbuild_flag_new_opts_t {
 	char short_option;
-	bool optional_arg;
+	bool optional;
 	int8_t num_arguments; // No one need more than 127 arguments (at least then fixed count becomes meaningless).
 	// uint8_t __padding[1];
 	const char* group;

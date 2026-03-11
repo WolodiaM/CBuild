@@ -509,7 +509,7 @@ test_case_t TESTS[] = {
 		.platforms = TPLM_ALL,
 		.argv =  {.data = (char*[]){
 			"--long",
-			"--arg1", "a",
+			"--arg_req", "a",
 			"-L", "foo", "bar",
 			"-t", "-foo", "---bar", "baz", "^",
 			"--long",
