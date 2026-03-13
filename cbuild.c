@@ -31,8 +31,8 @@ enum cbuild_custom_log_level_t {
 	TEST_LOG_SUCCESS,
 	TEST_LOG_START,
 	CBUILD_LOG_ERROR,
-	CBUILD_LOG_WARN ,
-	CBUILD_LOG_INFO ,
+	CBUILD_LOG_WARN,
+	CBUILD_LOG_INFO,
 	CBUILD_LOG_TRACE,
 };
 // Includes
@@ -1220,8 +1220,8 @@ bool amalgamate(void) {
 		SOURCE_DIR"/Arena.h",
 		SOURCE_DIR"/Temp.h",
 		SOURCE_DIR"/DynArray.h",
-		SOURCE_DIR"/StringBuilder.h",
 		SOURCE_DIR"/StringView.h",
+		SOURCE_DIR"/StringBuilder.h",
 		SOURCE_DIR"/Stack.h",
 		SOURCE_DIR"/Map.h",
 		SOURCE_DIR"/Proc.h",
@@ -1248,15 +1248,15 @@ bool amalgamate(void) {
 		header.size = 0;
 	}
 	cbuild_sb_clear(&header);
-	cbuild_sb_append_cstr(&output, "#endif __CBUILD_H__");
-	cbuild_sb_append_cstr(&output, "#ifdef CBUILD_IMPLEMENTATION");
+	cbuild_sb_append_cstr(&output, "#endif // __CBUILD_H__\n");
+	cbuild_sb_append_cstr(&output, "#ifdef CBUILD_IMPLEMENTATION\n");
 	const char* sources[] = {
 		SOURCE_DIR"/Common.c",
 		SOURCE_DIR"/Log.c",
 		SOURCE_DIR"/Arena.c",
 		SOURCE_DIR"/Temp.c",
-		SOURCE_DIR"/StringBuilder.c",
 		SOURCE_DIR"/StringView.c",
+		SOURCE_DIR"/StringBuilder.c",
 		SOURCE_DIR"/Map.c",
 		SOURCE_DIR"/Proc.c",
 		SOURCE_DIR"/Command.c",
@@ -1266,12 +1266,20 @@ bool amalgamate(void) {
 		SOURCE_DIR"/FlagParse.c",
 		SOURCE_DIR"/RGlob.c",
 	};
-	cbuild_sb_append_cstr(&output, "#endif // CBUILD_IMPLEMENTATION");
 	cbuild_sb_t source = {0};
 	for (size_t i = 0; i < cbuild_arr_len(sources); i++) {
 		if(!cbuild_file_read(sources[i], &source)) return false;
-		cbuild_sb_append_arr(&output, source.data, source.size);
+		cbuild_sv_t content = cbuild_sv_from_sb(header);
+		while (content.size > 0) {
+			cbuild_sv_t line = cbuild_sv_chop_by_delim(&content, '\n');
+			if (cbuild_sv_prefix(line, cbuild_sv_from_lit("#include"))) {
+				cbuild_sb_append_cstr(&output, "// ");
+			}
+			cbuild_sb_append_sv(&output, line);
+			cbuild_sb_append_cstr(&output, "\n");
+		}
 	}
+	cbuild_sb_append_cstr(&output, "#endif // CBUILD_IMPLEMENTATION");
 	if(!cbuild_file_write("cbuild.h.new", &output)) return false;
 	cbuild_sb_clear(&output);
 	return true;
@@ -1310,12 +1318,10 @@ void version(const char* app_name) {
 	printf("License: GPL-3.0-or-later\n");
 	printf("Author: WolodiaM\n");
 }
-pid_t MAIN_PID = 0;
 // Main
 int main(int argc, char** argv) {
 	setenv("ASAN_OPTIONS", "exitcode=255", false);
 	cbuild_selfrebuild(argc, argv);
-	MAIN_PID = getpid();
 	atexit(cbuild_temp_profiler);
 	cbuild_flag_set_option(CBUILD_FLAG_HELP_HOOK, help);
 	cbuild_flag_set_option(CBUILD_FLAG_VERSION_HOOK, version);

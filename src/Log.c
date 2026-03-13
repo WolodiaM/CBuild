@@ -13,7 +13,7 @@ CBUILDDEF void __cbuild_default_log_handler(const char* level, const char* fmt,
 	__CBUILD_PRINT("\n");
 }
 cbuild_log_handler_t __cbuild_curr_log_handler = __cbuild_default_log_handler;
-cbuild_log_level_t __cbuild_min_log_level = CBUILD_LOG_ERROR;
+cbuild_log_level_t __cbuild_min_log_level = CBUILD_LOG_MIN_LEVEL;
 #ifndef CBUILD_LOG_CUSTOM_LEVELS
 	const char* __cbuild_log_level_names[] = {
 		[CBUILD_LOG_ERROR] = CBUILD_TERM_FG(CBUILD_TERM_RED)"[ERROR]"CBUILD_TERM_RESET" ",
