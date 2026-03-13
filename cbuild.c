@@ -540,6 +540,26 @@ test_case_t TESTS[] = {
 			"bar", "--", "--foo"
 		}, .size = 16},
 	},
+	{
+		.file = "Arena",
+		.group = true,
+	},
+	{
+		.file = "allocation",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "realloc",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "reset",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "utils",
+		.platforms = TPLM_ALL,
+	},
 };
 static const char* TPL_NAMES[] = {
 	[TPL_X86_64_LINUX_GLIBC_GCC]    = "x86_64-linux-glibc-gcc",

@@ -11,6 +11,7 @@ CBUILDDEF void cbuild_arena_base_free(cbuild_arena_t* arena) {
 	arena->pointer = 0;
 	arena->capacity = 0;
 	__CBUILD_FREE(arena->base);
+	arena->base = NULL;
 }
 CBUILDDEF void* cbuild_arena_malloc(cbuild_arena_t* arena, size_t size) {
 	size_t adj_size = (size | ((2*sizeof(void*)) - 1)) + 1;
