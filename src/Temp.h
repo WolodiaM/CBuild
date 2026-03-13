@@ -20,3 +20,7 @@ CBUILDDEF void* cbuild_temp_memdup(const void* mem, size_t size);
 CBUILDDEF void cbuild_temp_reset(size_t checkpoint);
 /// Create new allocator checkpoint.
 CBUILDDEF size_t cbuild_temp_checkpoint(void);
+#ifdef CBUILD_PROFILER
+	/// Profile temp allocator. Same as `cbuild_arena_profile`
+	CBUILDDEF void cbuild_temp_profiler(void);
+#endif // CBUILD_PROFILER

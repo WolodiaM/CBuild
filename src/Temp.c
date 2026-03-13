@@ -44,4 +44,10 @@ CBUILDDEF void cbuild_temp_reset(size_t checkpoint) {
 	INIT();
 	cbuild_arena_reset(&__cbuild_temp_arena, checkpoint);
 }
+#ifdef CBUILD_PROFILER
+	CBUILDDEF void cbuild_temp_profiler(void) {
+		cbuild_log(CBUILD_LOG_TRACE, "Used %zu/%zu bytes of temp.",
+			__cbuild_temp_arena.max_pointer, __cbuild_temp_arena.capacity);
+	}
+#endif // CBUILD_PROFILER
 #undef INIT

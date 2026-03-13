@@ -17,6 +17,9 @@ CBUILDDEF void* cbuild_arena_malloc(cbuild_arena_t* arena, size_t size) {
 	if ((arena->pointer + adj_size) >= arena->capacity) return NULL;
 	void* ptr = (void*)(arena->base + arena->pointer);
 	arena->pointer += adj_size;
+	#ifdef CBUILD_PROFILER
+		arena->max_pointer = CBUILD_MAX(arena->pointer, arena->max_pointer);
+	#endif // CBUILD_PROFILER
 	return ptr;
 }
 CBUILDDEF void* cbuild_arena_realloc(cbuild_arena_t* arena, void* ptr, size_t size) {
@@ -70,6 +73,9 @@ CBUILDDEF char* cbuild_arena_vsprintf(cbuild_arena_t* arena, const char* fmt,
 		return NULL;
 	}
 }
-CBUILDDEF void cbuild_arena_profile(cbuild_arena_t* arena) {
-	cbuild_log_trace("Used %zu/%zu bytes of arena.", arena->pointer, arena->capacity);
-}
+#ifdef CBUILD_PROFILER
+	CBUILDDEF void cbuild_arena_profiler(cbuild_arena_t* arena, const char* arena_id) {
+		cbuild_log(CBUILD_LOG_TRACE, "Used %zu/%zu bytes of arena %s.",
+			arena->max_pointer, arena->capacity, arena_id);
+	}
+#endif // CBUILD_PROFILER

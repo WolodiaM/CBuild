@@ -21,6 +21,8 @@ cbuild_log_level_t __cbuild_min_log_level = CBUILD_LOG_ERROR;
 		[CBUILD_LOG_INFO]  = "[INFO] ",
 		[CBUILD_LOG_TRACE] = CBUILD_TERM_FG(CBUILD_TERM_BRBLACK)"[TRACE]"CBUILD_TERM_RESET" ",
 	};
+#else
+	extern const char* __cbuild_log_level_names[];
 #endif // CBUILD_LOG_CUSTOM_LEVELS
 // API
 CBUILDDEF void cbuild_log(cbuild_log_level_t level, const char* fmt, ...) {

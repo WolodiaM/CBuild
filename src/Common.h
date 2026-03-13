@@ -251,6 +251,12 @@
 //! # Configuration values [line:cbuild-configuration]
 //!
 //! All of this are defines that user can redefine.
+//!
+//! There are few more configuration define not listed here:
+//!
+//! - `CBUILD_PROFILER` - Enable profiler features in modules.
+//! - `CBUILD_LOG_CUSTOM_LEVELS` - used to inject custom log levels in 
+//!    CBuild's logger
 
 //@ cbuild-configuration
 #ifndef CBUILD_INIT_CAPACITY

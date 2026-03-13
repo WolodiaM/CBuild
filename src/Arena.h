@@ -18,6 +18,9 @@ typedef struct cbuild_arena_t {
 	void* base;
 	size_t capacity;
 	size_t pointer;
+	#ifdef CBUILD_PROFILER
+		size_t max_pointer;
+	#endif // CBUILD_PROFILER
 } cbuild_arena_t;
 
 /// Reallocate arena base to new size.
@@ -66,5 +69,14 @@ CBUILDDEF char* cbuild_arena_sprintf(cbuild_arena_t* arena, const char* fmt, ...
 /// `vsprintf` that uses arena as its allocator.
 CBUILDDEF char* cbuild_arena_vsprintf(cbuild_arena_t* arena, const char* fmt,
 	va_list args);
-/// Print formatter arena usage.
-CBUILDDEF void cbuild_arena_profile(cbuild_arena_t* arena);
+
+//! # Arena allocator profiles
+//!
+//! This adds one size_t field to each arena that track maximum allocated size.
+//! This makes each allocation a little slower.
+//!
+//! `cbuild_arena_profiler` Just prints usage as `TRACE` log.
+
+#ifdef CBUILD_PROFILER
+	CBUILDDEF void cbuild_arena_profiler(cbuild_arena_t* arena, const char* arena_id);
+#endif // CBUILD_PROFILER
