@@ -25,13 +25,36 @@
 // -x=c-header -o cbuild.h.pch
 // Linking will be done automatically
 
+// Log levele
+enum cbuild_custom_log_level_t {
+	TEST_LOG_FAILED = 1,
+	TEST_LOG_SUCCESS,
+	TEST_LOG_START,
+	CBUILD_LOG_ERROR,
+	CBUILD_LOG_WARN ,
+	CBUILD_LOG_INFO ,
+	CBUILD_LOG_TRACE,
+};
 // Includes
 #define CBUILDDEF static inline
 #define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_TRACE
-#include "cbuild.h"
+#define CBUILD_PROFILER
+#define CBUILD_LOG_CUSTOM_LEVELS
+#include "cbuild.split.h"
 #define GLOB_IMPLEMENTATION
 #include "rglob.h"
 #include "framework.h"
+// Log messages
+const char* __cbuild_log_level_names[] = {
+	[TEST_LOG_FAILED] = CBUILD_TERM_FG(CBUILD_TERM_RED)"[FAILED]"CBUILD_TERM_RESET" ",
+	[TEST_LOG_SUCCESS] = CBUILD_TERM_FG(CBUILD_TERM_GREEN)"[SUCCESS]"CBUILD_TERM_RESET" ",
+	[TEST_LOG_START] = CBUILD_TERM_FG(CBUILD_TERM_MAGENTA)"[START]"CBUILD_TERM_RESET,
+	[CBUILD_LOG_ERROR] = CBUILD_TERM_FG(CBUILD_TERM_RED)"[ERROR]"CBUILD_TERM_RESET" ",
+	[CBUILD_LOG_WARN]  = CBUILD_TERM_FG(CBUILD_TERM_YELLOW)"[WARN]"CBUILD_TERM_RESET" ",
+	[CBUILD_LOG_INFO]  = "[INFO] ",
+	[CBUILD_LOG_TRACE] = CBUILD_TERM_FG(CBUILD_TERM_BRBLACK)"[TRACE]"CBUILD_TERM_RESET" ",
+};
+
 // Test system globals
 typedef enum test_status_t {
 	TEST_SUCCEED = 0,     // Should be 0
@@ -538,18 +561,12 @@ static const char* TPL_NAMES[] = {
 _Static_assert(TPL_COUNT == cbuild_arr_len(TPL_NAMES),
 	"TPL_NAMES expect 14 test platforms.");
 // Test runner
-#define test_log_failed(msg, ...)                                              \
-	__cbuild_int_log(CBUILD_TERM_FG(CBUILD_TERM_RED)"[FAILED]"                   \
-		CBUILD_TERM_RESET" ",                                                      \
-		msg __VA_OPT__(,) __VA_ARGS__)
-#define test_log_success(msg, ...)                                             \
-	__cbuild_int_log(CBUILD_TERM_FG(CBUILD_TERM_GREEN)"[SUCCESS]"                \
-		CBUILD_TERM_RESET" "   ,                                                   \
-		msg __VA_OPT__(,) __VA_ARGS__)
-#define test_log_start(msg, ...)                                               \
-	__cbuild_int_log(CBUILD_TERM_FG(CBUILD_TERM_MAGENTA)"[START]"                \
-		CBUILD_TERM_RESET" "   ,                                                   \
-		msg __VA_OPT__(,) __VA_ARGS__)
+#define test_log_failed(msg, ...)                            \
+	cbuild_log(TEST_LOG_FAILED, msg __VA_OPT__(,) __VA_ARGS__)
+#define test_log_success(msg, ...)                            \
+	cbuild_log(TEST_LOG_SUCCESS, msg __VA_OPT__(,) __VA_ARGS__)
+#define test_log_start(msg, ...)                            \
+	cbuild_log(TEST_LOG_START, msg __VA_OPT__(,) __VA_ARGS__)
 void test_cmd_append_valrind(cbuild_cmd_t* cmd) {
 	cbuild_cmd_append(cmd, "valgrind");
 	cbuild_cmd_append(cmd, "--error-exitcode=255");
@@ -643,7 +660,7 @@ test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -668,7 +685,7 @@ test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -692,7 +709,7 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "musl-gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -716,7 +733,7 @@ test_status_t test_aarch64_linux_glibc_gcc(test_case_t test) {
 			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -741,7 +758,7 @@ test_status_t test_aarch64_linux_glibc_clang(test_case_t test) {
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -765,7 +782,7 @@ test_status_t test_aarch64_linux_musl_gcc(test_case_t test) {
 			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "musl-gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -790,7 +807,7 @@ test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -816,7 +833,7 @@ test_status_t test_x86_64_posix_clang(test_case_t test) {
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -841,7 +858,7 @@ test_status_t test_aarch64_posix_gcc(test_case_t test) {
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -867,7 +884,7 @@ test_status_t test_aarch64_posix_clang(test_case_t test) {
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
 	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -891,7 +908,7 @@ test_status_t test_x86_64_macos_gcc(test_case_t test) {
 			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc-15");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -916,7 +933,7 @@ test_status_t test_x86_64_macos_clang(test_case_t test) {
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -940,7 +957,7 @@ test_status_t test_aarch64_macos_gcc(test_case_t test) {
 			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc-15");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -965,7 +982,7 @@ test_status_t test_aarch64_macos_clang(test_case_t test) {
 	cbuild_cmd_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -989,7 +1006,7 @@ test_status_t test_x86_64_windows_cygwin_gcc(test_case_t test) {
 			TPL_RUN_REGISTERED_GROUP, test.file);
 	cbuild_cmd_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, CBUILD_CC_OUT, oname);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
@@ -1232,6 +1249,29 @@ bool amalgamate(void) {
 	}
 	cbuild_sb_clear(&header);
 	cbuild_sb_append_cstr(&output, "#endif __CBUILD_H__");
+	cbuild_sb_append_cstr(&output, "#ifdef CBUILD_IMPLEMENTATION");
+	const char* sources[] = {
+		SOURCE_DIR"/Common.c",
+		SOURCE_DIR"/Log.c",
+		SOURCE_DIR"/Arena.c",
+		SOURCE_DIR"/Temp.c",
+		SOURCE_DIR"/StringBuilder.c",
+		SOURCE_DIR"/StringView.c",
+		SOURCE_DIR"/Map.c",
+		SOURCE_DIR"/Proc.c",
+		SOURCE_DIR"/Command.c",
+		SOURCE_DIR"/FS.c",
+		SOURCE_DIR"/Compile.c",
+		SOURCE_DIR"/DLLoad.c",
+		SOURCE_DIR"/FlagParse.c",
+		SOURCE_DIR"/RGlob.c",
+	};
+	cbuild_sb_append_cstr(&output, "#endif // CBUILD_IMPLEMENTATION");
+	cbuild_sb_t source = {0};
+	for (size_t i = 0; i < cbuild_arr_len(sources); i++) {
+		if(!cbuild_file_read(sources[i], &source)) return false;
+		cbuild_sb_append_arr(&output, source.data, source.size);
+	}
 	if(!cbuild_file_write("cbuild.h.new", &output)) return false;
 	cbuild_sb_clear(&output);
 	return true;
@@ -1271,19 +1311,14 @@ void version(const char* app_name) {
 	printf("Author: WolodiaM\n");
 }
 pid_t MAIN_PID = 0;
-void temp_profiler(void) {
-	if(getpid() != MAIN_PID) return;
-	cbuild_log(CBUILD_LOG_TRACE, "Used %zu/%zu bytes of temp.",
-		__cbuild_int_temp_size, CBUILD_TEMP_ARENA_SIZE);
-}
 // Main
 int main(int argc, char** argv) {
 	setenv("ASAN_OPTIONS", "exitcode=255", false);
 	cbuild_selfrebuild(argc, argv);
 	MAIN_PID = getpid();
-	atexit(temp_profiler);
-	cbuild_flag_help = help;
-	cbuild_flag_version = version;
+	atexit(cbuild_temp_profiler);
+	cbuild_flag_set_option(CBUILD_FLAG_HELP_HOOK, help);
+	cbuild_flag_set_option(CBUILD_FLAG_VERSION_HOOK, version);
 	cbuild_flag_parse(argc, argv);
 	cbuild_arglist_t* pargs_orig =	cbuild_flag_get_pargs();
 	cbuild_arglist_t pargs = *pargs_orig;
@@ -1316,7 +1351,7 @@ int main(int argc, char** argv) {
 			cbuild_cmd_t cmd = {0};
 			cbuild_cmd_append_many(&cmd,
 				CBUILD_CC, CBUILD_CARGS_WARN,
-				CBUILD_CC_OUT, "wikimk."EXE_NAME,
+				"-o", "wikimk."EXE_NAME,
 				"wikimk.c");
 			if(!cbuild_cmd_run(&cmd)) return 1;
 		} else if(strcmp(arg, "wiki") == 0) {
