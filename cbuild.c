@@ -560,6 +560,22 @@ test_case_t TESTS[] = {
 		.file = "utils",
 		.platforms = TPLM_ALL,
 	},
+	{
+		.file = "RGlob",
+		.group = true,
+	},
+	{
+		.file = "basic",
+	},
+	{
+		.file = "options",
+	},
+	{
+		.file = "match",
+	},
+	{
+		.file = "advanced",
+	},
 };
 static const char* TPL_NAMES[] = {
 	[TPL_X86_64_LINUX_GLIBC_GCC]    = "x86_64-linux-glibc-gcc",
