@@ -87,6 +87,6 @@ jobs:
         shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
         run: |
           cd "$(cygpath "$GITHUB_WORKSPACE")"
-          ./cbuild.exe test Common:arr
+          ./cbuild.exe test
 
   # vmactions/freebsd-vm or cross-platform-actions/action - *BSD
