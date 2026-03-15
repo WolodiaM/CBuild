@@ -85,7 +85,7 @@
 		#define CBUILD_OS_BSD
 	#elif defined(__unix__) || defined(unix) || defined(__unix)
 		#define CBUILD_OS_UNIX
-	#elif defined(__CYGWIN__)
+	#elif defined(__CYGWIN__) || defined(__cygwin__)
 		#define CBUILD_OS_WINDOWS
 		#define CBUILD_OS_WINDOWS_CYGWIN
 	#elif defined(_WIN32) || defined(_WIN64) || defined(__MINGW32__) || defined(__MINGW64__)
@@ -251,7 +251,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <regex.h> // mingw seems to provide it
+#include <regex.h> // mingw seems to provide it too
 
 //! # Configuration values [line:cbuild-configuration]
 //!

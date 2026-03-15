@@ -57,6 +57,7 @@ jobs:
         with:
           packages: gcc make valgrind
       - name: Build test runner
+        shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
         run: |
           cd "$(cygpath "$GITHUB_WORKSPACE")"
           gcc cbuild.c -o cbuild.exe
@@ -65,6 +66,7 @@ jobs:
       #     cd "$(cygpath "$GITHUB_WORKSPACE")"
       #     ./cbuild.exe docs wikimk
       - name: Run tests
+        shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
         run: |
           cd "$(cygpath "$GITHUB_WORKSPACE")"
           ./cbuild.exe test
