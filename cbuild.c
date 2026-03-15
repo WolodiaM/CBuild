@@ -87,6 +87,10 @@ enum {
 	TPL_AARCH64_MACOS_GCC,
 	TPL_AARCH64_MACOS_CLANG,
 	TPL_X86_64_WINDOWS_CYGWIN_GCC,
+	TPL_X86_64_FREEBSD_GCC,
+	TPL_X86_64_FREEBSD_CLANG,
+	TPL_AARCH64_FREEBSD_GCC,
+	TPL_AARCH64_FREEBSD_CLANG,
 	TPL_COUNT,
 };
 #define TPL_MASK(idx) (1u << (idx))
@@ -107,8 +111,12 @@ enum {
 	TPLM_AARCH64_MACOS_GCC         = TPL_MASK(TPL_AARCH64_MACOS_GCC),
 	TPLM_AARCH64_MACOS_CLANG       = TPL_MASK(TPL_AARCH64_MACOS_CLANG),
 	TPLM_X86_64_WINDOWS_CYGWIN_GCC = TPL_MASK(TPL_X86_64_WINDOWS_CYGWIN_GCC),
+	TPLM_X86_64_FREEBSD_GCC        = TPL_MASK(TPL_X86_64_FREEBSD_GCC),
+	TPLM_X86_64_FREEBSD_CLANG      = TPL_MASK(TPL_X86_64_FREEBSD_CLANG),
+	TPLM_AARCH64_FREEBSD_GCC       = TPL_MASK(TPL_AARCH64_FREEBSD_GCC),
+	TPLM_AARCH64_FREEBSD_CLANG     = TPL_MASK(TPL_AARCH64_FREEBSD_CLANG),
 };
-_Static_assert(TPL_COUNT == 15, "Enum TPLM_* expects 15 test platforms.");
+_Static_assert(TPL_COUNT == 19, "Enum TPLM_* expects 19 test platforms.");
 #if defined(CBUILD_OS_LINUX)
 	#define EXE_NAME "run"
 	#if defined(__x86_64__)
@@ -136,6 +144,17 @@ _Static_assert(TPL_COUNT == 15, "Enum TPLM_* expects 15 test platforms.");
 		const uint32_t TPLM_RUNNER_HOST =
 			TPLM_AARCH64_MACOS_GCC        |
 			TPLM_AARCH64_MACOS_CLANG;
+	#endif
+#elif defined(CBUILD_OS_BSD)
+	#define EXE_NAME "run"
+	#if defined(__x86_64__)
+		const uint32_t TPLM_RUNNER_HOST =
+			TPLM_X86_64_FREEBSD_GCC         |
+			TPLM_X86_64_FREEBSD_CLANG;
+	#elif defined(__aarch64__)
+		const uint32_t TPLM_RUNNER_HOST =
+			TPLM_AARCH64_FREEBSD_GCC        |
+			TPLM_AARCH64_FREEBSD_CLANG;
 	#endif
 #elif defined(CBUILD_OS_WINDOWS_CYGWIN)
 	#define EXE_NAME "exe"
@@ -591,6 +610,10 @@ static const char* TPL_NAMES[] = {
 	[TPL_AARCH64_MACOS_GCC]         = "aarch64-macos-gcc",
 	[TPL_AARCH64_MACOS_CLANG]       = "aarch64-macos-clang",
 	[TPL_X86_64_WINDOWS_CYGWIN_GCC] = "x86_64-windows-cygwin-gcc",
+	[TPL_X86_64_FREEBSD_GCC]        = "x86_64-freebsd-gcc",
+	[TPL_X86_64_FREEBSD_CLANG]      = "x86_64-freebsd-clang",
+	[TPL_AARCH64_FREEBSD_GCC]       = "aarch64-freebsd-gcc",
+	[TPL_AARCH64_FREEBSD_CLANG]     = "aarch64-freebsd-clang",
 };
 _Static_assert(TPL_COUNT == cbuild_arr_len(TPL_NAMES),
 	"TPL_NAMES expect 14 test platforms.");
@@ -1051,6 +1074,104 @@ test_status_t test_x86_64_windows_cygwin_gcc(test_case_t test) {
 	cbuild_cmd_clear(&cmd);
 	return test_case_run_simple(test, oname);
 }
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_x86_64_freebsd_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: FreeBSD, Arch: x86_64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char* oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_freebsd_gcc_%s_%s.run", 
+			TPL_RUN_REGISTERED_GROUP, test.file);
+	cbuild_cmd_append(&cmd, "gcc");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_valgrind(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_x86_64_freebsd_clang(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: FreeBSD, Arch: x86_64, Compiler: clang");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char* oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_freebsd_clang_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
+	cbuild_cmd_append(&cmd, "clang");
+	test_cmd_append_cc_base(test, &cmd);
+	test_cmd_append_clang_san(&cmd);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_clang_san(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_aarch64_freebsd_gcc(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: FreeBSD, Arch: aarch64, Compiler: gcc");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char* oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_freebsd_gcc_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
+	cbuild_cmd_append(&cmd, "gcc");
+	test_cmd_append_cc_base(test, &cmd);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_valgrind(test, oname);
+}
+_Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
+test_status_t test_aarch64_freebsd_clang(test_case_t test) {
+	test_log_start("Running test case \"%s\"", test.file);
+	cbuild_log_info("Platform: FreeBSD, Arch: aarch64, Compiler: clang");
+	cbuild_log_trace("Building test \"%s\"...", test.file);
+	cbuild_cmd_t cmd = {0};
+	const char* fname =	cbuild_temp_sprintf(TEST_FOLDER"/%s_%s.c",
+		TPL_RUN_REGISTERED_GROUP, test.file);
+	const char* oname =
+		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_freebsd_clang_%s_%s.run",
+			TPL_RUN_REGISTERED_GROUP, test.file);
+	cbuild_cmd_append(&cmd, "clang");
+	test_cmd_append_cc_base(test, &cmd);
+	test_cmd_append_clang_san(&cmd);
+	cbuild_cmd_append_many(&cmd, "-o", oname);
+	cbuild_cmd_append(&cmd, fname);
+	if(!cbuild_cmd_run(&cmd)) {
+		test_log_failed("Test \"%s\" failed to build.", test.file);
+		cbuild_cmd_clear(&cmd);
+		return TEST_COMP_FAILED;
+	}
+	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
+	cbuild_cmd_clear(&cmd);
+	return test_case_run_clang_san(test, oname);
+}
 static test_status_t (*TPL_RUNNERS[])(test_case_t test) = {
 	[TPL_X86_64_LINUX_GLIBC_GCC]    = test_x86_64_linux_glibc_gcc,
 	[TPL_X86_64_LINUX_GLIBC_CLANG]  = test_x86_64_linux_glibc_clang,
@@ -1067,9 +1188,13 @@ static test_status_t (*TPL_RUNNERS[])(test_case_t test) = {
 	[TPL_AARCH64_MACOS_GCC]         = test_aarch64_macos_gcc,
 	[TPL_AARCH64_MACOS_CLANG]       = test_aarch64_macos_clang,
 	[TPL_X86_64_WINDOWS_CYGWIN_GCC] = test_x86_64_windows_cygwin_gcc,
+	[TPL_X86_64_FREEBSD_GCC]        = test_x86_64_freebsd_gcc,
+	[TPL_X86_64_FREEBSD_CLANG]      = test_x86_64_freebsd_clang,
+	[TPL_AARCH64_FREEBSD_GCC]       = test_aarch64_freebsd_gcc,
+	[TPL_AARCH64_FREEBSD_CLANG]     = test_aarch64_freebsd_clang,
 };
 _Static_assert(TPL_COUNT == cbuild_arr_len(TPL_RUNNERS),
-	"TPL_RUNNERS expect 5 test platforms.");
+	"TPL_RUNNERS expect 19 test platforms.");
 // Single-case runner
 bool test_case(test_case_t test) {
 	bool failed = false;
