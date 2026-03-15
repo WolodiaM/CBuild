@@ -175,7 +175,7 @@ volatile const char* TPL_RUN_REGISTERED_GROUP = NULL;
 	}
 test_case_t TESTS[] = {
 	{
-		.file = "common",
+		.file = "Common",
 		.group = true,
 	},
 	{
