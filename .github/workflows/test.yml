@@ -46,6 +46,9 @@ jobs:
     defaults:
       run:
         shell: bash.exe -l -o pipefail {0}
+    env:
+      CHERE_INVOKING: 1
+      SHELLOPTS: igncr
     steps:
       - name: Checkout
         uses: actions/checkout@v6
