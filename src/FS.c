@@ -641,7 +641,7 @@ CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 	cbuild_sv_t path = cbuild_sv_from_cstr(path_);
 	// Windows paths can have drive letter
 	// Drive letter is only one character
-	if (isalpha(path.data[0]) && path.data[1] == ':') {
+	if (isalpha((unsigned char)path.data[0]) && path.data[1] == ':') {
 		cbuild_sb_append_arr(&buff, path.data, 2);
 		path.data += 2;
 		path.size -= 2;
@@ -679,7 +679,7 @@ CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 	if(buff.size == 0) cbuild_sb_append(&buff, '.');
 	if(!((buff.size == 1 && buff.data[0] == '/') ||
 			(buff.size == 2 && buff.data[0] == '/' && buff.data[1] == '/') ||
-			(buff.size == 3 && isalpha(buff.data[0]) && 
+			(buff.size == 3 && isalpha((unsigned char)buff.data[0]) && 
 				buff.data[1] == ':' && buff.data[2] == '/')) &&
 		(buff.data[buff.size - 1] == '/')) buff.size--;
 	cbuild_stack_clear(&dirs);

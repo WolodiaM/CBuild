@@ -3,7 +3,7 @@
 #include "Temp.h"
 size_t cbuild_sv_trim_left(cbuild_sv_t* sv) {
 	size_t i = 0;
-	while(i < sv->size && isspace(sv->data[i])) {
+	while(i < sv->size && isspace((unsigned char)sv->data[i])) {
 		i++;
 	}
 	sv->data += i;
@@ -12,7 +12,7 @@ size_t cbuild_sv_trim_left(cbuild_sv_t* sv) {
 }
 size_t cbuild_sv_trim_right(cbuild_sv_t* sv) {
 	size_t i = sv->size;
-	while(i > 0 && isspace(sv->data[i - 1])) {
+	while(i > 0 && isspace((unsigned char)sv->data[i - 1])) {
 		i--;
 	}
 	size_t tmp = sv->size - i;
