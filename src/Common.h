@@ -83,11 +83,11 @@
 		defined(__OpenBSD__) || \
 		defined(__DragonFly__)
 		#define CBUILD_OS_BSD
-	#elif defined(__unix__) || defined(unix) || defined(__unix)
-		#define CBUILD_OS_UNIX
 	#elif defined(__CYGWIN__) || defined(__cygwin__)
 		#define CBUILD_OS_WINDOWS
 		#define CBUILD_OS_WINDOWS_CYGWIN
+	#elif defined(__unix__) || defined(unix) || defined(__unix)
+		#define CBUILD_OS_UNIX
 	#elif defined(_WIN32) || defined(_WIN64) || defined(__MINGW32__) || defined(__MINGW64__)
 		#define CBUILD_OS_WINDOWS
 	#else
