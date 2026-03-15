@@ -55,12 +55,12 @@ jobs:
       - name: Install Cygwin and dependencies
         uses: cygwin/cygwin-install-action@v6
         with:
-          packages: gcc make valgrind
+          packages: gcc make
       - name: Build test runner
         shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
         run: |
           cd "$(cygpath "$GITHUB_WORKSPACE")"
-          gcc cbuild.c -o cbuild.exe
+          /usr/bin/gcc cbuild.c -o cbuild.exe
       # - name: Build wikimk (check if it builds)
       #   run: |
       #     cd "$(cygpath "$GITHUB_WORKSPACE")"

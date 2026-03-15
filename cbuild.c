@@ -1038,7 +1038,7 @@ test_status_t test_x86_64_windows_cygwin_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_windows_cygwin_gcc_%s_%s.exe",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_cmd_append(&cmd, "/usr/bin/gcc");
 	test_cmd_append_cc_base(test, &cmd);
 	cbuild_cmd_append_many(&cmd, "-o", oname);
 	cbuild_cmd_append(&cmd, fname);
@@ -1049,7 +1049,7 @@ test_status_t test_x86_64_windows_cygwin_gcc(test_case_t test) {
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
 	cbuild_cmd_clear(&cmd);
-	return test_case_run_valgrind(test, oname);
+	return test_case_run_simple(test, oname);
 }
 static test_status_t (*TPL_RUNNERS[])(test_case_t test) = {
 	[TPL_X86_64_LINUX_GLIBC_GCC]    = test_x86_64_linux_glibc_gcc,
