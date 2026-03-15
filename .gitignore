@@ -6,6 +6,7 @@ wiki/out
 wiki/wikimk/template/nav.html
 # Build output
 build/
+cbuild.h
 # Binaries
 wikimk.run
 cbuild.run

@@ -82,4 +82,3 @@ CBUILDDEF void __cbuild_assert(const char* file, unsigned int line, const char* 
 		return (uint64_t)(CBUILD_NANOS_PER_SEC * t.tv_sec + t.tv_nsec);
 	}
 #endif // CBUILD_API_*
-

@@ -76,4 +76,3 @@ CBUILDDEF cbuild_log_handler_t cbuild_log_get_handler(void);
 /// Default log handler for CBuild.
 CBUILDDEF void __cbuild_default_log_handler(const char* level,
 	const char* fmt, va_list args);
-

@@ -382,4 +382,3 @@ CBUILDDEF cbuild_arglist_t* cbuild_flag_get_flag(const char* opt) {
 CBUILDDEF const char* cbuild_flag_app_name(void) {
 	return __cbuild_flag_context.app_name;
 }
-

@@ -1269,6 +1269,7 @@ bool amalgamate(void) {
 	cbuild_sb_t header = {0};
 	for (size_t i = 0; i < cbuild_arr_len(headers); i++) {
 		if(!cbuild_file_read(headers[i], &header)) return false;
+		cbuild_sb_appendf(&output, "\n/* %s */\n\n", cbuild_path_name(headers[i]));
 		cbuild_sv_t content = cbuild_sv_from_sb(header);
 		while (content.size > 0) {
 			cbuild_sv_t line = cbuild_sv_chop_by_delim(&content, '\n');
@@ -1303,7 +1304,8 @@ bool amalgamate(void) {
 	cbuild_sb_t source = {0};
 	for (size_t i = 0; i < cbuild_arr_len(sources); i++) {
 		if(!cbuild_file_read(sources[i], &source)) return false;
-		cbuild_sv_t content = cbuild_sv_from_sb(header);
+		cbuild_sb_appendf(&output, "\n/* %s */\n\n", cbuild_path_name(headers[i]));
+		cbuild_sv_t content = cbuild_sv_from_sb(source);
 		while (content.size > 0) {
 			cbuild_sv_t line = cbuild_sv_chop_by_delim(&content, '\n');
 			if (cbuild_sv_prefix(line, cbuild_sv_from_lit("#include"))) {

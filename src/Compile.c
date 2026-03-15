@@ -109,4 +109,3 @@ CBUILDDEF int cbuild_compare_mtime_many(const char* output, const char** inputs,
 	}
 	return ret;
 }
-
