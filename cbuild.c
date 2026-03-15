@@ -41,8 +41,6 @@ enum cbuild_custom_log_level_t {
 #define CBUILD_PROFILER
 #define CBUILD_LOG_CUSTOM_LEVELS
 #include "cbuild.split.h"
-#define GLOB_IMPLEMENTATION
-#include "rglob.h"
 #include "framework.h"
 // Log messages
 const char* __cbuild_log_level_names[] = {
@@ -1316,7 +1314,7 @@ bool amalgamate(void) {
 		}
 	}
 	cbuild_sb_append_cstr(&output, "#endif // CBUILD_IMPLEMENTATION");
-	if(!cbuild_file_write("cbuild.h.new", &output)) return false;
+	if(!cbuild_file_write("cbuild.h", &output)) return false;
 	cbuild_sb_clear(&output);
 	return true;
 }
@@ -1460,9 +1458,8 @@ int main(int argc, char** argv) {
 				if(!cbuild_cmd_run(&cmd)) return 1;
 				// Setup test group and run test
 				bool test_found = false;
-				glob_t glob_state = {0};
-				int cres = glob(test_name, GLOB_COMPILE, &glob_state, NULL, 0);
-				if(cres != 0 && cres < GLOB_REGERROR_MAX) return 1;
+				cbuild_glob_t glob_state = {0};
+				if (!cbuild_glob_compile(&glob_state, test_name)) return 1;
 				for(size_t i = 0; i < cbuild_arr_len(TESTS); i++) {
 					test_case_t test = TESTS[i];
 					if(test.group) {
@@ -1472,8 +1469,7 @@ int main(int argc, char** argv) {
 						}
 					} else {
 						if(TPL_RUN_REGISTERED_GROUP != NULL) {
-							int mres = glob(test_name, 0, &glob_state, &test.file, 1);
-							if (mres == GLOB_NOERROR && glob_state.size > 0) {
+							if (cbuild_glob_match_single(&glob_state, test.file)) {
 								if(platform_found) test.platforms = platform_mask;
 								test_found = true;
 								if(test_case(test)) failed = true;
@@ -1481,7 +1477,7 @@ int main(int argc, char** argv) {
 						}
 					}
 				}
-				globfree(&glob_state);
+				cbuild_glob_free(&glob_state);
 				if(!test_found) {
 					cbuild_log_error("Invalid test specified: \"%s:%s\"!",
 						*test_group, test_name);

@@ -51,11 +51,15 @@ CBUILDDEF void cbuild_flag_set_option(enum cbuild_flag_options_t option, ...) {
 }
 #if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
 	CBUILDDEF unsigned short __cbuild_flag_term_width(void) {
-		struct winsize w;
-		if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1) {
+		#if defined(TIOCGWINSZ)
+			struct winsize w;
+			if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1) {
+				return 80;
+			}
+			return w.ws_col;
+		#else
 			return 80;
-		}
-		return w.ws_col;
+		#endif // Extension check
 	}
 	void __cbuild_flag_term_get_cursor(int* x, int* y) {
 		struct termios orig = {0};
@@ -127,7 +131,7 @@ CBUILDDEF void __cbuild_flag_parse_arguments(struct __cbuild_flag_t* flag,
 	// More arguments found - can be triggered only for a TList
 	if (found > flag->spec.num_arguments) {
 		cbuild_log_error(
-
+			
 			"Too many arguments for flag --%s, %d provided but %d expected.",
 			flag->option, found, flag->spec.num_arguments);
 		__cbuild_flag_context.help(__cbuild_flag_context.app_name);
@@ -136,7 +140,7 @@ CBUILDDEF void __cbuild_flag_parse_arguments(struct __cbuild_flag_t* flag,
 	// Less arguments found
 	if (found < flag->spec.num_arguments) {
 		cbuild_log_error(
-
+			
 			"Too few arguments for flag --%s, %d provided but %d expected.",
 			flag->option, found, flag->spec.num_arguments);
 		__cbuild_flag_context.help(__cbuild_flag_context.app_name);
@@ -357,7 +361,7 @@ CBUILDDEF void cbuild_flag_print_help(void) {
 		cbuild_da_foreach(__cbuild_flag_context.flags, flag) {
 			if (flag->spec.group) {
 				if (strcmp(flag->spec.group, *group) == 0) {
-						char* desc = __cbuild_flag_fmt_flag(flag, name_len);
+					char* desc = __cbuild_flag_fmt_flag(flag, name_len);
 					__CBUILD_PRINT(desc);
 					__CBUILD_FREE(desc);
 				}
@@ -378,3 +382,4 @@ CBUILDDEF cbuild_arglist_t* cbuild_flag_get_flag(const char* opt) {
 CBUILDDEF const char* cbuild_flag_app_name(void) {
 	return __cbuild_flag_context.app_name;
 }
+

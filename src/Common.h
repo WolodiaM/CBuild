@@ -110,9 +110,10 @@
 //!   * `CBUILD_OS_WINDOWS_CYGWIN`
 //! - `CBUILD_API_STRICT_POSIX`
 //!   POSIX.1-2001 (`_POSIX_C_SOURCE == 200112L`). 
-//!   Only two extension are used and one extension type is considered: 
+//!   Only three extension are used and one extension type is considered: 
 //!   * `MAP_ANON/MAP_ANONYMOUS`. If none is available fallabck to `shm_open` is provided but needs `dlopen` and `dlsym` provided.
 //!   * `sysconf(_SC_NPROCESSORS_ONLN)`. Literal `1` is used as fallback.
+//!   * `ioctl` and `TIOCGWINSZ`.
 //!   * Newer POSIX versions can be used if detected.
 //! - `CBUILD_API_WINAPI`
 //!   WinAPI and possibly NT API.
@@ -196,12 +197,14 @@
 	#include <dlfcn.h>
 	#include <errno.h>
 	#include <fcntl.h>
+	#include <termios.h>
 	#include <signal.h>
 	#include <sys/mman.h>
 	#include <sys/stat.h>
 	#include <sys/time.h>
 	#include <sys/types.h>
 	#include <sys/wait.h>
+	#include <sys/ioctl.h>
 	#include <unistd.h>
 	// Process and file handles
 	typedef pid_t cbuild_proc_t;
@@ -214,6 +217,8 @@
 	#define CBUILD_INVALID_DIR NULL
 	// For pointer errors
 	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
+	/// Handle for dynamic library
+	typedef void* cbuild_dlib_t;
 #elif defined(CBUILD_API_WINAPI)
 	// Platform includes
 	#include <windows.h>
@@ -229,7 +234,7 @@
 	/// Additional error value for pointers (when error and not found are separate cases)
 	#define CBUILD_PTR_ERR (void*)((intptr_t)-1)
 	/// Handle for dynamic library
-	typedef void* cbuild_dlib_t;
+	typedef HINSTANCE cbuild_dlib_t;
 #endif // CBUILD_API_*
 
 //! # Normal platform-independent includes [lines:cbuild-includes]
