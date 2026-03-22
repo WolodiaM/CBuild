@@ -1,6 +1,8 @@
 #pragma once // For LSP
 //! Parser for command-line flags with GNU-style format.
 //!
+//! License: `GPL-3.0-or-later`.
+//!
 //! # Features
 //!
 //! - Support for long and short options.

@@ -1,3 +1,5 @@
+//! License: `GPL-3.0-or-later`.
+
 #include "Common.h"
 #if defined(CBUILD_API_STRICT_POSIX) || (defined(CBUILD_API_POSIX) && ( \
 			(defined(CBUILD_OS_LINUX) && \

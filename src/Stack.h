@@ -11,6 +11,8 @@
 //!     size_t capacity;
 //! }
 //! ```
+//!
+//! License: `GPL-3.0-or-later`.
 
 /// Push a new element on top of a stack.
 ///

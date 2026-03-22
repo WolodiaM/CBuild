@@ -1,5 +1,7 @@
 #pragma once // For LSP 
 //! This file provides small logger utility.
+//!
+//! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
 

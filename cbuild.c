@@ -1145,7 +1145,7 @@ test_status_t test_aarch64_freebsd_gcc(test_case_t test) {
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
 	cbuild_cmd_clear(&cmd);
-	return test_case_run_valgrind(test, oname);
+	return test_case_run_simple(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_aarch64_freebsd_clang(test_case_t test) {

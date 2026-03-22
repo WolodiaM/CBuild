@@ -1,3 +1,5 @@
+//! License: `GPL-3.0-or-later`.
+
 #include "Log.h"
 #include "Common.h"
 #include "Term.h"

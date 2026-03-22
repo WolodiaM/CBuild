@@ -1,5 +1,7 @@
 #pragma once // For LSP 
 //! Arena allocator.
+//!
+//! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
 
@@ -35,7 +37,7 @@ CBUILDDEF void cbuild_arena_base_realloc(cbuild_arena_t* arena, size_t new_capac
 ///
 /// * [pl:arena:cbuild_arena_t*] Arena object.
 /// * [pl:capacity:size_t] Capacity of arena.
-#define cbuild_arena_base_alloc(arena, capacity) cbuild_arena_base_realloc(arena, capacity)
+#define cbuild_arena_base_malloc(arena, capacity) cbuild_arena_base_realloc(arena, capacity)
 /// Free arena base.
 CBUILDDEF void cbuild_arena_base_free(cbuild_arena_t* arena);
 /// Allocate inside of arena.

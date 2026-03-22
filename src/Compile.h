@@ -1,6 +1,8 @@
 #pragma once // For LSP
 //! Some helpers specifically for a compilation
 //!
+//! License: `GPL-3.0-or-later`.
+//!
 //! # `CBUILD_CC` [line:cbuild-compiler-self]
 //!
 //! This will hold compiler command for compiler that was used to compiler CBuild.
@@ -105,9 +107,10 @@
 /// to resolve dynamic or user-provided arguments.
 CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv,
 	const char* argv0_path, cbuild_cmd_t files);
-/// This function will receive self-rebuild command with all arguments
-/// applied but without files. It can modify it to add arguments.
-extern void (*cbuild_selfrebuild_hook)(cbuild_cmd_t* cmd);
+/// This function receives command before files are appended and can modify it.
+typedef void (*cbuild_selfrebuild_hook_t)(cbuild_cmd_t* cmd);
+/// This function is called by default [`__cbuild_selfrebuild`]{__cbuild_selfrebuild}
+extern cbuild_selfrebuild_hook_t cbuild_selfrebuild_hook;
 /// Compare mtime of 2 files.
 /// Same check as done by `make`.
 ///

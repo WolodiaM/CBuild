@@ -1,6 +1,8 @@
 #pragma once // For LSP
 //! Glob syntax implementation over POSIX ERE regex.
 //!
+//! License: `GPL-3.0-or-later`.
+//!
 //! # Preprocessor
 //!
 //! This glob is implemented as a preprocessor and a series of wrappers around

@@ -9,6 +9,8 @@
 //!     size_t capacity;
 //! }
 //! ```
+//!
+//! License: `GPL-3.0-or-later`.
 
 /// Create type for a new dynamic array.
 ///

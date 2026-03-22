@@ -1,6 +1,8 @@
 #pragma once // For LSP 
 //! This file provides utilities to construct ANSII escape codes.
 //!
+//! License: `GPL-3.0-or-later`.
+//!
 //! ::: note
 //! This only provides strings for escape codes and some macro to build that strings
 //! :::

@@ -1,6 +1,8 @@
 #pragma once // For LSP 
 //! Hasmap implementation in C.
 //!
+//! License: `GPL-3.0-or-later`.
+//!
 //! This map has rather interesting API and contains.
 //!
 //! # No resize

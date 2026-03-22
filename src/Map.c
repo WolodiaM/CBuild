@@ -1,3 +1,5 @@
+//! License: `GPL-3.0-or-later`.
+
 #include "Map.h"
 #include "Common.h"
 #include "Log.h"

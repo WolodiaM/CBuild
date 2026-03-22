@@ -1,5 +1,7 @@
 #pragma once // For LSP 
 //! This file provides OS-selection logic, includes and some general utilities.
+//!
+//! License: `GPL-3.0-or-later`.
 //! 
 //! ::: note
 //! CBuild should be first header included in translation unit. On `CBUILD_API_POSIX`
@@ -326,7 +328,7 @@
 //! - Macro helpers for '##' and '#' operators
 //! - Attribute abstractions to support both new C23 attributes and older 
 //!   gnu-style attributes.
-//! - Allocator hooks (__CBUILD_MALLOC, __CBUILD_REALLOC, __CBUILD_FREE) which
+//! - Allocator hooks (`__CBUILD_MALLOC`, `__CBUILD_REALLOC`, `__CBUILD_FREE`) which
 //!   can be overridden by defining CBUILD_CUSTOM_ALLOC
 
 //@ cbuild-misc-preproc
@@ -488,7 +490,7 @@ CBUILDDEF uint64_t cbuild_time_nanos(void);
 
 //! # Internal API [line:cbuild-api-internal]
 //! These are internal function, so their API can break at any time.
-//! But they still can be considered mostly stable (eg. I ddeos not
+//! But they still can be considered mostly stable (eg. I does not
 //! break their API that often).
 
 /// Get name of program (`argv[0]`).

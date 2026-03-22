@@ -1,6 +1,7 @@
 #pragma once // For LSP 
-
 //! File system access abstraction layer.
+//!
+//! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
 #include "StringBuilder.h"

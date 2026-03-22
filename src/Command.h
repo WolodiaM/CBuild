@@ -1,5 +1,7 @@
 #pragma once // For LSP 
 //! Command runner
+//!
+//! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
 #include "StringBuilder.h"

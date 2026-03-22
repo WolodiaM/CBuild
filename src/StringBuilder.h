@@ -1,5 +1,7 @@
 #pragma once // For LSP 
 //! Dynamic string - string builder. Specialization of DynArray.h for `char`{.c} datatype.
+//!
+//! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
 #include "StringView.h"

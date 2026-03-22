@@ -1,5 +1,7 @@
 #pragma once // For LSP 
 //! Abstractions for process control.
+//!
+//! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
 

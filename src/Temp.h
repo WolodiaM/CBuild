@@ -1,5 +1,7 @@
 #pragma once // For LSP 
 //! Global arena for CBuild. Uses bump allocator under the hood.
+//!
+//! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
 

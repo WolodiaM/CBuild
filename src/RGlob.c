@@ -1,3 +1,5 @@
+//! License: `GPL-3.0-or-later`.
+
 #include "RGlob.h"
 #include "Common.h"
 #include "StringBuilder.h"

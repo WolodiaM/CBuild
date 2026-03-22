@@ -1,5 +1,7 @@
 #pragma once // For LSP
 //! Abstract runtime loading of dynamic libraries.
+//!
+//! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
 

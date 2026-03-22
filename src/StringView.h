@@ -1,5 +1,7 @@
 #pragma once // For LSP 
 //! Implementation of string view in C.
+//!
+//! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
 

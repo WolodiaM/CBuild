@@ -1,3 +1,5 @@
+//! License: `GPL-3.0-or-later`.
+
 #include "FS.h"
 #include "Common.h"
 #include "StringBuilder.h"

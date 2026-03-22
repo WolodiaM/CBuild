@@ -1,12 +1,14 @@
+//! License: `GPL-3.0-or-later`.
+
 #include "Temp.h"
 #include "Arena.h"
 #include "Common.h"
 cbuild_arena_t __cbuild_temp_arena = {0};
-#define INIT()                                                               \
-	do {                                                                       \
-		if (!__cbuild_temp_arena.base) {                                         \
-			cbuild_arena_base_alloc(&__cbuild_temp_arena, CBUILD_TEMP_ARENA_SIZE); \
-		}                                                                        \
+#define INIT()                                                                \
+	do {                                                                        \
+		if (!__cbuild_temp_arena.base) {                                          \
+			cbuild_arena_base_malloc(&__cbuild_temp_arena, CBUILD_TEMP_ARENA_SIZE); \
+		}                                                                         \
 	} while(0)
 CBUILDDEF void* cbuild_temp_malloc(size_t size) {
 	INIT();

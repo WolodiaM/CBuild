@@ -1,3 +1,5 @@
+//! License: `GPL-3.0-or-later`.
+
 #include "StringBuilder.h"
 #include "StringView.h"
 #include "Temp.h"
