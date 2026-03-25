@@ -1452,10 +1452,14 @@ void help(const char* app_name) {
 	printf("Commands:\n");
 	printf("\tbuild    Build cbuild.h\n");
 	printf("\tdocs     Build documentation. Requires argument\n");
-	printf("\t\twikimk     Build wikimk.run\n");
-	printf("\t\twiki       Build wiki\n");
-	printf("\t\tdoxygen    Build doxygen\n");
-	printf("\t\tserve      Host local copy of wiki on localhost:\n");
+	printf("\t\twikimk.run      Build wikimk.run\n");
+	printf("\t\tcodeparse.so    Build codeparse.so\n");
+	printf("\t\ttemplate.so     Build template.so\n");
+	printf("\t\tbuild-all       Build all binaries\n");
+	// printf("\t\twikimk     Build wikimk.run\n");
+	// printf("\t\twiki       Build wiki\n");
+	// printf("\t\tdoxygen    Build doxygen\n");
+	// printf("\t\tserve      Host local copy of wiki on localhost:\n");
 	printf("\ttest     Run test. Format of argument is <group>:<test>[/platform]. If no platform is specified that test is run for all registered platforms.\n");
 	printf("\tclean    Clean all generated files\n");
 	printf("\ttags     Generate CTags\n");
@@ -1508,32 +1512,63 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 		char* arg = cbuild_shift(pargs.data, pargs.size);
-		if(strcmp(arg, "doxygen") == 0) {
+		if (strcmp(arg, "wikimk.run") == 0 || strcmp(arg, "build-all") == 0) {
 			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, "doxygen", "doxygen.conf");
-			if(!cbuild_cmd_run(&cmd)) return 1;
-			cbuild_dir_remove("wiki/out/doxygen");
-			if(!cbuild_dir_move("wiki/doxygen/html", "wiki/out/doxygen")) return 1;
-		} else if(strcmp(arg, "wikimk") == 0) {
-			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd,
-				CBUILD_CC, CBUILD_CARGS_WARN,
-				"-o", "wikimk."EXE_NAME,
-				"wikimk.c");
-			if(!cbuild_cmd_run(&cmd)) return 1;
-		} else if(strcmp(arg, "wiki") == 0) {
-			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, "./wikimk."EXE_NAME, "build");
-			if(!cbuild_cmd_run(&cmd)) return 1;
-		} else if(strcmp(arg, "serve") == 0) {
-			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, "./wikimk."EXE_NAME, "serve");
-			if(!cbuild_cmd_run(&cmd)) return 1;
-		} else {
-			cbuild_log(CBUILD_LOG_ERROR, "Invalid argument specified: \"%s\"!", arg);
-			help(cbuild_flag_app_name());
-			return 1;
+			cbuild_cmd_append_many(&cmd, CC,
+				CBUILD_CARGS_WARN,
+				"-O3", CBUILD_CARGS_DEBUG_GDB, "-Wl,--export-dynamic",
+				"-Wl,-z,origin", "-Wl,-rpath,$ORIGIN/",
+				CBUILD_CARGS_LIBINCLUDE("dl"));
+			cbuild_cmd_append_many(&cmd, 
+				"wikimk/wikimk.c", "-o", BUILD_FOLDER"/wikimk.run");
+			if (!cbuild_cmd_run(&cmd)) return 1;
 		}
+		if (strcmp(arg, "codeparse.so") == 0 || strcmp(arg, "build-all") == 0) {
+			cbuild_cmd_t cmd = {0};
+			cbuild_cmd_append_many(&cmd, CC,
+				CBUILD_CARGS_WARN,
+				"-O3", CBUILD_CARGS_DEBUG_GDB,
+				"-shared", "-fPIC");
+			cbuild_cmd_append_many(&cmd, 
+				"wikimk/codeparse.c", "-o", BUILD_FOLDER"/codeparse.so");
+			if (!cbuild_cmd_run(&cmd)) return 1;
+		}
+		if (strcmp(arg, "template.so") == 0 || strcmp(arg, "build-all") == 0) {
+			cbuild_cmd_t cmd = {0};
+			cbuild_cmd_append_many(&cmd, CC,
+				CBUILD_CARGS_WARN,
+				"-O3", CBUILD_CARGS_DEBUG_GDB,
+				"-shared", "-fPIC");
+			cbuild_cmd_append_many(&cmd, 
+				"wikimk/template.c", "-o", BUILD_FOLDER"/template.so");
+			if (!cbuild_cmd_run(&cmd)) return 1;
+		}
+		// if(strcmp(arg, "doxygen") == 0) {
+		// 	cbuild_cmd_t cmd = {0};
+		// 	cbuild_cmd_append_many(&cmd, "doxygen", "doxygen.conf");
+		// 	if(!cbuild_cmd_run(&cmd)) return 1;
+		// 	cbuild_dir_remove("wiki/out/doxygen");
+		// 	if(!cbuild_dir_move("wiki/doxygen/html", "wiki/out/doxygen")) return 1;
+		// } else if(strcmp(arg, "wikimk") == 0) {
+		// 	cbuild_cmd_t cmd = {0};
+		// 	cbuild_cmd_append_many(&cmd,
+		// 		CBUILD_CC, CBUILD_CARGS_WARN,
+		// 		"-o", "wikimk."EXE_NAME,
+		// 		"wikimk.c");
+		// 	if(!cbuild_cmd_run(&cmd)) return 1;
+		// } else if(strcmp(arg, "wiki") == 0) {
+		// 	cbuild_cmd_t cmd = {0};
+		// 	cbuild_cmd_append_many(&cmd, "./wikimk."EXE_NAME, "build");
+		// 	if(!cbuild_cmd_run(&cmd)) return 1;
+		// } else if(strcmp(arg, "serve") == 0) {
+		// 	cbuild_cmd_t cmd = {0};
+		// 	cbuild_cmd_append_many(&cmd, "./wikimk."EXE_NAME, "serve");
+		// 	if(!cbuild_cmd_run(&cmd)) return 1;
+		// } else {
+		// 	cbuild_log(CBUILD_LOG_ERROR, "Invalid argument specified: \"%s\"!", arg);
+		// 	help(cbuild_flag_app_name());
+		// 	return 1;
+		// }
 	} else if(strcmp(subcommand, "test") == 0) {
 		if(pargs.size == 0) {
 			// Remove temp files

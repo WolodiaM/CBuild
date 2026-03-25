@@ -1,10 +1,46 @@
 // C declaration parser for CBuild.
 // This file can parse declarations from CBuild, not C declarations in general.
 // License: `GPL-3.0-or-later`.
-
-// TODO: Fix that note
-declaration_type_t extract_decl_type(lines_t lines, size_t line) {
-	cbuild_sv_t cline = lines.data[line];
+// Includes
+#include "../cbuild.split.h"
+#include "wikimk.h"
+// TODO: All errors should print current line.
+// NOTE: All cbuild_sv_t returned own their data (and are guaranteed to be constant
+// on caller side) and should be allocated with 'malloc'.
+// Code
+// #define sv_append_sv(sv1, sv2) \
+// 	if (sv1.data == NULL) {      \
+// 		sv1 = sv2;                 \
+// 	} else {                     \
+// 		sv1.size += sv2.size + 1;  \
+// 	}
+cbuild_sv_t sb_leak_as_sv(cbuild_sb_t* sb) {
+	cbuild_sv_t ret = cbuild_sv_from_sb(*sb);
+	sb->data = NULL;
+	sb->size = 0;
+	sb->capacity = 0;
+	return ret;
+}
+cbuild_sv_t sv_dup(cbuild_sv_t sv) {
+	char* data = malloc(sv.size);
+	cbuild_assert(data != NULL, "Allocation failed.");
+	memcpy(data, sv.data, sv.size);
+	return cbuild_sv_from_parts(data, sv.size);
+}
+// This should be used for all reads from lines except for first one
+void next_line(lines_t* lines, size_t* line, cbuild_sv_t* cline, cbuild_sb_t* decl) {
+	do {
+		cbuild_assert(*line <= lines->size,
+			"Overflow in lines array: %zu > %zu.\n", *line, lines->size);
+		*cline = lines->data[(*line)++];
+	} while (cline->size == 0);
+	cbuild_sb_append(decl, '\n');
+	cbuild_sv_trim_right(cline);
+	cbuild_sb_append_sv(decl, *cline);
+	cbuild_sv_trim_left(cline);
+}
+declaration_type_t parser_decl_type(lines_t* lines, size_t line) {
+	cbuild_sv_t cline = lines->data[line];
 	cbuild_sv_trim_left(&cline);
 	if (cbuild_sv_prefix(cline, cbuild_sv_from_lit("#define"))) {
 		return DECL_DEFINE;
@@ -31,81 +67,31 @@ declaration_type_t extract_decl_type(lines_t lines, size_t line) {
 		return DECL_FUNCTION;
 	}
 }
-// TODO: decl is single-line only
-bool parse_func_decl(lines_t lines, size_t line, cbuild_arena_t* allocator,
-	char** ret, char** name, arguments_t* args, char** decl) {
-	// Prepare working variables
+bool parser_func_arglist(lines_t* lines, size_t* line, cbuild_sv_t* cline,
+	arguments_t* args, cbuild_sb_t* decl) {
 	cbuild_sb_t tmp = {0};
-	cbuild_sb_t d = {0};
-	cbuild_sv_t cline = lines.data[line++];
-	cbuild_sv_trim_right(&cline);
-	cbuild_sb_append_sv(&d, cline);
-	cbuild_sv_trim_left(&cline);
-	// Strip attributes
-	cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("CBUILD_ATTR_NORETURN("));
-	if (cbuild_sv_prefix(cline, cbuild_sv_from_lit("CBUILD_ATTR_PRINTF(")) ||
-		cbuild_sv_prefix(cline, cbuild_sv_from_lit("CBUILD_ATTR_DEPRECATED("))) {
-		cline = lines.data[line++];
-		cbuild_sv_trim_right(&cline);
-		cbuild_sb_append_sv(&d, cline);
-		cbuild_sv_trim_left(&cline);
-	}
-	// Strip CBUILDDEF
-	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("CBUILDDEF "))) {
-		cbuild_log_error("Function is not prefixed!");
-		return false;
-	}
-	// Parse return value
-	char sep = '\0';
-	cbuild_sv_t token = sv_chop_token_with_separator(&cline, &sep);
-	while (sep != '(') {
-		cbuild_sb_appendf(&tmp, CBuildSVFmt" ", CBuildSVArg(token));
-		token = sv_chop_token_with_separator(&cline, &sep);
-	}
-	tmp.size--;
-	cbuild_sb_append_null(&tmp);
-	*ret = cbuild_arena_strdup(allocator, tmp.data);
-	tmp.size = 0;
-	// Pare function name
-	*name = cbuild_arena_sprintf(allocator, CBuildSVFmt, CBuildSVArg(token));
-	// Get argument count
-	// C uses commas only as argument delimiter in function declaration. Also such
-	// declaration should end with ';' (at least this is true for CBuild).
-	size_t num_args = 0;
-	for (size_t i = line - 1; i < lines.size; i++) {
-		num_args += cbuild_sv_count(lines.data[i], ',');
-		// This checks if current line does not end with ';'. Because if it ends this
-		// means that it is the last line of this declaration.
-		if (lines.data[i].data[lines.data[i].size - 1] == ';') break;
-	}
-	// Last argument does not have comma after. If function have no arguments,
-	// this will allocate 1 argument, which is harmless.
-	num_args++;	
-	args->data = cbuild_arena_malloc(allocator, sizeof(*args->data) * num_args);
+	cbuild_sv_trim_right(cline);
+	cbuild_sv_trim_left(cline);
 	// Start parsing argument list. This is two-level loop where outer one parses
 	// pairs of '<type> <name>' which end with ',' or ')' and inner one parses
 	// '<type>' out of separate tokens.
-	sep = '\0';
-	token = sv_chop_token_with_separator(&cline, &sep);
+	char sep = '\0';
+	bool noinsert_type = false;
+	cbuild_sv_t token = sv_chop_token_with_separator(cline, &sep);
 	if (cbuild_sv_cmp(token, cbuild_sv_from_lit("void")) != 0) {
-		size_t arg = 0;
 		while (sep != ')') {
 			while (sep != ',' && sep != ')') {
-				cbuild_sb_append_sv(&tmp, token);
-				cbuild_sb_append(&tmp, ' ');
-				token = sv_chop_token_with_separator(&cline, &sep);
+				if (!noinsert_type) {
+					cbuild_sb_append_sv(&tmp, token);
+				}
+				token = sv_chop_token_with_separator(cline, &sep);
+				noinsert_type = false;
 			}
-			cbuild_sv_trim_left(&cline); // Trim line again
-			tmp.size--;
-			while (*token.data == '*') {
-				cbuild_sb_append_sv(&tmp, cbuild_sv_chop(&token, 1));
-			}
-			cbuild_sb_append_null(&tmp);
-			args->data[arg].type = cbuild_arena_strdup(allocator, tmp.data);
-			tmp.size = 0;
-			args->data[arg].name = 
-				cbuild_arena_sprintf(allocator, CBuildSVFmt, CBuildSVArg(token));
-			arg++;
+			if (sep != ')') sep = '\0';
+			cbuild_da_append(args, ((argument_t){
+						.type = sb_leak_as_sv(&tmp),
+						.name = sv_dup(token),
+					}));
 			// Here we have cline fully-trimmed from left. Because any function
 			// declaration line can end only with ',' or ');' this means that we can
 			// directly check for `cline.size` (because we chop ',' and then trim
@@ -113,34 +99,62 @@ bool parse_func_decl(lines_t lines, size_t line, cbuild_arena_t* allocator,
 			// that size is greated that 0 it means that it either contains ');' or
 			// other arguments. If it is 0 it means that declarations continues on
 			// next line.
-			if (cline.size == 0) {
-				cbuild_sb_append_cstr(&d, "\n");
-				cline = lines.data[line++];
-				cbuild_sv_trim_right(&cline);
-				cbuild_sb_append_sv(&d, cline);
-				cbuild_sv_trim_left(&cline);
+			if (cline->size == 0) {
+				cbuild_sb_append_cstr(decl, "\n");
+				next_line(lines, line, cline, decl);
 			}
 			// Now we either have line starting from ')' (should not happen but this
 			// is handled by this parser) or another argument (or arguments) in cline.
+			noinsert_type = true;
 		}
-		args->size = arg;
 	}
-	// Pass decl
-	cbuild_sb_append_null(&d);
-	*decl = cbuild_arena_strdup(allocator, d.data);
-	cbuild_sb_clear(&tmp);
-	cbuild_sb_clear(&d);
 	return true;
 }
-bool parse_var_decl(lines_t lines, size_t line, cbuild_arena_t* allocator,
-	char** type, char** name, char** decl) {
+bool parser_func_decl(lines_t* lines, size_t line,
+	cbuild_sv_t* ret, cbuild_sv_t* name, arguments_t* args, cbuild_sv_t* decl) {
+	// Prepare working variables
 	cbuild_sb_t tmp = {0};
-	cbuild_sv_t cline = lines.data[line++];
+	cbuild_sb_t d = {0};
+	cbuild_sv_t cline = lines->data[line++];
+	cbuild_sv_trim_right(&cline);
+	cbuild_sb_append_sv(&d, cline);
+	cbuild_sv_trim_left(&cline);
+	// Strip attributes
+	cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("CBUILD_ATTR_NORETURN("));
+	if (cbuild_sv_prefix(cline, cbuild_sv_from_lit("CBUILD_ATTR_PRINTF(")) ||
+		cbuild_sv_prefix(cline, cbuild_sv_from_lit("CBUILD_ATTR_DEPRECATED("))) {
+		next_line(lines, &line, &cline, &d);
+	}
+	// Strip CBUILDDEF
+	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("CBUILDDEF "))) {
+		cbuild_log_error("Function is not prefixed with CBUILDDEF.");
+		return false;
+	}
+	// Parse return value
+	char sep = '\0';
+	cbuild_sv_t token = sv_chop_token_with_separator(&cline, &sep);
+	while (sep != '(') {
+		cbuild_sb_append_sv(&tmp, token);
+		token = sv_chop_token_with_separator(&cline, &sep);
+	}
+	*ret = sb_leak_as_sv(&tmp);
+	// Pare function name
+	*name = sv_dup(token);
+	// Parse function args
+	if (!parser_func_arglist(lines, &line, &cline, args, &d)) return false;
+	// Pass decl
+	*decl = sb_leak_as_sv(&d);
+	return true;
+}
+bool parser_var_decl(lines_t* lines, size_t line,
+	cbuild_sv_t* type, cbuild_sv_t* name, cbuild_sv_t* decl) {
+	cbuild_sb_t tmp = {0};
+	cbuild_sv_t cline = lines->data[line++];
 	if (cline.data[cline.size - 1] == '\\') cline.size--;
 	cbuild_sv_trim_right(&cline);
-	*decl = cbuild_arena_sprintf(allocator, CBuildSVFmt, CBuildSVArg(cline));
 	cbuild_sv_trim_left(&cline);
 	if(!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("extern "))) {
+		cbuild_log_error("Variable is not prefixed with extern.");
 		return false;
 	}
 	cbuild_sv_trim_left(&cline);
@@ -148,52 +162,199 @@ bool parse_var_decl(lines_t lines, size_t line, cbuild_arena_t* allocator,
 	cbuild_sv_t token = sv_chop_token_with_separator(&cline, &sep);
 	while (sep != ';') {
 		cbuild_sb_append_sv(&tmp, token);
-		cbuild_sb_append(&tmp, ' ');
 		token = sv_chop_token_with_separator(&cline, &sep);
 	}
-	*name = cbuild_arena_sprintf(allocator, CBuildSVFmt, CBuildSVArg(token));
-	tmp.size--;
-	cbuild_sb_append_null(&tmp);
-	*type = cbuild_arena_strdup(allocator, tmp.data);
-	*decl = cbuild_arena_sprintf(allocator,"extern %s "CBuildSVFmt";",
-		tmp.data, CBuildSVArg(token));
-	cbuild_sb_clear(&tmp);
+	*name = sv_dup(token);
+	*type = sb_leak_as_sv(&tmp);
+	int ret = asprintf(&decl->data, "extern "CBuildSVFmt" "CBuildSVFmt, 
+		CBuildSVArg(*name), CBuildSVArg(*type));
+	cbuild_assert(ret >= 0, "asprintf failed");
+	decl->size = (size_t)ret;
 	return true;
 }
-bool parse_define_decl(lines_t lines, size_t line, cbuild_arena_t* allocator,
-	char** name, char** decl) {
-	cbuild_sv_t cline = lines.data[line++];
+bool parser_define_decl(lines_t* lines, size_t line,
+	cbuild_sv_t* name, cbuild_sv_t* decl) {
+	cbuild_sv_t cline = lines->data[line++];
 	if (cline.data[cline.size - 1] == '\\') cline.size--;
 	cbuild_sv_trim_right(&cline);
-	cbuild_sv_t d = cline;
-	cbuild_sv_t def = sv_chop_token(&d);
+	cbuild_sv_t cline_copy = cline;
+	cbuild_sv_t def = sv_chop_token(&cline_copy);
 	char sep = '\0';
-	cbuild_sv_t nm = sv_chop_token_with_separator(&d, &sep);
+	cbuild_sv_t nm = sv_chop_token_with_separator(&cline_copy, &sep);
+	cbuild_sb_t d = {0};
 	if (sep == '(') {
 		// We can chop by ')' because we are parsing arglist.
-		cbuild_sv_t args = cbuild_sv_chop_by_delim(&d, ')');
-		*decl = cbuild_arena_sprintf(allocator, 
+		cbuild_sv_t args = cbuild_sv_chop_by_delim(&cline_copy, ')');
+		cbuild_sb_appendf(&d, 
 			CBuildSVFmt" "CBuildSVFmt"("CBuildSVFmt")",
 			CBuildSVArg(def), CBuildSVArg(nm), CBuildSVArg(args));
 	} else {
-		*decl = cbuild_arena_sprintf(allocator, 
+		cbuild_sb_appendf(&d,
 			CBuildSVFmt" "CBuildSVFmt, CBuildSVArg(def), CBuildSVArg(nm));
 	}
+	*decl = cbuild_sv_from_sb(d);
 	cbuild_sv_trim_left(&cline);
 	if(!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("#define"))) {
+		cbuild_log_error("Define is not prefixed with #define.");
 		return false;
 	}
 	cbuild_sv_trim_left(&cline);
-	cbuild_sv_t n = sv_chop_token(&cline);
-	*name = cbuild_arena_sprintf(allocator, CBuildSVFmt, CBuildSVArg(n));
+	*name = sv_dup(sv_chop_token(&cline));
 	return true;
 }
-bool parse_typedef_func_decl(lines_t lines, size_t line, cbuild_arena_t* allocator,
-	char** ret, char** name, arguments_t* args, char** decl) {
+// Needed to merge struct and typedef struct parsing.
+// This assumes that cline is already in d.
+bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
+	cbuild_sv_t* name, arguments_t* fields, cbuild_sb_t* decl) {
+	cbuild_sv_t token = {0};
+	cbuild_sb_t tmp = {0};
+	char sep = '\0';
+	// Get next line
+	next_line(lines, line, cline, decl);
+	token = sv_chop_token_with_separator(cline, &sep);
+	bool noinsert_type = false;
+	while (*cline->data != '}') { // Struct declaration ends when '}' is encountered
+		// Pars&e list of fields.
+		while (sep != ';') {
+			if (cbuild_sv_cmp(token, cbuild_sv_from_lit("{")) == 0) {
+				if (cbuild_sv_cmp(cbuild_sv_from_sb(tmp), cbuild_sv_from_lit("struct ")) == 0) {
+					// This is nested struct declaration.
+					size_t last_idx = fields->size;
+					if (!parser_struct_fields(lines, line, cline, name, fields, decl)) {
+						return false;
+					}
+					cbuild_sv_chop(cline, 1); // Chop-out '}'
+					token = sv_chop_token(cline);
+					tmp.size = 0;
+					for (size_t i = last_idx; i < fields->size; i++) {
+						cbuild_sb_appendf(&tmp, CBuildSVFmt"."CBuildSVFmt,
+							CBuildSVArg(token), CBuildSVArg(fields->data[i].name));
+						free((void*)fields->data[i].name.data);
+						fields->data[i].name = sb_leak_as_sv(&tmp);
+					}
+					cbuild_sb_append_cstr(&tmp, "struct { ... }");
+					break;
+				} else if (cbuild_sv_cmp(cbuild_sv_from_sb(tmp), cbuild_sv_from_lit("enum ")) == 0) {
+					// This is nested struct declaration.
+					tmp.size = 0;
+					cbuild_sb_append_cstr(&tmp, "enum { ... }");
+					CBUILD_TODO("parse nested enums");
+				} else if (cbuild_sv_cmp(cbuild_sv_from_sb(tmp), cbuild_sv_from_lit("union ")) == 0) {
+					// This is nested struct declaration.
+					tmp.size = 0;
+					cbuild_sb_append_cstr(&tmp, "union { ... }");
+					CBUILD_TODO("parse nested unions");
+				} else {
+					CBUILD_UNREACHABLE("Invalid composite detected: "CBuildSBFmt".", 
+						CBuildSBArg(tmp));
+				}
+			}
+			if (!noinsert_type) {
+				cbuild_sb_append_sv(&tmp, token);
+				cbuild_sb_append(&tmp, ' ');
+			}
+			token = sv_chop_token_with_separator(cline, &sep);
+			noinsert_type = false;
+		}
+		cbuild_da_append(fields, ((argument_t){
+					.type = sb_leak_as_sv(&tmp),
+					.name = sv_dup(token),
+				}));
+		// Get next line
+		next_line(lines, line, cline, decl);
+		if (sep != '}') sep = '\0';
+		noinsert_type = true;
+	}
+	return true;
+}
+bool parser_struct_decl(lines_t* lines, size_t line,
+	cbuild_sv_t* name, arguments_t* fields, cbuild_sv_t* decl) {
+	cbuild_sb_t d = {0};
+	cbuild_sv_t cline = lines->data[line++];
+	cbuild_sv_trim_right(&cline);
+	cbuild_sb_append_sv(&d, cline);
+	cbuild_sv_trim_left(&cline);
+	// Parse 'struct <name> {'
+	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("struct "))) {
+		cbuild_log_error("Structure is not prefixed with struct.");
+		return false;
+	}
+	*name = sv_dup(sv_chop_token(&cline));
+	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("{"))) {
+		cbuild_log_error("Structure is not prefixed with {.");
+		return false;
+	}
+	// Parse fields
+	if (!parser_struct_fields(lines, &line, &cline, name, fields, &d)) {
+		return false;
+	}
+	// Cline here have '};' at the start.
+	if (!cbuild_sv_prefix(cline, cbuild_sv_from_lit("};"))) {
+		cbuild_log_error("Structure does not end with };: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
+		return false;
+	}
+	*decl = cbuild_sv_from_sb(d);
+	return true;
+}
+// bool (*enum_decl)(lines_t* lines, size_t line,
+// 	cbuild_sv_t* name, arguments_t* values, cbuild_sv_t* decl);
+// bool (*typedef_decl)(lines_t* lines, size_t line,
+// 	cbuild_sv_t* orig, cbuild_sv_t* new, cbuild_sv_t* decl);
+bool parser_typedef_struct_decl(lines_t* lines, size_t line,
+	cbuild_sv_t* typename, cbuild_sv_t* name, arguments_t* fields, cbuild_sv_t* decl) {
+	cbuild_sb_t d = {0};
+	cbuild_sv_t cline = lines->data[line++];
+	cbuild_sv_trim_right(&cline);
+	cbuild_sb_append_sv(&d, cline);
+	cbuild_sv_trim_left(&cline);
+	// Parse 'typedef struct <name> {'
+	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("typedef "))) {
+		cbuild_log_error("Structure is not prefixed with struct.");
+		return false;
+	}
+	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("struct "))) {
+		cbuild_log_error("Structure is not prefixed with struct.");
+		return false;
+	}
+	cbuild_sv_trim_left(&cline);
+	if (*cline.data != '{') {
+		*typename = sv_dup(sv_chop_token(&cline));
+	}
+	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("{"))) {
+		cbuild_log_error("Structure is not prefixed with {: "CBuildSVFmt,
+			CBuildSVArg(lines->data[line - 1]));
+		return false;
+	}
+	// Parse fields
+	if (!parser_struct_fields(lines, &line, &cline, name, fields, &d)) {
+		return false;
+	}
+	// Cline here have '}' at the start.
+	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("}"))) {
+		cbuild_log_error("Structure does not end with }: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
+		return false;
+	}
+	char sep = '\0';
+	*name = sv_dup(sv_chop_token_with_separator(&cline, &sep));
+	// Cline here have '}' at the start.
+	if (sep != ';') {
+		cbuild_log_error("Structure does not end with ;: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
+		return false;
+	}
+	*decl = cbuild_sv_from_sb(d);
+	return true;
+}
+// bool (*typedef_enum_decl)(lines_t* lines, size_t line,
+// 	cbuild_sv_t* typename, cbuild_sv_t* name, arguments_t* values, cbuild_sv_t* decl);
+bool parser_typedef_func_decl(lines_t* lines, size_t line,
+	cbuild_sv_t* ret, cbuild_sv_t* name, arguments_t* args, cbuild_sv_t* decl) {
 	// Prepare working variables
 	cbuild_sb_t tmp = {0};
 	cbuild_sb_t d = {0};
-	cbuild_sv_t cline = lines.data[line++];
+	cbuild_sv_t cline = lines->data[line++];
 	cbuild_sv_trim_right(&cline);
 	cbuild_sb_append_sv(&d, cline);
 	cbuild_sv_trim_left(&cline);
@@ -206,81 +367,17 @@ bool parse_typedef_func_decl(lines_t lines, size_t line, cbuild_arena_t* allocat
 	char sep = '\0';
 	cbuild_sv_t token = sv_chop_token_with_separator(&cline, &sep);
 	while (sep != '(') {
-		cbuild_sb_appendf(&tmp, CBuildSVFmt" ", CBuildSVArg(token));
+		cbuild_sb_append_sv(&tmp, token);
 		token = sv_chop_token_with_separator(&cline, &sep);
 	}
-	cbuild_sb_append_sv(&tmp, token);
-	cbuild_sb_append_null(&tmp);
-	*ret = cbuild_arena_strdup(allocator, tmp.data);
-	tmp.size = 0;
-	// Pare function name
+	*ret = sb_leak_as_sv(&tmp);
+	// Parse function name
 	cbuild_sv_chop(&cline, 1); // Chop '*'	
-	token = sv_chop_token(&cline);
-	*name = cbuild_arena_sprintf(allocator, CBuildSVFmt, CBuildSVArg(token));
+	*name = sv_dup(sv_chop_token(&cline));
 	cbuild_sv_chop(&cline, 1); // Chop '(' which starts arguments.	
-	// Get argument count
-	// C uses commas only as argument delimiter in function declaration. Also such
-	// declaration should end with ';' (at least this is true for CBuild).
-	size_t num_args = 0;
-	for (size_t i = line - 1;
-		// This line both checks if there are still some lines and if current line
-		// does not end with ';'. Because if it ends this means that it is the last
-		// line of this declaration.
-		i < lines.size && lines.data[i].data[lines.data[i].size - 1] != ';';
-		i++) {
-		num_args += cbuild_sv_count(lines.data[i], ',');
-	}
-	// Last argument does not have comma after. If function have no arguments,
-	// this will allocate 1 argument, which is harmless.
-	num_args++;	
-	args->data = cbuild_arena_malloc(allocator, sizeof(*args->data) * num_args);
-	// Start parsing argument list. This is two-level loop where outer one parses
-	// pairs of '<type> <name>' which end with ',' or ')' and inner one parses
-	// '<type>' out of separate tokens.
-	sep = '\0';
-	token = sv_chop_token_with_separator(&cline, &sep);
-	if (cbuild_sv_cmp(token, cbuild_sv_from_lit("void")) != 0) {
-		size_t arg = 0;
-		while (sep != ')') {
-			while (sep != ',' && sep != ')') {
-				cbuild_sb_append_sv(&tmp, token);
-				cbuild_sb_append(&tmp, ' ');
-				token = sv_chop_token(&cline);
-			}
-			cbuild_sv_trim_left(&cline); // Trim line again
-			tmp.size--;
-			while (*token.data == '*') {
-				cbuild_sb_append_sv(&tmp, cbuild_sv_chop(&token, 1));
-			}
-			cbuild_sb_append_null(&tmp);
-			args->data[arg].type = cbuild_arena_strdup(allocator, tmp.data);
-			tmp.size = 0;
-			args->data[arg].name = 
-				cbuild_arena_sprintf(allocator, CBuildSVFmt, CBuildSVArg(token));
-			arg++;
-			// Here we have cline fully-trimmed from left. Because any function
-			// declaration line can end only with ',' or ');' this means that we can
-			// directly check for `cline.size` (because we chop ',' and then trim
-			// line) to determine if line need to be switched. For example, if we found
-			// that size is greated that 0 it means that it either contains ');' or
-			// other arguments. If it is 0 it means that declarations continues on
-			// next line.
-			if (cline.size == 0) {
-				cbuild_sb_append_cstr(&d, "\n");
-				cline = lines.data[line++];
-				cbuild_sv_trim_right(&cline);
-				cbuild_sb_append_sv(&d, cline);
-				cbuild_sv_trim_left(&cline);
-			}
-			// Now we either have line starting from ')' (should not happen but this
-			// is handled by this parser) or another argument (or arguments) in cline.
-		}
-		args->size = arg;
-	}
+	// Parse function args
+	if (!parser_func_arglist(lines, &line, &cline, args, &d)) return false;
 	// Pass decl
-	cbuild_sb_append_null(&d);
-	*decl = cbuild_arena_strdup(allocator, d.data);
-	cbuild_sb_clear(&tmp);
-	cbuild_sb_clear(&d);
+	*decl = cbuild_sv_from_sb(d);
 	return true;
 }
