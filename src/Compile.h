@@ -60,15 +60,15 @@
 #define CBUILD_CARGS_DEFINE_VAL_TEMP(defname, val) \
 	cbuild_temp_sprintf("-D%s=%s", defname, val)
 /// Remove define based on compile-time literal.
-#define CBUILD_CARGS_UNDEF(defname)   "-U" defname
+#define CBUILD_CARGS_UNDEF(defname)   "-U"defname
 /// Add include based on compile-time literal.
 #define CBUILD_CARGS_INCLUDE(file)    "--include", file
 /// Add library include (`-l`) based on compile-time literal.
-#define CBUILD_CARGS_LIBINCLUDE(lib)  "-l" lib
+#define CBUILD_CARGS_LIBINCLUDE(lib)  "-l"lib
 /// Add library directories (`-I` and `-L`) based on compile-time literal.
-#define CBUILD_CARGS_LIBDIR(src, obj) "-I" src, "-L" obj
+#define CBUILD_CARGS_LIBDIR(src, obj) "-I"src, "-L"obj
 /// Set standard based on compile-time literal.
-#define CBUILD_CARGS_STD(std)         "-std=" std
+#define CBUILD_CARGS_STD(std)         "-std="std
 
 /// Simple wrapper for self-rebuild. Only `argv[0]`{.c} is used.
 /// Other elements are used only to re-exec new binary with same arguments.

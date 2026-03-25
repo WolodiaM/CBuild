@@ -15,6 +15,6 @@ CBUILDDEF void* cbuild_dlib_get_sym(cbuild_dlib_t handle, const char* name) {
 	return dlsym(handle, name);
 }
 CBUILDDEF void cbuild_dlib_close(cbuild_dlib_t handle) {
-	cbuild_assert(dlclose(handle) != 0, "Failed to close dynamic library.\n");
+	cbuild_assert(dlclose(handle) == 0, "Failed to close dynamic library.\n");
 }
 #endif // CBUILD_API_*

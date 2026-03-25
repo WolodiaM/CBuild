@@ -334,6 +334,8 @@ CBUILDDEF void cbuild_flag_print_help(void) {
 				flag_len += 1; // 'Terminator is shown as 'desc|terminator'
 				flag_len += (int)strlen(flag->spec.terminator);
 			}
+		} else {
+			flag_len += 1;
 		}
 		name_len = CBUILD_MAX(name_len, flag_len);
 	}
