@@ -90,7 +90,7 @@ CBUILDDEF bool cbuild_glob_compile_opt(cbuild_glob_t* glob, const char* pattern,
 ///
 /// * [pl:glob:cbuild_glob_t*] Glob object.
 /// * [pl:pattern"const char*] Pattern to compile.
-/// * [pl:...:...cbuid_glob_opts_t] Fields of configuration structure in initializer-list form.
+/// * [pl:...:...cbulid_glob_opts_t] Fields of configuration structure in initializer-list form.
 #define cbuild_glob_compile(glob, pattern, ...)                                   \
 cbuild_glob_compile_opt(glob, pattern, (struct cbuild_glob_opts_t){ __VA_ARGS__ })
 /// Find matches in a list.

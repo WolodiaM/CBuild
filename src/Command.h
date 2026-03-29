@@ -72,7 +72,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
 ///   - [fl:fdstderr] Redirect `stderr` to some file descriptor.
 ///   - [fl:file_stderr] Redirect `stderr` to some file.
 /// * Miscellaneous lags:
-///   - [fl:no_reset] By default `size` filed of command is reset. This make it stay untouched.
+///   - [fl:no_reset] By default `size` filed of command is reset. This flag disables this feature.
 ///   - [fl:autokill] Works only on Linux. Automatically kills process if parent dies.
 ///   - [fl:no_print_cmd] By default command is printed as `TRACE` log. This flag disable this log message.
 struct cbuild_cmd_opts_t {
@@ -104,6 +104,6 @@ CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opts_t op
 /// Run command.
 ///
 /// * [pl:cmd:cbuild_cmd_t*] Command to execute.
-/// * [pl:...:...cbuid_cmd_opts_t] Fields of configuration structure in initializer-list form.
+/// * [pl:...:...cbuild_cmd_opts_t] Fields of configuration structure in initializer-list form.
 #define cbuild_cmd_run(cmd, ...)                                               \
 cbuild_cmd_run_opt(cmd, (struct cbuild_cmd_opts_t){ __VA_ARGS__ })
