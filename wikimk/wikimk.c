@@ -296,7 +296,7 @@ bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args) {
 	if (!cbuild_sv_suffix(path, cbuild_sv_from_lit(".md"))) return true;
 	cbuild_cmd_t cmd = {0};
 	wikimk_cmd_append_pandoc_base_and_edit(&cmd, args.path);
-	if (cbuild_sv_cmp(path, cbuild_sv_from_lit(CODE_DOC_OUT"/symbols.md")) == 0) {
+	if (cbuild_sv_cmp(path, cbuild_sv_from_lit(CODE_DOC_SYMBOLS)) == 0) {
 		cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template-symbols.html");
 	} else {
 		cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
