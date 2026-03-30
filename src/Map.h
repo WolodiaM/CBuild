@@ -143,8 +143,8 @@ CBUILDDEF void* cbuild_map_get_raw(const cbuild_map_t* map, const void* key);
 /// This function will allocate one stack variable that will hold copy of key.
 /// This function will check if size of this variable matches `map->key_size`{.c}.
 ///
-/// * [pl:map] Map object.
-/// * [pl:key] Value of a key. Need to be copyable via `=`.
+/// * [pl:map:cbuild_map_t*] Map object.
+/// * [pl:key:any] Value of a key. Need to be copyable via `=`.
 ///
 /// [r:] Pointer to a pair structure or NULL if not found.
 #define cbuild_map_get(map, key)                                               \
@@ -161,8 +161,8 @@ CBUILDDEF void* cbuild_map_get_raw(const cbuild_map_t* map, const void* key);
 /// to a key. This function will check if size of this variable matches 
 /// `map->key_size`{.c}.
 ///
-/// * [pl:map] Map object.
-/// * [pl:key] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
+/// * [pl:map:cbuild_map_t*] Map object.
+/// * [pl:key:const void*] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
 ///
 /// [r:] Pointer to a pair structure or NULL if not found.
 #define cbuild_map_get_ptr(map, key)                                           \
@@ -201,8 +201,8 @@ CBUILDDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
 /// This function will allocate one stack variable that will hold copy of key.
 /// This function will check if size of this variable matches `map->key_size`{.c}.
 ///
-/// * [pl:map] Map object.
-/// * [pl:key] Value of a key. Need to be copyable via `=`.
+/// * [pl:map:cbuild_map_t*] Map object.
+/// * [pl:key:any] Value of a key. Need to be copyable via `=`.
 ///
 /// [r:] Pointer to a pair structure or NULL if not found.
 #define cbuild_map_get_or_alloc(map, key)                                      \
@@ -227,8 +227,8 @@ CBUILDDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
 /// to a key. This function will check if size of this variable matches 
 /// `map->key_size`{.c}.
 ///
-/// * [pl:map] Map object.
-/// * [pl:key] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
+/// * [pl:map:cbuild_map_t*] Map object.
+/// * [pl:key:const void*] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
 ///
 /// [r:] Pointer to a pair structure or NULL if not found.
 #define cbuild_map_get_or_alloc_ptr(map, key)                                  \
@@ -253,8 +253,8 @@ CBUILDDEF bool cbuild_map_remove_raw(cbuild_map_t* map, const void* key);
 /// This function will allocate one stack variable that will hold copy of key.
 /// This function will check if size of this variable matches `map->key_size`{.c}.
 ///
-/// * [pl:map] Map object.
-/// * [pl:key] Value of a key. Need to be copyable via `=`.
+/// * [pl:map:cbuild_map_t*] Map object.
+/// * [pl:key:any] Value of a key. Need to be copyable via `=`.
 ///
 /// [r:] `false` if key was not found.
 #define cbuild_map_remove(map, key)                                            \
@@ -272,8 +272,8 @@ CBUILDDEF bool cbuild_map_remove_raw(cbuild_map_t* map, const void* key);
 /// to a key. This function will check if size of this variable matches 
 /// `map->key_size`{.c}.
 ///
-/// * [pl:map] Map object.
-/// * [pl:key] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
+/// * [pl:map:cbuild_map_t*] Map object.
+/// * [pl:key:const void*] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
 ///
 /// [r:] `false` if key was not found.
 #define cbuild_map_remove_ptr(map, key)                                        \

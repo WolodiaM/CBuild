@@ -8,7 +8,7 @@
 
 /// String builder string builder.
 ///
-/// * [fl:sbta] Pointer to data. This pointer "owns" the data.
+/// * [fl:data] Pointer to data. This pointer "owns" the data.
 /// * [fl:size] Length of string builder. Data in range from `data`{.c} to `data+size`{.c} is guaranteed to be valid.
 /// * [fl:capacity] Length of allocated data. Data is guaranteed to be allocated (but may be not initialized) from `data`{.c} to `data+size`{.c}.
 typedef struct cbuild_sb_t {

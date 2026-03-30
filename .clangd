@@ -19,7 +19,6 @@ Diagnostics:
 If:
   PathMatch:
     - cbuild.c
-    - cbuild.split.c
 CompileFlags:
   Add: [ -std=gnu99 ]
 ---
@@ -34,11 +33,8 @@ CompileFlags:
   Add: [ -include, ../framework.h, -DTEST_RUN_PLATFORM="" ]
 ---
 If:
-  PathMatch: cbuild.h
+  PathMatch:
+    - cbuild.h
+    - cbuild.split.h
 CompileFlags:
-  Add: [ -DCBUILD_IMPLEMENTATION ]
----
-If:
-  PathMatch: rglob.h
-CompileFlags:
-  Add: [ -DGLOB_IMPLEMENTATION ]
+  Add: [ -std=gnu99, -DCBUILD_IMPLEMENTATION ]

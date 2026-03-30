@@ -30,5 +30,3 @@ typedef struct {
 	size_t size;
 	size_t capacity;
 } arguments_t;
-cbuild_sv_t sv_chop_token_with_separator(cbuild_sv_t* sv, char* separator);
-cbuild_sv_t sv_chop_token(cbuild_sv_t* sv);

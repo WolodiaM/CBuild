@@ -401,7 +401,7 @@
 /// Place `TODO` marker in code. Upon reaching it execution will abort with message. 
 ///
 /// * [pl:message:const char*] Message that will be printed before aborting. printf-style.
-/// * [pl:...] Format string arguments.
+/// * [pl:...:...any[]] Format string arguments.
 #define CBUILD_TODO(message, ...)                              \
 	do {                                                         \
 		__CBUILD_PRINTF("%s:%d: TODO: %s\n", __FILE__, __LINE__,   \
@@ -411,7 +411,7 @@
 /// Mark some code as unreachable. This will abort with message if executed.
 ///
 /// * [pl:message:const char*] Message that will be printed before aborting. printf-style.
-/// * [pl:...] Format string arguments.
+/// * [pl:...:...any[]] Format string arguments.
 #define CBUILD_UNREACHABLE(message, ...)                            \
 	do {                                                              \
 		__CBUILD_PRINTF("%s:%d: UNREACHABLE: %s\n", __FILE__, __LINE__, \

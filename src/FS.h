@@ -187,7 +187,7 @@ typedef struct cbuild_dir_walk_func_args_t {
 typedef bool (*cbuild_dir_walk_func_t)(cbuild_dir_walk_func_args_t args);
 /// Arguments to a directory walker.
 ///
-/// * [fl:content] Some arguments that will be passed to callback.
+/// * [fl:context] Some arguments that will be passed to callback.
 /// * [fl:visit_dir_last] Inverts order. Now all child files are visited first and parent directory is visited last.
 struct cbuild_dir_walk_opts_t {
 	void* context;
@@ -231,7 +231,7 @@ struct cbuild_path_ext_opts_t {
 /// [r:] String allocated via [`cbuild_temp_malloc`](Temp.html#cbuild_temp_malloc).
 CBUILDDEF char* cbuild_path_ext_opt(const char* path, struct cbuild_path_ext_opts_t opts);
 /// Get extension of specific file.
-/// File pointer by [p:path] is not checked in any way.
+/// File pointer by [p:path:const char*] is not checked in any way.
 ///
 /// * [pl:path:const char*] Path to a file.
 /// * [pl:...:...cbuild_path_ext_opts_t] Fields of configuration structure in initializer-list form.

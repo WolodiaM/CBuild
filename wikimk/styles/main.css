@@ -76,7 +76,7 @@ body {
 	background-color: var(--bg);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
 							 Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-	font-size: 14pt;
+	font-size: 1rem;
 }
 h1 {
 	color: var(--fg2);
@@ -130,10 +130,15 @@ pre>code, code {
 	font-family: "Courier New", Courier, monospace;
 	background-color: var(--bg-soft);
 }
+pre>code {
+	display: block;
+	overflow-x: auto;
+}
 p {
 	text-indent: 2em;
 	margin-bottom: 0.5em;
 	margin-top: 0.5em;
+	line-height: 1.25;
 }
 li p {
 	text-indent: 0;
@@ -237,6 +242,7 @@ header div.header-theme-switcher button {
 	border: 2px solid var(--bg4);
 	border-radius: 5px;
 	font-size: inherit;
+	cursor: pointer;
 }
 /* Navigation part */
 nav {
@@ -277,6 +283,109 @@ footer div p {
 }
 footer div p.footer-name {
 	font-size: 150%;
+}
+/* -------------------------------------------- */
+/* Code doc style */
+/* -------------------------------------------- */
+div.decl {
+	background-color: var(--bg1);
+	border-width: 2px;
+	border-radius: 5px;
+	border-style: solid;
+	padding: 1em;
+	overflow: auto;
+}
+div.func-decl {
+	border-color: var(--green);
+}
+div.var-decl {
+	border-color: var(--red);
+}
+div.definer-decl {
+	border-color: var(--blue);
+}
+div.struct-decl {
+	border-color: var(--purple);
+}
+div.enum-decl {
+	border-color: var(--orange);
+}
+div.typedef-decl {
+	border-color: var(--dim-red);
+}
+div.typedef-struct-decl {
+	border-color: var(--dim-purple);
+}
+div.typedef-enum-decl {
+	border-color: var(--dim-orange);
+}
+div.typedef-func-decl {
+	border-color: var(--dim-green);
+}
+div.decl h2 {
+	text-align: justify !important;
+}
+div.decl span.arglist-type {
+}
+div.decl span.arglist-name {
+}
+div.decl span.fieldlist-type {
+}
+div.decl span.fieldlist-name {
+}
+div.decl span.enumval-list {
+}
+div.decl span.argref-name {
+	position: relative;
+	display: inline-block;
+	cursor: help;
+	border-bottom: 1px dotted var(--fg3);
+}
+div.decl span.argref-name span.argref-type {
+	/* Hover feature */
+	visibility: hidden;
+	position: absolute;
+	bottom: 125%; /* Position above the text */
+	left: 50%;
+	transform: translateX(-50%);
+	/* Styling */
+	z-index: 10;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+div.decl span.argref-name:hover span.argref-type {
+	visibility: visible;
+	opacity: 1;
+}
+div.decl span.fieldref-name {
+	position: relative;
+	display: inline-block;
+	cursor: help;
+	border-bottom: 1px dotted var(--fg3);
+}
+div.decl span.fieldref-name span.fieldref-type {
+	/* Hover feature */
+	visibility: hidden;
+	position: absolute;
+	bottom: 125%; /* Position above the text */
+	left: 50%;
+	transform: translateX(-50%);
+	/* Styling */
+	z-index: 10;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+div.decl span.fieldref-name span.fieldref-type {
+	visibility: visible;
+	opacity: 1;
+}
+div.decl span.enumval-ref {
+}
+div.decl span.return-starter {
+}
+div.decl span.return-type {
+}
+h2 span.symbols-list-elem {
 }
 /* -------------------------------------------- */
 /* Layouts */

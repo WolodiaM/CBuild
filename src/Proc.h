@@ -56,13 +56,19 @@ CBUILDDEF int cbuild_proc_wait_code(cbuild_proc_t proc);
 CBUILDDEF ssize_t cbuild_procs_wait_any(cbuild_proclist_t procs, int* code);
 /// Check if specific process is still running.
 CBUILDDEF bool cbuild_proc_is_running(cbuild_proc_t proc);
+/// Function that can be used a child process entry point.
+///
+/// [pl:args] Arguments passed from parent process.
+///
+/// [r:] Exit code of a process.
+typedef int (*cbuild_proc_func_t)(void* args);
 /// Start a new process.
 ///
 /// * [pl:func] Function that will be used as process' entry point. Function should return exit code.
 /// * [pl:args] Arguments that will be passed to that function
 ///
 /// [r:] Process handle of new process.
-CBUILDDEF cbuild_proc_t cbuild_proc_start(int (*func)(void* args), void* args);
+CBUILDDEF cbuild_proc_t cbuild_proc_start(cbuild_proc_func_t func, void* args);
 /// Pointer wrapper for shared memory.
 ///
 /// * [fl:ptr] Pointer to a memory.

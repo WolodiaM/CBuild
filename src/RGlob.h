@@ -89,7 +89,7 @@ CBUILDDEF bool cbuild_glob_compile_opt(cbuild_glob_t* glob, const char* pattern,
 /// into a regx one and then it will call `regcomp`. POSIX ERE will be used.
 ///
 /// * [pl:glob:cbuild_glob_t*] Glob object.
-/// * [pl:pattern"const char*] Pattern to compile.
+/// * [pl:pattern:const char*] Pattern to compile.
 /// * [pl:...:...cbulid_glob_opts_t] Fields of configuration structure in initializer-list form.
 #define cbuild_glob_compile(glob, pattern, ...)                                   \
 cbuild_glob_compile_opt(glob, pattern, (struct cbuild_glob_opts_t){ __VA_ARGS__ })
