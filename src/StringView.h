@@ -40,42 +40,42 @@ CBUILDDEF size_t cbuild_sv_trim_right(cbuild_sv_t* sv);
 CBUILDDEF size_t cbuild_sv_trim(cbuild_sv_t* sv);
 /// Chop [p:size] characters from string view starting from the left.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 /// * [pl:size] Number of character that will be chopped.
 ///
 /// [r:] New string view containing chopped characters.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop(cbuild_sv_t* sv, size_t size);
 /// Chop [p:size] characters from string view starting from the right.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 /// * [pl:size] Number of character that will be chopped.
 ///
 /// [r:] New string view containing chopped characters.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_right(cbuild_sv_t* sv, size_t size);
 /// Chop characters from string view starting from the left until [p:delim] is found.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 /// * [pl:delim] Delimiter character.
 ///
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim);
 /// Chop characters from string view starting from the right until [p:delim] is found.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 /// * [pl:delim] Delimiter character.
 ///
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_delim(cbuild_sv_t* sv, char delim);
 /// Chop characters from string view starting from the left until [p:delim] is found.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 /// * [pl:delim] Delimiter string view.
 ///
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
 /// Chop characters from string view starting from the right until [p:delim] is found.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 /// * [pl:delim] Delimiter string view.
 ///
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
@@ -91,7 +91,7 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_sv(cbuild_sv_t* sv, cbuild_sv_t de
 typedef bool (*cbuild_sv_delim_func)(const cbuild_sv_t* sv, size_t idx, void* args);
 /// chop characters from string view starting from the left until [p:delim] returns `true`.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. its size will be reduced.
 /// * [pl:delim] Delimiter function.
 /// * [pl:args] Arguments to a function.
 ///
@@ -100,7 +100,7 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv,
 	cbuild_sv_delim_func delim, void* args);
 /// chop characters from string view starting from the right until [p:delim] returns `true`.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 /// * [pl:delim] Delimiter function.
 /// * [pl:args] Arguments to a function.
 ///
@@ -174,7 +174,7 @@ CBUILDDEF uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv);
 /// Chop characters from string view starting from the left until [p:delim] is found.
 /// Operates on utf8 codepoints instead of ASCII characters.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 /// * [pl:delim] Delimiter character.
 ///
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
@@ -190,7 +190,7 @@ typedef bool (*cbuild_sv_utf8delim_func)(const cbuild_sv_t* sv, void* args);
 /// chop characters from string view starting from the right until [p:delim] returns `true`.
 /// Operates on utf8 codepoints instead of ASCII characters.
 ///
-/// * [pl:sv:string_view_t*] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 /// * [pl:delim] Delimiter function.
 /// * [pl:args] Arguments to a function.
 ///

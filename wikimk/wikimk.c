@@ -202,6 +202,10 @@ int main(int argc, char** argv) {
 	if (!docgen_generate_symbols(CODE_DOC_SYMBOLS, &symbols)) {
 		return 1;
 	}
+	cbuild_sb_t dirname = {0};
+	cbuild_sb_append_cstr(&dirname, "Code Doc");
+	if (!cbuild_file_write(CODE_DOC_OUT"/.dirname", &dirname)) return 1;
+	cbuild_sb_clear(&dirname);
 	cbuild_arena_base_free(&symbols.arena);
 	// wikimk
 	if (!cbuild_dir_remove(WIKI_OUT)) {
@@ -296,10 +300,9 @@ bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args) {
 	if (!cbuild_sv_suffix(path, cbuild_sv_from_lit(".md"))) return true;
 	cbuild_cmd_t cmd = {0};
 	wikimk_cmd_append_pandoc_base_and_edit(&cmd, args.path);
+	cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
 	if (cbuild_sv_cmp(path, cbuild_sv_from_lit(CODE_DOC_SYMBOLS)) == 0) {
-		cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template-symbols.html");
-	} else {
-		cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
+		cbuild_cmd_append_many(&cmd, "-M", "symbols-page");
 	}
 	// Input file
 	cbuild_cmd_append(&cmd, args.path);

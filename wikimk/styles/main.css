@@ -76,7 +76,7 @@ body {
 	background-color: var(--bg);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
 							 Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-	font-size: 1rem;
+	font-size: 14pt;
 }
 h1 {
 	color: var(--fg2);
@@ -123,7 +123,7 @@ ol {
   list-style-type: decimal;
   padding-left: 1.5em;
 }
-ol > li {
+ol>li {
   display: list-item;
 }
 pre>code, code {
@@ -267,6 +267,24 @@ nav ul ul ul li::before {
 	color: var(--fg);
 	content: "┗";
 }
+nav li>details>summary {
+	color: var(--fg);
+	font-size: 100%;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+nav li>details>summary::marker {
+	display: none;
+	content: "";
+}
+nav li>details>summary::-webkit-details-marker {
+	display: none;
+}
+nav li {
+	display: flex;
+}
 /* Footer */
 footer div {
 	border: 2px dotted var(--yellow-dim);
@@ -284,64 +302,63 @@ footer div p {
 footer div p.footer-name {
 	font-size: 150%;
 }
-/* -------------------------------------------- */
 /* Code doc style */
-/* -------------------------------------------- */
-div.decl {
-	background-color: var(--bg1);
+section.decl {
 	border-width: 2px;
 	border-radius: 5px;
 	border-style: solid;
 	padding: 1em;
+	margin: 1em;
 	overflow: auto;
 }
-div.func-decl {
+section.func-decl {
 	border-color: var(--green);
 }
-div.var-decl {
+section.var-decl {
 	border-color: var(--red);
 }
-div.definer-decl {
+section.definer-decl {
 	border-color: var(--blue);
 }
-div.struct-decl {
+section.struct-decl {
 	border-color: var(--purple);
 }
-div.enum-decl {
+section.enum-decl {
 	border-color: var(--orange);
 }
-div.typedef-decl {
-	border-color: var(--dim-red);
+section.typedef-decl {
+	border-color: var(--red-dim);
 }
-div.typedef-struct-decl {
-	border-color: var(--dim-purple);
+section.typedef-struct-decl {
+	border-color: var(--purple-dim);
 }
-div.typedef-enum-decl {
-	border-color: var(--dim-orange);
+section.typedef-enum-decl {
+	border-color: var(--orange-dim);
 }
-div.typedef-func-decl {
-	border-color: var(--dim-green);
+section.typedef-func-decl {
+	border-color: var(--green-dim);
 }
-div.decl h2 {
+section.decl>h2 {
 	text-align: justify !important;
 }
-div.decl span.arglist-type {
+section.decl span.arglist-type {
 }
-div.decl span.arglist-name {
+section.decl span.enumval-list,
+section.decl span.arglist-name,
+section.decl span.fieldlist-name {
+	color: var(--blue);
+	font-family: monospace;
 }
-div.decl span.fieldlist-type {
+section.decl span.fieldlist-type {
 }
-div.decl span.fieldlist-name {
-}
-div.decl span.enumval-list {
-}
-div.decl span.argref-name {
+section.decl span.argref-name,
+section.decl span.fieldref-name {
 	position: relative;
-	display: inline-block;
 	cursor: help;
 	border-bottom: 1px dotted var(--fg3);
 }
-div.decl span.argref-name span.argref-type {
+section.decl span.argref-name>span.argref-type,
+section.decl span.fieldref-name>span.fieldref-type {
 	/* Hover feature */
 	visibility: hidden;
 	position: absolute;
@@ -353,39 +370,30 @@ div.decl span.argref-name span.argref-type {
 	opacity: 0;
 	transition: opacity 0.2s;
 }
-div.decl span.argref-name:hover span.argref-type {
+section.decl span.argref-name:hover>span.argref-type,
+section.decl span.fieldref-name:hover>span.fieldref-type {
 	visibility: visible;
 	opacity: 1;
 }
-div.decl span.fieldref-name {
-	position: relative;
-	display: inline-block;
-	cursor: help;
-	border-bottom: 1px dotted var(--fg3);
+section.decl span.argref-name,
+section.decl span.fieldref-name,
+section.decl span.enumval-ref {
+	background-color: var(--bg2);
+	padding: 0 4px;
+	border-radius: 3px;
+	color: var(--aqua);
 }
-div.decl span.fieldref-name span.fieldref-type {
-	/* Hover feature */
-	visibility: hidden;
-	position: absolute;
-	bottom: 125%; /* Position above the text */
-	left: 50%;
-	transform: translateX(-50%);
-	/* Styling */
-	z-index: 10;
-	opacity: 0;
-	transition: opacity 0.2s;
+section.decl span.return-type {
+	font-style: italic;
 }
-div.decl span.fieldref-name span.fieldref-type {
-	visibility: visible;
-	opacity: 1;
-}
-div.decl span.enumval-ref {
-}
-div.decl span.return-starter {
-}
-div.decl span.return-type {
+section.decl span.return-type:before {
+	color: var(--red);
+	content: "Return: ";
 }
 h2 span.symbols-list-elem {
+	display: block;
+	padding: 0.5em 0;
+	border-bottom: 1px solid var(--bg2);
 }
 /* -------------------------------------------- */
 /* Layouts */
@@ -401,6 +409,8 @@ div.nav-container {
 @media screen and (min-width: 901px) {
 	/* Horizontal stacking of blocks */
 	div.nav-nav-box {
+		position: sticky;
+		top: 0;
 		flex: 1 1 0;
 		min-width: 0;
 		padding: 1em;
@@ -438,47 +448,11 @@ div.nav-container {
 		margin-left: auto;
 	}
 }
-/* Vertical tablet layout */
-@media screen and (min-width: 768px) and (max-width: 900px) {
-	/* Horizontal stacking of blocks */
-	div.nav-nav-box {
-		flex: 1 1 0;
-		min-width: 0;
-		padding: 1em;
-		padding-top: 5em;
-	}
-	div.nav-nav-box nav {
-		overflow: auto;
-	}
-	div.nav-content-box {
-		flex: 3 1 0;
-		min-width: 0;
-		padding: 1em;
-	}
-	/* Wide header and footer */
-	footer {
-		width: 100%;
-	}
-	header {
-		width: 100%;
-	}
-	/* Vertical header layout */
-	header div.header {
-		flex-direction: column;
-		align-items: center;
-		position: static;
-	}
-	header div.header-title {
-		position: static;
-		transform: none;
-		margin-bottom: 0.5em;
-	}
-	header div.header-theme-switcher {
-		margin-left: 0;
-	}
-}
 /* Mobile layout */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
+	body {
+		font-size: 12pt;
+	}
 	/* Vertical stacking of blocks */
 	div.nav-container {
 		flex-direction: column;
@@ -515,5 +489,8 @@ div.nav-container {
 	}
 	header div.header-theme-switcher {
 		margin-left: 0;
+	}
+	nav summary {
+		font-weight: bold;
 	}
 }

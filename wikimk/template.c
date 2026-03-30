@@ -108,16 +108,14 @@ void template_parsed_enum_value_standalone(cbuild_sb_t* dst, argument_t arg) {
 	cbuild_sb_appendf(dst, "[`"CBuildSVFmt"`]{.enumval-ref}", CBuildSVArg(arg.name));
 }
 void template_parsed_ret(cbuild_sb_t* dst, cbuild_sv_t text) {
-	cbuild_sb_appendf(dst, 
-		"[Returns]{.return-starter} [`"CBuildSVFmt"`]{.return-type}",
-		CBuildSVArg(text));
+	cbuild_sb_appendf(dst, "[`"CBuildSVFmt"`]{.return-type}", CBuildSVArg(text));
 }
 // Symbol table formatting
 void template_symtab_entry(cbuild_sb_t* dst, const char* symbol, const char* file) {
 	const char* fname = cbuild_path_name(file);
-	const char* md_fname = cbuild_temp_sprintf("%.*s.md", 
+	const char* html_fname = cbuild_temp_sprintf("%.*s.html", 
 		(int)(strlen(fname) - 2), fname);
 	cbuild_sb_appendf(dst, 
-		"## [[`%s`](%s#%s)]{.symbols-list-elem} {#ID_%s}\n",
-		symbol, md_fname, symbol, symbol);
+		"### [[`%s`](%s#%s)]{.symbols-list-elem} {#ID_%s}\n",
+		symbol, html_fname, symbol, symbol);
 }

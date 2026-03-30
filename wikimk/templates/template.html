@@ -6,18 +6,22 @@
 		<meta
 			http-equiv="Content-Security-Policy"
 			content="default-src 'self';
-							 img-src 'self' data https://github.com https://img.shields.io;
-							 object-src 'none';
-							 base-uri 'self';
-							 upgrade-insecure-requests;">
+			         img-src 'self' data https://github.com https://img.shields.io;
+			         object-src 'none';
+			         base-uri 'self';
+			         upgrade-insecure-requests;">
 		<meta http-equiv="X-Content-Type-Options" content="nosniff">
 		<meta name="referrer" content="strict-origin-when-cross-origin">
-		<base href="/CBuild/">
+		<!-- <base href="/CBuild/"> -->
 		<title>$title$</title>
-		<link rel="stylesheet" href="styles/reset.css">
-		<link rel="stylesheet" href="styles/main.css">
-		<link rel="stylesheet" href="styles/syntax.css">
-		<script src="scripts/theme.js"></script>
+		<link rel="stylesheet" href="/styles/reset.css">
+		<link rel="stylesheet" href="/styles/main.css">
+		<link rel="stylesheet" href="/styles/syntax.css">
+		<script src="/scripts/theme.js"></script>
+		<script src="/scripts/mobile-close-nav-tree.js"></script>
+		$if(symbols-page)$
+		<script src="/scripts/symbols-redirect.js"></script>
+		$endif$
 	</head>
 	<body>
 		<header>
