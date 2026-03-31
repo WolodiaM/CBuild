@@ -289,8 +289,9 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 		const char* arg = cbuild_shift(argv, argc);
-		int port = atoi(arg);
-		if (port < 1 || port > UINT16_MAX) {
+		char* num_end = NULL;
+		long port = strtol(arg, &num_end, 10);
+		if (port < 1 || port > UINT16_MAX || *num_end != '\0') {
 			printf("ERROR: Invalid port provided to subcommand 'serve'.\n");
 			main_help(progname);
 			return 1;

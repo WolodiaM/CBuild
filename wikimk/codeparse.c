@@ -155,7 +155,8 @@ bool parser_func_decl(lines_t* lines, size_t line,
 	}
 	// Strip CBUILDDEF
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("CBUILDDEF "))) {
-		cbuild_log_error("Function is not prefixed with CBUILDDEF.");
+		cbuild_log_error("Function is not prefixed with CBUILDDEF: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	// Parse return value
@@ -184,7 +185,8 @@ bool parser_var_decl(lines_t* lines, size_t line,
 	cbuild_sv_trim_right(&cline);
 	cbuild_sv_trim_left(&cline);
 	if(!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("extern "))) {
-		cbuild_log_error("Variable is not prefixed with extern.");
+		cbuild_log_error("Variable is not prefixed with extern: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	cbuild_sv_trim_left(&cline);
@@ -227,7 +229,8 @@ bool parser_define_decl(lines_t* lines, size_t line,
 	*decl = cbuild_sv_from_sb(d);
 	cbuild_sv_trim_left(&cline);
 	if(!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("#define"))) {
-		cbuild_log_error("Define is not prefixed with #define.");
+		cbuild_log_error("Define is not prefixed with #define: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	cbuild_sv_trim_left(&cline);
@@ -240,9 +243,9 @@ bool parser_enum_values(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 	while (*cline->data != '}') { // Enum declaration ends when '}' is encountered
 		cbuild_sv_t token = sv_chop_token(cline);
 		cbuild_da_append(fields, ((argument_t){
-			.type = cbuild_sv_from_parts(NULL, 0), // Enum values does not have individual types and just share overal type of an enum
-			.name = sv_dup(token),
-		}));
+					.type = cbuild_sv_from_parts(NULL, 0), // Enum values does not have individual types and just share overal type of an enum
+					.name = sv_dup(token),
+				}));
 		next_line(lines, line, cline, decl);
 	}
 	return true;
@@ -283,7 +286,7 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 						while(*token_no_ptr.data == '*') cbuild_sv_chop(&token_no_ptr, 1);
 						for (size_t i = last_idx; i < fields->size; i++) {
 							cbuild_sb_appendf(&tmp, CBuildSVFmt"."CBuildSVFmt,
-												 CBuildSVArg(token_no_ptr), CBuildSVArg(fields->data[i].name));
+								CBuildSVArg(token_no_ptr), CBuildSVArg(fields->data[i].name));
 							free((void*)fields->data[i].name.data);
 							fields->data[i].name = sb_leak_as_sv(&tmp);
 						}
@@ -343,7 +346,7 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 						while(*token_no_ptr.data == '*') cbuild_sv_chop(&token_no_ptr, 1);
 						for (size_t i = last_idx; i < fields->size; i++) {
 							cbuild_sb_appendf(&tmp, CBuildSVFmt"."CBuildSVFmt,
-												 CBuildSVArg(token_no_ptr), CBuildSVArg(fields->data[i].name));
+								CBuildSVArg(token_no_ptr), CBuildSVArg(fields->data[i].name));
 							free((void*)fields->data[i].name.data);
 							fields->data[i].name = sb_leak_as_sv(&tmp);
 						}
@@ -389,9 +392,9 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 		}
 		if (tmp.size > 0 && token.size > 0) {
 			cbuild_da_append(fields, ((argument_t){
-				.type = sb_leak_as_sv(&tmp),
-				.name = sv_dup(token),
-			}));
+						.type = sb_leak_as_sv(&tmp),
+						.name = sv_dup(token),
+					}));
 		}
 		// Get next line
 		next_line(lines, line, cline, decl);
@@ -409,12 +412,14 @@ bool parser_struct_decl(lines_t* lines, size_t line,
 	cbuild_sv_trim_left(&cline);
 	// Parse 'struct <name> {'
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("struct "))) {
-		cbuild_log_error("Structure is not prefixed with struct.");
+		cbuild_log_error("Structure is not prefixed with struct: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	*name = sv_dup(sv_chop_token(&cline));
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("{"))) {
-		cbuild_log_error("Structure is not prefixed with {.");
+		cbuild_log_error("Structure is not prefixed with {.: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	// Parse fields
@@ -439,12 +444,14 @@ bool parser_enum_decl(lines_t* lines, size_t line,
 	cbuild_sv_trim_left(&cline);
 	// Parse 'enum <name> {'
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("enum "))) {
-		cbuild_log_error("Enumeration is not prefixed with enum.");
+		cbuild_log_error("Enumeration is not prefixed with enum: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	*name = sv_dup(sv_chop_token(&cline));
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("{"))) {
-		cbuild_log_error("Enumeration is not prefixed with {.");
+		cbuild_log_error("Enumeration is not prefixed with {: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	// Parse fields
@@ -468,7 +475,8 @@ bool parser_typedef_decl(lines_t* lines, size_t line,
 	cbuild_sv_trim_right(&cline);
 	cbuild_sv_trim_left(&cline);
 	if(!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("typedef "))) {
-		cbuild_log_error("Typedef is not prefixed with typedef.");
+		cbuild_log_error("Typedef is not prefixed with typedef: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	cbuild_sv_trim_left(&cline);
@@ -497,11 +505,13 @@ bool parser_typedef_struct_decl(lines_t* lines, size_t line,
 	cbuild_sv_trim_left(&cline);
 	// Parse 'typedef struct <name> {'
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("typedef "))) {
-		cbuild_log_error("Structure typedef is not prefixed with struct.");
+		cbuild_log_error("Structure typedef is not prefixed with struct"CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("struct "))) {
-		cbuild_log_error("Structure typedef is not prefixed with struct.");
+		cbuild_log_error("Structure typedef is not prefixed with struct"CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	cbuild_sv_trim_left(&cline);
@@ -543,11 +553,13 @@ bool parser_typedef_enum_decl(lines_t* lines, size_t line,
 	cbuild_sv_trim_left(&cline);
 	// Parse 'typedef enum <name> {'
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("typedef "))) {
-		cbuild_log_error("Enumeration typedef is not prefixed with typedef.");
+		cbuild_log_error("Enumeration typedef is not prefixed with typedef: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("enum "))) {
-		cbuild_log_error("Enumeration typedef is not prefixed with enum.");
+		cbuild_log_error("Enumeration typedef is not prefixed with enum: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	cbuild_sv_trim_left(&cline);
@@ -591,7 +603,8 @@ bool parser_typedef_func_decl(lines_t* lines, size_t line,
 	cbuild_sv_trim_left(&cline);
 	// Strip typedef
 	if (!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("typedef "))) {
-		cbuild_log_error("Function is not prefixed!");
+		cbuild_log_error("Function is not prefixed: "CBuildSVFmt".",
+			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
 	// Parse return value
