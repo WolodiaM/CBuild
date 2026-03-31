@@ -1,3 +1,7 @@
+# NOTE
+
+This spec was never finalized, and generator support a little different feature set. It mostly comes down to specific ways of markdown output and error reporting and in few places real code is a little flexible. Also, **Default Value Evaluation** part is not implemented at all. When this will be extracted into separate project then it will have proper spec for doc comments. Also, not all heading conversion is done. For up-to-date spec please refer to code. This spec evolved while I was writing generator to both simplify generator and jave enough features to be useful.
+
 # General
 
 Starting comment: `///`. This is easy to parse.
@@ -86,102 +90,3 @@ Allows to write normal headings while not breaking global layout.
 Level 1 headings is used as page-level headers and level 2 is used for object names at the top of a block. Both of this are added by C "parser" and "processor".
 
 In file-level comments only 1 is subtracted from heading level.
-
-## Template
-
-Same as currently for wikimk, template is available. But here 2 templates are used - first one is for generated markdown. This allows to set metadata and some overal structure and second is for HTML. Default header and footer is present too. Search header is added.
-
-## Hover
-
-  1. The Generated HTML
-  When your parser sees [p:my_param], it would wrap it in a span with a hidden "popup" span inside:
-```html
-<span class="doc-ref">
-  <code>my_param</code>
-  <span class="doc-popup">
-    <strong>int</strong> - The count of items to process.
-  </span>
-</span>
-```
-  2. The CSS (The "No-JS" Magic)
-  You can handle the visibility entirely through the :hover pseudo-class:
-
-```css
-/* The container */
-.doc-ref {
-    position: relative;
-    display: inline-block;
-    cursor: help;
-    border-bottom: 1px dotted #666;
-}
-
-/* The popup (hidden by default) */
-.doc-popup {
-    visibility: hidden;
-    position: absolute;
-    bottom: 125%; /* Position above the text */
-    left: 50%;
-    transform: translateX(-50%);
-
-    /* Styling */
-    background-color: #333;
-    color: #fff;
-    padding: 8px;
-    border-radius: 4px;
-    width: 200px;
-    z-index: 10;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-/* Show on hover */
-.doc-ref:hover .doc-popup {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* A small arrow at the bottom of the popup */
-.doc-popup::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #333 transparent transparent transparent;
-}
-```
-
-# Used pandoc extensions (for a full wiki)
-
-Extensions:
-
-- smart
-- auto\_identifiers
-- Either ascii\_identifiers or gfm\_auto\_identifiers
-- raw\_html - Disabled. Allow to build to other formats. And easier to manage. And harder to break.
--  all\_symbols\_escapable
-
-Pandoc markdown:
-
-- blank\_before\_header
-- space\_in\_atx\_header
-- header\_attributes - Used in cross-referencing
-- implicit\_header\_references - Better to use explicit names but sometimes it is useful
-- fenced\_code\_attributes - Syntax-highlighted
-- intraword\_underscores - Highly useful for code.
-- inline\_code\_attributes - Useful for code docs
-- bracketed\_spans - Useful for custom styling. wikimk support colors here and pandoc supports "underline", "smallcaps" and "mark" (maybe need to be added to main wikimk css).
-
-# Defined css
-
-## Divs
-
-### note
-
-Same as in wikimk
-
-### deprecated
-
-Somethings like note but with deprecation indicator.
