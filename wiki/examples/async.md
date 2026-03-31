@@ -48,16 +48,13 @@ int main(int argc, char** argv) {
     cbuild_selfrebuild(argc, argv);
     cbuild_cmd_t c1 = {0};
     cbuild_cmd_append_many(&c1, CC, "-c", "src/main.c");
-    cbuild_proc_t p1;
-    cbuild_cmd_run(&c1, .pass_proc = true, .proc = &p1);
+    cbuild_proclist_t procs;
+    cbuild_cmd_run(&c1, .procs = &procs);
     cbuild_cmd_t c2 = {0};
     cbuild_cmd_append_many(&c2, CC, "-c", "src/utils.c");
     cbuild_proc_t p2;
-    cbuild_cmd_run(&c2, .pass_proc = true, .proc = &p2);
-    if (!cbuild_proc_wait(p1)) {
-        return 1;
-    }
-    if (!cbuild_proc_wait(p2)) {
+    cbuild_cmd_run(&c2, .procs = &procs);
+    if (!cbuild_procs_wait(procs)) {
         return 1;
     }
     cbuild_cmd_t l = {0};

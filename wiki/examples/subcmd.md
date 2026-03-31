@@ -54,10 +54,10 @@ bool build() {
     cbuild_cmd_t c = {0};
     cbuild_cmd_append_many(&c, CC, "-c", "src/main.c");
     cbuild_proc_t p1;
-    cbuild_cmd_run(&c, .pass_proc = true, .proc = &p1);
+    cbuild_cmd_run(&c,  .proc = &p1);
     cbuild_cmd_append_many(&c, CC, "-c", "src/utils.c");
     cbuild_proc_t p2;
-    cbuild_cmd_run(&c, .pass_proc = true, .proc = &p2);
+    cbuild_cmd_run(&c, .proc = &p2);
     if (!cbuild_proc_wait(p1)) {
         return false;
     }
