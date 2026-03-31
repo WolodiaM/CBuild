@@ -8,6 +8,7 @@ wiki/wikimk/template/nav.html
 build/
 cbuild.h
 wikimk/templates/nav.html
+wiki/doc
 # Binaries
 wikimk.run
 cbuild.run
