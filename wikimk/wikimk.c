@@ -9,6 +9,8 @@
 // ----------------------------------------
 // Includes
 // ----------------------------------------
+#include "sys/socket.h"
+#include "netinet/in.h"
 #define CBUILD_IMPLEMENTATION
 #include "../cbuild.split.h"
 // ----------------------------------------
@@ -23,6 +25,7 @@
 #define CODE_DOC_OUT     "wiki/doc"
 #define CODE_DOC_SYMBOLS "wiki/doc/symbols.md"
 #define WIKIMK_TEMPLATE  "wikimk/templates"
+#define WIKIMK_ERRORS    "wikimk/errors"
 #define WIKIMK_STYLES    "wikimk/styles"
 #define WIKIMK_SCRIPTS   "wikimk/scripts"
 #define WIKI_SRC         "wiki"
@@ -97,7 +100,9 @@ typedef struct {
 bool docgen_dir_walk(cbuild_dir_walk_func_args_t args);
 bool docgen_generate_symbols(const char* output, symbols_t* symbols);
 bool wikimk_generate_nav_html(const char* output, const char* src);
+bool wikimk_build_error(int code);
 bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args);
+bool http_serve_dir(const char* dir, uint16_t port);
 // TODO: Move this into CBuild, but this maybe need some group of function
 // (eg. multiple functions of such class), so it will be here until I have
 // time to thing about thia addition to an API
@@ -176,64 +181,127 @@ void on_exit_handler(int code, void* args) {
 	cbuild_temp_profiler();
 }
 cbuild_proclist_t procs = {0};
-int main(int argc, char** argv) {
-	on_exit(on_exit_handler, NULL);
-	// docgen
-	if (!load_template()) return 1;
-	if (!load_parser()) return 1;
+bool main_prelude(void) {
+	if (!load_template()) return false;
+	if (!load_parser()) return false;
+	return true;
+}
+bool main_epilogue(void) {
+	cbuild_dlib_close(PARSER.lib);
+	cbuild_dlib_close(TEMPLATE.lib);
+	return true;
+}
+bool main_docgen(void) {
 	cbuild_log_info("Processing doc comments from '%s' into '%s.",
 		CODE_DOC_SRC, CODE_DOC_OUT);
 	if (!cbuild_dir_remove(CODE_DOC_OUT)) {
 		cbuild_log_error("Could not clean build folder '"CODE_DOC_OUT"'.");
-		return 1;
+		return false;
 	}
 	if (!cbuild_dir_check(CODE_DOC_SRC)) {
-		cbuild_log_error("Code SRC is invalid. Could not process doc comments.");
-		return 1;
+		cbuild_log_error("Directory "CODE_DOC_SRC" is code doc source but it does not exist.");
+		return false;
 	}
 	if (!cbuild_dir_check(CODE_DOC_OUT)) {
-		cbuild_dir_create(CODE_DOC_OUT);
+		if (!cbuild_dir_create(CODE_DOC_OUT)) return false;
 	}
 	symbols_t symbols = {0};
 	cbuild_arena_base_malloc(&symbols.arena, CBUILD_TEMP_ARENA_SIZE);
 	if (!cbuild_dir_walk(CODE_DOC_SRC, docgen_dir_walk, .context = &symbols)) {
-		return 1;
+		return false;
 	}
 	if (!docgen_generate_symbols(CODE_DOC_SYMBOLS, &symbols)) {
-		return 1;
+		return false;
 	}
 	cbuild_sb_t dirname = {0};
 	cbuild_sb_append_cstr(&dirname, "Code Doc");
-	if (!cbuild_file_write(CODE_DOC_OUT"/.dirname", &dirname)) return 1;
+	if (!cbuild_file_write(CODE_DOC_OUT"/.dirname", &dirname)) return false;
 	cbuild_sb_clear(&dirname);
 	cbuild_arena_base_free(&symbols.arena);
-	// wikimk
+	return true;
+}
+bool main_wikimk(void) {
 	if (!cbuild_dir_remove(WIKI_OUT)) {
 		cbuild_log_error("Could not clean build folder '"WIKI_OUT"'.");
-		return 1;
+		return false;
 	}
 	cbuild_log_info("Processing wiki from '%s' into '%s.", WIKI_SRC, WIKI_OUT);
 	if (!cbuild_dir_check(WIKI_SRC)) {
-		cbuild_log_error("Wiki SRC is invalid. Could not process doc comments.");
-		return 1;
+		cbuild_log_error("Directory "WIKI_SRC" is wiki source but it does not exist.");
+		return false;
 	}
 	if (!wikimk_generate_nav_html(WIKIMK_TEMPLATE"/nav.html", WIKI_SRC)) {
-		return 1;
+		return false;
 	}
 	if (!cbuild_dir_walk(WIKI_SRC, wikimk_dir_walk, .context = WIKI_OUT)) {
-		return 1;
+		return false;
 	}
-	if (!cbuild_procs_wait(procs)) return 1;
+	if (!wikimk_build_error(404)) return false;
+	if (!wikimk_build_error(405)) return false;
+	if (!cbuild_procs_wait(procs)) return false;
 	if (!cbuild_dir_copy(WIKIMK_STYLES, WIKI_OUT"/styles")) {
 		cbuild_log_error("Could not copy styles.");
-		return 1;
+		return false;
 	}
 	if (!cbuild_dir_copy(WIKIMK_SCRIPTS, WIKI_OUT"/scripts")) {
 		cbuild_log_error("Could not copy scripts.");
+		return false;
+	}
+	return true;
+}
+bool main_serve(uint16_t port) {
+	cbuild_log_info("Serving local copy of wiki on localhost:%d", port);
+	if (!http_serve_dir(WIKI_OUT, port)) return false;
+	return true;
+}
+void main_help(const char* progname) {
+	printf("Usage: %s <subcommand> [args]\n", progname);
+	printf("Subcommands:\n");
+	printf("  - help            Print this message.\n");
+	printf("  - docgen          Run DocGen part.\n");
+	printf("  - wikimk          Run WikiMK part.\n");
+	printf("  - build           Run DocGen and then WikiMK.\n");
+	printf("  - serve <port>    Serve file on localhost on given port. Port should be an integer in range of 1 to 65535.\n");
+}
+int main(int argc, char** argv) {
+	on_exit(on_exit_handler, NULL);
+	if (!main_prelude()) return 1;
+	const char* progname = cbuild_shift(argv, argc);
+	if (argc == 0) {
+		printf("ERROR: No subcommand provided.\n");
+		main_help(progname);
 		return 1;
 	}
-	cbuild_dlib_close(PARSER.lib);
-	cbuild_dlib_close(TEMPLATE.lib);
+	const char* command = cbuild_shift(argv, argc);
+	if (strcmp(command, "help") == 0) {
+		main_help(progname);
+	} else if (strcmp(command, "docgen") == 0) {
+		if (!main_docgen()) return 1;
+	} else if (strcmp(command, "wikimk") == 0) {
+		if (!main_wikimk()) return 1;
+	} else if (strcmp(command, "build") == 0) {
+		if (!main_docgen()) return 1;
+		if (!main_wikimk()) return 1;
+	} else if (strcmp(command, "serve") == 0) {
+		if (argc == 0) {
+			printf("ERROR: Subcommand 'serve' requires an argument.\n");
+			main_help(progname);
+			return 1;
+		}
+		const char* arg = cbuild_shift(argv, argc);
+		int port = atoi(arg);
+		if (port < 1 || port > UINT16_MAX) {
+			printf("ERROR: Invalid port provided to subcommand 'serve'.\n");
+			main_help(progname);
+			return 1;
+		}
+		if (!main_serve((uint16_t)port)) return 1;
+	} else {
+		printf("ERROR: Invalid subcommand provided.\n");
+		main_help(progname);
+		return 1;
+	}
+	if (!main_epilogue()) return 1;
 	return 0;
 }
 void push_symbol(symbols_t* symbol_table, cbuild_sv_t name, const char* filename) {
@@ -268,6 +336,22 @@ void wikimk_cmd_append_pandoc_base_and_edit(cbuild_cmd_t* cmd, const char* path)
 	// Edit filepath
 	char* edit_file = cbuild_temp_sprintf("EDIT-FILENAME:/%s", path);
 	cbuild_cmd_append_many(cmd, "-M", edit_file);
+}
+bool wikimk_build_error(int code) {
+	cbuild_cmd_t cmd = {0};
+	const char* md_path = cbuild_temp_sprintf(WIKIMK_ERRORS"/%d.md", code);
+	const char* html_path = cbuild_temp_sprintf(WIKI_OUT"/%d.html", code);
+	wikimk_cmd_append_pandoc_base_and_edit(&cmd, md_path);
+	cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
+	cbuild_cmd_append(&cmd, md_path);
+	cbuild_cmd_append_many(&cmd, "-o", html_path);
+	cbuild_log(CBUILD_LOG_TRACE,
+		"Generating error page for %d into '/%s'.", code, html_path);
+	if (!cbuild_cmd_run(&cmd, .procs = &procs)) return false;
+	// Cleanup
+	cbuild_cmd_clear(&cmd);
+	cbuild_temp_reset(0);
+	return true;
 }
 bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args) {
 	cbuild_sv_t path = cbuild_sv_from_cstr(args.path);
@@ -418,7 +502,7 @@ bool wikimk_generate_nav_html(const char* output, const char* src) {
 	return true;
 }
 // ----------------------------------------
-// Docgen
+// DocGen
 // ----------------------------------------
 // Helpers
 typedef struct {
@@ -823,5 +907,168 @@ bool docgen_generate_symbols(const char* output, symbols_t* symbols) {
 	}
 	if (!cbuild_file_write(output, &dst)) return false;
 	cbuild_sb_clear(&dst);
+	return true;
+}
+// ----------------------------------------
+// HTTP server
+// ----------------------------------------
+#define HTTP_SERVER_RECV_BUFFER_SIZE 4096
+static const char* http_response_text[600] = {
+	[200] = "OK",
+	[404] = "Not found",
+	[405] = "Method Not Allowed",
+};
+const char* http_mimedb(const char* file) {
+	cbuild_sv_t path = cbuild_sv_from_cstr(file);
+	if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".html"))) {
+		return "text/html; charset=utf-8";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".htm"))) {
+		return "text/html; charset=utf-8";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".css"))) {
+		return "text/css";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".js"))) {
+		return "application/javascript";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".json"))) {
+		return "application/json";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".png"))) {
+		return "image/png";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".jpg"))) {
+		return "image/jpeg";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".jpeg"))) {
+		return "image/jpeg";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".gif"))) {
+		return "image/gif";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".svg"))) {
+		return "image/svg+xml";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".ico"))) {
+		return "image/x-icon";
+	} else if (cbuild_sv_suffix(path, cbuild_sv_from_lit(".txt"))) {
+		return "text/plain; charset=utf-8";
+	} else {
+		return "application/octet-stream";
+	}
+}
+void http_serve_file(int socket, const char* path, int response) {
+	cbuild_sb_t file = {0};
+	if (!cbuild_file_read(path, &file)) {
+		cbuild_log_error("Could not read file '%s'.", path);
+		return;
+	}
+	const char* headers = cbuild_temp_sprintf(
+		"HTTP/1.1 %d %s\r\n"
+		"Content-Type: %s\r\n"
+		"Content-Length: %zu\r\n"
+		"Connection: close\r\n"
+		"\r\n",
+		response, http_response_text[response],
+		http_mimedb(path),
+		file.size);
+	send(socket, headers, strlen(headers), 0);
+	send(socket, file.data, file.size, 0);
+	cbuild_sb_clear(&file);
+}
+bool http_serve_dir(const char* dir, uint16_t port) {
+	// Create socket
+	int server_socket = socket(AF_INET, SOCK_STREAM, 0);
+	if(server_socket < 0) {
+		cbuild_log_error("Failed to create socket, error: \"%s\".",
+			strerror(errno));
+		return false;
+	}
+	int opt = 1;
+	setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, 
+		&opt, sizeof(opt));
+	// Bind socket
+	struct sockaddr_in server_addr;
+	server_addr.sin_family = AF_INET;
+	server_addr.sin_addr.s_addr = INADDR_ANY;
+	server_addr.sin_port = htons(port);
+	if(bind(server_socket,
+			(struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+		cbuild_log_error("Failed to bind socket to port %d, error: '%s'.",
+			port, strerror(errno));
+		return false;
+	}
+	// Listen for a client
+	if(listen(server_socket, 10) < 0) {
+		cbuild_log_error("Failed to listen for a client, error: '%s'.",
+			strerror(errno));
+		return false;
+	}
+	// Main loop of a server
+	while(true) {
+		cbuild_temp_reset(0);
+		// Accept client
+		struct sockaddr_in client_addr;
+		socklen_t client_addr_len = sizeof(client_addr);
+		int client_socket = accept(server_socket,
+			(struct sockaddr *)&client_addr, &client_addr_len);
+		if(client_socket < 0) {
+			cbuild_log_error("Failed to accept client, error: \"%s\".",
+				strerror(errno));
+		}
+		// Read request
+		char buf[HTTP_SERVER_RECV_BUFFER_SIZE];
+		// TODO: Dynamic buffer
+		ssize_t len = recv(client_socket, buf, sizeof(buf), 0);
+		if(len < 0) {
+			cbuild_log_error("Received malformed request from client.");
+			goto defer1;
+		}
+		cbuild_sv_t request = cbuild_sv_from_parts(buf, (size_t)len);
+		cbuild_sv_t type = cbuild_sv_chop_by_delim(&request, ' ');
+		cbuild_sv_t path = cbuild_sv_chop_by_delim(&request, ' ');
+		cbuild_sv_t protocol =
+			cbuild_sv_chop_by_sv(&request, cbuild_sv_from_cstr("\r\n"));
+		if(cbuild_sv_cmp(type, cbuild_sv_from_cstr("GET")) == 0 &&
+			cbuild_sv_cmp(protocol, cbuild_sv_from_cstr("HTTP/1.1")) == 0) {
+			cbuild_log_trace("Received request from client.");
+			cbuild_log_trace("Requested path \""CBuildSVFmt"\".",
+				CBuildSVArg(path));
+			cbuild_sb_t fpath = {0};
+			cbuild_sb_append_cstr(&fpath, dir);
+			// TODO: Expands '%' in path
+			if(cbuild_sv_suffix(path, cbuild_sv_from_cstr("/"))) {
+				cbuild_sb_append_sv(&fpath, path);
+				cbuild_sb_append_cstr(&fpath, "index.html");
+			} else {
+				cbuild_sb_append_sv(&fpath, path);
+			}
+			cbuild_sb_append_null(&fpath);
+			if(cbuild_sv_contains_sv(path, cbuild_sv_from_cstr(".."))) {
+				cbuild_log_warn("Path contains \"..\", aborting.");
+			} else {
+				cbuild_log_trace("Path resolves to \"%s\"", fpath.data);
+				if(!cbuild_file_check(fpath.data)) {
+					cbuild_log_warn("File not found, sending 404.");
+					const char* epath = cbuild_temp_sprintf("%s/404.html", dir);
+					http_serve_file(client_socket, epath, 404);
+				} else {
+					cbuild_log_trace("File found, sending 200.");
+					http_serve_file(client_socket, fpath.data, 200);
+				}
+			}
+			cbuild_sb_clear(&fpath);
+		} else {
+			cbuild_log_warn("Received invalid request from client.");
+			if((cbuild_sv_cmp(type, cbuild_sv_from_cstr("CONNECT")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("DELETE")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("HEAD")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("OPTIONS")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("PATCH")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("POST")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("PUT")) == 0 ||
+					cbuild_sv_cmp(type, cbuild_sv_from_cstr("TRACE")) == 0) &&
+				cbuild_sv_cmp(protocol, cbuild_sv_from_cstr("HTTP/1.1")) == 0) {
+				cbuild_log_warn("Invalid request type, sending 405.");
+				const char* epath = cbuild_temp_sprintf("%s/405.html", dir);
+				http_serve_file(client_socket, epath, 405);
+			}
+		}
+	defer1:
+		close(client_socket);
+		cbuild_log_trace("Finished handling request from client.");
+	}
+	close(server_socket);
 	return true;
 }

@@ -127,8 +127,10 @@ ol>li {
   display: list-item;
 }
 pre>code, code {
+	font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	font-family: "Courier New", Courier, monospace;
 	background-color: var(--bg-soft);
+	line-height: 1.2;
 }
 pre>code {
 	display: block;
@@ -250,6 +252,9 @@ nav {
 	border-radius: 5px;
 	background-color: var(--bg1);
 	padding: 1em;
+}
+nav .nav-toggle {
+	cursor: pointer;
 }
 nav summary {
 	font-size: 150%;
