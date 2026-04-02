@@ -1,10 +1,10 @@
 # Build output
-./build/
-./cbuild.h
-./wikimk/templates/nav.html
-./wiki/doc
+/build
+/cbuild.h
+/wikimk/templates/nav.html
+/wiki/doc
 # Binaries
 *.run
 *.run.old
 # Ctags
-./TAGS
+/TAGS
