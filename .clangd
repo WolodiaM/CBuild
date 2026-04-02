@@ -14,18 +14,7 @@ CompileFlags:
     - -D__CLANGD__
   Compiler: gcc
 Diagnostics:
-  Suppress: [ -Wunused-function ]
----
-If:
-  PathMatch:
-    - cbuild.c
-CompileFlags:
-  Add: [ -std=gnu99 ]
----
-If:
-  PathMatch: src/.*\.c
-CompileFlags:
-  Add: [ -std=gnu99 ]
+  Suppress: [ -Wunused-function, -std=gnu99 ]
 ---
 If:
   PathMatch: tests/.*\.c
@@ -37,4 +26,4 @@ If:
     - cbuild.h
     - cbuild.split.h
 CompileFlags:
-  Add: [ -std=gnu99, -DCBUILD_IMPLEMENTATION ]
+  Add: [ -DCBUILD_IMPLEMENTATION ]
