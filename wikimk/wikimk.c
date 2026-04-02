@@ -176,9 +176,7 @@ bool load_parser(void) {
 	return true;
 }
 // Main
-void on_exit_handler(int code, void* args) {
-	CBUILD_UNUSED(code);
-	CBUILD_UNUSED(args);
+void atexit_handler(void) {
 	cbuild_temp_profiler();
 }
 cbuild_proclist_t procs = {0};
@@ -265,7 +263,7 @@ void main_help(const char* progname) {
 	printf("  - serve <port>    Serve file on localhost on given port. Port should be an integer in range of 1 to 65535.\n");
 }
 int main(int argc, char** argv) {
-	on_exit(on_exit_handler, NULL);
+	atexit(atexit_handler);
 	if (!main_prelude()) return 1;
 	const char* progname = cbuild_shift(argv, argc);
 	if (argc == 0) {
