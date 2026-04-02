@@ -127,8 +127,7 @@ ol>li {
   display: list-item;
 }
 pre>code, code {
-	font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
-	font-family: "Courier New", Courier, monospace;
+	font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', "Courier New", Courier, monospace;
 	background-color: var(--bg-soft);
 	line-height: 1.25;
 }
@@ -148,20 +147,34 @@ pre.lineNumbers>code>span {
 	display: inline-block;
 	line-height: 1.25;
 }
+pre.lineNumbers>code::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 2.25em;
+	width: 1px;
+	background-color: var(--bg4);
+}
 pre.lineNumbers>code>span:empty {
 	line-height: 1.25;
 }
 pre.lineNumbers>code>span::before {
+	/* Show counter */
 	content: counter(source-line);
 	counter-increment: source-line;
-	position: absolute;
-	width: 3em;
+	/* Place line numbers */
+	width: 2em;
 	text-align: right;
-	border-right: 1px solid var(--bg4);
-	padding-right: 0.5em;
+	/* Style element */
 	color: var(--fg4);
-	-webkit-user-select: none;
+	z-index: 1;
+	position: sticky;
+	display: inline-block;
+	padding-right: 0.5em;
+	/* Make them unselectable */
 	user-select: none;
+	-webkit-user-select: none;
 }
 p {
 	text-indent: 2em;
