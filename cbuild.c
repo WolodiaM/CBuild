@@ -1456,6 +1456,7 @@ void help(const char* app_name) {
 	printf("\t\tcodeparse.so    Build codeparse.so\n");
 	printf("\t\ttemplate.so     Build template.so\n");
 	printf("\t\tbuild-all       Build all binaries\n");
+	printf("\t\tgenerate        Generate output wiki\n");
 	// printf("\t\twikimk     Build wikimk.run\n");
 	// printf("\t\twiki       Build wiki\n");
 	// printf("\t\tdoxygen    Build doxygen\n");
@@ -1543,32 +1544,11 @@ int main(int argc, char** argv) {
 				"wikimk/template.c", "-o", BUILD_FOLDER"/template.so");
 			if (!cbuild_cmd_run(&cmd)) return 1;
 		}
-		// if(strcmp(arg, "doxygen") == 0) {
-		// 	cbuild_cmd_t cmd = {0};
-		// 	cbuild_cmd_append_many(&cmd, "doxygen", "doxygen.conf");
-		// 	if(!cbuild_cmd_run(&cmd)) return 1;
-		// 	cbuild_dir_remove("wiki/out/doxygen");
-		// 	if(!cbuild_dir_move("wiki/doxygen/html", "wiki/out/doxygen")) return 1;
-		// } else if(strcmp(arg, "wikimk") == 0) {
-		// 	cbuild_cmd_t cmd = {0};
-		// 	cbuild_cmd_append_many(&cmd,
-		// 		CBUILD_CC, CBUILD_CARGS_WARN,
-		// 		"-o", "wikimk."EXE_NAME,
-		// 		"wikimk.c");
-		// 	if(!cbuild_cmd_run(&cmd)) return 1;
-		// } else if(strcmp(arg, "wiki") == 0) {
-		// 	cbuild_cmd_t cmd = {0};
-		// 	cbuild_cmd_append_many(&cmd, "./wikimk."EXE_NAME, "build");
-		// 	if(!cbuild_cmd_run(&cmd)) return 1;
-		// } else if(strcmp(arg, "serve") == 0) {
-		// 	cbuild_cmd_t cmd = {0};
-		// 	cbuild_cmd_append_many(&cmd, "./wikimk."EXE_NAME, "serve");
-		// 	if(!cbuild_cmd_run(&cmd)) return 1;
-		// } else {
-		// 	cbuild_log(CBUILD_LOG_ERROR, "Invalid argument specified: \"%s\"!", arg);
-		// 	help(cbuild_flag_app_name());
-		// 	return 1;
-		// }
+		if (strcmp(arg, "generate") == 0) {
+			cbuild_cmd_t cmd = {0};
+			cbuild_cmd_append_many(&cmd, BUILD_FOLDER"/wikimk.run", "build");
+			if (!cbuild_cmd_run(&cmd)) return 1;
+		}
 	} else if(strcmp(subcommand, "test") == 0) {
 		if(pargs.size == 0) {
 			// Remove temp files
