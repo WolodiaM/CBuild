@@ -25,6 +25,7 @@
 #define CODE_DOC_OUT     "wiki/doc"
 #define CODE_DOC_SYMBOLS "wiki/doc/symbols.md"
 #define WIKIMK_TEMPLATE  "wikimk/templates"
+#define WIKIMK_FILTERS   "wikimk/filters"
 #define WIKIMK_ERRORS    "wikimk/errors"
 #define WIKIMK_STYLES    "wikimk/styles"
 #define WIKIMK_SCRIPTS   "wikimk/scripts"
@@ -328,7 +329,8 @@ void wikimk_cmd_append_pandoc_base_and_edit(cbuild_cmd_t* cmd, const char* path)
 		"-M", "author:" WIKI_AUTHOR,
 		"-M", "license:" WIKI_LICENSE);
 	cbuild_cmd_append_many(cmd,
-		"--lua-filter=wikimk/filters/codeblock-include-file.lua");
+		"--lua-filter="WIKIMK_FILTERS"/codeblock-include-file.lua",
+		"--lua-filter="WIKIMK_FILTERS"/codeblock-include-dir-tree.lua");
 	// Edit URL
 	cbuild_sb_t edit_url = {0};
 	cbuild_sb_append_cstr(&edit_url, "EDIT-URL:");
