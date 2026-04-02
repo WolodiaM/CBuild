@@ -327,6 +327,8 @@ void wikimk_cmd_append_pandoc_base_and_edit(cbuild_cmd_t* cmd, const char* path)
 		"-M", "name:" WIKI_NAME,
 		"-M", "author:" WIKI_AUTHOR,
 		"-M", "license:" WIKI_LICENSE);
+	cbuild_cmd_append_many(cmd,
+		"--lua-filter=wikimk/filters/codeblock-include-file.lua");
 	// Edit URL
 	cbuild_sb_t edit_url = {0};
 	cbuild_sb_append_cstr(&edit_url, "EDIT-URL:");
