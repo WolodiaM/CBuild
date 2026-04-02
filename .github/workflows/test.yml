@@ -33,28 +33,38 @@ jobs:
           sudo apt-get install -yqq build-essential clang valgrind musl musl-tools
       - name: Build test runner
         run: ${{ matrix.cc }} cbuild.c -o cbuild.run
-      # - name: Build wikimk (check if it builds)
-      #   run: ./cbuild.run docs wikimk
+      - name: Build wikimk (check if it builds)
+        run: ./cbuild.run docs build-all
       - name: Run tests
         run: ./cbuild.run test
-  # test-freebsd:
-  #   name: Runs tests on ${{ matrix.os }} via freebsd-vm
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     matrix:
-  #       os: [ubuntu-latest, ubuntu-24.04-arm]
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v6
-  #     - name: Run tests in vm
-  #       uses: vmactions/freebsd-vm@v1
-  #       with:
-  #         usesh: true
-  #         prepare: |
-  #           pkg install -y gcc clang valgrind
-  #         run: |
-  #           gcc cbuild.c -o cbuild.run
-  #           ./cbuild.run test
+  test-freebsd:
+    name: Runs tests on ${{ matrix.os }} via freebsd-vm with virtualised ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        include:
+          - os: ubuntu-latest
+            arch: x86_64
+            packages: gcc clang valgrind
+          - os: ubuntu-latest
+            arch: aarch64
+            packages: gcc clang
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Run tests in vm
+        id: test
+        uses: vmactions/freebsd-vm@v1
+        with:
+          arch: ${{ matrix.arch }}
+          usesh: true
+          prepare: |
+            pkg install -y ${{ matrix.packages }}
+          run: |
+            clang cbuild.c -o cbuild.run
+            ./cbuild.run docs build-all
+            ./cbuild.run test
   test-cygwin:
     name: Runs tests on ${{ matrix.os }} via cygwin
     runs-on: ${{ matrix.os }}
@@ -79,14 +89,12 @@ jobs:
         run: |
           cd "$(cygpath "$GITHUB_WORKSPACE")"
           /usr/bin/gcc cbuild.c -o cbuild.exe
-      # - name: Build wikimk (check if it builds)
-      #   run: |
-      #     cd "$(cygpath "$GITHUB_WORKSPACE")"
-      #     ./cbuild.exe docs wikimk
+      - name: Build wikimk (check if it builds)
+        run: |
+          cd "$(cygpath "$GITHUB_WORKSPACE")"
+          ./cbuild.run docs build-all
       - name: Run tests
         shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
         run: |
           cd "$(cygpath "$GITHUB_WORKSPACE")"
           ./cbuild.exe test
-
-  # vmactions/freebsd-vm or cross-platform-actions/action - *BSD
