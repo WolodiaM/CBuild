@@ -146,7 +146,7 @@ CBUILDDEF void* cbuild_map_get_raw(const cbuild_map_t* map, const void* key);
 /// * [pl:map:cbuild_map_t*] Map object.
 /// * [pl:key:any] Value of a key. Need to be copyable via `=`.
 ///
-/// [r:] Pointer to a pair structure or NULL if not found.
+/// [r:void*] Pointer to a pair structure or NULL if not found.
 #define cbuild_map_get(map, key)                                               \
 	({                                                                           \
 		__auto_type __cbuild_tmp_key = key;                                        \
@@ -164,7 +164,7 @@ CBUILDDEF void* cbuild_map_get_raw(const cbuild_map_t* map, const void* key);
 /// * [pl:map:cbuild_map_t*] Map object.
 /// * [pl:key:const void*] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
 ///
-/// [r:] Pointer to a pair structure or NULL if not found.
+/// [r:void*] Pointer to a pair structure or NULL if not found.
 #define cbuild_map_get_ptr(map, key)                                           \
 	({                                                                           \
 		__auto_type __cbuild_tmp_key = key;                                        \
@@ -204,7 +204,7 @@ CBUILDDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
 /// * [pl:map:cbuild_map_t*] Map object.
 /// * [pl:key:any] Value of a key. Need to be copyable via `=`.
 ///
-/// [r:] Pointer to a pair structure or NULL if not found.
+/// [r:void*] Pointer to a pair structure or NULL if not found.
 #define cbuild_map_get_or_alloc(map, key)                                      \
 	({                                                                           \
 		__auto_type __cbuild_tmp_key = key;                                        \
@@ -230,7 +230,7 @@ CBUILDDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key);
 /// * [pl:map:cbuild_map_t*] Map object.
 /// * [pl:key:const void*] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
 ///
-/// [r:] Pointer to a pair structure or NULL if not found.
+/// [r:void*] Pointer to a pair structure or NULL if not found.
 #define cbuild_map_get_or_alloc_ptr(map, key)                                  \
 	({                                                                           \
 		__auto_type __cbuild_tmp_key = key;                                        \
@@ -256,7 +256,7 @@ CBUILDDEF bool cbuild_map_remove_raw(cbuild_map_t* map, const void* key);
 /// * [pl:map:cbuild_map_t*] Map object.
 /// * [pl:key:any] Value of a key. Need to be copyable via `=`.
 ///
-/// [r:] `false` if key was not found.
+/// [r:void*] `false` if key was not found.
 #define cbuild_map_remove(map, key)                                            \
 	({                                                                           \
 		__auto_type __cbuild_tmp_key = key;                                        \
@@ -275,7 +275,7 @@ CBUILDDEF bool cbuild_map_remove_raw(cbuild_map_t* map, const void* key);
 /// * [pl:map:cbuild_map_t*] Map object.
 /// * [pl:key:const void*] Pointer to a key. Need to contain `map->key_size`{.c} bytes.
 ///
-/// [r:] `false` if key was not found.
+/// [r:void*] `false` if key was not found.
 #define cbuild_map_remove_ptr(map, key)                                        \
 	({                                                                           \
 		__auto_type __cbuild_tmp_key = key;                                        \

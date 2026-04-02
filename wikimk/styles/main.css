@@ -130,11 +130,38 @@ pre>code, code {
 	font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	font-family: "Courier New", Courier, monospace;
 	background-color: var(--bg-soft);
-	line-height: 1.2;
+	line-height: 1.25;
 }
 pre>code {
 	display: block;
 	overflow-x: auto;
+}
+/* Line numbers for Pandoc */
+pre.lineNumbers {
+	margin-left: 3.5em; /* Make space for the line numbers */
+}
+pre.lineNumbers>code {
+	counter-reset: source-line;
+	position: relative;
+}
+pre.lineNumbers>code>span {
+	display: inline-block;
+	line-height: 1.25;
+}
+pre.lineNumbers>code>span:empty {
+	line-height: 1.25;
+}
+pre.lineNumbers>code>span::before {
+	content: counter(source-line);
+	counter-increment: source-line;
+	position: absolute;
+	width: 3em;
+	text-align: right;
+	border-right: 1px solid var(--bg4);
+	padding-right: 0.5em;
+	color: var(--fg4);
+	-webkit-user-select: none;
+	user-select: none;
 }
 p {
 	text-indent: 2em;
@@ -383,9 +410,6 @@ section.decl span.fieldref-name:hover>span.fieldref-type {
 section.decl span.argref-name,
 section.decl span.fieldref-name,
 section.decl span.enumval-ref {
-	background-color: var(--bg2);
-	padding: 0 4px;
-	border-radius: 3px;
 	color: var(--aqua);
 }
 section.decl span.return-type {

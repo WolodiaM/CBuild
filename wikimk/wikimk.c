@@ -250,6 +250,7 @@ bool main_wikimk(void) {
 }
 bool main_serve(uint16_t port) {
 	cbuild_log_info("Serving local copy of wiki on localhost:%d", port);
+	printf("http://localhost:%d/\n", port);
 	if (!http_serve_dir(WIKI_OUT, port)) return false;
 	return true;
 }
@@ -659,6 +660,7 @@ bool docgen_comment_to_md(const comment_t* comment, cbuild_sb_t* dst,
 						// This is technically out of bound, but we chopped two chars at least,
 						// so this access is valid.
 						if (*line.data == ']') {
+							cbuild_sv_chop(&line, 1);
 							TEMPLATE.parsed_ret(dst, *pret_or_ptypename);
 						} else {
 							cbuild_sv_t text = cbuild_sv_chop_by_delim(&line, ']');
