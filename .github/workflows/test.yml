@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-26-intel]
         include:
            - os: ubuntu-latest
              cc: gcc
@@ -92,7 +92,7 @@ jobs:
       - name: Build wikimk (check if it builds)
         run: |
           cd "$(cygpath "$GITHUB_WORKSPACE")"
-          ./cbuild.run docs build-all
+          ./cbuild.exe docs build-all
       - name: Run tests
         shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
         run: |
