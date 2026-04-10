@@ -5,6 +5,7 @@
 #include "StringBuilder.h"
 #include "DynArray.h"
 #include "Log.h"
+#include "FS.h"
 struct __cbuild_flag_t {
 	bool found;
 	// uint8_t __padding[3];
@@ -54,10 +55,14 @@ CBUILDDEF void cbuild_flag_set_option(enum cbuild_flag_options_t option, ...) {
 #if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
 	CBUILDDEF unsigned short __cbuild_flag_term_width(void) {
 		#if defined(TIOCGWINSZ)
+			cbuild_fd_t fd = cbuild_fd_open_read("/dev/tty");
+			if (fd == CBUILD_INVALID_FD) return 80;
 			struct winsize w;
-			if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1) {
+			if (ioctl(fd, TIOCGWINSZ, &w) == -1) {
+				cbuild_fd_close(fd);
 				return 80;
 			}
+			cbuild_fd_close(fd);
 			return w.ws_col;
 		#else
 			return 80;
