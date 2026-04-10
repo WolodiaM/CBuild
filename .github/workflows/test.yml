@@ -19,7 +19,7 @@ jobs:
              cc: gcc
            - os: macos-latest
              cc: clang
-           - os: macos-15-intel
+           - os: macos-26-intel
              cc: clang
     # env:
     #     CBUILD_TEST_LOG_FULL: yes
