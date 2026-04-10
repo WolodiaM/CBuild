@@ -1,6 +1,6 @@
 int main(void) {
 	cbuild_arena_t arena = {0};
-	cbuild_arena_base_alloc(&arena, 1024);
+	cbuild_arena_base_malloc(&arena, 1024);
 	// Allocation 1
 	char* p1 = cbuild_arena_malloc(&arena, 32);
 	TEST_ASSERT_NEQ(p1, NULL, "allocation failed.");

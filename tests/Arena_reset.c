@@ -1,7 +1,7 @@
 int main(void) {
 	cbuild_arena_t arena = {0};
 	const size_t capacity = 1024;
-	cbuild_arena_base_alloc(&arena, capacity);
+	cbuild_arena_base_malloc(&arena, capacity);
 	cbuild_arena_malloc(&arena, 16);
 	size_t checkpoint1 = cbuild_arena_checkpoint(&arena);
 	TEST_ASSERT_EQ(checkpoint1, (16 | (2 * sizeof(void*) - 1)) + 1,

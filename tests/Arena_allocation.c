@@ -1,7 +1,7 @@
 int main(void) {
 	cbuild_arena_t arena = {0};
 	const size_t capacity = 1024;
-	cbuild_arena_base_alloc(&arena, capacity);
+	cbuild_arena_base_malloc(&arena, capacity);
 	TEST_ASSERT_NEQ(arena.base, NULL, "Arena base allocation failed.");
 	TEST_ASSERT_EQ(arena.capacity, capacity,
 		"Arena capacity mismatch"TEST_EXPECT_MSG(zu), capacity, arena.capacity);

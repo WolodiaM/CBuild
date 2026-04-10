@@ -7,7 +7,7 @@ char* test_vsprintf(cbuild_arena_t* a, const char* fmt, ...) {
 }
 int main(void) {
 	cbuild_arena_t arena = {0};
-	cbuild_arena_base_alloc(&arena, 1024);
+	cbuild_arena_base_malloc(&arena, 1024);
 	// Test strdup
 	const char* test_str = "Hello, world!";
 	char* dup_str = cbuild_arena_strdup(&arena, test_str);
