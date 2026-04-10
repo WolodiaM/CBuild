@@ -1517,9 +1517,21 @@ int main(int argc, char** argv) {
 			cbuild_cmd_t cmd = {0};
 			cbuild_cmd_append_many(&cmd, CC,
 				CBUILD_CARGS_WARN,
-				"-O3", CBUILD_CARGS_DEBUG_GDB, "-Wl,--export-dynamic",
-				"-Wl,-z,origin", "-Wl,-rpath,$ORIGIN/",
+				"-O3", CBUILD_CARGS_DEBUG_GDB,
 				CBUILD_CARGS_LIBINCLUDE("dl"));
+			#if defined(CBUILD_OS_LINUX) || defined(CBUILD_OS_BSD) || defined(CBUILD_OS_UNIX)
+				cbuild_cmd_append_many(&cmd,
+					"-Wl,--export-dynamic",
+					"-Wl,-z,origin", "-Wl,-rpath,$ORIGIN/");
+			#elif defined(CBUILD_OS_MACOS)
+				cbuild_cmd_append_many(&cmd, "-Wl,-rpath,@loader_path/");
+			#elif defined(CBUILD_OS_WINDOWS_CYGWIN)
+				cbuild_cmd_append_many(&cmd,
+					"-Wl,--export-dynamic",
+					"-Wl,-rpath,$ORIGIN/");
+			#else
+				#error "Unsupported OS for wikimk."
+			#endif
 			cbuild_cmd_append_many(&cmd, 
 				"wikimk/wikimk.c", "-o", BUILD_FOLDER"/wikimk.run");
 			if (!cbuild_cmd_run(&cmd)) return 1;
