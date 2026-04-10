@@ -34,6 +34,8 @@ jobs:
       - name: Build test runner
         run: ${{ matrix.cc }} cbuild.c -o cbuild.run
       - name: Build wikimk (check if it builds)
+        # NOTE: This cause too much problems as nor wikimk nor its build were even designed to be portable anything other than Linux
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
         run: ./cbuild.run docs build-all
       - name: Run tests
         run: ./cbuild.run test
