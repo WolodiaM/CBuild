@@ -24,7 +24,7 @@ cbuild_sv_t sv_dup(cbuild_sv_t sv) {
 }
 bool c_token_delims(const cbuild_sv_t* sv, size_t idx, void* args) {
 	if (args != NULL) *(char*)args = sv->data[idx];
-	if (isspace(sv->data[idx])) return true;
+	if (isspace((unsigned char)sv->data[idx])) return true;
 	if (sv->data[idx] == '(') return true; // Function decl uses this
 	if (sv->data[idx] == ')') return true; // Function decl uses this
 	if (sv->data[idx] == ',') return true; // Argument list decl uses this
