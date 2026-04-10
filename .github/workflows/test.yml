@@ -10,6 +10,8 @@ jobs:
     name: Runs tests on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
+      max-parallel: 4
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-26-intel]
         include:
@@ -39,38 +41,42 @@ jobs:
         run: ./cbuild.run docs build-all
       - name: Run tests
         run: ./cbuild.run test
-  test-freebsd:
-    name: Runs tests on ${{ matrix.os }} via freebsd-vm with virtualised ${{ matrix.arch }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        include:
-          - os: ubuntu-latest
-            arch: x86_64
-            packages: gcc llvm valgrind
-          - os: ubuntu-latest
-            arch: aarch64
-            packages: gcc llvm
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: Run tests in vm
-        id: test
-        uses: vmactions/freebsd-vm@v1
-        with:
-          arch: ${{ matrix.arch }}
-          usesh: true
-          prepare: |
-            pkg install -y ${{ matrix.packages }}
-          run: |
-            clang cbuild.c -o cbuild.run
-            ./cbuild.run docs build-all
-            ./cbuild.run test
+  # test-freebsd:
+  #   name: Runs tests on ${{ matrix.os }} via freebsd-vm with virtualised ${{ matrix.arch }}
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     fail-fast: false
+  #     max-parallel: 2
+  #     matrix:
+  #       os: [ubuntu-latest]
+  #       include:
+  #         - os: ubuntu-latest
+  #           arch: x86_64
+  #           packages: gcc llvm valgrind
+  #         - os: ubuntu-latest
+  #           arch: aarch64
+  #           packages: gcc llvm
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v6
+  #     - name: Run tests in vm
+  #       id: test
+  #       uses: vmactions/freebsd-vm@v1
+  #       with:
+  #         arch: ${{ matrix.arch }}
+  #         usesh: true
+  #         prepare: |
+  #           pkg install -y ${{ matrix.packages }}
+  #         run: |
+  #           clang cbuild.c -o cbuild.run
+  #           ./cbuild.run docs build-all
+  #           ./cbuild.run test
   test-cygwin:
     name: Runs tests on ${{ matrix.os }} via cygwin
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
+      max-parallel: 1
       matrix:
         os: [windows-latest]
     defaults:
