@@ -35,7 +35,7 @@ CBuild don't require any structure from your code so you script can be structure
 
 # Wiki
 
-This project has some documentation wiki. It was pretty poorly updated and now it in rather bad shape. Code doc generation was updated to not depend on doxygen, and it is much better right now (both because of some generator features and because comments can now contain raw markdown and also because comments was simply updated). But main wiki text is old now and does noot cover all of new CBuild's features. `structure.md` is udpdated to reference new structure, and I will try to update examples to match new CBuild's codebase.
+Wiki was in a pretty bad shape. I rewrote most of it, rewrote all doc comments, transitioned from doxygen to a custom format, and now it is in at least maintainable state. But content is still lacking and will be updated, especially examples section.
 
 # wikimk
 
