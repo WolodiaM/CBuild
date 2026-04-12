@@ -20,8 +20,7 @@
 #define WIKI_AUTHOR  "WolodiaM"
 #define WIKI_LICENSE "GFDL-1.3-or-later"
 // Paths
-// Path prefix
-#define CODE_DOC_SRC     "src"
+#define CODE_DOC_SRC     "src" // Prefix
 #define CODE_DOC_OUT     "wiki/doc"
 #define CODE_DOC_SYMBOLS "wiki/doc/symbols.md"
 #define WIKIMK_TEMPLATE  "wikimk/templates"
@@ -31,6 +30,8 @@
 #define WIKIMK_SCRIPTS   "wikimk/scripts"
 #define WIKI_SRC         "wiki"
 #define WIKI_OUT         "build/wiki"
+#define CHANGELOG_SRC    "changelog"
+#define CHANGELOG_DST    "wiki/changelog"
 // #define DEBUG_PARSER
 // Template
 struct {
@@ -220,10 +221,21 @@ bool main_docgen(void) {
 	return true;
 }
 bool main_wikimk(void) {
-	if (!cbuild_dir_remove(WIKI_OUT)) {
+	if (cbuild_dir_check(WIKI_OUT) && !cbuild_dir_remove(WIKI_OUT)) {
 		cbuild_log_error("Could not clean build folder '"WIKI_OUT"'.");
 		return false;
 	}
+	// TODO: Extract this somehow. Probably as a list of external of external files
+	cbuild_log_info("Copying changelog from '%s' to '%s'.", CHANGELOG_SRC, CHANGELOG_DST);
+	if (cbuild_dir_check(CHANGELOG_DST) && !cbuild_dir_remove(CHANGELOG_DST)) {
+		cbuild_log_error("Could not clean changelog output '"CHANGELOG_DST"'.");
+		return false;
+	}
+	if (!cbuild_dir_copy(CHANGELOG_SRC, CHANGELOG_DST)) return false;
+	cbuild_sb_t dirname = {0};
+	cbuild_sb_append_cstr(&dirname, "Changelog");
+	if (!cbuild_file_write(CHANGELOG_DST"/.dirname", &dirname)) return false;
+	cbuild_sb_clear(&dirname);
 	cbuild_log_info("Processing wiki from '%s' into '%s.", WIKI_SRC, WIKI_OUT);
 	if (!cbuild_dir_check(WIKI_SRC)) {
 		cbuild_log_error("Directory "WIKI_SRC" is wiki source but it does not exist.");
@@ -367,6 +379,7 @@ bool wikimk_build_error(int code) {
 }
 bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args) {
 	cbuild_sv_t path = cbuild_sv_from_cstr(args.path);
+	// TODO: Allow to register some custom 'special cases'?
 	if (cbuild_sv_cmp(path, cbuild_sv_from_lit(WIKI_SRC"/index.cfg")) == 0) {
 		// Get redirect destination
 		cbuild_sb_t file_content_sb = {0};
@@ -393,10 +406,36 @@ bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args) {
 		cbuild_temp_reset(0);
 		return true;
 	}
+	if (cbuild_sv_suffix(path, cbuild_sv_from_lit("changelog/changelog.txt"))) {
+		cbuild_cmd_t cmd = {0};
+		wikimk_cmd_append_pandoc_base_and_edit(&cmd, args.path);
+		cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
+		cbuild_cmd_append(&cmd, args.path);
+		// Output file
+		path.size -= 4; // Chop '.txt'
+		cbuild_sv_chop_prefix(&path, cbuild_sv_from_lit(WIKI_SRC"/"));
+		char* out = cbuild_temp_sprintf(WIKI_OUT"/"CBuildSVFmt".html", CBuildSVArg(path));
+		cbuild_cmd_append_many(&cmd, "-o", out);
+		// Create base dir
+		char* basedir = cbuild_path_base(out);
+		if (!cbuild_dir_check(basedir)) if (!cbuild_dir_create(basedir)) return false;
+		// Run command
+		cbuild_log(CBUILD_LOG_TRACE,
+			"Building source file '%s' into '%s'.", args.path, out);
+		if (!cbuild_cmd_run(&cmd, .procs = &procs)) return false;
+		// Cleanup
+		cbuild_cmd_clear(&cmd);
+		cbuild_temp_reset(0);
+		return true;
+	}
 	if (!cbuild_sv_suffix(path, cbuild_sv_from_lit(".md"))) return true;
 	cbuild_cmd_t cmd = {0};
 	wikimk_cmd_append_pandoc_base_and_edit(&cmd, args.path);
 	cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
+	if (!cbuild_sv_contains_sv(path, cbuild_sv_from_lit(CODE_DOC_OUT)) &&
+		!cbuild_sv_prefix(path, cbuild_sv_from_lit(CHANGELOG_DST))) {
+		cbuild_cmd_append_many(&cmd, "-M", "valid-edit");
+	}
 	if (cbuild_sv_cmp(path, cbuild_sv_from_lit(CODE_DOC_SYMBOLS)) == 0) {
 		cbuild_cmd_append_many(&cmd, "-M", "symbols-page");
 	}
@@ -442,8 +481,14 @@ bool wikimk_generate_nav_html_rec(cbuild_sb_t* out, const char* dir, const char*
 				cbuild_sb_clear(&file_content_sb);
 				continue;
 			}
-			if (!cbuild_sv_suffix(file_sv, cbuild_sv_from_lit(".md"))) continue;
-			file_sv.size -= 3; // '.md'
+			// TODO: Extract this somehow. Probably as a set of ignored files
+			if (cbuild_sv_suffix(file_sv, cbuild_sv_from_lit("changelog.example.md"))) continue;
+			// TODO: Extract this somehow. Probably as a set of added files
+			if (!cbuild_sv_suffix(file_sv, cbuild_sv_from_lit("changelog.txt")) &&
+					!cbuild_sv_suffix(file_sv, cbuild_sv_from_lit(".md"))) {
+				continue;
+			}
+			cbuild_sv_chop_right_by_delim(&file_sv, '.'); // Chop file extension
 			cbuild_sb_t file_content_sb = {0};
 			if (!cbuild_file_read(path, &file_content_sb)) return false;
 			cbuild_sv_t file_content = cbuild_sv_from_sb(file_content_sb);

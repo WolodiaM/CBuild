@@ -200,7 +200,7 @@ bool parser_var_decl(lines_t* lines, size_t line,
 	if (tmp.size > 0) tmp.size--;
 	*name = sv_dup(token);
 	*type = sb_leak_as_sv(&tmp);
-	int ret = asprintf(&decl->data, "extern "CBuildSVFmt" "CBuildSVFmt, 
+	int ret = asprintf(&decl->data, "extern "CBuildSVFmt" "CBuildSVFmt";",
 		CBuildSVArg(*name), CBuildSVArg(*type));
 	cbuild_assert(ret >= 0, "asprintf failed");
 	decl->size = (size_t)ret;
