@@ -1326,8 +1326,11 @@ bool amalgamate(void) {
 	cbuild_sb_t changelog_old = {0};
 	if (!cbuild_file_read(CHANGELOG_DIR"/changelog.txt", &changelog_old)) return false;
 	cbuild_sv_t changelog_old_content = cbuild_sv_from_sb(changelog_old);
+	// NOTE: This removes "markdown" header used by wikimk
+	for (size_t i = 0; i < 4; i++) cbuild_sv_chop_by_delim(&changelog_old_content, '\n');
 	while (changelog_old_content.size > 0) {
 		cbuild_sv_t line = cbuild_sv_chop_by_delim(&changelog_old_content, '\n');
+		if (cbuild_sv_cmp(line, cbuild_sv_from_lit("```")) == 0) continue;
 		cbuild_sb_append_cstr(&output, " * ");
 		cbuild_sb_append_sv(&output, line);
 		cbuild_sb_append_cstr(&output, "\n");

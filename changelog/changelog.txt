@@ -1,3 +1,8 @@
+---
+title: Legacy changelog
+---
+
+```
 --------------------------------------------
 15.12.2024  v1.0    Initial release
   Initial release [new]
@@ -295,3 +300,4 @@
   General [bugfix]
     - Added some 'const' annotations
     - Moved few functions to take parameters by value and not by pointer
+```

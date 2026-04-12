@@ -3,6 +3,7 @@
 /cbuild.h
 /wikimk/templates/nav.html
 /wiki/doc
+/wiki/changelog
 # Binaries
 *.run
 *.run.old
