@@ -1,14 +1,20 @@
 # -*- mode: conf -*-
 CompileFlags:
-	Add: [ -xc, -std=gnu99, -Wall, -Wextra, -Wno-comments, -Wconversion, -Wcast-align, -Wvla, -Wno-override-init, -Wshadow ]
-	Compiler: gcc
+  Add:
+    - -xc
+    - -std=gnu99
+    - -Wall
+    - -Wextra
+    - -Wno-comments
+    - -Wconversion
+    - -Wcast-align
+    - -Wvla
+    - -Wno-override-init
+    - -Wshadow
+    - -D__CLANGD__
+  Compiler: gcc
 Diagnostics:
-	Suppress: [ -Wunused-function ]
----
-If:
-	PathMatch: cbuild.c
-CompileFlags:
-	Add: [ -std=gnu99 ]
+  Suppress: [ -Wunused-function, -std=gnu99 ]
 ---
 If:
   PathMatch: tests/.*\.c
@@ -16,11 +22,8 @@ CompileFlags:
   Add: [ -include, ../framework.h, -DTEST_RUN_PLATFORM="" ]
 ---
 If:
-	PathMatch: cbuild.h
+  PathMatch:
+    - cbuild.h
+    - cbuild.split.h
 CompileFlags:
-	Add: [ -DCBUILD_IMPLEMENTATION ]
----
-If:
-	PathMatch: rglob.h
-CompileFlags:
-	Add: [ -DGLOB_IMPLEMENTATION ]
+  Add: [ -DCBUILD_IMPLEMENTATION ]

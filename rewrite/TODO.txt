@@ -1,0 +1,17 @@
+Changed functions:
+
+cbuild_flag_new_opt
+cbuild_flag_set_option
+cbuild_flag_parse
+cbuild_flag_get
+
+Error functions:
+errno
+strerror
+dlerror
+
+Issues to fix: 21;2;6;
+
+#21  Add ability to hook into logger.
+#6   Add directory walking interface
+#2   Allow to use '=' in options for FlagParse.h module

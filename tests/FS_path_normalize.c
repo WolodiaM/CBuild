@@ -46,9 +46,61 @@ int main(void) {
 	o = cbuild_path_normalize(i);
 	TEST_ASSERT_STREQ("..", o, "Wrong path after normalization of \"%s\""
 		TEST_EXPECT_MSG(s), i, "..", o);
+	i = "//host/share";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("//host/share", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "//host/share", o);
+	i = "//host/share/";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("//host/share", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "//host/share", o);
+	i = "//.";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("//", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "//", o);
+	i = "//..";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("//..", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "//..", o);
+	i = "/";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("/", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "/", o);
+	i = "//";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("//", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "//", o);
+	i = ".";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ(".", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, ".", o);
+	i = "..";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("..", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "..", o);
 	i = "C:/abc////d";
 	o = cbuild_path_normalize(i);
 	TEST_ASSERT_STREQ("C:/abc/d", o, "Wrong path after normalization of \"%s\""
 		TEST_EXPECT_MSG(s), i, "C:/abc/d", o);
+	i = "C:/";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("C:/", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "C:/", o);
+	i = "C:foo/../bar";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("C:bar", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "C:bar", o);
+	i = "C:../a";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("C:../a", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "C:../a", o);
+	i = "C:..";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("C:..", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "C:..", o);
+	i = "C:./a";
+	o = cbuild_path_normalize(i);
+	TEST_ASSERT_STREQ("C:a", o, "Wrong path after normalization of \"%s\""
+		TEST_EXPECT_MSG(s), i, "C:a", o);
 	return 0;
 }

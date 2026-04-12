@@ -5,7 +5,6 @@ int main(void) {
 	cbuild_sv_t sv4  = cbuild_sv_from_lit("ABC");
 	cbuild_sv_t sv5  = cbuild_sv_from_lit("def");
 	cbuild_sv_t sv6  = cbuild_sv_from_lit("defg");
-	printf("%zu==%zu\n",sv1.size,sv6.size);
 	// cbuild_sv_cmp
 	int r1 = cbuild_sv_cmp(sv1, sv1);
 	TEST_ASSERT_EQ(r1, 0,

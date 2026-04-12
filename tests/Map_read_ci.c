@@ -38,7 +38,9 @@ int main(void) {
 		"[no collision] Wrong value read for key 'def'"
 		TEST_EXPECT_RMSG("%"PRIu64), (uint64_t)2,
 		((intptr_t*)cbuild_map_get_ptr(&map, &key))[1]);
-	cbuild_map_clear_ex(&map, test_cstr_free);
+	map.clear_func = test_cstr_free;
+	cbuild_map_clear(&map);
+	map.clear_func = NULL;
 	// Reads with hash collisions
 	map.hash_func = test_cstr_hash;
 	cbuild_map_init(&map, 1);
@@ -58,6 +60,8 @@ int main(void) {
 		"[collision] Wrong value read for key 'aef'"
 		TEST_EXPECT_RMSG("%"PRIu64), (uint64_t)2,
 		((intptr_t*)cbuild_map_get_ptr(&map, &key))[1]);
-	cbuild_map_clear_ex(&map, test_cstr_free);
+	map.clear_func = test_cstr_free;
+	cbuild_map_clear(&map);
+	map.clear_func = NULL;
 	return 0;
 }

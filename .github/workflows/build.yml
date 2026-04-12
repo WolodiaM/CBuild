@@ -1,0 +1,28 @@
+name: Build cbuild.h during release
+run-name: ${{ github.actor }} building Wolodiam/CBuild
+on:
+  release:
+    types: [published]
+permissions:
+  contents: write
+jobs:
+  build:
+    name: Build cbuild.h
+    runs-on: ubuntu-latest
+    env:
+      TAG_NAME: ${{ github.event.release.tag_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Build buildscript
+        run: gcc cbuild.c -o cbuild.run
+      - name: Build cbuild.h
+        run: ./cbuild.run build
+      - name: Build few "packages"
+        run: |
+          zip "cbuild-${TAG_NAME}.zip" cbuild.h LICENSE
+          tar -czvf "cbuild-${TAG_NAME}.tar.gz" cbuild.h LICENSE
+      - name: Upload release asset
+        run: gh release upload "${TAG_NAME}" "cbuild.h#cbuild.h ${TAG_NAME}" "cbuild-${TAG_NAME}.zip" "cbuild-${TAG_NAME}.tar.gz"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

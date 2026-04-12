@@ -24,9 +24,9 @@
 #define __FRAMEWORK_H__
 // Includes
 #define CBUILD_IMPLEMENTATION
-#include "cbuild.h"
+#include "cbuild.split.h"
 // Globals
-#define BUILD_VERSION "v1.0"
+#define BUILD_VERSION "v2.0"
 #define BUILD_FOLDER "build"
 #define TEST_FOLDER "tests"
 // Asserts

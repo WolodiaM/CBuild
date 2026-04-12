@@ -6,12 +6,23 @@ on:
   pull_request:
     branches: [ "master" ]
 jobs:
-  test:
+  test-unix:
     name: Runs tests on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
+      max-parallel: 4
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-26-intel]
+        include:
+           - os: ubuntu-latest
+             cc: gcc
+           - os: ubuntu-24.04-arm
+             cc: gcc
+           - os: macos-latest
+             cc: clang
+           - os: macos-26-intel
+             cc: clang
     # env:
     #     CBUILD_TEST_LOG_FULL: yes
     steps:
@@ -22,45 +33,77 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -yqq build-essential clang valgrind musl musl-tools
-      - name: Build test runner (Linux)
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
-        run: gcc cbuild.c -o cbuild.run
-      - name: Build test runner (MacOS)
-        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
-        run: clang cbuild.c -o cbuild.run
+      - name: Build test runner
+        run: ${{ matrix.cc }} cbuild.c -o cbuild.run
       - name: Build wikimk (check if it builds)
-        run: ./cbuild.run docs wikimk
+        # NOTE: This cause too much problems as nor wikimk nor its build were even designed to be portable anything other than Linux
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
+        run: ./cbuild.run docs build-all
       - name: Run tests
         run: ./cbuild.run test
-  # TODO: Cygwin
-  # test-cygwin:
-  #   name: Runs tests on ${{ matrix.os }} via cygwin
+  # test-freebsd:
+  #   name: Runs tests on ${{ matrix.os }} via freebsd-vm with virtualised ${{ matrix.arch }}
   #   runs-on: ${{ matrix.os }}
   #   strategy:
+  #     fail-fast: false
+  #     max-parallel: 2
   #     matrix:
-  #       os: [windows-latest] # TODO: windows-11-arm - partner runner, but seems to be free, different setup? No cygwin-arm
-  #   defaults:
-  #     run:
-  #       shell: bash.exe -l -o pipefail {0}
+  #       os: [ubuntu-latest]
+  #       include:
+  #         - os: ubuntu-latest
+  #           arch: x86_64
+  #           packages: gcc llvm valgrind
+  #         - os: ubuntu-latest
+  #           arch: aarch64
+  #           packages: gcc llvm
   #   steps:
   #     - name: Checkout
   #       uses: actions/checkout@v6
-  #     - name: Install Cygwin and dependencies
-  #       uses: cygwin/cygwin-install-action@v6
+  #     - name: Run tests in vm
+  #       id: test
+  #       uses: vmactions/freebsd-vm@v1
   #       with:
-  #         packages: gcc make valgrind
-  #     - name: Build test runner
-  #       run: |
-  #         ln -sf "${{ github.workspace }}" CBuild
-  #         cd CBuild
-  #         gcc cbuild.c -o cbuild.exe
-  #     - name: Build wikimk (check if it builds)
-  #       run: |
-  #         ln -sf "${{ github.workspace }}" CBuild
-  #         cd CBuild
-  #         ./cbuild.exe docs wikimk
-  #     - name: Run tests
-  #       run: |
-  #         ln -sf "${{ github.workspace }}" CBuild
-  #         cd CBuild
-  #         ./cbuild.exe test
+  #         arch: ${{ matrix.arch }}
+  #         usesh: true
+  #         prepare: |
+  #           pkg install -y ${{ matrix.packages }}
+  #         run: |
+  #           clang cbuild.c -o cbuild.run
+  #           ./cbuild.run docs build-all
+  #           ./cbuild.run test
+  test-cygwin:
+    name: Runs tests on ${{ matrix.os }} via cygwin
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        os: [windows-latest]
+    defaults:
+      run:
+        shell: bash.exe -l -o pipefail {0}
+    env:
+      CHERE_INVOKING: 1
+      SHELLOPTS: igncr
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Install Cygwin and dependencies
+        uses: cygwin/cygwin-install-action@v6
+        with:
+          packages: gcc-core make
+      - name: Build test runner
+        shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
+        run: |
+          cd "$(cygpath "$GITHUB_WORKSPACE")"
+          /usr/bin/gcc cbuild.c -o cbuild.exe
+      # NOTE: This cause too much problems as nor wikimk nor its build were even designed to be portable anything other than Linux
+      # - name: Build wikimk (check if it builds)
+      #   run: |
+      #     cd "$(cygpath "$GITHUB_WORKSPACE")"
+      #     ./cbuild.exe docs build-all
+      - name: Run tests
+        shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
+        run: |
+          cd "$(cygpath "$GITHUB_WORKSPACE")"
+          ./cbuild.exe test

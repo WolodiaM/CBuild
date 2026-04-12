@@ -1,0 +1,32 @@
+code.sourceCode span.kw   { color: var(--red);    font-weight: bold;                     } /* Keyword */
+code.sourceCode span.kwz  { color: var(--red);    font-weight: bold;                     } /* Keyword (Zebra) */
+code.sourceCode span.dt   { color: var(--yellow);                                        } /* DataType */
+code.sourceCode span.dv,
+code.sourceCode span.bn,
+code.sourceCode span.fl   { color: var(--purple);                                        } /* Numbers (dec, baseN, float) */
+code.sourceCode span.ch,
+code.sourceCode span.st   { color: var(--green);                                         } /* Char and String */
+code.sourceCode span.co   { color: var(--fg2);    font-style: italic;                    } /* Comment */
+code.sourceCode span.cv   { color: var(--fg2);    font-weight: bold; font-style: italic; } /* CommentVar */
+code.sourceCode span.cm   { color: var(--fg2);    font-style: italic;                    } /* Comment.Multiline */
+code.sourceCode span.em   { color: var(--fg2);    font-style: italic;                    } /* Emphasis */
+code.sourceCode span.il   { color: var(--orange);                                        } /* Identifier (lint?) */
+code.sourceCode span.re   { color: var(--orange); font-weight: bold;                     } /* Regex? */
+code.sourceCode span.ot   { color: var(--aqua);                                          } /* Other */
+code.sourceCode span.fu   { color: var(--green);                                         } /* Function */
+code.sourceCode span.im   { color: var(--green);  font-weight: bold;                     } /* Import */
+code.sourceCode span.in   { color: var(--fg2);    font-weight: bold; font-style: italic; } /* Info */
+code.sourceCode span.cf   { color: var(--green);  font-weight: bold;                     } /* ControlFlow */
+code.sourceCode span.ex   { color: var(--fg2);                                           } /* Extension */
+code.sourceCode span.us   { color: var(--red);                                           } /* UserSymbol? */
+code.sourceCode span.op   { color: var(--orange);                                        } /* Operator */
+code.sourceCode span.pp   { color: var(--orange);                                        } /* Preprocessor */
+code.sourceCode span.sc   { color: var(--blue);                                          } /* SpecialChar */
+code.sourceCode span.ss   { color: var(--fg2);                                           } /* SpecialString */
+code.sourceCode span.vs   { color: var(--fg2);                                           } /* VerbatimString */
+code.sourceCode span.va   { color: var(--fg2);                                           } /* Variable */
+code.sourceCode span.at   { color: var(--green);                                         } /* Attribute */
+code.sourceCode span.an   { color: var(--blue);   font-weight: bold; font-style: italic; } /* Annotation */
+code.sourceCode span.al,
+code.sourceCode span.er   { color: var(--red);    font-weight: bold;                     } /* Alert/Error */
+code.sourceCode span.wa   { color: var(--fg2);    font-weight: bold; font-style: italic; } /* Warning */

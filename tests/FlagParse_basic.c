@@ -1,23 +1,30 @@
 int main(int argc, char** argv) {
-	cbuild_flag_new("-separator");
+	cbuild_flag_set_option(CBUILD_FLAG_PASS_SEPARATOR);
 	
-	cbuild_flag_new("arg_req\ta\targ=arg;thint=int;group=Requires arguments\tOption with both long and short options.");
-	cbuild_flag_new("list_req\tl\targ=list;thint=file;group=Requires arguments\tOption with both long and short options.");
-	cbuild_flag_new("tlist_req\tt\targ=tlist;tdelim=^;thint=boolean;len=3;group=Requires arguments\tOption with both long and short options.");
-	
-	cbuild_flag_new("arg_opt\tA\targ=arg?;thint=float;group=Argument is optional\tOption with both long and short options.");
-	cbuild_flag_new("list_opt\tL\targ=list?;thint=float;group=Argument is optional\tOption with both long and short options.");
-	cbuild_flag_new("tlist_opt\tT\targ=tlist?;thint=file;tdelim=^;len=4;group=Argument is optional\tOption with both long and short options.");
-	
-	cbuild_flag_new("long\n\tOption with long option only.");
-	
-	cbuild_flag_new("a1\tb\t\tSome argument");
-	cbuild_flag_new("a2\tc\t\tAnother argument");
-	
-	cbuild_flag_new("-alias:arg_req:arg1,arg2");
-	
-	cbuild_flag_new("-group:Requires arguments:All flags from this group requires at least one argument.");
-	cbuild_flag_new("-group:Argument is optional:Flags from this group can live even without any arguments!");
+	cbuild_flag_new("arg_req", .short_option = 'a', .num_arguments = 1,
+		.group = "Required arguments", .argument_desc = "int",
+		.desc = "Option with both long and short options.");
+	cbuild_flag_new("list_req", .short_option = 'l', .num_arguments = -1,
+		.group = "Required arguments", .argument_desc = "file",
+		.desc = "Option with both long and short options.");
+	cbuild_flag_new("tlist_req", .short_option = 't', .num_arguments = 3,
+		.group = "Required arguments", .argument_desc = "boolean", .terminator = "^",
+		.desc = "Option with both long and short options.");
+
+	cbuild_flag_new("arg_opt", .short_option = 'A', .num_arguments = 1,
+		.group = "Optional arguments", .argument_desc="float", .optional = true,
+		.desc = "Option with both long and short options.");
+	cbuild_flag_new("list_opt", .short_option = 'L', .num_arguments = -1,
+		.group = "Optional arguments", .argument_desc="float", .optional = true,
+		.desc = "Option with both long and short options.");
+	cbuild_flag_new("tlist_opt", .short_option = 'T', .num_arguments = 4,
+		.group = "Optional arguments", .argument_desc="float", .optional = true,
+		.terminator = "^", .desc = "Option with both long and short options.");
+
+	cbuild_flag_new("long", .desc = "Option with long option only");
+
+	cbuild_flag_new("a1", .short_option = 'b', .desc = "Some argument");
+	cbuild_flag_new("a2", .short_option = 'c', .desc = "Another argument");
 	
 	cbuild_flag_parse(argc, argv);
 	
@@ -28,7 +35,7 @@ int main(int argc, char** argv) {
 	char* arg_req_data0 = cbuild_flag_get_flag("arg_req")->data[0];
 	TEST_ASSERT_STREQ(arg_req_data0, "a",
 		"Error while parsing flag \"arg_req\" - wrong argument 0"
-		TEST_EXPECT_MSG(s), "0", arg_req_data0);
+		TEST_EXPECT_MSG(s), "a", arg_req_data0);
 	TEST_ASSERT_EQ(cbuild_flag_get_flag("list_req"), NULL,
 		"Error while parsing flag \"list_req\" - non-NULL value found");
 	size_t tlist_req_size = cbuild_flag_get_flag("tlist_req")->size;
@@ -42,11 +49,11 @@ int main(int argc, char** argv) {
 	char* tlist_req_data1 = cbuild_flag_get_flag("tlist_req")->data[1];
 	TEST_ASSERT_STREQ(tlist_req_data1, "---bar",
 		"Error while parsing flag \"tlist_req\" - wrong argument 1"
-		TEST_EXPECT_MSG(s), "---bar", tlist_req_data0);
+		TEST_EXPECT_MSG(s), "---bar", tlist_req_data1);
 	char* tlist_req_data2 = cbuild_flag_get_flag("tlist_req")->data[2];
 	TEST_ASSERT_STREQ(tlist_req_data2, "baz",
 		"Error while parsing flag \"tlist_req\" - wrong argument 2"
-		TEST_EXPECT_MSG(s), "baz", tlist_req_data0);
+		TEST_EXPECT_MSG(s), "baz", tlist_req_data2);
 	
 	cbuild_arglist_t* arg_opt = cbuild_flag_get_flag("arg_opt");
 	TEST_ASSERT_EQ(arg_opt, NULL,
@@ -73,7 +80,7 @@ int main(int argc, char** argv) {
 	TEST_ASSERT_NEQ(noarg_long_flag, NULL,
 		"Error while parsing flag \"long\"",
 		TEST_EXPECT_MSG(p), NULL, noarg_long_flag);
-	
+
 	size_t pargs_size = cbuild_flag_get_pargs()->size;
 	TEST_ASSERT_EQ(pargs_size, 3,
 		"Error while parsing positional arguments - wrong argument count"
@@ -93,11 +100,11 @@ int main(int argc, char** argv) {
 	
 	cbuild_arglist_t* missing_flag1 = cbuild_flag_get_flag("a1");
 	TEST_ASSERT_NEQ(missing_flag1, NULL,
-		"Error while parsing flag \"a1\" - flag should not be present"
+		"Error while parsing flag \"a1\" - flag should be present"
 		TEST_EXPECT_MSG(p), NULL, missing_flag1);
 	cbuild_arglist_t* missing_flag2 = cbuild_flag_get_flag("a2");
 	TEST_ASSERT_NEQ(missing_flag2, NULL,
-		"Error while parsing flag \"a2\" - flag should not be present"
+		"Error while parsing flag \"a2\" - flag should be present"
 		TEST_EXPECT_MSG(p), NULL, missing_flag2);
 	return 0;
 }
