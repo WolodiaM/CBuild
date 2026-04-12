@@ -8,7 +8,7 @@
 /// Load dynamic library into handle.
 ///
 /// * [pl:filename] Full path to a library or its platform-dependant "ID".
-/// * [pl:eager] By default symbols are loaded lazily (during calls to [`cbuild_dlib_get_sym`](#ID_cbuild_dlib_get_sym). This makes them load eagerly. Can be user to run global constructors.
+/// * [pl:eager] By default symbols are loaded lazily (during calls to [`cbuild_dlib_get_sym`](symbols.html#ID_cbuild_dlib_get_sym). This makes them load eagerly. Can be user to run global constructors.
 ///
 /// [r:] `NULL` if error happened.
 CBUILDDEF cbuild_dlib_t cbuild_dlib_open(const char* filename, bool eager);

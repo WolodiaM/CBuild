@@ -11,6 +11,7 @@
 //! # Compiler defines [line:cbuild-cc-defines]
 //!
 //! Valid compilers:
+//!
 //! - `CBUILD_CC_CLANG` - clang or its derivative.
 //! - `CBUILD_CC_GCC` - gcc or its derivative.
 //!
@@ -19,6 +20,7 @@
 //! :::
 //!
 //! Several compiler extensions are required from supported compiler:
+//!
 //! - Binary literals support (`0b`) either trough c standard (c23+) or as extension.
 //! - Attributes trough `__attribute__((...))` syntax, some are supported trough `[[...]]` syntax if support is detected 
 //!   * deprecated.
@@ -32,6 +34,7 @@
 //! - `__auto_type`.
 //!
 //! Explicetely unsupported compilers:
+//!
 //! - TCC - no statement expression (at least).
 //! - MSVC - no extensions at all.
 //!
@@ -60,6 +63,7 @@
 //! # OS defines [line:cbuild-os-defines]
 //!
 //! Valid OSes:
+//!
 //! - `CBUILD_OS_LINUX` - Any desktop Linux (excluding Android or ChromeOS for example).
 //! - `CBUILD_OS_MACOS` - MacOS.
 //! - `CBUILD_OS_BSD` - Any desktop BSD.
@@ -67,6 +71,7 @@
 //! - `CBUILD_OS_WINDOWS` - Windows.
 //!
 //! Also, there are some auxiliary OS checks, valid values are:
+//!
 //! - `CBUILD_OS_WINDOWS`:
 //!   * `CBUILD_OS_WINDOWS_CYGWIN `- Windows under Cygwin.
 //! - `CBUILD_OS_LINUX`:
@@ -101,6 +106,7 @@
 //! # API defines [line:cbuild-api-defines]
 //!
 //! Valid APIs:
+//!
 //! - `CBUILD_API_POSIX`.
 //!   POSIX.1-2001 (`_POSIX_C_SOURCE == 200112L`). 
 //!   Any detected extension can be used.
@@ -294,7 +300,7 @@
 	/// Default hash function for CBuild map. User can override it in runtime 
 	/// for specific map instance.
 	///
-	/// [Type](Map.html#ID_cbuild_map_hash_t): `size_t func(const void* key, size_t len)`{.c}. 
+	/// [Type](symbols.html#ID_cbuild_map_hash_t): `size_t func(const void* key, size_t len)`{.c}. 
 	#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_map_hash_func
 #endif // CBUILD_MAP_DEFAULT_HASH_FUNC
 #ifndef CBUILD_SELFREBUILD_ARGS
@@ -306,7 +312,7 @@
 #ifndef CBUILD_LOG_MIN_LEVEL
 	/// Minimal log level for `cbuild_log`.
 	/// 
-	/// [Type](Log.html#ID_cbuild_log_level_t): `cbuild_log_level_t`.
+	/// [Type](symbols.html#ID_cbuild_log_level_t): `cbuild_log_level_t`.
 	#define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_ERROR
 #endif // CBUILD_LOG_MIN_LEVEL
 #ifndef CBUILD_GLOB_CAPTURE_COUNT
@@ -324,6 +330,7 @@
 //! # Preprocessor configuration [line:cbuild-misc-preproc] {#preprocessor-configuration}
 //!
 //! This section provides several miscellaneous preprocessor macro.
+//!
 //! - Print hooks. These can not be overridden by user and should be edited here.
 //! - Macro helpers for '##' and '#' operators
 //! - Attribute abstractions to support both new C23 attributes and older 

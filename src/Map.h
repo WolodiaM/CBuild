@@ -106,12 +106,12 @@ typedef struct cbuild_map_bucket_t {
 /// values and should not be modified (but still can be if you know what you
 /// are doing).
 ///
-/// * [fl:buckets] List of bucket this map has. Pre-allocated on by [`cbuild_map_init`](#ID_cbuild_map_init).
-/// * [fl:nbuckets] Number of buckets. Parameter to [`cbuild_map_init`](#ID_cbuild_map_init).
+/// * [fl:buckets] List of bucket this map has. Pre-allocated on by [`cbuild_map_init`](symbols.html#ID_cbuild_map_init).
+/// * [fl:nbuckets] Number of buckets. Parameter to [`cbuild_map_init`](symbols.html#ID_cbuild_map_init).
 /// * [fl:hash_func] Custom hash function, can be left as `NULL`{.c} if unused.
 /// * [fl:keycmp_func] Custom key comparison function, can be `NULL`{.c} if unused.
-/// * [fl:key_size] Size of key. Should be set manually before call to [`cbuild_map_init`](#ID_cbuild_map_init).
-/// * [fl:elem_size] Size of pair structure. Should be set manually before call to [`cbuild_map_init`](#ID_cbuild_map_init).
+/// * [fl:key_size] Size of key. Should be set manually before call to [`cbuild_map_init`](symbols.html#ID_cbuild_map_init).
+/// * [fl:elem_size] Size of pair structure. Should be set manually before call to [`cbuild_map_init`](symbols.html#ID_cbuild_map_init).
 /// * [fl:iter_buckets] Internal counter used by iterator functions.
 /// * [fl:iter_vals] Internal counter used by iterator functions.
 typedef struct cbuild_map_t {

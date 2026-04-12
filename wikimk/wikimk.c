@@ -49,7 +49,7 @@ struct {
 	void (*typedef_enum_decl_start)(cbuild_sb_t* dst);
 	void (*typedef_func_decl_start)(cbuild_sb_t* dst);
 	void (*decl_end)(cbuild_sb_t* dst);
-	void (*decl_name)(cbuild_sb_t* dst, cbuild_sv_t name);
+	void (*decl_name)(cbuild_sb_t* dst, cbuild_sv_t name, const char* src, size_t line);
 	void (*decl_code)(cbuild_sb_t*dst, cbuild_sv_t decl_raw);
 	// Formatting of parsed data
 	void (*parsed_arg_in_list)(cbuild_sb_t* dst, argument_t arg);
@@ -305,14 +305,22 @@ int main(int argc, char** argv) {
 	if (!main_epilogue()) return 1;
 	return 0;
 }
-void push_symbol(symbols_t* symbol_table, cbuild_sv_t name, const char* filename) {
+bool push_symbol(symbols_t* symbol_table, cbuild_sv_t name, const char* filename) {
+	size_t checkpoint = cbuild_arena_checkpoint(&symbol_table->arena);
 	char* str = cbuild_arena_malloc(&symbol_table->arena, name.size + 1);
 	memcpy(str, name.data, name.size);
 	str[name.size] = '\0';
+	cbuild_da_foreach(*symbol_table, symbol) {
+		if (strcmp(symbol->symbol_name, str) == 0) {
+			cbuild_arena_reset(&symbol_table->arena, checkpoint);
+			return false;
+		}
+	}
 	cbuild_da_append(symbol_table, ((symbol_t){
 				.symbol_name = str,
 				.filename = cbuild_arena_strdup(&symbol_table->arena, filename),
 			}));
+	return true;
 }
 // ----------------------------------------
 // WikiMK
@@ -535,6 +543,7 @@ bool docgen_parse_file(const char* src_, void** file, comments_t* comments, line
 	comment_t curr = {0};
 	while (src.size > 0) {
 		cbuild_sv_t line = cbuild_sv_chop_by_delim(&src, '\n');
+		cbuild_sv_trim_left(&src);
 		cbuild_da_append(lines, line);
 		if (cbuild_sv_prefix(line, cbuild_sv_from_lit("///"))) {
 			if (curr.type == COMMENT_NONE) {
@@ -736,7 +745,6 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 				comment->last_line);
 			return false;
 		}
-		TEMPLATE.func_decl_start(dst);
 	} break;
 	case DECL_VARIABLE: {
 		if (!PARSER.var_decl(lines, comment->last_line,
@@ -745,7 +753,6 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 				comment->last_line);
 			return false;
 		}
-		TEMPLATE.var_decl_start(dst);
 	} break;
 	case DECL_DEFINE: {
 		if (!PARSER.define_decl(lines, comment->last_line,
@@ -754,7 +761,6 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 				comment->last_line);
 			return false;
 		}
-		TEMPLATE.define_decl_start(dst);
 	} break;
 	case DECL_STRUCT: {
 		if (!PARSER.struct_decl(lines, comment->last_line,
@@ -763,7 +769,6 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 				comment->last_line);
 			return false;
 		}
-		TEMPLATE.struct_decl_start(dst);
 	} break;
 	case DECL_ENUM: {
 		if (!PARSER.enum_decl(lines, comment->last_line,
@@ -772,7 +777,6 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 				comment->last_line);
 			return false;
 		}
-		TEMPLATE.enum_decl_start(dst);
 	} break;
 	case DECL_TYPEDEF: {
 		if (!PARSER.typedef_decl(lines, comment->last_line,
@@ -781,7 +785,6 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 				comment->last_line);
 			return false;
 		}
-		TEMPLATE.typedef_decl_start(dst);
 	} break;
 	case DECL_TYPEDEF_STRUCT: {
 		if (!PARSER.typedef_struct_decl(lines, comment->last_line,
@@ -790,7 +793,6 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 				comment->last_line);
 			return false;
 		}
-		TEMPLATE.typedef_struct_decl_start(dst);
 	} break;
 	case DECL_TYPEDEF_ENUM: {
 		if (!PARSER.typedef_enum_decl(lines, comment->last_line,
@@ -799,7 +801,6 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 				comment->last_line);
 			return false;
 		}
-		TEMPLATE.typedef_enum_decl_start(dst);
 	} break;
 	case DECL_TYPEDEF_FUNC: {
 		if (!PARSER.typedef_func_decl(lines, comment->last_line,
@@ -808,14 +809,45 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 				comment->last_line);
 			return false;
 		}
-		TEMPLATE.typedef_func_decl_start(dst);
 	} break;
 	case DECL_NONE:
 		CBUILD_UNREACHABLE("Invalid declaration type.");
 		break;
 	}
-	push_symbol(symbol_table, name, src);
-	TEMPLATE.decl_name(dst, name);
+	if (!push_symbol(symbol_table, name, src)) return true;
+	switch (decltype) {
+	case DECL_FUNCTION:
+		TEMPLATE.func_decl_start(dst);
+		break;
+	case DECL_VARIABLE:
+		TEMPLATE.var_decl_start(dst);
+		break;
+	case DECL_DEFINE:
+		TEMPLATE.define_decl_start(dst);
+		break;
+	case DECL_STRUCT:
+		TEMPLATE.struct_decl_start(dst);
+		break;
+	case DECL_ENUM:
+		TEMPLATE.enum_decl_start(dst);
+		break;
+	case DECL_TYPEDEF:
+		TEMPLATE.typedef_decl_start(dst);
+		break;
+	case DECL_TYPEDEF_STRUCT:
+		TEMPLATE.typedef_struct_decl_start(dst);
+		break;
+	case DECL_TYPEDEF_ENUM:
+		TEMPLATE.typedef_enum_decl_start(dst);
+		break;
+	case DECL_TYPEDEF_FUNC:
+		TEMPLATE.typedef_func_decl_start(dst);
+		break;
+	case DECL_NONE:
+		CBUILD_UNREACHABLE("Invalid declaration type.");
+		break;
+	}
+	TEMPLATE.decl_name(dst, name, src, comment->last_line + 1);
 	TEMPLATE.decl_code(dst, decl);
 	if (!docgen_comment_to_md(comment, dst, src, comments, "##", &ret_or_typename, &name, &args)) {
 		return false;

@@ -73,8 +73,8 @@ cbuild_flag_new_opt(option, (struct cbuild_flag_new_opts_t){ __VA_ARGS__ })
 /// Options for a flag parser
 ///
 /// * [fl:CBUILD_FLAG_PASS_SEPARATOR] Pass `--` inside of pargs. No arguments.
-/// * [fl:CBUILD_FLAG_HELP_HOOK] Set hook for `--help`. Argument - [`cbuild_flag_print_func_t`](#ID_cbuild_flag_print_func_t)
-/// * [fl:CBUILD_FLAG_VERSION_HOOK] Set hook for `--version`. Argument - [`cbuild_flag_print_func_t`](#ID_cbuild_flag_print_func_t)
+/// * [fl:CBUILD_FLAG_HELP_HOOK] Set hook for `--help`. Argument - [`cbuild_flag_print_func_t`](symbols.html#ID_cbuild_flag_print_func_t)
+/// * [fl:CBUILD_FLAG_VERSION_HOOK] Set hook for `--version`. Argument - [`cbuild_flag_print_func_t`](symbols.html#ID_cbuild_flag_print_func_t)
 enum cbuild_flag_options_t {
 	CBUILD_FLAG_PASS_SEPARATOR,
 	CBUILD_FLAG_HELP_HOOK,
