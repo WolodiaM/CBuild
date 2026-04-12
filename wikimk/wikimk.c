@@ -16,9 +16,10 @@
 // ----------------------------------------
 // Config
 // ----------------------------------------
-#define WIKI_NAME    "CBuild wiki"
-#define WIKI_AUTHOR  "WolodiaM"
-#define WIKI_LICENSE "GFDL-1.3-or-later"
+#define WIKI_NAME     "CBuild wiki"
+#define WIKI_AUTHOR   "WolodiaM"
+#define WIKI_LICENSE  "GFDL-1.3-or-later"
+#define SITE_BASE_URL "/CBuild"
 // Paths
 #define CODE_DOC_SRC     "src" // Prefix
 #define CODE_DOC_OUT     "wiki/doc"
@@ -346,10 +347,12 @@ void wikimk_cmd_append_pandoc_base_and_edit(cbuild_cmd_t* cmd, const char* path)
 	cbuild_cmd_append_many(cmd,
 		"-M", "name:" WIKI_NAME,
 		"-M", "author:" WIKI_AUTHOR,
-		"-M", "license:" WIKI_LICENSE);
+		"-M", "license:" WIKI_LICENSE,
+				"-M", "BASE_URL:"SITE_BASE_URL);
 	cbuild_cmd_append_many(cmd,
 		"--lua-filter="WIKIMK_FILTERS"/codeblock-include-file.lua",
-		"--lua-filter="WIKIMK_FILTERS"/codeblock-include-dir-tree.lua");
+		"--lua-filter="WIKIMK_FILTERS"/codeblock-include-dir-tree.lua",
+		"--lua-filter="WIKIMK_FILTERS"/url-transform-doc-ref.lua");
 	// Edit URL
 	cbuild_sb_t edit_url = {0};
 	cbuild_sb_append_cstr(&edit_url, "EDIT-URL:");
@@ -503,7 +506,7 @@ bool wikimk_generate_nav_html_rec(cbuild_sb_t* out, const char* dir, const char*
 					cbuild_sv_trim(&line);
 					// After 'title:' is chopped and lines is trimmed it now contains just title.
 					cbuild_sb_appendf(out, 
-						"<li><a href=\"%s/"CBuildSVFmt".html\">"CBuildSVFmt"</a></li>\n",
+						"<li><a href=\""SITE_BASE_URL"%s/"CBuildSVFmt".html\">"CBuildSVFmt"</a></li>\n",
 						fmt_dir, CBuildSVArg(file_sv), CBuildSVArg(line));
 					found = true;
 					break;

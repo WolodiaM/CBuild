@@ -300,7 +300,7 @@
 	/// Default hash function for CBuild map. User can override it in runtime 
 	/// for specific map instance.
 	///
-	/// [Type](symbols.html#ID_cbuild_map_hash_t): `size_t func(const void* key, size_t len)`{.c}. 
+	/// [Type](DOC:cbuild_map_hash_t): `size_t func(const void* key, size_t len)`{.c}. 
 	#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_map_hash_func
 #endif // CBUILD_MAP_DEFAULT_HASH_FUNC
 #ifndef CBUILD_SELFREBUILD_ARGS
@@ -312,7 +312,7 @@
 #ifndef CBUILD_LOG_MIN_LEVEL
 	/// Minimal log level for `cbuild_log`.
 	/// 
-	/// [Type](symbols.html#ID_cbuild_log_level_t): `cbuild_log_level_t`.
+	/// [Type](DOC:cbuild_log_level_t): `cbuild_log_level_t`.
 	#define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_ERROR
 #endif // CBUILD_LOG_MIN_LEVEL
 #ifndef CBUILD_GLOB_CAPTURE_COUNT

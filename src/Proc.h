@@ -79,7 +79,7 @@ typedef struct cbuild_proc_ptr_t {
 } cbuild_proc_ptr_t;
 /// Allocate memory that will be shared between child processes. Same as `malloc`.
 CBUILDDEF cbuild_proc_ptr_t cbuild_proc_malloc(size_t n);
-/// Free memory that was allocated via [`cbuild_proc_malloc`](symbols.html#ID_cbuild_proc_malloc).
+/// Free memory that was allocated via [`cbuild_proc_malloc`](DOC:cbuild_proc_malloc).
 /// Same as`free`.
 CBUILDDEF void cbuild_proc_free(cbuild_proc_ptr_t ptr);
 /// Get amount of CPU cores (or threads).

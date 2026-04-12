@@ -80,8 +80,8 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
 ///
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim);
-/// Delimiter function. Used as comparator in [`cbuild_sv_chop_by_func`](symbols.html#ID_cbuild_sv_chop_by_func)
-/// and [`cbuild_sv_chop_right_by_func`](symbols.html#ID_cbuild_sv_chop_right_by_func)
+/// Delimiter function. Used as comparator in [`cbuild_sv_chop_by_func`](DOC:cbuild_sv_chop_by_func)
+/// and [`cbuild_sv_chop_right_by_func`](DOC:cbuild_sv_chop_right_by_func)
 ///
 /// * [pl:sv] String view passed to function.
 /// * [pl:idx] Current character.
@@ -180,7 +180,7 @@ CBUILDDEF uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv);
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim);
 /// Delimiter function. Used as comparator in 
-/// [`cbuild_sv_chop_by_func_utf8`](symbols.html#ID_cbuild_sv_chop_by_func_utf8)
+/// [`cbuild_sv_chop_by_func_utf8`](DOC:cbuild_sv_chop_by_func_utf8)
 ///
 /// * [pl:sv] String view, prechopped, so first character is possible delimiter and should be checked.
 /// * [pl:args] Arguments passed by caller.
@@ -221,7 +221,7 @@ CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx);
 CBUILDDEF char* cbuild_sv_to_cstr(cbuild_sv_t sv);
 /// Convert string view to c-string. Allocate memory via `malloc`.
 #define cbuild_cstr_from_sv(sv) cbuild_sv_to_cstr(sv)
-/// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](symbols.html#ID_cbuild_temp_malloc).
+/// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
 CBUILDDEF char* cbuild_sv_to_temp_cstr(cbuild_sv_t sv);
-/// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](symbols.html#ID_cbuild_temp_malloc).
+/// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
 #define cbuild_temp_cstr_from_sv(sv) cbuild_temp_sv_to_cstr(sv)

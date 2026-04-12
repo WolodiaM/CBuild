@@ -34,20 +34,20 @@
 CBUILD_ATTR_PRINTF(2,
 	CBUILDDEF void cbuild_log(cbuild_log_level_t level, const char* fmt, ...));
 
-/// Wrapper for [`cbuild_log`](symbols.html#ID_cbuild_log) that sets level to `CBUILD_LOG_ERROR`.
+/// Wrapper for [`cbuild_log`](DOC:cbuild_log) that sets level to `CBUILD_LOG_ERROR`.
 #define cbuild_log_error(msg, ...)                            \
 	cbuild_log(CBUILD_LOG_ERROR, msg __VA_OPT__(,) __VA_ARGS__)
-/// Wrapper for [`cbuild_log`](symbols.html#ID_cbuild_log) that sets level to `CBUILD_LOG_WARN`.
+/// Wrapper for [`cbuild_log`](DOC:cbuild_log) that sets level to `CBUILD_LOG_WARN`.
 #define cbuild_log_warn(msg, ...)                             \
 	cbuild_log(CBUILD_LOG_WARN, msg __VA_OPT__(,) __VA_ARGS__)
-/// Wrapper for [`cbuild_log`](symbols.html#ID_cbuild_log) that sets level to `CBUILD_LOG_INFO`.
+/// Wrapper for [`cbuild_log`](DOC:cbuild_log) that sets level to `CBUILD_LOG_INFO`.
 #define cbuild_log_info(msg, ...)                             \
 	cbuild_log(CBUILD_LOG_INFO, msg __VA_OPT__(,) __VA_ARGS__)
-/// Wrapper for [`cbuild_log`](symbols.html#ID_cbuild_log) that sets level to `CBUILD_LOG_TRACE`.
+/// Wrapper for [`cbuild_log`](DOC:cbuild_log) that sets level to `CBUILD_LOG_TRACE`.
 #define cbuild_log_trace(msg, ...)                            \
 	cbuild_log(CBUILD_LOG_TRACE, msg __VA_OPT__(,) __VA_ARGS__)
 
-/// Same as [`cbuild_log`](symbols.html#ID_cbuild_log) but takes `va_list`{.c} instead of variadics. 
+/// Same as [`cbuild_log`](DOC:cbuild_log) but takes `va_list`{.c} instead of variadics. 
 ///
 /// * [pl:level] Log level. Will be used both for printing and for disabling logs based on minimum level. 
 /// * [pl:fmt] Format string for printf.
