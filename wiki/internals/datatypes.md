@@ -23,7 +23,7 @@ For dynamic arrays you can use provided `cbuild_da_new`. Following code defines 
 typedef cbuild_da_new(int) my_da_t;
 ```
 
-Using provided macro allows you to quickly create needed datastructure, but using your own structure allows you to add additional fields to this structure. You can see this done in [RGlob.h](/doc/symbols.html#ID_cbuild_glob_t), where `cbuild_glob_t` both serves as a dynamic array of matches and additionally stores glob context.
+Using provided macro allows you to quickly create needed datastructure, but using your own structure allows you to add additional fields to this structure. You can see this done in [RGlob.h](DOC:cbuild_glob_t), where `cbuild_glob_t` both serves as a dynamic array of matches and additionally stores glob context.
 
 To create a new stack, the following structure should be created:
 
@@ -39,7 +39,7 @@ typedef struct my_stack_t {
 
 ::: entry
 
-Map datatype is much more complex. Implementing a hash map fully in C macro is much harder than dynamic array, so map uses real function for implementation. But C function does not support any templating. So, the map is not templated and relies on [`cbuild_map_t`](/doc/symbols.html#ID_cbuild_map_t), which stores sizes of key and full _pair_ structure. Map implementation makes few assumptions about data stored in it:
+Map datatype is much more complex. Implementing a hash map fully in C macro is much harder than dynamic array, so map uses real function for implementation. But C function does not support any templating. So, the map is not templated and relies on [`cbuild_map_t`](DOC:cbuild_map_t), which stores sizes of key and full _pair_ structure. Map implementation makes few assumptions about data stored in it:
 
 * The full _pair_ structure can be `memcpy`.
 * Neither data nor key owns any resources. This assumption can be overridden by providing custom element cleanup function.

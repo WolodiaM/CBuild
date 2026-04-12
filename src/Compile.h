@@ -50,13 +50,13 @@
 /// Add a define based on compile-time literal.
 #define CBUILD_CARGS_DEFINE(defname)  "-D" defname
 /// Add a define based on runtime string.
-/// Uses [`cbuild_temp_malloc`](symbols.html#ID_cbuild_temp_malloc).
+/// Uses [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
 #define CBUILD_CARGS_DEFINE_TEMP(defname) \
 	cbuild_temp_sprintf("-D%s", defname)
 /// Add a define with a value. Both based on compile-time literal.
 #define CBUILD_CARGS_DEFINE_VAL(defname, val)      "-D" defname "=" val
 /// Add a define with a value. Both based on runtime string.
-/// Uses [`cbuild_temp_malloc`](symbols.html#ID_cbuild_temp_malloc).
+/// Uses [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
 #define CBUILD_CARGS_DEFINE_VAL_TEMP(defname, val) \
 	cbuild_temp_sprintf("-D%s=%s", defname, val)
 /// Remove define based on compile-time literal.
@@ -103,13 +103,13 @@
 /// # How rebuild is performed
 ///
 /// `CBUILD_CC` is used as compiler. `CBUILD_CARGS_WARN` is used as default set
-/// of arguments. [`cbuild_selfrebuild_hook`](symbols.html#ID_cbuild_selfrebuild_hook) is called
+/// of arguments. [`cbuild_selfrebuild_hook`](DOC:cbuild_selfrebuild_hook) is called
 /// to resolve dynamic or user-provided arguments.
 CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv,
 	const char* argv0_path, cbuild_cmd_t files);
 /// This function receives command before files are appended and can modify it.
 typedef void (*cbuild_selfrebuild_hook_t)(cbuild_cmd_t* cmd);
-/// This function is called by default [`__cbuild_selfrebuild`](symbols.html#ID___cbuild_selfrebuild)
+/// This function is called by default [`__cbuild_selfrebuild`](DOC:__cbuild_selfrebuild)
 extern cbuild_selfrebuild_hook_t cbuild_selfrebuild_hook;
 /// Compare mtime of 2 files.
 /// Same check as done by `make`.
