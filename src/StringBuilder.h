@@ -86,20 +86,20 @@ typedef struct cbuild_sb_t {
 #define cbuild_sb_foreach(sb, iter) cbuild_da_foreach(sb, iter)
 /// `strcmp` for string builder. Fully compatible but extends API. 
 ///
-/// [r:-2] If size of first string builder is smaller.
-/// [r:-1] If first different character in first string builder is smaller.
-/// [r:0] If two string builders are equal.
-/// [r:1] If first different character in first string builder is larger.
-/// [r:2] If size of first string builder is larger.
+/// * [r:-2] If size of first string builder is smaller.
+/// * [r:-1] If first different character in first string builder is smaller.
+/// * [r:0] If two string builders are equal.
+/// * [r:1] If first different character in first string builder is larger.
+/// * [r:2] If size of first string builder is larger.
 CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t a, cbuild_sb_t b);
 /// `strcmp` for string builder. Fully compatible but extends API. 
 /// Performs case folding for ASCII.
 ///
-/// [r:-2] If size of first string builder is smaller.
-/// [r:-1] If first different character in first string builder is smaller.
-/// [r:0] If two string builders are equal.
-/// [r:1] If first different character in first string builder is larger.
-/// [r:2] If size of first string builder is larger.
+/// * [r:-2] If size of first string builder is smaller.
+/// * [r:-1] If first different character in first string builder is smaller.
+/// * [r:0] If two string builders are equal.
+/// * [r:1] If first different character in first string builder is larger.
+/// * [r:2] If size of first string builder is larger.
 CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t a, cbuild_sb_t b);
 /// Append utf8 character to a string builder.
 ///

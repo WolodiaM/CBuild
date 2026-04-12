@@ -109,20 +109,20 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_func(cbuild_sv_t* sv,
 	cbuild_sv_delim_func delim, void* args);
 /// `strcmp` for string view. Fully compatible but extends API. 
 ///
-/// [r:-2] If size of first string view is smaller.
-/// [r:-1] If first different character in first string view is smaller.
-/// [r:0] If two string views are equal.
-/// [r:1] If first different character in first string view is larger.
+/// * [r:-2] If size of first string view is smaller.
+/// * [r:-1] If first different character in first string view is smaller.
+/// * [r:0] If two string views are equal.
+/// * [r:1] If first different character in first string view is larger.
 /// [r:2] If size of first string view is larger.
 CBUILDDEF int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
 /// `strcmp` for string view. Fully compatible but extends API. 
 /// Performs case folding for ASCII.
 ///
-/// [r:-2] If size of first string view is smaller.
-/// [r:-1] If first different character in first string view is smaller.
-/// [r:0] If two string views are equal.
-/// [r:1] If first different character in first string view is larger.
-/// [r:2] If size of first string view is larger.
+/// * [r:-2] If size of first string view is smaller.
+/// * [r:-1] If first different character in first string view is smaller.
+/// * [r:0] If two string views are equal.
+/// * [r:1] If first different character in first string view is larger.
+/// * [r:2] If size of first string view is larger.
 CBUILDDEF int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
 /// Check if string view has specific prefix.
 CBUILDDEF bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);

@@ -210,9 +210,9 @@ CBUILDDEF cbuild_dir_t cbuild_dir_open(const char* path);
 /// * [pl:dir] Directory handle.
 /// * [pl:element] Return value for filename.
 ///
-/// [r:0] No error and directory iterator is still not empty.
-/// [r:1] No error but directory iterator is empty. [p:element] is `NULL`.
-/// [r:-1] Error happened.
+/// * [r:0] No error and directory iterator is still not empty.
+/// * [r:1] No error but directory iterator is empty. [p:element] is `NULL`.
+/// * [r:-1] Error happened.
 CBUILDDEF int cbuild_dir_next(cbuild_dir_t dir, const char** element);
 /// Close directory.
 CBUILDDEF bool cbuild_dir_close(cbuild_dir_t dir);

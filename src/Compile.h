@@ -109,20 +109,20 @@ CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv,
 	const char* argv0_path, cbuild_cmd_t files);
 /// This function receives command before files are appended and can modify it.
 typedef void (*cbuild_selfrebuild_hook_t)(cbuild_cmd_t* cmd);
-/// This function is called by default [`__cbuild_selfrebuild`]{__cbuild_selfrebuild}
+/// This function is called by default [`__cbuild_selfrebuild`](symbols.html#ID___cbuild_selfrebuild)
 extern cbuild_selfrebuild_hook_t cbuild_selfrebuild_hook;
 /// Compare mtime of 2 files.
 /// Same check as done by `make`.
 ///
-/// [r:=0] - Output is newer than input.
-/// [r:<0] - Error.
-/// [r:>0] - Output is older than input.
+/// * [r:=0] - Output is newer than input.
+/// * [r:<0] - Error.
+/// * [r:>0] - Output is older than input.
 CBUILDDEF int cbuild_compare_mtime(const char* output, const char* input);
 /// Compare mtime of 1 output file and multiple input files.
 /// Same check as done by `make`.
 ///
-/// [r:=0] - Output is newer than input.
-/// [r:<0] - Error.
-/// [r:>0] - Output is older than input. Number of files that are newer.
+/// * [r:=0] - Output is newer than input.
+/// * [r:<0] - Error.
+/// * [r:>0] - Output is older than input. Number of files that are newer.
 CBUILDDEF int cbuild_compare_mtime_many(const char* output, const char** inputs,
 	size_t num_inputs);
