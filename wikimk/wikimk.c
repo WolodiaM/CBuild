@@ -194,7 +194,7 @@ bool main_epilogue(void) {
 bool main_docgen(void) {
 	cbuild_log_info("Processing doc comments from '%s' into '%s.",
 		CODE_DOC_SRC, CODE_DOC_OUT);
-	if (!cbuild_dir_remove(CODE_DOC_OUT)) {
+	if (cbuild_dir_check(CODE_DOC_OUT) && !cbuild_dir_remove(CODE_DOC_OUT)) {
 		cbuild_log_error("Could not clean build folder '"CODE_DOC_OUT"'.");
 		return false;
 	}
