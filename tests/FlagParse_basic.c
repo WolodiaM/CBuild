@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 		.group = "Optional arguments", .argument_desc="float", .optional = true,
 		.terminator = "^", .desc = "Option with both long and short options.");
 
-	cbuild_flag_new("long", .desc = "Option with long option only");
+	cbuild_flag_new("long", .desc = "Option with long option only", .repeat = true);
 
 	cbuild_flag_new("a1", .short_option = 'b', .desc = "Some argument");
 	cbuild_flag_new("a2", .short_option = 'c', .desc = "Another argument");
