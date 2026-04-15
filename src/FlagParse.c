@@ -190,7 +190,7 @@ CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 					exit(1);
 					continue;
 				}
-				if (flag->found && flag->spec.repeat) {
+				if (flag->found && !flag->spec.repeat) {
 					cbuild_log_error("Flag --%s does not support being repeated.", arg);
 					__cbuild_flag_context.help(__cbuild_flag_context.app_name);
 					exit(1);
@@ -224,7 +224,7 @@ CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 					exit(1);
 					continue;
 				}
-				if (flag->found && flag->spec.repeat) {
+				if (flag->found && !flag->spec.repeat) {
 					cbuild_log_error("Flag --%s does not support being repeated.", arg);
 					__cbuild_flag_context.help(__cbuild_flag_context.app_name);
 					exit(1);
@@ -245,7 +245,7 @@ CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 					exit(1);
 					continue;
 				}
-				if (flag->found && flag->spec.repeat) {
+				if (flag->found && !flag->spec.repeat) {
 					cbuild_log_error("Flag -%c does not support being repeated.", arg[i]);
 					__cbuild_flag_context.help(__cbuild_flag_context.app_name);
 					exit(1);
