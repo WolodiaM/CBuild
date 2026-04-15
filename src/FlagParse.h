@@ -47,6 +47,7 @@
 ///
 /// * [fl:short_option] Character for short options. If `'\0'` (`0`) then disabled.
 /// * [fl:optional] Arguments to this flag are optional. This augments `num_arguments` field by allowing another option of passing no arguments (in addition to one provided by `num_arguments`).
+/// * [fl:repeat] If 'false' repeated flag invocation result in error. If 'true' each invocation of flag just append argument to shared list (if flag has argument limit it is treated as a per-invocation limit).
 /// * [fl:num_arguments] Number of arguments required. `-1` means `>0`.
 /// * [fl:group] Name of arguments group. Used only for help message. Can be `NULL`{.c}.
 /// * [fl:terminator] Terminator argument. Can be `NULL`{.c} (unset, non-terminated argument list).
@@ -54,7 +55,14 @@
 /// * [fl:argument_desc] Description for argumentt. Can be `NULL`{.c}, then default 'ARGUMENT' will be used. Used only if `num_arguments != 0`{.c}.
 struct cbuild_flag_new_opts_t {
 	char short_option;
-	bool optional;
+	union {
+		uint8_t __flags;
+		struct {
+			uint8_t optional : 1;
+			uint8_t repeat : 1;
+			uint8_t : 6;
+		};
+	};
 	int8_t num_arguments; // No one need more than 127 arguments (at least then fixed count becomes meaningless).
 	// uint8_t __padding[1];
 	const char* group;
