@@ -190,6 +190,11 @@ CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 					exit(1);
 					continue;
 				}
+				if (flag->found && flag->spec.repeat) {
+					cbuild_log_error("Flag --%s does not support being repeated.", arg);
+					__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+					exit(1);
+				}
 				flag->found = true;
 				if (flag->spec.terminator != NULL) {
 					cbuild_log_error(
@@ -214,10 +219,15 @@ CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 			} else {
 				struct __cbuild_flag_t* flag = __cbuild_flag_lookup_flag(arg);
 				if (flag == NULL) {
-					cbuild_log_error("Invalid flag specified: --%s", arg);
+					cbuild_log_error("Invalid flag specified: --%s.", arg);
 					__cbuild_flag_context.help(__cbuild_flag_context.app_name);
 					exit(1);
 					continue;
+				}
+				if (flag->found && flag->spec.repeat) {
+					cbuild_log_error("Flag --%s does not support being repeated.", arg);
+					__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+					exit(1);
 				}
 				flag->found = true;
 				__cbuild_flag_parse_arguments(flag, argv, argc, &parser);
@@ -230,10 +240,15 @@ CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 			for (size_t i = 0; i < len; i++) {
 				struct __cbuild_flag_t* flag = __cbuild_flag_lookup_sflag(arg[i]);
 				if (flag == NULL) {
-					cbuild_log_error("Invalid flag specified: -%c", arg[i]);
+					cbuild_log_error("Invalid flag specified: -%c.", arg[i]);
 					__cbuild_flag_context.help(__cbuild_flag_context.app_name);
 					exit(1);
 					continue;
+				}
+				if (flag->found && flag->spec.repeat) {
+					cbuild_log_error("Flag -%c does not support being repeated.", arg[i]);
+					__cbuild_flag_context.help(__cbuild_flag_context.app_name);
+					exit(1);
 				}
 				flag->found = true;
 				if ((i + 1) == len) {
@@ -268,7 +283,6 @@ CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 						__cbuild_flag_context.help(__cbuild_flag_context.app_name);
 						exit(1);
 					}
-					flag->found = true;
 				}
 			}
 			if (equal != NULL) *equal = '=';
