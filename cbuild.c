@@ -451,6 +451,18 @@ test_case_t TESTS[] = {
 		.platforms = TPLM_ALL,
 	},
 	{
+		.file = "LL",
+		.group = true,
+	},
+	{
+		.file = "create_and_read",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "scan",
+		.platforms = TPLM_ALL,
+	},
+	{
 		.file = "FS",
 		.group = true,
 	},
