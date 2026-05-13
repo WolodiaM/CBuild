@@ -203,13 +203,6 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
 /// Invalid codepoints assumed to have length of 1
 /// :::
 CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
-/**
- * @brief Validate string as utf8-based
- *
- * @param idx => size_t* -> If non-NULL here will be stored	index of first
- * invalid codepoint, if validation failed.
- * @return bool -> true if valid, false otherwise
- */
 /// Check if string view is a valid utf8 data.
 ///
 /// * [pl:sv] String view to work with.
