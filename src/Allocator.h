@@ -32,6 +32,6 @@ typedef struct cbuild_allocator_t {
 	void* state;
 } cbuild_allocator_t;
 /// Create allocator from arena.
-cbuild_allocator_t cbuild_allocator_from_arena(cbuild_arena_t* arena);
+CBUILDDEF cbuild_allocator_t cbuild_allocator_from_arena(cbuild_arena_t* arena);
 /// Create allocator from libc allocator.
-cbuild_allocator_t cbuild_allocator_from_libc(void);
+CBUILDDEF cbuild_allocator_t cbuild_allocator_from_libc(void);
