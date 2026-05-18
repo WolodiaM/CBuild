@@ -30,8 +30,9 @@ CBUILDDEF void* cbuild_ll_new(cbuild_allocator_t* a, void* elem, size_t size) {
 	return node + 1; // Return pointer to data.
 }
 CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* data, size_t size) {
-	void* node = cbuild_ll_new(a, elem, size);
+	void* node = cbuild_ll_new(a, elem == NULL ? NULL : *(void**)elem, size);
 	memcpy(node, data, size);
+	if (elem != NULL && *(void**)elem == NULL) *(void**)elem = node;
 	return node;
 }
 CBUILDDEF size_t cbuild_ll_size(void* elem) {

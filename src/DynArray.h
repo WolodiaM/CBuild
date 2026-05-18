@@ -93,6 +93,38 @@
 		}                                                                          \
 		__cbuild__ret;                                                             \
 	})
+/// Get last element from dynamic array.
+///
+/// * [pl:da:const cbuild_da_t*] Dynamic array object.
+/// 
+/// [r:typeof(da->data)] Pointer to an element.
+#define cbuild_da_last(da)                                                     \
+	({                                                                           \
+		typeof(*(da)->data)* __cbuild__ret = NULL;                                 \
+		if ((da)->size == 0) {                                                     \
+			cbuild_log_error("Trying to get last element from empty array.");        \
+			__cbuild__ret = NULL;                                                    \
+		} else {                                                                   \
+			__cbuild__ret = &((da)->data[(da)->size - 1]);                           \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
+/// Get first element from dynamic array.
+///
+/// * [pl:da:const cbuild_da_t*] Dynamic array object.
+/// 
+/// [r:typeof(da->data)] Pointer to an element.
+#define cbuild_da_first(da)                                                    \
+	({                                                                           \
+		typeof(*(da)->data)* __cbuild__ret = NULL;                                 \
+		if ((da)->size == 0) {                                                     \
+			cbuild_log_error("Trying to get first element from empty array.");       \
+			__cbuild__ret = NULL;                                                    \
+		} else {                                                                   \
+			__cbuild__ret = &((da)->data[0]);                                        \
+		}                                                                          \
+		__cbuild__ret;                                                             \
+	})
 /// Remove element dynamic array using its index.
 ///
 /// * [pl:da:cbuild_da_t*] Dynamic array object.

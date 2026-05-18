@@ -38,9 +38,11 @@ CBUILDDEF void* cbuild_ll_new(cbuild_allocator_t* a, void* elem, size_t size);
 /// new element.
 ///
 /// If [f:elem] is null then it will allocate new linked list.
+/// If [f:elem] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem] then.
 ///
 /// * [pl:a] Allocator.
-/// * [pl:elem] Any element of linked list.
+/// * [pl:elem] Any element of linked list. Pointer to pointer to data of this element.
 /// * [pl:data] Data that need to be put into new node. It will be copied via `memcpy`.
 /// * [pl:size] Length of a data in bytes.
 ///
@@ -52,9 +54,11 @@ CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* da
 /// new element.
 ///
 /// If [f:elem] is null then it will allocate new linked list.
+/// If [f:elem] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem] then.
 ///
 /// * [pl:a] Allocator.
-/// * [pl:elem] Any element of linked list.
+/// * [pl:elem] Any element of linked list. Pointer to pointer to data of this element.
 /// * [pl:data] Data that need to be put into new node. Must be value and not pointer.
 ///
 /// [r:] Pointer to new element.
@@ -69,9 +73,11 @@ CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* da
 /// new element.
 ///
 /// If [f:elem] is null then it will allocate new linked list.
+/// If [f:elem] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem] then.
 ///
 /// * [pl:a] Allocator.
-/// * [pl:elem] Any element of linked list.
+/// * [pl:elem] Any element of linked list. Pointer to pointer to data of this element.
 /// * [pl:data] Data that need to be put into new node. Must be typed (not `void`) pointer.
 ///
 /// [r:] Pointer to new element.

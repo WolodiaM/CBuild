@@ -1,7 +1,7 @@
 int main(void) {
 	cbuild_allocator_t a = cbuild_allocator_from_libc();
 	int* i1 = cbuild_ll_append(&a, NULL, 1);
-	int* i2 = cbuild_ll_append(&a, i1, 2);
+	int* i2 = cbuild_ll_append(&a, &i1, 2);
 	TEST_ASSERT_EQ(
 		*i1, 1,
 		"Wrong value for first node"TEST_EXPECT_MSG(d),
