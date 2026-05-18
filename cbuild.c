@@ -517,6 +517,10 @@ test_case_t TESTS[] = {
 		.platforms = TPLM_ALL,
 	},
 	{
+		.file = "dir_walk_symlink",
+		.platforms = TPLM_ALL, // They are all POSIX it is work on all of them
+	},
+	{
 		.file = "dir_create",
 		.platforms = TPLM_ALL,
 	},

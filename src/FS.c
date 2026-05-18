@@ -383,16 +383,19 @@ CBUILDDEF bool cbuild_dir_list(const char* path, cbuild_pathlist_t* elements) {
 		return true;
 	}
 #endif // CBUILD_API_*
+CBUILDDEF cbuild_filetype_t __cbuild_path_filetype_resolved(const char* path);
 CBUILDDEF bool __cbuild_dir_walk_opt(cbuild_sb_t* path, size_t level, bool* abort,
 	cbuild_dir_walk_func_t func, struct cbuild_dir_walk_opts_t opts) {
 	size_t curr_path_len = path->size;
 	cbuild_sb_append_null(path);
-	cbuild_filetype_t ftype = cbuild_path_filetype(path->data);
+	cbuild_filetype_t ftype_raw = cbuild_path_filetype(path->data);
+	cbuild_filetype_t ftype = __cbuild_path_filetype_resolved(path->data);
 	if (!opts.visit_dir_last) {
 		enum cbuild_dir_walk_result_t res = CBUILD_DIR_WALK_CONTINUE;
 		struct cbuild_dir_walk_func_args_t args = {
 			.path = path->data,
-			.type = ftype,
+			.type = ftype_raw,
+			.type_res = ftype,
 			.level = level,
 			.result = &res,
 			.context = opts.context,
@@ -432,7 +435,8 @@ CBUILDDEF bool __cbuild_dir_walk_opt(cbuild_sb_t* path, size_t level, bool* abor
 		enum cbuild_dir_walk_result_t res = CBUILD_DIR_WALK_CONTINUE;
 		struct cbuild_dir_walk_func_args_t args = {
 			.path = path->data,
-			.type = ftype,
+			.type = ftype_raw,
+			.type_res = ftype,
 			.level = level,
 			.result = &res,
 			.context = opts.context,
@@ -566,6 +570,21 @@ CBUILDDEF void cbuild_pathlist_clear(cbuild_pathlist_t* list) {
 		}
 		if(S_ISLNK(statbuff.st_mode)) {
 			return CBUILD_FTYPE_SYMLINK;
+		}
+		return CBUILD_FTYPE_OTHER;
+	}
+	CBUILDDEF cbuild_filetype_t __cbuild_path_filetype_resolved(const char* path) {
+		struct stat statbuff;
+		if(stat(path, &statbuff) < 0) {
+			cbuild_log_error("Could not stat file \"%s\", error: \"%s\"", path,
+				strerror(errno));
+			return CBUILD_FTYPE_MISSING;
+		}
+		if(S_ISREG(statbuff.st_mode)) {
+			return CBUILD_FTYPE_REGULAR;
+		}
+		if(S_ISDIR(statbuff.st_mode)) {
+			return CBUILD_FTYPE_DIRECTORY;
 		}
 		return CBUILD_FTYPE_OTHER;
 	}
