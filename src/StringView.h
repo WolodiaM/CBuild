@@ -4,6 +4,7 @@
 //! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
+#include "Arena.h"
 
 /// String view datatype
 ///
@@ -216,5 +217,7 @@ CBUILDDEF char* cbuild_sv_to_cstr(cbuild_sv_t sv);
 #define cbuild_cstr_from_sv(sv) cbuild_sv_to_cstr(sv)
 /// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
 CBUILDDEF char* cbuild_sv_to_temp_cstr(cbuild_sv_t sv);
+/// Convert string view to c-string. Allocate memory from provided arena via [`cbuild_arena_malloc`](DOC:cbuild_arena_malloc).
+CBUILDDEF char* cbuild_sv_to_arena_cstr(cbuild_arena_t* arena, cbuild_sv_t sv);
 /// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
 #define cbuild_temp_cstr_from_sv(sv) cbuild_temp_sv_to_cstr(sv)
