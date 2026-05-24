@@ -106,7 +106,7 @@ cbuild_sv_t cbuild_sv_chop_right_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
 cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
 	void* args) {
 	size_t i = 0;
-	while(i <= sv->size && !delim(sv, i, args)) {
+	while(i < sv->size && !delim(sv, i, args)) {
 		i++;
 	}
 	if(i >= sv->size) {
