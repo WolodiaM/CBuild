@@ -66,6 +66,10 @@
 #define CBUILD_TERM_FAINT            CBUILD_TERM_SGR("2")
 ///
 #define CBUILD_TERM_ITALIC           CBUILD_TERM_SGR("3")
+/// Disable bold
+#define CBUILD_TERM_NBOLD            CBUILD_TERM_SGR("22")
+/// Disable faint
+#define CBUILD_TERM_NFAINT           CBUILD_TERM_SGR("22")
 /// Disable italic
 #define CBUILD_TERM_NITALIC          CBUILD_TERM_SGR("23")
 ///
