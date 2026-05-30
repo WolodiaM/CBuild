@@ -4,6 +4,7 @@
 //! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
+#include "Arena.h"
 
 /// String view datatype
 ///
@@ -203,13 +204,6 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
 /// Invalid codepoints assumed to have length of 1
 /// :::
 CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
-/**
- * @brief Validate string as utf8-based
- *
- * @param idx => size_t* -> If non-NULL here will be stored	index of first
- * invalid codepoint, if validation failed.
- * @return bool -> true if valid, false otherwise
- */
 /// Check if string view is a valid utf8 data.
 ///
 /// * [pl:sv] String view to work with.
@@ -224,4 +218,8 @@ CBUILDDEF char* cbuild_sv_to_cstr(cbuild_sv_t sv);
 /// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
 CBUILDDEF char* cbuild_sv_to_temp_cstr(cbuild_sv_t sv);
 /// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
-#define cbuild_temp_cstr_from_sv(sv) cbuild_temp_sv_to_cstr(sv)
+#define cbuild_temp_cstr_from_sv(sv) cbuild_sv_to_temp_cstr(sv)
+/// Convert string view to c-string. Allocate memory from provided arena via [`cbuild_arena_malloc`](DOC:cbuild_arena_malloc).
+CBUILDDEF char* cbuild_sv_to_arena_cstr(cbuild_arena_t* arena, cbuild_sv_t sv);
+/// Convert string view to c-string. Allocate memory from provided arena via [`cbuild_arena_malloc`](DOC:cbuild_arena_malloc).
+#define cbuild_arena_cstr_from_sv(arena, sv) cbuild_sv_to_arena_cstr(arena, sv)

@@ -15,3 +15,7 @@ Issues to fix: 21;2;6;
 #21  Add ability to hook into logger.
 #6   Add directory walking interface
 #2   Allow to use '=' in options for FlagParse.h module
+
+----------------------------------------
+
+reference counting 'https://youtu.be/iotrPxUnTdQ'

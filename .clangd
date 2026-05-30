@@ -14,7 +14,7 @@ CompileFlags:
     - -D__CLANGD__
   Compiler: gcc
 Diagnostics:
-  Suppress: [ -Wunused-function, -std=gnu99 ]
+  Suppress: [ -Wunused-function ]
 ---
 If:
   PathMatch: tests/.*\.c

@@ -66,12 +66,20 @@
 #define CBUILD_TERM_FAINT            CBUILD_TERM_SGR("2")
 ///
 #define CBUILD_TERM_ITALIC           CBUILD_TERM_SGR("3")
+/// Disable bold
+#define CBUILD_TERM_NBOLD            CBUILD_TERM_SGR("22")
+/// Disable faint
+#define CBUILD_TERM_NFAINT           CBUILD_TERM_SGR("22")
 /// Disable italic
 #define CBUILD_TERM_NITALIC          CBUILD_TERM_SGR("23")
 ///
 #define CBUILD_TERM_UNDERLINE        CBUILD_TERM_SGR("4")
 /// Disable underline
 #define CBUILD_TERM_NUNDERLINE       CBUILD_TERM_SGR("24")
+///
+#define CBUILD_TERM_STRIKETHROUGH    CBUILD_TERM_SGR("9")
+/// Disable strikethrough
+#define CBUILD_TERM_NSTRIKETHROUGH   CBUILD_TERM_SGR("29")
 /// Enable blinking text
 #define CBUILD_TERM_BLINK            CBUILD_TERM_SGR("5")
 /// Disable blinking text
@@ -90,7 +98,10 @@
 #define CBUILD_TERM_OVERLINE         CBUILD_TERM_SGR("53")
 /// Disable overline
 #define CBUILD_TERM_NOVERLINE        CBUILD_TERM_SGR("55")
-
+/// Set foreground color to default one
+#define CBUILD_TERM_FGDEF            CBUILD_TERM_SGR("39")
+/// Set background color to default one
+#define CBUILD_TERM_BGDEF            CBUILD_TERM_SGR("49")
 /// Set foreground color based on 16 color palette.
 ///
 /// * [pl:color:Color] One of CBUILD_TERM_<COLOR> defines.

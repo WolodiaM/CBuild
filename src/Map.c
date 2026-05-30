@@ -16,10 +16,10 @@ CBUILDDEF size_t __cbuild_map_get_hash(const cbuild_map_t* map, const void* key)
 	if(map->hash_func == NULL) {
 		if(map->key_size > 0) {
 			hash = CBUILD_MAP_DEFAULT_HASH_FUNC(key, map->key_size)
-				% map->nbuckets;
+			% map->nbuckets;
 		} else {
 			hash = CBUILD_MAP_DEFAULT_HASH_FUNC(*((void**)key), strlen(*((char**)key)))
-				% map->nbuckets;
+			% map->nbuckets;
 		}
 	} else {
 		hash = map->hash_func(map, key) % map->nbuckets;
@@ -27,19 +27,19 @@ CBUILDDEF size_t __cbuild_map_get_hash(const cbuild_map_t* map, const void* key)
 	return hash;
 }
 CBUILDDEF void* __cbuild_map_check_bucket(const cbuild_map_t* map,
-																							const cbuild_map_bucket_t* bucket, const void* key) {
+	const cbuild_map_bucket_t* bucket, const void* key) {
 	if(map->keycmp_func == NULL) {
 		if(map->key_size > 0) {
 			for(size_t i = 0; i < bucket->nvals; i++) {
 				if(memcmp(key, ((char*)bucket->vals + (i * map->elem_size)),
-							map->key_size) == 0) {
+						map->key_size) == 0) {
 					return ((char*)bucket->vals + (i * map->elem_size));
 				}
 			}
 		} else {
 			for(size_t i = 0; i < bucket->nvals; i++) {
 				if(strcmp(*((char**)key),
-							*(char**)(void*)(((char*)bucket->vals + (i * map->elem_size)))) == 0) {
+						*(char**)(void*)(((char*)bucket->vals + (i * map->elem_size)))) == 0) {
 					return ((char*)bucket->vals + (i * map->elem_size));
 				}
 			}
@@ -47,7 +47,7 @@ CBUILDDEF void* __cbuild_map_check_bucket(const cbuild_map_t* map,
 	} else {
 		for(size_t i = 0; i < bucket->nvals; i++) {
 			if(map->keycmp_func(map, key,
-											 ((char*)bucket->vals + (i * map->elem_size)))) {
+					((char*)bucket->vals + (i * map->elem_size)))) {
 				return ((char*)bucket->vals + (i * map->elem_size));
 			}
 		}
@@ -80,10 +80,10 @@ CBUILDDEF void* cbuild_map_get_or_alloc_raw(cbuild_map_t* map, const void* key) 
 	if(ret != NULL) return ret;
 	bucket->nvals++;
 	bucket->vals = __CBUILD_REALLOC((char*)bucket->vals,
-															 bucket->nvals * map->elem_size);
+		bucket->nvals * map->elem_size);
 	cbuild_assert(bucket->vals != NULL, "Allocation failed.\n");
 	memset((char*)bucket->vals + (bucket->nvals - 1) * map->elem_size, 0,
-				map->elem_size);
+		map->elem_size);
 	return (char*)bucket->vals + ((bucket->nvals - 1) * map->elem_size);
 }
 CBUILDDEF bool cbuild_map_remove_raw(cbuild_map_t* map, const void* key) {

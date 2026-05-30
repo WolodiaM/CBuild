@@ -169,6 +169,7 @@ enum cbuild_dir_walk_result_t {
 /// * Current entry:
 ///   - [fl:path] Path to the file system object object (relative and including directory passed to [`cbuild_dir_walk`](DOC:cbuild_dir_walk).
 ///   - [fl:type] Type of current file-system object. 
+///   - [fl:type_res] Type of current file-system object. Resolved type for symlinks.
 /// * Iteration state:
 ///   - [fl:level] How deep iteration goes (`0` means base directory).
 /// * Context:
@@ -177,6 +178,7 @@ enum cbuild_dir_walk_result_t {
 typedef struct cbuild_dir_walk_func_args_t {
 	const char* path;
 	cbuild_filetype_t type;
+	cbuild_filetype_t type_res;
 	size_t level;
 	enum cbuild_dir_walk_result_t* result;
 	void* context;

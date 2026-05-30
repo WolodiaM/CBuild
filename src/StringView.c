@@ -2,6 +2,7 @@
 
 #include "StringView.h"
 #include "Common.h"
+#include "Arena.h"
 #include "Temp.h"
 size_t cbuild_sv_trim_left(cbuild_sv_t* sv) {
 	size_t i = 0;
@@ -105,7 +106,7 @@ cbuild_sv_t cbuild_sv_chop_right_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
 cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv, cbuild_sv_delim_func delim,
 	void* args) {
 	size_t i = 0;
-	while(i <= sv->size && !delim(sv, i, args)) {
+	while(i < sv->size && !delim(sv, i, args)) {
 		i++;
 	}
 	if(i >= sv->size) {
@@ -503,17 +504,23 @@ invalid:
 	if(idx != NULL) *idx = ret;
 	return false;
 }
+CBUILDDEF char* __cbuild_sv_to_cstr(cbuild_sv_t sv, char* buff) {
+	memcpy(buff, sv.data, sv.size);
+	buff[sv.size] = 0;
+	return buff;
+}
 char* cbuild_sv_to_cstr(cbuild_sv_t sv) {
 	char* ret = __CBUILD_MALLOC(sv.size + 1);
 	cbuild_assert(ret != NULL, "Allocation failed.\n");
-	memcpy(ret, sv.data, sv.size);
-	ret[sv.size] = 0;
-	return ret;
+	return __cbuild_sv_to_cstr(sv, ret);
 }
 char* cbuild_sv_to_temp_cstr(cbuild_sv_t sv) {
 	char* ret = cbuild_temp_malloc(sv.size + 1);
 	cbuild_assert(ret != NULL, "Allocation failed.\n");
-	memcpy(ret, sv.data, sv.size);
-	ret[sv.size] = 0;
-	return ret;
+	return __cbuild_sv_to_cstr(sv, ret);
+}
+char* cbuild_sv_to_arena_cstr(cbuild_arena_t* arena, cbuild_sv_t sv) {
+	char* ret = cbuild_arena_malloc(arena, sv.size + 1);
+	cbuild_assert(ret != NULL, "Allocation failed.\n");
+	return __cbuild_sv_to_cstr(sv, ret);
 }

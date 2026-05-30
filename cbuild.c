@@ -451,6 +451,18 @@ test_case_t TESTS[] = {
 		.platforms = TPLM_ALL,
 	},
 	{
+		.file = "LL",
+		.group = true,
+	},
+	{
+		.file = "create_and_read",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "scan",
+		.platforms = TPLM_ALL,
+	},
+	{
 		.file = "FS",
 		.group = true,
 	},
@@ -503,6 +515,10 @@ test_case_t TESTS[] = {
 	{
 		.file = "dir_walk",
 		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "dir_walk_symlink",
+		.platforms = TPLM_ALL, // They are all POSIX it is work on all of them
 	},
 	{
 		.file = "dir_create",
@@ -1380,12 +1396,14 @@ bool amalgamate(void) {
 		SOURCE_DIR"/Term.h",
 		SOURCE_DIR"/Log.h",
 		SOURCE_DIR"/Arena.h",
+		SOURCE_DIR"/Allocator.h",
 		SOURCE_DIR"/Temp.h",
 		SOURCE_DIR"/DynArray.h",
 		SOURCE_DIR"/StringView.h",
 		SOURCE_DIR"/StringBuilder.h",
 		SOURCE_DIR"/Stack.h",
 		SOURCE_DIR"/Map.h",
+		SOURCE_DIR"/LL.h",
 		SOURCE_DIR"/Proc.h",
 		SOURCE_DIR"/Command.h",
 		SOURCE_DIR"/FS.h",
@@ -1415,12 +1433,18 @@ bool amalgamate(void) {
 	cbuild_sb_append_cstr(&output, "#ifdef CBUILD_IMPLEMENTATION\n");
 	const char* sources[] = {
 		SOURCE_DIR"/Common.c",
+		"",
+		"",
 		SOURCE_DIR"/Log.c",
 		SOURCE_DIR"/Arena.c",
+		SOURCE_DIR"/Allocator.c",
 		SOURCE_DIR"/Temp.c",
+		"",
 		SOURCE_DIR"/StringView.c",
 		SOURCE_DIR"/StringBuilder.c",
+		"",
 		SOURCE_DIR"/Map.c",
+		SOURCE_DIR"/LL.c",
 		SOURCE_DIR"/Proc.c",
 		SOURCE_DIR"/Command.c",
 		SOURCE_DIR"/FS.c",
@@ -1431,6 +1455,7 @@ bool amalgamate(void) {
 	};
 	cbuild_sb_t source = {0};
 	for (size_t i = 0; i < cbuild_arr_len(sources); i++) {
+		if (strlen(sources[i]) == 0) continue;
 		if(!cbuild_file_read(sources[i], &source)) return false;
 		cbuild_sb_appendf(&output, "\n/* %s */\n\n", cbuild_path_name(headers[i]));
 		cbuild_sv_t content = cbuild_sv_from_sb(source);

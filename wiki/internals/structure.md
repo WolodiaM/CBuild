@@ -15,18 +15,20 @@ There are **n** modules in CBuild, most of them contain both header part and imp
 * [Term.h]{.green} - Some macro to simplify usage of ANSI codes.
 * [Log.h]{.green} - Logger for CBuild.
 * [Arena.h]{.green} - Bump allocator.
+* [Allocator.h]{.green} - Allocator interface abstraction.
 * [Temp.h]{.green} - Global temporary allocator used by CBuild. Users of this library can use it if some scratchpad allocations are needed. Technically this also can be used for long-lived allocations, but for that custom arena is preferable (but API does not really forbid using temp allocator for this).
 * [DynArray.h]{.green} - Dynamic array implementation/
 * [StringBuilder.h]{.green} - String builder implementation. It uses dynamic array underneath and just provides few wrapper macro and some function that make sense only on strings.
 * [StringView.h]{.green} - String view implementation. Have basic support for UTF8 characters.
 * [Stack.h]{.green} - Simple stack datatype implementation. 
-* [Map.h]{.green} - Map datatype implementation/
+* [Map.h]{.green} - Map datatype implementation.
+* [LL.h]{.green} - Simple linked list implementation.
 * [Proc.h]{.green} - Few utility functions for process control. 
 * [Command.h]{.green} - Command runner. Support *process-pool* with configurable maximum process count.
 * [FS.h]{.green} - Filesystem and file APIs.
 * [Compile.h]{.green} - Some compilation helpers and utilities useful for buildscripts.
 * [DLLoad.h]{.green} - Small wrappers for functions used to dynamically load shared libraries.
 * [FlagParse.h]{.green} - Library to parse GNU-style command line flags.
-* [RGlob.h]{.green} - Glob over list of entries. Uses POSIX ERE as base and just compiles globs to regexes.
+* [RGlob.h]{.green} - Glob over list of entries. Uses POSIX ERE as base and just compiles glob to regex.
 
 :::
