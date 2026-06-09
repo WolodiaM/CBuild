@@ -17,6 +17,10 @@
 /// Set cursor to specific coordinates.
 #define CBUILD_TERM_CURSOR_SET(x, y)                                           \
 	CBUILD_TERM_CSI __CBUILD_STRINGIFY(x) ";" __CBUILD_STRINGIFY(y) "H"
+/// Set cursor to specific coordinates.
+///
+/// This is intended for using in *printf* and provide just format string.
+#define CBUILD_TERM_CURSOR_SETdyn CBUILD_TERM_CSI"%u;%uH"
 /// Set cursor to specific column in current line
 #define CBUILD_TERM_CURSOR_SETH(x) CBUILD_TERM_CSI __CBUILD_STRINGIFY(x) "G"
 /// Move cursor in specific direction for specified number of steps.
@@ -110,27 +114,51 @@
 ///
 /// * [pl:color:Color] One of CBUILD_TERM_<COLOR> defines.
 #define CBUILD_TERM_BG(color) CBUILD_TERM_SGR(__CBUILD_XSTRINGIFY(color##addten))
-/// Set foreground color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit)
+/// Set foreground color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
 #define CBUILD_TERM_FG8(color)                                                 \
 	CBUILD_TERM_SGR("38;5;" __CBUILD_STRINGIFY(color))
-/// Set background color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit)
+/// Set foreground color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
+///
+/// This is intended for using in *printf* and provide just format string.
+#define CBUILD_TERM_FG8dyn CBUILD_TERM_SGR("38;6;%u")
+/// Set background color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
 #define CBUILD_TERM_BG8(color)                                                 \
 	CBUILD_TERM_SGR("48;5;" __CBUILD_STRINGIFY(color))
-/// Set underline color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit)
+/// Set background color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
+///
+/// This is intended for using in *printf* and provide just format string.
+#define CBUILD_TERM_BG8dyn CBUILD_TERM_SGR("48;6;%u")
+/// Set underline color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
 #define CBUILD_TERM_UNDERLINE8(color)                                          \
 	CBUILD_TERM_SGR("58;5;" __CBUILD_STRINGIFY(color))
-/// Set foreground color to to some RGB888 color
+/// Set underline color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
+///
+/// This is intended for using in *printf* and provide just format string.
+#define CBUILD_TERM_UNDERLINE8dyn CBUILD_TERM_SGR("58;6;%u")
+/// Set foreground color to to some RGB888 color.
 #define CBUILD_TERM_FG24(r, g, b)                                              \
 	CBUILD_TERM_SGR("38;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \
 		__CBUILD_STRINGIFY(b))
-/// Set background color to to some RGB888 color
+/// Set foreground color to some RGB888 color.
+///
+/// This is intended for using in *printf* and provide just format string.
+#define CBUILD_TERM_FG24dyn CBUILD_TERM_SGR("38;2;%u;%u;%u")
+/// Set background color to to some RGB888 color.
 #define CBUILD_TERM_BG24(r, g, b)                                              \
 	CBUILD_TERM_SGR("48;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \
 		__CBUILD_STRINGIFY(b))
-/// Set underline color to to some RGB888 color
+/// Set background color to some RGB888 color.
+///
+/// This is intended for using in *printf* and provide just format string.
+#define CBUILD_TERM_BG24dyn CBUILD_TERM_SGR("48;2;%u;%u;%u")
+/// Set underline color to to some RGB888 color.
 #define CBUILD_TERM_UNDERLINE24(r, g, b)                                       \
 	CBUILD_TERM_SGR("58;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \
 		__CBUILD_STRINGIFY(b))
+/// Set underline color to some RGB888 color.
+///
+/// This is intended for using in *printf* and provide just format string.
+#define CBUILD_TERM_UNDERLINE24dyn CBUILD_TERM_SGR("58;2;%u;%u;%u")
 
 //! # Colors
 
