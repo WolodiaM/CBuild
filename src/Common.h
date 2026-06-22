@@ -491,9 +491,9 @@ CBUILDDEF uint64_t cbuild_time_nanos(void);
 #define CBUILD_NANOS_PER_SEC (long long)(1000*1000*1000)
 
 /// Return bigger number from 2 numbers
-#define CBUILD_MAX(a, b) (a) > (b) ? (a) : (b)
+#define CBUILD_MAX(a, b) ((a) > (b) ? (a) : (b))
 /// Return smaller number from 2 numbers
-#define CBUILD_MIN(a, b) (a) < (b) ? (a) : (b)
+#define CBUILD_MIN(a, b) ((a) < (b) ? (a) : (b))
 
 //! # Internal API [line:cbuild-api-internal]
 //! These are internal function, so their API can break at any time.

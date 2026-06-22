@@ -57,73 +57,15 @@
 			sizeof(__cbuild_da_tmp_arr) / sizeof(__cbuild_da_tmp_arr[0]);            \
 		cbuild_da_append_arr((da), __cbuild_da_tmp_arr, __cbuild_da_tmp_count);    \
 	} while (0)
-/// Set element in dynamic array using its index.
+/// Pop element from top of a dynamic array.
 ///
 /// * [pl:da:cbuild_da_t*] Dynamic array object.
-/// * [pl:idx:size_t] Element index.
-/// * [pl:elem:*typeof(da->data)] New element's value.
 /// 
-/// [r:bool] False on overflow.
-#define cbuild_da_set(da, idx, elem)                                           \
+/// [r:*typeof(da->data)] Popped element.
+#define cbuild_da_pop(da) \
 	({                                                                           \
-		bool __cbuild__ret = false;                                                \
-		if ((idx) >= (da)->size) {                                                 \
-			cbuild_log(CBUILD_LOG_ERROR, "Index overflow in set.");                  \
-			__cbuild__ret = false;                                                   \
-		} else {                                                                   \
-			(da)->data[(idx)] = elem;                                                \
-			__cbuild__ret = true;                                                    \
-		}                                                                          \
-		__cbuild__ret;                                                             \
-	})
-/// Get element from dynamic array using its index.
-///
-/// * [pl:da:const cbuild_da_t*] Dynamic array object.
-/// * [pl:idx:size_t] Element index.
-/// 
-/// [r:typeof(da->data)] Pointer to an element or `NULL`{.c} if index out of bounds.
-#define cbuild_da_get(da, idx)                                                 \
-	({                                                                           \
-		typeof(*(da)->data)* __cbuild__ret = NULL;                                 \
-		if ((idx) >= (da)->size) {                                                 \
-			cbuild_log(CBUILD_LOG_ERROR, "Index overflow in get.");                  \
-			__cbuild__ret = NULL;                                                    \
-		} else {                                                                   \
-			__cbuild__ret = &((da)->data[(idx)]);                                    \
-		}                                                                          \
-		__cbuild__ret;                                                             \
-	})
-/// Get last element from dynamic array.
-///
-/// * [pl:da:const cbuild_da_t*] Dynamic array object.
-/// 
-/// [r:typeof(da->data)] Pointer to an element.
-#define cbuild_da_last(da)                                                     \
-	({                                                                           \
-		typeof(*(da)->data)* __cbuild__ret = NULL;                                 \
-		if ((da)->size == 0) {                                                     \
-			cbuild_log_error("Trying to get last element from empty array.");        \
-			__cbuild__ret = NULL;                                                    \
-		} else {                                                                   \
-			__cbuild__ret = &((da)->data[(da)->size - 1]);                           \
-		}                                                                          \
-		__cbuild__ret;                                                             \
-	})
-/// Get first element from dynamic array.
-///
-/// * [pl:da:const cbuild_da_t*] Dynamic array object.
-/// 
-/// [r:typeof(da->data)] Pointer to an element.
-#define cbuild_da_first(da)                                                    \
-	({                                                                           \
-		typeof(*(da)->data)* __cbuild__ret = NULL;                                 \
-		if ((da)->size == 0) {                                                     \
-			cbuild_log_error("Trying to get first element from empty array.");       \
-			__cbuild__ret = NULL;                                                    \
-		} else {                                                                   \
-			__cbuild__ret = &((da)->data[0]);                                        \
-		}                                                                          \
-		__cbuild__ret;                                                             \
+		cbuild_assert((da)->size != 0, "Underflow in pop.\n");                     \
+		(da)->data[--(da)->size];                                                  \
 	})
 /// Remove element dynamic array using its index.
 ///
@@ -206,10 +148,3 @@
 		(da)->size     = 0;                                                        \
 		(da)->capacity = 0;                                                        \
 	} while(0)
-/// Foreach implementation for dynamic array. Same semantics as 'for' loop.
-///
-/// * [pl:da:cbuild_da_t] Dynamic array object.
-/// * [pl:iter:name] Name if variable that will be used as iterator. Will have type `typeof(da->data)`{.c}.
-#define cbuild_da_foreach(da, iter)                                            \
-	for (typeof(*((da).data))* iter = (da).data;                                 \
-		iter < ((da).data + (da).size); iter++)

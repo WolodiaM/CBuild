@@ -261,6 +261,10 @@ test_case_t TESTS[] = {
 		.platforms = TPLM_ALL,
 	},
 	{
+		.file = "pop",
+		.platforms = TPLM_ALL,
+	},
+	{
 		.file = "StringBuilder",
 		.group = true,
 	},
@@ -321,25 +325,6 @@ test_case_t TESTS[] = {
 	},
 	{
 		.file = "interop",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "Stack",
-		.group = true,
-	},
-	{
-		.file = "alloc",
-		.platforms = TPLM_ALL,
-		.cargs = {.data = (const char*[]){
-			"-DCBUILD_INIT_CAPACITY=2ul",
-		}, .size = 1},
-	},
-	{
-		.file = "push",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "pop",
 		.platforms = TPLM_ALL,
 	},
 	{
@@ -1398,17 +1383,16 @@ bool amalgamate(void) {
 		SOURCE_DIR"/Arena.h",
 		SOURCE_DIR"/Allocator.h",
 		SOURCE_DIR"/Temp.h",
+		SOURCE_DIR"/Span.h",
 		SOURCE_DIR"/DynArray.h",
 		SOURCE_DIR"/StringView.h",
 		SOURCE_DIR"/StringBuilder.h",
-		SOURCE_DIR"/Stack.h",
 		SOURCE_DIR"/Map.h",
 		SOURCE_DIR"/LL.h",
 		SOURCE_DIR"/Proc.h",
 		SOURCE_DIR"/Command.h",
 		SOURCE_DIR"/FS.h",
 		SOURCE_DIR"/Compile.h",
-		SOURCE_DIR"/DLLoad.h",
 		SOURCE_DIR"/FlagParse.h",
 		SOURCE_DIR"/RGlob.h",
 	};
@@ -1433,23 +1417,22 @@ bool amalgamate(void) {
 	cbuild_sb_append_cstr(&output, "#ifdef CBUILD_IMPLEMENTATION\n");
 	const char* sources[] = {
 		SOURCE_DIR"/Common.c",
-		"",
-		"",
+		"", // Version.h
+		"", // Term.h
 		SOURCE_DIR"/Log.c",
 		SOURCE_DIR"/Arena.c",
 		SOURCE_DIR"/Allocator.c",
 		SOURCE_DIR"/Temp.c",
-		"",
+		"", // Span.h
+		"", // DynArray.h
 		SOURCE_DIR"/StringView.c",
 		SOURCE_DIR"/StringBuilder.c",
-		"",
 		SOURCE_DIR"/Map.c",
 		SOURCE_DIR"/LL.c",
 		SOURCE_DIR"/Proc.c",
 		SOURCE_DIR"/Command.c",
 		SOURCE_DIR"/FS.c",
 		SOURCE_DIR"/Compile.c",
-		SOURCE_DIR"/DLLoad.c",
 		SOURCE_DIR"/FlagParse.c",
 		SOURCE_DIR"/RGlob.c",
 	};

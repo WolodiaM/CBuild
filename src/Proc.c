@@ -3,7 +3,7 @@
 #include "Proc.h"
 #include "Common.h"
 #include "Log.h"
-#include "DynArray.h"
+#include "Span.h"
 #if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
 	CBUILDDEF int cbuild_proc_wait_code(cbuild_proc_t proc) {
 		if(proc == CBUILD_INVALID_PROC) {
@@ -165,7 +165,7 @@ CBUILDDEF bool cbuild_proc_wait(cbuild_proc_t proc) {
 }
 CBUILDDEF bool cbuild_procs_wait(cbuild_proclist_t procs) {
 	bool ret = true;
-	cbuild_da_foreach(procs, proc) {
+	cbuild_span_foreach(&procs, proc) {
 		if(!cbuild_proc_wait(*proc)) ret = false;
 	}
 	return ret;

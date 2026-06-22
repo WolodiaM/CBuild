@@ -66,15 +66,17 @@ CBUILDDEF cbuild_log_level_t cbuild_log_get_min_level(void);
 /// This function will be called only for messages that should be printed.
 /// It can be treated as a formatter for logged messages.
 ///
-/// * [pl:level] Log level name. 
+/// * [pl:level] Log level.
+/// * [pl:prefix] Log level name. 
 /// * [pl:fmt] Format string for printf.
 /// * [pl:args] Arguments for format string.
-typedef void (*cbuild_log_handler_t)(const char* level, const char* fmt, va_list args);
+typedef void (*cbuild_log_handler_t)(cbuild_log_level_t level, const char* prefix, const char* fmt, va_list args);
 /// Setup handler for logger. Passing NULL will disable logs.
 /// Default log handler will be setup by default.
 CBUILDDEF void cbuild_log_set_handler(cbuild_log_handler_t handler);
 /// Get current log handler.
 CBUILDDEF cbuild_log_handler_t cbuild_log_get_handler(void);
 /// Default log handler for CBuild.
-CBUILDDEF void __cbuild_default_log_handler(const char* level,
+CBUILDDEF void __cbuild_default_log_handler(
+	cbuild_log_level_t level, const char* prefix,
 	const char* fmt, va_list args);

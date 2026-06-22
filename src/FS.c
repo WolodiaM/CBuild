@@ -4,7 +4,6 @@
 #include "Common.h"
 #include "StringBuilder.h"
 #include "DynArray.h"
-#include "Stack.h"
 #include "Log.h"
 #include "Temp.h"
 #if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
@@ -651,14 +650,14 @@ CBUILDDEF char* cbuild_path_base(const char* path) {
 	ret[len - 1] = '\0';
 	return ret;
 }
-typedef struct __cbuild_stack_cstr_t {
+typedef struct __cbuild_da_cstr_t {
 	cbuild_sv_t* data;
-	size_t ptr;
+	size_t size;
 	size_t capacity;
-} __cbuild_stack_cstr_t;
+} __cbuild_da_cstr_t;
 CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 	cbuild_sb_t buff = {0};
-	__cbuild_stack_cstr_t dirs = {0};
+	__cbuild_da_cstr_t dirs = {0};
 	cbuild_sv_t path = cbuild_sv_from_cstr(path_);
 	// Windows paths can have drive letter
 	// Drive letter is only one character
@@ -682,19 +681,19 @@ CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 		if(cbuild_sv_cmp(dir, cbuild_sv_from_lit(".")) == 0) {
 			// Do nothing
 		} else if(cbuild_sv_cmp(dir, cbuild_sv_from_lit("..")) == 0) {
-			if(dirs.ptr == 0) { // Underflow
+			if(dirs.size == 0) { // Underflow
 				cbuild_sb_append_cstr(&buff, "../");
 				// Underflow on absolute path is undefined anyway
 				// and on relative path we can guarantee that this will be fine
 				// (we have nothing in directory stack anyway)
 			} else {
-				cbuild_stack_pop(&dirs);
+				cbuild_da_pop(&dirs);
 			}
 		} else {
-			cbuild_stack_push(&dirs, dir);
+			cbuild_da_append(&dirs, dir);
 		}
 	} while(path.size > 0);
-	for(size_t i = 0; i <	dirs.ptr; i++) {
+	for(size_t i = 0; i <	dirs.size; i++) {
 		cbuild_sb_appendf(&buff, CBuildSVFmt"/", CBuildSVArg(dirs.data[i]));
 	}
 	if(buff.size == 0) cbuild_sb_append(&buff, '.');
@@ -703,7 +702,7 @@ CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 			(buff.size == 3 && isalpha((unsigned char)buff.data[0]) && 
 				buff.data[1] == ':' && buff.data[2] == '/')) &&
 		(buff.data[buff.size - 1] == '/')) buff.size--;
-	cbuild_stack_clear(&dirs);
+	cbuild_da_clear(&dirs);
 	char* ret = cbuild_temp_sprintf(CBuildSBFmt, CBuildSBArg(buff));
 	cbuild_sb_clear(&buff);
 	return ret;

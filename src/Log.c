@@ -4,13 +4,15 @@
 #include "Common.h"
 #include "Term.h"
 // Internals
-CBUILDDEF void __cbuild_default_log_handler(const char* level, const char* fmt, 
-	va_list args) {
+CBUILDDEF void __cbuild_default_log_handler(
+	cbuild_log_level_t level, const char* prefix,
+	const char* fmt, va_list args) {
+	CBUILD_UNUSED(level);
 	time_t t = time(NULL);
 	struct tm* tm_info = localtime(&t);
 	__CBUILD_PRINTF("[%02d:%02d:%02d] ", tm_info->tm_hour, tm_info->tm_min,
 		tm_info->tm_sec);
-	__CBUILD_PRINT(level);
+	__CBUILD_PRINT(prefix);
 	__CBUILD_VPRINTF(fmt, args);
 	__CBUILD_PRINT("\n");
 }
@@ -36,7 +38,7 @@ CBUILDDEF void cbuild_log(cbuild_log_level_t level, const char* fmt, ...) {
 void cbuild_vlog(cbuild_log_level_t level, const char* fmt, va_list args) {
 	if (level <= __cbuild_min_log_level) {
 		if(__cbuild_curr_log_handler) {
-			__cbuild_curr_log_handler(__cbuild_log_level_names[level], fmt, args);
+			__cbuild_curr_log_handler(level, __cbuild_log_level_names[level], fmt, args);
 		}
 	}
 }

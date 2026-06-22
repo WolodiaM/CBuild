@@ -120,21 +120,21 @@
 /// Set foreground color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
 ///
 /// This is intended for using in *printf* and provide just format string.
-#define CBUILD_TERM_FG8dyn CBUILD_TERM_SGR("38;6;%u")
+#define CBUILD_TERM_FG8dyn CBUILD_TERM_SGR("38;5;%u")
 /// Set background color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
 #define CBUILD_TERM_BG8(color)                                                 \
 	CBUILD_TERM_SGR("48;5;" __CBUILD_STRINGIFY(color))
 /// Set background color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
 ///
 /// This is intended for using in *printf* and provide just format string.
-#define CBUILD_TERM_BG8dyn CBUILD_TERM_SGR("48;6;%u")
+#define CBUILD_TERM_BG8dyn CBUILD_TERM_SGR("48;5;%u")
 /// Set underline color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
 #define CBUILD_TERM_UNDERLINE8(color)                                          \
 	CBUILD_TERM_SGR("58;5;" __CBUILD_STRINGIFY(color))
 /// Set underline color in terms of [8-bit palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
 ///
 /// This is intended for using in *printf* and provide just format string.
-#define CBUILD_TERM_UNDERLINE8dyn CBUILD_TERM_SGR("58;6;%u")
+#define CBUILD_TERM_UNDERLINE8dyn CBUILD_TERM_SGR("58;5;%u")
 /// Set foreground color to to some RGB888 color.
 #define CBUILD_TERM_FG24(r, g, b)                                              \
 	CBUILD_TERM_SGR("38;2;" __CBUILD_STRINGIFY(r) ";" __CBUILD_STRINGIFY(g) ";"  \

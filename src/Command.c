@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "FS.h"
 #include "Proc.h" 
+#include "Span.h"
 CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 	cbuild_sb_t sb = {0};
 	if(cmd.size < 1) {
@@ -147,7 +148,7 @@ CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opts_t op
 	} else if(opts.procs != NULL) {
 		if(opts.async_threads != -1) {
 			if((size_t)opts.async_threads == opts.procs->size) {
-				cbuild_da_set(opts.procs, proc_idx, proc);
+				cbuild_span_set(opts.procs, proc_idx, proc);
 			} else {
 				cbuild_da_append(opts.procs, proc);
 			}

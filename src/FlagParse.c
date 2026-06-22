@@ -6,6 +6,7 @@
 #include "DynArray.h"
 #include "Log.h"
 #include "FS.h"
+#include "Span.h"
 struct __cbuild_flag_t {
 	bool found;
 	// uint8_t __padding[3];
@@ -93,7 +94,7 @@ CBUILDDEF void __cbuild_flag_version(const char* name) {
 	__CBUILD_PRINTF("%s - v1.0\n", name);
 }
 CBUILDDEF struct __cbuild_flag_t* __cbuild_flag_lookup_flag(const char* name) {
-	cbuild_da_foreach(__cbuild_flag_context.flags, flag) {
+	cbuild_span_foreach(&__cbuild_flag_context.flags, flag) {
 		if (strcmp(flag->option, name) == 0) {
 			return flag;
 		}
@@ -101,7 +102,7 @@ CBUILDDEF struct __cbuild_flag_t* __cbuild_flag_lookup_flag(const char* name) {
 	return NULL;
 }
 CBUILDDEF struct __cbuild_flag_t* __cbuild_flag_lookup_sflag(char name) {
-	cbuild_da_foreach(__cbuild_flag_context.flags, flag) {
+	cbuild_span_foreach(&__cbuild_flag_context.flags, flag) {
 		if (flag->spec.short_option == name) {
 			return flag;
 		}
@@ -341,7 +342,7 @@ CBUILDDEF char* __cbuild_flag_fmt_flag(struct __cbuild_flag_t* flag, int len) {
 CBUILDDEF void cbuild_flag_print_help(void) {
 	// Measure size of flag name column
 	int name_len = 0;
-	cbuild_da_foreach(__cbuild_flag_context.flags, flag) {
+	cbuild_span_foreach(&__cbuild_flag_context.flags, flag) {
 		int flag_len = 3; // '--' and space after it.
 		if (flag->spec.short_option != '\0') flag_len += 4;
 		flag_len += (int)strlen(flag->option);
@@ -362,14 +363,14 @@ CBUILDDEF void cbuild_flag_print_help(void) {
 	// Print ungrouped arguments and collect list of groups
 	cbuild_arglist_t groups = {0};
 	__CBUILD_PRINT("Flags:\n");
-	cbuild_da_foreach(__cbuild_flag_context.flags, flag) {
+	cbuild_span_foreach(&__cbuild_flag_context.flags, flag) {
 		if (flag->spec.group == NULL) {
 			char* desc = __cbuild_flag_fmt_flag(flag, name_len);
 			__CBUILD_PRINT(desc);
 			__CBUILD_FREE(desc);
 		} else {
 			bool group_found = false;
-			cbuild_da_foreach(groups, group) {
+			cbuild_span_foreach(&groups, group) {
 				if (strcmp(*group, flag->spec.group) == 0) {
 					group_found = true;
 					break;
@@ -379,9 +380,9 @@ CBUILDDEF void cbuild_flag_print_help(void) {
 		}
 	}
 	// Print all grouped flags
-	cbuild_da_foreach(groups, group) {
+	cbuild_span_foreach(&groups, group) {
 		__CBUILD_PRINTF("%s\n", *group);
-		cbuild_da_foreach(__cbuild_flag_context.flags, flag) {
+		cbuild_span_foreach(&__cbuild_flag_context.flags, flag) {
 			if (flag->spec.group) {
 				if (strcmp(flag->spec.group, *group) == 0) {
 					char* desc = __cbuild_flag_fmt_flag(flag, name_len);
