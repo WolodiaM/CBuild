@@ -103,7 +103,7 @@ CBUILDDEF bool cbuild_file_read(const char* path, cbuild_sb_t* data) {
 		return false;
 	}
 	size_t size = (size_t)cbuild_file_len(path);
-	cbuild_sb_resize(data, size); // Assert data != NULL
+	cbuild_da_resize(data, size); // Assert data != NULL
 	ssize_t len = cbuild_fd_read_file(fd, data->data, size, path);
 	if(len < 0) {
 		cbuild_fd_close(fd);
@@ -415,7 +415,7 @@ CBUILDDEF bool __cbuild_dir_walk_opt(cbuild_sb_t* path, size_t level, bool* abor
 			if (strcmp(file, ".")  == 0) continue;
 			if (strcmp(file, "..")  == 0) continue;
 			path->size = curr_path_len;
-			cbuild_sb_append(path, '/');
+			cbuild_da_append(path, '/');
 			cbuild_sb_append_cstr(path, file);
 			if (!__cbuild_dir_walk_opt(path, level + 1, abort, func, opts)) {
 				if (!cbuild_dir_close(dir)) return false;
@@ -455,7 +455,7 @@ CBUILDDEF bool cbuild_dir_walk_opt(const char* path, cbuild_dir_walk_func_t func
 	cbuild_sb_append_cstr(&tmp_path, path);
 	bool abort = false;
 	bool ret = __cbuild_dir_walk_opt(&tmp_path, 0, &abort, func, opts);
-	cbuild_sb_clear(&tmp_path);
+	cbuild_da_clear(&tmp_path);
 	return ret;
 }
 #if defined(CBUILD_API_POSIX) || defined(CBUILD_API_STRICT_POSIX)
@@ -662,18 +662,18 @@ CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 	// Windows paths can have drive letter
 	// Drive letter is only one character
 	if (isalpha((unsigned char)path.data[0]) && path.data[1] == ':') {
-		cbuild_sb_append_arr(&buff, path.data, 2);
+		cbuild_da_append_arr(&buff, path.data, 2);
 		path.data += 2;
 		path.size -= 2;
 	}
 	if(*path.data == '/') {
-		cbuild_sb_append(&buff, '/');
+		cbuild_da_append(&buff, '/');
 	}
 	// Unix paths threat double slash differently
 	// POSIX threats paths starting with '//' specially.
 	if(cbuild_sv_prefix(path, cbuild_sv_from_lit("//")) &&
 		!cbuild_sv_prefix(path, cbuild_sv_from_lit("///"))) {
-		cbuild_sb_append(&buff, '/');
+		cbuild_da_append(&buff, '/');
 	}
 	do {
 		cbuild_sv_t dir = cbuild_sv_chop_by_delim(&path, '/');
@@ -696,7 +696,7 @@ CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 	for(size_t i = 0; i <	dirs.size; i++) {
 		cbuild_sb_appendf(&buff, CBuildSVFmt"/", CBuildSVArg(dirs.data[i]));
 	}
-	if(buff.size == 0) cbuild_sb_append(&buff, '.');
+	if(buff.size == 0) cbuild_da_append(&buff, '.');
 	if(!((buff.size == 1 && buff.data[0] == '/') ||
 			(buff.size == 2 && buff.data[0] == '/' && buff.data[1] == '/') ||
 			(buff.size == 3 && isalpha((unsigned char)buff.data[0]) && 
@@ -704,6 +704,6 @@ CBUILDDEF char* cbuild_path_normalize(const char* path_) {
 		(buff.data[buff.size - 1] == '/')) buff.size--;
 	cbuild_da_clear(&dirs);
 	char* ret = cbuild_temp_sprintf(CBuildSBFmt, CBuildSBArg(buff));
-	cbuild_sb_clear(&buff);
+	cbuild_da_clear(&buff);
 	return ret;
 }

@@ -310,29 +310,29 @@ CBUILDDEF char* __cbuild_flag_fmt_flag(struct __cbuild_flag_t* flag, int len) {
 	}
 	cbuild_sb_appendf(&sb, "--%s", flag->option);
 	if (flag->spec.num_arguments) {
-		cbuild_sb_append(&sb, ' ');
-		if (flag->spec.optional) cbuild_sb_append(&sb, '[');
-		else cbuild_sb_append(&sb, '<');
+		cbuild_da_append(&sb, ' ');
+		if (flag->spec.optional) cbuild_da_append(&sb, '[');
+		else cbuild_da_append(&sb, '<');
 		if (flag->spec.argument_desc) cbuild_sb_append_cstr(&sb, flag->spec.argument_desc);
 		else cbuild_sb_append_cstr(&sb, "ARGUMENT");
 		if (flag->spec.terminator) {
 			cbuild_sb_appendf(&sb, "|%s", flag->spec.terminator);
 		}
-		if (flag->spec.optional) cbuild_sb_append(&sb, ']');
-		else cbuild_sb_append(&sb, '>');
+		if (flag->spec.optional) cbuild_da_append(&sb, ']');
+		else cbuild_da_append(&sb, '>');
 	}
-	for (int i = (int)sb.size; i < len; i++) cbuild_sb_append(&sb, ' ');
-	cbuild_sb_append(&sb, ' ');
+	for (int i = (int)sb.size; i < len; i++) cbuild_da_append(&sb, ' ');
+	cbuild_da_append(&sb, ' ');
 	size_t col1w = sb.size;
 	ssize_t desc_len = (ssize_t)strlen(flag->spec.desc);
 	const char* desc = flag->spec.desc;
 	const size_t line_len = __cbuild_flag_term_width() - col1w;
 	while (desc_len > 0) {
 		if (desc != flag->spec.desc) { // This is means this is not a first iteration
-			for (size_t i = 0; i < col1w; i++) cbuild_sb_append(&sb, ' ');
+			for (size_t i = 0; i < col1w; i++) cbuild_da_append(&sb, ' ');
 		}
-		cbuild_sb_append_arr(&sb, desc, CBUILD_MIN(line_len, (size_t)desc_len));
-		cbuild_sb_append(&sb, '\n');
+		cbuild_da_append_arr(&sb, desc, CBUILD_MIN(line_len, (size_t)desc_len));
+		cbuild_da_append(&sb, '\n');
 		desc += line_len;
 		desc_len -= (ssize_t)line_len;
 	}

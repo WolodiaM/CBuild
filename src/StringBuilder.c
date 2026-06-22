@@ -34,7 +34,7 @@ CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp) {
 	} else {
 		CBUILD_UNREACHABLE("Invalid Unicode codepoint found: 0x%04X\n", cp);
 	}
-	cbuild_sb_append_arr(sb, buffer, len);
+	cbuild_da_append_arr(sb, buffer, len);
 	
 }
 CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t sb) {
@@ -47,7 +47,7 @@ CBUILDDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t sb) {
 }
 CBUILDDEF cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv) {
 	cbuild_sb_t ret = {0};
-	cbuild_sb_append_arr(&ret, sv.data, sv.size);
+	cbuild_da_append_arr(&ret, sv.data, sv.size);
 	return ret;
 }
 CBUILDDEF int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...) {
@@ -70,10 +70,10 @@ CBUILDDEF int cbuild_sb_vappendf(cbuild_sb_t* sb, const char* fmt, va_list args)
 		char* buff1 = __CBUILD_MALLOC((size_t)ret + 1);
 		cbuild_assert(buff1 != NULL, "Allocation failed.\n");
 		vsnprintf(buff1, (size_t)ret + 1, fmt, args_copy);
-		cbuild_sb_append_arr(sb, buff1, (size_t)ret);
+		cbuild_da_append_arr(sb, buff1, (size_t)ret);
 		__CBUILD_FREE(buff1);
 	} else {
-		cbuild_sb_append_arr(sb, buff, (size_t)ret);
+		cbuild_da_append_arr(sb, buff, (size_t)ret);
 	}
 	va_end(args_copy);
 	return ret;

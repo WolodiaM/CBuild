@@ -15,28 +15,28 @@ CBUILDDEF bool cbuild_glob_compile_opt(cbuild_glob_t* glob, const char* pattern,
 		PARSE_CHAR_CLASS_FIRST,
 		PARSE_CHAR_CLASS_AFTER_LAST,
 	} state = PARSE_NORMAL;
-	if (!opts.partial_match) cbuild_sb_append(&regex, '^');
+	if (!opts.partial_match) cbuild_da_append(&regex, '^');
 	for(const char* pptr = pattern; *pptr != '\0'; pptr++) {
 		if (state == PARSE_CHAR_CLASS_AFTER_LAST) {
 			state = PARSE_NORMAL;
 			if (*pptr == '*') {
-				cbuild_sb_append(&regex, *pptr);
+				cbuild_da_append(&regex, *pptr);
 				continue;
 			}
 		}
 		if (state == PARSE_ESCAPE) {
-			cbuild_sb_append(&regex, *pptr);
+			cbuild_da_append(&regex, *pptr);
 			state = PARSE_NORMAL;
 			continue;
 		}
 		if (state == PARSE_CHAR_CLASS_FIRST && *pptr == '!') {
-			cbuild_sb_append(&regex, '^');
+			cbuild_da_append(&regex, '^');
 			state = PARSE_CHAR_CLASS;
 			continue;
 		}
 		if ((state == PARSE_CHAR_CLASS || state == PARSE_CHAR_CLASS_FIRST)
 			&& *pptr != ']') {
-			cbuild_sb_append(&regex, *pptr);
+			cbuild_da_append(&regex, *pptr);
 			state = PARSE_CHAR_CLASS; // Clears GPST_CHAR_CLASS_FIRST
 			continue;
 		}
@@ -45,18 +45,18 @@ CBUILDDEF bool cbuild_glob_compile_opt(cbuild_glob_t* glob, const char* pattern,
 			state = PARSE_ESCAPE;
 		} break;
 		case '[': {
-			cbuild_sb_append(&regex, '[');
+			cbuild_da_append(&regex, '[');
 			state = PARSE_CHAR_CLASS_FIRST;
 		} break;
 		case ']': {
-			cbuild_sb_append(&regex, ']');
+			cbuild_da_append(&regex, ']');
 			state = PARSE_CHAR_CLASS_AFTER_LAST;
 		} break;
 		case '*': {
 			cbuild_sb_append_cstr(&regex, ".*");
 		} break;
 		case '?': {
-			cbuild_sb_append(&regex, '.');
+			cbuild_da_append(&regex, '.');
 		} break;
 		case '(': CBUILD_ATTR_FALLTHROUGH();
 		case ')': CBUILD_ATTR_FALLTHROUGH();
@@ -67,18 +67,18 @@ CBUILDDEF bool cbuild_glob_compile_opt(cbuild_glob_t* glob, const char* pattern,
 		case '.': CBUILD_ATTR_FALLTHROUGH();
 		case '|': CBUILD_ATTR_FALLTHROUGH();
 		case '+': {
-			cbuild_sb_append(&regex, '\\');
-			cbuild_sb_append(&regex, *pptr);
+			cbuild_da_append(&regex, '\\');
+			cbuild_da_append(&regex, *pptr);
 		} break;
 		default: {
-			cbuild_sb_append(&regex, *pptr);
+			cbuild_da_append(&regex, *pptr);
 		} break;
 		}
 	}
-	if (!opts.partial_match) cbuild_sb_append(&regex, '$');
+	if (!opts.partial_match) cbuild_da_append(&regex, '$');
 	cbuild_sb_append_null(&regex);
 	int ecode = regcomp(&glob->regex, regex.data, REG_EXTENDED | REG_NEWLINE);
-	cbuild_sb_clear(&regex);
+	cbuild_da_clear(&regex);
 	return ecode == 0;
 }
 CBUILDDEF bool cbuild_glob_match(cbuild_glob_t* glob, const char** list, size_t size) {

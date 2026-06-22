@@ -21,7 +21,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 			cbuild_sb_appendf(&sb, "\'%s\'", tmp);
 		}
 		if(i < cmd.size - 1) {
-			cbuild_sb_append(&sb, ' ');
+			cbuild_da_append(&sb, ' ');
 		}
 	}
 	return sb;
@@ -100,7 +100,7 @@ CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opts_t op
 	if(!opts.no_print_cmd) {
 		cbuild_sb_t cmd_sb = cbuild_cmd_to_sb(*cmd);
 		cbuild_log_trace("Running command '"CBuildSBFmt"'", CBuildSBArg(cmd_sb));
-		cbuild_sb_clear(&cmd_sb);
+		cbuild_da_clear(&cmd_sb);
 	}
 	// Open files
 	cbuild_fd_t fdstdin = CBUILD_INVALID_FD;

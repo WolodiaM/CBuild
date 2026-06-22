@@ -31,11 +31,11 @@ CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv,
 	int cond = cbuild_compare_mtime_many(output, files.data, files.size);
 	if(cond < 0) {
 		cbuild_log_error("Error while performing self-rebuild.");
-		cbuild_sb_clear(&backup);
+		cbuild_da_clear(&backup);
 		exit(1);
 	}
 	if(cond == 0) {
-		cbuild_sb_clear(&backup);
+		cbuild_da_clear(&backup);
 		return;
 	}
 	cbuild_log_info("Rebuilding CBuild buildscript.");
@@ -63,7 +63,7 @@ CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv,
 		return; // If compilation failed the let old version run
 	}
 	// Re-exec into new binary
-	cbuild_sb_clear(&backup);
+	cbuild_da_clear(&backup);
 	__cbuild_int_compile_mark_exec(output);
 	// Here real argv[0] used because this can be executed (it was just executed)
 	// and argv0_path can be absolute path, which will look bad inside a command
