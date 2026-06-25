@@ -25,7 +25,7 @@ int main(void) {
 		TEST_EXPECT_MSG(s), "a", dirls.data[0]);
 	TEST_ASSERT_STREQ(dirls.data[1], "b", "Wrong directory read at second index"
 		TEST_EXPECT_MSG(s), "b", dirls.data[1]);
-	cbuild_da_clear(&dirls);
+	cbuild_pathlist_clear(&dirls);
 	cbuild_da_clear(&dir_creator);
 	cbuild_da_clear(&file_writer);
 	return 0;

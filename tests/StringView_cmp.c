@@ -1,7 +1,6 @@
 int main(void) {
 	cbuild_sv_t sv1  = cbuild_sv_from_lit("abc");
 	cbuild_sv_t sv2  = cbuild_sv_from_lit("abc");
-	cbuild_sv_t sv3  = cbuild_sv_from_lit("ABC");
 	cbuild_sv_t sv4  = cbuild_sv_from_lit("ABC");
 	cbuild_sv_t sv5  = cbuild_sv_from_lit("def");
 	cbuild_sv_t sv6  = cbuild_sv_from_lit("defg");
