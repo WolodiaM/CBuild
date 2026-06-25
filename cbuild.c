@@ -390,39 +390,19 @@ test_case_t TESTS[] = {
 		.group = true,
 	},
 	{
-		.file = "alloc",
+		.file = "get",
 		.platforms = TPLM_ALL,
 	},
 	{
-		.file = "write_ii",
+		.file = "find",
 		.platforms = TPLM_ALL,
 	},
 	{
-		.file = "write_ci",
+		.file = "find_idx",
 		.platforms = TPLM_ALL,
 	},
 	{
-		.file = "read_ii",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "read_ci",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "remove_ii",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "remove_ci",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "iter_ii",
-		.platforms = TPLM_ALL,
-	},
-	{
-		.file = "iter_ci",
+		.file = "append",
 		.platforms = TPLM_ALL,
 	},
 	{

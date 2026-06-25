@@ -8,16 +8,16 @@
 #include "FS.h"
 #include "Proc.h" 
 #include "Span.h"
-CBUILDDEF void __cbuild_cmd_to_sb_token(cbuild_sb_t* sb, const char* elem) {
+CBUILDDEF void __cbuild_cmd_to_sb_token(cbuild_sb_t* sb, const char* elem, bool quoted) {
 	for (const char* c = elem; *c != '\0'; c++) {
-		if (*c == '"') {
-			cbuild_sb_append_cstr(sb, "\\\"");
+		if (*c == '$') {
+			cbuild_sb_append_cstr(sb, "\\$");
 		} else if (*c == '`') {
 			cbuild_sb_append_cstr(sb, "\\`");
-		} else if (*c == '$') {
-			cbuild_sb_append_cstr(sb, "\\$");
 		} else if (*c == '\\') {
 			cbuild_sb_append_cstr(sb, "\\\\");
+		} else if (quoted && *c == '"') {
+			cbuild_sb_append_cstr(sb, "\\\"");
 		} else {
 			cbuild_da_append(sb, *c);
 		}
@@ -31,10 +31,10 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 	for(size_t i = 0; i < cmd.size; i++) {
 		const char* tmp = cmd.data[i];
 		if(!strchr(tmp, ' ')) {
-			__cbuild_cmd_to_sb_token(&sb, tmp);
+			__cbuild_cmd_to_sb_token(&sb, tmp, false);
 		} else {
 			cbuild_da_append(&sb, '"');
-			__cbuild_cmd_to_sb_token(&sb, tmp);
+			__cbuild_cmd_to_sb_token(&sb, tmp, true);
 			cbuild_da_append(&sb, '"');
 		}
 		if(i < cmd.size - 1) {
