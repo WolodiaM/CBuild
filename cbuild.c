@@ -25,21 +25,11 @@
 // -x=c-header -o cbuild.h.pch
 // Linking will be done automatically
 
-// Log levele
-enum cbuild_custom_log_level_t {
-	TEST_LOG_FAILED = 1,
-	TEST_LOG_SUCCESS,
-	TEST_LOG_START,
-	CBUILD_LOG_ERROR,
-	CBUILD_LOG_WARN,
-	CBUILD_LOG_INFO,
-	CBUILD_LOG_TRACE,
-};
 // Includes
 #define CBUILDDEF static inline
 #define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_TRACE
 #define CBUILD_PROFILER
-#define CBUILD_LOG_CUSTOM_LEVELS
+#define CBUILD_LOG_CUSTOM_LEVELS "../cbuild.c.log-levels.h"
 #include "cbuild.split.h"
 #include "framework.h"
 // Log messages
@@ -626,35 +616,35 @@ _Static_assert(TPL_COUNT == cbuild_arr_len(TPL_NAMES),
 #define test_log_start(msg, ...)                            \
 	cbuild_log(TEST_LOG_START, msg __VA_OPT__(,) __VA_ARGS__)
 void test_cmd_append_valrind(cbuild_cmd_t* cmd) {
-	cbuild_cmd_append(cmd, "valgrind");
-	cbuild_cmd_append(cmd, "--error-exitcode=255");
-	cbuild_cmd_append(cmd, "--track-origins=yes");
-	cbuild_cmd_append_many(cmd, "--leak-check=full", "--show-leak-kinds=all");
-	cbuild_cmd_append(cmd, "--errors-for-leak-kinds=definite,indirect,possible");
+	cbuild_da_append(cmd, "valgrind");
+	cbuild_da_append(cmd, "--error-exitcode=255");
+	cbuild_da_append(cmd, "--track-origins=yes");
+	cbuild_da_append_many(cmd, "--leak-check=full", "--show-leak-kinds=all");
+	cbuild_da_append(cmd, "--errors-for-leak-kinds=definite,indirect,possible");
 }
 void test_cmd_append_clang_san(cbuild_cmd_t* cmd) {
-	cbuild_cmd_append(cmd, "-fsanitize=address");
+	cbuild_da_append(cmd, "-fsanitize=address");
 }
 void test_cmd_append_cc_base(test_case_t test, cbuild_cmd_t* cmd) {
-	cbuild_cmd_append_many(cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
-	cbuild_cmd_append_many(cmd, CBUILD_CARGS_INCLUDE("framework.h"));
-	cbuild_cmd_append_many(cmd, "-fmacro-prefix-map=tests/=");
-	cbuild_cmd_append_many(cmd,
+	cbuild_da_append_many(cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
+	cbuild_da_append_many(cmd, CBUILD_CARGS_INCLUDE("framework.h"));
+	cbuild_da_append_many(cmd, "-fmacro-prefix-map=tests/=");
+	cbuild_da_append_many(cmd,
 		cbuild_temp_sprintf("-DTEST_RUN_PLATFORM=\"%s\"",
 			TPL_NAMES[TPL_RUN_REGISTERED_CURR]));
-	cbuild_cmd_append(cmd, "-ggdb");
-	cbuild_cmd_append_arr(cmd, test.cargs.data, test.cargs.size);
+	cbuild_da_append(cmd, "-ggdb");
+	cbuild_da_append_arr(cmd, test.cargs.data, test.cargs.size);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_case_run_valgrind(test_case_t test, const char* oname) {
 	cbuild_cmd_t cmd = {0};
 	cbuild_log_trace("Running test \"%s\"...", test.file);
 	test_cmd_append_valrind(&cmd);
-	cbuild_cmd_append(&cmd, oname);
-	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
+	cbuild_da_append(&cmd, oname);
+	cbuild_da_append_arr(&cmd, test.argv.data, test.argv.size);
 	cbuild_proc_t proc;
 	cbuild_cmd_run(&cmd, .proc = &proc);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	int code = cbuild_proc_wait_code(proc);
 	if(code == 255) {
 		test_log_failed("Test \"%s\" leaks memory.", test.file);
@@ -672,26 +662,26 @@ _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 st
 test_status_t test_case_run_simple(test_case_t test, const char* oname) {
 	cbuild_cmd_t cmd = {0};
 	cbuild_log_trace("Running test \"%s\"...", test.file);
-	cbuild_cmd_append(&cmd, oname);
-	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
+	cbuild_da_append(&cmd, oname);
+	cbuild_da_append_arr(&cmd, test.argv.data, test.argv.size);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_FAILED;
 	}
 	test_log_success("Test \"%s\" succeed.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return TEST_SUCCEED;
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
 test_status_t test_case_run_clang_san(test_case_t test, const char* oname) {
 	cbuild_cmd_t cmd = {0};
 	cbuild_log_trace("Running test \"%s\"...", test.file);
-	cbuild_cmd_append(&cmd, oname);
-	cbuild_cmd_append_arr(&cmd, test.argv.data, test.argv.size);
+	cbuild_da_append(&cmd, oname);
+	cbuild_da_append_arr(&cmd, test.argv.data, test.argv.size);
 	cbuild_proc_t proc;
 	cbuild_cmd_run(&cmd, .proc = &proc);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	int code = cbuild_proc_wait_code(proc);
 	if(code == 255) {
 		test_log_failed("Test \"%s\" leaks memory.", test.file);
@@ -716,17 +706,17 @@ test_status_t test_x86_64_linux_glibc_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_gcc_%s_%s.run", 
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_da_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_valgrind(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -740,18 +730,18 @@ test_status_t test_x86_64_linux_glibc_clang(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_glibc_clang_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "clang");
+	cbuild_da_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_clang_san(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -765,17 +755,17 @@ test_status_t test_x86_64_linux_musl_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_linux_musl_gcc_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "musl-gcc");
+	cbuild_da_append(&cmd, "musl-gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_simple(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -789,17 +779,17 @@ test_status_t test_aarch64_linux_glibc_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_glibc_gcc_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_da_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_valgrind(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -813,18 +803,18 @@ test_status_t test_aarch64_linux_glibc_clang(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_glibc_clang_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "clang");
+	cbuild_da_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_clang_san(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -838,17 +828,17 @@ test_status_t test_aarch64_linux_musl_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_linux_musl_gcc_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "musl-gcc");
+	cbuild_da_append(&cmd, "musl-gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_simple(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -862,18 +852,18 @@ test_status_t test_x86_64_posix_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_gcc_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_da_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_valgrind(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -887,19 +877,19 @@ test_status_t test_x86_64_posix_clang(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_posix_clang_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "clang");
+	cbuild_da_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_clang_san(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -913,18 +903,18 @@ test_status_t test_aarch64_posix_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_posix_gcc_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_da_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_valgrind(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -938,19 +928,19 @@ test_status_t test_aarch64_posix_clang(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_posix_clang_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "clang");
+	cbuild_da_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-DCBUILD_API_DEFINED", "-DCBUILD_API_STRICT_POSIX");
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_clang_san(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -964,17 +954,17 @@ test_status_t test_x86_64_macos_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_macos_gcc_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "gcc-15");
+	cbuild_da_append(&cmd, "gcc-15");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return TEST_SUCCEED;
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -988,18 +978,18 @@ test_status_t test_x86_64_macos_clang(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_macos_clang_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "clang");
+	cbuild_da_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_clang_san(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -1013,17 +1003,17 @@ test_status_t test_aarch64_macos_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_macos_gcc_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "gcc-15");
+	cbuild_da_append(&cmd, "gcc-15");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_simple(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -1037,18 +1027,18 @@ test_status_t test_aarch64_macos_clang(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_macos_clang_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "clang");
+	cbuild_da_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_clang_san(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -1062,17 +1052,17 @@ test_status_t test_x86_64_windows_cygwin_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_windows_cygwin_gcc_%s_%s.exe",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "/usr/bin/gcc");
+	cbuild_da_append(&cmd, "/usr/bin/gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_simple(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -1086,17 +1076,17 @@ test_status_t test_x86_64_freebsd_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_freebsd_gcc_%s_%s.run", 
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_da_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_valgrind(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -1110,18 +1100,18 @@ test_status_t test_x86_64_freebsd_clang(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_x86_64_freebsd_clang_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "clang");
+	cbuild_da_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_clang_san(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -1135,17 +1125,17 @@ test_status_t test_aarch64_freebsd_gcc(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_freebsd_gcc_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "gcc");
+	cbuild_da_append(&cmd, "gcc");
 	test_cmd_append_cc_base(test, &cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_simple(test, oname);
 }
 _Static_assert(TEST_STATUS_COUNT == 5, "Enum test_status_t expected to hold 5 statuses.");
@@ -1159,18 +1149,18 @@ test_status_t test_aarch64_freebsd_clang(test_case_t test) {
 	const char* oname =
 		cbuild_temp_sprintf(BUILD_FOLDER"/test_aarch64_freebsd_clang_%s_%s.run",
 			TPL_RUN_REGISTERED_GROUP, test.file);
-	cbuild_cmd_append(&cmd, "clang");
+	cbuild_da_append(&cmd, "clang");
 	test_cmd_append_cc_base(test, &cmd);
 	test_cmd_append_clang_san(&cmd);
-	cbuild_cmd_append_many(&cmd, "-o", oname);
-	cbuild_cmd_append(&cmd, fname);
+	cbuild_da_append_many(&cmd, "-o", oname);
+	cbuild_da_append(&cmd, fname);
 	if(!cbuild_cmd_run(&cmd)) {
 		test_log_failed("Test \"%s\" failed to build.", test.file);
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		return TEST_COMP_FAILED;
 	}
 	cbuild_log_trace("Test \"%s\" built successfully.", test.file);
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	return test_case_run_clang_san(test, oname);
 }
 static test_status_t (*TPL_RUNNERS[])(test_case_t test) = {
@@ -1326,7 +1316,7 @@ bool amalgamate(void) {
 	cbuild_sb_append_cstr(&output, "/* CHANGELOG\n");
 	cbuild_sb_t changelog_old = {0};
 	if (!cbuild_file_read(CHANGELOG_DIR"/changelog.txt", &changelog_old)) return false;
-	cbuild_sv_t changelog_old_content = cbuild_sv_from_sb(changelog_old);
+	cbuild_sv_t changelog_old_content = cbuild_sb_to_sv(changelog_old);
 	// NOTE: This removes "markdown" header used by wikimk
 	for (size_t i = 0; i < 4; i++) cbuild_sv_chop_by_delim(&changelog_old_content, '\n');
 	while (changelog_old_content.size > 0) {
@@ -1336,7 +1326,7 @@ bool amalgamate(void) {
 		cbuild_sb_append_sv(&output, line);
 		cbuild_sb_append_cstr(&output, "\n");
 	}
-	cbuild_sb_clear(&changelog_old);
+	cbuild_da_clear(&changelog_old);
 	// NOTE: For now I use zerover, so it is really easy to iterate over versions
 	int version = CHANGELOG_FIRST_NEW_ZEROVER;
 	const char* ch_path = cbuild_temp_sprintf(CHANGELOG_DIR"/v0.%d.md", version++);
@@ -1344,7 +1334,7 @@ bool amalgamate(void) {
 	while (cbuild_file_check(ch_path)) {
 		cbuild_sb_append_cstr(&output, " * --------------------------------------------\n");
 		if (!cbuild_file_read(ch_path, &changelog)) return false;
-		cbuild_sv_t ch = cbuild_sv_from_sb(changelog);
+		cbuild_sv_t ch = cbuild_sb_to_sv(changelog);
 		cbuild_sv_chop_by_delim(&ch, '\n'); // ---
 		cbuild_sv_chop_by_delim(&ch, '\n'); // title: ...
 		cbuild_sv_chop_by_delim(&ch, ' ');  // date: 
@@ -1370,7 +1360,7 @@ bool amalgamate(void) {
 		changelog.size = 0;
 		ch_path = cbuild_temp_sprintf(CHANGELOG_DIR"/v0.%d.md", version++);
 	}
-	cbuild_sb_clear(&changelog);
+	cbuild_da_clear(&changelog);
 	cbuild_sb_append_cstr(&output, " */\n");
 	// Headers
 	cbuild_sb_append_cstr(&output, "#ifndef __CBUILD_H__\n");
@@ -1400,7 +1390,7 @@ bool amalgamate(void) {
 	for (size_t i = 0; i < cbuild_arr_len(headers); i++) {
 		if(!cbuild_file_read(headers[i], &header)) return false;
 		cbuild_sb_appendf(&output, "\n/* %s */\n\n", cbuild_path_name(headers[i]));
-		cbuild_sv_t content = cbuild_sv_from_sb(header);
+		cbuild_sv_t content = cbuild_sb_to_sv(header);
 		while (content.size > 0) {
 			cbuild_sv_t line = cbuild_sv_chop_by_delim(&content, '\n');
 			if (cbuild_sv_prefix(line, cbuild_sv_from_lit("#pragma once")) ||
@@ -1412,7 +1402,7 @@ bool amalgamate(void) {
 		}
 		header.size = 0;
 	}
-	cbuild_sb_clear(&header);
+	cbuild_da_clear(&header);
 	cbuild_sb_append_cstr(&output, "#endif // __CBUILD_H__\n");
 	cbuild_sb_append_cstr(&output, "#ifdef CBUILD_IMPLEMENTATION\n");
 	const char* sources[] = {
@@ -1441,7 +1431,7 @@ bool amalgamate(void) {
 		if (strlen(sources[i]) == 0) continue;
 		if(!cbuild_file_read(sources[i], &source)) return false;
 		cbuild_sb_appendf(&output, "\n/* %s */\n\n", cbuild_path_name(headers[i]));
-		cbuild_sv_t content = cbuild_sv_from_sb(source);
+		cbuild_sv_t content = cbuild_sb_to_sv(source);
 		while (content.size > 0) {
 			cbuild_sv_t line = cbuild_sv_chop_by_delim(&content, '\n');
 			if (cbuild_sv_prefix(line, cbuild_sv_from_lit("#include"))) {
@@ -1453,7 +1443,7 @@ bool amalgamate(void) {
 	}
 	cbuild_sb_append_cstr(&output, "#endif // CBUILD_IMPLEMENTATION");
 	if(!cbuild_file_write("cbuild.h", &output)) return false;
-	cbuild_sb_clear(&output);
+	cbuild_da_clear(&output);
 	return true;
 }
 // Hooks
@@ -1526,63 +1516,63 @@ int main(int argc, char** argv) {
 		char* arg = cbuild_shift(pargs.data, pargs.size);
 		if (strcmp(arg, "wikimk.run") == 0 || strcmp(arg, "build-all") == 0) {
 			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, CC,
+			cbuild_da_append_many(&cmd, CC,
 				CBUILD_CARGS_WARN,
 				"-O3", CBUILD_CARGS_DEBUG_GDB,
 				CBUILD_CARGS_LIBINCLUDE("dl"));
 			#if defined(CBUILD_OS_LINUX) || defined(CBUILD_OS_BSD) || defined(CBUILD_OS_UNIX)
-				cbuild_cmd_append_many(&cmd,
+				cbuild_da_append_many(&cmd,
 					"-Wl,--export-dynamic",
 					"-Wl,-z,origin", "-Wl,-rpath,$ORIGIN/");
 			#elif defined(CBUILD_OS_MACOS)
-				cbuild_cmd_append_many(&cmd, "-Wl,-rpath,@loader_path/");
+				cbuild_da_append_many(&cmd, "-Wl,-rpath,@loader_path/");
 			#elif defined(CBUILD_OS_WINDOWS_CYGWIN)
-				cbuild_cmd_append_many(&cmd,
+				cbuild_da_append_many(&cmd,
 					"-Wl,--export-dynamic",
 					"-Wl,-rpath,$ORIGIN/");
 			#else
 				#error "Unsupported OS for wikimk."
 			#endif
-			cbuild_cmd_append_many(&cmd, 
+			cbuild_da_append_many(&cmd, 
 				"wikimk/wikimk.c", "-o", BUILD_FOLDER"/wikimk.run");
 			if (!cbuild_cmd_run(&cmd)) return 1;
 		}
 		if (strcmp(arg, "codeparse.so") == 0 || strcmp(arg, "build-all") == 0) {
 			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, CC,
+			cbuild_da_append_many(&cmd, CC,
 				CBUILD_CARGS_WARN,
 				"-O3", CBUILD_CARGS_DEBUG_GDB,
 				"-shared", "-fPIC");
-			cbuild_cmd_append_many(&cmd, 
+			cbuild_da_append_many(&cmd, 
 				"wikimk/codeparse.c", "-o", BUILD_FOLDER"/codeparse.so");
 			if (!cbuild_cmd_run(&cmd)) return 1;
 		}
 		if (strcmp(arg, "template.so") == 0 || strcmp(arg, "build-all") == 0) {
 			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, CC,
+			cbuild_da_append_many(&cmd, CC,
 				CBUILD_CARGS_WARN,
 				"-O3", CBUILD_CARGS_DEBUG_GDB,
 				"-shared", "-fPIC");
-			cbuild_cmd_append_many(&cmd, 
+			cbuild_da_append_many(&cmd, 
 				"wikimk/template.c", "-o", BUILD_FOLDER"/template.so");
 			if (!cbuild_cmd_run(&cmd)) return 1;
 		}
 		if (strcmp(arg, "generate") == 0) {
 			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, BUILD_FOLDER"/wikimk.run", "build");
+			cbuild_da_append_many(&cmd, BUILD_FOLDER"/wikimk.run", "build");
 			if (!cbuild_cmd_run(&cmd)) return 1;
 		}
 	} else if(strcmp(subcommand, "test") == 0) {
 		if(pargs.size == 0) {
 			// Remove temp files
 			cbuild_cmd_t cmd = {0};
-			cbuild_cmd_append_many(&cmd, "sh", "-c", "rm -rf "BUILD_FOLDER"/test_*");
+			cbuild_da_append_many(&cmd, "sh", "-c", "rm -rf "BUILD_FOLDER"/test_*");
 			if(!cbuild_cmd_run(&cmd)) return 1;
 			// Run tests
 			if(test()) return 1;
 		} else {
 			bool failed = false;
-			cbuild_da_foreach(pargs, test_group) {
+			cbuild_span_foreach(&pargs, test_group) {
 				// Parse spec
 				char* test_name = strchr(*test_group, ':');
 				if(test_name != NULL) {
@@ -1617,7 +1607,7 @@ int main(int argc, char** argv) {
 				}
 				// Remove temp files
 				cbuild_cmd_t cmd = {0};
-				cbuild_cmd_append_many(&cmd, "sh", "-c",
+				cbuild_da_append_many(&cmd, "sh", "-c",
 					cbuild_temp_sprintf("rm -rf "BUILD_FOLDER"/test_%s_%s_%s_*", 
 						tpl_name ? tpl_name : "*", *test_group, test_name));
 				if(!cbuild_cmd_run(&cmd)) return 1;
@@ -1663,7 +1653,7 @@ int main(int argc, char** argv) {
 		cbuild_file_remove("wikimk."EXE_NAME);
 	} else if(strcmp(subcommand, "tags") == 0) {
 		cbuild_cmd_t cmd = {0};
-		cbuild_cmd_append_many(&cmd, "ctags",
+		cbuild_da_append_many(&cmd, "ctags",
 			"-e", "--languages=C", "--kinds-C=+px",
 			"cbuild.h");
 		if(!cbuild_cmd_run(&cmd)) {

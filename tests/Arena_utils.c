@@ -29,10 +29,10 @@ int main(void) {
 	TEST_ASSERT_NEQ(vfmt_str, NULL, "cbuild_arena_vsprintf failed.");
 	TEST_ASSERT_STREQ(vfmt_str, "val: 42",
 		"cbuild_arena_vsprintf: Wrong content"TEST_EXPECT_MSG(s), "val: 42", vfmt_str);
-	cbuild_arena_free(&arena);
+	cbuild_arena_reset(&arena, 0);
 	// Test OOM in utils
 	cbuild_arena_base_realloc(&arena, 33); 
-	cbuild_arena_free(&arena);
+	cbuild_arena_reset(&arena, 0);
 	char* large_dup = cbuild_arena_strdup(&arena, "This string is much longer than 33 bytes for sure");
 	TEST_ASSERT_EQ(large_dup, NULL, "cbuild_arena_strdup should return NULL on OOM.");
 	cbuild_arena_base_free(&arena);

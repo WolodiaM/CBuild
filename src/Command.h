@@ -17,45 +17,13 @@ typedef struct cbuild_cmd_t {
 	size_t size;
 	size_t capacity;
 } cbuild_cmd_t;
-/// Append new argument to a command.
-///
-/// * [pl:cmd:cbuild_cmd_t*] Command object.
-/// * [pl:val:const char*] Element to append.
-#define	cbuild_cmd_append(cmd, val) cbuild_da_append(cmd, val)
-/// Append new arguments to a command.
-///
-/// * [pl:cmd:cbuild_cmd_t*] Command object.
-/// * [pl:vals:const char**] Elements to append.
-/// * [pl:vals_cnt:size_t] Number of elements to append.
-#define	cbuild_cmd_append_arr(cmd, vals, vals_cnt)                             \
-	cbuild_da_append_arr(cmd, vals, vals_cnt)
-/// Append new arguments to a command.
-///
-/// * [pl:cmd:cbuild_cmd_t*] Command object.
-/// * [pl:...:const char*] Elements to append.
-#define	cbuild_cmd_append_many(cmd, ...)                                       \
-	cbuild_da_append_many(cmd, __VA_ARGS__)
-/// Free command.
-///
-/// This should be used only if you want to free underlying memory, if you just
-/// want to clear array and reuse it, setting `size` to `0` would be much faster.
-///
-/// * [pl:cmd:cbuild_cmd_t*] Dynamic array object.
-#define	cbuild_cmd_clear(cmd) cbuild_da_clear(cmd)
 /// Convert command to string builder.
 ///
 /// ::: note
-/// This function properly formats arguments with spaces by wrapping them in `'`.
-/// But arguments that has both spaces and `'` are not handler properly.
+/// This function properly formats arguments with spaces by wrapping them in `"`.
+/// This function additionally escape `$`, `\``, `"` and `\\` in all contexts.
 /// :::
 CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
-/// Convert command to string builder.
-///
-/// ::: note
-/// This function properly formats arguments with spaces by wrapping them in `'`.
-/// But arguments that has both spaces and `'` are not handler properly.
-/// :::
-#define	cbuild_sb_from_cmd(cmd) cbuild_cmd_to_sb(cmd)
 /// Configuration for command.
 ///
 /// This structure consists of a few separate blocks:

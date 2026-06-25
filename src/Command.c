@@ -8,6 +8,21 @@
 #include "FS.h"
 #include "Proc.h" 
 #include "Span.h"
+CBUILDDEF void __cbuild_cmd_to_sb_token(cbuild_sb_t* sb, const char* elem) {
+	for (const char* c = elem; *c != '\0'; c++) {
+		if (*c == '"') {
+			cbuild_sb_append_cstr(sb, "\\\"");
+		} else if (*c == '`') {
+			cbuild_sb_append_cstr(sb, "\\`");
+		} else if (*c == '$') {
+			cbuild_sb_append_cstr(sb, "\\$");
+		} else if (*c == '\\') {
+			cbuild_sb_append_cstr(sb, "\\\\");
+		} else {
+			cbuild_da_append(sb, *c);
+		}
+	}
+}
 CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 	cbuild_sb_t sb = {0};
 	if(cmd.size < 1) {
@@ -16,9 +31,11 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 	for(size_t i = 0; i < cmd.size; i++) {
 		const char* tmp = cmd.data[i];
 		if(!strchr(tmp, ' ')) {
-			cbuild_sb_append_cstr(&sb, tmp);
+			__cbuild_cmd_to_sb_token(&sb, tmp);
 		} else {
-			cbuild_sb_appendf(&sb, "\'%s\'", tmp);
+			cbuild_da_append(&sb, '"');
+			__cbuild_cmd_to_sb_token(&sb, tmp);
+			cbuild_da_append(&sb, '"');
 		}
 		if(i < cmd.size - 1) {
 			cbuild_da_append(&sb, ' ');
@@ -33,13 +50,13 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 		cbuild_fd_t fdstdout, cbuild_fd_t fdstderr) {
 		// Get args
 		cbuild_cmd_t argv = {0};
-		cbuild_cmd_append_arr(&argv, cmd->data, cmd->size);
-		cbuild_cmd_append(&argv, (char*)NULL);
+		cbuild_da_append_arr(&argv, cmd->data, cmd->size);
+		cbuild_da_append(&argv, (char*)NULL);
 		cbuild_proc_t proc = fork();
 		if(proc < 0) {
 			cbuild_log_error( "Could not create child process, error: \"%s\"",
 				strerror(errno));
-			cbuild_cmd_clear(&argv);
+			cbuild_da_clear(&argv);
 			return CBUILD_INVALID_PROC;
 		}
 		if(proc == 0) {
@@ -50,7 +67,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 					cbuild_log_error(
 						"Could not redirect stdin inside of a child process, error: \"%s\"",
 						strerror(errno));
-					cbuild_cmd_clear(&argv);
+					cbuild_da_clear(&argv);
 					exit(1);
 				}
 			}
@@ -59,7 +76,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 					cbuild_log_error(
 						"Could not redirect stdout inside of a child process, error: \"%s\"",
 						strerror(errno));
-					cbuild_cmd_clear(&argv);
+					cbuild_da_clear(&argv);
 					exit(1);
 				}
 			}
@@ -68,7 +85,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 					cbuild_log_error(
 						"Could not redirect stderr inside of a child process, error: \"%s\"",
 						strerror(errno));
-					cbuild_cmd_clear(&argv);
+					cbuild_da_clear(&argv);
 					exit(1);
 				}
 			}
@@ -88,7 +105,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd) {
 			}
 			exit(0);
 		}
-		cbuild_cmd_clear(&argv);
+		cbuild_da_clear(&argv);
 		return proc;
 	}
 #endif // CBUILD_API_*

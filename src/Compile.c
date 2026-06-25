@@ -50,11 +50,11 @@ CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv,
 	}
 	// Actual rebuild
 	cbuild_cmd_t cmd = {0};
-	cbuild_cmd_append_many(&cmd, CBUILD_CC, CBUILD_SELFREBUILD_ARGS);
+	cbuild_da_append_many(&cmd, CBUILD_CC, CBUILD_SELFREBUILD_ARGS);
 	if(cbuild_selfrebuild_hook != NULL) {
 		cbuild_selfrebuild_hook(&cmd);
 	}
-	cbuild_cmd_append_many(&cmd, "-o", output, source);
+	cbuild_da_append_many(&cmd, "-o", output, source);
 	if(!cbuild_cmd_run(&cmd)) {
 		cbuild_file_rename(backup.data, output);
 		cbuild_log_error("----------------------------------------");
@@ -67,7 +67,7 @@ CBUILDDEF void __cbuild_selfrebuild(int argc, char** argv,
 	__cbuild_int_compile_mark_exec(output);
 	// Here real argv[0] used because this can be executed (it was just executed)
 	// and argv0_path can be absolute path, which will look bad inside a command
-	cbuild_cmd_append_arr(&cmd, argv, (size_t)argc);
+	cbuild_da_append_arr(&cmd, argv, (size_t)argc);
 	if(!cbuild_cmd_run(&cmd)) {
 		// NOTE: This hides app exit code. But this is unfixable in current API
 		exit(1);

@@ -19,7 +19,7 @@ int main(void) {
 	TEST_ASSERT_EQ(p3, p2,
 		"Re-allocation after reset should use the same address"TEST_EXPECT_MSG(p),
 		p2, p3);
-	cbuild_arena_free(&arena);
+	cbuild_arena_reset(&arena, 0);
 	TEST_ASSERT_EQ(arena.pointer, 0,
 		"Arena pointer after free mismatch"TEST_EXPECT_MSG(zu),
 		(size_t)0, arena.pointer);

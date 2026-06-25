@@ -12,13 +12,6 @@ typedef struct cbuild_pathlist_t {
 	size_t size;
 	size_t capacity;
 } cbuild_pathlist_t;
-/// Get element from list of paths using its index.
-///
-/// * [pl:list:const cbuild_pathlist_t*] Path list object.
-/// * [pl:idx:size_t] Element index.
-/// 
-/// [r:char**] Pointer to an element or `NULL`{.c} if index out of bounds.
-#define cbuild_pathlist_get(list, idx) cbuild_da_get(list, idx)
 /// Free pathlist.
 /// 
 /// ::: note

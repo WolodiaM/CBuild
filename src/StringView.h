@@ -116,15 +116,6 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_func(cbuild_sv_t* sv,
 /// * [r:1] If first different character in first string view is larger.
 /// [r:2] If size of first string view is larger.
 CBUILDDEF int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
-/// `strcmp` for string view. Fully compatible but extends API. 
-/// Performs case folding for ASCII.
-///
-/// * [r:-2] If size of first string view is smaller.
-/// * [r:-1] If first different character in first string view is smaller.
-/// * [r:0] If two string views are equal.
-/// * [r:1] If first different character in first string view is larger.
-/// * [r:2] If size of first string view is larger.
-CBUILDDEF int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b);
 /// Check if string view has specific prefix.
 CBUILDDEF bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
 /// Check if string view has specific suffix.
@@ -213,13 +204,7 @@ CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
 CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx);
 /// Convert string view to c-string. Allocate memory via `malloc`.
 CBUILDDEF char* cbuild_sv_to_cstr(cbuild_sv_t sv);
-/// Convert string view to c-string. Allocate memory via `malloc`.
-#define cbuild_cstr_from_sv(sv) cbuild_sv_to_cstr(sv)
 /// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
 CBUILDDEF char* cbuild_sv_to_temp_cstr(cbuild_sv_t sv);
-/// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
-#define cbuild_temp_cstr_from_sv(sv) cbuild_sv_to_temp_cstr(sv)
 /// Convert string view to c-string. Allocate memory from provided arena via [`cbuild_arena_malloc`](DOC:cbuild_arena_malloc).
 CBUILDDEF char* cbuild_sv_to_arena_cstr(cbuild_arena_t* arena, cbuild_sv_t sv);
-/// Convert string view to c-string. Allocate memory from provided arena via [`cbuild_arena_malloc`](DOC:cbuild_arena_malloc).
-#define cbuild_arena_cstr_from_sv(arena, sv) cbuild_sv_to_arena_cstr(arena, sv)

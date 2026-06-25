@@ -47,40 +47,11 @@ int main(void) {
 	TEST_ASSERT_EQ(r7, 2,
 		"cbuild_sb_cmp: Wrong difference reported when size1 > size2"
 		TEST_EXPECT_MSG(d), 2, r7);
-	// Case-less compare
-	TEST_ASSERT_EQ(cbuild_sb_cmp_icase(sb5, sb5), 0,
-		"cbuild_sb_cmp_icase: Comparison with self failed"
-		TEST_EXPECT_MSG(d), 0,
-		cbuild_sb_cmp_icase(sb5, sb5));
-	int r8 = cbuild_sb_cmp_icase(sb1, sb2);
-	TEST_ASSERT_EQ(r8, 0,
-		"cbuild_sb_cmp_icase: Comparison with identical string failed"
-		TEST_EXPECT_MSG(d), 0, r8);
-	int r9 = cbuild_sb_cmp_icase(sb1, sb3);
-	TEST_ASSERT_EQ(r9, 0,
-		"cbuild_sb_cmp_icase: Comparison with same string (different case) failed"
-		TEST_EXPECT_MSG(d), 0, r8);
-	int r10 = cbuild_sb_cmp_icase(sb1, sb5);
-	TEST_ASSERT_EQ(r10, -1,
-		"cbuild_sb_cmp_icase: Wrong difference reported when c1 < c2"
-		TEST_EXPECT_MSG(d), -1, r10);
-	int r11 = cbuild_sb_cmp_icase(sb5, sb1);
-	TEST_ASSERT_EQ(r11, 1,
-		"cbuild_sb_cmp_icase: Wrong difference reported when c1 > c2"
-		TEST_EXPECT_MSG(d), 1, r11);
-	int r12 = cbuild_sb_cmp_icase(sb1, sb6);
-	TEST_ASSERT_EQ(r12, -2,
-		"cbuild_sb_cmp_icase: Wrong difference reported when size1 < size2"
-		TEST_EXPECT_MSG(d), -2, r12);
-	int r13 = cbuild_sb_cmp_icase(sb6, sb1);
-	TEST_ASSERT_EQ(r13, 2,
-		"cbuild_sb_cmp_icase: Wrong difference reported when size1 > size2"
-		TEST_EXPECT_MSG(d), 2, r13);
 	// Clear all string builders
-	cbuild_sb_clear(&sb1);
-	cbuild_sb_clear(&sb2);
-	cbuild_sb_clear(&sb3);
-	cbuild_sb_clear(&sb4);
-	cbuild_sb_clear(&sb5);
-	cbuild_sb_clear(&sb6);
+	cbuild_da_clear(&sb1);
+	cbuild_da_clear(&sb2);
+	cbuild_da_clear(&sb3);
+	cbuild_da_clear(&sb4);
+	cbuild_da_clear(&sb5);
+	cbuild_da_clear(&sb6);
 }

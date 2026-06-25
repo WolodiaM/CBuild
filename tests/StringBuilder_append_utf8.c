@@ -12,7 +12,7 @@ int main(void) {
 		"Error while appending utf8 characters to a string builder"
 		TEST_EXPECT_MSG(s), test, sb.data);
 	cbuild_sb_t copy = {0};
-	cbuild_sb_append_arr(&copy, sb.data, sb.size);
+	cbuild_da_append_arr(&copy, sb.data, sb.size);
 	cbuild_sb_t different = {0};
 	cbuild_sb_append_cstr(&different, "abc");
 	cbuild_sb_append_null(&different);
@@ -23,8 +23,8 @@ int main(void) {
 	size_t len = cbuild_sb_utf8len(sb);
 	TEST_ASSERT_EQ(len, 5,
 		"Wrong codepoint count calculated"TEST_EXPECT_MSG(zu), (size_t)5, len);
-	cbuild_sb_clear(&sb);
-	cbuild_sb_clear(&copy);
-	cbuild_sb_clear(&different);
+	cbuild_da_clear(&sb);
+	cbuild_da_clear(&copy);
+	cbuild_da_clear(&different);
 	return 0;
 }

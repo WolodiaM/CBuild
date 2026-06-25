@@ -3,7 +3,7 @@ int main(void) {
 	cbuild_cmd_t file_writer = {0};
 	const char* tsrc = TEST_TEMP_FILE_EX("src");
 	const char* tdst = TEST_TEMP_FILE_EX("dst");
-	cbuild_cmd_append_many(&file_writer, "dd", "bs=1024", "count=64",
+	cbuild_da_append_many(&file_writer, "dd", "bs=1024", "count=64",
 		"status=none", "if=/dev/urandom", cbuild_temp_sprintf("of=%s", tsrc));
 	cbuild_cmd_run(&file_writer);
 	// Do testing
@@ -15,8 +15,8 @@ int main(void) {
 	TEST_ASSERT_MEMEQ(f1.data, f2.data, 64 * 1024,
 		"Content of large source and destination files do not match after copy"
 		TEST_EXPECT_RMSG(CBuildSBFmt), CBuildSBArg(f1), CBuildSBArg(f2));
-	cbuild_cmd_clear(&file_writer);
-	cbuild_sb_clear(&f1);
-	cbuild_sb_clear(&f2);
+	cbuild_da_clear(&file_writer);
+	cbuild_da_clear(&f1);
+	cbuild_da_clear(&f2);
 	return 0;
 }

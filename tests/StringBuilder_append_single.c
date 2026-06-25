@@ -1,8 +1,8 @@
 int main(void) {
 	cbuild_sb_t sb = {0};
-	cbuild_sb_append(&sb, 'a');
-	cbuild_sb_append(&sb, 'b');
-	cbuild_sb_append(&sb, 'c');
+	cbuild_da_append(&sb, 'a');
+	cbuild_da_append(&sb, 'b');
+	cbuild_da_append(&sb, 'c');
 	TEST_ASSERT_EQ(sb.size, 3,
 		"Wrong element count after insertion"TEST_EXPECT_MSG(zu),
 		(size_t)3, sb.size);
@@ -12,6 +12,6 @@ int main(void) {
 		"Wrong element at index 1"TEST_EXPECT_MSG(c), 'b', sb.data[1]);
 	TEST_ASSERT_EQ(sb.data[2], 'c',
 		"Wrong element at index 2"TEST_EXPECT_MSG(c), 'c', sb.data[2]);
-	cbuild_sb_clear(&sb);
+	cbuild_da_clear(&sb);
 	return 0;
 }

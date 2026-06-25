@@ -9,7 +9,8 @@
 	/// Supported log levels. Compared arithmetically.
 	///
 	/// This can be overridden by defining `CBUILD_LOG_CUSTOM_LEVELS` and then providing
-	/// enumeration `cbuild_custom_log_level_t` (without typedef).
+	/// enumeration `cbuild_custom_log_level_t` (without typedef). This define should
+	/// point to file, which willbe icluded to provide given enum.
 	/// This 4 levels should be present in you implementation of this enum, because
 	/// they are used by CBuild itself.
 	///
@@ -23,6 +24,7 @@
 		CBUILD_LOG_TRACE   = 4,
 	} cbuild_log_level_t;
 #else
+	#include CBUILD_LOG_CUSTOM_LEVELS
 	typedef enum cbuild_custom_log_level_t cbuild_log_level_t;
 #endif // CBUILD_LOG_CUSTOM_LEVELS
 

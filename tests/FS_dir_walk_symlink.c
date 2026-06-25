@@ -14,10 +14,10 @@ int main(void) {
 	// Create test data
 	cbuild_cmd_t dir_creator = {0};
 	const char* dir = TEST_TEMP_FILE_EX("dirls/");
-	cbuild_cmd_append_many(&dir_creator, "mkdir", "-p", dir);
+	cbuild_da_append_many(&dir_creator, "mkdir", "-p", dir);
 	cbuild_cmd_run(&dir_creator);
 	cbuild_cmd_t file_writer = {0};
-	cbuild_cmd_append_many(&file_writer, "printf", "ABCD");
+	cbuild_da_append_many(&file_writer, "printf", "ABCD");
 	cbuild_cmd_run(&file_writer, .no_reset = true,
 		.file_stdout = cbuild_temp_sprintf("%s/a", dir));
 	cbuild_cmd_run(&file_writer, .no_reset = true,
@@ -28,8 +28,8 @@ int main(void) {
 	cbuild_cmd_run(&file_writer, .no_reset = true,
 		.file_stdout = cbuild_temp_sprintf("%s/c/b", dir));
 	symlink("c", cbuild_temp_sprintf("%s/d", dir));
-	cbuild_cmd_clear(&dir_creator);
-	cbuild_cmd_clear(&file_writer);
+	cbuild_da_clear(&dir_creator);
+	cbuild_da_clear(&file_writer);
 	// Do testing
 	TEST_ASSERT(cbuild_dir_walk(dir, walker),
 		"Failed to walk directory tree.");

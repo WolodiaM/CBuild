@@ -5,6 +5,7 @@
 
 #include "Common.h"
 #include "StringView.h"
+#include "DynArray.h"
 
 /// String builder string builder.
 ///
@@ -37,15 +38,6 @@ typedef struct cbuild_sb_t {
 /// * [r:1] If first different character in first string builder is larger.
 /// * [r:2] If size of first string builder is larger.
 CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t a, cbuild_sb_t b);
-/// `strcmp` for string builder. Fully compatible but extends API. 
-/// Performs case folding for ASCII.
-///
-/// * [r:-2] If size of first string builder is smaller.
-/// * [r:-1] If first different character in first string builder is smaller.
-/// * [r:0] If two string builders are equal.
-/// * [r:1] If first different character in first string builder is larger.
-/// * [r:2] If size of first string builder is larger.
-CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t a, cbuild_sb_t b);
 /// Append utf8 character to a string builder.
 ///
 /// * [pl:sb] String builder object.
@@ -59,17 +51,13 @@ CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp);
 CBUILDDEF size_t cbuild_sb_utf8len(cbuild_sb_t sb);
 /// Convert string builder to a string view.
 CBUILDDEF cbuild_sv_t cbuild_sb_to_sv(cbuild_sb_t sb);
-/// Convert string builder to a string view.
-#define	cbuild_sv_from_sb(sb) cbuild_sb_to_sv(sb)
 /// Convert string view to a string builder (allocated new data).
 CBUILDDEF cbuild_sb_t cbuild_sv_to_sb(cbuild_sv_t sv);
-/// Convert string view to a string builder (allocated new data).
-#define cbuild_sb_from_sv(sv) cbuild_sv_to_sb(sv)
 /// Apppend string view to a string builder
 ///
 /// * [pl:sb:cbuild_sb_t*] String builder object.
 /// * [pl:cstr:cbuild_sv_t] String view.
-#define cbuild_sb_append_sv(sb, sv) cbuild_sb_append_arr((sb), (sv).data, (sv).size)
+#define cbuild_sb_append_sv(sb, sv) cbuild_da_append_arr((sb), (sv).data, (sv).size)
 /// Append data to a string builder using printf-style format string.
 CBUILD_ATTR_PRINTF(2,
 	CBUILDDEF int cbuild_sb_appendf(cbuild_sb_t* sb, const char* fmt, ...));

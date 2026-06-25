@@ -102,13 +102,6 @@ typedef struct cbuild_arglist_t {
 	size_t size;
 	size_t capacity;
 } cbuild_arglist_t;
-/// Get element from argument list using its index.
-///
-/// * [pl:arglist:const cbuild_arglist_t*] Argument list.
-/// * [pl:idx:size_t] Element index.
-/// 
-/// [r:char**] Pointer to an element or `NULL`{.c} on overflow.
-#define cbuild_arglist_get(arglist, idx) cbuild_da_get(arglist, idx)
 /// Parse flags.
 ///
 /// ::: note

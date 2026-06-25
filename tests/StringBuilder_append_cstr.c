@@ -5,6 +5,6 @@ int main(void) {
 	cbuild_sb_append_null(&sb);
 	TEST_ASSERT_STREQ(sb.data, STR,
 		"Wrong elements inserted as a string"TEST_EXPECT_MSG(s), STR, sb.data);
-	cbuild_sb_clear(&sb);
+	cbuild_da_clear(&sb);
 	return 0;
 }

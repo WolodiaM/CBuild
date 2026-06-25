@@ -5,17 +5,17 @@ int main(void) {
 	cbuild_proclist_t procs = {0};
 	cbuild_fd_t rd, wr;
 	TEST_ASSERT(cbuild_fd_open_pipe(&rd, &wr), "Can't open pipe.");
-	cbuild_cmd_append_many(&cmd, "sh", "-c", "sleep 3; printf 1");
+	cbuild_da_append_many(&cmd, "sh", "-c", "sleep 3; printf 1");
 	TEST_ASSERT(cbuild_cmd_run(&cmd, .async_threads = 2, .procs = &procs,
 			.fdstdout = &wr, .no_reset = true),
 		"Failed to run async command 1.");
 	cmd.size = 0;
-	cbuild_cmd_append_many(&cmd, "sh", "-c", "sleep 1; printf 2");
+	cbuild_da_append_many(&cmd, "sh", "-c", "sleep 1; printf 2");
 	TEST_ASSERT(cbuild_cmd_run(&cmd, .async_threads = 2, .procs = &procs,
 			.fdstdout = &wr, .no_reset = true),
 		"Failed to run async command 2.");
 	cmd.size = 0;
-	cbuild_cmd_append_many(&cmd, "sh", "-c", "printf 3");
+	cbuild_da_append_many(&cmd, "sh", "-c", "printf 3");
 	TEST_ASSERT(cbuild_cmd_run(&cmd, .async_threads = 2, .procs = &procs,
 			.fdstdout = &wr, .no_reset = true),
 		"Failed to run async command 3.");
@@ -31,7 +31,7 @@ int main(void) {
 		"Wrong string read from async stdout pipe" TEST_EXPECT_RMSG(CBuildSVFmt),
 		cbuild_sv_from_cstr(TEST_STR), cbuild_sv_from_parts(str, (size_t)num));
 	cbuild_fd_close(rd);
-	cbuild_cmd_clear(&cmd);
-	cbuild_proclist_clear(&procs);
+	cbuild_da_clear(&cmd);
+	cbuild_da_clear(&procs);
 	return 0;
 }

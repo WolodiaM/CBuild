@@ -31,6 +31,7 @@ typedef struct cbuild_arena_t {
 ///
 /// ::: note
 /// This is just a direct call to `realloc` plus some metadata management.
+/// This will invalidate pointers to all data allocated in arena.
 /// :::
 CBUILDDEF void cbuild_arena_base_realloc(cbuild_arena_t* arena, size_t new_capacity);
 /// Allocate new arena base.
@@ -58,10 +59,6 @@ CBUILDDEF void* cbuild_arena_realloc(cbuild_arena_t* arena, void* ptr, size_t si
 CBUILDDEF size_t cbuild_arena_checkpoint(cbuild_arena_t* arena);
 /// Reset arena to some checkpoint.
 CBUILDDEF void cbuild_arena_reset(cbuild_arena_t* arena, size_t checkpoint);
-/// Free arena. Set `pointer` to 0.
-///
-/// * [pl:arena:cbuild_arena_t*] Arena object.
-#define cbuild_arena_free(arena) cbuild_arena_reset(arena, 0)
 /// `strdup` that uses arena as allocator.
 CBUILDDEF char* cbuild_arena_strdup(cbuild_arena_t* arena, const char* src);
 /// `memdup` that uses arena as its allocator.

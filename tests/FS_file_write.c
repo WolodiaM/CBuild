@@ -10,7 +10,7 @@ int main(void) {
 	cbuild_sb_append_null(&check);
 	TEST_ASSERT_STREQ(check.data, sb.data,
 		"Wrong value read from a file"TEST_EXPECT_MSG(s), check.data, sb.data);
-	cbuild_sb_clear(&sb);
-	cbuild_sb_clear(&check);
+	cbuild_da_clear(&sb);
+	cbuild_da_clear(&check);
 	return 0;
 }

@@ -11,30 +11,6 @@ typedef struct cbuild_proclist_t {
 	size_t size;
 	size_t capacity;
 } cbuild_proclist_t;
-/// Append new element to list of processes.
-///
-/// * [pl:proclist:cbuild_proclist_t*] Dynamic array object.
-/// * [pl:proc:cbuild_proc_t] Process handle.
-#define cbuild_proclist_append(proclist, proc) cbuild_da_append(proclist, proc)
-/// Clears list of processes.
-///
-/// * [pl:proclist:cbuild_proclist_t*] Dynamic array object.
-#define cbuild_proclist_clear(proclist) cbuild_da_clear(proclist)
-/// Set element in process list using its index.
-///
-/// * [pl:proclist:cbuild_proclist_t*] List of processes.
-/// * [pl:idx:size_t] Element index.
-/// * [pl:proc:cbuild_proc_t] New element's value.
-/// 
-/// [r:bool] False on overflow.
-#define cbuild_proclist_set(proclist, idx, proc) cbuild_da_set(proclist, idx, proc)
-/// Get element from process list using its index.
-///
-/// * [pl:proclist:cbuild_proclist_t*] List of processes.
-/// * [pl:idx:size_t] Slement index.
-/// 
-/// [r:cbuild_proc_t*] Pointer to an element or `NULL`{.c} on overflow.
-#define cbuild_proclist_get(proclist, idx) cbuild_da_get(proclist, idx)
 /// Blocking wait until specific process finishes.
 ///
 /// [r:] `false`{.c} if process returned with an error.

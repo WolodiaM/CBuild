@@ -8,7 +8,7 @@ int main(void) {
 	TEST_ASSERT_STREQ(sb.data, "2: Hello, world!",
 		"cbuild_sb_appendf: Wrong content after format append"
 		TEST_EXPECT_MSG(s), "2: Hello, world!", sb.data);
-	cbuild_sb_clear(&sb);
+	cbuild_da_clear(&sb);
 	char long_fmt[1024];
 	memset(long_fmt, 'x', 1023);
 	long_fmt[1023] = '\0';
@@ -20,6 +20,6 @@ int main(void) {
 	TEST_ASSERT_MEMEQ(sb.data, long_fmt, 1023,
 		"cbuild_sb_appendf: Wrong data after long string format append"
 		TEST_EXPECT_MSG(s), long_fmt, sb.data);
-	cbuild_sb_clear(&sb);
+	cbuild_da_clear(&sb);
 	return 0;
 }

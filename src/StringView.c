@@ -149,25 +149,6 @@ int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b) {
 	}
 	return 0;
 }
-int cbuild_sv_cmp_icase(cbuild_sv_t a, cbuild_sv_t b) {
-	if(a.size < b.size) {
-		return -2;
-	}
-	if(a.size > b.size) {
-		return 2;
-	}
-	for(size_t i = 0; i < a.size; i++) {
-		char ac = 'A' <= a.data[i] && a.data[i] <= 'Z' ? a.data[i] + 32 : a.data[i];
-		char bc = 'A' <= b.data[i] && b.data[i] <= 'Z' ? b.data[i] + 32 : b.data[i];
-		int diff = ac - bc;
-		if(diff < 0) {
-			return -1;
-		} else if(diff > 0) {
-			return 1;
-		}
-	}
-	return 0;
-}
 bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix) {
 	if(sv.size < prefix.size) {
 		return false;

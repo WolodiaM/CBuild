@@ -65,8 +65,10 @@
 #define CBUILD_CARGS_INCLUDE(file)    "--include", file
 /// Add library include (`-l`) based on compile-time literal.
 #define CBUILD_CARGS_LIBINCLUDE(lib)  "-l"lib
-/// Add library directories (`-I` and `-L`) based on compile-time literal.
-#define CBUILD_CARGS_LIBDIR(src, obj) "-I"src, "-L"obj
+/// Add library directories (`-I`) based on compile-time literal.
+#define CBUILD_CARGS_LIBIDIR(src, obj) "-I"src
+/// Add library directories (`-L`) based on compile-time literal.
+#define CBUILD_CARGS_LIBLDIR(src, obj) "-L"obj
 /// Set standard based on compile-time literal.
 #define CBUILD_CARGS_STD(std)         "-std="std
 

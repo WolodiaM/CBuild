@@ -7,9 +7,6 @@
 CBUILDDEF int cbuild_sb_cmp(cbuild_sb_t a, cbuild_sb_t b) {
 	return cbuild_sv_cmp(cbuild_sb_to_sv(a), cbuild_sb_to_sv(b));
 }
-CBUILDDEF int cbuild_sb_cmp_icase(cbuild_sb_t a, cbuild_sb_t b) {
-	return cbuild_sv_cmp_icase(cbuild_sb_to_sv(a), cbuild_sb_to_sv(b));
-}
 CBUILDDEF void cbuild_sb_append_utf8(cbuild_sb_t* sb, uint32_t cp) {
 	unsigned char buffer[4] = {0};
 	size_t len = 0;

@@ -92,10 +92,6 @@
 #define CBUILD_TERM_REVERSE          CBUILD_TERM_SGR("7")
 /// Disable reverse mode
 #define CBUILD_TERM_NREVERSE         CBUILD_TERM_SGR("27")
-/// Enable crossed-out text rendering
-#define CBUILD_TERM_CROSS_OUT        CBUILD_TERM_SGR("9")
-/// Disable crossed-out rendering
-#define CBUILD_TERM_NCROSS_OUT       CBUILD_TERM_SGR("29")
 ///
 #define CBUILD_TERM_DOUBLE_UNDERLINE CBUILD_TERM_SGR("21")
 ///

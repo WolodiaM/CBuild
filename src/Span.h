@@ -88,5 +88,3 @@
 #define cbuild_span_foreach(span, iter)              \
 	for (typeof(*((span)->data))* iter = (span)->data; \
 		iter < ((span)->data + (span)->size); iter++)
-
-#define cbuild_last(span)

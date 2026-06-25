@@ -16,7 +16,7 @@ int main(void) {
 	TEST_ASSERT_STREQ(sv.data, sv_out.data,
 		"Wrong elements after transformations (sv->sb->sv)"
 		TEST_EXPECT_MSG(s), sv.data, sv_out.data)
-	cbuild_sb_clear(&sb);
+	cbuild_da_clear(&sb);
 	sb = cbuild_sv_to_sb(sv);
 	TEST_ASSERT_EQ(sb.size, sv.size,
 		"Wrong number of elements set"TEST_EXPECT_MSG(zu), sb.size, sv.size);
@@ -24,6 +24,6 @@ int main(void) {
 	// included '\0'
 	TEST_ASSERT_STREQ(sb.data, sv.data,
 		"Wrong string set"TEST_EXPECT_MSG(s), sb.data, sv.data)
-	cbuild_sb_clear(&sb);
+	cbuild_da_clear(&sb);
 	return 0;
 }
