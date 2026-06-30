@@ -130,51 +130,51 @@ char cbuild_sv_chop_char(cbuild_sv_t* sv) {
 // ----------------------------------------
 // Loading of "configs"
 bool load_template(void) {
-	TEMPLATE.lib = cbuild_dlib_open("template.so", false);
+	TEMPLATE.lib = dlopen("template.so", RTLD_LAZY);
 	if (TEMPLATE.lib == NULL) {
 		cbuild_log_error("Could not open shared library \"template.so\".");
 		return false;
 	}
-	TEMPLATE.code_edit = cbuild_dlib_get_sym(TEMPLATE.lib, "template_code_edit");
-	TEMPLATE.look_in_source = cbuild_dlib_get_sym(TEMPLATE.lib, "template_look_in_source");
-	TEMPLATE.func_decl_start = cbuild_dlib_get_sym(TEMPLATE.lib, "template_func_decl_start");
-	TEMPLATE.var_decl_start = cbuild_dlib_get_sym(TEMPLATE.lib, "template_var_decl_start");
-	TEMPLATE.define_decl_start = cbuild_dlib_get_sym(TEMPLATE.lib, "template_define_decl_start");
-	TEMPLATE.struct_decl_start = cbuild_dlib_get_sym(TEMPLATE.lib, "template_struct_decl_start");
-	TEMPLATE.enum_decl_start = cbuild_dlib_get_sym(TEMPLATE.lib, "template_enum_decl_start");
-	TEMPLATE.typedef_decl_start = cbuild_dlib_get_sym(TEMPLATE.lib, "template_typedef_decl_start");
-	TEMPLATE.typedef_struct_decl_start = cbuild_dlib_get_sym(TEMPLATE.lib, "template_typedef_struct_decl_start");
-	TEMPLATE.typedef_enum_decl_start = cbuild_dlib_get_sym(TEMPLATE.lib, "template_typedef_enum_decl_start");
-	TEMPLATE.typedef_func_decl_start = cbuild_dlib_get_sym(TEMPLATE.lib, "template_typedef_func_decl_start");
-	TEMPLATE.decl_end = cbuild_dlib_get_sym(TEMPLATE.lib, "template_decl_end");
-	TEMPLATE.decl_name = cbuild_dlib_get_sym(TEMPLATE.lib, "template_decl_name");
-	TEMPLATE.decl_code = cbuild_dlib_get_sym(TEMPLATE.lib, "template_decl_code");
-	TEMPLATE.parsed_arg_in_list = cbuild_dlib_get_sym(TEMPLATE.lib, "template_parsed_arg_in_list");
-	TEMPLATE.parsed_field_in_list = cbuild_dlib_get_sym(TEMPLATE.lib, "template_parsed_field_in_list");
-	TEMPLATE.parsed_enum_value_in_list = cbuild_dlib_get_sym(TEMPLATE.lib, "template_parsed_enum_value_in_list");
-	TEMPLATE.parsed_ret = cbuild_dlib_get_sym(TEMPLATE.lib, "template_parsed_ret");
-	TEMPLATE.parsed_arg_standalone = cbuild_dlib_get_sym(TEMPLATE.lib, "template_parsed_arg_standalone");
-	TEMPLATE.parsed_field_standalone = cbuild_dlib_get_sym(TEMPLATE.lib, "template_parsed_field_standalone");
-	TEMPLATE.parsed_enum_value_standalone = cbuild_dlib_get_sym(TEMPLATE.lib, "template_parsed_enum_value_standalone");
-	TEMPLATE.symtab_entry = cbuild_dlib_get_sym(TEMPLATE.lib, "template_symtab_entry");
+	TEMPLATE.code_edit = dlsym(TEMPLATE.lib, "template_code_edit");
+	TEMPLATE.look_in_source = dlsym(TEMPLATE.lib, "template_look_in_source");
+	TEMPLATE.func_decl_start = dlsym(TEMPLATE.lib, "template_func_decl_start");
+	TEMPLATE.var_decl_start = dlsym(TEMPLATE.lib, "template_var_decl_start");
+	TEMPLATE.define_decl_start = dlsym(TEMPLATE.lib, "template_define_decl_start");
+	TEMPLATE.struct_decl_start = dlsym(TEMPLATE.lib, "template_struct_decl_start");
+	TEMPLATE.enum_decl_start = dlsym(TEMPLATE.lib, "template_enum_decl_start");
+	TEMPLATE.typedef_decl_start = dlsym(TEMPLATE.lib, "template_typedef_decl_start");
+	TEMPLATE.typedef_struct_decl_start = dlsym(TEMPLATE.lib, "template_typedef_struct_decl_start");
+	TEMPLATE.typedef_enum_decl_start = dlsym(TEMPLATE.lib, "template_typedef_enum_decl_start");
+	TEMPLATE.typedef_func_decl_start = dlsym(TEMPLATE.lib, "template_typedef_func_decl_start");
+	TEMPLATE.decl_end = dlsym(TEMPLATE.lib, "template_decl_end");
+	TEMPLATE.decl_name = dlsym(TEMPLATE.lib, "template_decl_name");
+	TEMPLATE.decl_code = dlsym(TEMPLATE.lib, "template_decl_code");
+	TEMPLATE.parsed_arg_in_list = dlsym(TEMPLATE.lib, "template_parsed_arg_in_list");
+	TEMPLATE.parsed_field_in_list = dlsym(TEMPLATE.lib, "template_parsed_field_in_list");
+	TEMPLATE.parsed_enum_value_in_list = dlsym(TEMPLATE.lib, "template_parsed_enum_value_in_list");
+	TEMPLATE.parsed_ret = dlsym(TEMPLATE.lib, "template_parsed_ret");
+	TEMPLATE.parsed_arg_standalone = dlsym(TEMPLATE.lib, "template_parsed_arg_standalone");
+	TEMPLATE.parsed_field_standalone = dlsym(TEMPLATE.lib, "template_parsed_field_standalone");
+	TEMPLATE.parsed_enum_value_standalone = dlsym(TEMPLATE.lib, "template_parsed_enum_value_standalone");
+	TEMPLATE.symtab_entry = dlsym(TEMPLATE.lib, "template_symtab_entry");
 	return true;
 }
 bool load_parser(void) {
-	PARSER.lib = cbuild_dlib_open("codeparse.so", false);
+	PARSER.lib = dlopen("codeparse.so", RTLD_LAZY);
 	if (PARSER.lib == NULL) {
 		cbuild_log_error("Could not open shared library \"codeparse.so\".");
 		return false;
 	}
-	PARSER.decl_type = cbuild_dlib_get_sym(PARSER.lib, "parser_decl_type");
-	PARSER.func_decl = cbuild_dlib_get_sym(PARSER.lib, "parser_func_decl");
-	PARSER.var_decl = cbuild_dlib_get_sym(PARSER.lib, "parser_var_decl");
-	PARSER.define_decl = cbuild_dlib_get_sym(PARSER.lib, "parser_define_decl");
-	PARSER.struct_decl = cbuild_dlib_get_sym(PARSER.lib, "parser_struct_decl");
-	PARSER.enum_decl = cbuild_dlib_get_sym(PARSER.lib, "parser_enum_decl");
-	PARSER.typedef_decl = cbuild_dlib_get_sym(PARSER.lib, "parser_typedef_decl");
-	PARSER.typedef_struct_decl = cbuild_dlib_get_sym(PARSER.lib, "parser_typedef_struct_decl");
-	PARSER.typedef_enum_decl = cbuild_dlib_get_sym(PARSER.lib, "parser_typedef_enum_decl");
-	PARSER.typedef_func_decl = cbuild_dlib_get_sym(PARSER.lib, "parser_typedef_func_decl");
+	PARSER.decl_type = dlsym(PARSER.lib, "parser_decl_type");
+	PARSER.func_decl = dlsym(PARSER.lib, "parser_func_decl");
+	PARSER.var_decl = dlsym(PARSER.lib, "parser_var_decl");
+	PARSER.define_decl = dlsym(PARSER.lib, "parser_define_decl");
+	PARSER.struct_decl = dlsym(PARSER.lib, "parser_struct_decl");
+	PARSER.enum_decl = dlsym(PARSER.lib, "parser_enum_decl");
+	PARSER.typedef_decl = dlsym(PARSER.lib, "parser_typedef_decl");
+	PARSER.typedef_struct_decl = dlsym(PARSER.lib, "parser_typedef_struct_decl");
+	PARSER.typedef_enum_decl = dlsym(PARSER.lib, "parser_typedef_enum_decl");
+	PARSER.typedef_func_decl = dlsym(PARSER.lib, "parser_typedef_func_decl");
 	return true;
 }
 // Main
@@ -188,8 +188,8 @@ bool main_prelude(void) {
 	return true;
 }
 bool main_epilogue(void) {
-	cbuild_dlib_close(PARSER.lib);
-	cbuild_dlib_close(TEMPLATE.lib);
+	dlclose(PARSER.lib);
+	dlclose(TEMPLATE.lib);
 	return true;
 }
 bool main_docgen(void) {
@@ -217,7 +217,7 @@ bool main_docgen(void) {
 	cbuild_sb_t dirname = {0};
 	cbuild_sb_append_cstr(&dirname, "Code Doc");
 	if (!cbuild_file_write(CODE_DOC_OUT"/.dirname", &dirname)) return false;
-	cbuild_sb_clear(&dirname);
+	cbuild_da_clear(&dirname);
 	cbuild_arena_base_free(&symbols.arena);
 	return true;
 }
@@ -236,7 +236,7 @@ bool main_wikimk(void) {
 	cbuild_sb_t dirname = {0};
 	cbuild_sb_append_cstr(&dirname, "Changelog");
 	if (!cbuild_file_write(CHANGELOG_DST"/.dirname", &dirname)) return false;
-	cbuild_sb_clear(&dirname);
+	cbuild_da_clear(&dirname);
 	cbuild_log_info("Processing wiki from '%s' into '%s.", WIKI_SRC, WIKI_OUT);
 	if (!cbuild_dir_check(WIKI_SRC)) {
 		cbuild_log_error("Directory "WIKI_SRC" is wiki source but it does not exist.");
@@ -323,7 +323,7 @@ bool push_symbol(symbols_t* symbol_table, cbuild_sv_t name, const char* filename
 	char* str = cbuild_arena_malloc(&symbol_table->arena, name.size + 1);
 	memcpy(str, name.data, name.size);
 	str[name.size] = '\0';
-	cbuild_da_foreach(*symbol_table, symbol) {
+	cbuild_span_foreach(symbol_table, symbol) {
 		if (strcmp(symbol->symbol_name, str) == 0) {
 			cbuild_arena_reset(&symbol_table->arena, checkpoint);
 			return false;
@@ -339,17 +339,17 @@ bool push_symbol(symbols_t* symbol_table, cbuild_sv_t name, const char* filename
 // WikiMK
 // ----------------------------------------
 void wikimk_cmd_append_pandoc_base_and_edit(cbuild_cmd_t* cmd, const char* path) {
-	cbuild_cmd_append(cmd, "pandoc");
+	cbuild_da_append(cmd, "pandoc");
 	// Base args
-	cbuild_cmd_append_many(cmd,
+	cbuild_da_append_many(cmd,
 		"-f", "markdown",
 		"-t", "html5");
-	cbuild_cmd_append_many(cmd,
+	cbuild_da_append_many(cmd,
 		"-M", "name:" WIKI_NAME,
 		"-M", "author:" WIKI_AUTHOR,
 		"-M", "license:" WIKI_LICENSE,
 				"-M", "BASE_URL:"SITE_BASE_URL);
-	cbuild_cmd_append_many(cmd,
+	cbuild_da_append_many(cmd,
 		"--lua-filter="WIKIMK_FILTERS"/codeblock-include-file.lua",
 		"--lua-filter="WIKIMK_FILTERS"/codeblock-include-dir-tree.lua",
 		"--lua-filter="WIKIMK_FILTERS"/url-transform-doc-ref.lua");
@@ -358,25 +358,25 @@ void wikimk_cmd_append_pandoc_base_and_edit(cbuild_cmd_t* cmd, const char* path)
 	cbuild_sb_append_cstr(&edit_url, "EDIT-URL:");
 	TEMPLATE.code_edit(&edit_url, path, 0);
 	cbuild_sb_append_null(&edit_url);
-	cbuild_cmd_append_many(cmd, "-M", cbuild_temp_strdup(edit_url.data));
-	cbuild_sb_clear(&edit_url);
+	cbuild_da_append_many(cmd, "-M", cbuild_temp_strdup(edit_url.data));
+	cbuild_da_clear(&edit_url);
 	// Edit filepath
 	char* edit_file = cbuild_temp_sprintf("EDIT-FILENAME:/%s", path);
-	cbuild_cmd_append_many(cmd, "-M", edit_file);
+	cbuild_da_append_many(cmd, "-M", edit_file);
 }
 bool wikimk_build_error(int code) {
 	cbuild_cmd_t cmd = {0};
 	const char* md_path = cbuild_temp_sprintf(WIKIMK_ERRORS"/%d.md", code);
 	const char* html_path = cbuild_temp_sprintf(WIKI_OUT"/%d.html", code);
 	wikimk_cmd_append_pandoc_base_and_edit(&cmd, md_path);
-	cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
-	cbuild_cmd_append(&cmd, md_path);
-	cbuild_cmd_append_many(&cmd, "-o", html_path);
+	cbuild_da_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
+	cbuild_da_append(&cmd, md_path);
+	cbuild_da_append_many(&cmd, "-o", html_path);
 	cbuild_log(CBUILD_LOG_TRACE,
 		"Generating error page for %d into '/%s'.", code, html_path);
 	if (!cbuild_cmd_run(&cmd, .procs = &procs)) return false;
 	// Cleanup
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	cbuild_temp_reset(0);
 	return true;
 }
@@ -387,38 +387,38 @@ bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args) {
 		// Get redirect destination
 		cbuild_sb_t file_content_sb = {0};
 		if (!cbuild_file_read(args.path, &file_content_sb)) return false;
-		cbuild_sv_t file_content = cbuild_sv_from_sb(file_content_sb);
+		cbuild_sv_t file_content = cbuild_sb_to_sv(file_content_sb);
 		cbuild_sv_t name = cbuild_sv_chop_by_delim(&file_content, '\n');
 		cbuild_sv_trim(&name);
 		// Insert redirect destination
 		cbuild_cmd_t cmd = {0};
 		wikimk_cmd_append_pandoc_base_and_edit(&cmd, args.path);
-		cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/redirect.html");
+		cbuild_da_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/redirect.html");
 		const char* redirect =
 			cbuild_temp_sprintf("REDIRECT:"CBuildSVFmt, CBuildSVArg(name));
-		cbuild_cmd_append_many(&cmd, "-M", redirect);
-		cbuild_cmd_append_many(&cmd, "-o", WIKI_OUT"/index.html");
-		cbuild_cmd_append(&cmd, "/dev/null"); // Some input file is needed, but no input is really needed
+		cbuild_da_append_many(&cmd, "-M", redirect);
+		cbuild_da_append_many(&cmd, "-o", WIKI_OUT"/index.html");
+		cbuild_da_append(&cmd, "/dev/null"); // Some input file is needed, but no input is really needed
 		// Run command
 		cbuild_log(CBUILD_LOG_TRACE,
 			"Generating index.html redirect to '/"CBuildSVFmt"'.", CBuildSVArg(name));
 		if (!cbuild_cmd_run(&cmd, .procs = &procs)) return false;
 		// Cleanup
-		cbuild_cmd_clear(&cmd);
-		cbuild_sb_clear(&file_content_sb);
+		cbuild_da_clear(&cmd);
+		cbuild_da_clear(&file_content_sb);
 		cbuild_temp_reset(0);
 		return true;
 	}
 	if (cbuild_sv_suffix(path, cbuild_sv_from_lit("changelog/changelog.txt"))) {
 		cbuild_cmd_t cmd = {0};
 		wikimk_cmd_append_pandoc_base_and_edit(&cmd, args.path);
-		cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
-		cbuild_cmd_append(&cmd, args.path);
+		cbuild_da_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
+		cbuild_da_append(&cmd, args.path);
 		// Output file
 		path.size -= 4; // Chop '.txt'
 		cbuild_sv_chop_prefix(&path, cbuild_sv_from_lit(WIKI_SRC"/"));
 		char* out = cbuild_temp_sprintf(WIKI_OUT"/"CBuildSVFmt".html", CBuildSVArg(path));
-		cbuild_cmd_append_many(&cmd, "-o", out);
+		cbuild_da_append_many(&cmd, "-o", out);
 		// Create base dir
 		char* basedir = cbuild_path_base(out);
 		if (!cbuild_dir_check(basedir)) if (!cbuild_dir_create(basedir)) return false;
@@ -427,28 +427,28 @@ bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args) {
 			"Building source file '%s' into '%s'.", args.path, out);
 		if (!cbuild_cmd_run(&cmd, .procs = &procs)) return false;
 		// Cleanup
-		cbuild_cmd_clear(&cmd);
+		cbuild_da_clear(&cmd);
 		cbuild_temp_reset(0);
 		return true;
 	}
 	if (!cbuild_sv_suffix(path, cbuild_sv_from_lit(".md"))) return true;
 	cbuild_cmd_t cmd = {0};
 	wikimk_cmd_append_pandoc_base_and_edit(&cmd, args.path);
-	cbuild_cmd_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
+	cbuild_da_append_many(&cmd, "--template", WIKIMK_TEMPLATE"/template.html");
 	if (!cbuild_sv_contains_sv(path, cbuild_sv_from_lit(CODE_DOC_OUT)) &&
 		!cbuild_sv_prefix(path, cbuild_sv_from_lit(CHANGELOG_DST))) {
-		cbuild_cmd_append_many(&cmd, "-M", "valid-edit");
+		cbuild_da_append_many(&cmd, "-M", "valid-edit");
 	}
 	if (cbuild_sv_cmp(path, cbuild_sv_from_lit(CODE_DOC_SYMBOLS)) == 0) {
-		cbuild_cmd_append_many(&cmd, "-M", "symbols-page");
+		cbuild_da_append_many(&cmd, "-M", "symbols-page");
 	}
 	// Input file
-	cbuild_cmd_append(&cmd, args.path);
+	cbuild_da_append(&cmd, args.path);
 	// Output file
 	path.size -= 3; // Chop '.md'
 	cbuild_sv_chop_prefix(&path, cbuild_sv_from_lit(WIKI_SRC"/"));
 	char* out = cbuild_temp_sprintf(WIKI_OUT"/"CBuildSVFmt".html", CBuildSVArg(path));
-	cbuild_cmd_append_many(&cmd, "-o", out);
+	cbuild_da_append_many(&cmd, "-o", out);
 	// Create base dir
 	char* basedir = cbuild_path_base(out);
 	if (!cbuild_dir_check(basedir)) if (!cbuild_dir_create(basedir)) return false;
@@ -457,7 +457,7 @@ bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args) {
 		"Building source file '%s' into '%s'.", args.path, out);
 	if (!cbuild_cmd_run(&cmd, .procs = &procs)) return false;
 	// Cleanup
-	cbuild_cmd_clear(&cmd);
+	cbuild_da_clear(&cmd);
 	cbuild_temp_reset(0);
 	return true;
 }
@@ -465,7 +465,7 @@ bool wikimk_dir_walk(cbuild_dir_walk_func_args_t args) {
 bool wikimk_generate_nav_html_rec(cbuild_sb_t* out, const char* dir, const char* fmt_dir) {
 	cbuild_pathlist_t files = {0};
 	if (!cbuild_dir_list(dir, &files)) return false;
-	cbuild_da_foreach(files, file) {
+	cbuild_span_foreach(&files, file) {
 		const char* path = cbuild_temp_sprintf("%s/%s", dir, *file);
 		cbuild_sv_t file_sv = cbuild_sv_from_cstr(*file);
 		switch (cbuild_path_filetype(path)) {
@@ -473,7 +473,7 @@ bool wikimk_generate_nav_html_rec(cbuild_sb_t* out, const char* dir, const char*
 			if (cbuild_sv_suffix(file_sv, cbuild_sv_from_lit(".url"))) {
 				cbuild_sb_t file_content_sb = {0};
 				if (!cbuild_file_read(path, &file_content_sb)) return false;
-				cbuild_sv_t file_content = cbuild_sv_from_sb(file_content_sb);
+				cbuild_sv_t file_content = cbuild_sb_to_sv(file_content_sb);
 				cbuild_sv_t name = cbuild_sv_chop_by_delim(&file_content, '\n');
 				cbuild_sv_trim(&name);
 				cbuild_sv_t url = cbuild_sv_chop_by_delim(&file_content, '\n');
@@ -481,7 +481,7 @@ bool wikimk_generate_nav_html_rec(cbuild_sb_t* out, const char* dir, const char*
 				cbuild_sb_appendf(out, 
 					"<li><a href=\""CBuildSVFmt"\">"CBuildSVFmt"</a></li>\n",
 					CBuildSVArg(url), CBuildSVArg(name));
-				cbuild_sb_clear(&file_content_sb);
+				cbuild_da_clear(&file_content_sb);
 				continue;
 			}
 			// TODO: Extract this somehow. Probably as a set of ignored files
@@ -494,7 +494,7 @@ bool wikimk_generate_nav_html_rec(cbuild_sb_t* out, const char* dir, const char*
 			cbuild_sv_chop_right_by_delim(&file_sv, '.'); // Chop file extension
 			cbuild_sb_t file_content_sb = {0};
 			if (!cbuild_file_read(path, &file_content_sb)) return false;
-			cbuild_sv_t file_content = cbuild_sv_from_sb(file_content_sb);
+			cbuild_sv_t file_content = cbuild_sb_to_sv(file_content_sb);
 			if (!cbuild_sv_chop_prefix(&file_content, cbuild_sv_from_lit("---\n"))) {
 				cbuild_log_error("Invalid markdown yaml metadata in file %s.", path);
 				return false;
@@ -517,19 +517,19 @@ bool wikimk_generate_nav_html_rec(cbuild_sb_t* out, const char* dir, const char*
 				cbuild_log_error("Malformed markdown file - it does not contain 'title' metadata.");
 				return false;
 			}
-			cbuild_sb_clear(&file_content_sb);
+			cbuild_da_clear(&file_content_sb);
 		} break;
 		case CBUILD_FTYPE_DIRECTORY: {
 			const char* name_file_path = cbuild_temp_sprintf("%s/.dirname", path);
 			if (cbuild_file_check(name_file_path)) {
 				cbuild_sb_t dirname_sb = {0};
 				if (!cbuild_file_read(name_file_path, &dirname_sb)) return false;
-				cbuild_sv_t dirname = cbuild_sv_from_sb(dirname_sb);
+				cbuild_sv_t dirname = cbuild_sb_to_sv(dirname_sb);
 				cbuild_sv_trim(&dirname);
 				cbuild_sb_appendf(out,
 					"<li><details open><summary>"CBuildSVFmt"</summary><ul>\n",
 					CBuildSVArg(dirname));
-				cbuild_sb_clear(&dirname_sb);
+				cbuild_da_clear(&dirname_sb);
 			} else {
 				cbuild_sb_appendf(out,
 					"<li><details open><summary>%s</summary><ul>\n", *file);
@@ -558,7 +558,7 @@ bool wikimk_generate_nav_html(const char* output, const char* src) {
 	cbuild_temp_reset(checkpoint);
 	cbuild_sb_appendf(&out, "</ul>\n");
 	if (!cbuild_file_write(output, &out)) return false;
-	cbuild_sb_clear(&out);
+	cbuild_da_clear(&out);
 	return true;
 }
 // ----------------------------------------
@@ -586,7 +586,7 @@ typedef struct {
 bool docgen_parse_file(const char* src_, void** file, comments_t* comments, lines_t* lines) {
 	cbuild_sb_t src_sb = {0};
 	if (!cbuild_file_read(src_, &src_sb)) return false;
-	cbuild_sv_t src = cbuild_sv_from_sb(src_sb);
+	cbuild_sv_t src = cbuild_sb_to_sv(src_sb);
 	size_t lnum = 1;
 	comment_t curr = {0};
 	while (src.size > 0) {
@@ -621,7 +621,7 @@ bool docgen_parse_file(const char* src_, void** file, comments_t* comments, line
 				// printf("\t%s, %zu:%zu\n",
 				// 	curr.type == COMMENT_DOC ? "doc" : curr.type == COMMENT_FILE ? "file" : "anchor",
 				// 	curr.first_line, curr.last_line);
-				// cbuild_da_foreach(curr.lines, l) {
+				// cbuild_span_foreach(curr.lines, l) {
 				// 	printf("\t\t"CBuildSVFmt"\n", CBuildSVArg(*l));
 				// }
 				cbuild_da_append(comments, curr);
@@ -647,7 +647,7 @@ bool docgen_comment_to_md(const comment_t* comment, cbuild_sb_t* dst,
 	CBUILD_UNUSED(pname);
 	bool codeblock = false;
 	bool duplicate_hash = true;
-	cbuild_da_foreach(comment->lines, cline) {
+	cbuild_span_foreach(&comment->lines, cline) {
 		cbuild_sv_t line = *cline;
 		if (cbuild_sv_contains_sv(line, cbuild_sv_from_lit("```"))) {
 			codeblock = !codeblock;
@@ -665,7 +665,7 @@ bool docgen_comment_to_md(const comment_t* comment, cbuild_sb_t* dst,
 					void (*template_arg_or_field)(cbuild_sb_t* dst, argument_t arg) = NULL;
 					if (cbuild_sv_chop_prefix(&line, cbuild_sv_from_lit("line:"))) {
 						cbuild_sv_t tag = cbuild_sv_chop_by_delim(&line, ']');
-						cbuild_da_foreach(*comments, cm) {
+						cbuild_span_foreach(comments, cm) {
 							if (cm->type == COMMENT_ANCHOR && 
 								cbuild_sv_cmp(tag, cm->lines.data[0]) == 0) {
 								TEMPLATE.look_in_source(dst, src, cm->first_line);
@@ -688,7 +688,7 @@ bool docgen_comment_to_md(const comment_t* comment, cbuild_sb_t* dst,
 						} else if (sep == ']') {
 							bool found = false;
 							if (pargs) {
-								cbuild_da_foreach(*pargs, a) {
+								cbuild_span_foreach(pargs, a) {
 									if (cbuild_sv_cmp(arg, a->name) == 0) {
 										found = true;
 										if (template_arg_or_field == TEMPLATE.parsed_field_in_list && a->type.data == NULL) {
@@ -739,7 +739,7 @@ bool docgen_comment_to_md(const comment_t* comment, cbuild_sb_t* dst,
 						} else if (sep == ']') {
 							bool found = false;
 							if (pargs) {
-								cbuild_da_foreach(*pargs, a) {
+								cbuild_span_foreach(pargs, a) {
 									if (cbuild_sv_cmp(arg, a->name) == 0) {
 										found = true;
 										if (template_arg_or_field == TEMPLATE.parsed_field_in_list && a->type.data == NULL) {
@@ -771,12 +771,12 @@ bool docgen_comment_to_md(const comment_t* comment, cbuild_sb_t* dst,
 				}
 			}
 		not_a_command:
-			cbuild_sb_append(dst, c);
+			cbuild_da_append(dst, c);
 		}
-		cbuild_sb_append(dst, '\n');
+		cbuild_da_append(dst, '\n');
 		duplicate_hash = true;
 	} 
-	cbuild_sb_append(dst, '\n');
+	cbuild_da_append(dst, '\n');
 	return true;
 }
 bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
@@ -904,13 +904,13 @@ bool docgen_generate_declaration_doc(const comment_t* comment, cbuild_sb_t* dst,
 		cbuild_sb_appendf(dst, "Ret/Typename: "CBuildSVFmt"\n", CBuildSVArg(ret_or_typename));
 		cbuild_sb_appendf(dst, "Name: "CBuildSVFmt"\n", CBuildSVArg(name));
 		cbuild_sb_append_cstr(dst, "Arguments:\n");
-		cbuild_da_foreach(args, arg) {
+		cbuild_span_foreach(args, arg) {
 			cbuild_sb_appendf(dst, "  - "CBuildSVFmt" of "CBuildSVFmt"\n",
 				CBuildSVArg(arg->name), CBuildSVArg(arg->type));
 		}
 	#endif // DEBUG_PARSER
 	TEMPLATE.decl_end(dst);
-	cbuild_da_foreach(args, arg) {
+	cbuild_span_foreach(&args, arg) {
 		free((void*)arg->type.data);
 		free((void*)arg->name.data);
 	}
@@ -932,7 +932,7 @@ bool docgen_process_file(const char* src, const char* output, symbols_t* symbol_
 	cbuild_sb_appendf(&dst, "title: %s\n", cbuild_path_name(src));
 	cbuild_sb_appendf(&dst, "---\n");
 	cbuild_sb_appendf(&dst, "# %s\n\n", cbuild_path_name(src));
-	cbuild_da_foreach(comments, comment) {
+	cbuild_span_foreach(&comments, comment) {
 		switch (comment->type) {
 		case COMMENT_FILE: {
 			if (!docgen_comment_to_md(comment, &dst, src, &comments, "#", NULL, NULL, NULL)) {
@@ -953,8 +953,8 @@ bool docgen_process_file(const char* src, const char* output, symbols_t* symbol_
 		}
 	}
 	if (!cbuild_file_write(output, &dst)) return false;
-	cbuild_sb_clear(&dst);
-	cbuild_da_foreach(comments, comment) {
+	cbuild_da_clear(&dst);
+	cbuild_span_foreach(&comments, comment) {
 		cbuild_da_clear(&comment->lines);
 	}
 	cbuild_da_clear(&comments);
@@ -971,14 +971,14 @@ bool docgen_dir_walk(cbuild_dir_walk_func_args_t args) {
 	cbuild_sv_chop(&src, sizeof(CODE_DOC_SRC));
 	cbuild_sb_t dst = {0};
 	cbuild_sb_append_cstr(&dst, CODE_DOC_OUT);
-	cbuild_sb_append(&dst, '/');
+	cbuild_da_append(&dst, '/');
 	cbuild_sb_append_sv(&dst, src);
 	dst.size -= 1; // Strip extension
 	cbuild_sb_append_cstr(&dst, "md");
 	cbuild_sb_append_null(&dst);
 	cbuild_log_trace("Converting '%s' into '%s'.", args.path, dst.data);
 	if(!docgen_process_file(args.path, dst.data, args.context)) return false;
-	cbuild_sb_clear(&dst);
+	cbuild_da_clear(&dst);
 	return true;
 }
 bool docgen_generate_symbols(const char* output, symbols_t* symbols) {
@@ -986,12 +986,12 @@ bool docgen_generate_symbols(const char* output, symbols_t* symbols) {
 	cbuild_sb_t dst = {0};
 	cbuild_sb_append_cstr(&dst, "---\ntitle: All symbols exported by CBuild\n---\n");
 	cbuild_sb_append_cstr(&dst, "# Symbols\n\n");
-	cbuild_da_foreach(*symbols, symbol) {
+	cbuild_span_foreach(symbols, symbol) {
 		cbuild_temp_reset(0);
 		TEMPLATE.symtab_entry(&dst, symbol->symbol_name, symbol->filename);
 	}
 	if (!cbuild_file_write(output, &dst)) return false;
-	cbuild_sb_clear(&dst);
+	cbuild_da_clear(&dst);
 	return true;
 }
 // ----------------------------------------
@@ -1050,7 +1050,7 @@ void http_serve_file(int socket, const char* path, int response) {
 		file.size);
 	send(socket, headers, strlen(headers), 0);
 	send(socket, file.data, file.size, 0);
-	cbuild_sb_clear(&file);
+	cbuild_da_clear(&file);
 }
 bool http_serve_dir(const char* dir, uint16_t port) {
 	// Create socket
@@ -1133,7 +1133,7 @@ bool http_serve_dir(const char* dir, uint16_t port) {
 					http_serve_file(client_socket, fpath.data, 200);
 				}
 			}
-			cbuild_sb_clear(&fpath);
+			cbuild_da_clear(&fpath);
 		} else {
 			cbuild_log_warn("Received invalid request from client.");
 			if((cbuild_sv_cmp(type, cbuild_sv_from_cstr("CONNECT")) == 0 ||

@@ -10,7 +10,7 @@
 // on caller side) and should be allocated with 'malloc'.
 // Code
 cbuild_sv_t sb_leak_as_sv(cbuild_sb_t* sb) {
-	cbuild_sv_t ret = cbuild_sv_from_sb(*sb);
+	cbuild_sv_t ret = cbuild_sb_to_sv(*sb);
 	sb->data = NULL;
 	sb->size = 0;
 	sb->capacity = 0;
@@ -50,7 +50,7 @@ void next_line(lines_t* lines, size_t* line, cbuild_sv_t* cline, cbuild_sb_t* de
 		cbuild_sv_trim_left(&cl);
 		if (cl.size == 0) continue;
 		cbuild_sv_trim_right(cline);
-		cbuild_sb_append(decl, '\n');
+		cbuild_da_append(decl, '\n');
 		cbuild_sb_append_sv(decl, *cline);
 		if (cbuild_sv_prefix(cl, cbuild_sv_from_lit("//"))) continue;
 		if (cbuild_sv_prefix(cl, cbuild_sv_from_lit("/*"))) continue;
@@ -103,7 +103,7 @@ bool parser_func_arglist(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 			while (sep != ',' && sep != ')') {
 				if (!noinsert_type) {
 					cbuild_sb_append_sv(&tmp, token);
-					cbuild_sb_append(&tmp, ' ');
+					cbuild_da_append(&tmp, ' ');
 				}
 				token = sv_chop_token_with_separator(cline, &sep);
 				noinsert_type = false;
@@ -112,7 +112,7 @@ bool parser_func_arglist(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 			if (tmp.size > 0) tmp.size--;
 			while(*token.data == '*') {
 				cbuild_sv_chop(&token, 1);
-				cbuild_sb_append(&tmp, '*');
+				cbuild_da_append(&tmp, '*');
 			}
 			if (cbuild_sv_cmp(token, cbuild_sv_from_lit("...")) == 0) {
 				cbuild_sb_append_cstr(&tmp, "variadics");
@@ -164,7 +164,7 @@ bool parser_func_decl(lines_t* lines, size_t line,
 	cbuild_sv_t token = sv_chop_token_with_separator(&cline, &sep);
 	while (sep != '(') {
 		cbuild_sb_append_sv(&tmp, token);
-		cbuild_sb_append(&tmp, ' ');
+		cbuild_da_append(&tmp, ' ');
 		token = sv_chop_token_with_separator(&cline, &sep);
 	}
 	if (tmp.size > 0) tmp.size--;
@@ -194,7 +194,7 @@ bool parser_var_decl(lines_t* lines, size_t line,
 	cbuild_sv_t token = sv_chop_token_with_separator(&cline, &sep);
 	while (sep != ';') {
 		cbuild_sb_append_sv(&tmp, token);
-		cbuild_sb_append(&tmp, ' ');
+		cbuild_da_append(&tmp, ' ');
 		token = sv_chop_token_with_separator(&cline, &sep);
 	}
 	if (tmp.size > 0) tmp.size--;
@@ -226,7 +226,7 @@ bool parser_define_decl(lines_t* lines, size_t line,
 		cbuild_sb_appendf(&d,
 			CBuildSVFmt" "CBuildSVFmt, CBuildSVArg(def), CBuildSVArg(nm));
 	}
-	*decl = cbuild_sv_from_sb(d);
+	*decl = cbuild_sb_to_sv(d);
 	cbuild_sv_trim_left(&cline);
 	if(!cbuild_sv_chop_prefix(&cline, cbuild_sv_from_lit("#define"))) {
 		cbuild_log_error("Define is not prefixed with #define: "CBuildSVFmt".",
@@ -265,7 +265,7 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 		// Pars&e list of fields.
 		while (sep != ';' && *cline->data != ':') {
 			if (cbuild_sv_cmp(token, cbuild_sv_from_lit("{")) == 0) {
-				if (cbuild_sv_prefix(cbuild_sv_from_sb(tmp), cbuild_sv_from_lit("struct"))) {
+				if (cbuild_sv_prefix(cbuild_sb_to_sv(tmp), cbuild_sv_from_lit("struct"))) {
 					// This is nested struct declaration.
 					size_t last_idx = fields->size;
 					if (!parser_struct_fields(lines, line, cline, fields, decl)) {
@@ -277,7 +277,7 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 					// Check for real type name
 					cbuild_sb_t copy = {0};
 					if (tmp.size >= sizeof("struct ")) {
-						cbuild_sb_append_arr(&copy, tmp.data + (sizeof("struct ") - 1), tmp.size - (sizeof("struct ") - 1));
+						cbuild_da_append_arr(&copy, tmp.data + (sizeof("struct ") - 1), tmp.size - (sizeof("struct ") - 1));
 					}
 					// Sometime anonymous structs are allowed and useful
 					if (token.size > 0) {
@@ -291,15 +291,15 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 							fields->data[i].name = sb_leak_as_sv(&tmp);
 						}
 						if (copy.size > 0) {
-							cbuild_sb_append_arr(&tmp, copy.data, copy.size);
+							cbuild_da_append_arr(&tmp, copy.data, copy.size);
 						} else {
 							cbuild_sb_append_cstr(&tmp, "struct { ... } ");
 						}
 					} else {
-						cbuild_sb_clear(&tmp);
+						cbuild_da_clear(&tmp);
 					}
 					break;
-				} else if (cbuild_sv_prefix(cbuild_sv_from_sb(tmp), cbuild_sv_from_lit("enum"))) {
+				} else if (cbuild_sv_prefix(cbuild_sb_to_sv(tmp), cbuild_sv_from_lit("enum"))) {
 					// This is nested enum declaration.
 					if (!parser_enum_values(lines, line, cline, fields, decl)) {
 						return false;
@@ -310,21 +310,21 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 					// Check for real type name
 					cbuild_sb_t copy = {0};
 					if (tmp.size >= sizeof("enum ")) {
-						cbuild_sb_append_arr(&copy, tmp.data + (sizeof("enum ") - 1), tmp.size - (sizeof("enum ") - 1));
+						cbuild_da_append_arr(&copy, tmp.data + (sizeof("enum ") - 1), tmp.size - (sizeof("enum ") - 1));
 					}
 					// Sometime anonymous enums are allowed and useful
 					if (token.size > 0) {
 						tmp.size = 0;
 						if (copy.size > 0) {
-							cbuild_sb_append_arr(&tmp, copy.data, copy.size);
+							cbuild_da_append_arr(&tmp, copy.data, copy.size);
 						} else {
 							cbuild_sb_append_cstr(&tmp, "enum { ... } ");
 						}
 					} else {
-						cbuild_sb_clear(&tmp);
+						cbuild_da_clear(&tmp);
 					}
 					break;
-				} else if (cbuild_sv_prefix(cbuild_sv_from_sb(tmp), cbuild_sv_from_lit("union"))) {
+				} else if (cbuild_sv_prefix(cbuild_sb_to_sv(tmp), cbuild_sv_from_lit("union"))) {
 					// This is nested union declaration.
 					// Parse field
 					size_t last_idx = fields->size;
@@ -337,7 +337,7 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 					// Check for real type name
 					cbuild_sb_t copy = {0};
 					if (tmp.size >= sizeof("union ")) {
-						cbuild_sb_append_arr(&copy, tmp.data + (sizeof("union ") - 1), tmp.size - (sizeof("union ") - 1));
+						cbuild_da_append_arr(&copy, tmp.data + (sizeof("union ") - 1), tmp.size - (sizeof("union ") - 1));
 					}
 					// In a lot of cases anonymous unions are useful
 					if (token.size > 0) {
@@ -351,12 +351,12 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 							fields->data[i].name = sb_leak_as_sv(&tmp);
 						}
 						if (copy.size > 0) {
-							cbuild_sb_append_arr(&tmp, copy.data, copy.size);
+							cbuild_da_append_arr(&tmp, copy.data, copy.size);
 						} else {
 							cbuild_sb_append_cstr(&tmp, "struct { ... } ");
 						}
 					} else {
-						cbuild_sb_clear(&tmp);
+						cbuild_da_clear(&tmp);
 					}
 					break;
 				} else {
@@ -366,7 +366,7 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 			}
 			if (!noinsert_type) {
 				cbuild_sb_append_sv(&tmp, token);
-				cbuild_sb_append(&tmp, ' ');
+				cbuild_da_append(&tmp, ' ');
 			}
 			token = sv_chop_token_with_separator(cline, &sep);
 			noinsert_type = false;
@@ -374,7 +374,7 @@ bool parser_struct_fields(lines_t* lines, size_t* line, cbuild_sv_t* cline,
 		if (tmp.size > 0) tmp.size--;
 		while(*token.data == '*') {
 			cbuild_sv_chop(&token, 1);
-			cbuild_sb_append(&tmp, '*');
+			cbuild_da_append(&tmp, '*');
 		}
 		// INFO: This fixes type for bitfields
 		// NOTE: This checks if 'type' string builder is not-empty because for anonymous
@@ -432,7 +432,7 @@ bool parser_struct_decl(lines_t* lines, size_t line,
 			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
-	*decl = cbuild_sv_from_sb(d);
+	*decl = cbuild_sb_to_sv(d);
 	return true;
 }
 bool parser_enum_decl(lines_t* lines, size_t line,
@@ -464,7 +464,7 @@ bool parser_enum_decl(lines_t* lines, size_t line,
 			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
-	*decl = cbuild_sv_from_sb(d);
+	*decl = cbuild_sb_to_sv(d);
 	return true;
 }
 bool parser_typedef_decl(lines_t* lines, size_t line,
@@ -484,7 +484,7 @@ bool parser_typedef_decl(lines_t* lines, size_t line,
 	cbuild_sv_t token = sv_chop_token_with_separator(&cline, &sep);
 	while (sep != ';') {
 		cbuild_sb_append_sv(&tmp, token);
-		cbuild_sb_append(&tmp, ' ');
+		cbuild_da_append(&tmp, ' ');
 		token = sv_chop_token_with_separator(&cline, &sep);
 	}
 	if (tmp.size > 0) tmp.size--;
@@ -541,7 +541,7 @@ bool parser_typedef_struct_decl(lines_t* lines, size_t line,
 			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
-	*decl = cbuild_sv_from_sb(d);
+	*decl = cbuild_sb_to_sv(d);
 	return true;
 }
 bool parser_typedef_enum_decl(lines_t* lines, size_t line,
@@ -589,7 +589,7 @@ bool parser_typedef_enum_decl(lines_t* lines, size_t line,
 			CBuildSVArg(lines->data[line - 1]));
 		return false;
 	}
-	*decl = cbuild_sv_from_sb(d);
+	*decl = cbuild_sb_to_sv(d);
 	return true;
 }
 bool parser_typedef_func_decl(lines_t* lines, size_t line,
@@ -612,7 +612,7 @@ bool parser_typedef_func_decl(lines_t* lines, size_t line,
 	cbuild_sv_t token = sv_chop_token_with_separator(&cline, &sep);
 	while (sep != '(') {
 		cbuild_sb_append_sv(&tmp, token);
-		cbuild_sb_append(&tmp, ' ');
+		cbuild_da_append(&tmp, ' ');
 		token = sv_chop_token_with_separator(&cline, &sep);
 	}
 	if (tmp.size > 0) tmp.size--;
@@ -624,6 +624,6 @@ bool parser_typedef_func_decl(lines_t* lines, size_t line,
 	// Parse function args
 	if (!parser_func_arglist(lines, &line, &cline, args, &d)) return false;
 	// Pass decl
-	*decl = cbuild_sv_from_sb(d);
+	*decl = cbuild_sb_to_sv(d);
 	return true;
 }

@@ -68,8 +68,8 @@ void template_decl_name(cbuild_sb_t* dst, cbuild_sv_t name, const char* src, siz
 	cbuild_sb_append_cstr(dst, "## [");
 	for (size_t i = 0; i < name.size; i++) {
 		char c = name.data[i];
-		if (c == '_') cbuild_sb_append(dst, '\\');
-		cbuild_sb_append(dst, c);
+		if (c == '_') cbuild_da_append(dst, '\\');
+		cbuild_da_append(dst, c);
 	}
 	cbuild_sb_append_cstr(dst, "](");
 	template_code_edit(dst, src, line);
