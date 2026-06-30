@@ -144,6 +144,14 @@ CBUILDDEF bool cbuild_sv_contains_sv(cbuild_sv_t sv, cbuild_sv_t needle);
 ///
 /// [r:] Length of codepoint in bytes.
 CBUILDDEF int cbuild_sv_utf8cp_len(cbuild_sv_t sv);
+/// Get length of last utf8 codepoint in string view.
+///
+/// ::: note
+/// Invalid codepoints assumed to have length of 1
+/// :::
+///
+/// [r:] Length of codepoint in bytes.
+CBUILDDEF int cbuild_sv_utf8cp_right_len(cbuild_sv_t sv);
 /// `strchr` implementation for string view.
 ///
 /// * [pl:sv] String view to work with
@@ -159,10 +167,24 @@ CBUILDDEF char* cbuild_sv_strchr(cbuild_sv_t sv, char c);
 ///
 /// [r:] Pointer to character or NULL if not found.
 CBUILDDEF char* cbuild_sv_utf8chr(cbuild_sv_t sv, uint32_t c);
+/// `strrchr` implementation for string view.
+/// Operates on utf8 codepoints instead of ASCII characters.
+///
+/// * [pl:sv] String view to work with
+/// * [pl:c] Codepoint that will be searched.
+///
+/// [r:] Pointer to character or NULL if not found.
+CBUILDDEF char* cbuild_sv_utf8rchr(cbuild_sv_t sv, uint32_t c);
 /// Chop first utf8 codepoint out of string view.
 ///
 /// [r:] Unicode codepoint. `UINT32_MAX`{.c} means error.
 CBUILDDEF uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv);
+/// Chop utf8 codepoint from the endof string view
+///
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
+///
+/// [r:] Unicode codepoint for chopped utf8 character.
+CBUILDDEF uint32_t cbuild_sv_chop_right_utf8(cbuild_sv_t* sv);
 /// Chop characters from string view starting from the left until [p:delim] is found.
 /// Operates on utf8 codepoints instead of ASCII characters.
 ///
@@ -171,15 +193,23 @@ CBUILDDEF uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv);
 ///
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim);
+/// Chop characters from string view starting from the right until [p:delim] is found.
+/// Operates on utf8 codepoints instead of ASCII characters.
+///
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] Delimiter character.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_right_utf8(cbuild_sv_t* sv, uint32_t delim);
 /// Delimiter function. Used as comparator in 
 /// [`cbuild_sv_chop_by_func_utf8`](DOC:cbuild_sv_chop_by_func_utf8)
 ///
-/// * [pl:sv] String view, prechopped, so first character is possible delimiter and should be checked.
+/// * [pl:sv] String view, prechopped, so first (or last) character is possible delimiter and should be checked.
 /// * [pl:args] Arguments passed by caller.
 ///
 /// [r:] If true is returned this character will be considered a delimiter
-typedef bool (*cbuild_sv_utf8delim_func)(const cbuild_sv_t* sv, void* args);
-/// chop characters from string view starting from the right until [p:delim] returns `true`.
+typedef bool (*cbuild_sv_utf8delim_func)(cbuild_sv_t sv, void* args);
+/// chop characters from string view starting from the left until [p:delim] returns `true`.
 /// Operates on utf8 codepoints instead of ASCII characters.
 ///
 /// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
@@ -188,6 +218,16 @@ typedef bool (*cbuild_sv_utf8delim_func)(const cbuild_sv_t* sv, void* args);
 ///
 /// [r:] new string view containing chopped characters. Delimiter character will not be in any string view.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
+	cbuild_sv_utf8delim_func delim, void* args);
+/// chop characters from string view starting from the right until [p:delim] returns `true`.
+/// Operates on utf8 codepoints instead of ASCII characters.
+///
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] Delimiter function.
+/// * [pl:args] Arguments to a function.
+///
+/// [r:] new string view containing chopped characters. Delimiter character will not be in any string view.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_func_utf8(cbuild_sv_t* sv,
 	cbuild_sv_utf8delim_func delim, void* args);
 /// Get length of a string view in utf8 codepoints.
 ///

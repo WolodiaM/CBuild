@@ -200,6 +200,17 @@ int cbuild_sv_utf8cp_len(cbuild_sv_t sv) {
 	if((*sv.data & 0xF8) == 0xF0 && sv.size >= 4) return 4;
 	return 1;
 }
+int cbuild_sv_utf8cp_right_len(cbuild_sv_t sv) {
+	size_t i = sv.size;
+	size_t len = 0;
+	while (i > 0) {
+		i--;
+		len++;
+		if ((sv.data[i] & 0xC0) != 0x80) break;
+	}
+	if (len > sv.size) len = sv.size;
+	return (int)len;
+}
 char* cbuild_sv_strchr(cbuild_sv_t sv, char c) {
 	return memchr(sv.data, c, sv.size);
 }
@@ -207,6 +218,14 @@ char* cbuild_sv_utf8chr(cbuild_sv_t sv, uint32_t c) {
 	while(sv.size > 0) {
 		char* curr = sv.data;
 		uint32_t codepoint = cbuild_sv_chop_utf8(&sv);
+		if(codepoint == c) return curr;
+	}
+	return NULL;
+}
+char* cbuild_sv_utf8rchr(cbuild_sv_t sv, uint32_t c) {
+	while(sv.size > 0) {
+		char* curr = sv.data + sv.size - cbuild_sv_utf8cp_right_len(sv);
+		uint32_t codepoint = cbuild_sv_chop_right_utf8(&sv);
 		if(codepoint == c) return curr;
 	}
 	return NULL;
@@ -258,6 +277,20 @@ uint32_t cbuild_sv_chop_utf8(cbuild_sv_t* sv) {
 	sv->size--;
 	return *(s - 1);
 }
+uint32_t cbuild_sv_chop_right_utf8(cbuild_sv_t* sv) {
+	ssize_t i = (ssize_t)sv->size;
+	size_t len = 0;
+	while (i >= 0) {
+		i--;
+		len++;
+		if ((sv->data[i] & 0xC0) != 0x80) break;
+	}
+	if (i < 0) i = 0;
+	if (len > sv->size) len = sv->size;
+	sv->size -= len;
+	cbuild_sv_t tmp = cbuild_sv_from_parts(&sv->data[sv->size], (size_t)len);
+	return cbuild_sv_chop_utf8(&tmp);
+}
 cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim) {
 	char* chrptr = cbuild_sv_utf8chr(*sv, delim);
 	if(chrptr != NULL) {
@@ -272,18 +305,45 @@ cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim) {
 	}
 	return cbuild_sv_chop(sv, sv->size);
 }
+cbuild_sv_t cbuild_sv_chop_right_by_utf8(cbuild_sv_t* sv, uint32_t delim) {
+	char* chrptr = cbuild_sv_utf8rchr(*sv, delim);
+	if(chrptr != NULL) {
+		size_t i = (size_t)(chrptr - sv->data);
+		cbuild_sv_t ret = cbuild_sv_from_parts(chrptr, (sv->size - i));
+		cbuild_sv_chop_utf8(&ret);
+		sv->size = i;
+		return ret;
+	}
+	return cbuild_sv_chop(sv, sv->size);
+}
 cbuild_sv_t cbuild_sv_chop_by_func_utf8(cbuild_sv_t* sv,
 	cbuild_sv_utf8delim_func delim, void* args) {
 	cbuild_sv_t ret = cbuild_sv_from_parts(sv->data, 0);
 	while(sv->size > 0) {
 		size_t cplen = (size_t)cbuild_sv_utf8cp_len(*sv);
-		if(delim(sv, args)) {
+		if(delim(*sv, args)) {
 			sv->data += cplen;
 			sv->size -= cplen;
 			break;
 		} else {
 			sv->data += cplen;
 			sv->size -= cplen;
+			ret.size += cplen;
+		}
+	}
+	return ret;
+}
+cbuild_sv_t cbuild_sv_chop_right_by_func_utf8(cbuild_sv_t* sv,
+	cbuild_sv_utf8delim_func delim, void* args) {
+	cbuild_sv_t ret = cbuild_sv_from_parts(sv->data + sv->size, 0);
+	while(sv->size > 0) {
+		size_t cplen = (size_t)cbuild_sv_utf8cp_right_len(*sv);
+		if(delim(*sv, args)) {
+			sv->size -= cplen;
+			break;
+		} else {
+			sv->size -= cplen;
+			ret.data -= cplen;
 			ret.size += cplen;
 		}
 	}
