@@ -53,7 +53,6 @@
 
 #include "Common.h"
 #include "DynArray.h"
-_Static_assert(SIZE_WIDTH == 64, "Libary require 64-bit size_t.");
 
 /// Hash function for a key.
 ///
