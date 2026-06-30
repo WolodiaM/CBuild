@@ -172,6 +172,9 @@ bool parser_func_decl(lines_t* lines, size_t line,
 	// Pare function name
 	*name = sv_dup(token);
 	// Parse function args
+	if (cline.size == 0) {
+		next_line(lines, &line, &cline, &d);
+	}
 	if (!parser_func_arglist(lines, &line, &cline, args, &d)) return false;
 	// Pass decl
 	*decl = sb_leak_as_sv(&d);

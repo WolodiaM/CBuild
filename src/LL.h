@@ -27,10 +27,10 @@
 /// If [f:elem] is null then it will allocate new linked list.
 ///
 /// * [pl:a] Allocator.
-/// * [pl:elem] Any element of linked list.
+/// * [pl:elem:T*] Any element of linked list.
 /// * [pl:size] Length of a data section of element in bytes.
 ///
-/// [r:] Pointer to new element.
+/// [r:T*] Pointer to new element.
 CBUILDDEF void* cbuild_ll_new(cbuild_allocator_t* a, void* elem, size_t size);
 /// Append element to linked list. This is semi-internal function.
 ///
@@ -42,26 +42,26 @@ CBUILDDEF void* cbuild_ll_new(cbuild_allocator_t* a, void* elem, size_t size);
 /// will be also returned in [f:elem] then.
 ///
 /// * [pl:a] Allocator.
-/// * [pl:elem] Any element of linked list. Pointer to pointer to data of this element.
-/// * [pl:data] Data that need to be put into new node. It will be copied via `memcpy`.
+/// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
+/// * [pl:data:T] Data that need to be put into new node. It will be copied via `memcpy`.
 /// * [pl:size] Length of a data in bytes.
 ///
-/// [r:] Pointer to new element.
+/// [r:T*] Pointer to new element.
 CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* data, size_t size);
 /// Append element to linked list.
 ///
 /// This function will first iterate forward until it find end and then append
 /// new element.
 ///
-/// If [f:elem] is null then it will allocate new linked list.
-/// If [f:elem] points to null then it will allocate new linked list. Element
-/// will be also returned in [f:elem] then.
+/// If [f:elem:T*] is null then it will allocate new linked list.
+/// If [f:elem:T*] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem:T*] then.
 ///
-/// * [pl:a] Allocator.
-/// * [pl:elem] Any element of linked list. Pointer to pointer to data of this element.
-/// * [pl:data] Data that need to be put into new node. Must be value and not pointer.
+/// * [pl:a:cbuild_allocator_t*] Allocator.
+/// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
+/// * [pl:data:T] Data that need to be put into new node. Must be value and not pointer.
 ///
-/// [r:] Pointer to new element.
+/// [r:T*] Pointer to new element.
 #define cbuild_ll_append(a, elem, data)                                       \
 	({                                                                          \
 		__auto_type __cbuild_ll_tmp = data;                                       \
@@ -72,15 +72,15 @@ CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* da
 /// This function will first iterate forward until it find end and then append
 /// new element.
 ///
-/// If [f:elem] is null then it will allocate new linked list.
-/// If [f:elem] points to null then it will allocate new linked list. Element
-/// will be also returned in [f:elem] then.
+/// If [f:elem:T*] is null then it will allocate new linked list.
+/// If [f:elem:T*] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem:T*] then.
 ///
-/// * [pl:a] Allocator.
-/// * [pl:elem] Any element of linked list. Pointer to pointer to data of this element.
-/// * [pl:data] Data that need to be put into new node. Must be typed (not `void`) pointer.
+/// * [pl:a:cbuild_allocator_t*] Allocator.
+/// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
+/// * [pl:data:T] Data that need to be put into new node. Must be typed (not `void`) pointer.
 ///
-/// [r:] Pointer to new element.
+/// [r:T*] Pointer to new element.
 #define cbuild_ll_append_ptr(a, elem, data)                                   \
 	({                                                                          \
 		__auto_type __cbuild_ll_tmp = data;                                       \
@@ -91,17 +91,17 @@ CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* da
 /// This will first iterate backward until it find start and then iterate
 /// forward until end is found and count number of elements.
 ///
-/// * [pl:elem] Any element of linked list.
+/// * [pl:elem:T*] Any element of linked list.
 CBUILDDEF size_t cbuild_ll_size(void* elem);
 /// Remove element from linked list.
 ///
 /// * [pl:a] Allocator.
-/// * [pl:elem] Element of linked list that should be removed.
+/// * [pl:elem:T*] Element of linked list that should be removed.
 CBUILDDEF void cbuild_ll_remove(cbuild_allocator_t* a, void* elem);
 /// Free full linked list.
 ///
 /// * [pl:a] Allocator.
-/// * [pl:elem] Any element of linked list.
+/// * [pl:elem:T*] Any element of linked list.
 CBUILDDEF void cbuild_ll_free(cbuild_allocator_t* a, void* elem);
 /// Get next element from linked list or NULL.
 CBUILDDEF void* cbuild_ll_next(void* elem);
