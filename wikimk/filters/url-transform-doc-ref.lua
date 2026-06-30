@@ -9,5 +9,5 @@ local function transform_doc_refs(el)
 	return el;
 end
 function Pandoc(doc)
-	return  doc:walk({Meta = get_vars}):walk({Link = transform_doc_refs});
+	return doc:walk({Meta = get_vars}):walk({Link = transform_doc_refs});
 end

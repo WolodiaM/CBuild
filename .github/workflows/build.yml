@@ -18,11 +18,7 @@ jobs:
         run: gcc cbuild.c -o cbuild.run
       - name: Build cbuild.h
         run: ./cbuild.run build
-      - name: Build few "packages"
-        run: |
-          zip "cbuild-${TAG_NAME}.zip" cbuild.h LICENSE
-          tar -czvf "cbuild-${TAG_NAME}.tar.gz" cbuild.h LICENSE
       - name: Upload release asset
-        run: gh release upload "${TAG_NAME}" "cbuild.h#cbuild.h ${TAG_NAME}" "cbuild-${TAG_NAME}.zip" "cbuild-${TAG_NAME}.tar.gz"
+        run: gh release upload "${TAG_NAME}" "cbuild.h#cbuild.h ${TAG_NAME}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

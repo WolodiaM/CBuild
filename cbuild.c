@@ -1293,6 +1293,19 @@ bool amalgamate(void) {
 	// Changelog
 	cbuild_sb_append_cstr(&output, "// cbuild.h by WolodiaM\n");
 	cbuild_sb_append_cstr(&output, "// License: GPL-3.0-or-later\n");
+	cbuild_sb_append_cstr(&output, "//\n");
+	cbuild_sb_append_cstr(&output, "// Copyright (C) 2025 WolodiaM\n");
+	cbuild_sb_append_cstr(&output, "// This program is free software: you can redistribute it and/or modify\n");
+	cbuild_sb_append_cstr(&output, "// it under the terms of the GNU General Public License as published by\n");
+	cbuild_sb_append_cstr(&output, "// the Free Software Foundation, either version 3 of the License, or\n");
+	cbuild_sb_append_cstr(&output, "// (at your option) any later version.\n");
+	cbuild_sb_append_cstr(&output, "// This program is distributed in the hope that it will be useful,\n");
+	cbuild_sb_append_cstr(&output, "// but WITHOUT ANY WARRANTY; without even the implied warranty of\n");
+	cbuild_sb_append_cstr(&output, "// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n");
+	cbuild_sb_append_cstr(&output, "// GNU General Public License for more details.\n");
+	cbuild_sb_append_cstr(&output, "// You should have received a copy of the GNU General Public License\n");
+	cbuild_sb_append_cstr(&output, "// along with this program.  If not, see <https://www.gnu.org/licenses/>.\n");
+	cbuild_sb_append_cstr(&output, "//\n");
 	cbuild_sb_append_cstr(&output, "/* CHANGELOG\n");
 	cbuild_sb_t changelog_old = {0};
 	if (!cbuild_file_read(CHANGELOG_DIR"/changelog.txt", &changelog_old)) return false;
@@ -1421,7 +1434,18 @@ bool amalgamate(void) {
 			cbuild_sb_append_cstr(&output, "\n");
 		}
 	}
-	cbuild_sb_append_cstr(&output, "#endif // CBUILD_IMPLEMENTATION");
+	cbuild_sb_append_cstr(&output, "#endif // CBUILD_IMPLEMENTATION\n");
+	// Add license
+	cbuild_sb_append_cstr(&output, "// License: \n");
+	cbuild_sb_t license = {0};
+	if(!cbuild_file_read("LICENSE", &license)) return false;
+	cbuild_sv_t content = cbuild_sb_to_sv(license);
+	while (content.size > 0) {
+		cbuild_sv_t line = cbuild_sv_chop_by_delim(&content, '\n');
+		cbuild_sb_append_cstr(&output, "// ");
+		cbuild_sb_append_sv(&output, line);
+		cbuild_sb_append_cstr(&output, "\n");
+	}
 	if(!cbuild_file_write("cbuild.h", &output)) return false;
 	cbuild_da_clear(&output);
 	return true;
