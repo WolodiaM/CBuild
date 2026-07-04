@@ -468,23 +468,23 @@ CBUILD_ATTR_NORETURN(CBUILDDEF void __cbuild_assert(const char* file, unsigned i
 /// Shift arguments from "standard" C array view - pointer and size as separate variables.
 /// Size will be decremented and pointer will be incremented.
 ///
-/// * [pl:argv:any*] Array.
 /// * [pl:argc:size_t] Length of an array.
+/// * [pl:argv:any*] Array.
 ///
 /// [r:any] Shifted First element of an array.
-#define cbuild_shift(argv, argc)                                        \
+#define cbuild_shift(argc, argv)                                        \
 	(cbuild_assert((argc) > 0, "More arguments are required."), (argc)--, \
 		*(argv)++)
 /// Shift arguments from "standard" C array view - pointer and size as separate variables.
 /// Size will be decremented and pointer will be incremented.
 /// Allows for a used-defined message.
 ///
-/// * [pl:argv:any*] Array.
 /// * [pl:argc:size_t] Length of an array.
+/// * [pl:argv:any*] Array.
 /// * [pl:...:format string] Message that will be printed if array does not have enough elements.
 ///
 /// [r:any] Shifted First element of an array.
-#define cbuild_shift_expect(argv, argc, ...)                    \
+#define cbuild_shift_expect(argc, argv, ...)                    \
 	(cbuild_assert((argc) > 0, __VA_ARGS__), (argc)--, *(argv)++)
 
 /// Get time in nanoseconds.
