@@ -1510,14 +1510,14 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 	}
-	char* subcommand = cbuild_shift(pargs.data, pargs.size);
+	char* subcommand = cbuild_shift(pargs.size, pargs.data);
 	if(strcmp(subcommand, "docs") == 0) {
 		if(pargs.size == 0) {
 			cbuild_log(CBUILD_LOG_ERROR, "No argument specified!");
 			help(cbuild_flag_app_name());
 			return 1;
 		}
-		char* arg = cbuild_shift(pargs.data, pargs.size);
+		char* arg = cbuild_shift(pargs.size, pargs.data);
 		if (strcmp(arg, "wikimk.run") == 0 || strcmp(arg, "build-all") == 0) {
 			cbuild_cmd_t cmd = {0};
 			cbuild_da_append_many(&cmd, CC,

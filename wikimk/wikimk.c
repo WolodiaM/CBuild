@@ -279,13 +279,13 @@ void main_help(const char* progname) {
 int main(int argc, char** argv) {
 	atexit(atexit_handler);
 	if (!main_prelude()) return 1;
-	const char* progname = cbuild_shift(argv, argc);
+	const char* progname = cbuild_shift(argc, argv);
 	if (argc == 0) {
 		printf("ERROR: No subcommand provided.\n");
 		main_help(progname);
 		return 1;
 	}
-	const char* command = cbuild_shift(argv, argc);
+	const char* command = cbuild_shift(argc, argv);
 	if (strcmp(command, "help") == 0) {
 		main_help(progname);
 	} else if (strcmp(command, "docgen") == 0) {
@@ -301,7 +301,7 @@ int main(int argc, char** argv) {
 			main_help(progname);
 			return 1;
 		}
-		const char* arg = cbuild_shift(argv, argc);
+		const char* arg = cbuild_shift(argc, argv);
 		char* num_end = NULL;
 		long port = strtol(arg, &num_end, 10);
 		if (port < 1 || port > UINT16_MAX || *num_end != '\0') {
