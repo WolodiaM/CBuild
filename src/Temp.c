@@ -46,6 +46,9 @@ CBUILDDEF void cbuild_temp_reset(size_t checkpoint) {
 	INIT();
 	cbuild_arena_reset(&__cbuild_temp_arena, checkpoint);
 }
+CBUILDDEF cbuild_arena_t* cbuild_temp_arena(void) {
+	return &__cbuild_temp_arena;
+}
 #ifdef CBUILD_PROFILER
 	CBUILDDEF void cbuild_temp_profiler(void) {
 		cbuild_log(CBUILD_LOG_TRACE, "Used %zu/%zu bytes of temp.",

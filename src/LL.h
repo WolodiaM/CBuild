@@ -24,7 +24,7 @@
 /// This function will first iterate forward until it find end and then append
 /// new element.
 ///
-/// If [f:elem] is null then it will allocate new linked list.
+/// If [f:elem:T*] is null then it will allocate new linked list.
 ///
 /// * [pl:a] Allocator.
 /// * [pl:elem:T*] Any element of linked list.
@@ -32,14 +32,41 @@
 ///
 /// [r:T*] Pointer to new element.
 CBUILDDEF void* cbuild_ll_new(cbuild_allocator_t* a, void* elem, size_t size);
+/// Allocate new element in linked list. New memory would be zero-initialized.
+///
+/// This function will first iterate forward until it find end and then append
+/// new element.
+///
+/// If [f:elem:T*] is null then it will allocate new linked list.
+///
+/// * [pl:elem:T*] Any element of linked list.
+/// * [pl:size:size_t] Length of a data section of element in bytes.
+///
+/// [r:T*] Pointer to new element.
+#define cbuild_ll_new_malloc(elem, size) \
+	cbuild_ll_new(cbuild_allocator_from_libc(), elem, size)
+/// Allocate new element in linked list. New memory would be zero-initialized.
+///
+/// This function will first iterate forward until it find end and then append
+/// new element.
+///
+/// If [f:elem:T*] is null then it will allocate new linked list.
+///
+/// * [pl:arena:cbuild_arena_t*] Arena.
+/// * [pl:elem:T*] Any element of linked list.
+/// * [pl:size:size_t] Length of a data section of element in bytes.
+///
+/// [r:T*] Pointer to new element.
+#define cbuild_ll_new_arena(arena, elem, size) \
+	cbuild_ll_new(cbuild_allocator_from_arena(arena), elem, size)
 /// Append element to linked list. This is semi-internal function.
 ///
 /// This function will first iterate forward until it find end and then append
 /// new element.
 ///
-/// If [f:elem] is null then it will allocate new linked list.
-/// If [f:elem] points to null then it will allocate new linked list. Element
-/// will be also returned in [f:elem] then.
+/// If [f:elem:T*] is null then it will allocate new linked list.
+/// If [f:elem:T*] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem:T*] then.
 ///
 /// * [pl:a] Allocator.
 /// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
@@ -48,6 +75,39 @@ CBUILDDEF void* cbuild_ll_new(cbuild_allocator_t* a, void* elem, size_t size);
 ///
 /// [r:T*] Pointer to new element.
 CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* data, size_t size);
+/// Append element to linked list. This is semi-internal function.
+///
+/// This function will first iterate forward until it find end and then append
+/// new element.
+///
+/// If [f:elem:T*] is null then it will allocate new linked list.
+/// If [f:elem:T*] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem:T*] then.
+///
+/// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
+/// * [pl:data:T] Data that need to be put into new node. It will be copied via `memcpy`.
+/// * [pl:size:size_t] Length of a data in bytes.
+///
+/// [r:T*] Pointer to new element.
+#define cbuild_ll_append_raw_malloc(elem, data, size) \
+	cbuild_ll_append_raw(cbuild_allocator_from_libc(), elem, data, size)
+/// Append element to linked list. This is semi-internal function.
+///
+/// This function will first iterate forward until it find end and then append
+/// new element.
+///
+/// If [f:elem:T*] is null then it will allocate new linked list.
+/// If [f:elem:T*] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem:T*] then.
+///
+/// * [pl:arena:cbuild_arena_t*] Arena.
+/// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
+/// * [pl:data:T] Data that need to be put into new node. It will be copied via `memcpy`.
+/// * [pl:size:size_t] Length of a data in bytes.
+///
+/// [r:T*] Pointer to new element.
+#define cbuild_ll_append_raw_arena(arena, elem, size) \
+	cbuild_ll_append_raw(cbuild_allocator_from_arena(arena), elem, data, size)
 /// Append element to linked list.
 ///
 /// This function will first iterate forward until it find end and then append
@@ -76,6 +136,37 @@ CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* da
 /// If [f:elem:T*] points to null then it will allocate new linked list. Element
 /// will be also returned in [f:elem:T*] then.
 ///
+/// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
+/// * [pl:data:T] Data that need to be put into new node. Must be value and not pointer.
+///
+/// [r:T*] Pointer to new element.
+#define cbuild_ll_append_malloc(elem, data) \
+	cbuild_ll_append(cbuild_allocator_from_libc(), elem, data)
+/// Append element to linked list.
+///
+/// This function will first iterate forward until it find end and then append
+/// new element.
+///
+/// If [f:elem:T*] is null then it will allocate new linked list.
+/// If [f:elem:T*] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem:T*] then.
+///
+/// * [pl:arena:cbuild_arena_t*] Arena.
+/// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
+/// * [pl:data:T] Data that need to be put into new node. Must be value and not pointer.
+///
+/// [r:T*] Pointer to new element.
+#define cbuild_ll_append_arena(arena, elem, data) \
+	cbuild_ll_append(cbuild_allocator_from_arena(arena), elem, data)
+/// Append element to linked list.
+///
+/// This function will first iterate forward until it find end and then append
+/// new element.
+///
+/// If [f:elem:T*] is null then it will allocate new linked list.
+/// If [f:elem:T*] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem:T*] then.
+///
 /// * [pl:a:cbuild_allocator_t*] Allocator.
 /// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
 /// * [pl:data:T] Data that need to be put into new node. Must be typed (not `void`) pointer.
@@ -86,6 +177,37 @@ CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* da
 		__auto_type __cbuild_ll_tmp = data;                                       \
 		cbuild_ll_append_raw(a, elem, __cbuild_ll_tmp, sizeof(*__cbuild_ll_tmp)); \
 	})
+/// Append element to linked list.
+///
+/// This function will first iterate forward until it find end and then append
+/// new element.
+///
+/// If [f:elem:T*] is null then it will allocate new linked list.
+/// If [f:elem:T*] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem:T*] then.
+///
+/// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
+/// * [pl:data:T] Data that need to be put into new node. Must be typed (not `void`) pointer.
+///
+/// [r:T*] Pointer to new element.
+#define cbuild_ll_append_ptr_malloc(elem, data) \
+	cbuild_ll_append_ptr(cbuild_allocator_from_libc(), elem, data)
+/// Append element to linked list.
+///
+/// This function will first iterate forward until it find end and then append
+/// new element.
+///
+/// If [f:elem:T*] is null then it will allocate new linked list.
+/// If [f:elem:T*] points to null then it will allocate new linked list. Element
+/// will be also returned in [f:elem:T*] then.
+///
+/// * [pl:arena:cbuild_arena_t*] Arena.
+/// * [pl:elem:T*] Any element of linked list. Pointer to pointer to data of this element.
+/// * [pl:data:T] Data that need to be put into new node. Must be typed (not `void`) pointer.
+///
+/// [r:T*] Pointer to new element.
+#define cbuild_ll_append_ptr_arena(arena, elem, data) \
+	cbuild_ll_append_ptr(cbuild_allocator_from_arena(arena), elem, data)
 /// Get size of linked list in elements.
 ///
 /// This will first iterate backward until it find start and then iterate

@@ -4,6 +4,7 @@
 //! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
+#include "Arena.h"
 
 /// Same as `malloc`. Can return NULL.
 CBUILDDEF void* cbuild_temp_malloc(size_t size);
@@ -22,6 +23,8 @@ CBUILDDEF void* cbuild_temp_memdup(const void* mem, size_t size);
 CBUILDDEF void cbuild_temp_reset(size_t checkpoint);
 /// Create new allocator checkpoint.
 CBUILDDEF size_t cbuild_temp_checkpoint(void);
+/// Get backing arena for temp allocator.
+CBUILDDEF cbuild_arena_t* cbuild_temp_arena(void);
 #ifdef CBUILD_PROFILER
 	/// Profile temp allocator. Same as `cbuild_arena_profile`
 	CBUILDDEF void cbuild_temp_profiler(void);
