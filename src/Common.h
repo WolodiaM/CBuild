@@ -296,13 +296,6 @@
 	/// Type: `size_t`{.c}.
 	#define CBUILD_TEMP_ARENA_SIZE ((size_t)8 * (size_t)1024 * (size_t)1024)
 #endif // CBUILD_TEMP_ARENA_SIZE
-#ifndef CBUILD_MAP_DEFAULT_HASH_FUNC
-	/// Default hash function for CBuild map. User can override it in runtime 
-	/// for specific map instance.
-	///
-	/// [Type](DOC:cbuild_map_hash_t): `size_t func(const void* key, size_t len)`{.c}. 
-	#define CBUILD_MAP_DEFAULT_HASH_FUNC __cbuild_map_hash_func
-#endif // CBUILD_MAP_DEFAULT_HASH_FUNC
 #ifndef CBUILD_SELFREBUILD_ARGS
 	/// Default arguments for `cbuild_selfrebuild`.
 	///
@@ -316,9 +309,20 @@
 	#define CBUILD_LOG_MIN_LEVEL CBUILD_LOG_ERROR
 #endif // CBUILD_LOG_MIN_LEVEL
 #ifndef CBUILD_GLOB_CAPTURE_COUNT
-	/// Number og "capture groups" glob supports. This is used for underlying regex engine.
+	/// Number of "capture groups" glob supports. This is used for underlying regex engine.
 	#define CBUILD_GLOB_CAPTURE_COUNT 10
 #endif // CBUILD_GLOB_CAPTURE_COUNT
+#ifndef CBUILD_MAP_DEFUALT_HASH
+	/// Default hash function, one of `cbuild_map_hash_*` functions.
+	/// Also this can be set to a function matching following signature:
+	/// [Type](DOC:cbuild_map_hash_t): `size_t func(const void* key, size_t len)`{.c}. 
+	///
+	/// ::: note
+	/// It can be overridden at runtime for specific map instance. 
+	/// :::
+	///
+	#define CBUILD_MAP_DEFAULT_HASH cbuild_map_hash_djb2
+#endif // CBUILD_MAP_DEFAULT_HASH
 #ifndef CBUILDDEF
 	/// This is prepended to all cbuild's functions. Can be set to eg. `static inline`
 	/// for build that use only one translation unit.

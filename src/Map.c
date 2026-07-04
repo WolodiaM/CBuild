@@ -4,39 +4,31 @@
 #include "Common.h"
 #include "StringView.h"
 #include "StringBuilder.h"
-CBUILDDEF size_t __cbuild_map_hash_func(const void* data, size_t len) {
-	const unsigned char* ucPtr = (const unsigned char*)data;
-	size_t hash = 5381;
-	for(size_t i = 0; i < len; i++) {
-		hash = ((hash << 5) + hash) + ucPtr[i]; // hash * 33 + data[i]
-	}
-	return hash;
-}
 CBUILDDEF size_t __cbuild_map_num_hash(const void* map,
 	const void* key, size_t klen) {
 	CBUILD_UNUSED(map);
-	return __cbuild_map_hash_func(key, klen);
+	return CBUILD_MAP_DEFAULT_HASH(key, klen);
 }
 CBUILDDEF size_t __cbuild_map_cstr_hash(const void* map,
 	const void* key, size_t klen) {
 	CBUILD_UNUSED(map);
 	CBUILD_UNUSED(klen);
 	size_t len = strlen(key);
-	return __cbuild_map_hash_func(key, len);
+	return CBUILD_MAP_DEFAULT_HASH(key, len);
 }
 CBUILDDEF size_t __cbuild_map_sv_hash(const void* map,
 	const void* key, size_t klen) {
 	CBUILD_UNUSED(map);
 	CBUILD_UNUSED(klen);
 	const cbuild_sv_t* sv = key;
-	return __cbuild_map_hash_func(sv->data, sv->size);
+	return CBUILD_MAP_DEFAULT_HASH(sv->data, sv->size);
 }
 CBUILDDEF size_t __cbuild_map_sb_hash(const void* map,
 	const void* key, size_t klen) {
 	CBUILD_UNUSED(map);
 	CBUILD_UNUSED(klen);
 	const cbuild_sb_t* sb = key;
-	return __cbuild_map_hash_func(sb->data, sb->size);
+	return CBUILD_MAP_DEFAULT_HASH(sb->data, sb->size);
 }
 CBUILDDEF bool __cbuild_map_num_keycmp(const void* map,
 	const void* k1, const void* k2, size_t klen) {
@@ -73,4 +65,38 @@ CBUILDDEF size_t __cbuild_map_step(size_t prev) {
 	z = (z ^ (z >> 27)) * 0x94d049bb133111eb;
 	// We probably have less than 4GB of array and we need to have this number odd
 	return (z ^ (z >> 31)) | 1;
+}
+CBUILDDEF size_t cbuild_map_hash_djb2(const void* data, size_t len) {
+	const uint8_t* ucPtr = data;
+	size_t hash = 5381;
+	for (size_t i = 0; i < len; i++) {
+		hash = ((hash << 5) + hash) + ucPtr[i]; // hash * 33 + data[i]
+	}
+	return hash;
+}
+CBUILDDEF size_t cbuild_map_hash_fnv1(void const *data, size_t len) {
+	const uint8_t* bytes = data;
+	size_t hash = 14695981039346656037u;
+	for (size_t i = 0; i < len; ++i) {
+		hash *= 1099511628211u;
+		hash ^= (size_t)bytes[i];
+	}
+	return hash;
+}
+CBUILDDEF size_t cbuild_map_hash_fnv1a(const void* data, size_t len) {
+	const uint8_t* bytes = data;
+	size_t hash = 14695981039346656037u;
+	for (size_t i = 0; i < len; i++) {
+		hash ^= (uint64_t)bytes[i];
+		hash *= 1099511628211u;
+	}
+	return hash;
+}
+CBUILDDEF size_t cbuild_map_hash_sdbm(void const *data, size_t len) {
+	const uint8_t* bytes = data;
+	size_t hash = 0u;
+	for (size_t i = 0; i < len; i++) {
+		hash = bytes[i] + (hash << 6) + (hash << 16) - hash;
+	}
+	return hash;
 }

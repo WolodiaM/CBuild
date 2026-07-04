@@ -259,7 +259,8 @@ typedef enum cbuild_map_tombstone_t {
 		}                                                                             \
 		cbuild_da_clear(map1);                                                        \
 	} while(0)
-/// Resizes the map, sets `size` and zero-inits memory.
+/// Resizes the map, sets `size` and zero-inits memory. This will not
+/// rehash older elements into a new size!
 ///
 /// This function will automatically round-up size to next power-of-2.
 ///
@@ -278,12 +279,22 @@ typedef enum cbuild_map_tombstone_t {
 		memset((map)->data, 0, (map)->size * sizeof(*(map)->data));         \
 	} while(0)
 
+//! # This library provides some default hash functions. You can configure
+//! default one using macro [`CBUILD_MAP_DEFALT_HASH`](DOC:CBUILD_MAP_DEFAULT_HASH).
+
+/// [DJB2 hash](http://www.cse.yorku.ca/~oz/hash.html#djb2).
+CBUILDDEF size_t cbuild_map_hash_djb2(const void* data, size_t len);
+/// [FNV1a](http://www.isthe.com/chongo/tech/comp/fnv/index.html).
+CBUILDDEF size_t cbuild_map_hash_fnv1(const void* data, size_t len);
+/// [FNV1](http://www.isthe.com/chongo/tech/comp/fnv/index.html).
+CBUILDDEF size_t cbuild_map_hash_fnv1a(const void* data, size_t len);
+/// [SDBM](http://www.cse.yorku.ca/~oz/hash.html#sdbm).
+CBUILDDEF size_t cbuild_map_hash_sdbm(const void* data, size_t len);
+
 //! # Internal functions [line:cbuild-map-internal]
 
 //@ cbuild-map-internal
 
-/// Base hashing function. Uses dbj2 hash.
-CBUILDDEF size_t __cbuild_map_hash_func(const void* data, size_t len);
 ///
 CBUILDDEF size_t __cbuild_map_num_hash(const void* map,
 	const void* key, size_t klen);
