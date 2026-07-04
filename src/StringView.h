@@ -200,7 +200,7 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_utf8(cbuild_sv_t* sv, uint32_t delim);
 /// * [pl:delim] Delimiter character.
 ///
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
-CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_right_utf8(cbuild_sv_t* sv, uint32_t delim);
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_utf8(cbuild_sv_t* sv, uint32_t delim);
 /// Delimiter function. Used as comparator in 
 /// [`cbuild_sv_chop_by_func_utf8`](DOC:cbuild_sv_chop_by_func_utf8)
 ///

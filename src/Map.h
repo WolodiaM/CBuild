@@ -44,6 +44,13 @@
 //! Key can be any value, but you need to use `init` function that support
 //! specific type of keys.
 //!
+//! # Removing memory
+//!
+//! To emove memory you first need to get pair, and then set tombstone to
+//! `CBUILD_MAP_DELETED`. You can also run `map->clear(map, pair)` if you
+//! actually used clear function for this map instance. Or you can manually
+//! clear what is needed for this specific pair.
+//!
 //! # Backing memory
 //!
 //! Backing memory is a dynamic array. It allows to do a few things for maps

@@ -106,7 +106,7 @@ CBUILDDEF void* cbuild_ll_append_raw(cbuild_allocator_t* a, void* elem, void* da
 /// * [pl:size:size_t] Length of a data in bytes.
 ///
 /// [r:T*] Pointer to new element.
-#define cbuild_ll_append_raw_arena(arena, elem, size) \
+#define cbuild_ll_append_raw_arena(arena, elem, data, size) \
 	cbuild_ll_append_raw(cbuild_allocator_from_arena(arena), elem, data, size)
 /// Append element to linked list.
 ///

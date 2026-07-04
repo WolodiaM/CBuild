@@ -312,7 +312,7 @@
 	/// Number of "capture groups" glob supports. This is used for underlying regex engine.
 	#define CBUILD_GLOB_CAPTURE_COUNT 10
 #endif // CBUILD_GLOB_CAPTURE_COUNT
-#ifndef CBUILD_MAP_DEFUALT_HASH
+#ifndef CBUILD_MAP_DEFAULT_HASH
 	/// Default hash function, one of `cbuild_map_hash_*` functions.
 	/// Also this can be set to a function matching following signature:
 	/// [Type](DOC:cbuild_map_hash_t): `size_t func(const void* key, size_t len)`{.c}. 
