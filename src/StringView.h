@@ -4,7 +4,7 @@
 //! License: `GPL-3.0-or-later`.
 
 #include "Common.h"
-#include "Arena.h"
+#include "Allocator.h"
 
 /// String view datatype
 ///
@@ -242,9 +242,14 @@ CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
 ///
 /// [r:] `false` if validation failed.
 CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx);
-/// Convert string view to c-string. Allocate memory via `malloc`.
-CBUILDDEF char* cbuild_sv_to_cstr(cbuild_sv_t sv);
-/// Convert string view to c-string. Allocate memory via [`cbuild_temp_malloc`](DOC:cbuild_temp_malloc).
-CBUILDDEF char* cbuild_sv_to_temp_cstr(cbuild_sv_t sv);
-/// Convert string view to c-string. Allocate memory from provided arena via [`cbuild_arena_malloc`](DOC:cbuild_arena_malloc).
-CBUILDDEF char* cbuild_sv_to_arena_cstr(cbuild_arena_t* arena, cbuild_sv_t sv);
+/// Convert string view to c-string.
+CBUILDDEF char* cbuild_sv_to_cstr(cbuild_allocator_t* a, cbuild_sv_t sv);
+/// Convert string view to c-string.
+#define cbuild_sv_to_cstr_malloc(sv) \
+	cbuild_sv_to_cstr(cbuild_allocator_from_libc(), sv)
+/// Convert string view to c-string.
+#define cbuild_sv_to_cstr_temp(sv) \
+	cbuild_sv_to_cstr(cbuild_allocator_from_temp(), sv)
+/// Convert string view to c-string.
+#define cbuild_sv_to_cstr_arena(arena, sv) \
+	cbuild_sv_to_cstr(cbuild_allocator_from_arena(arena), sv)

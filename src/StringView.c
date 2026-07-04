@@ -545,23 +545,10 @@ invalid:
 	if(idx != NULL) *idx = ret;
 	return false;
 }
-CBUILDDEF char* __cbuild_sv_to_cstr(cbuild_sv_t sv, char* buff) {
+CBUILDDEF char* cbuild_sv_to_cstr(cbuild_allocator_t* a, cbuild_sv_t sv) {
+	char* buff = a->malloc(a, sv.size + 1);
+	cbuild_assert(buff != NULL, "Allocation failed.\n");
 	memcpy(buff, sv.data, sv.size);
 	buff[sv.size] = 0;
 	return buff;
-}
-char* cbuild_sv_to_cstr(cbuild_sv_t sv) {
-	char* ret = __CBUILD_MALLOC(sv.size + 1);
-	cbuild_assert(ret != NULL, "Allocation failed.\n");
-	return __cbuild_sv_to_cstr(sv, ret);
-}
-char* cbuild_sv_to_temp_cstr(cbuild_sv_t sv) {
-	char* ret = cbuild_temp_malloc(sv.size + 1);
-	cbuild_assert(ret != NULL, "Allocation failed.\n");
-	return __cbuild_sv_to_cstr(sv, ret);
-}
-char* cbuild_sv_to_arena_cstr(cbuild_arena_t* arena, cbuild_sv_t sv) {
-	char* ret = cbuild_arena_malloc(arena, sv.size + 1);
-	cbuild_assert(ret != NULL, "Allocation failed.\n");
-	return __cbuild_sv_to_cstr(sv, ret);
 }
