@@ -2,7 +2,7 @@ int main(void) {
 	int  arr[3] = {1, 2, 3};
 	int* arr_ptr = arr;
 	int  arr_sz = 3;
-	int  val  = cbuild_shift(arr_ptr, arr_sz);
+	int  val  = cbuild_shift(arr_sz, arr_ptr);
 	TEST_ASSERT_EQ(val, 1, "cbuild_shift: Wrong element returned"
 		TEST_EXPECT_MSG(d), 1, val);
 	TEST_ASSERT_EQ(arr_sz, 2,

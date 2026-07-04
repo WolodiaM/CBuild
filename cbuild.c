@@ -554,15 +554,19 @@ test_case_t TESTS[] = {
 	},
 	{
 		.file = "basic",
+		.platforms = TPLM_ALL,
 	},
 	{
 		.file = "options",
+		.platforms = TPLM_ALL,
 	},
 	{
 		.file = "match",
+		.platforms = TPLM_ALL,
 	},
 	{
 		.file = "advanced",
+		.platforms = TPLM_ALL,
 	},
 };
 static const char* TPL_NAMES[] = {
