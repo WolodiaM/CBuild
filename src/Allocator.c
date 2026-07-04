@@ -2,6 +2,7 @@
 
 #include "Allocator.h"
 #include "Arena.h"
+#include "Temp.h"
 
 CBUILDDEF void* __cbuild_allocator_arena_malloc(cbuild_allocator_t* self, size_t size) {
 	return cbuild_arena_malloc(self->state, size);
@@ -39,4 +40,7 @@ CBUILDDEF cbuild_allocator_t cbuild_allocator_from_libc(void) {
 		.realloc = __cbuild_allocator_libc_realloc,
 		.free = __cbuild_allocator_libc_free,
 	};
+}
+CBUILDDEF cbuild_allocator_t cbuild_allocator_from_temp(void) {
+	return cbuild_allocator_from_arena(cbuild_temp_arena());
 }

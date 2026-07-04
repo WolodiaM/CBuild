@@ -35,3 +35,5 @@ typedef struct cbuild_allocator_t {
 CBUILDDEF cbuild_allocator_t cbuild_allocator_from_arena(cbuild_arena_t* arena);
 /// Create allocator from libc allocator.
 CBUILDDEF cbuild_allocator_t cbuild_allocator_from_libc(void);
+/// Create allocator from temporary allocator.
+CBUILDDEF cbuild_allocator_t cbuild_allocator_from_temp(void);
