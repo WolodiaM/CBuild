@@ -243,7 +243,7 @@ CBUILDDEF size_t cbuild_sv_utf8len(cbuild_sv_t sv);
 /// [r:] `false` if validation failed.
 CBUILDDEF bool cbuild_sv_utf8valid(cbuild_sv_t sv, size_t* idx);
 /// Convert string view to c-string.
-CBUILDDEF char* cbuild_sv_to_cstr(cbuild_allocator_t* a, cbuild_sv_t sv);
+CBUILDDEF char* cbuild_sv_to_cstr(cbuild_allocator_t a, cbuild_sv_t sv);
 /// Convert string view to c-string.
 #define cbuild_sv_to_cstr_malloc(sv) \
 	cbuild_sv_to_cstr(cbuild_allocator_from_libc(), sv)

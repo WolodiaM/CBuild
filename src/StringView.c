@@ -545,8 +545,8 @@ invalid:
 	if(idx != NULL) *idx = ret;
 	return false;
 }
-CBUILDDEF char* cbuild_sv_to_cstr(cbuild_allocator_t* a, cbuild_sv_t sv) {
-	char* buff = a->malloc(a, sv.size + 1);
+CBUILDDEF char* cbuild_sv_to_cstr(cbuild_allocator_t a, cbuild_sv_t sv) {
+	char* buff = a.malloc(&a, sv.size + 1);
 	cbuild_assert(buff != NULL, "Allocation failed.\n");
 	memcpy(buff, sv.data, sv.size);
 	buff[sv.size] = 0;

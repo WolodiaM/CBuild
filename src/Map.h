@@ -258,7 +258,7 @@ typedef enum cbuild_map_tombstone_t {
 /// * [pl:map2:cbuild_map_t*] Destination map object.
 #define cbuild_map_rehash(map1, map2)                                             \
 	do {                                                                            \
-		cbuild_da_foreach((map1), __map_e1) {                                         \
+		cbuild_span_foreach((map1), __map_e1) {                                       \
 			if (__map_e1->tombstone == CBUILD_MAP_FULL) {                               \
 				typeof((map1)->data) __map_e2 = cbuild_map_append((map2), __map_e1->key); \
 				memcpy(__map_e2, __map_e1, sizeof(*__map_e1));                            \

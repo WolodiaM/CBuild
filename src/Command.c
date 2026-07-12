@@ -147,8 +147,8 @@ CBUILDDEF bool cbuild_cmd_run_opt(cbuild_cmd_t* cmd, struct cbuild_cmd_opts_t op
 	if(opts.procs != NULL && opts.async_threads != -1) {
 		if(opts.async_threads == 0) opts.async_threads = cbuild_nproc() + 1;
 		if((size_t)opts.async_threads == opts.procs->size) {
-			proc_idx = (size_t)cbuild_procs_wait_any(*opts.procs, &code);
-			if(code != 0) {
+			proc_idx = cbuild_procs_wait_any(*opts.procs, &code);
+			if(!opts.no_abort_on_error && code != 0) {
 				goto cleanup;
 			}
 		}

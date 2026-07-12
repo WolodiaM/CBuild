@@ -43,6 +43,7 @@ CBUILDDEF cbuild_sb_t cbuild_cmd_to_sb(cbuild_cmd_t cmd);
 ///   - [fl:no_reset] By default `size` filed of command is reset. This flag disables this feature.
 ///   - [fl:autokill] Works only on Linux. Automatically kills process if parent dies.
 ///   - [fl:no_print_cmd] By default command is printed as `TRACE` log. This flag disable this log message.
+///   - [fl:no_abort_on_error] If `procs` is used and internal scheduler decides to wait on free slot do not abort if that command exits with error.
 struct cbuild_cmd_opts_t {
 	// Async
 	cbuild_proclist_t* procs; // Non-null implies async
@@ -60,10 +61,11 @@ struct cbuild_cmd_opts_t {
 	union {
 		uint32_t flags;
 		struct {
-			uint32_t no_reset     : 1;
-			uint32_t autokill     : 1;
-			uint32_t no_print_cmd : 1;
-			uint32_t              : 29;
+			uint32_t no_reset          : 1;
+			uint32_t autokill          : 1;
+			uint32_t no_print_cmd      : 1;
+			uint32_t no_abort_on_error : 1;
+			uint32_t                   : 28;
 		};
 	};
 };
