@@ -26,10 +26,10 @@ CBUILDDEF int cbuild_proc_wait_code(cbuild_proc_t proc);
 /// Blocking wait until any process from list exits.
 ///
 /// * [pl:procs] List of processess.
-/// * [pl:code] Return value for exit code of exited process, Could be `NULL`{.c}.
+/// * [pl:code] Return value for exit code of exited process, or INT_MAX in case of ECHILD, or INT_MIN in case of empty array. Could be `NULL`{.c}.
 ///
 /// [r:] Index of exited process in [p:procs] array.
-CBUILDDEF ssize_t cbuild_procs_wait_any(cbuild_proclist_t procs, int* code);
+CBUILDDEF size_t cbuild_procs_wait_any(cbuild_proclist_t procs, int* code);
 /// Check if specific process is still running.
 CBUILDDEF bool cbuild_proc_is_running(cbuild_proc_t proc);
 /// Function that can be used a child process entry point.

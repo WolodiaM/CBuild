@@ -35,9 +35,10 @@
 			}
 		}
 	}
-	CBUILDDEF ssize_t cbuild_procs_wait_any(cbuild_proclist_t procs, int* code) {
+	CBUILDDEF size_t cbuild_procs_wait_any(cbuild_proclist_t procs, int* code) {
 		if(procs.size == 0) {
-			return -1;
+			if (code != NULL) *code = INT_MIN;
+			return 0;
 		}
 		while(true) {
 			for(size_t i = 0; i < procs.size; i++) {
@@ -47,7 +48,8 @@
 				int ret = waitpid(proc, &status, WNOHANG);
 				if(ret < 0) {
 					if(errno ==	ECHILD) {
-						return INT_MAX;
+						if (code != NULL) *code = INT_MAX;
+						return i;
 					} else {
 						cbuild_log_error(
 							"Could not wait for child process (pid %d), error: \"%s\"", proc,
@@ -57,14 +59,14 @@
 				} else if(ret > 0) {
 					if(WIFEXITED(status)) {
 						if(code != NULL) *code = WEXITSTATUS(status);
-						return (ssize_t)i;
+						return i;
 					}
 					if(WIFSIGNALED(status)) {
 						cbuild_log_error(
 							"Process (pid %d) was terminated by signal \"%d\"", proc,
 							WTERMSIG(status));
 						if(code != NULL) *code = -WTERMSIG(status);
-						return (ssize_t)i;
+						return i;
 					}
 				}
 			}
@@ -74,7 +76,6 @@
 			};
 			nanosleep(&duration, NULL);
 		}
-		return -1;
 	}
 	CBUILDDEF bool cbuild_proc_is_running(cbuild_proc_t proc) {
 		if(proc <= 0) return false;
