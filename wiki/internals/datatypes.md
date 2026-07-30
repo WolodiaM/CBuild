@@ -52,3 +52,17 @@ Then you need to initialize function pointers, either using one of provided `cbu
 Linked list is a little special - you do not need to create structure for it. You just need to allocate element using provided functions and then you can attach new elements to it (or any of elements attached later, API does not care which element from list you pass to it). It rely on shadow data and gives you a direct pointer to an element.
 
 :::
+
+::: entry
+
+Additionally CBuild implicitly define `span` datatype, which uses this structure:
+```c
+typedef struct my_span_t {
+    int* data;
+    size_t size;
+} my_span_t;
+```
+
+As you can see, any dynamic array is automatically a span too. And any string view is a span too. This is a *base class* used by both of this datatypes to allow shared behaviour (e.g., foreach loop work with spans, so it can be shared between both of this datatypes). And if just read-only view of some array is needed span can be created to contain both pointer and size, providing few extra features for such view.
+
+:::
