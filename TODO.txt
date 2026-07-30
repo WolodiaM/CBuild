@@ -1,1 +1,6 @@
 reference counting 'https://youtu.be/iotrPxUnTdQ'
+Add support for file+loc to log
+cbuild_dir_walk errors-out on __cbuild_path_filetype_resolved if link is invalid.
+Add cbuild_sv_chop_by_space
+Add cbuild_sv_chop
+Add cbuild_sv_chop_by_one_of
