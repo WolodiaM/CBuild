@@ -109,11 +109,6 @@ bool http_serve_dir(const char* dir, uint16_t port);
 // TODO: Move this into CBuild, but this maybe need some group of function
 // (eg. multiple functions of such class), so it will be here until I have
 // time to thing about thia addition to an API
-bool cbuild_sv_chop_prefix(cbuild_sv_t* sv, cbuild_sv_t prefix) {
-	if (!cbuild_sv_prefix(*sv, prefix)) return false;
-	cbuild_sv_chop(sv, prefix.size);
-	return true;
-}
 size_t cbuild_sv_count(cbuild_sv_t sv, char c) {
 	size_t ret = 0;
 	for (size_t i = 0; i < sv.size; i++) if (sv.data[i] == c) ret++;
