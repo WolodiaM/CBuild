@@ -64,6 +64,32 @@ cbuild_sv_t cbuild_sv_chop_right_by_delim(cbuild_sv_t* sv, char delim) {
 	}
 	return cbuild_sv_chop(sv, sv->size);
 }
+cbuild_sv_t cbuild_sv_chop_by_delim_any(cbuild_sv_t* sv, const char* delim) {
+	size_t i;
+	for (i = 0; i < sv->size; i++) {
+		if (strchr(delim, sv->data[i]) != NULL) break;
+	}
+	cbuild_sv_t ret = { .data = sv->data, .size = i };
+	sv->data += (i + 1);
+	sv->size -= CBUILD_MIN((i + 1), sv->size);
+	return ret;
+}
+cbuild_sv_t cbuild_sv_chop_right_by_delim_any(cbuild_sv_t* sv, const char* delim) {
+	ssize_t i;
+	for (i = (ssize_t)sv->size; i > 0; i--) {
+		if (strchr(delim, sv->data[i - 1]) != NULL) break;
+	}
+	i--;
+	if (i == -1) {
+		cbuild_sv_t ret = *sv;
+		sv->size = 0;
+		return ret;
+	} else {
+		cbuild_sv_t ret = { .data = &sv->data[i + 1], .size = sv->size - (size_t)(i + 1) };
+		sv->size = (size_t)i;
+		return ret;
+	}
+}
 cbuild_sv_t cbuild_sv_chop_by_sv(cbuild_sv_t* sv, cbuild_sv_t delim) {
 	if(delim.size == 0 || delim.size > sv->size) {
 		return cbuild_sv_from_parts(sv->data, 0);
@@ -132,6 +158,16 @@ cbuild_sv_t cbuild_sv_chop_right_by_func(cbuild_sv_t* sv,
 	sv->size = (size_t)i;
 	return cbuild_sv_from_parts(sv->data + i + 1, tmp - ((size_t)i + 1));
 }
+CBUILDDEF bool __cbuild_sv_chop_by_space_delim(const cbuild_sv_t* sv, size_t i, void* args) {
+	CBUILD_UNUSED(args);
+	return isspace(sv->data[i]);
+}
+cbuild_sv_t cbuild_sv_chop_by_space(cbuild_sv_t* sv) {
+	return cbuild_sv_chop_by_func(sv, __cbuild_sv_chop_by_space_delim, NULL);
+}
+cbuild_sv_t cbuild_sv_chop_right_by_space(cbuild_sv_t* sv) {
+	return cbuild_sv_chop_right_by_func(sv, __cbuild_sv_chop_by_space_delim, NULL);
+}
 int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b) {
 	if(a.size < b.size) {
 		return -2;
@@ -154,6 +190,20 @@ bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix) {
 		return false;
 	}
 	return cbuild_sv_cmp(cbuild_sv_from_parts(sv.data, prefix.size), prefix) == 0;
+}
+bool cbuild_sv_chop_prefix(cbuild_sv_t* sv, cbuild_sv_t prefix) {
+	if (cbuild_sv_prefix(*sv, prefix)) {
+		cbuild_sv_chop(sv, prefix.size);
+		return true;
+	}
+	return false;
+}
+bool cbuild_sv_chop_suffix(cbuild_sv_t* sv, cbuild_sv_t suffix) {
+	if (cbuild_sv_suffix(*sv, suffix)) {
+		cbuild_sv_chop_right(sv, suffix.size);
+		return true;
+	}
+	return false;
 }
 bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix) {
 	if(sv.size < suffix.size) {
@@ -545,7 +595,7 @@ invalid:
 	if(idx != NULL) *idx = ret;
 	return false;
 }
-CBUILDDEF char* cbuild_sv_to_cstr(cbuild_allocator_t a, cbuild_sv_t sv) {
+char* cbuild_sv_to_cstr(cbuild_allocator_t a, cbuild_sv_t sv) {
 	char* buff = a.malloc(&a, sv.size + 1);
 	cbuild_assert(buff != NULL, "Allocation failed.\n");
 	memcpy(buff, sv.data, sv.size);

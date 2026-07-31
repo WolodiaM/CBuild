@@ -67,6 +67,20 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_delim(cbuild_sv_t* sv, char delim);
 ///
 /// [r:] New string view containing chopped characters. [p:delim] will not be included.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_delim(cbuild_sv_t* sv, char delim);
+/// Chop characters from string view starting from the left until one of [p:delim] is found.
+///
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] List of delimiter character.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_delim_any(cbuild_sv_t* sv, const char* delim);
+/// Chop characters from string view starting from the right until one of [p:delim] is found.
+///
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
+/// * [pl:delim] List of delimiter character.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_delim_any(cbuild_sv_t* sv, const char* delim);
 /// Chop characters from string view starting from the left until [p:delim] is found.
 ///
 /// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
@@ -108,6 +122,20 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_func(cbuild_sv_t* sv,
 /// [r:] new string view containing chopped characters. Delimiter character will not be in any string view.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_func(cbuild_sv_t* sv,
 	cbuild_sv_delim_func delim, void* args);
+/// Chop characters from string view starting from the left until character that
+/// is space (as reported by `isspace`) is found.
+///
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_space(cbuild_sv_t* sv);
+/// Chop characters from string view starting from the right until character that
+/// is space (as reported by `isspace`) is found.
+///
+/// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
+///
+/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_space(cbuild_sv_t* sv);
 /// `strcmp` for string view. Fully compatible but extends API. 
 ///
 /// * [r:-2] If size of first string view is smaller.
@@ -118,8 +146,12 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_func(cbuild_sv_t* sv,
 CBUILDDEF int cbuild_sv_cmp(cbuild_sv_t a, cbuild_sv_t b);
 /// Check if string view has specific prefix.
 CBUILDDEF bool cbuild_sv_prefix(cbuild_sv_t sv, cbuild_sv_t prefix);
+/// Check if string view has specific prefix and chop it if it is present.
+CBUILDDEF bool cbuild_sv_chop_prefix(cbuild_sv_t* sv, cbuild_sv_t prefix);
 /// Check if string view has specific suffix.
 CBUILDDEF bool cbuild_sv_suffix(cbuild_sv_t sv, cbuild_sv_t suffix);
+/// Check if string view has specific suffix and chop it if it is present.
+CBUILDDEF bool cbuild_sv_chop_suffix(cbuild_sv_t* sv, cbuild_sv_t suffix);
 /// Find specific character in string view.
 ///
 /// [r:] Index of character or `-1`{.c} if not found
