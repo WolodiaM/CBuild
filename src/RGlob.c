@@ -14,6 +14,8 @@ CBUILDDEF bool cbuild_glob_compile_opt(cbuild_glob_t* glob, const char* pattern,
 		PARSE_CHAR_CLASS,
 		PARSE_CHAR_CLASS_FIRST,
 		PARSE_CHAR_CLASS_AFTER_LAST,
+		PARSE_ASTERISK,
+		PARSE_DOUBLE_ASTERISK,
 	} state = PARSE_NORMAL;
 	if (!opts.partial_match) cbuild_da_append(&regex, '^');
 	for(const char* pptr = pattern; *pptr != '\0'; pptr++) {
@@ -40,6 +42,24 @@ CBUILDDEF bool cbuild_glob_compile_opt(cbuild_glob_t* glob, const char* pattern,
 			state = PARSE_CHAR_CLASS; // Clears GPST_CHAR_CLASS_FIRST
 			continue;
 		}
+		if (state == PARSE_ASTERISK) {
+			if (*pptr == '*') {
+				state = PARSE_DOUBLE_ASTERISK;
+				continue;
+			} else {
+				cbuild_sb_append_cstr(&regex, "[^/]*");
+				state = PARSE_NORMAL;
+			}
+		}
+		if (state == PARSE_DOUBLE_ASTERISK) {
+			state = PARSE_NORMAL;
+			if (*pptr == '/') {
+				cbuild_sb_append_cstr(&regex, "(.*/)?");
+				continue;
+			} else {
+				cbuild_sb_append_cstr(&regex, "[^/]*");
+			}
+		}
 		switch(*pptr) {
 		case '#': {
 			state = PARSE_ESCAPE;
@@ -53,7 +73,7 @@ CBUILDDEF bool cbuild_glob_compile_opt(cbuild_glob_t* glob, const char* pattern,
 			state = PARSE_CHAR_CLASS_AFTER_LAST;
 		} break;
 		case '*': {
-			cbuild_sb_append_cstr(&regex, ".*");
+			state = PARSE_ASTERISK;
 		} break;
 		case '?': {
 			cbuild_da_append(&regex, '.');
@@ -74,6 +94,9 @@ CBUILDDEF bool cbuild_glob_compile_opt(cbuild_glob_t* glob, const char* pattern,
 			cbuild_da_append(&regex, *pptr);
 		} break;
 		}
+	}
+	if (state == PARSE_ASTERISK) {
+		cbuild_sb_append_cstr(&regex, "[^/]*");
 	}
 	if (!opts.partial_match) cbuild_da_append(&regex, '$');
 	cbuild_sb_append_null(&regex);

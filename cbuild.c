@@ -6,10 +6,10 @@
  * And a lot of generated HTML ;)
  *
  * @date 2025-09-12
- * @copyright (C) 2025 WolodiaM
+ * @copyright (C) 2025-2026 WolodiaM
  * @license GPL-3.0-or-later
  *
- * Copyright (C) 2025 WolodiaM
+ * Copyright (C) 2025-2026 WolodiaM
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -566,6 +566,10 @@ test_case_t TESTS[] = {
 	},
 	{
 		.file = "advanced",
+		.platforms = TPLM_ALL,
+	},
+	{
+		.file = "double_asterisk",
 		.platforms = TPLM_ALL,
 	},
 };
@@ -1298,7 +1302,7 @@ bool amalgamate(void) {
 	cbuild_sb_append_cstr(&output, "// cbuild.h by WolodiaM\n");
 	cbuild_sb_append_cstr(&output, "// License: GPL-3.0-or-later\n");
 	cbuild_sb_append_cstr(&output, "//\n");
-	cbuild_sb_append_cstr(&output, "// Copyright (C) 2025 WolodiaM\n");
+	cbuild_sb_append_cstr(&output, "// Copyright (C) 2025-2026 WolodiaM\n");
 	cbuild_sb_append_cstr(&output, "// This program is free software: you can redistribute it and/or modify\n");
 	cbuild_sb_append_cstr(&output, "// it under the terms of the GNU General Public License as published by\n");
 	cbuild_sb_append_cstr(&output, "// the Free Software Foundation, either version 3 of the License, or\n");
