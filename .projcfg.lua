@@ -24,6 +24,7 @@ return {
 					"-Wvla",
 					"-Wno-override-init",
 					"-Wshadow",
+					"-Wstrict-prototypes",
 					"-Wno-pragma-once-outside-header",
 				},
 			},

@@ -36,7 +36,7 @@
 /// Enables almost all warnings except `-Wcomments` and `-Woverride-init`.
 #define CBUILD_CARGS_WARN \
 	"-Wall", "-Wextra", "-Wno-comments", "-Wconversion", "-Wcast-align", "-Wvla", \
-	"-Wno-override-init", "-Wshadow"
+	"-Wno-override-init", "-Wshadow", "-Wstrict-prototypes"
 /// Promote all warnings to errors.
 #define CBUILD_CARGS_WERROR           "-Werror"
 /// Setup profiles,
@@ -66,9 +66,9 @@
 /// Add library include (`-l`) based on compile-time literal.
 #define CBUILD_CARGS_LIBINCLUDE(lib)  "-l"lib
 /// Add library directories (`-I`) based on compile-time literal.
-#define CBUILD_CARGS_LIBIDIR(src, obj) "-I"src
+#define CBUILD_CARGS_LIBIDIR(src) "-I"src
 /// Add library directories (`-L`) based on compile-time literal.
-#define CBUILD_CARGS_LIBLDIR(src, obj) "-L"obj
+#define CBUILD_CARGS_LIBLDIR(obj) "-L"obj
 /// Set standard based on compile-time literal.
 #define CBUILD_CARGS_STD(std)         "-std="std
 
