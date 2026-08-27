@@ -24,6 +24,11 @@ int main(void) {
 		tail, i9,
 		"Wrong tail found for linked list"TEST_EXPECT_MSG(p),
 		i9, tail);
+	int* e3 = cbuild_ll_get(i5, 2);
+	TEST_ASSERT_EQ(
+		e3, i3,
+		"Wrong second element found for linked list"TEST_EXPECT_MSG(p),
+		i3, e3);
 	int* li = i1;
 	for (int i = 1; i < 10; i++) {
 		TEST_ASSERT_EQ(

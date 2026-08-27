@@ -85,3 +85,9 @@ CBUILDDEF void* cbuild_ll_tail(void* elem) {
 	}
 	return tail;
 }
+CBUILDDEF void* cbuild_ll_get(void* elem, size_t i) {
+	size_t cnt = 0;
+	void* e = cbuild_ll_head(elem);
+	while (e != NULL && cnt < i) { e = cbuild_ll_next(e); cnt++; }
+	return e;
+}

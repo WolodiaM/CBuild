@@ -233,3 +233,5 @@ CBUILDDEF void* cbuild_ll_prev(void* elem);
 CBUILDDEF void* cbuild_ll_head(void* elem);
 /// Get tail element from linked list.
 CBUILDDEF void* cbuild_ll_tail(void* elem);
+/// Get specific element from linked list
+CBUILDDEF void* cbuild_ll_get(void* elem, size_t i);
