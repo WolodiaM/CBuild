@@ -102,13 +102,38 @@ typedef struct cbuild_arglist_t {
 	size_t size;
 	size_t capacity;
 } cbuild_arglist_t;
+/// Options for flag parsing.
+///
+/// * [fl:subcommands] Enables "subcommands" mode. This will just treat first positional argument as end of flags (as for subcommands you should use nested parser).
+/// * [fl:keep_argv0] Store argv0 into context.
+/// * [fl:reset_parts] Reset positional arguments array before parsing.
+struct cbuild_flag_parse_opts_t {
+	union {
+		uint8_t __flags;
+		struct {
+			uint8_t subcommands: 1;
+			uint8_t keep_argv0:  1;
+			uint8_t reset_pargs: 1;
+			uint8_t : 5;
+		};
+	};
+};
 /// Parse flags.
 ///
 /// ::: note
 /// This function prints error and aborts on invalid flags and when parsed 
 /// argument count differs from required (uses `exit(1)`).
 /// :::
-CBUILDDEF void cbuild_flag_parse(int argc, char** argv);
+#define cbuild_flag_parse(argc, argv, ...)                                           \
+	cbuild_flag_parse_opt(argc, argv, (struct cbuild_flag_parse_opts_t){ __VA_ARGS__ }) \
+/// Parse flags.
+///
+/// ::: note
+/// This function prints error and aborts on invalid flags and when parsed 
+/// argument count differs from required (uses `exit(1)`).
+/// :::
+CBUILDDEF void cbuild_flag_parse_opt(int argc, char** argv,
+	struct cbuild_flag_parse_opts_t options);
 /// Print help for all flags via [`__CBUILD_PRINT`](Common.html#preprocessor-configuration)
 CBUILDDEF void cbuild_flag_print_help(void);
 /// Get list of positional arguments.

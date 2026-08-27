@@ -30,6 +30,9 @@ struct __cbuild_flag_context_t {
 };
 struct __cbuild_flag_context_t __cbuild_flag_context;
 CBUILDDEF void cbuild_flag_new_opt(const char* option, struct cbuild_flag_new_opts_t opts) {
+	cbuild_span_foreach(&__cbuild_flag_context.flags, flag) {
+		if (strcmp(flag->option, option) == 0) return;
+	}
 	struct __cbuild_flag_t flag = {0};
 	flag.option = option;
 	flag.spec = opts;
@@ -155,7 +158,8 @@ CBUILDDEF void __cbuild_flag_parse_arguments(struct __cbuild_flag_t* flag,
 		exit(1);
 	}
 }
-CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
+CBUILDDEF void cbuild_flag_parse_opt(int argc, char** argv,
+	struct cbuild_flag_parse_opts_t options) {
 	// Register built-in flags and parameters
 	cbuild_flag_new("help", .short_option = 'h', .desc = "Print this message.");
 	cbuild_flag_new("version", .short_option = 'v',
@@ -167,7 +171,8 @@ CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 		cbuild_flag_set_option(CBUILD_FLAG_VERSION_HOOK, __cbuild_flag_version);
 	}
 	// Parse flags
-	__cbuild_flag_context.app_name = argv[0];
+	if (!options.keep_argv0) __cbuild_flag_context.app_name = argv[0];
+	if (options.reset_pargs) __cbuild_flag_context.pargs.size = 0;
 	bool parse_flags = true;
 	int parser = 1;
 	while (parser < argc) {
@@ -288,6 +293,7 @@ CBUILDDEF void cbuild_flag_parse(int argc, char** argv) {
 			}
 			if (equal != NULL) *equal = '=';
 		} else { // Positional argument
+			if (options.subcommands) parse_flags = false;
 			cbuild_da_append(&__cbuild_flag_context.pargs, arg);
 		}
 	}
