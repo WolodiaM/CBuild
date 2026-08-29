@@ -7,21 +7,25 @@ int main(void) {
 		"Arena capacity mismatch"TEST_EXPECT_MSG(zu), capacity, arena.capacity);
 	TEST_ASSERT_EQ(arena.pointer, 0,
 		"Invalid initial arena pointer"TEST_EXPECT_MSG(zu), (size_t)0, arena.pointer);
-	void* p1 = cbuild_arena_malloc(&arena, 10);
+	const size_t FIRST = 10;
+	void* p1 = cbuild_arena_malloc(&arena, FIRST);
 	TEST_ASSERT_NEQ(p1, NULL, "First allocation failed.");
 	TEST_ASSERT_EQ((uintptr_t)p1, (uintptr_t)arena.base,
 		"First allocation should be at base.");
 	size_t expected_ptr = 0;
-	while (expected_ptr < 10) expected_ptr += sizeof(cbuild_max_align_t);
+	while (expected_ptr < FIRST) expected_ptr += sizeof(cbuild_max_align_t);
 	TEST_ASSERT_EQ(arena.pointer, expected_ptr,
 		"Arena pointer after first allocation mismatch"TEST_EXPECT_MSG(zu),
 		expected_ptr, arena.pointer);
-	void* p2 = cbuild_arena_malloc(&arena, 20);
+	const size_t SECOND = 20;
+	void* p2 = cbuild_arena_malloc(&arena, SECOND);
 	TEST_ASSERT_NEQ(p2, NULL, "Second allocation failed");
 	TEST_ASSERT_EQ((uintptr_t)p2, (uintptr_t)arena.base + expected_ptr,
 		"Second allocation should follow first"TEST_EXPECT_MSG(p),
 		(uintptr_t)arena.base + expected_ptr, (uintptr_t)p2);
-	size_t expected_ptr2 = expected_ptr + 32;
+	size_t expected_ptr2 = 0;
+	while (expected_ptr2 < SECOND) expected_ptr2 += sizeof(cbuild_max_align_t);
+	expected_ptr2 += expected_ptr;
 	TEST_ASSERT_EQ(arena.pointer, expected_ptr2,
 		"Arena pointer after second allocation mismatch"TEST_EXPECT_MSG(zu),
 		expected_ptr2, arena.pointer);

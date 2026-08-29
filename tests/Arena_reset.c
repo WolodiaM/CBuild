@@ -2,14 +2,16 @@ int main(void) {
 	cbuild_arena_t arena = {0};
 	const size_t capacity = 1024;
 	cbuild_arena_base_malloc(&arena, capacity);
-	cbuild_arena_malloc(&arena, 16);
+	const size_t FIRST = 16;
+	cbuild_arena_malloc(&arena, FIRST);
 	size_t checkpoint1 = cbuild_arena_checkpoint(&arena);
 	size_t expected_checkpoint = 0;
-	while (expected_checkpoint < 16) expected_checkpoint += sizeof(cbuild_max_align_t);
+	while (expected_checkpoint < FIRST) expected_checkpoint += sizeof(cbuild_max_align_t);
 	TEST_ASSERT_EQ(checkpoint1, expected_checkpoint,
 		"Arena checkpoint 1 mismatch"TEST_EXPECT_MSG(zu),
 		expected_checkpoint, checkpoint1);
-	void* p2 = cbuild_arena_malloc(&arena, 32);
+	const size_t SECOND = 32;
+	void* p2 = cbuild_arena_malloc(&arena, SECOND);
 	size_t checkpoint2 = cbuild_arena_checkpoint(&arena);
 	TEST_ASSERT_NEQ(checkpoint1, checkpoint2,
 		"Checkpoint should change after allocation.");
@@ -17,7 +19,8 @@ int main(void) {
 	TEST_ASSERT_EQ(arena.pointer, checkpoint1,
 		"Arena pointer after reset mismatch"TEST_EXPECT_MSG(zu),
 		checkpoint1, arena.pointer);
-	void* p3 = cbuild_arena_malloc(&arena, 16);
+	const size_t THIRD = 16;
+	void* p3 = cbuild_arena_malloc(&arena, THIRD);
 	TEST_ASSERT_EQ(p3, p2,
 		"Re-allocation after reset should use the same address"TEST_EXPECT_MSG(p),
 		p2, p3);
