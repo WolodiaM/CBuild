@@ -11,7 +11,8 @@ int main(void) {
 	TEST_ASSERT_NEQ(p1, NULL, "First allocation failed.");
 	TEST_ASSERT_EQ((uintptr_t)p1, (uintptr_t)arena.base,
 		"First allocation should be at base.");
-	size_t expected_ptr = sizeof(cbuild_max_align_t);
+	size_t expected_ptr = 0;
+	while (expected_ptr < 10) expected_ptr += sizeof(cbuild_max_align_t);
 	TEST_ASSERT_EQ(arena.pointer, expected_ptr,
 		"Arena pointer after first allocation mismatch"TEST_EXPECT_MSG(zu),
 		expected_ptr, arena.pointer);
