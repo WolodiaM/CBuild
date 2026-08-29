@@ -83,7 +83,7 @@ CBUILDDEF void cbuild_flag_set_option(enum cbuild_flag_options_t option, ...) {
 		const char req[] = "\e[6n";
 		if (write(STDOUT_FILENO, req, sizeof(req)) < 0) {
 			cbuild_log_error("Could not get cusrsor in terminal - write failed with: %s, ",
-				strerror(errno))
+				strerror(errno));
 			*x = 0;
 			*y = 0;
 			return;
