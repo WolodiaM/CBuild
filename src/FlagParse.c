@@ -81,7 +81,13 @@ CBUILDDEF void cbuild_flag_set_option(enum cbuild_flag_options_t option, ...) {
 		new.c_cc[VTIME] = 0;
 		tcsetattr(STDIN_FILENO, TCSANOW, &new);
 		const char req[] = "\e[6n";
-		write(STDOUT_FILENO, req, sizeof(req));
+		if (write(STDOUT_FILENO, req, sizeof(req)) < 0) {
+			cbuild_log_error("Could not get cusrsor in terminal - write failed with: %s, ",
+				strerror(errno))
+			*x = 0;
+			*y = 0;
+			return;
+		}
 		char resp[9] = {0}; 
 		cbuild_assert(read(STDIN_FILENO, resp, 8) >= 0,
 			"Can not read from stdin.\n");
