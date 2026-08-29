@@ -27,12 +27,11 @@ typedef struct cbuild_arena_t {
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L) || \
 	(defined (__cplusplus) && __cplusplus >= 201103L) || \
 	defined(_GCC_MAX_ALIGN_T) || defined(__DEFINED_max_align_t)
-	/// max_align_t for CBuild
+	/// max_align_t for CBuild. In case of max_align_t found it just mirror what
+	/// clang does because gcc has some special cases for 32-bit systems.
 	typedef max_align_t cbuild_max_align_t;
 #else
-	/// max_align_t for CBuild (raw version).
-	/// Mirror what clang does because gcc has some special cases for 32-bit systems.
-	typedef union {
+	typedef union cbuild_max_align_t {
 		long long ll __attribute__((__aligned__(__alignof__(long long))));;
 		long double ldb __attribute__((__aligned__(__alignof__(long double))));;
 	} cbuild_max_align_t;

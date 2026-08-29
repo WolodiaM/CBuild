@@ -106,14 +106,14 @@ typedef struct cbuild_arglist_t {
 ///
 /// * [fl:subcommands] Enables "subcommands" mode. This will just treat first positional argument as end of flags (as for subcommands you should use nested parser).
 /// * [fl:keep_argv0] Store argv0 into context.
-/// * [fl:reset_parts] Reset positional arguments array before parsing.
+/// * [fl:reset_pargs] Reset positional arguments array before parsing.
 struct cbuild_flag_parse_opts_t {
 	union {
 		uint8_t __flags;
 		struct {
-			uint8_t subcommands: 1;
-			uint8_t keep_argv0:  1;
-			uint8_t reset_pargs: 1;
+			uint8_t subcommands : 1;
+			uint8_t keep_argv0  : 1;
+			uint8_t reset_pargs : 1;
 			uint8_t : 5;
 		};
 	};

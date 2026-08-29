@@ -127,14 +127,14 @@ CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_func(cbuild_sv_t* sv,
 ///
 /// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 ///
-/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+/// [r:] New string view containing chopped characters. Delimiter will not be included.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_by_space(cbuild_sv_t* sv);
 /// Chop characters from string view starting from the right until character that
 /// is space (as reported by `isspace`) is found.
 ///
 /// * [pl:sv] String view from which data will be chopped. Its size will be reduced.
 ///
-/// [r:] New string view containing chopped characters. [p:delim] will not be included.
+/// [r:] New string view containing chopped characters. Delimiter will not be included.
 CBUILDDEF cbuild_sv_t cbuild_sv_chop_right_by_space(cbuild_sv_t* sv);
 /// `strcmp` for string view. Fully compatible but extends API. 
 ///
