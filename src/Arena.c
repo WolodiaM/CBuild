@@ -39,6 +39,9 @@ CBUILDDEF size_t cbuild_arena_checkpoint(cbuild_arena_t* arena) {
 	return arena->pointer;
 }
 CBUILDDEF void cbuild_arena_reset(cbuild_arena_t* arena, size_t checkpoint) {
+	#ifdef CBUILD_ARENA_STAMP
+		for (size_t i = checkpoint; i < arena->pointer; i++) arena->data[i] = 0xCC;
+	#endif // CBUILD_ARENA_STAMP
 	arena->pointer = checkpoint;
 }
 CBUILDDEF char* cbuild_arena_strdup(cbuild_arena_t* arena, const char* src) {

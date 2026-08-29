@@ -272,6 +272,7 @@
 //! - `CBUILD_LOG_CUSTOM_LEVELS` - used to inject custom log levels in 
 //!    CBuild's logger
 //! - `CBUILD_TRACE_PA` - Enable tracing for pool allocator.
+//! - `CBUILD_ARENA_STAMP` - "Stamp" freed arena memory with 0xCC.
 
 //@ cbuild-configuration
 #ifndef CBUILD_INIT_CAPACITY
