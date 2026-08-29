@@ -15,17 +15,6 @@ CBUILDDEF void cbuild_arena_base_free(cbuild_arena_t* arena) {
 	__CBUILD_FREE(arena->base);
 	arena->base = NULL;
 }
-#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L) || \
-	(defined (__cplusplus) && __cplusplus >= 201103L) || \
-	defined(_GCC_MAX_ALIGN_T) || defined(__DEFINED_max_align_t)
-	typedef max_align_t cbuild_max_align_t;
-#else
-	// Mirror what clang does because gcc has some special cases for 32-bit systems.
-	typedef union {
-		long long ll __attribute__((__aligned__(__alignof__(long long))));;
-		long double ldb __attribute__((__aligned__(__alignof__(long double))));;
-	} cbuild_max_align_t;
-#endif // Extension check
 CBUILDDEF void* cbuild_arena_malloc(cbuild_arena_t* arena, size_t size) {
 	size_t adj_size = (size + (sizeof(cbuild_max_align_t) - 1)) &
 		~(sizeof(cbuild_max_align_t) - 1);
