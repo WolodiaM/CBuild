@@ -4,9 +4,11 @@ int main(void) {
 	cbuild_arena_base_malloc(&arena, capacity);
 	cbuild_arena_malloc(&arena, 16);
 	size_t checkpoint1 = cbuild_arena_checkpoint(&arena);
-	TEST_ASSERT_EQ(checkpoint1, (16 | (2 * sizeof(void*) - 1)) + 1,
+	size_t expected_checkpoint = 0;
+	while (expected_checkpoint < 16) expected_checkpoint += sizeof(cbuild_max_align_t);
+	TEST_ASSERT_EQ(checkpoint1, expected_checkpoint,
 		"Arena checkpoint 1 mismatch"TEST_EXPECT_MSG(zu),
-		(16 | (2 * sizeof(void*) - 1)) + 1, checkpoint1);
+		expected_checkpoint, checkpoint1);
 	void* p2 = cbuild_arena_malloc(&arena, 32);
 	size_t checkpoint2 = cbuild_arena_checkpoint(&arena);
 	TEST_ASSERT_NEQ(checkpoint1, checkpoint2,
