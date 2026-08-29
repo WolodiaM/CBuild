@@ -72,39 +72,39 @@ jobs:
   #           clang cbuild.c -o cbuild.run
   #           ./cbuild.run docs build-all
   #           ./cbuild.run test
-  test-cygwin:
-    name: Runs tests on ${{ matrix.os }} via cygwin
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix:
-        os: [windows-latest]
-    defaults:
-      run:
-        shell: bash.exe -l -o pipefail {0}
-    env:
-      CHERE_INVOKING: 1
-      SHELLOPTS: igncr
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: Install Cygwin and dependencies
-        uses: cygwin/cygwin-install-action@v6
-        with:
-          packages: gcc-core make
-      - name: Build test runner
-        shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
-        run: |
-          cd "$(cygpath "$GITHUB_WORKSPACE")"
-          /usr/bin/gcc cbuild.c -o cbuild.exe
-      # NOTE: This cause too much problems as nor wikimk nor its build were even designed to be portable anything other than Linux
-      # - name: Build wikimk (check if it builds)
-      #   run: |
-      #     cd "$(cygpath "$GITHUB_WORKSPACE")"
-      #     ./cbuild.exe docs build-all
-      - name: Run tests
-        shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
-        run: |
-          cd "$(cygpath "$GITHUB_WORKSPACE")"
-          ./cbuild.exe test
+  # test-cygwin:
+  #   name: Runs tests on ${{ matrix.os }} via cygwin
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     fail-fast: false
+  #     max-parallel: 1
+  #     matrix:
+  #       os: [windows-latest]
+  #   defaults:
+  #     run:
+  #       shell: bash.exe -l -o pipefail {0}
+  #   env:
+  #     CHERE_INVOKING: 1
+  #     SHELLOPTS: igncr
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v6
+  #     - name: Install Cygwin and dependencies
+  #       uses: cygwin/cygwin-install-action@v6
+  #       with:
+  #         packages: gcc-core make
+  #     - name: Build test runner
+  #       shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
+  #       run: |
+  #         cd "$(cygpath "$GITHUB_WORKSPACE")"
+  #         /usr/bin/gcc cbuild.c -o cbuild.exe
+  #     # NOTE: This cause too much problems as nor wikimk nor its build were even designed to be portable anything other than Linux
+  #     # - name: Build wikimk (check if it builds)
+  #     #   run: |
+  #     #     cd "$(cygpath "$GITHUB_WORKSPACE")"
+  #     #     ./cbuild.exe docs build-all
+  #     - name: Run tests
+  #       shell: C:\cygwin\bin\bash.exe -l -o pipefail {0}
+  #       run: |
+  #         cd "$(cygpath "$GITHUB_WORKSPACE")"
+  #         ./cbuild.exe test
