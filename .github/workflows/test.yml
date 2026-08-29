@@ -39,9 +39,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
         run: ./cbuild.run docs build-all
       - name: Run tests
-        run: |
-          ./cbuild.run test Arena:allocation
-          ./cbuild.run test Arena:reset
+        run: ./cbuild.run test
   # test-freebsd:
   #   name: Runs tests on ${{ matrix.os }} via freebsd-vm with virtualised ${{ matrix.arch }}
   #   runs-on: ${{ matrix.os }}
