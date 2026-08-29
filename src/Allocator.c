@@ -26,6 +26,22 @@ CBUILDDEF void __cbuild_allocator_libc_free(cbuild_allocator_t* self, void* ptr)
 	CBUILD_UNUSED(self);
 	free(ptr);
 }
+CBUILDDEF void* __cbuild_allocator_pool_alloc_malloc(cbuild_allocator_t* self, size_t size) {
+	cbuild_assert(size == ((cbuild_pool_alloc_t*)(self->state))->object_size,
+		"Pool allocator support only allocations of size equal to its object size (%zu != %zu)",
+		size, ((cbuild_pool_alloc_t*)(self->state))->object_size);
+	return cbuild_pool_alloc_malloc(self->state);
+}
+CBUILDDEF void* __cbuild_allocator_pool_alloc_realloc(cbuild_allocator_t* self, void* ptr, size_t size) {
+	CBUILD_UNUSED(self);
+	CBUILD_UNUSED(ptr);
+	CBUILD_UNUSED(size);
+	cbuild_assert(false, "Pool allocator does not support 'realloc'.");
+	return NULL;
+}
+CBUILDDEF void __cbuild_allocator_pool_alloc_free(cbuild_allocator_t* self, void* ptr) {
+	cbuild_pool_alloc_free(self->state, ptr);
+}
 CBUILDDEF cbuild_allocator_t cbuild_allocator_from_arena(cbuild_arena_t* arena) {
 	return (cbuild_allocator_t){
 		.malloc = __cbuild_allocator_arena_malloc,
@@ -43,4 +59,12 @@ CBUILDDEF cbuild_allocator_t cbuild_allocator_from_libc(void) {
 }
 CBUILDDEF cbuild_allocator_t cbuild_allocator_from_temp(void) {
 	return cbuild_allocator_from_arena(cbuild_temp_arena());
+}
+CBUILDDEF cbuild_allocator_t cbuild_allocator_from_pool_alloc(cbuild_pool_alloc_t* a) {
+	return (cbuild_allocator_t){
+		.malloc = __cbuild_allocator_pool_alloc_malloc,
+		.realloc = __cbuild_allocator_pool_alloc_realloc,
+		.free = __cbuild_allocator_pool_alloc_free,
+		.state = a,
+	};
 }

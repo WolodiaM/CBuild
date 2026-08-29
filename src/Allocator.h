@@ -22,6 +22,7 @@
 
 #include "Common.h"
 #include "Arena.h"
+#include "PoolAlloc.h"
 
 /// Allocator object. Can be used to write allocator-agnostic functions
 /// without reinventing the wheel.
@@ -31,9 +32,11 @@ typedef struct cbuild_allocator_t {
 	void (*free)(struct cbuild_allocator_t* self, void* ptr);
 	void* state;
 } cbuild_allocator_t;
-/// Create allocator from arena.
+/// Create allocator from [arena](DOC:cbuild_arena_t).
 CBUILDDEF cbuild_allocator_t cbuild_allocator_from_arena(cbuild_arena_t* arena);
 /// Create allocator from libc allocator.
 CBUILDDEF cbuild_allocator_t cbuild_allocator_from_libc(void);
 /// Create allocator from temporary allocator.
 CBUILDDEF cbuild_allocator_t cbuild_allocator_from_temp(void);
+/// Create allocator from [pool allocator](DOC:cbuild_pool_alloc_t).
+CBUILDDEF cbuild_allocator_t cbuild_allocator_from_pool_alloc(cbuild_pool_alloc_t* a);

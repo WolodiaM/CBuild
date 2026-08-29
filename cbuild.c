@@ -1375,6 +1375,7 @@ bool amalgamate(void) {
 		SOURCE_DIR"/Term.h",
 		SOURCE_DIR"/Log.h",
 		SOURCE_DIR"/Arena.h",
+		SOURCE_DIR"/PoolAlloc.h",
 		SOURCE_DIR"/Allocator.h",
 		SOURCE_DIR"/Temp.h",
 		SOURCE_DIR"/Span.h",
@@ -1415,6 +1416,7 @@ bool amalgamate(void) {
 		"", // Term.h
 		SOURCE_DIR"/Log.c",
 		SOURCE_DIR"/Arena.c",
+		SOURCE_DIR"/PoolAlloc.c",
 		SOURCE_DIR"/Allocator.c",
 		SOURCE_DIR"/Temp.c",
 		"", // Span.h
