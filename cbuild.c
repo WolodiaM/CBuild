@@ -617,6 +617,7 @@ void test_cmd_append_cc_base(test_case_t test, cbuild_cmd_t* cmd) {
 	cbuild_da_append_many(cmd, CBUILD_CARGS_WARN, CBUILD_CARGS_WERROR);
 	cbuild_da_append_many(cmd, CBUILD_CARGS_INCLUDE("framework.h"));
 	cbuild_da_append_many(cmd, "-fmacro-prefix-map=tests/=");
+	cbuild_da_append_many(cmd, "-march=x86-64-v2");
 	cbuild_da_append_many(cmd,
 		cbuild_temp_sprintf("-DTEST_RUN_PLATFORM=\"%s\"",
 			TPL_NAMES[TPL_RUN_REGISTERED_CURR]));

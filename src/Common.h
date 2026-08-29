@@ -229,6 +229,7 @@
 	typedef void* cbuild_dlib_t;
 #elif defined(CBUILD_API_WINAPI)
 	// Platform includes
+	#define WIN32_LEAN_AND_MEAN
 	#include <windows.h>
 	#include <io.h>
 	/// Process handle
